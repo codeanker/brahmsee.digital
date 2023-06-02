@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import { useCreateRegistrationState } from '@/store/registrationStore'
-import { faCalendarDays } from '@fortawesome/pro-regular-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { useRouter } from 'vue-router'
 import RegistrationLayout from './components/RegistrationLayout.vue'
 
@@ -23,11 +21,10 @@ const { user } = useCreateRegistrationState()
       class="mt-4"
     />
     <div class="btn btn-secondary mt-4 flex w-full text-left">
-      <FontAwesomeIcon
-        :icon="faCalendarDays"
-        class="my-1 mx-2 text-gray-400"
+      <i
+        class="mx-2 my-1 text-gray-400"
         size="lg"
-      />
+      ></i>
       <div class="text-sm">
         Geburtsdatum
         <p class="font-semibold">07.03.2000</p>

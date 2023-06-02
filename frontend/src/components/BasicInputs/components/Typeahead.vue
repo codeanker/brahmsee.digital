@@ -14,22 +14,21 @@
             class="btn bg-transparent px-1"
             @click="clear"
           >
-            <FontAwesomeIcon
-              :icon="faTimes"
+            <i
               fixed-width
-              class="text-gray-500"
-            />
+              class="fa-sharp fa-light fa-times text-gray-500"
+            ></i>
           </button>
           <ComboboxButton
             class="btn bg-transparent px-1"
             @click="filterItems(searchTerm)"
           >
-            <FontAwesomeIcon
-              :icon="pending ? faSpinner : faChevronDown"
+            <i
+              :class="pending ? 'fa-spinner' : 'fa-chevron-down'"
               fixed-width
-              class="text-gray-500"
+              class="fa-sharp fa-light text-gray-500"
               :spin="pending"
-            />
+            ></i>
           </ComboboxButton>
         </div>
         <transition
@@ -68,10 +67,7 @@
                       active ? 'text-white' : 'text-primary-600',
                     ]"
                   >
-                    <FontAwesomeIcon
-                      :icon="faCheck"
-                      fixed-width
-                    />
+                    <i class="fa-sharp fa-light fa-check"></i>
                   </span>
                 </li>
               </slot>
@@ -85,8 +81,6 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faChevronDown, faCheck, faSpinner, faTimes } from '@fortawesome/pro-solid-svg-icons'
 import { Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/vue'
 import { debounce } from '@/helpers/debounce'
 

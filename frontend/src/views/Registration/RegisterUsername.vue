@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import { useCreateRegistrationState } from '@/store/registrationStore'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faSpinnerThird } from '@fortawesome/pro-light-svg-icons'
 import { useRouter } from 'vue-router'
 import RegistrationLayout from './components/RegistrationLayout.vue'
 
@@ -43,11 +41,11 @@ async function register() {
       @click="register"
     >
       <template v-if="isCreatePending">
-        <FontAwesomeIcon
-          :icon="faSpinnerThird"
+        <i
+          class="faSpinnerThird"
           spin
           size="lg"
-        />
+        ></i>
       </template>
       <template v-else>erstellen</template>
     </button>

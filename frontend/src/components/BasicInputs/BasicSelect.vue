@@ -2,7 +2,7 @@
   <div :id="id || name || label">
     <label
       v-if="label"
-      class="block text-sm font-medium leading-6 mb-2"
+      class="mb-2 block text-sm font-medium leading-6"
       :for="id || name || label"
       >{{ label }}</label
     >
@@ -13,10 +13,7 @@
     >
       <ListboxButton class="input-style flex items-center justify-between">
         {{ options.find((option) => option.value === modelValue)?.label || placeholder || 'Bitte wählen...' }}
-        <FontAwesomeIcon
-          :icon="faAngleDown"
-          class="text-gray-500"
-        />
+        <i class="fa-sharp fa-light fa-angle-down text-gray-500"></i>
       </ListboxButton>
       <div class="relative mt-1">
         <transition
@@ -55,8 +52,6 @@
 import useValidatedModel from '../../composables/useValidatedModel'
 import BasicValidationFeedback from './components/BasicValidationFeedback.vue'
 import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/vue'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faAngleDown } from '@fortawesome/pro-solid-svg-icons'
 import { RuleFunction } from '@codeanker/validation'
 import { RequiredRulesParams } from '@codeanker/validation/rules'
 

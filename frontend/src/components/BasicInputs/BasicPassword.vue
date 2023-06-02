@@ -21,18 +21,17 @@
           class="btn rounded-l-none border border-solid border-gray-100 bg-gray-100"
           @click="passwordVisible = !passwordVisible"
         >
-          <FontAwesomeIcon
+          <i class="fa-sharp fa-light fa-tent fa-xl w-auto text-white"></i>
+          <i
             v-if="passwordVisible"
-            :icon="faEye"
-            class="text-primary"
+            class="fa-sharp fa-light fa-eye text-primary"
             fixed-width
-          />
-          <FontAwesomeIcon
+          ></i>
+          <i
             v-else
-            :icon="faEyeSlash"
-            class="text-primary"
+            class="fa-sharp fa-light fa-eye-slash text-primary"
             fixed-width
-          />
+          ></i>
         </button>
       </div>
     </div>
@@ -40,8 +39,6 @@
 </template>
 
 <script setup lang="ts">
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faEye, faEyeSlash } from '@fortawesome/pro-duotone-svg-icons'
 import useValidatedModel from '../../composables/useValidatedModel'
 import { ref } from 'vue'
 import BasicFormGroup from './components/BasicFormGroup.vue'

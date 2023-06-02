@@ -6,10 +6,7 @@
     <div>
       <MenuButton class="btn btn-primary">
         Options
-        <FontAwesomeIcon
-          :icon="faAngleDown"
-          fixed-width
-        />
+        <i class="faAngleDown"></i>
       </MenuButton>
     </div>
 
@@ -69,7 +66,5 @@
 </template>
 
 <script setup lang="ts">
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faAngleDown } from '@fortawesome/pro-solid-svg-icons'
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 </script>

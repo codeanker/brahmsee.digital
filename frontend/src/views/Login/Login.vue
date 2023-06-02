@@ -1,7 +1,5 @@
 <script setup>
 import { ref } from 'vue'
-import { faSpinnerThird } from '@fortawesome/pro-light-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import useAuthentication from '@/composables/useAuthentication'
 import { useRouter } from 'vue-router'
 
@@ -50,11 +48,7 @@ const version = `${import.meta.env.VITE_APP_VERSION || '0.0.0'}-${import.meta.en
           :disabled="loginPending"
         >
           <template v-if="loginPending">
-            <FontAwesomeIcon
-              :icon="faSpinnerThird"
-              spin
-              size="lg"
-            />
+            <i class="fa-sharp fa-light fa-spinner-third fa-2xl"></i>
           </template>
           <template v-else> Login </template>
         </button>

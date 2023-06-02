@@ -67,10 +67,7 @@
               <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-green-700 px-6 pb-2">
                 <router-link :to="{ name: 'Dashboard' }">
                   <div class="flex h-16 shrink-0 items-center space-x-4">
-                    <FontAwesomeIcon
-                      :icon="faTents"
-                      class="h-8 w-auto text-white"
-                    />
+                    <i class="fa-sharp fa-light fa-tent fa-xl w-auto text-white"></i>
                     <div class="font-bold uppercase text-white">Brahmsee</div>
                   </div>
                 </router-link>
@@ -153,10 +150,7 @@
       <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-green-700 px-6">
         <router-link :to="{ name: 'Dashboard' }">
           <div class="flex h-16 shrink-0 items-center space-x-3">
-            <FontAwesomeIcon
-              :icon="faTents"
-              class="h-8 w-auto text-white"
-            />
+            <i class="fa-sharp fa-light fa-tent fa-xl w-auto text-white"></i>
             <div class="font-bold uppercase text-white">Brahmsee</div>
           </div>
         </router-link>
@@ -272,8 +266,6 @@
 
 <script setup>
 import useAuthentication from '@/composables/useAuthentication'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faTents } from '@fortawesome/pro-light-svg-icons'
 import { ref } from 'vue'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import userProfileImage from '@/helpers/userProfileImage'
