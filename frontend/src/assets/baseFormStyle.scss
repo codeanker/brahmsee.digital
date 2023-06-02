@@ -1,0 +1,36 @@
+
+[type='text'], [type='email'], [type='url'], [type='password'], [type='number'], [type='date'], [type='datetime-local'], [type='month'], [type='search'], [type='tel'], [type='time'], [type='week'], [multiple], textarea, select, .input-style {
+  @apply block w-full py-2 px-4 text-gray-900 bg-gray-100 border-gray-100 border rounded-lg transition focus:border-primary-700 ring-0 focus:ring-0 leading-5 focus:outline-none;
+}
+
+.btn{
+  @apply transition text-center leading-5 text-base cursor-pointer rounded focus:outline-none py-2 px-4 inline-block;
+}
+
+[type='checkbox'] {
+  &:checked:hover {
+    @apply bg-primary-700;
+  }
+
+  @apply w-4 h-4 bg-white border-gray-400 rounded transition text-primary-700 checked:bg-primary-700 checked:border-primary-700 focus:ring-primary-700;
+}
+
+[type='radio'] {
+  &:checked:hover {
+    @apply bg-primary-700;
+  }
+
+  @apply w-4 h-4 bg-white border-gray-400 rounded-full transition text-primary-700 checked:bg-primary-700 checked:border-primary-700 focus:ring-primary-700;
+}
+
+.btn-primary{
+  @apply border bg-primary-700 border-primary-700 active:bg-primary-800 text-white rounded-lg;
+}
+
+.btn-secondary{
+  @apply border bg-gray-100 border-gray-100 active:bg-gray-300 text-gray-900;
+}
+
+.btn-link{
+  @apply active:bg-gray-100 border border-transparent;
+}

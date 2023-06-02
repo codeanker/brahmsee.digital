@@ -1,0 +1,18 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "baseUrl": ".",
+    "jsx": "preserve",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]}
+  },
+  "include": [
+    "./src/**/*"
+  ],
+  "vueCompilerOptions": {
+    "target": 3
+  }
+}

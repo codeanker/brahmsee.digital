@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "composite": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "preserveConstEnums": true,
+    "allowJs": true,
+    "checkJs": false,
+    "noImplicitAny": false,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "rootDir": ".",
+    "paths": {
+      "@codeanker/*": ["packages/*"],
+    },
+    "module": "CommonJS",
+    "skipLibCheck": true,
+    "target": "ES2020"
+  },
+  "ts-node": {
+    "transpileOnly": true,
+    "swc": true
+  },
+  "include": ["tenants/**/*", "packages/**/*", "packages/**/*.json", "api/**/*", "client/**/*", "kundenkonto/**/*", "shared/**/*"],
+  "exclude": ["node_modules", "**/node_modules"]
+}

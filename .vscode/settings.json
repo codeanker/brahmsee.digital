@@ -1,0 +1,14 @@
+{
+    "eslint.workingDirectories": [
+        "./frontend",
+        "./api"
+    ],
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true,
+    },
+    "editor.tabSize": 2,
+    "files.trimTrailingWhitespace": true,
+    "files.trimFinalNewlines": true,
+    "files.insertFinalNewline": true,
+    "volar.completion.preferredTagNameCase": "pascal"
+}

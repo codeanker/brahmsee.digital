@@ -1,0 +1,32 @@
+{
+  "name": "codeanker-project",
+  "author": "CODEANKER GmbH",
+  "version": "0.0.0.",
+  "description": "",
+  "workspaces": [
+    "api",
+    "frontend",
+    "packages/*"
+  ],
+  "scripts": {
+    "start": "docker-compose build && docker-compose up",
+    "lint": "eslint \"**/*.{vue,ts,js}\"",
+    "lint-staged": "lint-staged -c .lintstagedrc.js",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.3",
+    "@typescript-eslint/eslint-plugin": "^5.57.1",
+    "@typescript-eslint/parser": "^5.57.1",
+    "eslint": "^8.37.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-vue": "^9.10.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.0",
+    "prettier": "^2.8.7",
+    "prettier-plugin-tailwindcss": "^0.2.6",
+    "tailwindcss": "^3.3.1",
+    "typescript": "^5.0.3"
+  }
+}
