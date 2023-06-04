@@ -54,7 +54,7 @@
             </thead>
             <tbody class="divide-y divide-gray-200 bg-white">
               <tr
-                v-for="user in userList.data"
+                v-for="user in userList"
                 :key="user.email"
               >
                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
@@ -93,20 +93,9 @@
 import { useAsyncState } from '@vueuse/core'
 import { apiClient } from '../../api'
 
-const {
-  state: userList,
-  execute: fetchUsers,
-  isLoading,
-} = useAsyncState(
-  async () => {
-    const result = await apiClient.user.list.query()
-    return result
-  },
-  {
-    data: [],
-    total: 0,
-    limit: 0,
-    skip: 0,
-  }
-)
+const { state: userList, execute: fetchUsers } = useAsyncState(async () => {
+  const result = await apiClient.user.list.query()
+  return result
+}, [])
+fetchUsers()
 </script>
