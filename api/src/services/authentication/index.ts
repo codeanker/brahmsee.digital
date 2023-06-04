@@ -4,8 +4,9 @@ import prisma from '../../prisma'
 import { TRPCError } from '@trpc/server'
 import { sign, verify } from 'jsonwebtoken'
 import { hash, compare } from 'bcryptjs'
+import * as config from 'config'
 
-const jwtSecret = 'codeanker' // TODO: jwtSecret in env
+const jwtSecret: string = config.get('secret')
 
 export const authenticationRouter = router({
   login: publicProcedure
@@ -26,7 +27,7 @@ export const authenticationRouter = router({
           password: true,
         },
       })
-      if (!user || !(await passwordMaches(user.password, opts.input.password))) {
+      if (!user || !(await passwordMatches(user.password, opts.input.password))) {
         throw new TRPCError({
           code: 'UNAUTHORIZED',
           message: 'Email or password is incorrect',
@@ -86,7 +87,7 @@ export function hashPassword(password: string) {
   return hash(password, 10)
 }
 
-async function passwordMaches(hash: string, password: string) {
+async function passwordMatches(hash: string, password: string) {
   // find password in entity, this allows for dot notation
 
   if (!hash) return false

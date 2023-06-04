@@ -24,6 +24,7 @@ services:
       - 3030:3030
     volumes:
       - ./api/src:/app/api/src
+      - ./api/config:/app/api/config
       - ./api/prisma:/app/api/prisma
     environment:
       - NODE_ENV=docker
