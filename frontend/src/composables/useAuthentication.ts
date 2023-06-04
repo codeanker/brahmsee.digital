@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { apiClient } from '@/api'
 import { RouterOutput } from '@codeanker/api'
 
-const user = ref<RouterOutput['authenication']['login']['user']>(null)
+const user = ref<RouterOutput['authenication']['login']['user'] | null>(null)
 
 export default function useAuthentication() {
   const {
@@ -16,6 +16,7 @@ export default function useAuthentication() {
         email: email,
         password: password,
       })
+      localStorage.setItem('jwt', authenticationResponse.accessToken)
       user.value = authenticationResponse.user
       return authenticationResponse
     },
@@ -25,8 +26,13 @@ export default function useAuthentication() {
 
   async function reAuthenticate() {
     try {
-      const authenticationResponse = await apiClient.authenication.reAuthenticate.mutate()
-      user.value = authenticationResponse.user
+      const accessToken = localStorage.getItem('jwt')
+      if (accessToken) {
+        const authenticationResponse = await apiClient.authenication.reAuthenticate.mutate({ accessToken })
+        if ('user' in authenticationResponse) {
+          user.value = authenticationResponse.user
+        }
+      }
     } catch (error) {
       user.value = null
     }

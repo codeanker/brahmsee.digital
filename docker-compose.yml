@@ -27,3 +27,4 @@ services:
       - ./api/prisma:/app/api/prisma
     environment:
       - NODE_ENV=docker
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/brahmsee.digital?schema=public

@@ -54,8 +54,8 @@
             </thead>
             <tbody class="divide-y divide-gray-200 bg-white">
               <tr
-                v-for="user in userList.data"
-                :key="user.email"
+                v-for="user in userList"
+                :key="user.id"
               >
                 <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
                   <div class="flex items-center">
@@ -82,7 +82,7 @@
                     >Active</span
                   >
                 </td>
-                <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">User Rolle</td>
+                <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">{{ user.role }}</td>
                 <td class="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                   <a
                     href="#"
@@ -104,20 +104,10 @@ import { useAsyncState } from '@vueuse/core'
 import userProfileImage from '@/helpers/userProfileImage'
 import { apiClient } from '../../api'
 
-const {
-  state: userList,
-  execute: fetchUsers,
-  isLoading,
-} = useAsyncState(
-  async () => {
-    const result = await apiClient.user.list.query()
-    return result
-  },
-  {
-    data: [],
-    total: 0,
-    limit: 0,
-    skip: 0,
-  }
-)
+const { state: userList, execute: fetchUsers } = useAsyncState(async () => {
+  const result = await apiClient.user.list.query()
+  return result
+}, [])
+
+fetchUsers()
 </script>
