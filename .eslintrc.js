@@ -13,7 +13,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['api/**/*'],
+      files: ['packages/api/**/*'],
       settings: {
         'import/resolver': {
           node: true,
@@ -21,7 +21,7 @@ module.exports = {
       },
     },
     {
-      files: ['**/*.vue'],
+      files: ['packages/**/*.vue'],
       parser: 'vue-eslint-parser',
       parserOptions: {
         parser: '@typescript-eslint/parser',
@@ -56,7 +56,7 @@ module.exports = {
       },
     },
     {
-      files: ['**/*.ts'],
+      files: ['packages/**/*.ts'],
       plugins: ['@typescript-eslint'],
       parser: '@typescript-eslint/parser',
       extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'],
@@ -80,26 +80,26 @@ module.exports = {
       },
     },
     {
-      files: ['**/*.js'],
+      files: ['packages/**/*.js'],
       extends: ['eslint:recommended', 'plugin:prettier/recommended'],
       rules: {
         'no-unused-vars': 'off',
       },
     },
     {
-      files: ['frontend/**/*'],
+      files: ['packages/frontend/**/*'],
       env: {
         browser: true,
       },
     },
     {
-      files: ['frontend/**/*'],
+      files: ['packages/frontend/**/*'],
       parserOptions: {
         sourceType: 'module',
       },
     },
     {
-      files: ['api/test/**/*.js'],
+      files: ['packages/api/test/**/*.js'],
       env: {
         mocha: true,
       },

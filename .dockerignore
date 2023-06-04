@@ -1,5 +1,1 @@
-node_modules/
-api/node_modules/
-frontend/node_modules/
-packages/*/node_modules/
-packages/*/dist/
+.gitignore

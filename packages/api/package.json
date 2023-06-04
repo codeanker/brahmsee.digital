@@ -35,9 +35,9 @@
   ],
   "main": "src/client",
   "scripts": {
-    "dev": "nodemon -x ts-node src/index.ts",
-    "compile": "shx rm -rf lib/ && tsc",
-    "start": "node lib/",
+    "dev": "nodemon -x tsx src/index.ts",
+    "build": "shx rm -rf dist/ && tsc",
+    "start": "node dist/",
     "prettier": "npx prettier \"**/*.ts\" --write",
     "mocha": "cross-env NODE_ENV=test mocha test/ --require ts-node/register --recursive --extension .ts --exit",
     "test": "npm run mocha",
@@ -73,7 +73,7 @@
     "nodemon": "^2.0.22",
     "prettier": "^2.8.7",
     "shx": "^0.3.4",
-    "ts-node": "^10.9.1",
+    "tsx": "^3.12.7",
     "typescript": "^4.9.5"
   }
 }

@@ -2,14 +2,12 @@
   "name": "codeanker-project",
   "author": "CODEANKER GmbH",
   "version": "0.0.0.",
-  "description": "",
+  "description": "Brahmsee Digitalverwaltung",
   "workspaces": [
-    "api",
-    "frontend",
     "packages/*"
   ],
   "scripts": {
-    "start": "docker-compose build && docker-compose up",
+    "start": "docker compose up --build --pull always",
     "lint": "eslint \"**/*.{vue,ts,js}\"",
     "lint-staged": "lint-staged -c .lintstagedrc.js",
     "prepare": "husky install"
@@ -23,6 +21,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-vue": "^9.10.0",
     "husky": "^8.0.3",
+    "lerna": "^6.6.2",
     "lint-staged": "^13.2.0",
     "prettier": "^2.8.7",
     "prettier-plugin-tailwindcss": "^0.2.6",
