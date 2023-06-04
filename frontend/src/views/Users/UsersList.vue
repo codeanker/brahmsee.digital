@@ -101,10 +101,8 @@
 
 <script setup lang="ts">
 import { useAsyncState } from '@vueuse/core'
-import { featherClient } from '@/api'
-import { ref, unref, Ref } from 'vue'
-import { User } from '@codeanker/api'
 import userProfileImage from '@/helpers/userProfileImage'
+import { apiClient } from '../../api'
 
 const {
   state: userList,
@@ -112,7 +110,7 @@ const {
   isLoading,
 } = useAsyncState(
   async () => {
-    const result = await featherClient.service('users').find({})
+    const result = await apiClient.user.list.query()
     return result
   },
   {

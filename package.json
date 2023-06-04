@@ -9,7 +9,10 @@
     "packages/*"
   ],
   "scripts": {
-    "start": "docker-compose build && docker-compose up",
+    "start": "docker-compose -f docker-compose-services.yml -f docker-compose.yml build && docker-compose -f docker-compose-services.yml -f docker-compose.yml up",
+    "start:api": "npm run dev -w ./api",
+    "start:frontend": "npm run serve -w ./frontend",
+    "start:services": "docker compose -f docker-compose-services.yml up --build",
     "lint": "eslint \"**/*.{vue,ts,js}\"",
     "lint-staged": "lint-staged -c .lintstagedrc.js",
     "prepare": "husky install"

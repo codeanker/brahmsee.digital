@@ -1,10 +1,10 @@
-import { User } from '@codeanker/api'
-import { featherClient } from '@/api'
 import { createGlobalState, useAsyncState, useStorage } from '@vueuse/core'
 import { unref } from 'vue'
+import { apiClient } from '../api'
+import { RouterInput } from '@codeanker/api'
 
 export const useCreateRegistrationState = createGlobalState(() => {
-  const defaultRegistrationState: Partial<User> = {}
+  const defaultRegistrationState: Partial<RouterInput['user']['create']> = {}
   const user = useStorage('registration-user-store', defaultRegistrationState)
   const approvePassword = useStorage('registration-approve-password-store', '')
 
@@ -12,7 +12,7 @@ export const useCreateRegistrationState = createGlobalState(() => {
     isLoading: isCreatePending,
     error: createUserError,
     execute: createUser,
-  } = useAsyncState(async () => featherClient.service('users').create(unref(user) as User), null, {
+  } = useAsyncState(async () => apiClient.user.create.mutate(unref(user) as RouterInput['user']['create']), null, {
     immediate: false,
   })
 
