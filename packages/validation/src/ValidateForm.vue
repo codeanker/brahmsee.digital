@@ -2,6 +2,7 @@
   <Form
     ref="form"
     slim
+    @submit="emit('submit')"
   >
     <slot />
   </Form>
@@ -10,14 +11,18 @@
 <script setup lang="ts">
 import { Form } from 'vee-validate'
 import { ref } from 'vue'
+
+const emit = defineEmits<{
+  (event: 'submit'): void
+}>()
+
 const form = ref<InstanceType<typeof Form>>()
 
-async function validate({ returnErrors = false, scrollIntoView = true } = {}) {
+async function validate({ scrollIntoView = true } = {}) {
   if (!form.value) return
-  const isValid = await form.value.validate()
-  if (!isValid) {
-    const errors = form.value.getErrors()
-    if (!errors) true
+  const validationResult = await form.value.validate()
+  if (!validationResult.valid) {
+    const errors = validationResult.errors
     const errorKeys = Object.keys(errors)
     if (scrollIntoView) {
       const firstErrorKey = errorKeys.find((key) => {
@@ -29,15 +34,8 @@ async function validate({ returnErrors = false, scrollIntoView = true } = {}) {
       const scrollToElement = label || element
       scrollToElement?.scrollIntoView({ block: 'start', behavior: 'smooth' })
     }
-
-    if (returnErrors)
-      return errorKeys.filter((errorKey) => {
-        const errorByKey = errors[errorKey]
-        return errorByKey && errorByKey.length > 0
-      })
   }
-  if (returnErrors) return []
-  else return isValid
+  return validationResult
 }
 async function reset() {
   await form.value?.resetForm()
