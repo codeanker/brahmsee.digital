@@ -29,6 +29,7 @@ export const userRouter = router({
       })
       return users
     }),
+  /** Die Liste der User */
   list: publicProcedure.query(async () => {
     const users = await prisma.user.findMany({
       select: {
