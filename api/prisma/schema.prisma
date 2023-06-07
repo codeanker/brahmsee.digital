@@ -27,6 +27,7 @@ model User {
 model Gliederung {
   id    Int     @id @default(autoincrement())
   name String
+  edv Int
 }
 
 model Anmeldung {
