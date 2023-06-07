@@ -1,9 +1,9 @@
 import { useAsyncState } from '@vueuse/core'
-import { Ref, ref } from 'vue'
-import { featherClient, featherSocketClient } from '@/api'
-import { User } from '@codeanker/api'
+import { ref } from 'vue'
+import { apiClient } from '@/api'
+import { RouterOutput } from '@codeanker/api'
 
-const user: Ref<null | User> = ref(null)
+const user = ref<RouterOutput['authenication']['login']['user'] | null>(null)
 
 export default function useAuthentication() {
   const {
@@ -12,15 +12,11 @@ export default function useAuthentication() {
     error: loginError,
   } = useAsyncState(
     async ({ email, password }) => {
-      const authenticationResponse = await featherClient.authenticate({
-        strategy: 'local',
+      const authenticationResponse = await apiClient.authenication.login.mutate({
         email: email,
         password: password,
       })
-      await featherSocketClient.authenticate({
-        strategy: 'jwt',
-        accessToken: authenticationResponse.accessToken,
-      })
+      localStorage.setItem('jwt', authenticationResponse.accessToken)
       user.value = authenticationResponse.user
       return authenticationResponse
     },
@@ -30,12 +26,13 @@ export default function useAuthentication() {
 
   async function reAuthenticate() {
     try {
-      const authenticationResponse = await featherClient.reAuthenticate()
-      await featherSocketClient.authenticate({
-        strategy: 'jwt',
-        accessToken: authenticationResponse.accessToken,
-      })
-      user.value = authenticationResponse.user
+      const accessToken = localStorage.getItem('jwt')
+      if (accessToken) {
+        const authenticationResponse = await apiClient.authenication.reAuthenticate.mutate({ accessToken })
+        if ('user' in authenticationResponse) {
+          user.value = authenticationResponse.user
+        }
+      }
     } catch (error) {
       user.value = null
     }

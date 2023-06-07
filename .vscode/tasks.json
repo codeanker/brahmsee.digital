@@ -1,0 +1,51 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "start:frontend",
+			"label": "Start frontend",
+      "problemMatcher": [],
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"group": "start",
+				"close": false,
+			}
+		},
+		{
+			"type": "npm",
+			"script": "start:api",
+			"label": "Start api",
+      "problemMatcher": [],
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"group": "start",
+				"close": false,
+			}
+		},
+		{
+			"type": "npm",
+			"script": "start:services",
+			"label": "Start services",
+      "problemMatcher": [],
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"group": "start",
+				"close": false,
+			}
+		},
+		{
+			"label": "Start apps",
+			"dependsOn": ["Start frontend", "Start api"],
+      "problemMatcher": [],
+		},
+		{
+			"label": "Start",
+			"dependsOn": ["Start apps", "Start services"],
+      "problemMatcher": [],
+		},
+	]
+}

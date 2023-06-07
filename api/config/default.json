@@ -1,34 +1,4 @@
 {
-  "host": "localhost",
   "port": 3030,
-  "public": "./public/",
-  "origins": [
-    "http://localhost:3030"
-  ],
-  "paginate": {
-    "default": 10,
-    "max": 50
-  },
-  "mongodb": "codeanker",
-  "authentication": {
-    "entity": "user",
-    "service": "users",
-    "secret": "+FlXgxS+xpzatPMGpJS10yTsFoW04+K7",
-    "authStrategies": [
-      "jwt",
-      "local"
-    ],
-    "jwtOptions": {
-      "header": {
-        "typ": "access"
-      },
-      "audience": "https://yourdomain.com",
-      "algorithm": "HS256",
-      "expiresIn": "1d"
-    },
-    "local": {
-      "usernameField": "email",
-      "passwordField": "password"
-    }
-  }
+  "secret": "671da83520c50fcf4dae59db807174171bd1361426aff2f150766c0380beedd0"
 }

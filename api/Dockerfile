@@ -13,6 +13,7 @@ COPY package*.json ./
 
 RUN npm ci
 COPY . ./
+RUN npx prisma generate --schema=./api/prisma/schema.prisma
 
 ENV TZ=Europe/Berlin
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone

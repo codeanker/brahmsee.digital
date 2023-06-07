@@ -4,6 +4,7 @@
     :name="name"
     :label="label"
     :error-message="errorMessage"
+    :required="!!required"
   >
     <div class="align-items-center flex">
       <input
@@ -40,7 +41,7 @@ const props = withDefaults(
     label?: string
     name?: string
     // eslint-disable-next-line vue/no-unused-properties
-    modelValue: string
+    modelValue?: string
     // eslint-disable-next-line vue/no-unused-properties
     rules?: RuleFunction[]
     // eslint-disable-next-line vue/no-unused-properties

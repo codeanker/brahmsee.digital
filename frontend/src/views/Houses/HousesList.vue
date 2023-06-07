@@ -54,7 +54,7 @@
             </thead>
             <tbody class="divide-y divide-gray-200 bg-white">
               <tr
-                v-for="user in userList.data"
+                v-for="user in userList"
                 :key="user.email"
               >
                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
@@ -91,25 +91,11 @@
 
 <script setup lang="ts">
 import { useAsyncState } from '@vueuse/core'
-import { featherClient } from '@/api'
-import { ref, unref, Ref } from 'vue'
-import { User } from '@codeanker/api'
-import userProfileImage from '@/helpers/userProfileImage'
+import { apiClient } from '../../api'
 
-const {
-  state: userList,
-  execute: fetchUsers,
-  isLoading,
-} = useAsyncState(
-  async () => {
-    const result = await featherClient.service('users').find({})
-    return result
-  },
-  {
-    data: [],
-    total: 0,
-    limit: 0,
-    skip: 0,
-  }
-)
+const { state: userList, execute: fetchUsers } = useAsyncState(async () => {
+  const result = await apiClient.user.list.query()
+  return result
+}, [])
+fetchUsers()
 </script>

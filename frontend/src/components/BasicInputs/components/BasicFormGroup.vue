@@ -2,9 +2,14 @@
   <div>
     <label
       v-if="label"
-      class="block text-sm font-medium leading-6 mb-2"
+      class="mb-2 block text-sm font-medium leading-6"
       :for="id || name || label"
-      >{{ label }}</label
+      >{{ label
+      }}<span
+        v-if="required"
+        class="text-red-500"
+        >*</span
+      ></label
     >
     <slot></slot>
     <BasicValidationFeedback :error-message="errorMessage" />
@@ -19,12 +24,14 @@ withDefaults(
     id?: string
     label?: string
     name?: string
+    required?: boolean
     errorMessage?: string
   }>(),
   {
     id: '',
     label: '',
     name: '',
+    required: false,
     errorMessage: undefined,
   }
 )
