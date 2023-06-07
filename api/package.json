@@ -3,6 +3,7 @@
   "main": "./src/index.ts",
   "scripts": {
     "dev": "nodemon -x ts-node src/index.ts",
+    "build": "tsc",
     "createUser": "ts-node src/scripts/createUser.ts"
   },
   "dependencies": {
