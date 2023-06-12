@@ -1,0 +1,10 @@
+apiVersion: v2
+name: brahmsee.digital
+type: application
+version: 0.1.0
+appVersion: 1.16.0
+description: Platform zur Verwaltung des Landeskindertreffens
+home: https://brahmsee.digital/
+icon:
+sources:
+  - https://github.com/codeanker/brahmsee.digital

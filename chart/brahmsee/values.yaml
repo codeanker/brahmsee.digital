@@ -1,0 +1,32 @@
+global:
+  commit: "b3ba1f0"
+  env: "production"
+  ingress:
+    hosts: ["brahmsee.localhost"]
+  mongodb:
+    uri: "mongodb://local:user@mongodb.mongodb.svc.cluster.local:27017/testDb"
+
+
+api:
+  s3:
+    key: ""
+    secret: ""
+    bucket: "dlrg-brahmsee"
+    sharedBucket: "dlrg-brahmsee"
+  sendgrid:
+    key: ""
+  twilio:
+    sid: ""
+    secret: ""
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "256Mi"
+
+client:
+  enabled: true
+  replicaCount: 2
+  resources:
+    requests:
+      cpu: "1m"
+      memory: "10Mi"

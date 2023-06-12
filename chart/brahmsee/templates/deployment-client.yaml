@@ -1,0 +1,54 @@
+{{- if .Values.client.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}-client
+  labels:
+    {{- include "codeanker.label" . | indent 4 }}
+spec:
+  replicas: {{ .Values.client.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}-client
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}-client
+        {{- include "codeanker.label" . | indent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}-client
+          image: codeanker/{{ .Chart.Name }}-client:{{ .Values.global.commit }}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /nginx-health
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+{{ toYaml .Values.client.resources | indent 12 }}
+      imagePullSecrets:
+        - name: codeanker-docker-key
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Chart.Name }}-client-svc
+  labels:
+    app: {{ .Chart.Name }}-client
+    {{- include "codeanker.label" . | indent 4 }}
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+  selector:
+    app: {{ .Chart.Name }}-client
+{{- end }}
