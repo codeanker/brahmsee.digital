@@ -3,14 +3,7 @@ concurrency: ci-${{ github.ref }}
 
 on:
   push:
-    branches: [ master, development, 'release/**', feature/**, 'dependabot/**', 'hotfix/**' ]
-
-
-env:
-  NODE_VERSION: 18.x
-
-permissions:
-  contents: read
+    branches: [ master, development, 'release/**', feature/**, 'dependabot/**', 'hotfix/**', 'cdci' ]
 
 jobs:
   prepare:
