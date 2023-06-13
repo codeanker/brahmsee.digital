@@ -269,32 +269,11 @@ import useAuthentication from '@/composables/useAuthentication'
 import { ref } from 'vue'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import userProfileImage from '@/helpers/userProfileImage'
-import {
-  BanknotesIcon,
-  Bars3Icon,
-  ChartBarIcon,
-  FlagIcon,
-  FolderIcon,
-  HomeIcon,
-  RocketLaunchIcon,
-  TrophyIcon,
-  UserGroupIcon,
-  XMarkIcon,
-} from '@heroicons/vue/24/outline'
+import { Bars3Icon, RocketLaunchIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 
-const navigation = [
-  { name: 'Dashboard', route: '/dashboard', icon: RocketLaunchIcon, current: false },
-  // { name: 'Teilnehmende', route: '', icon: UserGroupIcon, current: false },
-  // { name: 'Unterbringung', route: '', icon: HomeIcon, current: false },
-  // { name: 'Programm', route: '', icon: TrophyIcon, current: false },
-  // { name: 'Finanzen', route: '', icon: BanknotesIcon, current: false },
-  // { name: 'Auswertung', route: '', icon: ChartBarIcon, current: false }
-]
+const navigation = [{ name: 'Dashboard', route: '/dashboard', icon: RocketLaunchIcon, current: false }]
 const teams = [
   { id: 1, name: 'Häuser und Zelte', route: '/houses', initial: 'HZ', current: false },
-  // { id: 2, name: 'Räume', route: '', initial: 'R', current: false },
-  // { id: 3, name: 'Teilnehmende', route: '', initial: 'T', current: false },
-  // { id: 4, name: 'CREW', route: '', initial: 'C', current: false },
   { id: 5, name: 'Benutzer:innen', route: '/users', initial: 'B', current: false },
 ]
 

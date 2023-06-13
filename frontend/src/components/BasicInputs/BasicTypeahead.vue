@@ -2,7 +2,7 @@
   <div>
     <label
       v-if="label"
-      class="block text-sm font-medium leading-6 mb-2"
+      class="mb-2 block text-sm font-medium leading-6"
       :for="id || name || label"
       >{{ label }}</label
     >
