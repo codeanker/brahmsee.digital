@@ -3,7 +3,7 @@ concurrency: ci-${{ github.ref }}
 
 on:
   push:
-    branches: [ master, development ]
+    branches: [ master, development, cdci ]
 
 jobs:
   prepare:
