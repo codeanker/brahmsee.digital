@@ -3,7 +3,7 @@ concurrency: ci-${{ github.ref }}
 
 on:
   push:
-    branches: [ master, development, 'release/**', feature/**, 'dependabot/**', 'hotfix/**', 'cdci' ]
+    branches: [ master, development ]
 
 jobs:
   prepare:
@@ -31,13 +31,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Private actions checkout
-      uses: daspn/private-actions-checkout@v2
-      with:
-        actions_list: '["codeanker/actions@master"]'
-        checkout_base_path: ./.github
-        app_id: ${{ secrets.APP_ID }}
-        app_private_key: ${{ secrets.APP_PRIVATE_KEY }}
     - name: Docker meta
       id: docker_meta
       uses: docker/metadata-action@v4
@@ -92,13 +85,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Private actions checkout
-      uses: daspn/private-actions-checkout@v2
-      with:
-        actions_list: '["codeanker/actions@master"]'
-        checkout_base_path: ./.github
-        app_id: ${{ secrets.APP_ID }}
-        app_private_key: ${{ secrets.APP_PRIVATE_KEY }}
     - name: Docker meta
       id: docker_meta
       uses: docker/metadata-action@v4
