@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
-      "strict": true
+      "strict": true,
+      "esModuleInterop": true,
     },
     "ts-node": {
       "swc": true
