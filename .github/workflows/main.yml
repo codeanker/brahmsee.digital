@@ -1,6 +1,5 @@
 name: main
 concurrency: ci-${{ github.ref }}
-
 on:
   push:
     branches: [ master, development, cdci ]
