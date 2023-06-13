@@ -3,8 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite --host",
-    "build": "vite build",
-    "serve": "vite preview"
+    "build": "vite build --mode development",
+    "build:staging": "vite build --mode staging",
+    "build:production": "vite build --mode production",
+    "serve": "vite preview",
+    "start": "npm run serve"
   },
   "dependencies": {
     "@codeanker/api": "*",
