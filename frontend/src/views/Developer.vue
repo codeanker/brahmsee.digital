@@ -181,6 +181,4 @@ async function queryObject(searchTerm) {
   await new Promise((resolve) => setTimeout(resolve, 200))
   return foos.filter((result) => result?.name.includes(searchTerm))
 }
-
-
 </script>
