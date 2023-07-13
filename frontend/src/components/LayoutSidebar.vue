@@ -214,22 +214,29 @@
                 </li>
               </ul>
             </li>
-            <li class="-mx-6 mt-auto">
-              <a
-                href="#"
-                class="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-green-700"
-              >
-                <img
-                  class="h-8 w-8 rounded-full bg-green-700"
-                  :src="userProfileImage(user)"
-                  alt=""
-                />
-                <span class="sr-only">Your profile</span>
-                <span aria-hidden="true">{{ user.firstname }} {{ user.lastname }}</span>
-              </a>
-            </li>
           </ul>
         </nav>
+      </div>
+      <div class="grid grid-flow-col gap-x-4 bg-green-800 px-6 py-3 text-sm font-semibold leading-6 text-white">
+        <router-link
+          :to="{ name: 'Profile' }"
+          class="flex flex-row items-center gap-x-4"
+        >
+          <img
+            class="h-10 w-10 rounded-full bg-green-700"
+            :src="userProfileImage(user)"
+            alt=""
+          />
+          <span class="sr-only">Your profile</span>
+          <span aria-hidden="true">Hallo, {{ user.firstname }}</span>
+        </router-link>
+        <button
+          type="button"
+          title="Abmelden"
+          @click="logout"
+        >
+          <ArrowRightOnRectangleIcon class="ml-auto h-6 w-6" />
+        </button>
       </div>
     </div>
 
@@ -246,14 +253,14 @@
         />
       </button>
       <div class="flex-1 text-sm font-semibold leading-6 text-white">Dashboard</div>
-      <a href="#">
+      <router-link :to="{ name: 'Profile' }">
         <span class="sr-only">Your profile</span>
         <img
           class="h-8 w-8 rounded-full bg-green-700"
           :src="userProfileImage(user)"
           alt=""
         />
-      </a>
+      </router-link>
     </div>
 
     <main class="py-10 lg:pl-72">
@@ -279,6 +286,7 @@ import {
   RocketLaunchIcon,
   TrophyIcon,
   UserGroupIcon,
+  ArrowRightOnRectangleIcon,
   XMarkIcon,
 } from '@heroicons/vue/24/outline'
 
@@ -300,5 +308,5 @@ const teams = [
 
 const sidebarOpen = ref(false)
 
-const { user } = useAuthentication()
+const { user, logout } = useAuthentication()
 </script>

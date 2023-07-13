@@ -6,6 +6,7 @@ import RegistrationRoutes from '../views/Registration/_routes.js'
 import LoginRoutes from '../views/Login/_routes.js'
 import UsersRoutes from '../views/Users/_routes.js'
 import HousesRoutes from '../views/Houses/_routes.js'
+import ProfileRoutes from '../views/Profile/_routes.js'
 
 const routes = [
   {
@@ -20,7 +21,7 @@ const routes = [
   {
     path: '/',
     component: () => import('../layouts/BaseLayout.vue'),
-    children: [...DashboardRoutes, ...RegistrationRoutes, ...UsersRoutes, ...HousesRoutes],
+    children: [...DashboardRoutes, ...RegistrationRoutes, ...UsersRoutes, ...HousesRoutes, ...ProfileRoutes],
   },
   ...LoginRoutes,
 ]

@@ -38,11 +38,17 @@ export default function useAuthentication() {
     }
   }
 
+  function logout() {
+    localStorage.clear()
+    location.reload()
+  }
+
   return {
     login: ({ email, password }) => login(0, { email, password }),
     loginPending,
     loginError,
     reAuthenticate,
+    logout,
     user,
   }
 }
