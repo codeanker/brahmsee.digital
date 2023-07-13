@@ -21,11 +21,6 @@ export const authenticationRouter = router({
         where: {
           email: opts.input.email,
         },
-        select: {
-          id: true,
-          email: true,
-          password: true,
-        },
       })
       if (!user || !(await passwordMatches(user.password, opts.input.password))) {
         throw new TRPCError({
