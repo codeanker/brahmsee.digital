@@ -214,22 +214,30 @@
                 </li>
               </ul>
             </li>
-            <li class="-mx-6 mt-auto">
-              <a
-                href="#"
-                class="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-green-700"
-              >
-                <img
-                  class="h-8 w-8 rounded-full bg-green-700"
-                  :src="userProfileImage(user)"
-                  alt=""
-                />
-                <span class="sr-only">Your profile</span>
-                <span aria-hidden="true">{{ user.firstname }} {{ user.lastname }}</span>
-              </a>
-            </li>
           </ul>
         </nav>
+      </div>
+      <!-- Profile -->
+      <div class="grid grid-flow-col gap-x-4 bg-green-800 px-6 py-3 text-sm font-semibold leading-6 text-white">
+        <router-link
+          :to="{ name: 'Dashboard' }"
+          class="flex flex-row items-center gap-x-4"
+        >
+          <img
+            class="h-10 w-10 rounded-full bg-green-700"
+            :src="userProfileImage(user)"
+            alt=""
+          />
+          <span class="sr-only">Your profile</span>
+          <span aria-hidden="true">Hallo, {{ user.firstname }}</span>
+        </router-link>
+        <button
+          type="button"
+          title="Abmelden"
+          @click="logout"
+        >
+          <ArrowRightOnRectangleIcon class="ml-auto h-6 w-6" />
+        </button>
       </div>
     </div>
 
@@ -264,12 +272,13 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import useAuthentication from '@/composables/useAuthentication'
 import { ref } from 'vue'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import userProfileImage from '@/helpers/userProfileImage'
 import {
+  ArrowRightOnRectangleIcon,
   BanknotesIcon,
   Bars3Icon,
   ChartBarIcon,
@@ -300,5 +309,5 @@ const teams = [
 
 const sidebarOpen = ref(false)
 
-const { user } = useAuthentication()
+const { user, logout } = useAuthentication()
 </script>

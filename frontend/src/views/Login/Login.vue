@@ -44,6 +44,7 @@ const version = `${import.meta.env.VITE_APP_VERSION || '0.0.0'}-${import.meta.en
           placeholder="Password"
         />
         <Button
+          color="primary"
           type="submit"
           :disabled="loginPending"
           full
