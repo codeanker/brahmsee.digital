@@ -5,6 +5,7 @@ import { TRPCError } from '@trpc/server'
 import { sign, verify } from 'jsonwebtoken'
 import { hash, compare } from 'bcryptjs'
 import * as config from 'config'
+import exclude from '../../util/prisma-exclude'
 
 const jwtSecret: string = config.get('secret')
 
@@ -62,14 +63,10 @@ export const authenticationRouter = router({
 
         const user = await prisma.user.findUnique({
           where: { id: payload.userId },
-          select: {
-            id: true,
-            email: true,
-          },
         })
         // TODO: check issued at
         if (user) {
-          return { ok: true, user }
+          return { ok: true, user: exclude(user, 'password') }
         } else {
           return { ok: false }
         }
