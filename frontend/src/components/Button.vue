@@ -1,5 +1,6 @@
 <template>
-  <button
+  <component
+    :is="to === undefined ? 'button' : 'router-link'"
     type="button"
     :class="
       [
@@ -10,12 +11,15 @@
         full ? 'w-full' : 'w-auto',
       ].join(' ')
     "
+    :to="to"
   >
     <slot></slot>
-  </button>
+  </component>
 </template>
 
 <script setup lang="ts">
+import { RouterLinkProps } from 'vue-router'
+
 type Color = 'primary' | 'secondary' | 'success' | 'warning' | 'danger'
 const colors: Record<Color, string> = {
   primary: 'text-white bg-green-600 hover:bg-green-500 focus:outline-green-600',
@@ -25,16 +29,11 @@ const colors: Record<Color, string> = {
   danger: 'text-white bg-red-500 hover:bg-red-400 focus:outline-red-500',
 }
 
-defineProps({
-  color: {
-    type: String,
-    required: false,
-    default: 'primary',
-  },
-  full: {
-    type: Boolean,
-    required: false,
-    default: false,
-  },
-})
+interface Props {
+  color: Color
+  full?: boolean
+  to?: RouterLinkProps['to']
+}
+
+defineProps<Props>()
 </script>
