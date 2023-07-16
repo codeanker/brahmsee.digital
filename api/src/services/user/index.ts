@@ -2,6 +2,7 @@ import { z } from 'zod'
 import prisma from '../../prisma'
 import { publicProcedure, router } from '../../trpc'
 import { hashPassword } from '../authentication'
+import exclude from '../../util/prisma-exclude'
 
 export const userRouter = router({
   create: publicProcedure
@@ -42,4 +43,39 @@ export const userRouter = router({
     })
     return users
   }),
+
+  read: publicProcedure.input(z.number().int()).query(async ({ input }) => {
+    const user = await prisma.user.findFirst({
+      where: {
+        id: input,
+      },
+    })
+    if (user !== null) {
+      return exclude(user, 'password')
+    }
+
+    return null
+  }),
+
+  update: publicProcedure
+    .input(
+      z.object({
+        id: z.number().int(),
+        email: z.string(),
+        firstname: z.string(),
+        lastname: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      await prisma.user.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          email: input.email,
+          firstname: input.firstname,
+          lastname: input.lastname,
+        },
+      })
+    }),
 })

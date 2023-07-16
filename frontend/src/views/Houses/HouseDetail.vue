@@ -123,12 +123,7 @@
         </div>
 
         <div class="mt-8 flex">
-          <button
-            type="submit"
-            class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-          >
-            Save
-          </button>
+          <Button color="secondary"> Speichern</Button>
         </div>
       </form>
     </div>
@@ -194,12 +189,7 @@
         </div>
 
         <div class="mt-8 flex">
-          <button
-            type="submit"
-            class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-          >
-            Save
-          </button>
+          <Button color="secondary">Speichern</Button>
         </div>
       </form>
     </div>
@@ -234,12 +224,7 @@
         </div>
 
         <div class="mt-8 flex">
-          <button
-            type="submit"
-            class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-          >
-            Log out other sessions
-          </button>
+          <Button color="warning"> Andere Sitzungen abmelden</Button>
         </div>
       </form>
     </div>
@@ -254,12 +239,7 @@
       </div>
 
       <form class="flex items-start md:col-span-2">
-        <button
-          type="submit"
-          class="rounded-md bg-red-500 px-3 py-2 text-sm font-semibold shadow-sm hover:bg-red-400"
-        >
-          Yes, delete my account
-        </button>
+        <Button color="danger"> Ja, meinen Account löschen </Button>
       </form>
     </div>
   </div>
@@ -281,6 +261,7 @@ import {
   XMarkIcon,
 } from '@heroicons/vue/24/outline'
 import { Bars3Icon, MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
+import Button from '@/components/Button.vue'
 
 const navigation = [
   { name: 'Projects', href: '#', icon: FolderIcon, current: false },

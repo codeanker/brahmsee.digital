@@ -5,13 +5,14 @@
         <h1 class="text-base font-semibold leading-6 text-gray-900">Benutzer</h1>
         <p class="mt-2 text-sm text-gray-700">Liste aller Benutzer die Zugriff auf dieses System haben.</p>
       </div>
-      <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-        <button
-          type="button"
-          class="block rounded-md bg-green-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+      <div class="mt-4 flex flex-row gap-4">
+        <Button color="primary">Hinzufügen</Button>
+        <Button
+          color="secondary"
+          @click="fetchUsers"
         >
-          Hinzufügen
-        </button>
+          <ArrowPathIcon class="h-6 w-6" />
+        </Button>
       </div>
     </div>
     <div class="mt-8 flow-root">
@@ -56,6 +57,7 @@
               <tr
                 v-for="user in userList"
                 :key="user.id"
+                class="odd:bg-gray-50"
               >
                 <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
                   <div class="flex items-center">
@@ -70,6 +72,11 @@
                       <div class="font-medium text-gray-900">{{ user.firstname }} {{ user.lastname }}</div>
                       <div class="mt-1 text-gray-500">{{ user.email }}</div>
                     </div>
+                    <Badge
+                      v-if="user.id === currentUser?.id"
+                      class="ml-4"
+                      >Du</Badge
+                    >
                   </div>
                 </td>
                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
@@ -79,16 +86,18 @@
                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
                   <span
                     class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20"
-                    >Active</span
                   >
+                    Active
+                  </span>
                 </td>
                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">{{ user.role }}</td>
                 <td class="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                  <a
-                    href="#"
+                  <router-link
+                    :to="{ name: 'UserDetail', params: { userId: user.id } }"
                     class="text-green-600 hover:text-green-900"
-                    >Bearbeiten<span class="sr-only">, {{ user.firstname }}</span></a
                   >
+                    Bearbeiten
+                  </router-link>
                 </td>
               </tr>
             </tbody>
@@ -103,7 +112,12 @@
 import { useAsyncState } from '@vueuse/core'
 import userProfileImage from '@/helpers/userProfileImage'
 import { apiClient } from '../../api'
+import Button from '@/components/Button.vue'
+import Badge from '@/components/Badge.vue'
+import useAuthentication from '@/composables/useAuthentication'
+import { ArrowPathIcon } from '@heroicons/vue/24/outline'
 
+const { user: currentUser } = useAuthentication()
 const { state: userList, execute: fetchUsers } = useAsyncState(async () => {
   const result = await apiClient.user.list.query()
   return result

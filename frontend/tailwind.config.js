@@ -3,18 +3,6 @@ module.exports = {
   important: true,
   content: ['./index.html', './public/**/*.html', './src/**/*.{js,jsx,ts,tsx,vue}'],
   theme: {
-    colors: {
-      success: colors.lime,
-      warning: colors.yellow,
-      danger: colors.red,
-      gray: colors.gray,
-      primary: colors.green,
-      white: colors.white,
-      black: colors.black,
-      green: colors.green,
-      emerald: colors.emerald,
-      red: colors.red,
-    },
     container: {
       center: true,
       padding: '1rem',
@@ -26,6 +14,13 @@ module.exports = {
       },
     },
     extend: {
+      colors: {
+        success: colors.lime,
+        warning: colors.yellow,
+        danger: colors.red,
+        primary: colors.green,
+        secondary: colors.indigo,
+      },
       zIndex: {
         '-1': '-1',
         dropdown: '1000',

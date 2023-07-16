@@ -6,12 +6,7 @@
         <p class="mt-2 text-sm text-gray-700">Liste aller Häuser und Zeltplätze.</p>
       </div>
       <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-        <button
-          type="button"
-          class="block rounded-md bg-green-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
-        >
-          Hinzufügen
-        </button>
+        <Button color="primary">Hinzufügen</Button>
       </div>
     </div>
     <div class="mt-8 flow-root">
@@ -92,6 +87,7 @@
 <script setup lang="ts">
 import { useAsyncState } from '@vueuse/core'
 import { apiClient } from '../../api'
+import Button from '@/components/Button.vue'
 
 const { state: userList, execute: fetchUsers } = useAsyncState(async () => {
   const result = await apiClient.user.list.query()

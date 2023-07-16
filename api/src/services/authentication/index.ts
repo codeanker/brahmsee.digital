@@ -78,6 +78,48 @@ export const authenticationRouter = router({
   logout: publicProcedure.mutation(async () => {
     return true
   }),
+
+  changePassword: publicProcedure
+    .input(
+      z.object({
+        id: z.number().int(),
+        password_old: z.string(),
+        password: z.string(),
+        password_confirm: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const { password } = await prisma.user.findFirst({
+        where: {
+          id: input.id,
+        },
+        select: {
+          password: true,
+        },
+      })
+      if (!(await passwordMatches(password, input.password_old))) {
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message: 'You must enter your old password to change it!',
+        })
+      }
+
+      if (input.password !== input.password_confirm) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Password must be confirmed and match!',
+        })
+      }
+
+      await prisma.user.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          password: await hashPassword(input.password),
+        },
+      })
+    }),
 })
 
 export function hashPassword(password: string) {
