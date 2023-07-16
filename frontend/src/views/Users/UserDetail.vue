@@ -109,11 +109,11 @@
         </p>
       </div>
 
-      <form class="flex items-start md:col-span-2">
+      <div class="flex items-start md:col-span-2">
         <Button
           v-if="!isSelf"
-          type="submit"
           color="danger"
+          @click="deleteUser"
         >
           Ja, diesen Account löschen
         </Button>
@@ -123,7 +123,14 @@
         >
           Deinen eigenen Account kannst du nicht löschen.
         </p>
-      </form>
+
+        <div
+          v-if="errorDelete"
+          class="bg-danger-400 mb-2 mt-5 rounded p-3 text-center text-white"
+        >
+          {{ errorDelete }}
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -135,6 +142,7 @@ import Button from '@/components/Button.vue'
 import FormUserGeneral from '@/components/forms/user/FormUserGeneral.vue'
 import useAuthentication from '@/composables/useAuthentication'
 import userProfileImage from '@/helpers/userProfileImage'
+import router from '@/router'
 import { ArrowLeftIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 import { ref } from 'vue'
@@ -158,10 +166,15 @@ const { state: user, execute: fetchUser } = useAsyncState(async () => {
   return result
 }, [])
 
-const { execute: updatePassword, error: errorPassword } = useAsyncState(async () => {
-  await apiClient.authenication.changePassword.mutate(password.value)
-  logout()
-}, null)
+
+const { execute: deleteUser, error: errorDelete } = useAsyncState(
+  async () => {
+    await apiClient.user.delete.mutate(user.value?.id)
+    await router.push({ name: 'Users' })
+  },
+  null,
+  { immediate: false }
+)
 
 fetchUser()
 </script>
