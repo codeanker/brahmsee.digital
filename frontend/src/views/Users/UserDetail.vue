@@ -34,7 +34,7 @@
     <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
       <div>
         <h2 class="text-base font-semibold leading-7">Profil Informationen</h2>
-        <p class="mt-1 text-sm leading-6 text-gray-400">Hier kannst Du deine Profil Informationen bearbeiten.</p>
+        <p class="mt-1 text-sm leading-6 text-gray-400">Hier kannst du das Nutzerprofil bearbeiten.</p>
         <img
           :src="userProfileImage(user, 512)"
           :alt="user?.email"
@@ -43,21 +43,27 @@
       </div>
 
       <FormUserGeneral
+        v-if="user !== null"
         :user="user"
         :is-self="isSelf"
         class="md:col-span-2"
+        mode="update"
+        @update="() => fetchUser()"
       />
     </div>
 
     <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
       <div>
         <h2 class="text-base font-semibold leading-7">Passwort ändern</h2>
-        <p class="mt-1 text-sm leading-6 text-gray-400">Hier kannst Du dein Passwort ändern.</p>
+        <p class="mt-1 text-sm leading-6 text-gray-400">Hier kann das Passwort des Accounts geändert werden.</p>
       </div>
 
       <div class="md:col-span-2">
         <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
-          <div class="col-span-full">
+          <div
+            v-if="isSelf"
+            class="col-span-full"
+          >
             <BasicPassword
               v-model="password.password_old"
               label="Aktuelles Passwort"
@@ -150,7 +156,7 @@ import { useRoute } from 'vue-router'
 
 const secondaryNavigation = [{ name: 'Account', href: '#', current: true }]
 
-const { user: currentUser, reAuthenticate, logout } = useAuthentication()
+const { user: currentUser, logout } = useAuthentication()
 const isSelf = ref(false)
 const password = ref({
   password_old: '',
@@ -164,8 +170,16 @@ const { state: user, execute: fetchUser } = useAsyncState(async () => {
   const result = await apiClient.user.read.query(parseInt(route.params.userId))
   isSelf.value = result?.id === currentUser.value?.id
   return result
-}, [])
+}, null)
 
+const { execute: updatePassword, error: errorPassword } = useAsyncState(
+  async () => {
+    await apiClient.authenication.changePassword.mutate(password.value)
+    logout()
+  },
+  null,
+  { immediate: false }
+)
 
 const { execute: deleteUser, error: errorDelete } = useAsyncState(
   async () => {
@@ -175,6 +189,4 @@ const { execute: deleteUser, error: errorDelete } = useAsyncState(
   null,
   { immediate: false }
 )
-
-fetchUser()
 </script>

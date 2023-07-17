@@ -31,6 +31,7 @@
       :close-on-scroll="closeOnScroll"
       :auto-apply="autoApply"
       :markers="markers"
+      :format="format"
     />
   </BasicFormGroup>
 </template>
@@ -73,6 +74,7 @@ const props = withDefaults(
     closeOnScroll?: boolean
     autoApply?: boolean
     markers?: typeof VueDatePicker.markers
+    format?: string
   }>(),
   {
     placeholder: undefined,
