@@ -1,14 +1,14 @@
 <template>
   <div>
     <!-- header -->
-    <LayoutSidebar>
+    <Sidebar>
       <router-view />
-    </LayoutSidebar>
+    </Sidebar>
 
     <!-- footer -->
   </div>
 </template>
 
 <script setup>
-import LayoutSidebar from '@/components/LayoutSidebar.vue'
+import Sidebar from '@/components/Sidebar/Sidebar.vue'
 </script>
