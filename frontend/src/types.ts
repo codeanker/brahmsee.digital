@@ -1,4 +1,9 @@
 import { FunctionalComponent } from 'vue'
+import { RouteRecordRaw } from 'vue-router'
+
+export type Route = RouteRecordRaw & {
+  public?: boolean
+}
 
 //#region Sidebar
 
