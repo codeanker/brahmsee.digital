@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <aside class="sticky top-0">
     <TransitionRoot
       as="template"
       :show="sidebarOpen"
@@ -67,7 +67,7 @@
     </TransitionRoot>
 
     <!-- Static sidebar for desktop -->
-    <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+    <div class="hidden lg:z-50 lg:flex lg:h-full lg:w-72 lg:flex-col">
       <SidebarItems
         :navigation="navigation"
         :teams="teams"
@@ -119,13 +119,7 @@
         />
       </a>
     </div>
-
-    <main class="py-10 lg:pl-72">
-      <div class="px-4 sm:px-6 lg:px-8">
-        <slot />
-      </div>
-    </main>
-  </div>
+  </aside>
 </template>
 
 <script setup lang="ts">
