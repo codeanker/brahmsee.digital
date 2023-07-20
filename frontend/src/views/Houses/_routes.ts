@@ -8,5 +8,5 @@ export default [
     name: 'HousesDetail',
     path: '/houses/:houseId/detail',
     component: () => import('./HouseDetail.vue'),
-  }
+  },
 ]
