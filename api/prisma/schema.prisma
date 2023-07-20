@@ -15,7 +15,7 @@ enum Role {
   ADMIN
 }
 
-enum Sex {
+enum Gender {
   MALE
   FEMALE
   UNSPECIFIED
@@ -28,7 +28,7 @@ model User {
   firstname String
   lastname  String
   birthday  String?
-  sex       Sex?
+  gender    Gender?
   role      Role
 }
 

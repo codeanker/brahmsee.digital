@@ -2,7 +2,7 @@
 CREATE TYPE "Role" AS ENUM ('GLIEDERUNG_ADMIN', 'ADMIN');
 
 -- CreateEnum
-CREATE TYPE "Sex" AS ENUM ('MALE', 'FEMALE', 'UNSPECIFIED');
+CREATE TYPE "Gender" AS ENUM ('MALE', 'FEMALE', 'UNSPECIFIED');
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -12,7 +12,7 @@ CREATE TABLE "User" (
     "firstname" TEXT NOT NULL,
     "lastname" TEXT NOT NULL,
     "birthday" TEXT,
-    "sex" "Sex",
+    "gender" "Gender",
     "role" "Role" NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")

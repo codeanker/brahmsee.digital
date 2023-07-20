@@ -32,9 +32,9 @@
 
       <div class="sm:col-span-3">
         <BasicSelect
-          v-model="userCopy.sex"
+          v-model="userCopy.gender"
           label="Geschlecht"
-          name="sex"
+          name="gender"
           :options="[
             {
               label: 'Männlich',
@@ -131,7 +131,7 @@ const fill = (user) => {
     lastname: user?.lastname,
     email: user?.email,
     password: user?.password ?? '',
-    sex: user?.sex || 'null',
+    gender: user?.gender || 'null',
     birthdate: user?.birthday === undefined ? 'null' : dayjs(user.birthday).toDate(),
     role: 'ADMIN', // TODO: Select
   }
