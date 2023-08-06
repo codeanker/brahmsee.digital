@@ -1,10 +1,12 @@
+import _import from '@/helpers/import'
 import { Route } from '@/types'
+import routesDashboard from '@/views/Dashboard/routes'
+import routesHouses from '@/views/Houses/routes'
+import routesAuth from '@/views/Login/routes'
+import routesRegistration from '@/views/Registration/routes'
+import routesUser from '@/views/Users/routes'
 import { createRouter, createWebHistory } from 'vue-router'
-import authenticationGuard from './authenticationGuard.js'
-
-function _import<T>(file: string): () => Promise<T> {
-  return () => import(/* @vite-ignore */ file)
-}
+import authenticationGuard from './authenticationGuard'
 
 const routes: Route[] = [
   {
@@ -13,74 +15,13 @@ const routes: Route[] = [
     component: _import('../views/Developer.vue'),
   },
 
-  //#region Authentication
-  {
-    name: 'Login',
-    path: '/login',
-    component: _import('../views/Login/Login.vue'),
-    public: true,
-  },
-  {
-    name: 'RegistrationStart',
-    path: '/registration',
-    component: _import('../views/Registration/RegistrationStart.vue'),
-    public: true,
-  },
-  {
-    name: 'RegisterLogin',
-    path: '/registration/registerLogin',
-    component: _import('../views/Registration/RegisterLogin.vue'),
-    public: true,
-  },
-  {
-    name: 'RegisterUsername',
-    path: '/registration/registerUsername',
-    component: _import('../views/Registration/RegisterUsername.vue'),
-    public: true,
-  },
-  //#endregion
+  ...routesAuth,
+  ...routesRegistration,
 
   {
     path: '/',
     component: _import('../layouts/BaseLayout.vue'),
-    children: [
-      {
-        name: 'Dashboard',
-        path: '/dashboard',
-        component: _import('../views/Dashboard/DashboardView.vue'),
-      },
-
-      //#region Users
-      {
-        name: 'Users',
-        path: '/users',
-        component: _import('../views/Users/UsersList.vue'),
-      },
-      {
-        name: 'UserCreate',
-        path: '/users/create',
-        component: _import('../views/Users/UserCreate.vue'),
-      },
-      {
-        name: 'UserDetail',
-        path: '/users/:userId/detail',
-        component: _import('../views/Users/UserDetail.vue'),
-      },
-      //#endregion
-
-      //#region Houses
-      {
-        name: 'Houses',
-        path: '/houses',
-        component: _import('../views/Houses/HousesList.vue'),
-      },
-      {
-        name: 'HousesDetail',
-        path: '/houses/:houseId/detail',
-        component: _import('../views/Houses/HouseDetail.vue'),
-      },
-      //#endregion
-    ],
+    children: [...routesDashboard, ...routesUser, ...routesHouses],
   },
 ]
 
