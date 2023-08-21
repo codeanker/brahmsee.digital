@@ -1,6 +1,9 @@
 -- CreateEnum
 CREATE TYPE "Role" AS ENUM ('GLIEDERUNG_ADMIN', 'ADMIN');
 
+-- CreateEnum
+CREATE TYPE "Gender" AS ENUM ('MALE', 'FEMALE', 'UNSPECIFIED');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
@@ -8,6 +11,8 @@ CREATE TABLE "User" (
     "password" TEXT NOT NULL,
     "firstname" TEXT NOT NULL,
     "lastname" TEXT NOT NULL,
+    "birthday" TEXT,
+    "gender" "Gender",
     "role" "Role" NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
@@ -17,6 +22,7 @@ CREATE TABLE "User" (
 CREATE TABLE "Gliederung" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
+    "edv" INTEGER NOT NULL,
 
     CONSTRAINT "Gliederung_pkey" PRIMARY KEY ("id")
 );

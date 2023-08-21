@@ -1,35 +1,35 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import authenticationGuard from './authenticationGuard.js'
+import _import from '@/helpers/import'
+import { Route } from '@/types'
+import routesDashboard from '@/views/Dashboard/routes'
+import routesHouses from '@/views/Houses/routes'
+import routesAuth from '@/views/Login/routes'
+import routesRegistration from '@/views/Registration/routes'
+import routesUser from '@/views/Users/routes'
+import { createRouter, createWebHistory } from 'vue-router'
+import authenticationGuard from './authenticationGuard'
 
-import DashboardRoutes from '../views/Dashboard/_routes.js'
-import RegistrationRoutes from '../views/Registration/_routes.js'
-import LoginRoutes from '../views/Login/_routes.js'
-import UsersRoutes from '../views/Users/_routes.js'
-import HousesRoutes from '../views/Houses/_routes.js'
-
-const routes = [
-  {
-    path: '/',
-    redirect: { name: 'Dashboard' },
-  },
+const routes: Route[] = [
   {
     name: 'Developer',
     path: '/developer',
-    component: () => import('../views/Developer.vue'),
+    component: _import('../views/Developer.vue'),
   },
+
+  ...routesAuth,
+  ...routesRegistration,
+
   {
     path: '/',
-    component: () => import('../layouts/BaseLayout.vue'),
-    children: [...DashboardRoutes, ...RegistrationRoutes, ...UsersRoutes, ...HousesRoutes],
+    component: _import('../layouts/BaseLayout.vue'),
+    children: [...routesDashboard, ...routesUser, ...routesHouses],
   },
-  ...LoginRoutes,
 ]
 
 const router = createRouter({
   history: createWebHistory(),
-  routes: routes as RouteRecordRaw[],
+  routes,
 })
 
-router.beforeEach(authenticationGuard)
+router.beforeEach(authenticationGuard(routes))
 
 export default router

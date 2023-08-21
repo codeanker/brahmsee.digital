@@ -80,7 +80,7 @@ module.exports = {
       },
     },
     {
-      files: ['**/*.js'],
+      files: ['**/*.ts'],
       extends: ['eslint:recommended', 'plugin:prettier/recommended'],
       rules: {
         'no-unused-vars': 'off',
@@ -99,7 +99,7 @@ module.exports = {
       },
     },
     {
-      files: ['api/test/**/*.js'],
+      files: ['api/test/**/*.ts'],
       env: {
         mocha: true,
       },

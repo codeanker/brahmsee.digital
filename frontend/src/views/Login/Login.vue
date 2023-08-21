@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import useAuthentication from '@/composables/useAuthentication'
 import { useRouter } from 'vue-router'
+import Button from '@/components/Button.vue'
 
 const router = useRouter()
 
@@ -42,23 +43,25 @@ const version = `${import.meta.env.VITE_APP_VERSION || '0.0.0'}-${import.meta.en
           class="w-full"
           placeholder="Password"
         />
-        <button
+        <Button
+          color="primary"
           type="submit"
-          class="btn btn-primary w-full"
           :disabled="loginPending"
+          full
         >
           <template v-if="loginPending">
             <i class="fa-sharp fa-light fa-spinner-third fa-2xl"></i>
           </template>
           <template v-else> Login </template>
-        </button>
-        <button
-          type="button"
-          class="btn btn-link text-primary-600 hidden w-full"
+        </Button>
+        <Button
+          color="secondary"
+          full
+          class="hidden"
           @click="router.push({ name: 'RegistrationStart' })"
         >
           Registrieren
-        </button>
+        </Button>
       </form>
       <div
         v-if="loginError"

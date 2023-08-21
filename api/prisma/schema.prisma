@@ -15,21 +15,29 @@ enum Role {
   ADMIN
 }
 
+enum Gender {
+  MALE
+  FEMALE
+  UNSPECIFIED
+}
+
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  password String
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  password  String
   firstname String
-  lastname String
-  role Role
+  lastname  String
+  birthday  String?
+  gender    Gender?
+  role      Role
 }
 
 model Gliederung {
-  id    Int     @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String
-  edv Int
+  edv  Int
 }
 
 model Anmeldung {
-  id    Int     @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 }
