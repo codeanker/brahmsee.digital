@@ -1,9 +1,10 @@
+import { Gender } from '@prisma/client'
 import { z } from 'zod'
+
 import prisma from '../../prisma'
 import { publicProcedure, router } from '../../trpc'
-import { hashPassword } from '../authentication'
 import exclude from '../../util/prisma-exclude'
-import { Gender } from '@prisma/client'
+import { hashPassword } from '../authentication'
 
 export const userRouter = router({
   create: publicProcedure
@@ -15,7 +16,7 @@ export const userRouter = router({
         role: z.enum(['GLIEDERUNG_ADMIN', 'ADMIN']),
         password: z.string(),
         birthdate: z.string().nullable(),
-        gender: z.enum(Object.keys(Gender)).nullable(),
+        gender: z.nativeEnum(Gender).nullable(),
       })
     )
     .mutation(async (opts) => {
@@ -70,7 +71,7 @@ export const userRouter = router({
         firstname: z.string(),
         lastname: z.string(),
         birthdate: z.string().nullable(),
-        gender: z.enum(Object.keys(Gender)).nullable(),
+        gender: z.nativeEnum(Gender).nullable(),
       })
     )
     .mutation(async ({ input }) => {

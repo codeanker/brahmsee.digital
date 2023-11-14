@@ -1,22 +1,12 @@
-<script setup lang="ts">
-import BasicInput from '@/components/BasicInputs/BasicInput.vue'
-import { useCreateRegistrationState } from '@/store/registrationStore'
-import { useRouter } from 'vue-router'
-import RegistrationLayout from './components/RegistrationLayout.vue'
-
-const router = useRouter()
-const { user } = useCreateRegistrationState()
-</script>
-
 <template>
   <RegistrationLayout @back="router.replace({ name: 'Login' })">
     <BasicInput
-      v-model="user.givenName"
+      v-model="user.firstname"
       placeholder="Vorname"
       class="mt-4"
     />
     <BasicInput
-      v-model="user.familyName"
+      v-model="user.lastname"
       placeholder="Nachname"
       class="mt-4"
     />
@@ -39,3 +29,15 @@ const { user } = useCreateRegistrationState()
     </button>
   </RegistrationLayout>
 </template>
+
+<script setup lang="ts">
+import { useRouter } from 'vue-router'
+
+import RegistrationLayout from './components/RegistrationLayout.vue'
+
+import BasicInput from '@/components/BasicInputs/BasicInput.vue'
+import { useCreateRegistrationState } from '@/store/registrationStore'
+
+const router = useRouter()
+const { user } = useCreateRegistrationState()
+</script>

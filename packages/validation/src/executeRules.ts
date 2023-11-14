@@ -1,5 +1,6 @@
-import { ComputedRef } from 'vue'
-import { RuleFieldContext, RuleFunction } from './defineRule'
+import { type ComputedRef } from 'vue'
+
+import type { RuleFieldContext, RuleFunction } from './defineRule'
 
 export function excecuteRules(rules: ComputedRef<RuleFunction[]>) {
   return async (value: unknown, context: RuleFieldContext): Promise<true | string> => {

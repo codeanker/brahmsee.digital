@@ -86,12 +86,14 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowPathIcon, HomeIcon } from '@heroicons/vue/24/outline'
+import { useAsyncState } from '@vueuse/core'
+
+import { apiClient } from '../../api'
+
 import BasicHeader from '@/components/BasicHeader.vue'
 import Button from '@/components/Button.vue'
 import router from '@/router'
-import { ArrowPathIcon, HomeIcon } from '@heroicons/vue/24/outline'
-import { useAsyncState } from '@vueuse/core'
-import { apiClient } from '../../api'
 
 const { state: userList, execute: fetchUsers } = useAsyncState(async () => {
   const result = await apiClient.user.list.query()

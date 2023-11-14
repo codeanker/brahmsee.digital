@@ -142,6 +142,11 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowLeftIcon } from '@heroicons/vue/24/outline'
+import { useAsyncState } from '@vueuse/core'
+import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+
 import { apiClient } from '@/api'
 import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
 import Button from '@/components/Button.vue'
@@ -149,10 +154,6 @@ import FormUserGeneral from '@/components/forms/user/FormUserGeneral.vue'
 import useAuthentication from '@/composables/useAuthentication'
 import userProfileImage from '@/helpers/userProfileImage'
 import router from '@/router'
-import { ArrowLeftIcon } from '@heroicons/vue/24/outline'
-import { useAsyncState } from '@vueuse/core'
-import { ref } from 'vue'
-import { useRoute } from 'vue-router'
 
 const secondaryNavigation = [{ name: 'Account', href: '#', current: true }]
 
@@ -162,12 +163,13 @@ const password = ref({
   password_old: '',
   password: '',
   password_confirm: '',
-  id: currentUser.value?.id,
+  id: currentUser.value!.id,
 })
 
 const route = useRoute()
 const { state: user, execute: fetchUser } = useAsyncState(async () => {
-  const result = await apiClient.user.read.query(parseInt(route.params.userId))
+  const userId = route.params.userId as string
+  const result = await apiClient.user.read.query(parseInt(userId))
   isSelf.value = result?.id === currentUser.value?.id
   return result
 }, null)
@@ -183,7 +185,7 @@ const { execute: updatePassword, error: errorPassword } = useAsyncState(
 
 const { execute: deleteUser, error: errorDelete } = useAsyncState(
   async () => {
-    await apiClient.user.delete.mutate(user.value?.id)
+    await apiClient.user.delete.mutate(user.value!.id)
     await router.push({ name: 'Users' })
   },
   null,

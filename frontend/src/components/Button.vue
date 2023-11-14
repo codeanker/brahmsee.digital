@@ -18,9 +18,11 @@
 </template>
 
 <script setup lang="ts">
-import { RouterLinkProps } from 'vue-router'
+import { type RouterLinkProps } from 'vue-router'
 
 type Color = 'primary' | 'secondary' | 'success' | 'warning' | 'danger'
+defineProps<Props>()
+
 const colors: Record<Color, string> = {
   primary: 'text-white bg-green-600 hover:bg-green-500 focus:outline-green-600',
   secondary: 'text-white bg-secondary-500 hover:bg-secondary-400 focus:outline-secondary-500',
@@ -34,6 +36,4 @@ interface Props {
   full?: boolean
   to?: RouterLinkProps['to']
 }
-
-defineProps<Props>()
 </script>

@@ -19,8 +19,9 @@
 </template>
 
 <script setup lang="ts">
+import { UserIcon } from '@heroicons/vue/24/outline'
+
 import BasicHeader from '@/components/BasicHeader.vue'
 import Button from '@/components/Button.vue'
 import FormUserGeneral from '@/components/forms/user/FormUserGeneral.vue'
-import { UserIcon } from '@heroicons/vue/24/outline'
 </script>

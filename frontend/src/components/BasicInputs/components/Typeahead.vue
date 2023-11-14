@@ -14,21 +14,22 @@
             class="btn bg-transparent px-1"
             @click="clear"
           >
-            <i
+            <!-- <FontAwesomeIcon
+              :icon="faTimes"
               fixed-width
-              class="fa-sharp fa-light fa-times text-gray-500"
-            ></i>
+              class="text-gray-500"
+            /> -->
           </button>
           <ComboboxButton
             class="btn bg-transparent px-1"
             @click="filterItems(searchTerm)"
           >
-            <i
-              :class="pending ? 'fa-spinner' : 'fa-chevron-down'"
+            <!-- <FontAwesomeIcon
+              :icon="pending ? faSpinner : faChevronDown"
               fixed-width
-              class="fa-sharp fa-light text-gray-500"
+              class="text-gray-500"
               :spin="pending"
-            ></i>
+            /> -->
           </ComboboxButton>
         </div>
         <transition
@@ -67,7 +68,10 @@
                       active ? 'text-white' : 'text-primary-600',
                     ]"
                   >
-                    <i class="fa-sharp fa-light fa-check"></i>
+                    <!-- <FontAwesomeIcon
+                      :icon="faCheck"
+                      fixed-width
+                    /> -->
                   </span>
                 </li>
               </slot>
@@ -80,8 +84,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
 import { Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/vue'
+import { computed, ref, watch } from 'vue'
+
 import { debounce } from '@/helpers/debounce'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -91,14 +96,14 @@ const props = withDefaults(
   defineProps<{
     query: (term: string, controller: AbortController) => Promise<QueryResult> | QueryResult
     // eslint-disable-next-line vue/no-unused-properties
-    modelValue: object | string | null
+    modelValue: object | string | null | undefined
     /** Formatiert das ausgewählte Query-Ergebnis zu einem String, der in das Input geschrieben wird */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     inputFormatter?: (value: any) => string
     /** Formatiert die Query-Ergebnisse zu Strings, die in der Auswahl angezeigt werden */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     resultFormatter?: (value: any) => string
-    debounce?: number
+    debounceTime?: number
     /** Flag, die dafür sorgt, dass sofort bei Seitenaufruf schonmal gesucht wird */
     immediate?: boolean
     /** Flag, die gesetzt werden kann, wenn die query nicht async ist. Debounce wird geskipped */
@@ -110,10 +115,12 @@ const props = withDefaults(
   {
     inputFormatter: () => (result) => result,
     resultFormatter: () => (result) => result,
-    debounce: 200,
+    debounceTime: 200,
   }
 )
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits<{
+  (event: 'update:modelValue', eventArgs: string | object | null | undefined): void
+}>()
 
 // Bei Seitenaufrufs
 if (props.immediate) {
@@ -190,7 +197,7 @@ const debounceFilterItems = debounce(
     }
     pending.value = false
   },
-  props.sync ? 0 : props.debounce
+  props.sync ? 0 : props.debounceTime
 )
 
 /** Wenn ein Ergebnis gewählt wird, wird der searchTerm mit dem formatierten Wert geupdated */

@@ -2,6 +2,7 @@
   "name": "@codeanker/helpers",
   "version": "1.0.0",
   "main": "index.ts",
+  "type": "module",
   "dependencies": {
     "dayjs": "^1.11.7"
   }

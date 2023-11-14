@@ -1,5 +1,5 @@
 import _import from '@/helpers/import'
-import { Route } from '@/types'
+import type { Route } from '@/types'
 
 const routesHouses: Route[] = [
   {

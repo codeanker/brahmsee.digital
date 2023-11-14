@@ -10,7 +10,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Footer from '@/components/Footer.vue'
 import Sidebar from '@/components/Sidebar/Sidebar.vue'
 </script>

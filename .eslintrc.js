@@ -1,3 +1,23 @@
+const importSettings = {
+  'import/first': 'error',
+  'import/no-duplicates': 'error',
+  'import/no-unresolved': 'off',
+  'import/newline-after-import': 'error',
+  'import/order': [
+    'error',
+    {
+      'newlines-between': 'always',
+      alphabetize: { order: 'asc', caseInsensitive: true },
+      pathGroups: [
+        {
+          pattern: '@/**/*',
+          group: 'internal',
+        },
+      ],
+    },
+  ],
+}
+
 module.exports = {
   root: true,
   env: {
@@ -26,10 +46,14 @@ module.exports = {
       parserOptions: {
         parser: '@typescript-eslint/parser',
       },
+      settings: {
+        'import/internal-regex': '^@codeanker/',
+      },
       extends: [
         'eslint:recommended',
         'plugin:@typescript-eslint/recommended',
         'plugin:vue/vue3-recommended',
+        'plugin:import/recommended',
         'plugin:prettier/recommended',
       ],
       rules: {
@@ -53,14 +77,33 @@ module.exports = {
         'vue/v-on-function-call': 'error',
         'vue/no-unused-properties': ['error', { groups: ['props', 'data', 'computed', 'methods', 'setup'] }],
         'vue/html-button-has-type': 'error',
+        'vue/no-ref-object-reactivity-loss': 'error',
+        'vue/padding-line-between-blocks': 'error',
+        'vue/define-macros-order': 'error',
+        'vue/block-order': [
+          'error',
+          {
+            order: ['template', 'script', 'style'],
+          },
+        ],
+        'vue/require-macro-variable-name': 'error',
+        'vue/define-props-declaration': 'error',
+        'vue/define-emits-declaration': 'error',
+        'vue/component-api-style': ['error', ['script-setup']],
+        'vue/block-lang': ['error', { script: { lang: 'ts' } }],
+        ...importSettings,
       },
     },
     {
       files: ['**/*.ts'],
       plugins: ['@typescript-eslint'],
       parser: '@typescript-eslint/parser',
+      env: {
+        es2022: true,
+      },
       extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'],
       settings: {
+        'import/internal-regex': '^@codeanker/',
         'import/parsers': {
           '@typescript-eslint/parser': ['.ts', '.tsx'],
         },
@@ -77,13 +120,17 @@ module.exports = {
           'error',
           { argsIgnorePattern: '^_', destructuredArrayIgnorePattern: '^_' },
         ],
+        ...importSettings,
       },
     },
     {
-      files: ['**/*.ts'],
+      files: ['**/*.js'],
       extends: ['eslint:recommended', 'plugin:prettier/recommended'],
       rules: {
-        'no-unused-vars': 'off',
+        'no-unused-vars': [
+          'error',
+          { argsIgnorePattern: '^_', destructuredArrayIgnorePattern: '^_', ignoreRestSiblings: true },
+        ],
       },
     },
     {
@@ -99,7 +146,7 @@ module.exports = {
       },
     },
     {
-      files: ['api/test/**/*.ts'],
+      files: ['api/test/**/*.js'],
       env: {
         mocha: true,
       },

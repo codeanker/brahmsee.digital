@@ -32,38 +32,16 @@
 </template>
 
 <script setup lang="ts">
-import { RuleFunction } from '@codeanker/validation'
-import useValidatedModel from '../../composables/useValidatedModel'
-import BasicValidationFeedback from './components/BasicValidationFeedback.vue'
 import { Switch } from '@headlessui/vue'
-import { RequiredRulesParams } from '@codeanker/validation/rules'
 
-const props = withDefaults(
-  defineProps<{
-    disabled?: boolean
+import useValidatedModel from '../../composables/useValidatedModel'
 
-    id?: string
-    label?: string
-    name?: string
-    // eslint-disable-next-line vue/no-unused-properties
-    modelValue: boolean | undefined
-    // eslint-disable-next-line vue/no-unused-properties
-    rules?: RuleFunction[]
-    // eslint-disable-next-line vue/no-unused-properties
-    required?: RequiredRulesParams
-  }>(),
-  {
-    type: 'text',
-    placeholder: '',
-    autocapitalize: undefined,
-    labelClass: '',
-    id: '',
-    label: '',
-    name: '',
-    rules: undefined,
-    required: false,
-  }
-)
-const emit = defineEmits(['update:modelValue'])
+import BasicValidationFeedback from './components/BasicValidationFeedback.vue'
+import { type BasicInputDefaultProps } from './defaultProps'
+
+const props = defineProps<BasicInputDefaultProps<boolean>>()
+const emit = defineEmits<{
+  (event: 'update:modelValue', eventArgs: boolean): void
+}>()
 const { model, errorMessage } = useValidatedModel(props, emit)
 </script>

@@ -1,9 +1,10 @@
-import { appRouter } from './services'
-import * as Koa from 'koa'
+import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
+import config from 'config'
+import Koa from 'koa'
 import { createKoaMiddleware } from 'trpc-koa-adapter'
+
 import { koaRouter } from './middlewares'
-import { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
-import * as config from 'config'
+import { appRouter } from './services'
 
 // Export type router type signature,
 // NOT the router itself.

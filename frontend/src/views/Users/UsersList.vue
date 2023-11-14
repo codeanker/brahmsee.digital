@@ -105,15 +105,17 @@
 </template>
 
 <script setup lang="ts">
+import { ArrowPathIcon, UsersIcon } from '@heroicons/vue/24/outline'
+import { useAsyncState } from '@vueuse/core'
+
+import { apiClient } from '../../api'
+
 import Badge from '@/components/Badge.vue'
 import BasicHeader from '@/components/BasicHeader.vue'
 import Button from '@/components/Button.vue'
 import useAuthentication from '@/composables/useAuthentication'
 import userProfileImage from '@/helpers/userProfileImage'
 import router from '@/router'
-import { ArrowPathIcon, UsersIcon } from '@heroicons/vue/24/outline'
-import { useAsyncState } from '@vueuse/core'
-import { apiClient } from '../../api'
 
 const { user: currentUser } = useAuthentication()
 const { state: userList, execute: fetchUsers } = useAsyncState(async () => {

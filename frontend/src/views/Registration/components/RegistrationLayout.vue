@@ -1,10 +1,3 @@
-<script setup lang="ts">
-import BasicHeader from '@/components/BasicHeader.vue'
-import BaseLayout from '@/layouts/BaseLayout.vue'
-
-const emit = defineEmits(['back'])
-</script>
-
 <template>
   <BaseLayout class="container py-4">
     <BasicHeader
@@ -24,3 +17,12 @@ const emit = defineEmits(['back'])
     <slot />
   </BaseLayout>
 </template>
+
+<script setup lang="ts">
+import BasicHeader from '@/components/BasicHeader.vue'
+import BaseLayout from '@/layouts/BaseLayout.vue'
+
+const emit = defineEmits<{
+  (event: 'back'): void
+}>()
+</script>

@@ -1,12 +1,3 @@
-<script setup lang="ts">
-defineProps<{
-  title?: string
-  subtitle?: string
-}>()
-
-const emit = defineEmits(['back'])
-</script>
-
 <template>
   <div class="mb-8">
     <div
@@ -34,3 +25,14 @@ const emit = defineEmits(['back'])
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+defineProps<{
+  title?: string
+  subtitle?: string
+}>()
+
+const emit = defineEmits<{
+  (event: 'back'): void
+}>()
+</script>

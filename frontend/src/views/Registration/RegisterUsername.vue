@@ -1,19 +1,3 @@
-<script setup lang="ts">
-import BasicInput from '@/components/BasicInputs/BasicInput.vue'
-import { useCreateRegistrationState } from '@/store/registrationStore'
-import { useRouter } from 'vue-router'
-import RegistrationLayout from './components/RegistrationLayout.vue'
-
-const router = useRouter()
-const { user, createUser, isCreatePending, createUserError } = useCreateRegistrationState()
-
-async function register() {
-  if (isCreatePending.value) return
-  const response = await createUser()
-  if (response) router.push({ name: 'Login' })
-}
-</script>
-
 <template>
   <RegistrationLayout @back="router.replace({ name: 'RegisterLogin' })">
     <div
@@ -51,3 +35,21 @@ async function register() {
     </button>
   </RegistrationLayout>
 </template>
+
+<script setup lang="ts">
+import { useRouter } from 'vue-router'
+
+import RegistrationLayout from './components/RegistrationLayout.vue'
+
+import BasicInput from '@/components/BasicInputs/BasicInput.vue'
+import { useCreateRegistrationState } from '@/store/registrationStore'
+
+const router = useRouter()
+const { user, createUser, isCreatePending, createUserError } = useCreateRegistrationState()
+
+async function register() {
+  if (isCreatePending.value) return
+  const response = await createUser()
+  if (response) router.push({ name: 'Login' })
+}
+</script>

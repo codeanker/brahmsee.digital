@@ -31,30 +31,20 @@
       :close-on-scroll="closeOnScroll"
       :auto-apply="autoApply"
       :markers="markers"
-      :format="format"
     />
   </BasicFormGroup>
 </template>
 
 <script setup lang="ts">
 import VueDatePicker from '@vuepic/vue-datepicker'
-import useValidatedModel from '../../composables/useValidatedModel'
-import BasicFormGroup from './components/BasicFormGroup.vue'
-import { RuleFunction } from '@codeanker/validation'
-import { RequiredRulesParams } from '@codeanker/validation/rules'
 
-const props = withDefaults(
-  defineProps<{
-    placeholder?: string
-    id?: string
-    label?: string
-    name?: string
-    // eslint-disable-next-line vue/no-unused-properties
-    modelValue: typeof VueDatePicker.modelValue
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any, vue/no-unused-properties
-    rules?: RuleFunction[]
-    // eslint-disable-next-line vue/no-unused-properties
-    required?: RequiredRulesParams
+import useValidatedModel from '../../composables/useValidatedModel'
+
+import BasicFormGroup from './components/BasicFormGroup.vue'
+import { type BasicInputDefaultProps } from './defaultProps'
+
+const props = defineProps<
+  BasicInputDefaultProps<typeof VueDatePicker.modelValue> & {
     range?: boolean
     autoRange?: typeof VueDatePicker.autoRange
     multiCalendars?: typeof VueDatePicker.multiCalendars
@@ -74,26 +64,12 @@ const props = withDefaults(
     closeOnScroll?: boolean
     autoApply?: boolean
     markers?: typeof VueDatePicker.markers
-    format?: string
-  }>(),
-  {
-    placeholder: undefined,
-    id: undefined,
-    label: undefined,
-    name: undefined,
-    rules: undefined,
-    required: false,
-    autoRange: undefined,
-    multiCalendars: false,
-    flow: undefined,
-    utc: false,
-    timezone: undefined,
-    presetRanges: undefined,
-    markers: undefined,
-    autoApply: true,
   }
-)
-const emit = defineEmits(['update:modelValue'])
+>()
+
+const emit = defineEmits<{
+  (event: 'update:modelValue', eventArgs: typeof VueDatePicker.modelValue | undefined): void
+}>()
 
 const { model, errorMessage } = useValidatedModel<typeof VueDatePicker.modelValue>(props, emit)
 </script>

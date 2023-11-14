@@ -102,6 +102,9 @@
 </template>
 
 <script setup lang="ts">
+import { useAsyncState } from '@vueuse/core'
+import { ref } from 'vue'
+
 import { apiClient } from '@/api'
 import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
@@ -111,18 +114,16 @@ import Button from '@/components/Button.vue'
 import useAuthentication from '@/composables/useAuthentication'
 import router from '@/router'
 import { dayjs } from '@codeanker/helpers'
-import { useAsyncState } from '@vueuse/core'
-import { ref } from 'vue'
 
-const { reAuthenticate } = useAuthentication()
-
-interface Props {
+const props = defineProps<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   user?: any
   isSelf?: boolean
   mode: 'create' | 'update'
   onUpdate?: () => void
-}
+}>()
+
+const { reAuthenticate } = useAuthentication()
 
 const fill = (user) => {
   return {
@@ -137,7 +138,6 @@ const fill = (user) => {
   }
 }
 
-const props = defineProps<Props>()
 const userCopy = ref(fill(props.user) ?? { role: 'ADMIN' })
 
 const {
@@ -155,7 +155,7 @@ const {
 
 const {
   execute: updateUser,
-  error: errorUpdate,
+  // error: errorUpdate,
   isLoading: isLoadingUpdate,
 } = useAsyncState(
   async () => {

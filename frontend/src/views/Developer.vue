@@ -5,7 +5,7 @@
       src="/codeanker.png"
       alt="Codeanker Logo"
     />
-    <Form
+    <ValidateForm
       ref="form"
       class="grid grid-cols-2 gap-6"
     >
@@ -120,7 +120,7 @@
       >
         validate
       </button>
-    </Form>
+    </ValidateForm>
     <h4 class="mt-12">HeadlessUI</h4>
     <p>HeadlessUI kann auch verwendet werden. Hier ein Beispiel</p>
     <Beispiel></Beispiel>
@@ -129,17 +129,19 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+
 import BasicCheckbox from '@/components/BasicInputs/BasicCheckbox.vue'
 import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
 import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
+import BasicSwitch from '@/components/BasicInputs/BasicSwitch.vue'
 import BasicTextArea from '@/components/BasicInputs/BasicTextArea.vue'
 import BasicTypeahead from '@/components/BasicInputs/BasicTypeahead.vue'
-import BasicSwitch from '@/components/BasicInputs/BasicSwitch.vue'
 import Beispiel from '@/components/Beispiel.vue'
+import { ValidateForm } from '@codeanker/validation'
 import { required, emailValid } from '@codeanker/validation/rules'
-import { Form } from '@codeanker/validation'
+
 const basicCheckbox = ref(true)
 const basicDatepicker = ref([])
 const basicInput = ref('')
@@ -152,7 +154,7 @@ const basicTypeaheadString = ref('Freitext')
 const foos = [{ name: 'fuu' }, { name: 'bar' }, { name: 'baz' }]
 const basicTypeahead = ref(foos[0])
 
-const form = ref<InstanceType<typeof Form>>()
+const form = ref<InstanceType<typeof ValidateForm>>()
 const presetRanges = ref([
   { label: 'Heute ne Woche', range: [new Date(), new Date(Date.now() + 6 * 24 * 60 * 60 * 1000)] },
 ])
@@ -181,6 +183,4 @@ async function queryObject(searchTerm) {
   await new Promise((resolve) => setTimeout(resolve, 200))
   return foos.filter((result) => result?.name.includes(searchTerm))
 }
-
-
 </script>

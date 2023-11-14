@@ -6,8 +6,13 @@
  *
  * @see https://www.prisma.io/docs/concepts/components/prisma-client/excluding-fields
  */
-export default function exclude<Entity, Key extends keyof Entity>(entity: Entity, ...keys: Key[]): Omit<Entity, Key> {
-  const entries = Object.entries(entity).filter(([key]) => !keys.includes(key))
-  const result = Object.fromEntries(entries)
-  return result as Omit<Entity, Key>
+export default function exclude<T extends Record<string, unknown>, K extends keyof T>(
+  entity: T,
+  ...keys: K[]
+): Omit<T, K> {
+  const clone = { ...entity }
+  for (const key of keys) {
+    delete clone[key]
+  }
+  return clone
 }

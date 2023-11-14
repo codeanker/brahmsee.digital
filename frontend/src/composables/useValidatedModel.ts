@@ -1,6 +1,8 @@
 import { computed } from 'vue'
-import { RuleFunction, watchAndValidateValue } from '@codeanker/validation'
+
+import { type RuleFunction, watchAndValidateValue } from '@codeanker/validation'
 import { required } from '@codeanker/validation/rules'
+
 export default function useValidatedModel<T = unknown>(
   props: {
     name?: string

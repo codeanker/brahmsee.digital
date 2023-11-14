@@ -1,5 +1,5 @@
-import { FunctionalComponent } from 'vue'
-import { RouteRecordRaw } from 'vue-router'
+import { type FunctionalComponent } from 'vue'
+import { type RouteRecordRaw } from 'vue-router'
 
 export type Route = RouteRecordRaw & {
   public?: boolean

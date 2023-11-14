@@ -1,10 +1,11 @@
-import { z } from 'zod'
-import { publicProcedure, router } from '../../trpc'
-import prisma from '../../prisma'
 import { TRPCError } from '@trpc/server'
-import { sign, verify } from 'jsonwebtoken'
-import { hash, compare } from 'bcryptjs'
-import * as config from 'config'
+import bcrypt from 'bcryptjs'
+import config from 'config'
+import jwt from 'jsonwebtoken'
+import { z } from 'zod'
+
+import prisma from '../../prisma'
+import { publicProcedure, router } from '../../trpc'
 import exclude from '../../util/prisma-exclude'
 
 const jwtSecret: string = config.get('secret')
@@ -33,7 +34,7 @@ export const authenticationRouter = router({
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, ...userWithoutPassword } = user
 
-      const accessToken = sign(
+      const accessToken = jwt.sign(
         {
           userId: user.id,
         },
@@ -53,7 +54,7 @@ export const authenticationRouter = router({
     )
     .mutation(async (opts) => {
       try {
-        const payload = verify(opts.input.accessToken, jwtSecret)
+        const payload = jwt.verify(opts.input.accessToken, jwtSecret)
         if (payload === null || typeof payload !== 'object') throw new Error('Weird payload')
 
         const user = await prisma.user.findUnique({
@@ -84,7 +85,7 @@ export const authenticationRouter = router({
       })
     )
     .mutation(async ({ input }) => {
-      const { password } = await prisma.user.findFirst({
+      const { password } = await prisma.user.findFirstOrThrow({
         where: {
           id: input.id,
         },
@@ -118,12 +119,12 @@ export const authenticationRouter = router({
 })
 
 export function hashPassword(password: string) {
-  return hash(password, 10)
+  return bcrypt.hash(password, 10)
 }
 
 async function passwordMatches(hash: string, password: string) {
   // find password in entity, this allows for dot notation
 
   if (!hash) return false
-  return await compare(password, hash)
+  return await bcrypt.compare(password, hash)
 }

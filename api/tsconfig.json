@@ -1,8 +1,11 @@
 {
-    "compilerOptions": {
-      "strict": true
-    },
-    "ts-node": {
-      "swc": true
-    }
-  }
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": [
+      "ES2022"
+    ]
+  },
+  "include": [
+    "src"
+  ],
+}

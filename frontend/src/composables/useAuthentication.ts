@@ -1,7 +1,8 @@
 import { useAsyncState } from '@vueuse/core'
 import { ref } from 'vue'
+
 import { apiClient } from '@/api'
-import { RouterOutput } from '@codeanker/api'
+import type { RouterOutput } from '@codeanker/api'
 
 const user = ref<RouterOutput['authenication']['login']['user'] | null>(null)
 

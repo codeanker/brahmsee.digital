@@ -1,5 +1,5 @@
-import { Route } from '@/types'
 import _import from '@/helpers/import'
+import type { Route } from '@/types'
 
 const routesAuth: Route[] = [
   {

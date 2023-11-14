@@ -1,6 +1,7 @@
+import { type NavigationGuardWithThis } from 'vue-router'
+
 import useAuthentication from '@/composables/useAuthentication'
-import { Route } from '@/types'
-import { NavigationGuardWithThis } from 'vue-router'
+import type { Route } from '@/types'
 
 export default function makeGuard(routes: Route[]): NavigationGuardWithThis<undefined> {
   const publicRoutes: string[] = routes

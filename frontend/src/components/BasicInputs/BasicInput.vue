@@ -4,7 +4,6 @@
     :name="name"
     :label="label"
     :error-message="errorMessage"
-    :required="!!required"
   >
     <div class="align-items-center flex">
       <input
@@ -14,8 +13,10 @@
         :type="type"
         :autocapitalize="autocapitalize"
         :placeholder="placeholder || label || name"
-        :class="{ 'rounded-r-none': $slots.append }"
+        :class="[{ 'rounded-r-none': $slots.append }, inputClass]"
         :disabled="disabled"
+        @focus="emit('focus')"
+        @blur="emit('blur')"
       />
       <div class="flex-shrink-0">
         <slot name="append" />
@@ -25,40 +26,30 @@
 </template>
 
 <script setup lang="ts">
-import { RuleFunction } from '@codeanker/validation'
+import { useVModel } from '@vueuse/core'
+
 import useValidatedModel from '../../composables/useValidatedModel'
+
 import BasicFormGroup from './components/BasicFormGroup.vue'
-import { RequiredRulesParams } from '@codeanker/validation/rules'
+import { type BasicInputDefaultProps } from './defaultProps'
 
-const props = withDefaults(
-  defineProps<{
+const props = defineProps<
+  BasicInputDefaultProps<string> & {
     type?: 'text' | 'number' | 'password' | 'email'
-    placeholder?: string
-    disabled?: boolean
     autocapitalize?: 'off' | 'on' | 'words' | 'characters'
-
-    id?: string
-    label?: string
-    name?: string
-    // eslint-disable-next-line vue/no-unused-properties
-    modelValue?: string
-    // eslint-disable-next-line vue/no-unused-properties
-    rules?: RuleFunction[]
-    // eslint-disable-next-line vue/no-unused-properties
-    required?: RequiredRulesParams
-  }>(),
-  {
-    type: 'text',
-    placeholder: '',
-    autocapitalize: undefined,
-    labelClass: '',
-    id: '',
-    label: '',
-    name: '',
-    rules: undefined,
-    required: false,
+    inputClass?: string
+    disableValidation?: boolean
   }
-)
-const emit = defineEmits(['update:modelValue'])
-const { model, errorMessage } = useValidatedModel(props, emit)
+>()
+const emit = defineEmits<{
+  (event: 'update:modelValue', eventArgs: string | undefined): void
+  (event: 'focus'): void
+  (event: 'blur'): void
+}>()
+const { model, errorMessage } = props.disableValidation
+  ? {
+      model: useVModel(props, 'modelValue', emit),
+      errorMessage: undefined,
+    }
+  : useValidatedModel(props, emit)
 </script>

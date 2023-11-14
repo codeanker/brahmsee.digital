@@ -1,12 +1,14 @@
+import { createRouter, createWebHistory } from 'vue-router'
+
+import authenticationGuard from './authenticationGuard'
+
 import _import from '@/helpers/import'
-import { Route } from '@/types'
+import type { Route } from '@/types'
 import routesDashboard from '@/views/Dashboard/routes'
 import routesHouses from '@/views/Houses/routes'
 import routesAuth from '@/views/Login/routes'
 import routesRegistration from '@/views/Registration/routes'
 import routesUser from '@/views/Users/routes'
-import { createRouter, createWebHistory } from 'vue-router'
-import authenticationGuard from './authenticationGuard'
 
 const routes: Route[] = [
   {

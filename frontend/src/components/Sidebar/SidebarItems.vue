@@ -69,7 +69,7 @@
 </template>
 
 <script setup lang="ts">
-import { NavItem, TeamItem } from '../../types'
+import { type NavItem, type TeamItem } from '../../types'
 
 interface Props {
   navigation: NavItem[]

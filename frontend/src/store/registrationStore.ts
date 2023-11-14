@@ -1,7 +1,9 @@
 import { createGlobalState, useAsyncState, useStorage } from '@vueuse/core'
 import { unref } from 'vue'
+
 import { apiClient } from '../api'
-import { RouterInput } from '@codeanker/api'
+
+import { type RouterInput } from '@codeanker/api'
 
 export const useCreateRegistrationState = createGlobalState(() => {
   const defaultRegistrationState: Partial<RouterInput['user']['create']> = {}

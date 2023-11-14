@@ -1,4 +1,5 @@
 import { input, password as passwordInput, select } from '@inquirer/prompts'
+
 import { getEnumOptions, roleMapping } from '../enumMappings'
 import prisma from '../prisma'
 import { hashPassword } from '../services/authentication'

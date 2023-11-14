@@ -19,7 +19,7 @@
     "@vueuse/core": "^10.1.2",
     "crypto-js": "^4.1.1",
     "socket.io-client": "^4.6.1",
-    "vue": "^3.2.47",
+    "vue": "^3.3.8",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
