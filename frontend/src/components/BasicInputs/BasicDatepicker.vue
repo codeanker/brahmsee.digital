@@ -38,7 +38,7 @@
 <script setup lang="ts">
 import VueDatePicker from '@vuepic/vue-datepicker'
 
-import useValidatedModel from '../../composables/useValidatedModel'
+import useValidationModel from '../../composables/useValidationModel'
 
 import BasicFormGroup from './components/BasicFormGroup.vue'
 import { type BasicInputDefaultProps } from './defaultProps'
@@ -71,5 +71,5 @@ const emit = defineEmits<{
   (event: 'update:modelValue', eventArgs: typeof VueDatePicker.modelValue | undefined): void
 }>()
 
-const { model, errorMessage } = useValidatedModel<typeof VueDatePicker.modelValue>(props, emit)
+const { model, errorMessage } = useValidationModel<typeof VueDatePicker.modelValue>(props, emit)
 </script>

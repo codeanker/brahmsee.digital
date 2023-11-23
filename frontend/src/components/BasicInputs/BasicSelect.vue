@@ -55,7 +55,7 @@
 // import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/vue'
 
-import useValidatedModel from '../../composables/useValidatedModel'
+import useValidationModel from '../../composables/useValidationModel'
 
 import BasicValidationFeedback from './components/BasicValidationFeedback.vue'
 import { type BasicInputDefaultProps } from './defaultProps'
@@ -69,5 +69,5 @@ const props = defineProps<
 const emit = defineEmits<{
   (event: 'update:modelValue', eventArgs: string | number | undefined): void
 }>()
-const { model, errorMessage } = useValidatedModel(props, emit)
+const { model, errorMessage } = useValidationModel(props, emit)
 </script>

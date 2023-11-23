@@ -61,14 +61,12 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import Button from '@/components/Button.vue'
-import useAuthentication from '@/composables/useAuthentication'
+import { login, loginError, loginPending } from '@/composables/useAuthentication'
 
 const router = useRouter()
 
 const email = ref('')
 const password = ref('')
-
-const { loginPending, login, loginError } = useAuthentication()
 
 async function loginWithRecirect() {
   const response = await login({ email: email.value, password: password.value })

@@ -1,26 +1,34 @@
+import cors from '@koa/cors'
 import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
-import config from 'config'
 import Koa from 'koa'
 import { createKoaMiddleware } from 'trpc-koa-adapter'
 
-import { koaRouter } from './middlewares'
-import { appRouter } from './services'
+import config from './config'
+import { createContext } from './context'
+import { logger } from './logger'
+import router from './routes'
+import { serviceRouter } from './services/'
+import { mergeRouters } from './trpc'
 
-// Export type router type signature,
-// NOT the router itself.
-export type AppRouter = typeof appRouter
-export type RouterInput = inferRouterInputs<AppRouter>
-export type RouterOutput = inferRouterOutputs<AppRouter>
+export const app = new Koa()
+export const appRouter = mergeRouters(serviceRouter)
 
-const app = new Koa()
+app.use(cors({ origin: '*' }))
+
+// initialize trpc middleware
 const adapter = createKoaMiddleware({
   router: appRouter,
+  createContext,
   prefix: '/trpc',
 })
 app.use(adapter)
-app.use(koaRouter.routes())
 
-const port = config.get('port')
-// eslint-disable-next-line no-console
-console.log('Server started on port ' + port)
-app.listen(port)
+// initialize koa router for custome routes
+app.use(router.routes())
+
+app.listen(config.port)
+logger.info(`app listening on http://0.0.0.0:${config.port}`)
+
+export type AppRouter = typeof appRouter
+export type RouterInput = inferRouterInputs<AppRouter>
+export type RouterOutput = inferRouterOutputs<AppRouter>

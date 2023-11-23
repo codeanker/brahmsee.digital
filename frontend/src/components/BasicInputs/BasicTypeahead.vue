@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import useValidatedModel from '../../composables/useValidatedModel'
+import useValidationModel from '../../composables/useValidationModel'
 
 import BasicValidationFeedback from './components/BasicValidationFeedback.vue'
 import Typeahead from './components/Typeahead.vue'
@@ -55,5 +55,5 @@ const props = withDefaults(
 const emit = defineEmits<{
   (event: 'update:modelValue', eventArgs: string | object | null | undefined): void
 }>()
-const { model, errorMessage } = useValidatedModel(props, emit)
+const { model, errorMessage } = useValidationModel(props, emit)
 </script>

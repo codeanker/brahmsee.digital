@@ -47,7 +47,7 @@
 import { useVModel } from '@vueuse/core'
 import { ref } from 'vue'
 
-import useValidatedModel from '../../composables/useValidatedModel'
+import useValidationModel from '../../composables/useValidationModel'
 
 import BasicFormGroup from './components/BasicFormGroup.vue'
 import { type BasicInputDefaultProps } from './defaultProps'
@@ -69,5 +69,5 @@ const { model, errorMessage } = props.disableValidation
       model: useVModel(props, 'modelValue', emit),
       errorMessage: undefined,
     }
-  : useValidatedModel(props, emit)
+  : useValidationModel(props, emit)
 </script>

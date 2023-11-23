@@ -40,6 +40,7 @@
 
           <div class="sm:col-span-3">
             <BasicInput
+              v-model="firstname"
               label="Vorname"
               name="firstname"
               class=""
@@ -48,6 +49,7 @@
 
           <div class="sm:col-span-3">
             <BasicInput
+              v-model="lastname"
               label="Nachname"
               name="lastname"
               class=""
@@ -56,6 +58,7 @@
 
           <div class="sm:col-span-3">
             <BasicDatepicker
+              v-model="birthdate"
               label="Geburtsdatum"
               name="birthdate"
               class=""
@@ -64,6 +67,7 @@
 
           <div class="sm:col-span-3">
             <BasicInput
+              v-model="age"
               label="Alter"
               name="age"
               class=""
@@ -72,6 +76,7 @@
 
           <div class="col-span-full">
             <BasicInput
+              v-model="email"
               label="Email"
               name="email"
               class=""
@@ -258,6 +263,8 @@
 //   XMarkIcon,
 // } from '@heroicons/vue/24/outline'
 
+import { ref } from 'vue'
+
 import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import Button from '@/components/Button.vue'
@@ -282,4 +289,11 @@ const secondaryNavigation = [
   { name: 'Teams', href: '#', current: false },
   { name: 'Integrations', href: '#', current: false },
 ]
+
+// demo
+const firstname = ref('Max')
+const lastname = ref('Mustermann')
+const birthdate = ref('07.03.2000')
+const age = ref('21')
+const email = ref('')
 </script>

@@ -7,4 +7,4 @@ koaRouter.get('/', async (ctx, next) => {
   await next()
 })
 
-export { koaRouter }
+export default koaRouter

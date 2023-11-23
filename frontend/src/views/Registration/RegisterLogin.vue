@@ -18,13 +18,13 @@
       name="approvePassword"
       class="mt-4"
     ></BasicPassword>
-    <BasicInput
+    <!-- <BasicInput
       v-model="user.mobile"
       placeholder="Rufnummer"
       name="rufnummer"
       class="mt-4"
     >
-    </BasicInput>
+    </BasicInput> -->
 
     <button
       type="button"

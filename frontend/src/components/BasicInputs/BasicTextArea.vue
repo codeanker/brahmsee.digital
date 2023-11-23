@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import useValidatedModel from '../../composables/useValidatedModel'
+import useValidationModel from '../../composables/useValidationModel'
 
 import BasicFormGroup from './components/BasicFormGroup.vue'
 import { type BasicInputDefaultProps } from './defaultProps'
@@ -35,5 +35,5 @@ const props = withDefaults(
 const emit = defineEmits<{
   (event: 'update:modelValue', eventArgs: string): void
 }>()
-const { model, errorMessage } = useValidatedModel(props, emit)
+const { model, errorMessage } = useValidationModel(props, emit)
 </script>

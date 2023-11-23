@@ -111,8 +111,9 @@ import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
 import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
 import Button from '@/components/Button.vue'
-import useAuthentication from '@/composables/useAuthentication'
+import { reAuthenticate } from '@/composables/useAuthentication'
 import router from '@/router'
+import type { RouterInput } from '@codeanker/api'
 import { dayjs } from '@codeanker/helpers'
 
 const props = defineProps<{
@@ -122,8 +123,6 @@ const props = defineProps<{
   mode: 'create' | 'update'
   onUpdate?: () => void
 }>()
-
-const { reAuthenticate } = useAuthentication()
 
 const fill = (user) => {
   return {
@@ -146,7 +145,10 @@ const {
   isLoading: isLoadingCreate,
 } = useAsyncState(
   async () => {
-    await apiClient.user.create.mutate(userCopy.value)
+    // @todo typing
+    await apiClient.user.managementCreate.mutate({
+      data: userCopy.value as unknown as RouterInput['user']['managementCreate']['data'],
+    })
     router.back()
   },
   null,
@@ -159,7 +161,11 @@ const {
   isLoading: isLoadingUpdate,
 } = useAsyncState(
   async () => {
-    await apiClient.user.update.mutate(userCopy.value)
+    // @todo typing
+    await apiClient.user.managementPatch.mutate({
+      id: userCopy.value.id,
+      data: userCopy.value as unknown as RouterInput['user']['managementPatch']['data'],
+    })
 
     if (props.isSelf) {
       await reAuthenticate()

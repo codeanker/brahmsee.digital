@@ -79,7 +79,7 @@
                   <div class="mt-1 text-gray-500">{{ user.email }}</div>
                 </div>
                 <Badge
-                  v-if="user.id === currentUser?.id"
+                  v-if="user.id === loggedInUser?.id"
                   class="ml-4"
                   >Du</Badge
                 >
@@ -113,13 +113,12 @@ import { apiClient } from '../../api'
 import Badge from '@/components/Badge.vue'
 import BasicHeader from '@/components/BasicHeader.vue'
 import Button from '@/components/Button.vue'
-import useAuthentication from '@/composables/useAuthentication'
+import { loggedInUser } from '@/composables/useAuthentication'
 import userProfileImage from '@/helpers/userProfileImage'
 import router from '@/router'
 
-const { user: currentUser } = useAuthentication()
 const { state: userList, execute: fetchUsers } = useAsyncState(async () => {
-  const result = await apiClient.user.list.query()
+  const result = await apiClient.user.managementList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
   return result
 }, [])
 

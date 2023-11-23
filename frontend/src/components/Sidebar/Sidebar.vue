@@ -80,11 +80,11 @@
         >
           <img
             class="h-10 w-10 rounded-full bg-green-700"
-            :src="userProfileImage(user)"
+            :src="userProfileImage(loggedInUser)"
             alt=""
           />
           <span class="sr-only">Your profile</span>
-          <span aria-hidden="true">Hallo, {{ user?.firstname }}</span>
+          <span aria-hidden="true">Hallo, {{ loggedInUser?.firstname }}</span>
         </router-link>
         <button
           type="button"
@@ -114,7 +114,7 @@
         <span class="sr-only">Your profile</span>
         <img
           class="h-8 w-8 rounded-full bg-green-700"
-          :src="userProfileImage(user)"
+          :src="userProfileImage(loggedInUser)"
           alt=""
         />
       </a>
@@ -129,7 +129,7 @@ import { ref } from 'vue'
 
 import SidebarItems from './SidebarItems.vue'
 
-import useAuthentication from '@/composables/useAuthentication'
+import { logout, loggedInUser } from '@/composables/useAuthentication'
 import userProfileImage from '@/helpers/userProfileImage'
 import type { NavItem, TeamItem } from '@/types'
 
@@ -150,6 +150,4 @@ const teams: TeamItem[] = [
 ]
 
 const sidebarOpen = ref(false)
-
-const { user, logout } = useAuthentication()
 </script>

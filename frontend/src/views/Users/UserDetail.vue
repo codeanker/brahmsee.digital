@@ -151,32 +151,32 @@ import { apiClient } from '@/api'
 import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
 import Button from '@/components/Button.vue'
 import FormUserGeneral from '@/components/forms/user/FormUserGeneral.vue'
-import useAuthentication from '@/composables/useAuthentication'
+import { loggedInUser, logout } from '@/composables/useAuthentication'
 import userProfileImage from '@/helpers/userProfileImage'
 import router from '@/router'
 
 const secondaryNavigation = [{ name: 'Account', href: '#', current: true }]
 
-const { user: currentUser, logout } = useAuthentication()
 const isSelf = ref(false)
 const password = ref({
   password_old: '',
   password: '',
   password_confirm: '',
-  id: currentUser.value!.id,
+  id: loggedInUser.value!.id,
 })
 
 const route = useRoute()
 const { state: user, execute: fetchUser } = useAsyncState(async () => {
   const userId = route.params.userId as string
-  const result = await apiClient.user.read.query(parseInt(userId))
-  isSelf.value = result?.id === currentUser.value?.id
+  const result = await apiClient.user.managementGet.query({ id: parseInt(userId) })
+  isSelf.value = result?.id === loggedInUser.value?.id
   return result
 }, null)
 
 const { execute: updatePassword, error: errorPassword } = useAsyncState(
   async () => {
-    await apiClient.authenication.changePassword.mutate(password.value)
+    // @todo
+    // await apiClient.user.changePassword.mutate({ password: password.value })
     logout()
   },
   null,
@@ -185,7 +185,7 @@ const { execute: updatePassword, error: errorPassword } = useAsyncState(
 
 const { execute: deleteUser, error: errorDelete } = useAsyncState(
   async () => {
-    await apiClient.user.delete.mutate(user.value!.id)
+    await apiClient.user.managementRemove.mutate({ id: user.value!.id })
     await router.push({ name: 'Users' })
   },
   null,
