@@ -15,7 +15,7 @@ export default defineConfig({
     https: true,
     proxy: {
       '/api': {
-        target: process.env.VITE_APP_API_URL,
+        target: 'http://localhost:3030',
         ws: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },

@@ -11,8 +11,7 @@
   "scripts": {
     "start": "docker-compose -f docker-compose-services.yml -f docker-compose.yml build && docker-compose -f docker-compose-services.yml -f docker-compose.yml up",
     "start:api": "npm run dev -w ./api",
-    "start:frontend": "npm run serve -w ./frontend",
-    "start:services": "docker compose -f docker-compose-services.yml up --build",
+    "start:frontend": "npm run dev -w ./frontend",
     "lint": "eslint \"**/*.{vue,ts,js}\"",
     "lint:fix": "eslint \"**/*.{vue,ts,js}\" --fix",
     "lint-staged": "lint-staged -c .lintstagedrc.js",

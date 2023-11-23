@@ -4,8 +4,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsx --clear-screen=false src/server.ts",
-    "dev": "tsx watch --clear-screen=false src/server.ts",
+    "start": "tsx --clear-screen=false src/index.ts",
+    "dev": "tsx watch --clear-screen=false src/index.ts",
     "createUser": "tsx src/scripts/createUser.ts",
     "postinstall": "prisma generate"
   },

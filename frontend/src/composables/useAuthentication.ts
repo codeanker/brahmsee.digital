@@ -22,7 +22,11 @@ export async function login({ email, password }: { email: string; password: stri
 }
 
 export async function reAuthenticate() {
-  loggedInUser.value = await apiClient.user.authenticatedGet.query()
+  try {
+    loggedInUser.value = await apiClient.user.authenticatedGet.query()
+  } catch (error) {
+    console.error(error)
+  }
   return loggedInUser.value
 }
 

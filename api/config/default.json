@@ -1,4 +1,12 @@
 {
+  "host": "localhost",
   "port": 3030,
-  "secret": "671da83520c50fcf4dae59db807174171bd1361426aff2f150766c0380beedd0"
+  "paginate": {
+    "default": 10,
+    "max": 50
+  },
+  "authentication": {
+    "secret": "secret",
+    "expiresIn": "1d"
+  }
 }

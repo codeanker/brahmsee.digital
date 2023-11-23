@@ -46,8 +46,12 @@ const isAuthed = (roles: Role[]) =>
         role: true,
       },
     })
-    if (!roles.includes(user.role)) {
-      throw new TRPCError({ code: 'FORBIDDEN' })
+    if (!roles.includes(user.role) && roles.length > 0) {
+      // if roles is empty, the resource is public
+      throw new TRPCError({
+        code: 'FORBIDDEN',
+        message: `You are not allowed to access this resource "${roles}" with "${user.role}"`,
+      })
     }
     return opts.next({
       ctx: {
