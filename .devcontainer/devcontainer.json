@@ -31,5 +31,5 @@
 			]
 		}
 	},
-	"onCreateCommand": "npm ci && cd api && npx prisma migrate deploy"
+	"onCreateCommand": "npm ci"
 }
