@@ -10,6 +10,9 @@ const __dirname = path.dirname(__filename)
 const baseConfig = config.util.loadFileConfigs(path.join(__dirname, '..', 'config'))
 
 const configSchema = z.strictObject({
+  db: z.strictObject({
+    url: z.string(),
+  }),
   authentication: z.strictObject({
     secret: z.string(),
     expiresIn: z.string(),

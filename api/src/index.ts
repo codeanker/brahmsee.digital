@@ -1,6 +1,7 @@
 import cors from '@koa/cors'
 import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
 import Koa from 'koa'
+import serve from 'koa-static'
 import { createKoaMiddleware } from 'trpc-koa-adapter'
 
 import config from './config'
@@ -14,6 +15,7 @@ export const app = new Koa()
 export const appRouter = mergeRouters(serviceRouter)
 
 app.use(cors({ origin: '*' }))
+app.use(serve('./static'))
 
 // initialize trpc middleware
 const adapter = createKoaMiddleware({

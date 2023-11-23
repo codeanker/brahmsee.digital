@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsx --clear-screen=false src/index.ts",
+    "start": "tsx src/index.ts",
     "dev": "tsx watch --clear-screen=false src/index.ts",
     "createUser": "tsx src/scripts/createUser.ts",
     "postinstall": "prisma generate"
@@ -16,6 +16,7 @@
     "config": "^3.3.9",
     "koa": "^2.14.2",
     "koa-router": "^12.0.1",
+    "koa-static": "^5.0.0",
     "prom-client": "^15.0.0",
     "superjson": "^2.2.1",
     "trpc-koa-adapter": "^1.1.3",

@@ -1,6 +1,9 @@
 {
   "host": "localhost",
   "port": 3030,
+  "db": {
+    "url": "postgresql://postgres:postgres@postgres:5432/brahmsee.digital?schema=public"
+  },
   "paginate": {
     "default": 10,
     "max": 50
