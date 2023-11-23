@@ -1,3 +1,14 @@
+<script setup lang="ts">
+import { type NavItem, type TeamItem } from '../../types'
+
+interface Props {
+  navigation: NavItem[]
+  teams: TeamItem[]
+}
+
+defineProps<Props>()
+</script>
+
 <template>
   <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-green-700 px-6">
     <router-link :to="{ name: 'Dashboard' }">
@@ -67,14 +78,3 @@
     </nav>
   </div>
 </template>
-
-<script setup lang="ts">
-import { type NavItem, type TeamItem } from '../../types'
-
-interface Props {
-  navigation: NavItem[]
-  teams: TeamItem[]
-}
-
-defineProps<Props>()
-</script>

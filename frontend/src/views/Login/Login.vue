@@ -1,3 +1,23 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+import Button from '@/components/Button.vue'
+import { login, loginError, loginPending } from '@/composables/useAuthentication'
+
+const router = useRouter()
+
+const email = ref('')
+const password = ref('')
+
+async function loginWithRecirect() {
+  const response = await login({ email: email.value, password: password.value })
+  if (response) router.push({ name: 'Dashboard' })
+}
+
+const version = `${import.meta.env.VITE_APP_VERSION || '0.0.0'}-${import.meta.env.VITE_APP_COMMIT_HASH || 'local'}`
+</script>
+
 <template>
   <div class="container flex h-screen max-w-sm flex-col justify-between pt-32">
     <div>
@@ -55,23 +75,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-
-import Button from '@/components/Button.vue'
-import { login, loginError, loginPending } from '@/composables/useAuthentication'
-
-const router = useRouter()
-
-const email = ref('')
-const password = ref('')
-
-async function loginWithRecirect() {
-  const response = await login({ email: email.value, password: password.value })
-  if (response) router.push({ name: 'Dashboard' })
-}
-
-const version = `${import.meta.env.VITE_APP_VERSION || '0.0.0'}-${import.meta.env.VITE_APP_COMMIT_HASH || 'local'}`
-</script>

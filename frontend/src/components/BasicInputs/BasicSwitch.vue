@@ -1,3 +1,18 @@
+<script setup lang="ts">
+import { Switch } from '@headlessui/vue'
+
+import useValidationModel from '../../composables/useValidationModel'
+
+import BasicValidationFeedback from './components/BasicValidationFeedback.vue'
+import { type BasicInputDefaultProps } from './defaultProps'
+
+const props = defineProps<BasicInputDefaultProps<boolean>>()
+const emit = defineEmits<{
+  (event: 'update:modelValue', eventArgs: boolean): void
+}>()
+const { model, errorMessage } = useValidationModel(props, emit)
+</script>
+
 <template>
   <div>
     <Switch
@@ -30,18 +45,3 @@
     <BasicValidationFeedback :error-message="errorMessage" />
   </div>
 </template>
-
-<script setup lang="ts">
-import { Switch } from '@headlessui/vue'
-
-import useValidationModel from '../../composables/useValidationModel'
-
-import BasicValidationFeedback from './components/BasicValidationFeedback.vue'
-import { type BasicInputDefaultProps } from './defaultProps'
-
-const props = defineProps<BasicInputDefaultProps<boolean>>()
-const emit = defineEmits<{
-  (event: 'update:modelValue', eventArgs: boolean): void
-}>()
-const { model, errorMessage } = useValidationModel(props, emit)
-</script>

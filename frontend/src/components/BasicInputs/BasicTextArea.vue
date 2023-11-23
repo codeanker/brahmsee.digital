@@ -1,21 +1,3 @@
-<template>
-  <BasicFormGroup
-    :id="id"
-    :name="name"
-    :label="label"
-    :error-message="errorMessage"
-  >
-    <textarea
-      :id="id || name || label"
-      v-model="model"
-      :name="id || name || label"
-      :cols="cols"
-      :placeholder="placeholder || label || name"
-      :rules="rules"
-    />
-  </BasicFormGroup>
-</template>
-
 <script setup lang="ts">
 import useValidationModel from '../../composables/useValidationModel'
 
@@ -37,3 +19,21 @@ const emit = defineEmits<{
 }>()
 const { model, errorMessage } = useValidationModel(props, emit)
 </script>
+
+<template>
+  <BasicFormGroup
+    :id="id"
+    :name="name"
+    :label="label"
+    :error-message="errorMessage"
+  >
+    <textarea
+      :id="id || name || label"
+      v-model="model"
+      :name="id || name || label"
+      :cols="cols"
+      :placeholder="placeholder || label || name"
+      :rules="rules"
+    />
+  </BasicFormGroup>
+</template>

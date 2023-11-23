@@ -1,3 +1,34 @@
+<script setup lang="ts">
+// import { faEye, faEyeSlash } from '@fortawesome/pro-duotone-svg-icons'
+// import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { useVModel } from '@vueuse/core'
+import { ref } from 'vue'
+
+import useValidationModel from '../../composables/useValidationModel'
+
+import BasicFormGroup from './components/BasicFormGroup.vue'
+import { type BasicInputDefaultProps } from './defaultProps'
+
+const props = defineProps<
+  BasicInputDefaultProps<string> & {
+    disableValidation?: boolean
+  }
+>()
+const emit = defineEmits<{
+  (event: 'update:modelValue', eventArgs: string | undefined): void
+  (event: 'focus'): void
+  (event: 'blur'): void
+}>()
+
+const passwordVisible = ref(false)
+const { model, errorMessage } = props.disableValidation
+  ? {
+      model: useVModel(props, 'modelValue', emit),
+      errorMessage: undefined,
+    }
+  : useValidationModel(props, emit)
+</script>
+
 <template>
   <BasicFormGroup
     :id="id"
@@ -40,34 +71,3 @@
     </div>
   </BasicFormGroup>
 </template>
-
-<script setup lang="ts">
-// import { faEye, faEyeSlash } from '@fortawesome/pro-duotone-svg-icons'
-// import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { useVModel } from '@vueuse/core'
-import { ref } from 'vue'
-
-import useValidationModel from '../../composables/useValidationModel'
-
-import BasicFormGroup from './components/BasicFormGroup.vue'
-import { type BasicInputDefaultProps } from './defaultProps'
-
-const props = defineProps<
-  BasicInputDefaultProps<string> & {
-    disableValidation?: boolean
-  }
->()
-const emit = defineEmits<{
-  (event: 'update:modelValue', eventArgs: string | undefined): void
-  (event: 'focus'): void
-  (event: 'blur'): void
-}>()
-
-const passwordVisible = ref(false)
-const { model, errorMessage } = props.disableValidation
-  ? {
-      model: useVModel(props, 'modelValue', emit),
-      errorMessage: undefined,
-    }
-  : useValidationModel(props, emit)
-</script>

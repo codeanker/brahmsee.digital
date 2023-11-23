@@ -1,30 +1,3 @@
-<template>
-  <BasicFormGroup
-    :id="id"
-    :name="name"
-    :label="label"
-    :error-message="errorMessage"
-  >
-    <div class="align-items-center flex">
-      <input
-        :id="id || name || label"
-        v-model="model"
-        :name="id || name || label"
-        :type="type"
-        :autocapitalize="autocapitalize"
-        :placeholder="placeholder || label || name"
-        :class="[{ 'rounded-r-none': $slots.append }, inputClass]"
-        :disabled="disabled"
-        @focus="emit('focus')"
-        @blur="emit('blur')"
-      />
-      <div class="flex-shrink-0">
-        <slot name="append" />
-      </div>
-    </div>
-  </BasicFormGroup>
-</template>
-
 <script setup lang="ts">
 import { useVModel } from '@vueuse/core'
 
@@ -53,3 +26,30 @@ const { model, errorMessage } = props.disableValidation
     }
   : useValidationModel(props, emit)
 </script>
+
+<template>
+  <BasicFormGroup
+    :id="id"
+    :name="name"
+    :label="label"
+    :error-message="errorMessage"
+  >
+    <div class="align-items-center flex">
+      <input
+        :id="id || name || label"
+        v-model="model"
+        :name="id || name || label"
+        :type="type"
+        :autocapitalize="autocapitalize"
+        :placeholder="placeholder || label || name"
+        :class="[{ 'rounded-r-none': $slots.append }, inputClass]"
+        :disabled="disabled"
+        @focus="emit('focus')"
+        @blur="emit('blur')"
+      />
+      <div class="flex-shrink-0">
+        <slot name="append" />
+      </div>
+    </div>
+  </BasicFormGroup>
+</template>

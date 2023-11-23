@@ -1,3 +1,16 @@
+<script setup lang="ts">
+import { useRouter } from 'vue-router'
+
+import RegistrationLayout from './components/RegistrationLayout.vue'
+
+import BasicInput from '@/components/BasicInputs/BasicInput.vue'
+import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
+import { useCreateRegistrationState } from '@/store/registrationStore'
+
+const router = useRouter()
+const { user, approvePassword } = useCreateRegistrationState()
+</script>
+
 <template>
   <RegistrationLayout @back="router.replace({ name: 'RegistrationStart' })">
     <BasicInput
@@ -35,16 +48,3 @@
     </button>
   </RegistrationLayout>
 </template>
-
-<script setup lang="ts">
-import { useRouter } from 'vue-router'
-
-import RegistrationLayout from './components/RegistrationLayout.vue'
-
-import BasicInput from '@/components/BasicInputs/BasicInput.vue'
-import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
-import { useCreateRegistrationState } from '@/store/registrationStore'
-
-const router = useRouter()
-const { user, approvePassword } = useCreateRegistrationState()
-</script>

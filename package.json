@@ -14,6 +14,7 @@
     "start:frontend": "npm run serve -w ./frontend",
     "start:services": "docker compose -f docker-compose-services.yml up --build",
     "lint": "eslint \"**/*.{vue,ts,js}\"",
+    "lint:fix": "eslint \"**/*.{vue,ts,js}\" --fix",
     "lint-staged": "lint-staged -c .lintstagedrc.js",
     "prepare": "husky install",
     "typecheck": "vue-tsc -b"

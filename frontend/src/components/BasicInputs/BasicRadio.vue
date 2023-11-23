@@ -1,3 +1,24 @@
+<script setup lang="ts">
+import useValidationModel from '../../composables/useValidationModel'
+
+import BasicValidationFeedback from './components/BasicValidationFeedback.vue'
+import { type BasicInputDefaultProps } from './defaultProps'
+
+const props = defineProps<
+  BasicInputDefaultProps<string | number | boolean> & {
+    options: {
+      id?: string
+      label: string
+      value: string | boolean | number
+    }[]
+  }
+>()
+const emit = defineEmits<{
+  (event: 'update:modelValue', eventArgs: string | number | boolean | undefined): void
+}>()
+const { model, errorMessage } = useValidationModel(props, emit)
+</script>
+
 <template>
   <div>
     <div
@@ -24,24 +45,3 @@
     <BasicValidationFeedback :error-message="errorMessage" />
   </div>
 </template>
-
-<script setup lang="ts">
-import useValidationModel from '../../composables/useValidationModel'
-
-import BasicValidationFeedback from './components/BasicValidationFeedback.vue'
-import { type BasicInputDefaultProps } from './defaultProps'
-
-const props = defineProps<
-  BasicInputDefaultProps<string | number | boolean> & {
-    options: {
-      id?: string
-      label: string
-      value: string | boolean | number
-    }[]
-  }
->()
-const emit = defineEmits<{
-  (event: 'update:modelValue', eventArgs: string | number | boolean | undefined): void
-}>()
-const { model, errorMessage } = useValidationModel(props, emit)
-</script>

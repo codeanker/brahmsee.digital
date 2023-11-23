@@ -1,3 +1,25 @@
+<script setup lang="ts">
+// import { faAngleDown } from '@fortawesome/pro-solid-svg-icons'
+// import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/vue'
+
+import useValidationModel from '../../composables/useValidationModel'
+
+import BasicValidationFeedback from './components/BasicValidationFeedback.vue'
+import { type BasicInputDefaultProps } from './defaultProps'
+
+const props = defineProps<
+  BasicInputDefaultProps<string | number> & {
+    options: { label: string; value: string | number; disabled?: boolean }[]
+  }
+>()
+
+const emit = defineEmits<{
+  (event: 'update:modelValue', eventArgs: string | number | undefined): void
+}>()
+const { model, errorMessage } = useValidationModel(props, emit)
+</script>
+
 <template>
   <div :id="id || name || label">
     <label
@@ -49,25 +71,3 @@
     <BasicValidationFeedback :error-message="errorMessage" />
   </div>
 </template>
-
-<script setup lang="ts">
-// import { faAngleDown } from '@fortawesome/pro-solid-svg-icons'
-// import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/vue'
-
-import useValidationModel from '../../composables/useValidationModel'
-
-import BasicValidationFeedback from './components/BasicValidationFeedback.vue'
-import { type BasicInputDefaultProps } from './defaultProps'
-
-const props = defineProps<
-  BasicInputDefaultProps<string | number> & {
-    options: { label: string; value: string | number; disabled?: boolean }[]
-  }
->()
-
-const emit = defineEmits<{
-  (event: 'update:modelValue', eventArgs: string | number | undefined): void
-}>()
-const { model, errorMessage } = useValidationModel(props, emit)
-</script>

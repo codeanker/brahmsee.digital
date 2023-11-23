@@ -1,13 +1,3 @@
-<template>
-  <Form
-    ref="form"
-    slim
-    @submit="emit('submit')"
-  >
-    <slot />
-  </Form>
-</template>
-
 <script setup lang="ts">
 import { Form } from 'vee-validate'
 import { ref } from 'vue'
@@ -45,3 +35,13 @@ defineExpose({
   reset,
 })
 </script>
+
+<template>
+  <Form
+    ref="form"
+    slim
+    @submit="emit('submit')"
+  >
+    <slot />
+  </Form>
+</template>

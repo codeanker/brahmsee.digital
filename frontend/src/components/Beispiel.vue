@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
+</script>
+
 <template>
   <Menu
     as="div"
@@ -64,7 +68,3 @@
     </transition>
   </Menu>
 </template>
-
-<script setup lang="ts">
-import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
-</script>

@@ -1,28 +1,3 @@
-<template>
-  <div>
-    <label
-      v-if="label"
-      :for="id || name || label"
-      >{{ label }}</label
-    >
-    <Typeahead
-      v-model="model"
-      :query="query"
-      :input-formatter="inputFormatter"
-      :result-formatter="resultFormatter"
-      :sync="sync"
-      :immediate="immediate"
-      :debounce-time="debounceTime"
-      :strict="strict"
-    >
-      <template #default="slotData">
-        <slot v-bind="slotData" />
-      </template>
-    </Typeahead>
-    <BasicValidationFeedback :error-message="errorMessage" />
-  </div>
-</template>
-
 <script setup lang="ts">
 import useValidationModel from '../../composables/useValidationModel'
 
@@ -57,3 +32,28 @@ const emit = defineEmits<{
 }>()
 const { model, errorMessage } = useValidationModel(props, emit)
 </script>
+
+<template>
+  <div>
+    <label
+      v-if="label"
+      :for="id || name || label"
+      >{{ label }}</label
+    >
+    <Typeahead
+      v-model="model"
+      :query="query"
+      :input-formatter="inputFormatter"
+      :result-formatter="resultFormatter"
+      :sync="sync"
+      :immediate="immediate"
+      :debounce-time="debounceTime"
+      :strict="strict"
+    >
+      <template #default="slotData">
+        <slot v-bind="slotData" />
+      </template>
+    </Typeahead>
+    <BasicValidationFeedback :error-message="errorMessage" />
+  </div>
+</template>

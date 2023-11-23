@@ -57,12 +57,6 @@ module.exports = {
         'plugin:prettier/recommended',
       ],
       rules: {
-        'vue/component-tags-order': [
-          'error',
-          {
-            order: [['script', 'template'], 'style'],
-          },
-        ],
         'vue/component-name-in-template-casing': 'warn',
         'vue/match-component-file-name': [
           'warn',
@@ -89,7 +83,7 @@ module.exports = {
         'vue/block-order': [
           'error',
           {
-            order: ['template', 'script', 'style'],
+            order: ['script', 'template', 'style'],
           },
         ],
         'vue/require-macro-variable-name': 'error',
