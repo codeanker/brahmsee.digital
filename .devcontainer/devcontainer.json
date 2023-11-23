@@ -30,5 +30,6 @@
 				"github.copilot"
 			]
 		}
-	}
+	},
+	"onCreateCommand": "npm ci && cd api && npx prisma migrate deploy"
 }
