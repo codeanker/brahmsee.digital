@@ -1,12 +1,25 @@
 <script setup lang="ts">
-import { type NavItem, type TeamItem } from '../../types'
+import type { Component } from 'vue'
 
-interface Props {
-  navigation: NavItem[]
-  teams: TeamItem[]
+interface SidebarItem {
+  name: string
+  route: string
+  current: boolean
 }
 
-defineProps<Props>()
+export interface NavItem extends SidebarItem {
+  icon: Component
+}
+
+export interface TeamItem extends SidebarItem {
+  id: number
+  initial: string
+}
+
+defineProps<{
+  navigation: NavItem[]
+  teams: TeamItem[]
+}>()
 </script>
 
 <template>

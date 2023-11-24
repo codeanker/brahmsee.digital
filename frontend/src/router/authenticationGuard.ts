@@ -1,14 +1,8 @@
 import { type NavigationGuardWithThis } from 'vue-router'
 
 import { loginPending, reAuthenticate, loggedInUser } from '@/composables/useAuthentication'
-import type { Route } from '@/types'
 
-export default function makeGuard(routes: Route[]): NavigationGuardWithThis<undefined> {
-  const publicRoutes: string[] = routes
-    .flatMap((route) => (route.children === undefined ? route : (route.children as Route[])))
-    .filter((route) => route.public)
-    .map((route) => route.name as string)
-
+export default function makeGuard(): NavigationGuardWithThis<undefined> {
   return async function (to, _from, next) {
     if (!loggedInUser.value && !loginPending.value) {
       await reAuthenticate()
@@ -21,7 +15,7 @@ export default function makeGuard(routes: Route[]): NavigationGuardWithThis<unde
         next()
       }
     } else {
-      if (publicRoutes.includes(to.name as string)) {
+      if (to.meta.public) {
         next()
       }
       return next({ name: 'Login', query: { redirect: to.path, ...to.query } })
