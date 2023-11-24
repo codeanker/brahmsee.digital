@@ -19,6 +19,7 @@ describe(`Feature: Login`, () => {
     context = await browser.newContext({ ignoreHTTPSErrors: true })
     await testUtils.cleanup()
     data = await testUtils.createMock()
+    await new Promise((resolve) => setTimeout(resolve, 1000))
   })
   afterAll(async () => {
     browser?.close()
@@ -26,12 +27,11 @@ describe(`Feature: Login`, () => {
   })
   it('Der Standard Nutzer kann sich anmelden.', async () => {
     const page = await context.newPage()
-    // login
     await login(page, {
       email: data.user.email,
-      password: data.user.password,
+      password: data.userPassword,
     })
-    await page.screenshot({ path: `${__dirname}/screenshots/${name}_login.png` })
+    // await page.screenshot({ path: `${__dirname}/screenshots/${name}_login.png` })
   })
   it.skip('Passwort kann zurück gesetzt werden.', async () => {})
 })

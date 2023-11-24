@@ -1,4 +1,6 @@
+// import { expect } from '@playwright/test'
 import { Page } from 'playwright'
+import { vi } from 'vitest'
 
 export async function login(page: Page, user: { email: string; password: string }) {
   await page.goto(`https://localhost.codeanker.com:8080/login`)
@@ -7,5 +9,5 @@ export async function login(page: Page, user: { email: string; password: string 
   await page.getByPlaceholder('Passwort').click()
   await page.getByPlaceholder('Passwort').fill(user.password)
   await page.getByPlaceholder('Passwort').press('Enter')
-  await page.getByRole('heading', { name: 'Hier kommt die Brahmsee Planung für 2024' }).isVisible()
+  await vi.waitUntil(() => !page.url().includes('login'))
 }

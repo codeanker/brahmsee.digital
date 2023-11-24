@@ -4,8 +4,6 @@ import dayjs from 'dayjs'
 import { Browser, chromium, BrowserContext, firefox, webkit, Page } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 
-import { login } from './helpers/login'
-
 import { testUtils } from '@codeanker/api'
 
 describe(`View: verwaltung/benutzer`, () => {
