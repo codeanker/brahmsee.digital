@@ -1,0 +1,1 @@
+<template>Lageplan</template>
