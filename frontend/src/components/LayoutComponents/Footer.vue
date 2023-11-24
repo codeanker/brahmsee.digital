@@ -1,6 +1,6 @@
 <script setup lang="ts">
-let version = '0.0.0'
-let commitHash = '0000000'
+let version = import.meta.env.VITE_APP_VERSION || 'unknown'
+let commitHash = import.meta.env.VITE_APP_COMMIT_HASH || 'unknown'
 </script>
 
 <template>

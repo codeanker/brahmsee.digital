@@ -19,7 +19,7 @@ app.use(async (ctx, next) => {
   if (!ctx.url.startsWith('/api/') && ctx.url !== '/' && ctx.url !== '/index.html') {
     ctx.set('cache-control', 'max-age: 31536000, immutable') // 1 week
   }
-  await next()
+  return await next()
 })
 
 // initialize trpc middleware
