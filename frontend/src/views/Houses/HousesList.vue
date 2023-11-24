@@ -1,3 +1,20 @@
+<script setup lang="ts">
+import { ArrowPathIcon, HomeIcon } from '@heroicons/vue/24/outline'
+import { useAsyncState } from '@vueuse/core'
+
+import { apiClient } from '../../api'
+
+import BasicHeader from '@/components/BasicHeader.vue'
+import Button from '@/components/Button.vue'
+import router from '@/router'
+
+const { state: userList, execute: fetchUsers } = useAsyncState(async () => {
+  const result = await apiClient.user.managementList.query({ pagination: { take: 100 }, filter: {} })
+  return result
+}, [])
+fetchUsers()
+</script>
+
 <template>
   <div class="px-4 sm:px-6 lg:px-8">
     <BasicHeader
@@ -84,20 +101,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { ArrowPathIcon, HomeIcon } from '@heroicons/vue/24/outline'
-import { useAsyncState } from '@vueuse/core'
-
-import { apiClient } from '../../api'
-
-import BasicHeader from '@/components/BasicHeader.vue'
-import Button from '@/components/Button.vue'
-import router from '@/router'
-
-const { state: userList, execute: fetchUsers } = useAsyncState(async () => {
-  const result = await apiClient.user.list.query()
-  return result
-}, [])
-fetchUsers()
-</script>

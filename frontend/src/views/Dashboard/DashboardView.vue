@@ -1,3 +1,5 @@
+<script setup lang="ts"></script>
+
 <template>
   <div>
     <div class="mt-6 flex flex-col items-center gap-16">
@@ -11,5 +13,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts"></script>

@@ -1,3 +1,61 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+
+import BasicCheckbox from '@/components/BasicInputs/BasicCheckbox.vue'
+import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
+import BasicInput from '@/components/BasicInputs/BasicInput.vue'
+import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
+import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
+import BasicSwitch from '@/components/BasicInputs/BasicSwitch.vue'
+import BasicTextArea from '@/components/BasicInputs/BasicTextArea.vue'
+import BasicTypeahead from '@/components/BasicInputs/BasicTypeahead.vue'
+import Beispiel from '@/components/Beispiel.vue'
+import { ValidateForm } from '@codeanker/validation'
+import { required, emailValid } from '@codeanker/validation/rules'
+
+const basicCheckbox = ref(true)
+const basicDatepicker = ref([])
+const basicInput = ref('')
+const basicInputEmail = ref('info@codeanker.de')
+const basicPassword = ref('')
+const basicSelect = ref('')
+const basicSwitch = ref(true)
+const basicTextArea = ref('')
+const basicTypeaheadString = ref('Freitext')
+const foos = [{ name: 'fuu' }, { name: 'bar' }, { name: 'baz' }]
+const basicTypeahead = ref(foos[0])
+
+const form = ref<InstanceType<typeof ValidateForm>>()
+const presetRanges = ref([
+  { label: 'Heute ne Woche', range: [new Date(), new Date(Date.now() + 6 * 24 * 60 * 60 * 1000)] },
+])
+const markers = ref<InstanceType<typeof BasicDatepicker>['markers']>([
+  {
+    date: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    type: 'dot',
+    tooltip: [{ text: 'Dot with tooltip', color: 'green' }],
+  },
+  {
+    date: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
+    type: 'line',
+    tooltip: [
+      { text: 'First tooltip', color: 'blue' },
+      { text: 'Second tooltip', color: 'yellow' },
+    ],
+  },
+  {
+    date: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+    type: 'dot',
+    color: 'yellow',
+  },
+])
+
+async function queryObject(searchTerm) {
+  await new Promise((resolve) => setTimeout(resolve, 200))
+  return foos.filter((result) => result?.name.includes(searchTerm))
+}
+</script>
+
 <template>
   <div class="container mb-32 mt-12">
     <img
@@ -126,61 +184,3 @@
     <Beispiel></Beispiel>
   </div>
 </template>
-
-<script setup lang="ts">
-import { ref } from 'vue'
-
-import BasicCheckbox from '@/components/BasicInputs/BasicCheckbox.vue'
-import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
-import BasicInput from '@/components/BasicInputs/BasicInput.vue'
-import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
-import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
-import BasicSwitch from '@/components/BasicInputs/BasicSwitch.vue'
-import BasicTextArea from '@/components/BasicInputs/BasicTextArea.vue'
-import BasicTypeahead from '@/components/BasicInputs/BasicTypeahead.vue'
-import Beispiel from '@/components/Beispiel.vue'
-import { ValidateForm } from '@codeanker/validation'
-import { required, emailValid } from '@codeanker/validation/rules'
-
-const basicCheckbox = ref(true)
-const basicDatepicker = ref([])
-const basicInput = ref('')
-const basicInputEmail = ref('info@codeanker.de')
-const basicPassword = ref('')
-const basicSelect = ref('')
-const basicSwitch = ref(true)
-const basicTextArea = ref('')
-const basicTypeaheadString = ref('Freitext')
-const foos = [{ name: 'fuu' }, { name: 'bar' }, { name: 'baz' }]
-const basicTypeahead = ref(foos[0])
-
-const form = ref<InstanceType<typeof ValidateForm>>()
-const presetRanges = ref([
-  { label: 'Heute ne Woche', range: [new Date(), new Date(Date.now() + 6 * 24 * 60 * 60 * 1000)] },
-])
-const markers = ref<InstanceType<typeof BasicDatepicker>['markers']>([
-  {
-    date: new Date(Date.now() + 24 * 60 * 60 * 1000),
-    type: 'dot',
-    tooltip: [{ text: 'Dot with tooltip', color: 'green' }],
-  },
-  {
-    date: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
-    type: 'line',
-    tooltip: [
-      { text: 'First tooltip', color: 'blue' },
-      { text: 'Second tooltip', color: 'yellow' },
-    ],
-  },
-  {
-    date: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-    type: 'dot',
-    color: 'yellow',
-  },
-])
-
-async function queryObject(searchTerm) {
-  await new Promise((resolve) => setTimeout(resolve, 200))
-  return foos.filter((result) => result?.name.includes(searchTerm))
-}
-</script>

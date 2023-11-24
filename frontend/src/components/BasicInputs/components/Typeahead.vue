@@ -1,88 +1,3 @@
-<template>
-  <div>
-    <Combobox v-model="model">
-      <div class="relative">
-        <ComboboxInput
-          class="input-style"
-          :display-value="inputFormatter"
-          @change="updateSearchTerm"
-        />
-        <div class="absolute inset-y-0 right-2 flex items-center">
-          <button
-            v-if="model"
-            type="button"
-            class="btn bg-transparent px-1"
-            @click="clear"
-          >
-            <!-- <FontAwesomeIcon
-              :icon="faTimes"
-              fixed-width
-              class="text-gray-500"
-            /> -->
-          </button>
-          <ComboboxButton
-            class="btn bg-transparent px-1"
-            @click="filterItems(searchTerm)"
-          >
-            <!-- <FontAwesomeIcon
-              :icon="pending ? faSpinner : faChevronDown"
-              fixed-width
-              class="text-gray-500"
-              :spin="pending"
-            /> -->
-          </ComboboxButton>
-        </div>
-        <transition
-          leave-active-class="transition ease-in duration-100"
-          leave-from-class="opacity-100"
-          leave-to-class="opacity-0"
-        >
-          <ComboboxOptions
-            v-if="items.length > 0"
-            class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
-          >
-            <ComboboxOption
-              v-for="(item, index) of items"
-              :key="'item' + index"
-              v-slot="{ active, selected }"
-              :value="item"
-            >
-              <slot v-bind="{ item, active, selected }">
-                <li
-                  :class="[
-                    'relative cursor-default select-none px-3 py-2',
-                    active ? 'bg-primary-600 text-white' : 'text-gray-900',
-                  ]"
-                >
-                  <!-- eslint-disable vue/no-v-html -->
-                  <span
-                    :class="['block truncate', selected && 'font-semibold']"
-                    v-html="highlight(resultFormatter(item))"
-                  >
-                  </span>
-                  <!-- eslint-enable vue/no-v-html -->
-                  <span
-                    v-if="selected"
-                    :class="[
-                      'absolute inset-y-0 right-0 flex items-center pr-4',
-                      active ? 'text-white' : 'text-primary-600',
-                    ]"
-                  >
-                    <!-- <FontAwesomeIcon
-                      :icon="faCheck"
-                      fixed-width
-                    /> -->
-                  </span>
-                </li>
-              </slot>
-            </ComboboxOption>
-          </ComboboxOptions>
-        </transition>
-      </div>
-    </Combobox>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/vue'
 import { computed, ref, watch } from 'vue'
@@ -242,3 +157,88 @@ const highlight = computed(() => {
   }
 })
 </script>
+
+<template>
+  <div>
+    <Combobox v-model="model">
+      <div class="relative">
+        <ComboboxInput
+          class="input-style"
+          :display-value="inputFormatter"
+          @change="updateSearchTerm"
+        />
+        <div class="absolute inset-y-0 right-2 flex items-center">
+          <button
+            v-if="model"
+            type="button"
+            class="btn bg-transparent px-1"
+            @click="clear"
+          >
+            <!-- <FontAwesomeIcon
+              :icon="faTimes"
+              fixed-width
+              class="text-gray-500"
+            /> -->
+          </button>
+          <ComboboxButton
+            class="btn bg-transparent px-1"
+            @click="filterItems(searchTerm)"
+          >
+            <!-- <FontAwesomeIcon
+              :icon="pending ? faSpinner : faChevronDown"
+              fixed-width
+              class="text-gray-500"
+              :spin="pending"
+            /> -->
+          </ComboboxButton>
+        </div>
+        <transition
+          leave-active-class="transition ease-in duration-100"
+          leave-from-class="opacity-100"
+          leave-to-class="opacity-0"
+        >
+          <ComboboxOptions
+            v-if="items.length > 0"
+            class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+          >
+            <ComboboxOption
+              v-for="(item, index) of items"
+              :key="'item' + index"
+              v-slot="{ active, selected }"
+              :value="item"
+            >
+              <slot v-bind="{ item, active, selected }">
+                <li
+                  :class="[
+                    'relative cursor-default select-none px-3 py-2',
+                    active ? 'bg-primary-600 text-white' : 'text-gray-900',
+                  ]"
+                >
+                  <!-- eslint-disable vue/no-v-html -->
+                  <span
+                    :class="['block truncate', selected && 'font-semibold']"
+                    v-html="highlight(resultFormatter(item))"
+                  >
+                  </span>
+                  <!-- eslint-enable vue/no-v-html -->
+                  <span
+                    v-if="selected"
+                    :class="[
+                      'absolute inset-y-0 right-0 flex items-center pr-4',
+                      active ? 'text-white' : 'text-primary-600',
+                    ]"
+                  >
+                    <!-- <FontAwesomeIcon
+                      :icon="faCheck"
+                      fixed-width
+                    /> -->
+                  </span>
+                </li>
+              </slot>
+            </ComboboxOption>
+          </ComboboxOptions>
+        </transition>
+      </div>
+    </Combobox>
+  </div>
+</template>

@@ -1,22 +1,3 @@
-<template>
-  <component
-    :is="to === undefined ? 'button' : 'router-link'"
-    type="button"
-    :class="
-      [
-        'block rounded-md px-3 py-2 text-center text-sm font-semibold shadow-sm',
-        'focus:outline focus:outline-2 focus:outline-offset-2',
-        'disabled:cursor-not-allowed',
-        colors[color],
-        full ? 'w-full' : 'w-auto',
-      ].join(' ')
-    "
-    :to="to"
-  >
-    <slot></slot>
-  </component>
-</template>
-
 <script setup lang="ts">
 import { type RouterLinkProps } from 'vue-router'
 
@@ -37,3 +18,22 @@ interface Props {
   to?: RouterLinkProps['to']
 }
 </script>
+
+<template>
+  <component
+    :is="to === undefined ? 'button' : 'router-link'"
+    type="button"
+    :class="
+      [
+        'block rounded-md px-3 py-2 text-center text-sm font-semibold shadow-sm',
+        'focus:outline focus:outline-2 focus:outline-offset-2',
+        'disabled:cursor-not-allowed',
+        colors[color],
+        full ? 'w-full' : 'w-auto',
+      ].join(' ')
+    "
+    :to="to"
+  >
+    <slot></slot>
+  </component>
+</template>

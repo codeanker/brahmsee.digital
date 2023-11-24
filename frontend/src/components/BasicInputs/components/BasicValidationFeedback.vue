@@ -1,3 +1,9 @@
+<script setup lang="ts">
+defineProps<{
+  errorMessage?: string
+}>()
+</script>
+
 <template>
   <Transition name="shake">
     <div
@@ -9,12 +15,6 @@
   </Transition>
   <!-- Das Feld {{ fieldName }} ist ein Pflichtfeld. -->
 </template>
-
-<script setup lang="ts">
-defineProps<{
-  errorMessage?: string
-}>()
-</script>
 
 <style lang="scss" scoped>
 .shake-enter-active {

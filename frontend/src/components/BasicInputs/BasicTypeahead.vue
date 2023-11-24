@@ -1,30 +1,5 @@
-<template>
-  <div>
-    <label
-      v-if="label"
-      :for="id || name || label"
-      >{{ label }}</label
-    >
-    <Typeahead
-      v-model="model"
-      :query="query"
-      :input-formatter="inputFormatter"
-      :result-formatter="resultFormatter"
-      :sync="sync"
-      :immediate="immediate"
-      :debounce-time="debounceTime"
-      :strict="strict"
-    >
-      <template #default="slotData">
-        <slot v-bind="slotData" />
-      </template>
-    </Typeahead>
-    <BasicValidationFeedback :error-message="errorMessage" />
-  </div>
-</template>
-
 <script setup lang="ts">
-import useValidatedModel from '../../composables/useValidatedModel'
+import useValidationModel from '../../composables/useValidationModel'
 
 import BasicValidationFeedback from './components/BasicValidationFeedback.vue'
 import Typeahead from './components/Typeahead.vue'
@@ -55,5 +30,30 @@ const props = withDefaults(
 const emit = defineEmits<{
   (event: 'update:modelValue', eventArgs: string | object | null | undefined): void
 }>()
-const { model, errorMessage } = useValidatedModel(props, emit)
+const { model, errorMessage } = useValidationModel(props, emit)
 </script>
+
+<template>
+  <div>
+    <label
+      v-if="label"
+      :for="id || name || label"
+      >{{ label }}</label
+    >
+    <Typeahead
+      v-model="model"
+      :query="query"
+      :input-formatter="inputFormatter"
+      :result-formatter="resultFormatter"
+      :sync="sync"
+      :immediate="immediate"
+      :debounce-time="debounceTime"
+      :strict="strict"
+    >
+      <template #default="slotData">
+        <slot v-bind="slotData" />
+      </template>
+    </Typeahead>
+    <BasicValidationFeedback :error-message="errorMessage" />
+  </div>
+</template>

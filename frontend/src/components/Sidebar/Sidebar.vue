@@ -1,3 +1,32 @@
+<script setup lang="ts">
+import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
+import { ArrowRightOnRectangleIcon, Bars3Icon, RocketLaunchIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { ref } from 'vue'
+
+import SidebarItems, { type NavItem, type TeamItem } from './SidebarItems.vue'
+
+import { logout, loggedInUser } from '@/composables/useAuthentication'
+import userProfileImage from '@/helpers/userProfileImage'
+
+const navigation: NavItem[] = [
+  { name: 'Dashboard', route: '/dashboard', icon: RocketLaunchIcon, current: false },
+  // { name: 'Teilnehmende', route: '', icon: UserGroupIcon, current: false },
+  // { name: 'Unterbringung', route: '', icon: HomeIcon, current: false },
+  // { name: 'Programm', route: '', icon: TrophyIcon, current: false },
+  // { name: 'Finanzen', route: '', icon: BanknotesIcon, current: false },
+  // { name: 'Auswertung', route: '', icon: ChartBarIcon, current: false }
+]
+const teams: TeamItem[] = [
+  { id: 1, name: 'Häuser und Zelte', route: '/houses', initial: 'HZ', current: false },
+  // { id: 2, name: 'Räume', route: '', initial: 'R', current: false },
+  // { id: 3, name: 'Teilnehmende', route: '', initial: 'T', current: false },
+  // { id: 4, name: 'CREW', route: '', initial: 'C', current: false },
+  { id: 5, name: 'Benutzer:innen', route: '/users', initial: 'B', current: false },
+]
+
+const sidebarOpen = ref(false)
+</script>
+
 <template>
   <aside class="sticky top-0">
     <TransitionRoot
@@ -80,11 +109,11 @@
         >
           <img
             class="h-10 w-10 rounded-full bg-green-700"
-            :src="userProfileImage(user)"
+            :src="userProfileImage(loggedInUser)"
             alt=""
           />
           <span class="sr-only">Your profile</span>
-          <span aria-hidden="true">Hallo, {{ user?.firstname }}</span>
+          <span aria-hidden="true">Hallo, {{ loggedInUser?.firstname }}</span>
         </router-link>
         <button
           type="button"
@@ -114,41 +143,10 @@
         <span class="sr-only">Your profile</span>
         <img
           class="h-8 w-8 rounded-full bg-green-700"
-          :src="userProfileImage(user)"
+          :src="userProfileImage(loggedInUser)"
           alt=""
         />
       </a>
     </div>
   </aside>
 </template>
-
-<script setup lang="ts">
-import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import { ArrowRightOnRectangleIcon, Bars3Icon, RocketLaunchIcon, XMarkIcon } from '@heroicons/vue/24/outline'
-import { ref } from 'vue'
-
-import SidebarItems, { type NavItem, type TeamItem } from './SidebarItems.vue'
-
-import useAuthentication from '@/composables/useAuthentication'
-import userProfileImage from '@/helpers/userProfileImage'
-
-const navigation: NavItem[] = [
-  { name: 'Dashboard', route: '/dashboard', icon: RocketLaunchIcon, current: false },
-  // { name: 'Teilnehmende', route: '', icon: UserGroupIcon, current: false },
-  // { name: 'Unterbringung', route: '', icon: HomeIcon, current: false },
-  // { name: 'Programm', route: '', icon: TrophyIcon, current: false },
-  // { name: 'Finanzen', route: '', icon: BanknotesIcon, current: false },
-  // { name: 'Auswertung', route: '', icon: ChartBarIcon, current: false }
-]
-const teams: TeamItem[] = [
-  { id: 1, name: 'Häuser und Zelte', route: '/houses', initial: 'HZ', current: false },
-  // { id: 2, name: 'Räume', route: '', initial: 'R', current: false },
-  // { id: 3, name: 'Teilnehmende', route: '', initial: 'T', current: false },
-  // { id: 4, name: 'CREW', route: '', initial: 'C', current: false },
-  { id: 5, name: 'Benutzer:innen', route: '/users', initial: 'B', current: false },
-]
-
-const sidebarOpen = ref(false)
-
-const { user, logout } = useAuthentication()
-</script>

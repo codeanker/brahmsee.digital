@@ -1,16 +1,14 @@
 import { type NavigationGuardWithThis } from 'vue-router'
 
-import useAuthentication from '@/composables/useAuthentication'
+import { loginPending, reAuthenticate, loggedInUser } from '@/composables/useAuthentication'
 
 export default function makeGuard(): NavigationGuardWithThis<undefined> {
   return async function (to, _from, next) {
-    const { loginPending, reAuthenticate, user } = useAuthentication()
-
-    if (!user.value && !loginPending.value) {
+    if (!loggedInUser.value && !loginPending.value) {
       await reAuthenticate()
     }
 
-    if (user.value) {
+    if (loggedInUser.value) {
       if (to.name === 'Login') {
         next({ name: 'Dashboard' })
       } else {

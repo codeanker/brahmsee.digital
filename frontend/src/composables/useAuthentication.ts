@@ -1,55 +1,36 @@
-import { useAsyncState } from '@vueuse/core'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
-import { apiClient } from '@/api'
-import type { RouterOutput } from '@codeanker/api'
+import { apiClient } from '../api'
 
-const user = ref<RouterOutput['authenication']['login']['user'] | null>(null)
+export const loggedInUser = ref()
+export const isAuthenticated = computed(() => loggedInUser.value !== undefined)
 
-export default function useAuthentication() {
-  const {
-    isLoading: loginPending,
-    execute: login,
-    error: loginError,
-  } = useAsyncState(
-    async ({ email, password }) => {
-      const authenticationResponse = await apiClient.authenication.login.mutate({
-        email: email,
-        password: password,
-      })
-      localStorage.setItem('jwt', authenticationResponse.accessToken)
-      user.value = authenticationResponse.user
-      return authenticationResponse
-    },
-    null,
-    { immediate: false }
-  )
+export const loginPending = ref(false)
+export const loginError = ref<Error | null>(null)
 
-  async function reAuthenticate() {
-    try {
-      const accessToken = localStorage.getItem('jwt')
-      if (accessToken) {
-        const authenticationResponse = await apiClient.authenication.reAuthenticate.mutate({ accessToken })
-        if ('user' in authenticationResponse) {
-          user.value = authenticationResponse.user
-        }
-      }
-    } catch (error) {
-      user.value = null
-    }
+export async function login({ email, password }: { email: string; password: string }) {
+  loginPending.value = true
+  loginError.value = null
+  try {
+    const authResult = await apiClient.authenication.login.mutate({ email, password })
+    loggedInUser.value = authResult.user
+    localStorage.setItem('jwt', authResult.accessToken)
+    return authResult
+  } catch (error) {
+    loginError.value = error as Error
   }
+}
 
-  function logout() {
-    localStorage.clear()
-    location.reload()
+export async function reAuthenticate() {
+  try {
+    loggedInUser.value = await apiClient.user.authenticatedGet.query()
+  } catch (error) {
+    console.error(error)
   }
+  return loggedInUser.value
+}
 
-  return {
-    login: ({ email, password }) => login(0, { email, password }),
-    loginPending,
-    loginError,
-    reAuthenticate,
-    logout,
-    user,
-  }
+export async function logout() {
+  localStorage.removeItem('jwt')
+  loggedInUser.value = undefined
 }

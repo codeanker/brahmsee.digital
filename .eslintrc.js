@@ -83,7 +83,7 @@ module.exports = {
         'vue/block-order': [
           'error',
           {
-            order: ['template', 'script', 'style'],
+            order: ['script', 'template', 'style'],
           },
         ],
         'vue/require-macro-variable-name': 'error',
@@ -98,8 +98,9 @@ module.exports = {
       files: ['**/*.ts'],
       plugins: ['@typescript-eslint'],
       parser: '@typescript-eslint/parser',
-      env: {
-        es2022: true,
+      parserOptions: {
+        project: ['./tsconfig.base.json'], // Specify it only for TypeScript files
+        tsconfigRootDir: __dirname,
       },
       extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'],
       settings: {
@@ -120,8 +121,20 @@ module.exports = {
           'error',
           { argsIgnorePattern: '^_', destructuredArrayIgnorePattern: '^_' },
         ],
+        '@typescript-eslint/strict-boolean-expressions': [
+          'error',
+          {
+            allowAny: true,
+            allowNullableObject: true,
+            allowNullableBoolean: true,
+          },
+        ],
         ...importSettings,
       },
+    },
+    // ts rules that require a parserOptions.project
+    {
+      files: ['api/**/*.ts', 'frontend/**/*.ts'],
     },
     {
       files: ['**/*.js'],
@@ -135,14 +148,11 @@ module.exports = {
     },
     {
       files: ['frontend/**/*'],
-      env: {
-        browser: true,
-      },
-    },
-    {
-      files: ['frontend/**/*'],
       parserOptions: {
         sourceType: 'module',
+      },
+      env: {
+        browser: true,
       },
     },
     {

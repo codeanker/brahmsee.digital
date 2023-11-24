@@ -1,3 +1,11 @@
+<script setup lang="ts">
+import { UserIcon } from '@heroicons/vue/24/outline'
+
+import BasicHeader from '@/components/BasicHeader.vue'
+import Button from '@/components/Button.vue'
+import FormUserGeneral from '@/components/forms/user/FormUserGeneral.vue'
+</script>
+
 <template>
   <div class="px-4 sm:px-6 lg:px-8">
     <BasicHeader title="Neuen Benutzer erstellen">
@@ -17,11 +25,3 @@
     <FormUserGeneral mode="create" />
   </div>
 </template>
-
-<script setup lang="ts">
-import { UserIcon } from '@heroicons/vue/24/outline'
-
-import BasicHeader from '@/components/BasicHeader.vue'
-import Button from '@/components/Button.vue'
-import FormUserGeneral from '@/components/forms/user/FormUserGeneral.vue'
-</script>

@@ -1,3 +1,55 @@
+<script setup lang="ts">
+import { ArrowLeftIcon } from '@heroicons/vue/24/outline'
+import { useAsyncState } from '@vueuse/core'
+import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+
+import { apiClient } from '@/api'
+import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
+import Button from '@/components/Button.vue'
+import FormUserGeneral from '@/components/forms/user/FormUserGeneral.vue'
+import { loggedInUser, logout } from '@/composables/useAuthentication'
+import userProfileImage from '@/helpers/userProfileImage'
+import router from '@/router'
+
+const secondaryNavigation = [{ name: 'Account', href: '#', current: true }]
+
+const isSelf = ref(false)
+const password = ref({
+  password_old: '',
+  password: '',
+  password_confirm: '',
+  id: loggedInUser.value!.id,
+})
+
+const route = useRoute()
+const { state: user, execute: fetchUser } = useAsyncState(async () => {
+  const userId = route.params.userId as string
+  const result = await apiClient.user.managementGet.query({ id: parseInt(userId) })
+  isSelf.value = result?.id === loggedInUser.value?.id
+  return result
+}, null)
+
+const { execute: updatePassword, error: errorPassword } = useAsyncState(
+  async () => {
+    // @todo
+    // await apiClient.user.changePassword.mutate({ password: password.value })
+    logout()
+  },
+  null,
+  { immediate: false }
+)
+
+const { execute: deleteUser, error: errorDelete } = useAsyncState(
+  async () => {
+    await apiClient.user.managementRemove.mutate({ id: user.value!.id })
+    await router.push({ name: 'Users' })
+  },
+  null,
+  { immediate: false }
+)
+</script>
+
 <template>
   <header class="border-b border-white/5">
     <!-- Secondary navigation -->
@@ -140,55 +192,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { ArrowLeftIcon } from '@heroicons/vue/24/outline'
-import { useAsyncState } from '@vueuse/core'
-import { ref } from 'vue'
-import { useRoute } from 'vue-router'
-
-import { apiClient } from '@/api'
-import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
-import Button from '@/components/Button.vue'
-import FormUserGeneral from '@/components/forms/user/FormUserGeneral.vue'
-import useAuthentication from '@/composables/useAuthentication'
-import userProfileImage from '@/helpers/userProfileImage'
-import router from '@/router'
-
-const secondaryNavigation = [{ name: 'Account', href: '#', current: true }]
-
-const { user: currentUser, logout } = useAuthentication()
-const isSelf = ref(false)
-const password = ref({
-  password_old: '',
-  password: '',
-  password_confirm: '',
-  id: currentUser.value!.id,
-})
-
-const route = useRoute()
-const { state: user, execute: fetchUser } = useAsyncState(async () => {
-  const userId = route.params.userId as string
-  const result = await apiClient.user.read.query(parseInt(userId))
-  isSelf.value = result?.id === currentUser.value?.id
-  return result
-}, null)
-
-const { execute: updatePassword, error: errorPassword } = useAsyncState(
-  async () => {
-    await apiClient.authenication.changePassword.mutate(password.value)
-    logout()
-  },
-  null,
-  { immediate: false }
-)
-
-const { execute: deleteUser, error: errorDelete } = useAsyncState(
-  async () => {
-    await apiClient.user.delete.mutate(user.value!.id)
-    await router.push({ name: 'Users' })
-  },
-  null,
-  { immediate: false }
-)
-</script>

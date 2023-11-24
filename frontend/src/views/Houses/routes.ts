@@ -1,16 +1,15 @@
-import _import from '@/helpers/import'
-import type { Route } from '@/types'
+import type { Route } from '@/router'
 
 const routesHouses: Route[] = [
   {
     name: 'Houses',
     path: '/houses',
-    component: _import('../views/Houses/HousesList.vue'),
+    component: import('./HousesList.vue'),
   },
   {
     name: 'HousesDetail',
     path: '/houses/:houseId/detail',
-    component: _import('../views/Houses/HouseDetail.vue'),
+    component: import('./HouseDetail.vue'),
   },
 ]
 

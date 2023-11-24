@@ -26,25 +26,8 @@
 			}
 		},
 		{
-			"type": "npm",
-			"script": "start:services",
-			"label": "Start services",
-      "problemMatcher": [],
-			"presentation": {
-				"reveal": "always",
-				"panel": "new",
-				"group": "start",
-				"close": false,
-			}
-		},
-		{
 			"label": "Start apps",
 			"dependsOn": ["Start frontend", "Start api"],
-      "problemMatcher": [],
-		},
-		{
-			"label": "Start",
-			"dependsOn": ["Start apps", "Start services"],
       "problemMatcher": [],
 		},
 	]

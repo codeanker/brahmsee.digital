@@ -1,3 +1,7 @@
+<script setup lang="ts">
+const year = new Date().getFullYear()
+</script>
+
 <template>
   <footer class="bg-gray-100">
     <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8">
@@ -16,7 +20,3 @@
     </div>
   </footer>
 </template>
-
-<script setup lang="ts">
-const year = new Date().getFullYear()
-</script>

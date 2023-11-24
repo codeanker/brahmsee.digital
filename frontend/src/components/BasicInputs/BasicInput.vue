@@ -1,3 +1,32 @@
+<script setup lang="ts">
+import { useVModel } from '@vueuse/core'
+
+import useValidationModel from '../../composables/useValidationModel'
+
+import BasicFormGroup from './components/BasicFormGroup.vue'
+import { type BasicInputDefaultProps } from './defaultProps'
+
+const props = defineProps<
+  BasicInputDefaultProps<string> & {
+    type?: 'text' | 'number' | 'password' | 'email'
+    autocapitalize?: 'off' | 'on' | 'words' | 'characters'
+    inputClass?: string
+    disableValidation?: boolean
+  }
+>()
+const emit = defineEmits<{
+  (event: 'update:modelValue', eventArgs: string | undefined): void
+  (event: 'focus'): void
+  (event: 'blur'): void
+}>()
+const { model, errorMessage } = props.disableValidation
+  ? {
+      model: useVModel(props, 'modelValue', emit),
+      errorMessage: undefined,
+    }
+  : useValidationModel(props, emit)
+</script>
+
 <template>
   <BasicFormGroup
     :id="id"
@@ -24,32 +53,3 @@
     </div>
   </BasicFormGroup>
 </template>
-
-<script setup lang="ts">
-import { useVModel } from '@vueuse/core'
-
-import useValidatedModel from '../../composables/useValidatedModel'
-
-import BasicFormGroup from './components/BasicFormGroup.vue'
-import { type BasicInputDefaultProps } from './defaultProps'
-
-const props = defineProps<
-  BasicInputDefaultProps<string> & {
-    type?: 'text' | 'number' | 'password' | 'email'
-    autocapitalize?: 'off' | 'on' | 'words' | 'characters'
-    inputClass?: string
-    disableValidation?: boolean
-  }
->()
-const emit = defineEmits<{
-  (event: 'update:modelValue', eventArgs: string | undefined): void
-  (event: 'focus'): void
-  (event: 'blur'): void
-}>()
-const { model, errorMessage } = props.disableValidation
-  ? {
-      model: useVModel(props, 'modelValue', emit),
-      errorMessage: undefined,
-    }
-  : useValidatedModel(props, emit)
-</script>

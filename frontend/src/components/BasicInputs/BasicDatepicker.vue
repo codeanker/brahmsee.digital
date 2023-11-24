@@ -1,3 +1,42 @@
+<script setup lang="ts">
+import VueDatePicker from '@vuepic/vue-datepicker'
+
+import useValidationModel from '../../composables/useValidationModel'
+
+import BasicFormGroup from './components/BasicFormGroup.vue'
+import { type BasicInputDefaultProps } from './defaultProps'
+
+const props = defineProps<
+  BasicInputDefaultProps<typeof VueDatePicker.modelValue> & {
+    range?: boolean
+    autoRange?: typeof VueDatePicker.autoRange
+    multiCalendars?: typeof VueDatePicker.multiCalendars
+    monthPicker?: boolean
+    timePicker?: boolean
+    yearPicker?: boolean
+    weekPicker?: boolean
+    textInput?: boolean
+    inline?: boolean
+    multiDates?: boolean
+    flow?: typeof VueDatePicker.flow
+    utc?: typeof VueDatePicker.utc
+    vertical?: boolean
+    modelAuto?: boolean
+    timezone?: string
+    presetRanges?: typeof VueDatePicker.presetRanges
+    closeOnScroll?: boolean
+    autoApply?: boolean
+    markers?: typeof VueDatePicker.markers
+  }
+>()
+
+const emit = defineEmits<{
+  (event: 'update:modelValue', eventArgs: typeof VueDatePicker.modelValue | undefined): void
+}>()
+
+const { model, errorMessage } = useValidationModel<typeof VueDatePicker.modelValue>(props, emit)
+</script>
+
 <template>
   <BasicFormGroup
     :id="id"
@@ -34,42 +73,3 @@
     />
   </BasicFormGroup>
 </template>
-
-<script setup lang="ts">
-import VueDatePicker from '@vuepic/vue-datepicker'
-
-import useValidatedModel from '../../composables/useValidatedModel'
-
-import BasicFormGroup from './components/BasicFormGroup.vue'
-import { type BasicInputDefaultProps } from './defaultProps'
-
-const props = defineProps<
-  BasicInputDefaultProps<typeof VueDatePicker.modelValue> & {
-    range?: boolean
-    autoRange?: typeof VueDatePicker.autoRange
-    multiCalendars?: typeof VueDatePicker.multiCalendars
-    monthPicker?: boolean
-    timePicker?: boolean
-    yearPicker?: boolean
-    weekPicker?: boolean
-    textInput?: boolean
-    inline?: boolean
-    multiDates?: boolean
-    flow?: typeof VueDatePicker.flow
-    utc?: typeof VueDatePicker.utc
-    vertical?: boolean
-    modelAuto?: boolean
-    timezone?: string
-    presetRanges?: typeof VueDatePicker.presetRanges
-    closeOnScroll?: boolean
-    autoApply?: boolean
-    markers?: typeof VueDatePicker.markers
-  }
->()
-
-const emit = defineEmits<{
-  (event: 'update:modelValue', eventArgs: typeof VueDatePicker.modelValue | undefined): void
-}>()
-
-const { model, errorMessage } = useValidatedModel<typeof VueDatePicker.modelValue>(props, emit)
-</script>

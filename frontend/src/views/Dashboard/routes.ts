@@ -1,11 +1,10 @@
-import _import from '@/helpers/import'
-import type { Route } from '@/types'
+import type { Route } from '@/router'
 
 const routesDashboard: Route[] = [
   {
     name: 'Dashboard',
     path: '/dashboard',
-    component: _import('../views/Dashboard/DashboardView.vue'),
+    component: import('./DashboardView.vue'),
   },
 ]
 

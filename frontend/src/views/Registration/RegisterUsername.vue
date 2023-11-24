@@ -1,3 +1,21 @@
+<script setup lang="ts">
+import { useRouter } from 'vue-router'
+
+import RegistrationLayout from './components/RegistrationLayout.vue'
+
+// import BasicInput from '@/components/BasicInputs/BasicInput.vue'
+import { useCreateRegistrationState } from '@/store/registrationStore'
+
+const router = useRouter()
+const { createUser, isCreatePending, createUserError } = useCreateRegistrationState()
+
+async function register() {
+  if (isCreatePending.value) return
+  const response = await createUser()
+  if (response) router.push({ name: 'Login' })
+}
+</script>
+
 <template>
   <RegistrationLayout @back="router.replace({ name: 'RegisterLogin' })">
     <div
@@ -11,12 +29,12 @@
         class="h-32 w-32 place-self-center rounded-full border-2 border-gray-200"
         src="https://picsum.photos/200"
       />
-      <BasicInput
+      <!-- <BasicInput
         v-model="user.username"
         placeholder="Nutzername"
         class="mt-4"
       >
-      </BasicInput>
+      </BasicInput> -->
     </div>
 
     <button
@@ -35,21 +53,3 @@
     </button>
   </RegistrationLayout>
 </template>
-
-<script setup lang="ts">
-import { useRouter } from 'vue-router'
-
-import RegistrationLayout from './components/RegistrationLayout.vue'
-
-import BasicInput from '@/components/BasicInputs/BasicInput.vue'
-import { useCreateRegistrationState } from '@/store/registrationStore'
-
-const router = useRouter()
-const { user, createUser, isCreatePending, createUserError } = useCreateRegistrationState()
-
-async function register() {
-  if (isCreatePending.value) return
-  const response = await createUser()
-  if (response) router.push({ name: 'Login' })
-}
-</script>

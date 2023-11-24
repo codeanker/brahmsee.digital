@@ -1,3 +1,51 @@
+<script setup lang="ts">
+// import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
+// import { Bars3Icon, MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
+// import {
+//   ChartBarSquareIcon,
+//   Cog6ToothIcon,
+//   FolderIcon,
+//   GlobeAltIcon,
+//   ServerIcon,
+//   SignalIcon,
+//   XMarkIcon,
+// } from '@heroicons/vue/24/outline'
+
+import { ref } from 'vue'
+
+import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
+import BasicInput from '@/components/BasicInputs/BasicInput.vue'
+import Button from '@/components/Button.vue'
+
+// const navigation = [
+//   { name: 'Projects', href: '#', icon: FolderIcon, current: false },
+//   { name: 'Deployments', href: '#', icon: ServerIcon, current: false },
+//   { name: 'Activity', href: '#', icon: SignalIcon, current: false },
+//   { name: 'Domains', href: '#', icon: GlobeAltIcon, current: false },
+//   { name: 'Usage', href: '#', icon: ChartBarSquareIcon, current: false },
+//   { name: 'Settings', href: '#', icon: Cog6ToothIcon, current: true },
+// ]
+// const teams = [
+//   { id: 1, name: 'Planetaria', href: '#', initial: 'P', current: false },
+//   { id: 2, name: 'Protocol', href: '#', initial: 'P', current: false },
+//   { id: 3, name: 'Tailwind Labs', href: '#', initial: 'T', current: false },
+// ]
+const secondaryNavigation = [
+  { name: 'Account', href: '#', current: true },
+  { name: 'Notifications', href: '#', current: false },
+  { name: 'Billing', href: '#', current: false },
+  { name: 'Teams', href: '#', current: false },
+  { name: 'Integrations', href: '#', current: false },
+]
+
+// demo
+const firstname = ref('Max')
+const lastname = ref('Mustermann')
+const birthdate = ref('07.03.2000')
+const age = ref('21')
+const email = ref('')
+</script>
+
 <template>
   <header class="border-b border-white/5">
     <!-- Secondary navigation -->
@@ -40,6 +88,7 @@
 
           <div class="sm:col-span-3">
             <BasicInput
+              v-model="firstname"
               label="Vorname"
               name="firstname"
               class=""
@@ -48,6 +97,7 @@
 
           <div class="sm:col-span-3">
             <BasicInput
+              v-model="lastname"
               label="Nachname"
               name="lastname"
               class=""
@@ -56,6 +106,7 @@
 
           <div class="sm:col-span-3">
             <BasicDatepicker
+              v-model="birthdate"
               label="Geburtsdatum"
               name="birthdate"
               class=""
@@ -64,6 +115,7 @@
 
           <div class="sm:col-span-3">
             <BasicInput
+              v-model="age"
               label="Alter"
               name="age"
               class=""
@@ -72,6 +124,7 @@
 
           <div class="col-span-full">
             <BasicInput
+              v-model="email"
               label="Email"
               name="email"
               class=""
@@ -244,42 +297,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-// import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
-// import { Bars3Icon, MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
-// import {
-//   ChartBarSquareIcon,
-//   Cog6ToothIcon,
-//   FolderIcon,
-//   GlobeAltIcon,
-//   ServerIcon,
-//   SignalIcon,
-//   XMarkIcon,
-// } from '@heroicons/vue/24/outline'
-
-import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
-import BasicInput from '@/components/BasicInputs/BasicInput.vue'
-import Button from '@/components/Button.vue'
-
-// const navigation = [
-//   { name: 'Projects', href: '#', icon: FolderIcon, current: false },
-//   { name: 'Deployments', href: '#', icon: ServerIcon, current: false },
-//   { name: 'Activity', href: '#', icon: SignalIcon, current: false },
-//   { name: 'Domains', href: '#', icon: GlobeAltIcon, current: false },
-//   { name: 'Usage', href: '#', icon: ChartBarSquareIcon, current: false },
-//   { name: 'Settings', href: '#', icon: Cog6ToothIcon, current: true },
-// ]
-// const teams = [
-//   { id: 1, name: 'Planetaria', href: '#', initial: 'P', current: false },
-//   { id: 2, name: 'Protocol', href: '#', initial: 'P', current: false },
-//   { id: 3, name: 'Tailwind Labs', href: '#', initial: 'T', current: false },
-// ]
-const secondaryNavigation = [
-  { name: 'Account', href: '#', current: true },
-  { name: 'Notifications', href: '#', current: false },
-  { name: 'Billing', href: '#', current: false },
-  { name: 'Teams', href: '#', current: false },
-  { name: 'Integrations', href: '#', current: false },
-]
-</script>

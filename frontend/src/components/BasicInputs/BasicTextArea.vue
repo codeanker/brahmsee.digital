@@ -1,23 +1,5 @@
-<template>
-  <BasicFormGroup
-    :id="id"
-    :name="name"
-    :label="label"
-    :error-message="errorMessage"
-  >
-    <textarea
-      :id="id || name || label"
-      v-model="model"
-      :name="id || name || label"
-      :cols="cols"
-      :placeholder="placeholder || label || name"
-      :rules="rules"
-    />
-  </BasicFormGroup>
-</template>
-
 <script setup lang="ts">
-import useValidatedModel from '../../composables/useValidatedModel'
+import useValidationModel from '../../composables/useValidationModel'
 
 import BasicFormGroup from './components/BasicFormGroup.vue'
 import { type BasicInputDefaultProps } from './defaultProps'
@@ -35,5 +17,23 @@ const props = withDefaults(
 const emit = defineEmits<{
   (event: 'update:modelValue', eventArgs: string): void
 }>()
-const { model, errorMessage } = useValidatedModel(props, emit)
+const { model, errorMessage } = useValidationModel(props, emit)
 </script>
+
+<template>
+  <BasicFormGroup
+    :id="id"
+    :name="name"
+    :label="label"
+    :error-message="errorMessage"
+  >
+    <textarea
+      :id="id || name || label"
+      v-model="model"
+      :name="id || name || label"
+      :cols="cols"
+      :placeholder="placeholder || label || name"
+      :rules="rules"
+    />
+  </BasicFormGroup>
+</template>

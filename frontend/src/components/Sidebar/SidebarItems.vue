@@ -1,3 +1,27 @@
+<script setup lang="ts">
+import type { Component } from 'vue'
+
+interface SidebarItem {
+  name: string
+  route: string
+  current: boolean
+}
+
+export interface NavItem extends SidebarItem {
+  icon: Component
+}
+
+export interface TeamItem extends SidebarItem {
+  id: number
+  initial: string
+}
+
+defineProps<{
+  navigation: NavItem[]
+  teams: TeamItem[]
+}>()
+</script>
+
 <template>
   <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-green-700 px-6">
     <router-link :to="{ name: 'Dashboard' }">
@@ -67,29 +91,3 @@
     </nav>
   </div>
 </template>
-
-<script setup lang="ts">
-import type { Component } from 'vue'
-
-interface SidebarItem {
-  name: string
-  route: string
-  current: boolean
-}
-
-export interface NavItem extends SidebarItem {
-  icon: Component
-}
-
-export interface TeamItem extends SidebarItem {
-  id: number
-  initial: string
-}
-
-interface Props {
-  navigation: NavItem[]
-  teams: TeamItem[]
-}
-
-defineProps<Props>()
-</script>
