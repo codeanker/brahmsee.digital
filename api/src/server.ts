@@ -14,7 +14,7 @@ import { appRouter } from './index'
 export const app = new Koa()
 
 app.use(cors({ origin: '*' }))
-app.use(serve('./static', { defer: true }))
+app.use(serve('./static', { defer: false }))
 app.use(async (ctx, next) => {
   if (!ctx.url.startsWith('/api/') && ctx.url !== '/' && ctx.url !== '/index.html') {
     ctx.set('cache-control', 'max-age: 31536000, immutable') // 1 week
