@@ -1,9 +1,9 @@
 import z from 'zod'
 
 import prisma from '../../prisma'
-import { ZQuerySchema } from '../../types/ZQuery'
+import { defineQuery } from '../../types/ZQuery'
 
-export const ZGliederungManagementListInputSchema = ZQuerySchema({
+export const ZGliederungManagementListInputSchema = defineQuery({
   filter: z.strictObject({
     name: z.string().optional(),
   }),
@@ -21,7 +21,7 @@ export async function gliederungManagementList(options: GliederungManagementList
     skip,
     take,
     where: {
-      name: options.input.filter.email,
+      name: options.input.filter.name,
     },
   })
   return list

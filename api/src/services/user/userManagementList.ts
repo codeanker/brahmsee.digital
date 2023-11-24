@@ -1,9 +1,9 @@
 import z from 'zod'
 
 import prisma from '../../prisma'
-import { ZQuerySchema } from '../../types/ZQuery'
+import { defineQuery } from '../../types/ZQuery'
 
-export const ZUserManagementListInputSchema = ZQuerySchema({
+export const ZUserManagementListInputSchema = defineQuery({
   filter: z.strictObject({
     email: z.string().optional(),
   }),

@@ -7,7 +7,7 @@ const ZPaginationSchema = z.strictObject({
 
 export type TQueryPagination = z.infer<typeof ZPaginationSchema>
 
-export const ZQuerySchema = ({ filter }: { filter: z.AnyZodObject }) =>
+export const defineQuery = <TFilter extends z.AnyZodObject>({ filter }: { filter: TFilter }) =>
   z.strictObject({
     pagination: ZPaginationSchema,
     filter: filter,
