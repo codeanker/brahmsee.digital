@@ -5,30 +5,33 @@
 			"type": "npm",
 			"script": "start:frontend",
 			"label": "Start frontend",
-      "problemMatcher": [],
+			"problemMatcher": [],
 			"presentation": {
 				"reveal": "always",
 				"panel": "new",
 				"group": "start",
-				"close": false,
+				"close": false
 			}
 		},
 		{
 			"type": "npm",
 			"script": "start:api",
 			"label": "Start api",
-      "problemMatcher": [],
+			"problemMatcher": [],
 			"presentation": {
 				"reveal": "always",
 				"panel": "new",
 				"group": "start",
-				"close": false,
+				"close": false
 			}
 		},
 		{
 			"label": "Start apps",
-			"dependsOn": ["Start frontend", "Start api"],
-      "problemMatcher": [],
-		},
+			"dependsOn": [
+				"Start frontend",
+				"Start api"
+			],
+			"problemMatcher": []
+		}
 	]
 }

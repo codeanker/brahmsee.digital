@@ -20,12 +20,18 @@ app.use(serve('./static'))
 const adapter = createKoaMiddleware({
   router: appRouter,
   createContext,
-  prefix: '/trpc',
+  prefix: '/api/trpc',
 })
 app.use(adapter)
 
 // initialize koa router for custome routes
 app.use(router.routes())
+
+app.use(async (ctx, next) => {
+  // serve index.html as catch all
+  ctx.url = '/'
+  await serve('./static')(ctx, next)
+})
 
 app.listen(config.port)
 logger.info(`app listening on http://0.0.0.0:${config.port}`)
