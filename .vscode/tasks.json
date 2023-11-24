@@ -26,10 +26,23 @@
 			}
 		},
 		{
+			"type": "npm",
+			"script": "test",
+			"label": "Run Test",
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"group": "start",
+				"close": false
+			}
+		},
+		{
 			"label": "Start apps",
 			"dependsOn": [
 				"Start frontend",
-				"Start api"
+				"Start api",
+				"Run Test"
 			],
 			"problemMatcher": []
 		}
