@@ -15,26 +15,26 @@ import { dayjs } from '@codeanker/helpers'
 
 const props = defineProps<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  user?: any
+  person?: any
   isSelf?: boolean
   mode: 'create' | 'update'
   onUpdate?: () => void
 }>()
 
-const fill = (user) => {
+const fill = (person) => {
   return {
-    id: user?.id,
-    firstname: user?.firstname,
-    lastname: user?.lastname,
-    email: user?.email,
-    password: user?.password ?? '',
-    gender: user?.gender || 'null',
-    birthdate: user?.birthday === undefined ? 'null' : dayjs(user.birthday).toDate(),
+    id: person?.id,
+    firstname: person?.firstname,
+    lastname: person?.lastname,
+    email: person?.email,
+    password: person?.password ?? '',
+    gender: person?.gender || 'null',
+    birthdate: person?.birthday === undefined ? 'null' : dayjs(person.birthday).toDate(),
     role: 'ADMIN', // TODO: Select
   }
 }
 
-const userCopy = ref(fill(props.user) ?? { role: 'ADMIN' })
+const userCopy = ref(fill(props.person) ?? { role: 'ADMIN' })
 
 const {
   execute: createUser,
@@ -87,7 +87,7 @@ const handle = async (event: Event) => {
 }
 
 const reset = () => {
-  userCopy.value = props.user ?? {}
+  userCopy.value = props.person ?? {}
 }
 </script>
 
