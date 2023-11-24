@@ -1,0 +1,1 @@
+<template>AnmeldungenGliederungView</template>

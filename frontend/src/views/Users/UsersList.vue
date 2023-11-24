@@ -4,9 +4,9 @@ import { useAsyncState } from '@vueuse/core'
 
 import { apiClient } from '../../api'
 
-import Badge from '@/components/Badge.vue'
-import Button from '@/components/Button.vue'
 import BasicHeader from '@/components/LayoutComponents/BasicHeader.vue'
+import Badge from '@/components/UIComponents/Badge.vue'
+import Button from '@/components/UIComponents/Button.vue'
 import { loggedInUser } from '@/composables/useAuthentication'
 import userProfileImage from '@/helpers/userProfileImage'
 import router from '@/router'
