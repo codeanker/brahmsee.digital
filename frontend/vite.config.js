@@ -24,4 +24,9 @@ export default defineConfig({
   css: {
     devSourcemap: true,
   },
+  build: {
+    rollupOptions: {
+      external: ['@codeanker/api'],
+    },
+  },
 })
