@@ -7,6 +7,7 @@ import routesHouses from '@/views/Houses/routes'
 import routesAuth from '@/views/Login/routes'
 import routesRegistration from '@/views/Registration/routes'
 import routesUser from '@/views/Users/routes'
+import routesVeranstaltungen from '@/views/Veranstaltungen/routes'
 
 export type Route = RouteRecordRaw & {
   meta?: {
@@ -23,6 +24,7 @@ const routes: Route[] = [
 
   ...routesAuth,
   ...routesRegistration,
+  ...routesVeranstaltungen,
 
   {
     path: '/',
