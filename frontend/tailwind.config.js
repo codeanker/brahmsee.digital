@@ -20,6 +20,9 @@ module.exports = {
         danger: colors.red,
         primary: colors.green,
         secondary: colors.indigo,
+        gray: colors.slate,
+        white: colors.white,
+        black: colors.black,
       },
       zIndex: {
         '-1': '-1',

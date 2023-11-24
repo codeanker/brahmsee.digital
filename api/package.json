@@ -4,10 +4,13 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsx src/index.ts",
-    "dev": "tsx watch --clear-screen=false src/index.ts",
+    "start": "tsx src/server.ts",
+    "dev": "tsx watch --clear-screen=false src/server.ts",
     "createUser": "tsx src/scripts/createUser.ts",
     "postinstall": "prisma generate"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@koa/cors": "^4.0.0",

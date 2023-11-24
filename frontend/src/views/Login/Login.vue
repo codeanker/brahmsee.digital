@@ -2,7 +2,10 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-import Button from '@/components/Button.vue'
+import BasicInput from '@/components/BasicInputs/BasicInput.vue'
+import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
+import Button from '@/components/UIComponents/Button.vue'
+import Loading from '@/components/UIComponents/Loading.vue'
 import { login, loginError, loginPending } from '@/composables/useAuthentication'
 
 const router = useRouter()
@@ -31,18 +34,19 @@ const version = `${import.meta.env.VITE_APP_VERSION || '0.0.0'}-${import.meta.en
         class="space-y-2"
         @submit.prevent="loginWithRecirect"
       >
-        <input
+        <BasicInput
           v-model="email"
           type="email"
           class="w-full"
           placeholder="E-Mail"
-        />
-        <input
+          label="E-Mail"
+        ></BasicInput>
+        <BasicPassword
           v-model="password"
-          type="password"
           class="w-full"
-          placeholder="Password"
-        />
+          placeholder="Passwort"
+          label="Passwort"
+        ></BasicPassword>
         <Button
           color="primary"
           type="submit"
@@ -50,7 +54,7 @@ const version = `${import.meta.env.VITE_APP_VERSION || '0.0.0'}-${import.meta.en
           full
         >
           <template v-if="loginPending">
-            <i class="fa-sharp fa-light fa-spinner-third fa-2xl"></i>
+            <Loading class="fill-white"></Loading>
           </template>
           <template v-else> Login </template>
         </Button>

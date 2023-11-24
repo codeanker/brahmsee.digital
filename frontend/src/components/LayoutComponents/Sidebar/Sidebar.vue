@@ -1,6 +1,15 @@
 <script setup lang="ts">
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import { ArrowRightOnRectangleIcon, Bars3Icon, RocketLaunchIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import {
+  ArrowRightOnRectangleIcon,
+  Bars3Icon,
+  RocketLaunchIcon,
+  UserGroupIcon,
+  MapIcon,
+  ChartBarIcon,
+  ScissorsIcon,
+  XMarkIcon,
+} from '@heroicons/vue/24/outline'
 import { ref } from 'vue'
 
 import SidebarItems, { type NavItem, type TeamItem } from './SidebarItems.vue'
@@ -10,18 +19,18 @@ import userProfileImage from '@/helpers/userProfileImage'
 
 const navigation: NavItem[] = [
   { name: 'Dashboard', route: '/dashboard', icon: RocketLaunchIcon, current: false },
-  // { name: 'Teilnehmende', route: '', icon: UserGroupIcon, current: false },
+  { name: 'Anmeldungen', route: '', icon: UserGroupIcon, current: false },
+  { name: 'Auswertung', route: '', icon: ChartBarIcon, current: false },
+  { name: 'Lageplan', route: '', icon: MapIcon, current: false },
+  { name: 'Programm', route: '', icon: ScissorsIcon, current: false },
   // { name: 'Unterbringung', route: '', icon: HomeIcon, current: false },
-  // { name: 'Programm', route: '', icon: TrophyIcon, current: false },
   // { name: 'Finanzen', route: '', icon: BanknotesIcon, current: false },
-  // { name: 'Auswertung', route: '', icon: ChartBarIcon, current: false }
 ]
 const teams: TeamItem[] = [
-  { id: 1, name: 'Häuser und Zelte', route: '/houses', initial: 'HZ', current: false },
-  // { id: 2, name: 'Räume', route: '', initial: 'R', current: false },
-  // { id: 3, name: 'Teilnehmende', route: '', initial: 'T', current: false },
-  // { id: 4, name: 'CREW', route: '', initial: 'C', current: false },
-  { id: 5, name: 'Benutzer:innen', route: '/users', initial: 'B', current: false },
+  { id: 1, name: 'Benutzer:innen', route: '/verwaltung/benutzer', initial: 'B', current: false },
+  { id: 2, name: 'Gliederungen', route: '/verwaltung/gliederungen', initial: 'V', current: false },
+  { id: 3, name: 'Orte', route: '/verwaltung/orte', initial: 'O', current: false },
+  { id: 4, name: 'Veranstaltungen', route: '/veranstaltungen', initial: 'V', current: false },
 ]
 
 const sidebarOpen = ref(false)
@@ -112,7 +121,6 @@ const sidebarOpen = ref(false)
             :src="userProfileImage(loggedInUser)"
             alt=""
           />
-          <span class="sr-only">Your profile</span>
           <span aria-hidden="true">Hallo, {{ loggedInUser?.firstname }}</span>
         </router-link>
         <button

@@ -5,7 +5,8 @@ import prisma from '../../prisma'
 export const ZGliederungManagementCreateInputSchema = z.strictObject({
   data: z.strictObject({
     name: z.string(),
-    edv: z.number(),
+    edv: z.string(),
+    landesverbandId: z.number(),
   }),
 })
 

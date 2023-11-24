@@ -4,8 +4,8 @@ import { useAsyncState } from '@vueuse/core'
 
 import { apiClient } from '../../api'
 
-import BasicHeader from '@/components/BasicHeader.vue'
-import Button from '@/components/Button.vue'
+import BasicHeader from '@/components/LayoutComponents/BasicHeader.vue'
+import Button from '@/components/UIComponents/Button.vue'
 import router from '@/router'
 
 const { state: userList, execute: fetchUsers } = useAsyncState(async () => {
