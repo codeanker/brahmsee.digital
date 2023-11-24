@@ -1,20 +1,24 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 
 import authenticationGuard from './authenticationGuard'
 
-import _import from '@/helpers/import'
-import type { Route } from '@/types'
 import routesDashboard from '@/views/Dashboard/routes'
 import routesHouses from '@/views/Houses/routes'
 import routesAuth from '@/views/Login/routes'
 import routesRegistration from '@/views/Registration/routes'
 import routesUser from '@/views/Users/routes'
 
+export type Route = RouteRecordRaw & {
+  meta?: {
+    public?: boolean
+  }
+}
+
 const routes: Route[] = [
   {
     name: 'Developer',
     path: '/developer',
-    component: _import('../views/Developer.vue'),
+    component: import('../views/Developer.vue'),
   },
 
   ...routesAuth,
@@ -22,7 +26,7 @@ const routes: Route[] = [
 
   {
     path: '/',
-    component: _import('../layouts/BaseLayout.vue'),
+    component: import('../layouts/BaseLayout.vue'),
     children: [...routesDashboard, ...routesUser, ...routesHouses],
   },
 ]
@@ -32,6 +36,6 @@ const router = createRouter({
   routes,
 })
 
-router.beforeEach(authenticationGuard(routes))
+router.beforeEach(authenticationGuard())
 
 export default router

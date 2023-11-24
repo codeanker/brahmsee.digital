@@ -1,24 +1,29 @@
-import _import from '@/helpers/import'
-import type { Route } from '@/types'
+import type { Route } from '../../router'
 
 const routesRegistration: Route[] = [
   {
     name: 'RegistrationStart',
     path: '/registration',
-    component: _import('../views/Registration/RegistrationStart.vue'),
-    public: true,
+    component: import('./RegistrationStart.vue'),
+    meta: {
+      public: true,
+    },
   },
   {
     name: 'RegisterLogin',
     path: '/registration/registerLogin',
-    component: _import('../views/Registration/RegisterLogin.vue'),
-    public: true,
+    component: import('./RegisterLogin.vue'),
+    meta: {
+      public: true,
+    },
   },
   {
     name: 'RegisterUsername',
     path: '/registration/registerUsername',
-    component: _import('../views/Registration/RegisterUsername.vue'),
-    public: true,
+    component: import('./RegisterUsername.vue'),
+    meta: {
+      public: true,
+    },
   },
 ]
 

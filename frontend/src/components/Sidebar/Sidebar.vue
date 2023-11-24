@@ -127,11 +127,10 @@ import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessu
 import { ArrowRightOnRectangleIcon, Bars3Icon, RocketLaunchIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { ref } from 'vue'
 
-import SidebarItems from './SidebarItems.vue'
+import SidebarItems, { type NavItem, type TeamItem } from './SidebarItems.vue'
 
 import useAuthentication from '@/composables/useAuthentication'
 import userProfileImage from '@/helpers/userProfileImage'
-import type { NavItem, TeamItem } from '@/types'
 
 const navigation: NavItem[] = [
   { name: 'Dashboard', route: '/dashboard', icon: RocketLaunchIcon, current: false },

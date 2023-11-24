@@ -69,7 +69,22 @@
 </template>
 
 <script setup lang="ts">
-import { type NavItem, type TeamItem } from '../../types'
+import type { Component } from 'vue'
+
+interface SidebarItem {
+  name: string
+  route: string
+  current: boolean
+}
+
+export interface NavItem extends SidebarItem {
+  icon: Component
+}
+
+export interface TeamItem extends SidebarItem {
+  id: number
+  initial: string
+}
 
 interface Props {
   navigation: NavItem[]
