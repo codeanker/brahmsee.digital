@@ -6,14 +6,22 @@ import useValidationModel from '../../composables/useValidationModel'
 import BasicFormGroup from './components/BasicFormGroup.vue'
 import { type BasicInputDefaultProps } from './defaultProps'
 
-const props = defineProps<
-  BasicInputDefaultProps<string> & {
-    type?: 'text' | 'number' | 'password' | 'email'
-    autocapitalize?: 'off' | 'on' | 'words' | 'characters'
-    inputClass?: string
-    disableValidation?: boolean
+const props = withDefaults(
+  defineProps<
+    BasicInputDefaultProps<string> & {
+      type?: 'text' | 'number' | 'password' | 'email'
+      autocapitalize?: 'off' | 'on' | 'words' | 'characters'
+      inputClass?: string
+      disableValidation?: boolean
+    }
+  >(),
+  {
+    type: 'text',
+    autocapitalize: 'off',
+    inputClass: '',
+    disableValidation: false,
   }
->()
+)
 const emit = defineEmits<{
   (event: 'update:modelValue', eventArgs: string | undefined): void
   (event: 'focus'): void

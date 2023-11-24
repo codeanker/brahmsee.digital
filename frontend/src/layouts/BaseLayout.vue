@@ -7,7 +7,7 @@ import Sidebar from '@/components/Sidebar/Sidebar.vue'
   <Sidebar />
 
   <div class="flex flex-1 flex-col">
-    <div class="mt-12 flex-1 lg:mx-8">
+    <div class="flex-grow">
       <router-view />
     </div>
 
