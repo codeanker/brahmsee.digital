@@ -9,6 +9,9 @@
     "createUser": "tsx src/scripts/createUser.ts",
     "postinstall": "prisma generate"
   },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "dependencies": {
     "@koa/cors": "^4.0.0",
     "@prisma/client": "^4.16.2",
