@@ -15,7 +15,7 @@ import { ref } from 'vue'
 
 import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
-import Button from '@/components/Button.vue'
+import Button from '@/components/UIComponents/Button.vue'
 
 // const navigation = [
 //   { name: 'Projects', href: '#', icon: FolderIcon, current: false },
