@@ -30,3 +30,6 @@
       - 🟢Detail ```verwaltung/benutzer/:benutzerId```
     - 🟢Create ```verwaltung/benutzer/create```
   - Orte (Häuser, Zeltplätze, Räume) ```verwaltung/orte```
+    - List
+      - Detail ```verwaltung/benutzer/:benutzerId```
+    - Create ```verwaltung/benutzer/create```
