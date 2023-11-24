@@ -15,7 +15,13 @@ export const app = new Koa()
 export const appRouter = mergeRouters(serviceRouter)
 
 app.use(cors({ origin: '*' }))
-app.use(serve('./static'))
+app.use(serve('./static', { defer: true }))
+app.use(async (ctx, next) => {
+  if (!ctx.url.startsWith('/api/') && ctx.url !== '/' && ctx.url !== '/index.html') {
+    ctx.set('cache-control', 'max-age: 31536000, immutable') // 1 week
+  }
+  await next()
+})
 
 // initialize trpc middleware
 const adapter = createKoaMiddleware({
