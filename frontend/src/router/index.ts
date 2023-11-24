@@ -5,8 +5,7 @@ import authenticationGuard from './authenticationGuard'
 import routesDashboard from '@/views/Dashboard/routes'
 import routesEinstellungen from '@/views/Einstellungen/routes'
 import routesAuth from '@/views/Login/routes'
-import routesRegistration from '@/views/Registration/routes'
-import routesUser from '@/views/Users/routes'
+import routesPerson from '@/views/Persons/routes'
 import routesVeranstaltungen from '@/views/Veranstaltungen/routes'
 
 export type Route = RouteRecordRaw & {
@@ -23,12 +22,10 @@ const routes: Route[] = [
   },
 
   ...routesAuth,
-  ...routesRegistration,
-
   {
     path: '/',
     component: () => import('../layouts/BaseLayout.vue'),
-    children: [...routesDashboard, ...routesUser, ...routesVeranstaltungen, ...routesEinstellungen],
+    children: [...routesDashboard, ...routesPerson, ...routesVeranstaltungen, ...routesEinstellungen],
   },
 ]
 

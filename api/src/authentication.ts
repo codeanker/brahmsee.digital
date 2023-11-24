@@ -7,7 +7,7 @@ export const { getEntityIdFromHeader, authenticationLogin, sign } = createAuthen
   jwtSecret: config.authentication.secret,
   expiresIn: config.authentication.expiresIn,
   async getEnityByEmail(email) {
-    const user = await prisma.user.findFirstOrThrow({
+    const account = await prisma.account.findFirstOrThrow({
       where: {
         email,
       },
@@ -16,10 +16,10 @@ export const { getEntityIdFromHeader, authenticationLogin, sign } = createAuthen
         password: true,
       },
     })
-    if (user.password === null) throw new Error('User has no password')
+    if (account.password === null) throw new Error('Account has no password')
     return {
-      id: user.id,
-      password: user.password,
+      id: account.id,
+      password: account.password,
     }
   },
 })

@@ -1,20 +1,24 @@
 import prisma from '../prisma'
 
 export async function createMock() {
-  const user = await prisma.user.create({
+  const account = await prisma.account.create({
     data: {
-      firstname: 'Test',
-      lastname: 'User',
       email: 'log@codeanker.de',
       password: '123',
       role: 'ADMIN',
+      person: {
+        create: {
+          firstname: 'Test',
+          lastname: 'User',
+        },
+      },
     },
   })
-  return { user }
+  return { account }
 }
 
 export async function cleanup() {
-  await prisma.user.deleteMany({
+  await prisma.account.deleteMany({
     where: {
       email: 'log@codeanker.de',
     },

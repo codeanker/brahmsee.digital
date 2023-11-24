@@ -3,7 +3,7 @@ import z from 'zod'
 
 import prisma from '../../prisma'
 
-export const ZUserManagementPatchInputSchema = z.strictObject({
+export const ZPersonManagementPatchInputSchema = z.strictObject({
   id: z.number().int(),
   data: z.strictObject({
     email: z.string(),
@@ -14,14 +14,14 @@ export const ZUserManagementPatchInputSchema = z.strictObject({
   }),
 })
 
-export type TUserManagementPatchInputSchema = z.infer<typeof ZUserManagementPatchInputSchema>
+export type TPersonManagementPatchInputSchema = z.infer<typeof ZPersonManagementPatchInputSchema>
 
-type UserManagementPatchOptions = {
-  input: TUserManagementPatchInputSchema
+type PersonManagementPatchOptions = {
+  input: TPersonManagementPatchInputSchema
 }
 
-export async function userManagementPatch(options: UserManagementPatchOptions) {
-  return prisma.user.update({
+export async function personManagementPatch(options: PersonManagementPatchOptions) {
+  return prisma.person.update({
     where: {
       id: options.input.id,
     },

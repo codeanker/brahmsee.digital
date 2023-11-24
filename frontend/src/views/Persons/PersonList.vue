@@ -7,16 +7,16 @@ import { apiClient } from '../../api'
 import BasicHeader from '@/components/LayoutComponents/BasicHeader.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
 import Button from '@/components/UIComponents/Button.vue'
-import { loggedInUser } from '@/composables/useAuthentication'
-import userProfileImage from '@/helpers/userProfileImage'
+import { loggedInAccount } from '@/composables/useAuthentication'
+import personProfileImage from '@/helpers/personProfileImage'
 import router from '@/router'
 
-const { state: userList, execute: fetchUsers } = useAsyncState(async () => {
-  const result = await apiClient.user.managementList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
+const { state: personList, execute: fetchPersons } = useAsyncState(async () => {
+  const result = await apiClient.person.managementList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
   return result
 }, [])
 
-fetchUsers()
+fetchPersons()
 </script>
 
 <template>
@@ -35,7 +35,7 @@ fetchUsers()
           >
           <Button
             color="secondary"
-            @click="fetchUsers"
+            @click="fetchPersons"
           >
             <ArrowPathIcon class="h-5 w-5" />
           </Button>
@@ -80,27 +80,27 @@ fetchUsers()
         </thead>
         <tbody class="divide-y divide-gray-200 bg-white">
           <tr
-            v-for="user in userList"
-            :key="user.id"
+            v-for="person in personList"
+            :key="person.id"
             class="cursor-pointer even:bg-gray-50 hover:bg-gray-100"
-            :title="user.firstname + ' ' + user.lastname + ' bearbeiten'"
-            @click="router.push({ name: 'UserDetail', params: { userId: user.id } })"
+            :title="person.firstname + ' ' + person.lastname + ' bearbeiten'"
+            @click="router.push({ name: 'UserDetail', params: { personId: person.id } })"
           >
             <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
               <div class="flex items-center">
                 <div class="h-11 w-11 flex-shrink-0">
                   <img
                     class="h-11 w-11 rounded-full"
-                    :src="userProfileImage(user)"
+                    :src="personProfileImage(person)"
                     alt=""
                   />
                 </div>
                 <div class="ml-4">
-                  <div class="font-medium text-gray-900">{{ user.firstname }} {{ user.lastname }}</div>
-                  <div class="mt-1 text-gray-500">{{ user.email }}</div>
+                  <div class="font-medium text-gray-900">{{ person.firstname }} {{ person.lastname }}</div>
+                  <div class="mt-1 text-gray-500">{{ person.id }}</div>
                 </div>
                 <Badge
-                  v-if="user.id === loggedInUser?.id"
+                  v-if="person.id === loggedInAccount?.id"
                   class="ml-4"
                   >Du</Badge
                 >
@@ -117,7 +117,7 @@ fetchUsers()
                 Active
               </span>
             </td>
-            <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">{{ user.role }}</td>
+            <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500"></td>
           </tr>
         </tbody>
       </table>
