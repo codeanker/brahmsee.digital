@@ -27,7 +27,7 @@ export async function createMock(runId: string) {
 }
 
 export async function cleanup(runId: string) {
-  await prisma.user.deleteMany({
+  await prisma.account.deleteMany({
     where: {
       email: `log+${runId}@codeanker.de`,
     },
