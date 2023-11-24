@@ -2,6 +2,6 @@
 
 <template>
   <div class="container">
-    <h1>Dashboard / Home Übersicht... ```veranstaltung/:veranstalungId/dashboard```</h1>
+    <h5>Dashboard / Home Übersicht... ```veranstaltung/:veranstalungId/dashboard```</h5>
   </div>
 </template>
