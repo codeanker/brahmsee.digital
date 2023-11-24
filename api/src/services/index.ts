@@ -2,10 +2,10 @@ import { router } from '../trpc'
 
 import { authenticationRouter } from './authentication/authentication'
 import { gliederungRouter } from './gliederung/gliederung'
-import { userRouter } from './user/user'
+import { personRouter } from './user/person'
 
 export const serviceRouter = router({
-  user: userRouter,
+  person: personRouter,
   authenication: authenticationRouter,
   gliederung: gliederungRouter,
 })

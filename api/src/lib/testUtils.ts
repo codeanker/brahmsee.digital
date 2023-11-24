@@ -4,22 +4,26 @@ import prisma from '../prisma'
 import { hashPassword } from '@codeanker/authentication'
 
 export async function createMock(runId: string) {
-  const userPassword = '123'
-  const user = await prisma.user.create({
+  const accountPassword = 'test'
+  const account = await prisma.account.create({
     data: {
-      firstname: 'Test',
-      lastname: 'User',
       email: `log+${runId}@codeanker.de`,
-      password: await hashPassword(userPassword),
+      password: await hashPassword(accountPassword),
       role: 'ADMIN',
+      person: {
+        create: {
+          firstname: 'Test',
+          lastname: 'User',
+        },
+      },
     },
   })
   const { accessToken } = await authenticationLogin({
-    email: user.email,
-    password: userPassword,
+    email: account.email,
+    password: accountPassword,
   })
 
-  return { user, userPassword, accessToken }
+  return { account, accountPassword, accessToken }
 }
 
 export async function cleanup(runId: string) {

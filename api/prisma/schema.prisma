@@ -21,43 +21,95 @@ enum Gender {
   UNSPECIFIED
 }
 
-model User {
-  id        Int       @id @default(autoincrement())
-  email     String    @unique
-  password  String
-  firstname String
-  lastname  String
-  birthday  String?
-  gender    Gender?
-  role      Role
+model Person {
+  id          Int         @id @default(autoincrement())
+  firstname   String
+  lastname    String
+  birthday    String?
+  gender      Gender?
+  accountId   Int?         @unique
+  anmeldungen Anmeldung[]
+  gliederungId Int?
+  gliederung   Gliederung? @relation(fields: [gliederungId], references: [id])
+  account     Account?
+}
+
+model Account {
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  password String
+  role     Role
+  personId Int?   @unique
+  person   Person? @relation(fields: [personId], references: [id])
 }
 
 model Landesverband {
-  id   Int    @id @default(autoincrement())
-  name String
-  edv  String @unique
-  bezirke Bezirk[]
+  id           Int          @id @default(autoincrement())
+  name         String
+  edv          String       @unique
+  bezirke      Bezirk[]
   gliederungen Gliederung[]
 }
 
 model Bezirk {
-  id   Int    @id @default(autoincrement())
-  name String
-  edv  String @unique
+  id              Int            @id @default(autoincrement())
+  name            String
+  edv             String         @unique
   landesverbandId Int?
-  landesverband Landesverband? @relation(fields: [landesverbandId], references: [id])
-  gliederungen Gliederung[]
+  landesverband   Landesverband? @relation(fields: [landesverbandId], references: [id])
+  gliederungen    Gliederung[]
 }
+
 model Gliederung {
-  id   Int    @id @default(autoincrement())
-  name String
-  edv  String @unique
-  landesverbandId Int
-  bezirkId Int?
-  landesverband Landesverband @relation(fields: [landesverbandId], references: [id])
-  bezirk Bezirk? @relation(fields: [bezirkId], references: [id])
+  id                   Int                  @id @default(autoincrement())
+  name                 String
+  edv                  String               @unique
+  landesverbandId      Int
+  bezirkId             Int?
+  landesverband        Landesverband        @relation(fields: [landesverbandId], references: [id])
+  bezirk               Bezirk?              @relation(fields: [bezirkId], references: [id])
+  unterveranstaltungen Unterveranstaltung[]
+  personen             Person[]
+}
+
+enum AnmeldungStatus {
+  OFFEN
+  ANGENOMMEN
+  STORNIERT
+  ABGELEHNT
 }
 
 model Anmeldung {
-  id Int @id @default(autoincrement())
+  id                   Int                @id @default(autoincrement())
+  unterveranstaltungId Int
+  unterveranstaltung   Unterveranstaltung @relation(fields: [unterveranstaltungId], references: [id])
+  personId             Int
+  person               Person             @relation(fields: [personId], references: [id])
+  status               AnmeldungStatus    @default(OFFEN)
+}
+
+model Veranstaltung {
+  id                   Int                  @id @default(autoincrement())
+  name                 String
+  beginn               DateTime             @db.Date
+  ende                 DateTime             @db.Date
+  meldebeginn          DateTime             @db.Date
+  meldeschluss         DateTime             @db.Date
+  ort                  String               @default("Brahmsee")
+  maxTeilnehmende      Int
+  teilnahmegebuehr     Int
+  unterveranstaltungen Unterveranstaltung[]
+}
+
+model Unterveranstaltung {
+  id               Int           @id @default(autoincrement())
+  maxTeilnehmende  Int
+  teilnahmegebuehr Int
+  meldebeginn      DateTime      @db.Date
+  meldeschluss     DateTime      @db.Date
+  veranstaltungId  Int
+  veranstaltung    Veranstaltung @relation(fields: [veranstaltungId], references: [id])
+  gliederungId     Int
+  gliederung       Gliederung    @relation(fields: [gliederungId], references: [id])
+  Anmeldung        Anmeldung[]
 }

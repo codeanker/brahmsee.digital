@@ -20,13 +20,17 @@ async function createUser() {
       }
     }),
   })) as keyof typeof roleMapping
-  await prisma.user.create({
+  await prisma.account.create({
     data: {
       email: email,
       password: await hashPassword(password),
-      firstname: firstname,
-      lastname: lastname,
       role: roleId,
+      person: {
+        create: {
+          firstname: firstname,
+          lastname: lastname,
+        },
+      },
     },
   })
   // eslint-disable-next-line no-console

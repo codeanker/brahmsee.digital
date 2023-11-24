@@ -25,10 +25,12 @@ const loggerMiddleware = middleware(async (opts) => {
     durationMs
   )
 
-  if (result.ok) logger.info(`[${opts.ctx.userId ?? 'public'}] ${meta.path}.${meta.type} [${durationMs}ms]`)
+  if (result.ok) logger.info(`[${opts.ctx.accountId ?? 'public'}] ${meta.path}.${meta.type} [${durationMs}ms]`)
   else {
     // maybe dont log all errors
-    logger.error(`[${opts.ctx.userId ?? 'public'}] ${meta.path}.${meta.type} [${durationMs}ms] ${result.error.stack}`)
+    logger.error(
+      `[${opts.ctx.accountId ?? 'public'}] ${meta.path}.${meta.type} [${durationMs}ms] ${result.error.stack}`
+    )
   }
   return result
 })
@@ -36,27 +38,27 @@ const loggerMiddleware = middleware(async (opts) => {
 const isAuthed = (roles: Role[]) =>
   t.middleware(async (opts) => {
     const { ctx } = opts
-    if (ctx.userId === undefined) {
+    if (ctx.accountId === undefined) {
       throw new TRPCError({ code: 'UNAUTHORIZED' })
     }
-    const user = await prisma.user.findUniqueOrThrow({
-      where: { id: parseInt(ctx.userId) },
+    const account = await prisma.account.findUniqueOrThrow({
+      where: { id: parseInt(ctx.accountId) },
       select: {
         id: true,
         role: true,
       },
     })
-    if (!roles.includes(user.role) && roles.length > 0) {
+    if (!roles.includes(account.role) && roles.length > 0) {
       // if roles is empty, the resource is public
       throw new TRPCError({
         code: 'FORBIDDEN',
-        message: `You are not allowed to access this resource "${roles}" with "${user.role}"`,
+        message: `You are not allowed to access this resource "${roles}" with "${account.role}"`,
       })
     }
     return opts.next({
       ctx: {
-        user: user,
-        userId: ctx.userId,
+        account: account,
+        accountId: ctx.accountId,
       },
     })
   })

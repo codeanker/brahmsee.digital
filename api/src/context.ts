@@ -6,9 +6,9 @@ import { logger } from './logger'
 
 export async function createContext({ req }: trpcNext.CreateNextContextOptions) {
   try {
-    const userId = await getEntityIdFromHeader(req.headers.authorization)
+    const accountId = await getEntityIdFromHeader(req.headers.authorization)
     return {
-      userId,
+      accountId,
     }
   } catch (error) {
     logger.error(error)
