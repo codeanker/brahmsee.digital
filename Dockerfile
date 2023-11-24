@@ -40,4 +40,5 @@ FROM workspace-base as api-build-stage
 # RUN npm run build --workspace ./api
 
 COPY --from=frontend-build-stage /app/frontend/dist ./api/static/
+ENV NODE_ENV=production
 CMD [ "npm", "start", "-w", "./api" ]
