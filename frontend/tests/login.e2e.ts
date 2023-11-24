@@ -14,7 +14,6 @@ describe(`Feature: Login`, () => {
   let name = ''
   let data: Awaited<ReturnType<typeof testUtils.createMock>>
   beforeAll(async () => {
-    // https://test-chromium-2023-11-15-59-50.localhost.codeanker.com:8085/app/
     name = `test-${chromium.name()}-${dayjs().format('YYYY-MM-DD-HH-mm-ss')}`
     browser = await chromium.launch({ headless: true })
     context = await browser.newContext({ ignoreHTTPSErrors: true })
