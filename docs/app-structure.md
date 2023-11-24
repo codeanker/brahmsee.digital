@@ -1,32 +1,35 @@
 # Struktur für Routen
 
 - 🟢Veranstaltung (im Scope)
-  - Dashboard / Home Übersicht... ```veranstaltung/:veranstalungId/dashboard```
-  - Auswertung  ```veranstaltung/:veranstalungId/auswertung```
-    - Verpflegung ```veranstaltung/:veranstalungId/auswertung/verpflegung```
-    - Anmeldungen / Kosten, Personen ...
-  - 🟢Anmeldungen ```veranstaltung/:veranstalungId/anmeldungen```
-    - 🟢Crew ```veranstaltung/:veranstalungId/anmeldungen/crew```
-    - 🟢Gliederung ```veranstaltung/:veranstalungId/anmeldungen/gliederungen```
-      - 🟢Teilnehmende ```veranstaltung/:veranstalungId/anmeldungen/gliederungen/:gliederungId/teilnehmende```
-  - Programm ```veranstaltung/:veranstalungId/programm```
-     - List
-      - Detail```veranstaltung/:veranstalungId/programm/:programmId```
-    - Create ```veranstaltung/:veranstalungId/programm/erstellen```
-  - Lageplan ```veranstaltung/:veranstalungId/lageplan```
+  - 🟢Dashboard / Home Übersicht... ```veranstaltung/:id/dashboard```
+  - 🟢Auswertung  ```veranstaltung/:id/auswertung```
+    - 🟢Verpflegung ```veranstaltung/:id/auswertung/verpflegung```
+    - 🟢Anmeldungen / Kosten, Personen ... ```veranstaltung/:id/auswertung/anmeldungen```
+  - 🟢Anmeldungen ```veranstaltung/:id/anmeldungen```
+    - 🟢Crew ```veranstaltung/:id/anmeldungen/crew```
+    - 🟢Gliederung ```veranstaltung/:id/anmeldungen/gliederungen```
+    - 🟢Teilnehmende ```veranstaltung/:id/anmeldungen/gliederungen/:gliederungId/teilnehmende```
+  - 🟢Programm ```veranstaltung/:id/programm```
+    - 🟢List ```veranstaltung/:id/programm```
+    - 🟢Detail ```veranstaltung/:id/programm/:programmId```
+    - 🟢Create ```veranstaltung/:id/programm/erstellen```
+  - 🟢Lageplan ```veranstaltung/:id/lageplan```
 
 - 🟢Einstellungen / Verwaltung ```verwaltung```
-  - 🟢Gliederungsaccount anfrage ```verwaltung/gliederungen/anfragen```
+  - 🟢Gliederungsaccount Anfrage ```verwaltung/gliederungen/anfragen```
   - 🟢Gliederungen ```verwaltung/gliederungen```
-    - 🟢List
-      - 🟢Detail```verwaltung/gliederungen/:gliederungsId```
+    - 🟢List ```verwaltung/gliederungen```
+    - 🟢Detail ```verwaltung/gliederungen/:id```
     - 🟢Create ```verwaltung/gliederungen/erstellen```
   - 🟢Veranstaltungen ```verwaltung/veranstaltungen```
-    - 🟢List
-      - 🟢Detail ```verwaltung/veranstaltungen/:veranstaltungsId```
+    - 🟢List ```verwaltung/veranstaltungen```
+    - 🟢Detail ```verwaltung/veranstaltungen/:id```
     - 🟢Create ```verwaltung/veranstaltungen/erstellen```
   - 🟢Benutzer ```verwaltung/benutzer```
-    - 🟢List
-      - 🟢Detail ```verwaltung/benutzer/:benutzerId```
-    - 🟢Create ```verwaltung/benutzer/create```
-  - Orte (Häuser, Zeltplätze, Räume) ```verwaltung/orte```
+    - 🟢List ```verwaltung/benutzer```
+    - 🟢Detail ```verwaltung/benutzer/:id```
+    - 🟢Create ```verwaltung/benutzer/erstellen```
+  - 🟢 Orte (Häuser, Zeltplätze, Räume) ```verwaltung/orte```
+    - 🟢List ```verwaltung/orte```
+    - 🟢Detail ```verwaltung/orte/:id```
+    - 🟢Create ```verwaltung/orte/erstellen```
