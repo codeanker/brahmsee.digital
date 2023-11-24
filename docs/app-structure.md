@@ -1,29 +1,32 @@
 # Struktur für Routen
 
 - 🟢Veranstaltung (im Scope)
-  - Dashboard / Home Übersicht...
-  - Auswertung
-    - Verpflegung
+  - Dashboard / Home Übersicht... ```veranstaltung/:veranstalungId/dashboard```
+  - Auswertung  ```veranstaltung/:veranstalungId/auswertung```
+    - Verpflegung ```veranstaltung/:veranstalungId/auswertung/verpflegung```
     - Anmeldungen / Kosten, Personen ...
-  - 🟢Anmeldungen
-    - 🟢Crew
-    - 🟢Gliederung
-      - 🟢Teilnehmende
-  - Programm
-  - Lageplan
+  - 🟢Anmeldungen ```veranstaltung/:veranstalungId/anmeldungen```
+    - 🟢Crew ```veranstaltung/:veranstalungId/anmeldungen/crew```
+    - 🟢Gliederung ```veranstaltung/:veranstalungId/anmeldungen/gliederungen```
+      - 🟢Teilnehmende ```veranstaltung/:veranstalungId/anmeldungen/gliederungen/:gliederungId/teilnehmende```
+  - Programm ```veranstaltung/:veranstalungId/programm```
+     - List
+      - Detail```veranstaltung/:veranstalungId/programm/:programmId```
+    - Create ```veranstaltung/:veranstalungId/programm/erstellen```
+  - Lageplan ```veranstaltung/:veranstalungId/lageplan```
 
-- 🟢Einstellungen / Verwaltung
-  - 🟢Gliederungsaccount anfrage
-  - 🟢Gliederungen
+- 🟢Einstellungen / Verwaltung ```verwaltung```
+  - 🟢Gliederungsaccount anfrage ```verwaltung/gliederungen/anfragen```
+  - 🟢Gliederungen ```verwaltung/gliederungen```
     - 🟢List
-      - 🟢Detail
-    - 🟢Create
-  - 🟢Veranstaltungen
+      - 🟢Detail```verwaltung/gliederungen/:gliederungsId```
+    - 🟢Create ```verwaltung/gliederungen/erstellen```
+  - 🟢Veranstaltungen ```verwaltung/veranstaltungen```
     - 🟢List
-      - 🟢Detail
-    - 🟢Create
-  - 🟢Benutzer
+      - 🟢Detail ```verwaltung/veranstaltungen/:veranstaltungsId```
+    - 🟢Create ```verwaltung/veranstaltungen/erstellen```
+  - 🟢Benutzer ```verwaltung/benutzer```
     - 🟢List
-      - 🟢Detail
-    - 🟢Create
-  - Orte (Häuser, Zeltplätze, Räume)
+      - 🟢Detail ```verwaltung/benutzer/:benutzerId```
+    - 🟢Create ```verwaltung/benutzer/create```
+  - Orte (Häuser, Zeltplätze, Räume) ```verwaltung/orte```
