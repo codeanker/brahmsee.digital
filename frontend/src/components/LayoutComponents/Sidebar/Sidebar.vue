@@ -121,7 +121,6 @@ const sidebarOpen = ref(false)
             :src="userProfileImage(loggedInUser)"
             alt=""
           />
-          <span class="sr-only">Your profile</span>
           <span aria-hidden="true">Hallo, {{ loggedInUser?.firstname }}</span>
         </router-link>
         <button

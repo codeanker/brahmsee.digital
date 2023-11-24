@@ -36,7 +36,7 @@ defineProps<{
             />
           </svg>
         </div>
-        <div class="font-bold uppercase text-white">Brahmsee</div>
+        <div class="font-bold uppercase text-white">Brahmsee.digital</div>
       </div>
     </router-link>
     <nav class="flex flex-1 flex-col">
