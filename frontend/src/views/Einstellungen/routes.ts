@@ -49,24 +49,24 @@ const routesEinstellungen: Route[] = [
     component: () => import('./Orte/Create.vue'),
   },
   {
-    name: 'Ortsdetails',
+    name: 'Ort Details',
     path: '/verwaltung/orte/:id',
     component: () => import('./Orte/Detail.vue'),
   },
 
   {
     name: 'Alle Veranstaltungen',
-    path: '/verwaltung/orte',
+    path: '/verwaltung/veranstaltung',
     component: () => import('./Veranstaltungen/List.vue'),
   },
   {
     name: 'Veranstaltung erstellen',
-    path: '/verwaltung/orte/erstellen',
+    path: '/verwaltung/veranstaltung/erstellen',
     component: () => import('./Veranstaltungen/Create.vue'),
   },
   {
     name: 'Veranstaltungsdetails',
-    path: '/verwaltung/orte/:id',
+    path: '/verwaltung/veranstaltung/:id',
     component: () => import('./Veranstaltungen/Detail.vue'),
   },
 ]

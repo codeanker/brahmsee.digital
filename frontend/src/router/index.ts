@@ -3,7 +3,7 @@ import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import authenticationGuard from './authenticationGuard'
 
 import routesDashboard from '@/views/Dashboard/routes'
-import routesHouses from '@/views/Houses/routes'
+import routesEinstellungen from '@/views/Einstellungen/routes'
 import routesAuth from '@/views/Login/routes'
 import routesRegistration from '@/views/Registration/routes'
 import routesUser from '@/views/Users/routes'
@@ -24,12 +24,11 @@ const routes: Route[] = [
 
   ...routesAuth,
   ...routesRegistration,
-  ...routesVeranstaltungen,
 
   {
     path: '/',
     component: () => import('../layouts/BaseLayout.vue'),
-    children: [...routesDashboard, ...routesUser, ...routesHouses],
+    children: [...routesDashboard, ...routesUser, ...routesVeranstaltungen, ...routesEinstellungen],
   },
 ]
 

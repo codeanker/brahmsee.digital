@@ -21,10 +21,10 @@
     - 🟢List ```verwaltung/gliederungen```
     - 🟢Detail ```verwaltung/gliederungen/:id```
     - 🟢Create ```verwaltung/gliederungen/erstellen```
-  - 🟢Veranstaltungen ```verwaltung/veranstaltungen```
-    - 🟢List ```verwaltung/veranstaltungen```
-    - 🟢Detail ```verwaltung/veranstaltungen/:id```
-    - 🟢Create ```verwaltung/veranstaltungen/erstellen```
+  - 🟢Veranstaltungen ```verwaltung/veranstaltung```
+    - 🟢List ```verwaltung/veranstaltung```
+    - 🟢Detail ```verwaltung/veranstaltung/:id```
+    - 🟢Create ```verwaltung/veranstaltung/erstellen```
   - 🟢Benutzer ```verwaltung/benutzer```
     - 🟢List ```verwaltung/benutzer```
     - 🟢Detail ```verwaltung/benutzer/:id```
