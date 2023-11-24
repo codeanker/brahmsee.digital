@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import BasicHeader from '@/components/BasicHeader.vue'
+import BasicHeader from '@/components/LayoutComponents/BasicHeader.vue'
 import BaseLayout from '@/layouts/BaseLayout.vue'
 
 const emit = defineEmits<{

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Footer from '@/components/Footer.vue'
-import Sidebar from '@/components/Sidebar/Sidebar.vue'
+import Footer from '@/components/LayoutComponents/Footer.vue'
+import Sidebar from '@/components/LayoutComponents/Sidebar/Sidebar.vue'
 </script>
 
 <template>

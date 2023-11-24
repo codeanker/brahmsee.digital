@@ -28,5 +28,8 @@
   - 🟢Benutzer ```verwaltung/benutzer```
     - 🟢List
       - 🟢Detail ```verwaltung/benutzer/:benutzerId```
-    - 🟢Create ```verwaltung/benutzer/create```
+    - 🟢Create ```verwaltung/benutzer/erstellen```
   - Orte (Häuser, Zeltplätze, Räume) ```verwaltung/orte```
+    - List
+      - Detail ```verwaltung/benutzer/:benutzerId```
+    - Create ```verwaltung/benutzer/erstellen```
