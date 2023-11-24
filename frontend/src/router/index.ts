@@ -18,7 +18,7 @@ const routes: Route[] = [
   {
     name: 'Developer',
     path: '/developer',
-    component: import('../views/Developer.vue'),
+    component: () => import('../views/Developer.vue'),
   },
 
   ...routesAuth,
@@ -26,7 +26,7 @@ const routes: Route[] = [
 
   {
     path: '/',
-    component: import('../layouts/BaseLayout.vue'),
+    component: () => import('../layouts/BaseLayout.vue'),
     children: [...routesDashboard, ...routesUser, ...routesHouses],
   },
 ]

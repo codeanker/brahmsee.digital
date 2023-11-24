@@ -4,7 +4,7 @@ const routesDashboard: Route[] = [
   {
     name: 'Dashboard',
     path: '/dashboard',
-    component: import('./DashboardView.vue'),
+    component: () => import('./DashboardView.vue'),
   },
 ]
 

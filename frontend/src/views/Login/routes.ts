@@ -4,7 +4,7 @@ const routesAuth: Route[] = [
   {
     name: 'Login',
     path: '/login',
-    component: import('./Login.vue'),
+    component: () => import('./Login.vue'),
     meta: {
       public: true,
     },

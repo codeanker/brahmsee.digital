@@ -4,7 +4,7 @@ const routesRegistration: Route[] = [
   {
     name: 'RegistrationStart',
     path: '/registration',
-    component: import('./RegistrationStart.vue'),
+    component: () => import('./RegistrationStart.vue'),
     meta: {
       public: true,
     },
@@ -12,7 +12,7 @@ const routesRegistration: Route[] = [
   {
     name: 'RegisterLogin',
     path: '/registration/registerLogin',
-    component: import('./RegisterLogin.vue'),
+    component: () => import('./RegisterLogin.vue'),
     meta: {
       public: true,
     },
@@ -20,7 +20,7 @@ const routesRegistration: Route[] = [
   {
     name: 'RegisterUsername',
     path: '/registration/registerUsername',
-    component: import('./RegisterUsername.vue'),
+    component: () => import('./RegisterUsername.vue'),
     meta: {
       public: true,
     },
