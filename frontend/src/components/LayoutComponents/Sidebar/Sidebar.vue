@@ -30,7 +30,7 @@ const teams: TeamItem[] = [
   { id: 1, name: 'Benutzer:innen', route: '/verwaltung/benutzer', initial: 'B', current: false },
   { id: 2, name: 'Gliederungen', route: '/verwaltung/gliederungen', initial: 'V', current: false },
   { id: 3, name: 'Orte', route: '/verwaltung/orte', initial: 'O', current: false },
-  { id: 4, name: 'Veranstaltungen', route: '/veranstaltungen', initial: 'V', current: false },
+  { id: 4, name: 'Veranstaltungen', route: '/verwaltung/veranstaltungen', initial: 'V', current: false },
 ]
 
 const sidebarOpen = ref(false)
