@@ -41,7 +41,7 @@ const version = `${import.meta.env.VITE_APP_VERSION || '0.0.0'}-${import.meta.en
           v-model="password"
           type="password"
           class="w-full"
-          placeholder="Password"
+          placeholder="Passwort"
         />
         <Button
           color="primary"
