@@ -23,6 +23,23 @@ export async function gliederungManagementList(options: GliederungManagementList
     where: {
       name: options.input.filter.name,
     },
+    select: {
+      id: true,
+      name: true,
+      edv: true,
+      bezirk: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      landesverband: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+    },
   })
   return list
 }

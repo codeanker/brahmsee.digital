@@ -4,7 +4,7 @@ let commitHash = '0000000'
 </script>
 
 <template>
-  <footer class="text-sm text-center">
+  <footer class="text-sm text-center mt-5">
     <div class="w-full text-center mb-3 text-sm leading-snug opacity-50">
       Made with <span class="text-primary-700">♥︎</span> in Germany · Supported by
       <a

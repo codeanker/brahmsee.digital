@@ -29,7 +29,7 @@ const routesEinstellungen: Route[] = [
   },
   {
     name: 'Gliederungsdetails',
-    path: '/verwaltung/gliederungen/:id',
+    path: '/verwaltung/gliederungen/:gliederungId',
     component: () => import('./Gliederungen/Detail.vue'),
   },
   {
