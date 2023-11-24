@@ -14,8 +14,8 @@ import { ref } from 'vue'
 
 import SidebarItems, { type NavItem, type TeamItem } from './SidebarItems.vue'
 
-import { logout, loggedInUser } from '@/composables/useAuthentication'
-import userProfileImage from '@/helpers/userProfileImage'
+import { logout, loggedInAccount } from '@/composables/useAuthentication'
+import personProfileImage from '@/helpers/personProfileImage'
 
 const navigation: NavItem[] = [
   { name: 'Dashboard', route: '/dashboard', icon: RocketLaunchIcon, current: false },
@@ -118,10 +118,10 @@ const sidebarOpen = ref(false)
         >
           <img
             class="h-10 w-10 rounded-full bg-green-700"
-            :src="userProfileImage(loggedInUser)"
+            :src="personProfileImage(loggedInAccount)"
             alt=""
           />
-          <span aria-hidden="true">Hallo, {{ loggedInUser?.firstname }}</span>
+          <span aria-hidden="true">Hallo, {{ loggedInAccount?.firstname }}</span>
         </router-link>
         <button
           type="button"
@@ -151,7 +151,7 @@ const sidebarOpen = ref(false)
         <span class="sr-only">Your profile</span>
         <img
           class="h-8 w-8 rounded-full bg-green-700"
-          :src="userProfileImage(loggedInUser)"
+          :src="personProfileImage(loggedInAccount)"
           alt=""
         />
       </a>

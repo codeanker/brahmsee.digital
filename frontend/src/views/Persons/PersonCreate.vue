@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { UserIcon } from '@heroicons/vue/24/outline'
 
-import FormUserGeneral from '@/components/forms/user/FormUserGeneral.vue'
+import FormPersonGeneral from '@/components/forms/person/FormPersonGeneral.vue'
 import BasicHeader from '@/components/LayoutComponents/BasicHeader.vue'
 import Button from '@/components/UIComponents/Button.vue'
 </script>
@@ -22,6 +22,6 @@ import Button from '@/components/UIComponents/Button.vue'
       </template>
     </BasicHeader>
 
-    <FormUserGeneral mode="create" />
+    <FormPersonGeneral mode="create" />
   </div>
 </template>

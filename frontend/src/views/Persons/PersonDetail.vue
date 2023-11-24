@@ -6,10 +6,10 @@ import { useRoute } from 'vue-router'
 
 import { apiClient } from '@/api'
 import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
-import FormUserGeneral from '@/components/forms/user/FormUserGeneral.vue'
+import FormPersonGeneral from '@/components/forms/person/FormPersonGeneral.vue'
 import Button from '@/components/UIComponents/Button.vue'
-import { loggedInUser, logout } from '@/composables/useAuthentication'
-import userProfileImage from '@/helpers/userProfileImage'
+import { loggedInAccount, logout } from '@/composables/useAuthentication'
+import personProfileImage from '@/helpers/personProfileImage'
 import router from '@/router'
 
 const secondaryNavigation = [{ name: 'Account', href: '#', current: true }]
@@ -19,21 +19,21 @@ const password = ref({
   password_old: '',
   password: '',
   password_confirm: '',
-  id: loggedInUser.value!.id,
+  id: loggedInAccount.value!.id,
 })
 
 const route = useRoute()
-const { state: user, execute: fetchUser } = useAsyncState(async () => {
-  const userId = route.params.userId as string
-  const result = await apiClient.user.managementGet.query({ id: parseInt(userId) })
-  isSelf.value = result?.id === loggedInUser.value?.id
+const { state: person, execute: fetchUser } = useAsyncState(async () => {
+  const personId = route.params.personId as string
+  const result = await apiClient.person.managementGet.query({ id: parseInt(personId) })
+  isSelf.value = result?.id === loggedInAccount.value?.id
   return result
 }, null)
 
 const { execute: updatePassword, error: errorPassword } = useAsyncState(
   async () => {
     // @todo
-    // await apiClient.user.changePassword.mutate({ password: password.value })
+    // await apiClient.person.changePassword.mutate({ password: password.value })
     logout()
   },
   null,
@@ -42,7 +42,7 @@ const { execute: updatePassword, error: errorPassword } = useAsyncState(
 
 const { execute: deleteUser, error: errorDelete } = useAsyncState(
   async () => {
-    await apiClient.user.managementRemove.mutate({ id: user.value!.id })
+    await apiClient.person.managementRemove.mutate({ id: person.value!.id })
     await router.push({ name: 'Users' })
   },
   null,
@@ -88,15 +88,14 @@ const { execute: deleteUser, error: errorDelete } = useAsyncState(
         <h2 class="text-base font-semibold leading-7">Profil Informationen</h2>
         <p class="mt-1 text-sm leading-6 text-gray-400">Hier kannst du das Nutzerprofil bearbeiten.</p>
         <img
-          :src="userProfileImage(user, 512)"
-          :alt="user?.email"
+          :src="personProfileImage(person, 512)"
           class="mt-12 h-64 w-64 flex-none rounded-full border-4 border-gray-800 bg-gray-800 object-cover"
         />
       </div>
 
-      <FormUserGeneral
-        v-if="user !== null"
-        :user="user"
+      <FormPersonGeneral
+        v-if="person !== null"
+        :person="person"
         :is-self="isSelf"
         class="md:col-span-2"
         mode="update"

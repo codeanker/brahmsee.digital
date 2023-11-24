@@ -5,21 +5,21 @@ import prisma from '../../prisma'
 
 import { hashPassword, passwordMatches } from '@codeanker/authentication'
 
-export const ZUserChangePasswordInputSchema = z.strictObject({
+export const ZAccountChangePasswordInputSchema = z.strictObject({
   id: z.number().int(),
   password_old: z.string(),
   password: z.string(),
   password_confirm: z.string(),
 })
 
-export type TUserChangePasswordInputSchema = z.infer<typeof ZUserChangePasswordInputSchema>
+export type TAccountChangePasswordInputSchema = z.infer<typeof ZAccountChangePasswordInputSchema>
 
-type UserChangePasswordOptions = {
-  input: TUserChangePasswordInputSchema
+type AccountChangePasswordOptions = {
+  input: TAccountChangePasswordInputSchema
 }
 
-export async function userChangePassword(options: UserChangePasswordOptions) {
-  const { password } = await prisma.user.findFirstOrThrow({
+export async function accountChangePassword(options: AccountChangePasswordOptions) {
+  const { password } = await prisma.account.findFirstOrThrow({
     where: {
       id: options.input.id,
     },
@@ -41,7 +41,7 @@ export async function userChangePassword(options: UserChangePasswordOptions) {
     })
   }
 
-  await prisma.user.update({
+  await prisma.account.update({
     where: {
       id: options.input.id,
     },
