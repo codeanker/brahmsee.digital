@@ -4,6 +4,8 @@ import dayjs from 'dayjs'
 import { Browser, chromium, BrowserContext, firefox, webkit, Page } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 
+import { insertJwtToken } from './helpers/insertJwtToken'
+
 import { testUtils } from '@codeanker/api'
 
 describe(`View: verwaltung/benutzer`, () => {
@@ -22,5 +24,12 @@ describe(`View: verwaltung/benutzer`, () => {
     browser?.close()
     await testUtils.cleanup()
   })
-  it.skip('Write tests.', async () => {})
+  it('Ist View angelegt', async () => {
+    const page = await context.newPage()
+    await insertJwtToken(page, data.accessToken)
+
+    await page.goto(`https://localhost.codeanker.com:8080/verwaltung/benutzer`)
+    await page.waitForLoadState('networkidle')
+    await page.screenshot({ path: `${__dirname}/screenshots/${name}_verwaltung-benutzer.png` })
+  })
 })

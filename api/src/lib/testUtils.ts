@@ -1,3 +1,4 @@
+import { authenticationLogin } from '../authentication'
 import prisma from '../prisma'
 
 import { hashPassword } from '@codeanker/authentication'
@@ -13,7 +14,12 @@ export async function createMock() {
       role: 'ADMIN',
     },
   })
-  return { user, userPassword }
+  const { accessToken } = await authenticationLogin({
+    email: user.email,
+    password: userPassword,
+  })
+
+  return { user, userPassword, accessToken }
 }
 
 export async function cleanup() {
