@@ -26,7 +26,16 @@ defineProps<{
   <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-green-700 px-6">
     <router-link :to="{ name: 'Dashboard' }">
       <div class="flex h-16 shrink-0 items-center space-x-4">
-        <i class="fa-sharp fa-light fa-tent fa-xl w-auto text-white"></i>
+        <div class="w-7 fill-white">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 576 512"
+          >
+            <path
+              d="M32.1 512H0l2.9-32L32 160 288 0 544 176l29 304 3 32H543.9 32.1zM272 480V47.7L62.4 178.7 35 480H272zm32 0H405.4L304 288.4V480zm137.6 0h99.2L513.6 193.9 304 49.8V220L441.6 480z"
+            />
+          </svg>
+        </div>
         <div class="font-bold uppercase text-white">Brahmsee</div>
       </div>
     </router-link>
@@ -62,7 +71,7 @@ defineProps<{
           </ul>
         </li>
         <li>
-          <div class="text-xs font-semibold leading-6 text-green-200">Einstellungen</div>
+          <div class="text-xs font-semibold leading-6 text-green-200">Verwaltung</div>
           <ul
             role="list"
             class="-mx-2 mt-2 space-y-1"
