@@ -88,3 +88,4 @@ typings/
 *.sw*
 reports
 api/tsconfig.tsbuildinfo
+tsconfig.tsbuildinfo

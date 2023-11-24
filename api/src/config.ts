@@ -1,11 +1,11 @@
 import path from 'node:path'
-import { fileURLToPath } from 'node:url'
+// import { fileURLToPath } from 'url'
 
 import config from 'config'
 import { z } from 'zod'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+// const __filename = fileURLToPath(import.meta.url)
+// const __dirname = path.dirname(__filename)
 
 const baseConfig = config.util.loadFileConfigs(path.join(__dirname, '..', 'config'))
 
