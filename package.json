@@ -19,7 +19,8 @@
     "lint:fix": "eslint \"**/*.{vue,ts,js}\" --fix",
     "lint-staged": "lint-staged -c .lintstagedrc.js",
     "prepare": "husky install",
-    "typecheck": "vue-tsc -b"
+    "typecheck": "vue-tsc -b",
+    "test": "vitest"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",
