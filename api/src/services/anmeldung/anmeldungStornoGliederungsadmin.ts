@@ -1,6 +1,6 @@
 import z from 'zod'
 
-import { throwIfNotGliederungsadmin } from '../../helpers/throwIfNotGliederungsadmin'
+import { getGliederungRequireAdmin } from '../../helpers/getGliederungRequireAdmin'
 import prisma from '../../prisma'
 import type { AuthenticatedContext } from '../../trpc'
 
@@ -17,29 +17,28 @@ type AnmeldungStornoGliederungsadminOptions = AuthenticatedContext & {
 }
 
 export async function anmeldungStornoGliederungsadmin(options: AnmeldungStornoGliederungsadminOptions) {
+  const gliederung = await getGliederungRequireAdmin(options.ctx.accountId)
+
   const anmeldung = await prisma.anmeldung.findFirstOrThrow({
     where: {
       id: options.input.data.anmeldungId,
+      unterveranstaltung: {
+        gliederungId: gliederung.id,
+      },
     },
     select: {
       id: true,
       unterveranstaltung: {
         select: {
           id: true,
-          gliederungId: true,
         },
       },
     },
   })
 
-  await throwIfNotGliederungsadmin({
-    accountId: options.ctx.accountId,
-    gliederungId: anmeldung.unterveranstaltung.gliederungId,
-  })
-
   return prisma.anmeldung.update({
     where: {
-      id: options.input.data.anmeldungId,
+      id: anmeldung.id,
     },
     data: {
       status: 'STORNIERT',

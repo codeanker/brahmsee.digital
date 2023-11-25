@@ -44,7 +44,7 @@ const getColor = computed(() => {
 
 <style scoped>
 .spinner {
-  animation: rotateMe 2s linear infinite;
+  animation: rotateMe 4s linear infinite;
 }
 
 @keyframes rotateMe {

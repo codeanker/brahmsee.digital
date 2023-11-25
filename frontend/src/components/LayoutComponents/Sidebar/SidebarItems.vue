@@ -76,22 +76,28 @@ const isCurrentRoute = (path: string) => {
                   class="rounded-full h-1.5 aspect-square bg-primary-500 absolute z-50"
                 ></div>
               </div>
-              <template v-if="!child.disabled">
-                <router-link
-                  :to="child.route"
-                  class="flex items-center text-sm flex-grow"
-                  :class="{
-                    'text-primary-500': isCurrentRoute(child.route),
-                  }"
-                >
-                  {{ child.name }}
-                </router-link>
-              </template>
-              <template v-else>
-                <div class="flex items-center text-sm flex-grow cursor-not-allowed">
-                  {{ child.name }}
-                </div>
-              </template>
+              <router-link
+                v-if="child.route.startsWith('/')"
+                :to="child.route"
+                class="flex items-center text-sm flex-grow"
+                :class="{
+                  'text-primary-500': isCurrentRoute(child.route),
+                  'cursor-not-allowed': child.disabled,
+                }"
+              >
+                {{ child.name }}
+              </router-link>
+              <a
+                v-else
+                :href="child.route"
+                class="flex items-center text-sm flex-grow"
+                :class="{
+                  'text-primary-500': isCurrentRoute(child.route),
+                  'cursor-not-allowed': child.disabled,
+                }"
+              >
+                {{ child.name }}
+              </a>
 
               <!-- Badge -->
               <div
