@@ -2,21 +2,25 @@
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/vue'
 import { CheckIcon, ChevronDownIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
-import { ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref, type Ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 import { apiClient } from '@/api'
 
-const router = useRoute()
+const route = useRoute()
+const router = useRouter()
 
 const { state: veranstaltungen } = useAsyncState(async () => {
   return apiClient.veranstaltung.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
 }, [])
 
-let selectedVeranstaltung = ref(router.params.veranstaltungId)
+let selectedVeranstaltung: Ref<number> = ref(+route.params.veranstaltungId)
 const veranstaltungTitle = (id: number) => {
   return veranstaltungen.value.find((veranstaltung) => veranstaltung.id === id)?.name
 }
+watch(selectedVeranstaltung, (newValue) => {
+  router.push(`/veranstaltung/${newValue}/dashboard`)
+})
 </script>
 
 <template>
@@ -39,7 +43,7 @@ const veranstaltungTitle = (id: number) => {
         </div>
         <div class="grow text-white leading-3">
           <p class="text-sm font-normal text-primary-200 mb-0">Veranstaltung</p>
-          <h5 class="mb-1">{{ veranstaltungTitle(selectedVeranstaltung) }}</h5>
+          <h6 class="mb-1">{{ veranstaltungTitle(selectedVeranstaltung) }}</h6>
         </div>
         <div class="flex-shrink-0">
           <ChevronDownIcon class="w-6 h-6"></ChevronDownIcon>

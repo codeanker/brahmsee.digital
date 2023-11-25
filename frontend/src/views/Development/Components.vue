@@ -31,7 +31,7 @@ const loadingCode = `
 <Loading size="lg" />`
 const badgeCode = `<Badge>Badge</Badge>`
 const buttonCode = `
-<Button :to="{ name: 'Dashboard' }">Primary Link</Button>
+<Button :to="{ name: 'DashboardView' }">Primary Link</Button>
 <Button color="primary">Primary</Button>
 <Button color="secondary">Secondary</Button>
 <Button color="success">Success</Button>
@@ -116,7 +116,7 @@ const basicEditorCode = `
         :code="buttonCode"
       >
         <div class="flex items-center space-x-2">
-          <Button :to="{ name: 'Dashboard' }">Primary Link</Button>
+          <Button :to="{ name: 'DashboardView' }">Primary Link</Button>
           <Button color="primary">Primary</Button>
           <Button color="secondary">Secondary</Button>
           <Button color="success">Success</Button>
