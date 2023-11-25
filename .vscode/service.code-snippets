@@ -1,0 +1,72 @@
+{
+	// Place your brahmsee.digital workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and
+	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope
+	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is
+	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders.
+	// Placeholders with the same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"scope": "javascript,typescript",
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	"router": {
+		"scope": "typescript",
+		"prefix": "trouter",
+		"body": [
+			"import { publicProcedure, router } from '../../trpc'",
+      "",
+      "export const $1Router = router({",
+      "  // TODO: add your API methods here",
+      "})",
+
+		],
+		"description": "Create a router"
+	},
+	"router-route-mutation": {
+		"prefix": "troute-mutation",
+		"body": [
+			"$1: protectedProcedure([]).input(Z${1/(.)/${1:/capitalize}/}InputSchema).mutation($1),",
+		]
+	},
+	"router-route-query": {
+		"prefix": "troute-query",
+		"body": [
+			"$1: protectedProcedure([]).input(Z${1/(.)/${1:/capitalize}/}InputSchema).query($1),",
+		]
+	},
+	"endpoint-create": {
+		"prefix": "endpoint-create",
+		"body": [
+			"import z from 'zod'",
+      "",
+      "import prisma from '../../prisma'",
+      "",
+      "export const Z${1/(.)/${1:/capitalize}/}CreateInputSchema = z.strictObject({",
+      "  data: z.strictObject({",
+      "",
+      "  }),",
+      "})",
+      "",
+      "export type T${1/(.)/${1:/capitalize}/}CreateInputSchema = z.infer<typeof Z${1/(.)/${1:/capitalize}/}CreateInputSchema>",
+      "",
+      "type ${1/(.)/${1:/capitalize}/}CreateOptions = {",
+      "  input: T${1/(.)/${1:/capitalize}/}CreateInputSchema",
+      "}",
+      "",
+      "export async function $1Create(options: ${1/(.)/${1:/capitalize}/}CreateOptions) {",
+      "  return prisma.$1.create({",
+      "    data: options.input.data,",
+      "    select: {",
+      "      id: true,",
+      "    },",
+      "  })",
+      "}",
+		]
+	}
+}
