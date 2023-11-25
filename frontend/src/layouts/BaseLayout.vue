@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Sidebar from '@/components/LayoutComponents/Sidebar/Sidebar.vue'
+import Breadcrumbs from '@/components/UIComponents/Breadcrumbs.vue'
 </script>
 
 <template>
@@ -12,6 +13,7 @@ import Sidebar from '@/components/LayoutComponents/Sidebar/Sidebar.vue'
       <div class="col-span-9 relative py-12 px-8">
         <div class="bg-white absolute inset-y-0 left-0 -right-full"></div>
         <div class="relative">
+          <Breadcrumbs></Breadcrumbs>
           <router-view />
         </div>
       </div>
