@@ -4,8 +4,8 @@ import { computed } from 'vue'
 
 const props = withDefaults(
   defineProps<{
-    color: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'white'
-    size: 'sm' | 'md' | 'lg'
+    color?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'white'
+    size?: 'sm' | 'md' | 'lg'
   }>(),
   {
     color: 'primary',
