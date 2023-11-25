@@ -26,12 +26,13 @@ app.use(serve('./static', { defer: false }))
 app.use(cacheControl)
 
 // initialize trpc middleware
-const adapter = createKoaMiddleware({
-  router: appRouter,
-  createContext,
-  prefix: '/api/trpc',
-})
-app.use(adapter)
+app.use(
+  createKoaMiddleware({
+    prefix: '/api/trpc',
+    router: appRouter,
+    createContext,
+  })
+)
 
 app.use(router.routes())
 
