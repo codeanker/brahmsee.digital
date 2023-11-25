@@ -17,6 +17,7 @@ export async function personAuthenticatedGet(options: PersonAuthenticatedGetOpti
       id: options.ctx.accountId,
     },
     select: {
+      id: true,
       person: {
         select: {
           id: true,
