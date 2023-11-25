@@ -2,7 +2,7 @@ import { readLines } from "https://deno.land/std@0.171.0/io/read_lines.ts";
 
 async function startProcess() {
   const proxyProcess = Deno.run({
-    cmd: ["fly", "proxy", "5432", "-a", "db-app-name"],
+    cmd: ["flyctl", "proxy", "5432", "-a", "db-app-name"],
     stdout: "piped",
   });
 
