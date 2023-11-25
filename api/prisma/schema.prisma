@@ -137,24 +137,39 @@ model Person {
 }
 
 model Account {
-  id          Int          @id @default(autoincrement())
-  email       String       @unique
-  password    String
-  role        Role
-  personId    Int          @unique
-  person      Person       @relation(fields: [personId], references: [id])
-  gliederung  Gliederung[]
-  activatedAt DateTime?
+  id                  Int                   @id @default(autoincrement())
+  email               String                @unique
+  password            String
+  role                Role
+  personId            Int                   @unique
+  person              Person                @relation(fields: [personId], references: [id])
+  activatedAt         DateTime?
+  GliederungToAccount GliederungToAccount[]
 }
 
 model Gliederung {
-  id                   Int                  @id @default(autoincrement())
+  id                   Int                   @id @default(autoincrement())
   name                 String
-  edv                  String               @unique
+  edv                  String                @unique
   unterveranstaltungen Unterveranstaltung[]
   personen             Person[]
-  adminIds             Int[]
-  admins               Account[]
+  GliederungToAccount  GliederungToAccount[]
+}
+
+enum GliederungAccountRole {
+  DELIGATIONSLEITER
+  BETREUER
+  TEILNEHMER
+}
+
+model GliederungToAccount {
+  id           Int                   @id @default(autoincrement())
+  gliederungId Int
+  gliederung   Gliederung            @relation(fields: [gliederungId], references: [id])
+  accountId    Int
+  account      Account               @relation(fields: [accountId], references: [id])
+  role         GliederungAccountRole
+  @@unique([gliederungId, accountId])
 }
 
 enum AnmeldungStatus {

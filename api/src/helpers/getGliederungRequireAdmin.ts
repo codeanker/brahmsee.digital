@@ -10,9 +10,10 @@ import prisma from '../prisma'
 export async function getGliederungRequireAdmin(accountId: number) {
   return prisma.gliederung.findFirstOrThrow({
     where: {
-      admins: {
+      GliederungToAccount: {
         some: {
-          id: accountId,
+          accountId,
+          role: 'DELIGATIONSLEITER',
         },
       },
     },

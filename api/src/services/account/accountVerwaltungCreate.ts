@@ -36,11 +36,12 @@ export async function accountVerwaltungCreate(options: AccountVerwaltungCreateOp
         },
       },
       activatedAt: options.input.data.isActiv ? new Date() : null,
-      gliederung:
+      GliederungToAccount:
         options.input.data.adminInGliederungId !== undefined
           ? {
-              connect: {
-                id: options.input.data.adminInGliederungId,
+              create: {
+                gliederungId: options.input.data.adminInGliederungId,
+                role: 'DELIGATIONSLEITER',
               },
             }
           : undefined,
