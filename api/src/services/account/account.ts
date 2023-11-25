@@ -1,5 +1,6 @@
 import { protectedProcedure, router } from '../../trpc'
 
+import { ZAccountActivateInputSchema, accountActivate } from './accountActivate'
 import { ZAccountChangePasswordInputSchema, accountChangePassword } from './accountChangePassword'
 import { ZAccountGliederungAdminCreateInputSchema, accountGliederungAdminCreate } from './accountGliederungAdminCreate'
 import { ZAccountVerwaltungCreateInputSchema, accountVerwaltungCreate } from './accountVerwaltungCreate'
@@ -14,4 +15,5 @@ export const accountRouter = router({
   gliederungAdminCreate: protectedProcedure(['ADMIN'])
     .input(ZAccountGliederungAdminCreateInputSchema)
     .mutation(accountGliederungAdminCreate),
+  activate: protectedProcedure(['ADMIN']).input(ZAccountActivateInputSchema).mutation(accountActivate),
 })
