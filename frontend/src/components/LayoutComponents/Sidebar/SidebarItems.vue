@@ -26,14 +26,27 @@ defineProps<{
       <div
         v-if="item.type === 'SidebarItem'"
         :key="item.name"
-        class="flex flex-col p-2 rounded-lg cursor-pointer hover:bg-gray-200 transition-all"
+        class="flex flex-col"
       >
-        <div class="flex items-center space-x-3">
+        <router-link
+          :to="item.route"
+          class="flex items-center space-x-3 p-2 rounded-lg cursor-pointer hover:bg-gray-200 transition-all"
+        >
           <component
             :is="item.icon"
             class="h-5 aspect-square"
           />
           <div class="grow text-sm">{{ item.name }}</div>
+        </router-link>
+        <div class="flex flex-col">
+          <router-link
+            v-for="child in item.children"
+            :key="child.name"
+            :to="child.route"
+            class="flex items-center text-sm"
+          >
+            {{ child.name }}
+          </router-link>
         </div>
       </div>
       <div

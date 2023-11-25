@@ -3,65 +3,65 @@ import type { Route } from '@/router'
 const routesVeranstaltungen: Route[] = [
   {
     name: 'DashboardView',
-    path: '/veranstaltung/:id/dashboard',
+    path: '/veranstaltung/:veranstaltungId/dashboard',
     component: () => import('./DashboardView.vue'),
   },
 
   {
     name: 'AuswertungenView',
-    path: '/veranstaltung/:id/auswertung',
+    path: '/veranstaltung/:veranstaltungId/auswertung',
     component: () => import('./Auswertung/AuswertungView.vue'),
   },
   {
     name: 'AuswertungVerpflegungView',
-    path: '/veranstaltung/:id/auswertung/verpflegung',
+    path: '/veranstaltung/:veranstaltungId/auswertung/verpflegung',
     component: () => import('./Auswertung/VerpflegungView.vue'),
   },
   {
     name: 'AuswertungenAnmeldungenView',
-    path: '/veranstaltung/:id/auswertung/anmeldungen',
+    path: '/veranstaltung/:veranstaltungId/auswertung/anmeldungen',
     component: () => import('./Auswertung/AnmeldungenView.vue'),
   },
 
   {
     name: 'AnmeldungenView',
-    path: '/veranstaltung/:id/anmeldungen',
+    path: '/veranstaltung/:veranstaltungId/anmeldungen',
     component: () => import('./Anmeldungen/AnmeldungenView.vue'),
   },
   {
     name: 'AnmeldungenCrewView',
-    path: '/veranstaltung/:id/anmeldungen/crew',
+    path: '/veranstaltung/:veranstaltungId/anmeldungen/crew',
     component: () => import('./Anmeldungen/CrewView.vue'),
   },
   {
     name: 'AnmeldungenGliederungView',
-    path: '/veranstaltung/:id/anmeldungen/gliederungen',
-    component: () => import('./Anmeldungen/Gliederung/GliederungView.vue'),
+    path: '/veranstaltung/:veranstaltungId/anmeldungen/gliederungen',
+    component: () => import('./Anmeldungen/GliederungView.vue'),
   },
   {
     name: 'AnmeldungenGliederungTeilnehmendeView',
-    path: '/veranstaltung/:id/anmeldungen/gliederungen/:gliederungId/teilnehmende',
-    component: () => import('./Anmeldungen/Gliederung/TeilnehmendeView.vue'),
+    path: '/veranstaltung/:veranstaltungId/anmeldungen/teilnehmende',
+    component: () => import('./Anmeldungen/TeilnehmendeView.vue'),
   },
 
   {
     name: 'ProgrammListeView',
-    path: '/veranstaltung/:id/programm',
+    path: '/veranstaltung/:veranstaltungId/programm',
     component: () => import('./Programm/ListeView.vue'),
   },
   {
     name: 'ProgrammDetailView',
-    path: '/veranstaltung/:id/programm/:programmId',
+    path: '/veranstaltung/:veranstaltungId/programm/:programmId',
     component: () => import('./Programm/DetailView.vue'),
   },
   {
     name: 'ProgrammErstellenView',
-    path: '/veranstaltung/:id/programm/erstellen',
+    path: '/veranstaltung/:veranstaltungId/programm/erstellen',
     component: () => import('./Programm/ErstellenView.vue'),
   },
   {
     name: 'LageplanView',
-    path: '/veranstaltung/:id/lageplan',
+    path: '/veranstaltung/:veranstaltungId/lageplan',
     component: () => import('./LageplanView.vue'),
   },
 ]
