@@ -5,7 +5,7 @@ import { apiClient } from '@/api'
 import router from '@/router'
 
 const { state: gliederungenList } = useAsyncState(async () => {
-  return apiClient.gliederung.managementList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
+  return apiClient.gliederung.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
 }, [])
 </script>
 

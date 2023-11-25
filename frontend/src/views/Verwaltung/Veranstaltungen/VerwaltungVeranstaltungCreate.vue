@@ -8,7 +8,7 @@ import BasicInputNumber from '@/components/BasicInputs/BasicInputNumber.vue'
 import type { RouterInput } from '@codeanker/api'
 import { ValidateForm } from '@codeanker/validation'
 
-let model = ref<Partial<RouterInput['veranstaltung']['veranstaltungCreate']['data']>>({
+let model = ref<Partial<RouterInput['veranstaltung']['verwaltungCreate']['data']>>({
   name: '',
   beginn: new Date(),
   ende: new Date(),
@@ -20,8 +20,8 @@ let model = ref<Partial<RouterInput['veranstaltung']['veranstaltungCreate']['dat
 })
 
 async function create() {
-  await apiClient.veranstaltung.veranstaltungCreate.mutate({
-    data: model.value as RouterInput['veranstaltung']['veranstaltungCreate']['data'],
+  await apiClient.veranstaltung.verwaltungCreate.mutate({
+    data: model.value as RouterInput['veranstaltung']['verwaltungCreate']['data'],
   })
 }
 </script>

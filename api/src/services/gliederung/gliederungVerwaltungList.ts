@@ -4,19 +4,19 @@ import prisma from '../../prisma'
 import type { AuthenticatedContext } from '../../trpc'
 import { defineQuery } from '../../types/ZQuery'
 
-export const ZGliederungManagementListInputSchema = defineQuery({
+export const ZGliederungVerwaltungListInputSchema = defineQuery({
   filter: z.strictObject({
     name: z.string().optional(),
   }),
 })
 
-export type TGliederungManagementListInputSchema = z.infer<typeof ZGliederungManagementListInputSchema>
+export type TGliederungVerwaltungListInputSchema = z.infer<typeof ZGliederungVerwaltungListInputSchema>
 
-type GliederungManagementListOptions = AuthenticatedContext & {
-  input: TGliederungManagementListInputSchema
+type GliederungVerwaltungListOptions = AuthenticatedContext & {
+  input: TGliederungVerwaltungListInputSchema
 }
 
-export async function gliederungManagementList(options: GliederungManagementListOptions) {
+export async function gliederungVerwaltungList(options: GliederungVerwaltungListOptions) {
   const { skip, take } = options.input.pagination
   const list = await prisma.gliederung.findMany({
     skip,

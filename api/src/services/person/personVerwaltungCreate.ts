@@ -4,7 +4,7 @@ import z from 'zod'
 import prisma from '../../prisma'
 import type { AuthenticatedContext } from '../../trpc'
 
-export const ZPersonManagementCreateInputSchema = z.strictObject({
+export const ZPersonVerwaltungCreateInputSchema = z.strictObject({
   data: z.strictObject({
     firstname: z.string(),
     lastname: z.string(),
@@ -13,13 +13,13 @@ export const ZPersonManagementCreateInputSchema = z.strictObject({
   }),
 })
 
-export type TPersonManagementCreateInputSchema = z.infer<typeof ZPersonManagementCreateInputSchema>
+export type TPersonVerwaltungCreateInputSchema = z.infer<typeof ZPersonVerwaltungCreateInputSchema>
 
-type PersonManagementCreateOptions = AuthenticatedContext & {
-  input: TPersonManagementCreateInputSchema
+type PersonVerwaltungCreateOptions = AuthenticatedContext & {
+  input: TPersonVerwaltungCreateInputSchema
 }
 
-export async function personManagementCreate(options: PersonManagementCreateOptions) {
+export async function personVerwaltungCreate(options: PersonVerwaltungCreateOptions) {
   return prisma.person.create({
     data: options.input.data,
     select: {

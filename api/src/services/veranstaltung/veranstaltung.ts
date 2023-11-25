@@ -1,10 +1,13 @@
 import { protectedProcedure, router } from '../../trpc'
 
-import { ZVeranstaltungCreateInputSchema, veranstaltungCreate } from './veranstaltungCreate'
+import {
+  ZVeranstaltungVerwaltungCreateInputSchema,
+  veranstaltungVerwaltungCreate,
+} from './veranstaltungVerwaltungCreate'
 
 export const veranstaltungRouter = router({
-  veranstaltungCreate: protectedProcedure(['ADMIN'])
-    .input(ZVeranstaltungCreateInputSchema)
-    .mutation(veranstaltungCreate),
+  verwaltungCreate: protectedProcedure(['ADMIN'])
+    .input(ZVeranstaltungVerwaltungCreateInputSchema)
+    .mutation(veranstaltungVerwaltungCreate),
   // TODO: add your API methods here
 })

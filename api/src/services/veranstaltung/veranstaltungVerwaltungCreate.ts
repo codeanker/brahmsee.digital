@@ -3,7 +3,7 @@ import z from 'zod'
 import prisma from '../../prisma'
 import type { AuthenticatedContext } from '../../trpc'
 
-export const ZVeranstaltungCreateInputSchema = z.strictObject({
+export const ZVeranstaltungVerwaltungCreateInputSchema = z.strictObject({
   data: z.strictObject({
     name: z.string(),
     beginn: z.date(),
@@ -16,13 +16,13 @@ export const ZVeranstaltungCreateInputSchema = z.strictObject({
   }),
 })
 
-export type TVeranstaltungCreateInputSchema = z.infer<typeof ZVeranstaltungCreateInputSchema>
+export type TVeranstaltungVerwaltungCreateInputSchema = z.infer<typeof ZVeranstaltungVerwaltungCreateInputSchema>
 
-type VeranstaltungCreateOptions = AuthenticatedContext & {
-  input: TVeranstaltungCreateInputSchema
+type VeranstaltungVerwaltungCreateOptions = AuthenticatedContext & {
+  input: TVeranstaltungVerwaltungCreateInputSchema
 }
 
-export async function veranstaltungCreate(options: VeranstaltungCreateOptions) {
+export async function veranstaltungVerwaltungCreate(options: VeranstaltungVerwaltungCreateOptions) {
   return prisma.veranstaltung.create({
     data: options.input.data,
     select: {
