@@ -55,14 +55,14 @@ const { model, errorMessage } = props.disableValidation
           class="btn rounded-l-none border border-solid border-gray-100 bg-gray-100"
           @click="passwordVisible = !passwordVisible"
         >
-          <EyeIcon
-            v-if="passwordVisible"
-            class="w-6 h-6 stroke-primary-700"
-          ></EyeIcon>
           <EyeSlashIcon
             v-if="passwordVisible"
             class="w-6 h-6 stroke-primary-700"
           ></EyeSlashIcon>
+          <EyeIcon
+            v-else
+            class="w-6 h-6 stroke-primary-700"
+          ></EyeIcon>
         </button>
       </div>
     </div>

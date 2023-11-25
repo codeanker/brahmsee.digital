@@ -19,15 +19,17 @@ export async function login({ email, password }: { email: string; password: stri
   } catch (error) {
     loginError.value = error as Error
   }
+  loginPending.value = false
 }
 
 export async function reAuthenticate() {
+  if (localStorage.getItem('jwt') === undefined) return false
   try {
     loggedInAccount.value = await apiClient.person.authenticatedGet.query()
+    return loggedInAccount.value
   } catch (error) {
-    console.error(error)
+    return false
   }
-  return loggedInAccount.value
 }
 
 export async function logout() {

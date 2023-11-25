@@ -42,7 +42,7 @@ const isAuthed = (roles: Role[]) =>
       throw new TRPCError({ code: 'UNAUTHORIZED' })
     }
     const account = await prisma.account.findUniqueOrThrow({
-      where: { id: parseInt(ctx.accountId) },
+      where: { id: ctx.accountId },
       select: {
         id: true,
         role: true,

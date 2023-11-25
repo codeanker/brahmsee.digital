@@ -4,7 +4,7 @@
 		{
 			"type": "npm",
 			"script": "start:frontend",
-			"label": "Start frontend",
+			"label": "start:frontend",
 			"problemMatcher": [],
 			"presentation": {
 				"reveal": "always",
@@ -16,7 +16,7 @@
 		{
 			"type": "npm",
 			"script": "start:api",
-			"label": "Start api",
+			"label": "start:api",
 			"problemMatcher": [],
 			"presentation": {
 				"reveal": "always",
@@ -27,9 +27,61 @@
 		},
 		{
 			"type": "npm",
-			"script": "test",
-			"label": "Run Test",
+			"script": "start:docs",
+			"label": "start:docs",
 			"problemMatcher": [],
+			"presentation": {
+				"reveal": "silent",
+				"panel": "new",
+				"group": "misc",
+				"close": false
+			}
+		},
+		{
+			"type": "npm",
+			"script": "test",
+			"label": "start:test",
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"group": "misc",
+				"close": false
+			}
+		},
+		{
+			"label": "start:apps",
+			"dependsOn": [
+				"start:api",
+				"start:frontend",
+				"start:test",
+				"start:docs"
+			],
+			"problemMatcher": []
+		},
+		{
+			"label": "run:migration",
+			"type": "shell",
+			"command": "npx prisma migrate deploy & npx prisma generate",
+			"options": {
+        "cwd": "${workspaceFolder}/api"
+      },
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "always",
+				"revealProblems": "onProblem",
+				"panel": "new",
+				"close": true
+			}
+		},
+		{
+			"type": "npm",
+			"script": "createAccount",
+			"label": "run:createAccount",
+			"problemMatcher": [],
+			"options": {
+        "cwd": "${workspaceFolder}/api"
+      },
 			"presentation": {
 				"reveal": "always",
 				"panel": "new",
@@ -37,14 +89,5 @@
 				"close": false
 			}
 		},
-		{
-			"label": "Start apps",
-			"dependsOn": [
-				"Start frontend",
-				"Start api",
-				"Run Test"
-			],
-			"problemMatcher": []
-		}
 	]
 }

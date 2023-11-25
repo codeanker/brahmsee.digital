@@ -1,48 +1,58 @@
 <script setup lang="ts">
-withDefaults(
+import { SunIcon } from '@heroicons/vue/24/outline'
+import { computed } from 'vue'
+
+const props = withDefaults(
   defineProps<{
-    color: 'primary' | 'secondary' | 'success' | 'warning' | 'danger'
-    size: 'sm' | 'md' | 'lg'
+    color?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'white'
+    size?: 'sm' | 'md' | 'lg'
   }>(),
   {
     color: 'primary',
-    size: 'md',
+    size: 'sm',
   }
 )
+const getSize = computed(() => {
+  switch (props.size) {
+    case 'sm':
+      return '6'
+    case 'md':
+      return '12'
+    case 'lg':
+      return '24'
+    default:
+      return '6'
+  }
+})
+
+const getColor = computed(() => {
+  switch (props.color) {
+    case 'white':
+      return 'white'
+    default:
+      return props.color + '-600'
+  }
+})
 </script>
 
 <template>
-  <span
-    :class="`before:bg-${color}-100 after:bg-${color}-100 before:w-${size} before:h-${size} after:w-${size} after:h-${size}`"
-  ></span>
+  <SunIcon
+    class="spinner inline-block"
+    :class="`w-${getSize} h-${getSize} text-${getColor}`"
+  ></SunIcon>
 </template>
 
-<style>
-.loader {
-  display: inline-block;
-  position: relative;
-}
-.loader::after,
-.loader::before {
-  content: '';
-  border-radius: 50%;
-  position: absolute;
-  left: 0;
-  top: 0;
-  animation: animloader 2s linear infinite;
-}
-.loader::after {
-  animation-delay: 1s;
+<style scoped>
+.spinner {
+  animation: rotateMe 2s linear infinite;
 }
 
-@keyframes animloader {
+@keyframes rotateMe {
   0% {
-    transform: scale(0);
-    opacity: 1;
+    transform: rotate(-360deg);
   }
   100% {
-    transform: scale(1);
-    opacity: 0;
+    transform: rotate(0);
   }
 }
 </style>

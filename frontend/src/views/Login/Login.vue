@@ -18,7 +18,7 @@ async function loginWithRecirect() {
   if (response) router.push({ name: 'Dashboard' })
 }
 
-const version = `${import.meta.env.VITE_APP_VERSION || '0.0.0'}-${import.meta.env.VITE_APP_COMMIT_HASH || 'local'}`
+const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.env.VITE_APP_COMMIT_HASH || 'unknown'}`
 </script>
 
 <template>
@@ -54,7 +54,7 @@ const version = `${import.meta.env.VITE_APP_VERSION || '0.0.0'}-${import.meta.en
           full
         >
           <template v-if="loginPending">
-            <Loading class="fill-white"></Loading>
+            <Loading color="white"></Loading>
           </template>
           <template v-else> Login </template>
         </Button>

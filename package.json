@@ -6,12 +6,15 @@
   "workspaces": [
     "api",
     "frontend",
+    "docs",
     "packages/*"
   ],
   "scripts": {
     "start": "docker-compose -f docker-compose-services.yml -f docker-compose.yml build && docker-compose -f docker-compose-services.yml -f docker-compose.yml up",
     "start:api": "npm run dev -w ./api",
     "start:frontend": "npm run dev -w ./frontend",
+    "start:docs": "npm run docs:dev -w ./docs",
+    "migrate:api": "npm exec -w ./api prisma migrate deploy",
     "lint": "eslint \"**/*.{vue,ts,js}\"",
     "lint:fix": "eslint \"**/*.{vue,ts,js}\" --fix",
     "lint-staged": "lint-staged -c .lintstagedrc.js",
@@ -37,5 +40,8 @@
     "typescript": "^5.3.2",
     "vitest": "^0.34.6",
     "vue-tsc": "^1.8.22"
+  },
+  "dependencies": {
+    "simple-syntax-highlighter": "^3.0.2"
   }
 }

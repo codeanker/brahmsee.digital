@@ -3,10 +3,11 @@ import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import authenticationGuard from './authenticationGuard'
 
 import routesDashboard from '@/views/Dashboard/routes'
-import routesEinstellungen from '@/views/Einstellungen/routes'
+import routesDevelopment from '@/views/Development/routes'
 import routesAuth from '@/views/Login/routes'
 import routesPerson from '@/views/Persons/routes'
 import routesVeranstaltungen from '@/views/Veranstaltungen/routes'
+import routesVerwaltung from '@/views/Verwaltung/routes'
 
 export type Route = RouteRecordRaw & {
   meta?: {
@@ -24,8 +25,15 @@ const routes: Route[] = [
   ...routesAuth,
   {
     path: '/',
+    redirect: { name: 'Login' },
     component: () => import('../layouts/BaseLayout.vue'),
-    children: [...routesDashboard, ...routesPerson, ...routesVeranstaltungen, ...routesEinstellungen],
+    children: [
+      ...routesDashboard,
+      ...routesPerson,
+      ...routesVeranstaltungen,
+      ...routesVerwaltung,
+      ...routesDevelopment,
+    ],
   },
 ]
 

@@ -7,16 +7,15 @@ export default function makeGuard(): NavigationGuardWithThis<undefined> {
     if (!loggedInAccount.value && !loginPending.value) {
       await reAuthenticate()
     }
-
     if (loggedInAccount.value) {
       if (to.name === 'Login') {
-        next({ name: 'Dashboard' })
+        return next({ name: 'Dashboard' })
       } else {
-        next()
+        return next()
       }
     } else {
       if (to.meta.public) {
-        next()
+        return next()
       }
       return next({ name: 'Login', query: { redirect: to.path, ...to.query } })
     }
