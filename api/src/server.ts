@@ -7,6 +7,7 @@ import { createKoaMiddleware } from 'trpc-koa-adapter'
 import config from './config'
 import { createContext } from './context'
 import { logger } from './logger'
+import cacheControl from './middleware/cache-control'
 import router from './routes'
 
 import { appRouter } from './index'
@@ -15,12 +16,7 @@ export const app = new Koa()
 
 app.use(cors({ origin: '*' }))
 app.use(serve('./static', { defer: false }))
-app.use(async (ctx, next) => {
-  if (!ctx.url.startsWith('/api/') && ctx.url !== '/' && ctx.url !== '/index.html') {
-    ctx.set('cache-control', 'max-age: 31536000, immutable') // 1 week
-  }
-  return await next()
-})
+app.use(cacheControl)
 
 // initialize trpc middleware
 const adapter = createKoaMiddleware({
@@ -30,7 +26,6 @@ const adapter = createKoaMiddleware({
 })
 app.use(adapter)
 
-// initialize koa router for custome routes
 app.use(router.routes())
 
 app.use(async (ctx, next) => {
@@ -39,8 +34,8 @@ app.use(async (ctx, next) => {
   await serve('./static')(ctx, next)
 })
 
-app.listen(config.port)
-logger.info(`app listening on http://0.0.0.0:${config.port}`)
+app.listen(config.server.port, config.server.host)
+logger.info(`app listening on http://0.0.0.0:${config.server.port}`)
 
 export type AppRouter = typeof appRouter
 export type RouterInput = inferRouterInputs<AppRouter>
