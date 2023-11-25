@@ -11,8 +11,8 @@ export const ZVeranstaltungCreateInputSchema = z.strictObject({
     ort: z.string(),
     meldebeginn: z.date(),
     meldeschluss: z.date(),
-    maxTeilnehmende: z.string(),
-    teilnahmegebuehr: z.string(),
+    maxTeilnehmende: z.number().int(),
+    teilnahmegebuehr: z.number().int(),
   }),
 })
 
@@ -24,11 +24,7 @@ type VeranstaltungCreateOptions = AuthenticatedContext & {
 
 export async function veranstaltungCreate(options: VeranstaltungCreateOptions) {
   return prisma.veranstaltung.create({
-    data: {
-      ...options.input.data,
-      teilnahmegebuehr: parseInt(options.input.data.teilnahmegebuehr),
-      maxTeilnehmende: parseInt(options.input.data.maxTeilnehmende),
-    },
+    data: options.input.data,
     select: {
       id: true,
     },
