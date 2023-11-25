@@ -5,6 +5,7 @@ import { anmeldungRouter } from './anmeldung/anmeldung'
 import { authenticationRouter } from './authentication/authentication'
 import { gliederungRouter } from './gliederung/gliederung'
 import { personRouter } from './person/person'
+import { veranstaltungRouter } from './veranstaltung/veranstaltung'
 
 export const serviceRouter = router({
   person: personRouter,
@@ -12,4 +13,5 @@ export const serviceRouter = router({
   gliederung: gliederungRouter,
   account: accountRouter,
   anmeldung: anmeldungRouter,
+  veranstaltung: veranstaltungRouter,
 })

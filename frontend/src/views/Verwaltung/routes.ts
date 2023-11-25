@@ -57,17 +57,17 @@ const routesVerwaltung: Route[] = [
   {
     name: 'Alle Veranstaltungen',
     path: '/verwaltung/veranstaltung',
-    component: () => import('./Veranstaltungen/List.vue'),
+    component: () => import('./Veranstaltungen/VerwaltungVeranstaltungList.vue'),
   },
   {
     name: 'Veranstaltung erstellen',
     path: '/verwaltung/veranstaltung/erstellen',
-    component: () => import('./Veranstaltungen/Create.vue'),
+    component: () => import('./Veranstaltungen/VerwaltungVeranstaltungCreate.vue'),
   },
   {
     name: 'Veranstaltungsdetails',
     path: '/verwaltung/veranstaltung/:id',
-    component: () => import('./Veranstaltungen/Detail.vue'),
+    component: () => import('./Veranstaltungen/VerwaltungVeranstaltungDetail.vue'),
   },
 ]
 
