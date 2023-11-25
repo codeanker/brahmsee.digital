@@ -22,5 +22,3 @@ jobs:
       - run: flyctl deploy --remote-only --build-arg version=${{steps.version.outputs.prop}} --build-arg commitHash=${{steps.set-commit.outputs.commit}}
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-      - uses: denoland/setup-deno@v1
-      - run: deno run --allow-run .github/migrate.ts
