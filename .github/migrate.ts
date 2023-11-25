@@ -2,7 +2,7 @@ import { readLines } from "https://deno.land/std@0.171.0/io/read_lines.ts";
 
 async function startProcess() {
   const proxyProcess = Deno.run({
-    cmd: ["fly", "proxy", "5432", "-a", "db-app-name"],
+    cmd: ["flyctl", "proxy", "5432", "-a", "db-app-name"],
     stdout: "piped",
   });
 
@@ -23,7 +23,7 @@ async function startProcess() {
 const endProcess = await startProcess();
 
 const prismaMigrate = Deno.run({
-  cmd: ["npm", "exec", "prisma", "migrate", "deploy"],
+  cmd: ["npm", "run", "migrate:api"],
 });
 await prismaMigrate.status();
 prismaMigrate.close();

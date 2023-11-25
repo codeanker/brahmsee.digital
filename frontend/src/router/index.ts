@@ -4,10 +4,10 @@ import authenticationGuard from './authenticationGuard'
 
 import routesDashboard from '@/views/Dashboard/routes'
 import routesDevelopment from '@/views/Development/routes'
-import routesEinstellungen from '@/views/Einstellungen/routes'
 import routesAuth from '@/views/Login/routes'
 import routesPerson from '@/views/Persons/routes'
 import routesVeranstaltungen from '@/views/Veranstaltungen/routes'
+import routesVerwaltung from '@/views/Verwaltung/routes'
 
 export type Route = RouteRecordRaw & {
   meta?: {
@@ -31,7 +31,7 @@ const routes: Route[] = [
       ...routesDashboard,
       ...routesPerson,
       ...routesVeranstaltungen,
-      ...routesEinstellungen,
+      ...routesVerwaltung,
       ...routesDevelopment,
     ],
   },

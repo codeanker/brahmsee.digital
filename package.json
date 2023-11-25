@@ -14,6 +14,7 @@
     "start:api": "npm run dev -w ./api",
     "start:frontend": "npm run dev -w ./frontend",
     "start:docs": "npm run docs:dev -w ./docs",
+    "migrate:api": "npm exec -w ./api prisma migrate deploy",
     "lint": "eslint \"**/*.{vue,ts,js}\"",
     "lint:fix": "eslint \"**/*.{vue,ts,js}\" --fix",
     "lint-staged": "lint-staged -c .lintstagedrc.js",
