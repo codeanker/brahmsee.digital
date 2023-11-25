@@ -2,7 +2,6 @@
 import {
   MagnifyingGlassIcon,
   ArrowRightOnRectangleIcon,
-  HomeIcon,
   UserGroupIcon,
   ChartBarIcon,
   MapIcon,
@@ -12,6 +11,7 @@ import {
   GlobeEuropeAfricaIcon,
   CubeIcon,
   CalendarDaysIcon,
+  RocketLaunchIcon,
 } from '@heroicons/vue/24/outline'
 
 import SidebarItems, { type DividerItem, type SidebarItem } from './SidebarItems.vue'
@@ -22,12 +22,13 @@ import personProfileImage from '@/helpers/personProfileImage'
 let mainRoute = '/veranstaltung/1'
 
 const navigation: Array<SidebarItem | DividerItem> = [
-  { type: 'SidebarItem', name: 'Dashboard', route: '/dashboard', icon: HomeIcon },
+  { type: 'SidebarItem', name: 'Dashboard', route: '/dashboard', icon: RocketLaunchIcon },
   {
     type: 'SidebarItem',
     name: 'Anmeldungen',
     route: mainRoute + '/anmeldungen',
     icon: UserGroupIcon,
+    showChildren: false,
     children: [
       {
         type: 'SidebarItem',

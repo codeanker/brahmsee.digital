@@ -12,6 +12,8 @@ export const ZAccountVerwaltungCreateInputSchema = z.strictObject({
     password: z.string(),
     email: z.string().email(),
     roleId: z.nativeEnum(Role),
+    isActiv: z.boolean().optional(),
+    adminInGliederungId: z.number().int().optional(),
   }),
 })
 
@@ -33,6 +35,15 @@ export async function accountVerwaltungCreate(options: AccountVerwaltungCreateOp
           lastname: options.input.data.lastname,
         },
       },
+      activatedAt: options.input.data.isActiv ? new Date() : null,
+      gliederung:
+        options.input.data.adminInGliederungId !== undefined
+          ? {
+              connect: {
+                id: options.input.data.adminInGliederungId,
+              },
+            }
+          : undefined,
     },
     select: {
       id: true,
