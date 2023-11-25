@@ -4,6 +4,7 @@ import { watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { apiClient } from '@/api'
+import Loading from '@/components/UIComponents/Loading.vue'
 
 const route = useRoute()
 
@@ -15,7 +16,11 @@ watch(
   }
 )
 
-const { state: veranstaltung, execute } = useAsyncState(async () => {
+const {
+  state: veranstaltung,
+  execute,
+  isLoading,
+} = useAsyncState(async () => {
   return apiClient.veranstaltung.verwaltungGet.query({ id: parseInt(route.params.veranstaltungId as string) })
 }, null)
 </script>
@@ -23,6 +28,9 @@ const { state: veranstaltung, execute } = useAsyncState(async () => {
 <template>
   <div>
     <h5>Veranstaltungen Detail {{ veranstaltung?.name }}</h5>
-    {{ veranstaltung }}
+    <div v-if="isLoading"><Loading color="primary" /> Loading...</div>
+    <div v-else>
+      {{ veranstaltung }}
+    </div>
   </div>
 </template>

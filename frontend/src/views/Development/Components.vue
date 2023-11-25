@@ -116,7 +116,7 @@ const basicEditorCode = `
         :code="buttonCode"
       >
         <div class="flex items-center space-x-2">
-          <Button :to="{ name: 'DashboardView' }">Primary Link</Button>
+          <Button>Primary Link</Button>
           <Button color="primary">Primary</Button>
           <Button color="secondary">Secondary</Button>
           <Button color="success">Success</Button>
