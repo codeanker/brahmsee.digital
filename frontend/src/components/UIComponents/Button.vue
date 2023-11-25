@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { type RouterLinkProps } from 'vue-router'
 
-type Color = 'primary' | 'secondary' | 'success' | 'warning' | 'danger'
+type Color = 'primary' | 'secondary' | 'link' | 'success' | 'warning' | 'danger'
 defineProps<Props>()
 
 const colors: Record<Color, string> = {
-  primary: 'text-white bg-green-600 hover:bg-green-500 focus:outline-green-600',
-  secondary: 'text-white bg-secondary-500 hover:bg-secondary-400 focus:outline-secondary-500',
+  primary: 'text-white bg-primary-500 hover:bg-primary-600 focus:outline-primary-500',
+  secondary: 'text-white bg-primary-300 hover:bg-primary-400 focus:outline-primary-500',
+  link: 'text-primary-950 bg-transparent',
   success: '',
   warning: 'text-white bg-orange-500 hover:bg-orange-400 focus:outline-orange-500',
   danger: 'text-white bg-red-500 hover:bg-red-400 focus:outline-red-500',
@@ -25,7 +26,7 @@ interface Props {
     type="button"
     :class="
       [
-        'block rounded-md px-3 py-2 text-center text-sm font-semibold shadow-sm',
+        'block rounded-lg px-3 py-2 text-center text-sm font-medium',
         'focus:outline focus:outline-2 focus:outline-offset-2',
         'disabled:cursor-not-allowed',
         colors[color],
