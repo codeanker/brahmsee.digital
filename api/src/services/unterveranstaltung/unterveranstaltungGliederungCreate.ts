@@ -1,7 +1,7 @@
 import { TRPCError } from '@trpc/server'
 import z from 'zod'
 
-import { throwIfNotGliederungsadmin } from '../../helpers/throwIfNotGliederungsadmin'
+import { getGliederungRequireAdmin } from '../../helpers/getGliederungRequireAdmin'
 import prisma from '../../prisma'
 import type { AuthenticatedContext } from '../../trpc'
 
@@ -12,7 +12,6 @@ export const ZUnterveranstaltungGliederungCreateInputSchema = z.strictObject({
     teilnahmegebuehr: z.number({ description: 'In Cent' }).int(),
     meldebeginn: z.date(),
     meldeschluss: z.date(),
-    gliederungId: z.number().int(),
   }),
 })
 
@@ -26,10 +25,7 @@ type UnterveranstaltungGliederungCreateOptions = AuthenticatedContext & {
 
 export async function unterveranstaltungGliederungCreate(options: UnterveranstaltungGliederungCreateOptions) {
   // check logged in user is admin of gliederung
-  await throwIfNotGliederungsadmin({
-    accountId: options.ctx.accountId,
-    gliederungId: options.input.data.gliederungId,
-  })
+  const gliederung = await getGliederungRequireAdmin(options.ctx.accountId)
   const veranstaltung = await prisma.veranstaltung.findFirstOrThrow({
     where: {
       id: options.input.data.veranstaltungId,
@@ -54,7 +50,10 @@ export async function unterveranstaltungGliederungCreate(options: Unterveranstal
     })
   }
   return prisma.unterveranstaltung.create({
-    data: options.input.data,
+    data: {
+      ...options.input.data,
+      gliederungId: gliederung.id,
+    },
     select: {
       id: true,
     },

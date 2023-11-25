@@ -29,10 +29,15 @@ export async function accountGliederungAdminCreate(options: AccountGliederungAdm
     },
     select: {
       id: true,
-      adminIds: true,
+      GliederungToAccount: {
+        select: {
+          accountId: true,
+          role: true,
+        },
+      },
     },
   })
-  if (gliederung.adminIds !== null && gliederung.adminIds.length > 0) {
+  if (gliederung.GliederungToAccount.filter((relation) => relation.role === 'DELIGATIONSLEITER').length > 0) {
     throw new TRPCError({
       code: 'FORBIDDEN',
       message: 'Gliederung hat bereits einen Admin',

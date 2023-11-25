@@ -6,11 +6,29 @@
 import { PrismaClient } from '@prisma/client'
 
 import config from './config'
+import { logger } from './logger'
+import { isDevelopment } from './util/is-production'
 
-export default new PrismaClient({
+const log = logger.child({ label: 'db' })
+
+const client = new PrismaClient({
+  log: [
+    {
+      emit: 'event',
+      level: 'query',
+    },
+  ],
   datasources: {
     db: {
       url: config.db.url,
     },
   },
 })
+
+if (isDevelopment()) {
+  client.$on('query', (e) => {
+    log.debug(e.query)
+  })
+}
+
+export default client

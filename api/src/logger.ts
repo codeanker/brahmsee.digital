@@ -1,9 +1,20 @@
 import { createLogger, format, transports } from 'winston'
 
-// Configure the Winston logger. For the complete documentation see https://github.com/winstonjs/winston
+import { isDevelopment } from './util/is-production'
+
+const myFormat = format.printf(({ level, message, label, timestamp }) => {
+  return `${timestamp} [${label}] ${level} >> ${message}`
+})
+
 export const logger = createLogger({
-  // To see more detailed errors, change this to 'debug'
-  level: 'info',
-  format: format.combine(format.splat(), format.simple()),
+  level: isDevelopment() ? 'debug' : 'info',
+  format: format.combine(
+    format.label({
+      label: 'main',
+    }),
+    format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
+    format.colorize(),
+    myFormat
+  ),
   transports: [new transports.Console()],
 })

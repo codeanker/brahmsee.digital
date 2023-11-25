@@ -47,6 +47,7 @@ export const ZAnmeldungCreateInputSchema = z.strictObject({
     ),
     mahlzeitenIds: z.array(z.number().int()).optional(),
     uebernachtungsTage: z.array(z.date()).optional(),
+    tshirtBestellt: z.boolean().optional(),
   }),
 })
 
@@ -103,6 +104,7 @@ export async function anmeldungCreate(options: AnmeldungCreateOptions) {
               }
             : undefined,
           uebernachtungsTage: options.input.data.uebernachtungsTage,
+          tshirtBestellt: options.input.data.tshirtBestellt,
         },
       },
     },
