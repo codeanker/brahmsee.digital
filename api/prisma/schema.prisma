@@ -25,7 +25,7 @@ model Person {
   id          Int         @id @default(autoincrement())
   firstname   String
   lastname    String
-  birthday    String?
+  birthday    DateTime? @db.Date
   gender      Gender?
   accountId   Int?         @unique
   anmeldungen Anmeldung[]
