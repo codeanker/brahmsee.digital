@@ -3,7 +3,6 @@ import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import authenticationGuard from './authenticationGuard'
 
 import routesAusschreibungen from '@/views/Ausschreibungen/routes'
-import routesDashboard from '@/views/Dashboard/routes'
 import routesDevelopment from '@/views/Development/routes'
 import routesAuth from '@/views/Login/routes'
 import routesPerson from '@/views/Persons/routes'
@@ -24,7 +23,6 @@ const routes: Route[] = [
   },
 
   ...routesAuth,
-  ...routesDashboard,
   ...routesAusschreibungen,
   {
     path: '/',
