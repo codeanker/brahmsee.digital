@@ -4,10 +4,15 @@ import VueDatePicker from '@vuepic/vue-datepicker'
 import useValidationModel from '../../composables/useValidationModel'
 
 import BasicFormGroup from './components/BasicFormGroup.vue'
-import { type BasicInputDefaultProps } from './defaultProps'
 
-const props = defineProps<
-  BasicInputDefaultProps<typeof VueDatePicker.modelValue> & {
+const props = withDefaults(
+  defineProps<{
+    placeholder?: string
+    id?: string
+    label?: string
+    name?: string
+    // eslint-disable-next-line vue/no-unused-properties
+    modelValue: typeof VueDatePicker.modelValue
     range?: boolean
     autoRange?: typeof VueDatePicker.autoRange
     multiCalendars?: typeof VueDatePicker.multiCalendars
@@ -27,49 +32,75 @@ const props = defineProps<
     closeOnScroll?: boolean
     autoApply?: boolean
     markers?: typeof VueDatePicker.markers
+    enableTimePicker?: boolean
+    format?: typeof VueDatePicker.format
+    modelType?: typeof VueDatePicker.modelType
+  }>(),
+  {
+    placeholder: undefined,
+    id: undefined,
+    label: undefined,
+    name: undefined,
+    rules: undefined,
+    required: false,
+    autoRange: undefined,
+    multiCalendars: false,
+    flow: undefined,
+    utc: false,
+    timezone: undefined,
+    presetRanges: undefined,
+    markers: undefined,
+    autoApply: true,
+    icon: undefined,
+    format: 'MM/dd/yyyy HH:mm',
+    modelType: undefined,
   }
->()
-
+)
 const emit = defineEmits<{
-  (event: 'update:modelValue', eventArgs: typeof VueDatePicker.modelValue | undefined): void
+  (event: 'update:modelValue', eventArgs: boolean | undefined): void
 }>()
 
-const { model, errorMessage } = useValidationModel<typeof VueDatePicker.modelValue>(props, emit)
+const { model, errorMessage } = useValidationModel(props, emit)
 </script>
 
 <template>
-  <BasicFormGroup
-    :id="id"
-    :name="name"
-    :label="label"
-    :error-message="errorMessage"
-  >
-    <VueDatePicker
-      :id="id || name || label"
-      v-model="model"
-      :name="id || name || label"
-      :placeholder="placeholder || label || name"
-      :class="{ 'rounded-r-none': $slots.append }"
-      input-class-name="input-style"
-      :range="range"
-      :auto-range="autoRange"
-      :multi-calendars="multiCalendars"
-      :month-picker="monthPicker"
-      :time-picker="timePicker"
-      :year-picker="yearPicker"
-      :week-picker="weekPicker"
-      :text-input="textInput"
-      :inline="inline"
-      :multi-dates="multiDates"
-      :flow="flow"
-      :utc="utc"
-      :vertical="vertical"
-      :model-auto="modelAuto"
-      :timezone="timezone"
-      :preset-ranges="presetRanges"
-      :close-on-scroll="closeOnScroll"
-      :auto-apply="autoApply"
-      :markers="markers"
-    />
-  </BasicFormGroup>
+  <div>
+    <BasicFormGroup
+      :id="id"
+      :name="name"
+      :label="label"
+      :error-message="errorMessage"
+    >
+      <VueDatePicker
+        :id="id || name || label"
+        v-model="model"
+        :name="id || name || label"
+        :placeholder="placeholder || label || name"
+        :class="{ 'rounded-r-none': $slots.append }"
+        input-class-name="input-style"
+        :range="range"
+        :auto-range="autoRange"
+        :multi-calendars="multiCalendars"
+        :month-picker="monthPicker"
+        :time-picker="timePicker"
+        :year-picker="yearPicker"
+        :week-picker="weekPicker"
+        :text-input="textInput"
+        :inline="inline"
+        :multi-dates="multiDates"
+        :flow="flow"
+        :utc="utc"
+        :vertical="vertical"
+        :model-auto="modelAuto"
+        :timezone="timezone"
+        :preset-ranges="presetRanges"
+        :close-on-scroll="closeOnScroll"
+        :auto-apply="autoApply"
+        :markers="markers"
+        :enable-time-picker="timePicker || enableTimePicker"
+        :format="format"
+        :model-type="modelType"
+      />
+    </BasicFormGroup>
+  </div>
 </template>
