@@ -26,6 +26,7 @@ async function createUser() {
         lastname: lastname,
         password: password,
         roleId: roleId,
+        isActiv: true,
       },
     },
   })
