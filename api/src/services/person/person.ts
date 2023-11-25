@@ -1,6 +1,5 @@
 import { router, protectedProcedure } from '../../trpc'
 
-import { ZAccountChangePasswordInputSchema, accountChangePassword } from './accountChangePassword'
 import { personAuthenticatedGet, ZPersonAuthenticatedGetInputSchema } from './personAuthenticatedGet'
 import { personManagementCreate, ZPersonManagementCreateInputSchema } from './personManagementCreate'
 import { personManagementGet, ZPersonManagementGetInputSchema } from './personManagementGet'
@@ -21,8 +20,5 @@ export const personRouter = router({
     .input(ZPersonManagementPatchInputSchema)
     .mutation(personManagementPatch),
   managementList: protectedProcedure(['ADMIN']).input(ZPersonManagementListInputSchema).query(personManagementList),
-  changePassword: protectedProcedure(['ADMIN', 'GLIEDERUNG_ADMIN'])
-    .input(ZAccountChangePasswordInputSchema)
-    .mutation(accountChangePassword),
   // [additional routes]
 })
