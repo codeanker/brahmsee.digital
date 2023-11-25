@@ -31,7 +31,7 @@ describe(`Feature: Login`, () => {
     await page.getByPlaceholder('Passwort').click()
     await page.getByPlaceholder('Passwort').fill(data.accountPassword)
     await page.getByPlaceholder('Passwort').press('Enter')
-    await page.screenshot({ path: `${__dirname}/screenshots/${name}_login.png` })
+    // await page.screenshot({ path: `${__dirname}/screenshots/${name}_login.png` })
     await vi.waitUntil(() => !page.url().includes('login'))
   })
   it.skip('Passwort kann zurück gesetzt werden.', async () => {})

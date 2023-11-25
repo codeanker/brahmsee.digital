@@ -31,6 +31,6 @@ describe(`View: verwaltung/benutzer`, () => {
 
     await page.goto(`https://localhost.codeanker.com:8080/verwaltung/benutzer`)
     await page.waitForLoadState('networkidle')
-    await page.screenshot({ path: `${__dirname}/screenshots/${name}_verwaltung-benutzer.png` })
+    // await page.screenshot({ path: `${__dirname}/screenshots/${name}_verwaltung-benutzer.png` })
   })
 })
