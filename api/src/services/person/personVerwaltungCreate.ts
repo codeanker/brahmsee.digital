@@ -8,7 +8,7 @@ export const ZPersonVerwaltungCreateInputSchema = z.strictObject({
   data: z.strictObject({
     firstname: z.string(),
     lastname: z.string(),
-    birthdate: z.string().nullable(),
+    birthday: z.string().nullable(),
     gender: z.nativeEnum(Gender).optional(),
   }),
 })

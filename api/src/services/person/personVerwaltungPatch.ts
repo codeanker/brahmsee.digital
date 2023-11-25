@@ -10,7 +10,7 @@ export const ZPersonVerwaltungPatchInputSchema = z.strictObject({
     email: z.string(),
     firstname: z.string(),
     lastname: z.string(),
-    birthdate: z.string().nullable(),
+    birthday: z.string().nullable(),
     gender: z.nativeEnum(Gender).nullable(),
   }),
 })
