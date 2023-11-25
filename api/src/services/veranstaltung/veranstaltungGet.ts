@@ -14,7 +14,7 @@ type VeranstaltungVerwaltungGetOptions = AuthenticatedContext & {
 }
 
 export async function veranstaltungVerwaltungGet(options: VeranstaltungVerwaltungGetOptions) {
-  return prisma.veranstaltung.findFirstOrThrow({
+  const veranstaltung = await prisma.veranstaltung.findUnique({
     where: {
       id: options.input.id,
     },
@@ -30,4 +30,26 @@ export async function veranstaltungVerwaltungGet(options: VeranstaltungVerwaltun
       teilnahmegebuehr: true,
     },
   })
+  const anmeldungen = await prisma.anmeldung.findMany({
+    where: {
+      unterveranstaltung: {
+        is: {
+          veranstaltungId: options.input.id,
+        },
+      },
+    },
+    select: {
+      person: {
+        select: {
+          firstname: true,
+          lastname: true,
+          birthday: true,
+        },
+      },
+    },
+  })
+  return {
+    veranstaltung,
+    anmeldungen,
+  }
 }
