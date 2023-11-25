@@ -1,6 +1,6 @@
 import { PrismaClient, PrismaPromise } from '@prisma/client'
 
-const gleiderungenRaw: { edv: string; name: string }[] = [
+const gliederungen: { edv: string; name: string }[] = [
   { edv: '1600000', name: 'DLRG Bundesverband' },
   { edv: '0100000', name: 'Landesverband Baden e.V.' },
   { edv: '0101000', name: 'Bezirk Bodensee-Konstanz e.V.' },
@@ -1962,106 +1962,14 @@ const gleiderungenRaw: { edv: string; name: string }[] = [
   { edv: '1602019', name: 'Ortsgruppe IuK' },
 ]
 
-const gliederungenParsed = gleiderungenRaw.map((gliederung) => {
-  /* edv:
-  Die ersten beiden Ziffern sind das Landesverbandskürzel
-  Die nächsten beiden Ziffern sind das Bezirkskürzel
-  Der Rest ist die Ortsgruppennummer
-  */
-  const landesverbandEdv = gliederung.edv.substring(0, 2)
-  const bezirkEdv = gliederung.edv.substring(2, 4)
-  const ortsgruppeId = gliederung.edv.substring(4)
-  return {
-    ...gliederung,
-    landesverbandEdv,
-    bezirkEdv,
-    ortsgruppeId,
-  }
-})
-
-const landesverbaende = gliederungenParsed
-  .filter(
-    (gliederung) =>
-      gliederung.bezirkEdv === '00' && (gliederung.ortsgruppeId === '00' || gliederung.ortsgruppeId === '000')
-  )
-  .map((landesverband) => {
-    return {
-      name: landesverband.name,
-      edv: landesverband.landesverbandEdv,
-    }
-  })
-const landesverbaendeByEdv = landesverbaende.reduce((acc, landesverband) => {
-  acc[landesverband.edv] = landesverband
-  return acc
-}, {})
-const bezirke = gliederungenParsed
-  .filter(
-    (gliederung) =>
-      gliederung.bezirkEdv !== '00' && (gliederung.ortsgruppeId === '00' || gliederung.ortsgruppeId === '000')
-  )
-  .map((bezirk) => {
-    return {
-      name: bezirk.name,
-      edv: bezirk.landesverbandEdv + bezirk.bezirkEdv,
-      landesverbandEdv: bezirk.landesverbandEdv,
-    }
-  })
-const bezirkeByEdv = bezirke.reduce((acc, bezirk) => {
-  acc[bezirk.edv] = bezirk
-  return acc
-}, {})
-
-const gleiderungen = gliederungenParsed.map((gliederung) => {
-  const landesverband = landesverbaendeByEdv[gliederung.landesverbandEdv]?.name
-  const bezirk = bezirkeByEdv[gliederung.landesverbandEdv + gliederung.bezirkEdv]?.name
-  return {
-    ...gliederung,
-    landesverband,
-    bezirk,
-  }
-})
-
-export async function importGleiderungen(prisma: PrismaClient) {
+export async function importGliederungen(prisma: PrismaClient) {
   const transactions: PrismaPromise<any>[] = []
   transactions.push(
-    ...landesverbaende.map((landesverband) =>
-      prisma.landesverband.create({
-        data: {
-          edv: landesverband.edv,
-          name: landesverband.name,
-        },
-      })
-    )
-  )
-  transactions.push(
-    ...bezirke.map((bezirk) =>
-      prisma.bezirk.create({
-        data: {
-          edv: bezirk.edv,
-          name: bezirk.name,
-          landesverband: {
-            connect: {
-              edv: bezirk.landesverbandEdv,
-            },
-          },
-        },
-      })
-    )
-  )
-  transactions.push(
-    ...gleiderungen.map((gliederung) =>
+    ...gliederungen.map((gliederung) =>
       prisma.gliederung.create({
         data: {
           edv: gliederung.edv,
           name: gliederung.name,
-          bezirk: gliederung.bezirk
-            ? { connect: { edv: gliederung.landesverbandEdv + gliederung.bezirkEdv } }
-            : undefined,
-          landesverband: {
-            connect: {
-              edv: gliederung.landesverbandEdv,
-            },
-          },
         },
       })
     )

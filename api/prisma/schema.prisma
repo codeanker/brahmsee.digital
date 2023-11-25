@@ -43,31 +43,10 @@ model Account {
   gliederung Gliederung[]
 }
 
-model Landesverband {
-  id           Int          @id @default(autoincrement())
-  name         String
-  edv          String       @unique
-  bezirke      Bezirk[]
-  gliederungen Gliederung[]
-}
-
-model Bezirk {
-  id              Int            @id @default(autoincrement())
-  name            String
-  edv             String         @unique
-  landesverbandId Int?
-  landesverband   Landesverband? @relation(fields: [landesverbandId], references: [id])
-  gliederungen    Gliederung[]
-}
-
 model Gliederung {
   id                   Int                  @id @default(autoincrement())
   name                 String
   edv                  String               @unique
-  landesverbandId      Int
-  bezirkId             Int?
-  landesverband        Landesverband        @relation(fields: [landesverbandId], references: [id])
-  bezirk               Bezirk?              @relation(fields: [bezirkId], references: [id])
   unterveranstaltungen Unterveranstaltung[]
   personen             Person[]
   adminIds             Int[]

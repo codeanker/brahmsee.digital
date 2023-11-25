@@ -1,10 +1,10 @@
 import { PrismaClient } from '@prisma/client'
 
-import { importGleiderungen } from './gliederungen'
+import { importGliederungen } from './gliederungen'
 
 const prisma = new PrismaClient()
 async function main() {
-  await importGleiderungen(prisma)
+  await importGliederungen(prisma)
 }
 main()
   .then(async () => {
