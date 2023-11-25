@@ -10,6 +10,9 @@ export const { getEntityIdFromHeader, authenticationLogin, sign } = createAuthen
     const account = await prisma.account.findFirstOrThrow({
       where: {
         email,
+        activatedAt: {
+          not: null,
+        },
       },
       select: {
         id: true,
