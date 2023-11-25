@@ -11,7 +11,9 @@ import Sidebar from '@/components/LayoutComponents/Sidebar/Sidebar.vue'
       </div>
       <div class="col-span-9 relative py-12 px-8">
         <div class="bg-white absolute inset-y-0 left-0 -right-full"></div>
-        <router-view />
+        <div class="relative">
+          <router-view />
+        </div>
       </div>
     </div>
   </div>

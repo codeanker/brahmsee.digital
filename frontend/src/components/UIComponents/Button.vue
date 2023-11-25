@@ -25,15 +25,8 @@ const colors: Record<Color, string> = {
   <component
     :is="to === undefined ? 'button' : 'router-link'"
     type="button"
-    :class="
-      [
-        'block rounded-lg px-3 py-2 text-center text-sm font-medium',
-        'focus:outline focus:outline-2 focus:outline-offset-2',
-        'disabled:cursor-not-allowed',
-        'w-full inline-block whitespace-nowrap',
-        colors[color],
-      ].join(' ')
-    "
+    :class="colors[color]"
+    class="btn w-full rounded-xl"
     :to="to"
   >
     <slot></slot>
