@@ -19,6 +19,7 @@ export async function login({ email, password }: { email: string; password: stri
   } catch (error) {
     loginError.value = error as Error
   }
+  loginPending.value = false
 }
 
 export async function reAuthenticate() {

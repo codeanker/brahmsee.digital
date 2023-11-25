@@ -42,6 +42,8 @@ module.exports = {
   safelist: [
     { pattern: /bg-(info|success|danger|warning|primary)-(100|200)/ },
     { pattern: /text-(info|success|danger|warning|primary)-(600|700)/ },
+    { pattern: /bg-white/ },
+    { pattern: /(w|h)-(6|12|24)/ },
   ],
   plugins: [require('@tailwindcss/forms')],
   corePlugins: {
