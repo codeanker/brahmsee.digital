@@ -15,7 +15,7 @@ const password = ref('')
 
 async function loginWithRecirect() {
   const response = await login({ email: email.value, password: password.value })
-  if (response) router.push({ name: 'Dashboard' })
+  if (response) router.push({ name: 'DashboardView' })
 }
 
 const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.env.VITE_APP_COMMIT_HASH || 'unknown'}`

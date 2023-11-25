@@ -9,7 +9,7 @@ export default function makeGuard(): NavigationGuardWithThis<undefined> {
     }
     if (loggedInAccount.value) {
       if (to.name === 'Login') {
-        return next({ name: 'Dashboard' })
+        return next({ name: 'DashboardView' })
       } else {
         return next()
       }
