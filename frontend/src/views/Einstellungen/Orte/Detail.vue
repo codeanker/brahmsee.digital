@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="container">
+  <div>
     <h5>Orte Detail ```verwaltung/orte/:id```</h5>
   </div>
 </template>
