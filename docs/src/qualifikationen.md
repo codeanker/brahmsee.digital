@@ -1,3 +1,17 @@
+T-Shirt Größen
+98-104
+110-116
+122-128
+134-140
+146-152
+158-164
+XS
+S
+M
+L
+XL
+XXL
+XXXL
 ===== Fahrerlaubnis =====
 B - Kraftfahrzeuge bis 3,5t
 BE - Klasse B in Kombination mit einem Anhänger
