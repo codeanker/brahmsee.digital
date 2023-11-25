@@ -15,10 +15,10 @@ hero:
       link: /api-examples
 
 features:
-  - title: Feature A
+  - title: Project Setup
     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
+  - title: Entwicklung
     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
+  - title: Inhalt
     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
 ---
