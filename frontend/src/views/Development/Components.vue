@@ -2,6 +2,18 @@
 import ComponentPreview from './components/ComponentPreview.vue'
 
 import Loading from '@/components/UIComponents/Loading.vue'
+
+const loadingCode = `
+<Loading color="primary" />
+<Loading color="secondary" />
+<Loading color="warning" />
+<Loading color="danger" />
+<div class="rounded-md bg-gray-700">
+  <Loading color="white" />
+</div>
+<Loading size="sm" />
+<Loading size="md" />
+<Loading size="lg" />`
 </script>
 
 <template>
@@ -11,14 +23,19 @@ import Loading from '@/components/UIComponents/Loading.vue'
     <ComponentPreview
       name="Loading"
       description="Loading component"
-      code="<Loading />"
+      :code="loadingCode"
     >
-      <Loading color="primary" />
-      <Loading color="secondary" />
-      <Loading color="warning" />
-      <Loading color="danger" />
-      <div class="rounded-md bg-gray-700 p-2">
-        <Loading color="white" />
+      <div class="flex items-center space-x-2">
+        <Loading color="primary" />
+        <Loading color="secondary" />
+        <Loading color="warning" />
+        <Loading color="danger" />
+        <div class="rounded-md bg-gray-700">
+          <Loading color="white" />
+        </div>
+        <Loading size="sm" />
+        <Loading size="md" />
+        <Loading size="lg" />
       </div>
     </ComponentPreview>
   </div>
