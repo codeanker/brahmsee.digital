@@ -52,7 +52,7 @@ const props = withDefaults(
     markers: undefined,
     autoApply: true,
     icon: undefined,
-    format: 'MM/dd/yyyy HH:mm',
+    format: 'dd.MM.yyyy HH:mm',
     modelType: undefined,
   }
 )

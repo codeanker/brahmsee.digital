@@ -6,13 +6,13 @@ import type { AuthenticatedContext } from '../../trpc'
 export const ZVeranstaltungCreateInputSchema = z.strictObject({
   data: z.strictObject({
     name: z.string(),
-    beginn: z.string().datetime(),
-    ende: z.string().datetime(),
+    beginn: z.date(),
+    ende: z.date(),
     ort: z.string(),
-    meldebeginn: z.string().datetime(),
-    meldeschluss: z.string().datetime(),
-    maxTeilnehmende: z.number().int(),
-    teilnahmegebuehr: z.number({ description: 'In Cent' }).int(),
+    meldebeginn: z.date(),
+    meldeschluss: z.date(),
+    maxTeilnehmende: z.string(),
+    teilnahmegebuehr: z.string(),
   }),
 })
 
@@ -24,7 +24,11 @@ type VeranstaltungCreateOptions = AuthenticatedContext & {
 
 export async function veranstaltungCreate(options: VeranstaltungCreateOptions) {
   return prisma.veranstaltung.create({
-    data: options.input.data,
+    data: {
+      ...options.input.data,
+      teilnahmegebuehr: parseInt(options.input.data.teilnahmegebuehr),
+      maxTeilnehmende: parseInt(options.input.data.maxTeilnehmende),
+    },
     select: {
       id: true,
     },
