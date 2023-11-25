@@ -20,17 +20,17 @@ const routesVerwaltung: Route[] = [
   {
     name: 'Alle Gliederungen',
     path: '/verwaltung/gliederungen',
-    component: () => import('./Gliederungen/List.vue'),
+    component: () => import('./Gliederungen/GliederungList.vue'),
   },
   {
     name: 'Gliederungen erstellen',
     path: '/verwaltung/gliederungen/erstellen',
-    component: () => import('./Gliederungen/Create.vue'),
+    component: () => import('./Gliederungen/GliederungCreate.vue'),
   },
   {
     name: 'Gliederungsdetails',
     path: '/verwaltung/gliederungen/:gliederungId',
-    component: () => import('./Gliederungen/Detail.vue'),
+    component: () => import('./Gliederungen/GliederungDetail.vue'),
   },
   {
     name: 'Accountanfrage',

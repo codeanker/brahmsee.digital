@@ -13,7 +13,7 @@ const { state: gliederung } = useAsyncState(async () => {
 
 <template>
   <div>
-    <h5>Gliederungen Detail ```verwaltung/gliederungen/:id```</h5>
+    <h5>Gliederungen Detail</h5>
     {{ gliederung }}
   </div>
 </template>

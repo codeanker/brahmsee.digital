@@ -17,11 +17,16 @@ function formatDate(indate) {
 
 <template>
   <div>
-    <h5>Veranstaltungen List ```verwaltung/veranstaltungen```</h5>
+    <h5>Veranstaltungen</h5>
     <div class="flow-root">
       <p class="mt-8 text-sm text-gray-500">
-        <b>Tipp</b>: Zum Bearbeiten einer Gliederung die entsprechende Zeile anklicken.
+        <b>Tipp</b>: Zum Bearbeiten einer Veranstaltung die entsprechende Zeile anklicken.
       </p>
+      <RouterLink
+        class="text-primary-600"
+        to="/verwaltung/veranstaltung/erstellen"
+        >Veranstaltung erstellen</RouterLink
+      >
       <table class="min-w-full divide-y divide-gray-300">
         <thead>
           <tr>
