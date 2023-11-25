@@ -89,5 +89,20 @@
 				"close": false
 			}
 		},
+		{
+			"type": "shell",
+			"label": "install:playwright",
+			"command": "npx playwright install && npx playwright install-deps",
+			"options": {
+      },
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "always",
+				"revealProblems": "onProblem",
+				"panel": "new",
+				"close": true
+			}
+
+		}
 	]
 }
