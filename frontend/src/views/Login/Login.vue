@@ -54,7 +54,7 @@ const version = `${import.meta.env.VITE_APP_VERSION || '0.0.0'}-${import.meta.en
           full
         >
           <template v-if="loginPending">
-            <Loading class="fill-white"></Loading>
+            <Loading color="white"></Loading>
           </template>
           <template v-else> Login </template>
         </Button>
