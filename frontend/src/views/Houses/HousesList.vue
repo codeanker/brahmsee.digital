@@ -9,7 +9,7 @@ import Button from '@/components/UIComponents/Button.vue'
 import router from '@/router'
 
 const { state: personList, execute: fetchPersons } = useAsyncState(async () => {
-  const result = await apiClient.person.managementList.query({ pagination: { take: 100 }, filter: {} })
+  const result = await apiClient.person.verwaltungList.query({ pagination: { take: 100 }, filter: {} })
   return result
 }, [])
 fetchPersons()

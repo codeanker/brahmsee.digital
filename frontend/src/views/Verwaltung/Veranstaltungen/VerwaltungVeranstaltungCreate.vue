@@ -4,23 +4,24 @@ import { ref } from 'vue'
 import { apiClient } from '@/api'
 import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
+import BasicInputNumber from '@/components/BasicInputs/BasicInputNumber.vue'
 import type { RouterInput } from '@codeanker/api'
 import { ValidateForm } from '@codeanker/validation'
 
-let model = ref<Partial<RouterInput['veranstaltung']['veranstaltungCreate']['data']>>({
+let model = ref<Partial<RouterInput['veranstaltung']['verwaltungCreate']['data']>>({
   name: '',
   beginn: new Date(),
   ende: new Date(),
   ort: '',
-  meldebeginn: '',
-  meldeschluss: '',
-  maxTeilnehmende: '0',
-  teilnahmegebuehr: '9999',
+  meldebeginn: undefined,
+  meldeschluss: undefined,
+  maxTeilnehmende: undefined,
+  teilnahmegebuehr: undefined,
 })
 
 async function create() {
-  await apiClient.veranstaltung.veranstaltungCreate.mutate({
-    data: model.value as RouterInput['veranstaltung']['veranstaltungCreate']['data'],
+  await apiClient.veranstaltung.verwaltungCreate.mutate({
+    data: model.value as RouterInput['veranstaltung']['verwaltungCreate']['data'],
   })
 }
 </script>
@@ -75,7 +76,7 @@ async function create() {
       label="Maximale Teilnehmenden Zahl"
       placeholder="Maximale Teilnehmenden Zahl"
     />
-    <BasicInput
+    <BasicInputNumber
       v-model="model.teilnahmegebuehr"
       required
       type="number"

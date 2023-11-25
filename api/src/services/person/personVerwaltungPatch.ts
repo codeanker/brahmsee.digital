@@ -4,7 +4,7 @@ import z from 'zod'
 import prisma from '../../prisma'
 import type { AuthenticatedContext } from '../../trpc'
 
-export const ZPersonManagementPatchInputSchema = z.strictObject({
+export const ZPersonVerwaltungPatchInputSchema = z.strictObject({
   id: z.number().int(),
   data: z.strictObject({
     email: z.string(),
@@ -15,13 +15,13 @@ export const ZPersonManagementPatchInputSchema = z.strictObject({
   }),
 })
 
-export type TPersonManagementPatchInputSchema = z.infer<typeof ZPersonManagementPatchInputSchema>
+export type TPersonVerwaltungPatchInputSchema = z.infer<typeof ZPersonVerwaltungPatchInputSchema>
 
-type PersonManagementPatchOptions = AuthenticatedContext & {
-  input: TPersonManagementPatchInputSchema
+type PersonVerwaltungPatchOptions = AuthenticatedContext & {
+  input: TPersonVerwaltungPatchInputSchema
 }
 
-export async function personManagementPatch(options: PersonManagementPatchOptions) {
+export async function personVerwaltungPatch(options: PersonVerwaltungPatchOptions) {
   return prisma.person.update({
     where: {
       id: options.input.id,

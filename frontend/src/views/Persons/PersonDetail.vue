@@ -25,7 +25,7 @@ const password = ref({
 const route = useRoute()
 const { state: person, execute: fetchUser } = useAsyncState(async () => {
   const personId = route.params.personId as string
-  const result = await apiClient.person.managementGet.query({ id: parseInt(personId) })
+  const result = await apiClient.person.verwaltungGet.query({ id: parseInt(personId) })
   isSelf.value = result?.id === loggedInAccount.value?.id
   return result
 }, null)
@@ -42,7 +42,7 @@ const { execute: updatePassword, error: errorPassword } = useAsyncState(
 
 const { execute: deleteUser, error: errorDelete } = useAsyncState(
   async () => {
-    await apiClient.person.managementRemove.mutate({ id: person.value!.id })
+    await apiClient.person.verwaltungRemove.mutate({ id: person.value!.id })
     await router.push({ name: 'Users' })
   },
   null,

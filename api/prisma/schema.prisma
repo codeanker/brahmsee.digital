@@ -41,6 +41,7 @@ model Account {
   personId Int?    @unique
   person   Person? @relation(fields: [personId], references: [id])
   gliederung Gliederung[]
+  activatedAt DateTime?
 }
 
 model Gliederung {

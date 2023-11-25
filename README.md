@@ -15,6 +15,7 @@ Find all Tasks in CMD/CTRL-SHIFT-P -> `Tasks: Run Tasks`
 1. Clone via VSCode CMD/CTRL-SHIFT-P -> `Dev Containers: Clone Repository in Container Volume`
 2. Run Task: `run:migration`
 2. Run Task: `run:createAccount`
+2. Run Task: `install:playwright`
 4. Run Task: `start:apps`
 
 ## Mitarbeit

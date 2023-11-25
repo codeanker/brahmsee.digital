@@ -1,18 +1,18 @@
 import { router, protectedProcedure } from '../../trpc'
 
-import { gliederungManagementCreate, ZGliederungManagementCreateInputSchema } from './gliederungManagementCreate'
-import { ZGliederungManagementGetInputSchema, gliederungManagementGet } from './gliederungManagementGet'
-import { ZGliederungManagementListInputSchema, gliederungManagementList } from './gliederungManagementList'
+import { gliederungVerwaltungCreate, ZGliederungVerwaltungCreateInputSchema } from './gliederungVerwaltungCreate'
+import { ZGliederungVerwaltungGetInputSchema, gliederungVerwaltungGet } from './gliederungVerwaltungGet'
+import { ZGliederungVerwaltungListInputSchema, gliederungVerwaltungList } from './gliederungVerwaltungList'
 
 export const gliederungRouter = router({
-  managementCreate: protectedProcedure(['ADMIN'])
-    .input(ZGliederungManagementCreateInputSchema)
-    .mutation(gliederungManagementCreate),
-  managementList: protectedProcedure(['ADMIN'])
-    .input(ZGliederungManagementListInputSchema)
-    .query(gliederungManagementList),
+  verwaltungCreate: protectedProcedure(['ADMIN'])
+    .input(ZGliederungVerwaltungCreateInputSchema)
+    .mutation(gliederungVerwaltungCreate),
+  verwaltungList: protectedProcedure(['ADMIN'])
+    .input(ZGliederungVerwaltungListInputSchema)
+    .query(gliederungVerwaltungList),
   // [additional routes]
-  managementGet: protectedProcedure(['ADMIN'])
-    .input(ZGliederungManagementGetInputSchema)
-    .query(gliederungManagementGet),
+  verwaltungGet: protectedProcedure(['ADMIN'])
+    .input(ZGliederungVerwaltungGetInputSchema)
+    .query(gliederungVerwaltungGet),
 })

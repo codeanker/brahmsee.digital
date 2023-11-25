@@ -12,7 +12,7 @@ import personProfileImage from '@/helpers/personProfileImage'
 import router from '@/router'
 
 const { state: personList, execute: fetchPersons } = useAsyncState(async () => {
-  const result = await apiClient.person.managementList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
+  const result = await apiClient.person.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
   return result
 }, [])
 
