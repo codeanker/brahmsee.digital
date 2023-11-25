@@ -189,6 +189,7 @@ model Anmeldung {
   mahlzeitenIds        Int[]
   mahlzeiten           Mahlzeit[]
   uebernachtungsTage   DateTime[]         @db.Date
+  tshirtBestellt       Boolean            @default(false)
 }
 
 model Veranstaltung {
