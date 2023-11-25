@@ -1,5 +1,14 @@
 {
+  "server": {
+    "host": "SERVER_HOST",
+    "port": "SERVER_PORT"
+  },
+
   "db": {
     "url": "DATABASE_URL"
+  },
+
+  "authentication": {
+    "secret": "AUTHENTICATION_SECRET"
   }
 }

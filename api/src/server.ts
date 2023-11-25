@@ -30,7 +30,6 @@ const adapter = createKoaMiddleware({
 })
 app.use(adapter)
 
-// initialize koa router for custome routes
 app.use(router.routes())
 
 app.use(async (ctx, next) => {
@@ -39,8 +38,8 @@ app.use(async (ctx, next) => {
   await serve('./static')(ctx, next)
 })
 
-app.listen(config.port)
-logger.info(`app listening on http://0.0.0.0:${config.port}`)
+app.listen(config.server.port, config.server.host)
+logger.info(`app listening on http://0.0.0.0:${config.server.port}`)
 
 export type AppRouter = typeof appRouter
 export type RouterInput = inferRouterInputs<AppRouter>
