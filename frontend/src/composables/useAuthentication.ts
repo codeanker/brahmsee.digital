@@ -12,7 +12,7 @@ export async function login({ email, password }: { email: string; password: stri
   loginPending.value = true
   loginError.value = null
   try {
-    const authResult = await apiClient.authenication.login.mutate({ email, password })
+    const authResult = await apiClient.authentication.login.mutate({ email, password })
     loggedInAccount.value = authResult.user
     localStorage.setItem('jwt', authResult.accessToken)
     return authResult
