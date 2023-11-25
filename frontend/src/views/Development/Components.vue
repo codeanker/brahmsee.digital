@@ -5,6 +5,7 @@ import ComponentPreview from './components/ComponentPreview.vue'
 
 import BasicCheckbox from '@/components/BasicInputs/BasicCheckbox.vue'
 import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
+import BasicEditor from '@/components/BasicInputs/BasicEditor.vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
 import Button from '@/components/UIComponents/Button.vue'
@@ -13,6 +14,9 @@ import Loading from '@/components/UIComponents/Loading.vue'
 let checkboxModel = ref(false)
 let basicInputModel = ref('')
 let basicDatepickerModel = ref('')
+let basicEditorValue = ref(
+  '<p>Ich bin ein <strong>Editor</strong> der als <em><s>solcher</s></em> verwendet werden kann. ich biete verschiedene <mark class="highlight">Möglichkeiten</mark>. </p>'
+)
 
 const loadingCode = `
 <Loading color="primary" />
@@ -63,6 +67,15 @@ const basicInputCode = `
   name="BasicInput"
   disabled
 ></BasicInput>`
+const basicEditorCode = `
+<BasicEditor
+  id="BasicEditor"
+  v-model="editorValue"
+  label="Beschreibung"
+  name="BasicEditor"
+  required
+/>
+`
 </script>
 
 <template>
@@ -159,6 +172,16 @@ const basicInputCode = `
             label="Datepicker"
           ></BasicDatepicker>
         </div>
+      </ComponentPreview>
+      <ComponentPreview
+        name="BasicEditor"
+        description="WYSIWYG Editor"
+        :code="basicEditorCode"
+      >
+        <BasicEditor
+          v-model="basicEditorValue"
+          label="Beschreibung"
+        />
       </ComponentPreview>
     </div>
   </div>
