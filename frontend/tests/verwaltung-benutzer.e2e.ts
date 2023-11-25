@@ -2,11 +2,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import dayjs from 'dayjs'
 import { Browser, chromium, BrowserContext, firefox, webkit, Page } from 'playwright'
-import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+
+import { insertJwtToken } from './helpers/insertJwtToken'
 
 import { testUtils } from '@codeanker/api'
 
-describe(`Feature: Login`, () => {
+describe(`View: verwaltung/benutzer`, () => {
   let browser: Browser
   let context: BrowserContext
   let name = ''
@@ -23,16 +25,12 @@ describe(`Feature: Login`, () => {
     browser?.close()
     await testUtils.cleanup(runId)
   })
-  it('Der Standard Nutzer kann sich anmelden.', async () => {
+  it('Ist View angelegt', async () => {
     const page = await context.newPage()
-    await page.goto(`https://localhost.codeanker.com:8080/login`)
-    await page.getByPlaceholder('E-Mail').click()
-    await page.getByPlaceholder('E-Mail').fill(data.account.email)
-    await page.getByPlaceholder('Passwort').click()
-    await page.getByPlaceholder('Passwort').fill(data.accountPassword)
-    await page.getByPlaceholder('Passwort').press('Enter')
-    // await page.screenshot({ path: `${__dirname}/screenshots/${name}_login.png` })
-    await vi.waitUntil(() => !page.url().includes('login'))
+    await insertJwtToken(page, data.accessToken)
+
+    await page.goto(`https://localhost.codeanker.com:8080/verwaltung/benutzer`)
+    await page.waitForLoadState('networkidle')
+    // await page.screenshot({ path: `${__dirname}/screenshots/${name}_verwaltung-benutzer.png` })
   })
-  it.skip('Passwort kann zurück gesetzt werden.', async () => {})
 })

@@ -1,6 +1,7 @@
 import z from 'zod'
 
 import prisma from '../../prisma'
+import type { AuthenticatedContext } from '../../trpc'
 
 export const ZGliederungManagementGetInputSchema = z.strictObject({
   id: z.number(),
@@ -8,7 +9,7 @@ export const ZGliederungManagementGetInputSchema = z.strictObject({
 
 export type TGliederungManagementGetInputSchema = z.infer<typeof ZGliederungManagementGetInputSchema>
 
-type GliederungManagementGetOptions = {
+type GliederungManagementGetOptions = AuthenticatedContext & {
   input: TGliederungManagementGetInputSchema
 }
 

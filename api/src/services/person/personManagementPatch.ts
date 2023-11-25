@@ -2,6 +2,7 @@ import { Gender } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma'
+import type { AuthenticatedContext } from '../../trpc'
 
 export const ZPersonManagementPatchInputSchema = z.strictObject({
   id: z.number().int(),
@@ -16,7 +17,7 @@ export const ZPersonManagementPatchInputSchema = z.strictObject({
 
 export type TPersonManagementPatchInputSchema = z.infer<typeof ZPersonManagementPatchInputSchema>
 
-type PersonManagementPatchOptions = {
+type PersonManagementPatchOptions = AuthenticatedContext & {
   input: TPersonManagementPatchInputSchema
 }
 

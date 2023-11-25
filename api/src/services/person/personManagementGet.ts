@@ -1,6 +1,7 @@
 import z from 'zod'
 
 import prisma from '../../prisma'
+import type { AuthenticatedContext } from '../../trpc'
 
 export const ZPersonManagementGetInputSchema = z.strictObject({
   id: z.number().int(),
@@ -8,7 +9,7 @@ export const ZPersonManagementGetInputSchema = z.strictObject({
 
 export type TPersonManagementGetInputSchema = z.infer<typeof ZPersonManagementGetInputSchema>
 
-type PersonManagementGetOptions = {
+type PersonManagementGetOptions = AuthenticatedContext & {
   input: TPersonManagementGetInputSchema
 }
 

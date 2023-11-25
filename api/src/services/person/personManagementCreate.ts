@@ -2,6 +2,7 @@ import { Gender } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma'
+import type { AuthenticatedContext } from '../../trpc'
 
 export const ZPersonManagementCreateInputSchema = z.strictObject({
   data: z.strictObject({
@@ -14,7 +15,7 @@ export const ZPersonManagementCreateInputSchema = z.strictObject({
 
 export type TPersonManagementCreateInputSchema = z.infer<typeof ZPersonManagementCreateInputSchema>
 
-type PersonManagementCreateOptions = {
+type PersonManagementCreateOptions = AuthenticatedContext & {
   input: TPersonManagementCreateInputSchema
 }
 
