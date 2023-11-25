@@ -69,10 +69,10 @@ async function create() {
       label="Meldeschluss"
       placeholder="Meldeeschluss"
     />
-    <BasicDatepicker
+    <BasicInputNumber
       v-model="model.maxTeilnehmende"
       required
-      format="dd.MM.yyyy"
+      type="number"
       label="Maximale Teilnehmenden Zahl"
       placeholder="Maximale Teilnehmenden Zahl"
     />
