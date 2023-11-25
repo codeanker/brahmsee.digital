@@ -5,7 +5,7 @@
     <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black/10">
       <img
         class="h-44 lg:h-80 absolute"
-        src="@/assets/images/logo.svg"
+        src="@/assets/images/logo_white.svg"
         alt="logo"
       />
     </div>
