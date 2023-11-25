@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+
 import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 
-let model = {
+let model = ref({
   name: '',
   begin: '',
   ende: '',
@@ -11,49 +13,54 @@ let model = {
   meldeschluss: '',
   maxTeilnehmende: '',
   teilnahmegebuehr: '',
-}
+})
 </script>
 
 <template>
   <div>
     <h5>Veranstaltung anlegen</h5>
     <BasicInput
-      :model-value="model.name"
+      v-model="model.name"
       label="Name"
       placeholder="Name der Veranstaltung"
     />
     <BasicDatepicker
-      :model-value="model.begin"
+      v-model="model.begin"
+      format="dd.MM.yyyy"
       label="Beginn"
       placeholder="Veranstaltungsbegin"
     />
     <BasicDatepicker
-      :model-value="model.ende"
+      v-model="model.ende"
+      format="dd.MM.yyyy"
       label="Ende"
       placeholder="Veranstaltungsende"
     />
     <BasicInput
-      :model-value="model.ort"
+      v-model="model.ort"
       label="Ort"
       placeholder="Veranstaltungsort"
     />
     <BasicDatepicker
-      :model-value="model.meldebeginn"
+      v-model="model.meldebeginn"
+      format="dd.MM.yyyy"
       label="Meldebeginn"
       placeholder="Meldebeginn"
     />
     <BasicDatepicker
-      :model-value="model.meldeschluss"
+      v-model="model.meldeschluss"
+      format="dd.MM.yyyy"
       label="Meldeschluss"
       placeholder="Meldeeschluss"
     />
     <BasicDatepicker
-      :model-value="model.maxTeilnehmende"
+      v-model="model.maxTeilnehmende"
+      format="dd.MM.yyyy"
       label="Maximale Teilnehmenden Zahl"
       placeholder="Maximale Teilnehmenden Zahl"
     />
     <BasicInput
-      :model-value="model.teilnahmegebuehr"
+      v-model="model.teilnahmegebuehr"
       label="Teilnahmegebühr"
       placeholder="Teilnahmegebühr"
     />
