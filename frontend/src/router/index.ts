@@ -26,7 +26,17 @@ const routes: Route[] = [
     path: '/',
     redirect: { name: 'Login' },
     component: () => import('../layouts/BaseLayout.vue'),
-    children: [...routesPerson, ...routesVeranstaltungen, ...routesVerwaltung, ...routesDevelopment],
+    children: [
+      ...routesPerson,
+      ...routesVeranstaltungen,
+      ...routesVerwaltung,
+      ...routesDevelopment,
+      {
+        name: 'Dashboard',
+        path: '/dashboard',
+        component: () => import('../views/Dashboard.vue'),
+      },
+    ],
   },
 ]
 
