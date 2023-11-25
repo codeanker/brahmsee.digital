@@ -7,6 +7,9 @@ import { useRoute, useRouter } from 'vue-router'
 
 import { apiClient } from '@/api'
 
+const emit = defineEmits<{
+  (event: 'setVeranstaltung', eventArgs: number): void
+}>()
 const route = useRoute()
 const router = useRouter()
 
@@ -19,7 +22,9 @@ const veranstaltungTitle = (id: number) => {
   return veranstaltungen.value.find((veranstaltung) => veranstaltung.id === id)?.name
 }
 watch(selectedVeranstaltung, (newValue) => {
-  router.push(`/veranstaltung/${newValue}/dashboard`)
+  localStorage.setItem('letzteVeranstaltung', newValue.toString())
+  emit('setVeranstaltung', newValue)
+  router.push({ params: { veranstaltungId: newValue.toString() } })
 })
 </script>
 
