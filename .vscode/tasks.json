@@ -28,8 +28,8 @@
 		{
 			"label": "start:apps",
 			"dependsOn": [
-				"Start frontend",
-				"Start api"
+				"start:api",
+				"start:frontend"
 			],
 			"problemMatcher": []
 		},
