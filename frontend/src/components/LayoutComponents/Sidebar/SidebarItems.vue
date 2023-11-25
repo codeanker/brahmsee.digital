@@ -14,6 +14,7 @@ export interface SidebarItem {
   icon: Component
   route: string
   children?: SidebarItem[]
+  showChildren?: boolean
 }
 
 export interface DividerItem {
@@ -47,7 +48,12 @@ const isCurrentRoute = (path: string) => {
           />
           <div class="grow text-sm">{{ item.name }}</div>
         </router-link>
-        <div class="flex flex-col relative">
+
+        <!-- Children container -->
+        <div
+          class="flex flex-col relative transition-maxheight overflow-hidden"
+          :class="{ open: isCurrentRoute(item.route) }"
+        >
           <div
             v-for="child in item.children"
             :key="child.name"
@@ -86,3 +92,16 @@ const isCurrentRoute = (path: string) => {
     </template>
   </div>
 </template>
+
+<style scoped lang="scss">
+.transition-maxheight {
+  transition-property: max-height;
+  transition-duration: 1s;
+  transition-timing-function: ease-in-out;
+  max-height: 0;
+}
+
+.open {
+  max-height: 5000px;
+}
+</style>
