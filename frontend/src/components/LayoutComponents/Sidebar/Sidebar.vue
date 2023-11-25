@@ -68,7 +68,7 @@ const navigation: Array<SidebarItem | DividerItem> = [
   { type: 'SidebarItem', name: 'Benutzer:innen', route: '/verwaltung/benutzer', icon: UsersIcon },
   { type: 'SidebarItem', name: 'Orte', route: '/verwaltung/orte', icon: GlobeEuropeAfricaIcon },
   { type: 'DividerItem', name: 'Entwicklung' },
-  { type: 'SidebarItem', name: 'Komponenten', route: '/develeopment/components', icon: CubeIcon },
+  { type: 'SidebarItem', name: 'Komponenten', route: '/development/components', icon: CubeIcon },
   { type: 'SidebarItem', name: 'Dokumentation', route: 'http://127.0.0.1:5173/', icon: BookOpenIcon },
   // { name: 'Unterbringung', route: '', icon: HomeIcon },
   // { name: 'Finanzen', route: '', icon: BanknotesIcon },

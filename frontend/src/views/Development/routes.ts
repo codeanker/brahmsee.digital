@@ -3,7 +3,7 @@ import type { Route } from '@/router'
 const routesDevelopment: Route[] = [
   {
     name: 'Development',
-    path: '/develeopment',
+    path: '/development',
     children: [
       {
         name: 'Komponenten',
