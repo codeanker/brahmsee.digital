@@ -21,26 +21,129 @@ enum Gender {
   UNSPECIFIED
 }
 
+enum Essgewohnheit {
+  OMNIVORE
+  VEGETARISCH
+  VEGAN
+}
+
+enum NahrungsmittelIntoleranz {
+  SCHWEIN
+  GLUTEN
+  LAKTOSE
+  FRUCTOSE
+}
+
+enum QualificationFahrerlaubnis {
+  B
+  BE
+  C
+  CE
+  D1
+  D
+  D1E
+  DE
+  T
+  L
+}
+
+enum QualificationSchwimmer {
+  BRONZE
+  SILBER
+  GOLD
+  JUNIORRETTER
+  RETTUNGSSCHWIMMER_BRONZE
+  RETTUNGSSCHWIMMER_SILBER
+  RETTUNGSSCHWIMMER_GOLD
+}
+
+enum QualificationErsteHilfe {
+  EINWEISER_EHSH
+  AUSBILDER_EHSH_MODUL_1_2
+  AUSBILDER_EHSH_MODUL_3
+  MODULE_1
+  MODULE_2
+  MODULE_3
+  AUSBILDUNG
+  KINDERNOTFAELLE
+  BILDUNGS_UND_BETREUUNGSEINRICHTUNGEN_KINDER
+  AUSBILDER
+}
+
+enum QualificationSanitaeter {
+  SAN_A
+  SAN_B
+  FORTBILDUNG
+  AUSBILDER
+}
+
+enum QualificationFunk {
+  DLRG_SPRECHFUNKER
+  BOS_SPRECHFUNKER_ANALOG
+  BOS_SPRECHFUNKER_DIGITAL
+  AUSBILDER_SPRECHFUNK
+  AUSBILDER_BOS_SPRECHFUNK
+  MULTIPLIKATOR_SPRECHFUNK
+  MULTIPLIKATOR_BOS_SPRECHFUNK
+  EINSATZFAEHIGKEIT
+}
+
+enum Konfektionsgroesse {
+  JUNIOR_98_104
+  JUNIOR_110_116
+  JUNIOR_122_128
+  JUNIOR_134_140
+  JUNIOR_146_152
+  JUNIOR_158_164
+  XS
+  S
+  M
+  L
+  XL
+  XXL
+  XXXL
+}
+
+model Notfallkontakt {
+  id                      Int      @id @default(autoincrement())
+  firstname               String
+  lastname                String
+  telefon                 String
+  istErziehungsberechtigt Boolean?
+  personen                Person[]
+}
+
 model Person {
-  id           Int         @id @default(autoincrement())
-  firstname    String
-  lastname     String
-  birthday     DateTime?   @db.Date
-  gender       Gender?
-  anmeldungen  Anmeldung[]
-  gliederungId Int?
-  gliederung   Gliederung? @relation(fields: [gliederungId], references: [id])
-  account      Account?
+  id                           Int                          @id @default(autoincrement())
+  firstname                    String
+  lastname                     String
+  birthday                     DateTime?                    @db.Date
+  gender                       Gender?
+  anmeldungen                  Anmeldung[]
+  gliederungId                 Int?
+  gliederung                   Gliederung?                  @relation(fields: [gliederungId], references: [id])
+  account                      Account?
+  essgewohnheit                Essgewohnheit?
+  nahrungsmittelIntoleranzen   NahrungsmittelIntoleranz[]
+  weitereIntoleranzen          String[]
+  qualifikationenFahrerlaubnis QualificationFahrerlaubnis[]
+  qualifikationenSchwimmer     QualificationSchwimmer[]
+  qualifikationenErsteHilfe    QualificationErsteHilfe[]
+  qualifikationenSanitaeter    QualificationSanitaeter[]
+  qualifikationenFunk          QualificationFunk[]
+  konfektionsgroesse           Konfektionsgroesse?
+  notfallkontaktIds            Int[]
+  notfallkontakte              Notfallkontakt[]
 }
 
 model Account {
-  id       Int     @id @default(autoincrement())
-  email    String  @unique
-  password String
-  role     Role
-  personId Int    @unique
-  person   Person @relation(fields: [personId], references: [id])
-  gliederung Gliederung[]
+  id          Int          @id @default(autoincrement())
+  email       String       @unique
+  password    String
+  role        Role
+  personId    Int          @unique
+  person      Person       @relation(fields: [personId], references: [id])
+  gliederung  Gliederung[]
   activatedAt DateTime?
 }
 
@@ -68,6 +171,9 @@ model Anmeldung {
   personId             Int
   person               Person             @relation(fields: [personId], references: [id])
   status               AnmeldungStatus    @default(OFFEN)
+  mahlzeitenIds        Int[]
+  mahlzeiten           Mahlzeit[]
+  uebernachtungsTage   DateTime[]         @db.Date
 }
 
 model Veranstaltung {
@@ -81,6 +187,22 @@ model Veranstaltung {
   maxTeilnehmende      Int
   teilnahmegebuehr     Int
   unterveranstaltungen Unterveranstaltung[]
+  mahlzeiten           Mahlzeit[]
+}
+
+enum MahlzeitType {
+  FRUEHSTUECK
+  MITTAGESSEN
+  ABENDESSEN
+}
+
+model Mahlzeit {
+  id              Int           @id @default(autoincrement())
+  type            MahlzeitType
+  date            DateTime      @db.Date
+  veranstaltungId Int
+  veranstaltung   Veranstaltung @relation(fields: [veranstaltungId], references: [id])
+  anmeldung       Anmeldung[]
 }
 
 model Unterveranstaltung {

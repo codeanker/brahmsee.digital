@@ -3,19 +3,17 @@ import Sidebar from '@/components/LayoutComponents/Sidebar/Sidebar.vue'
 </script>
 
 <template>
-  <!-- Background -->
-  <div class="w-full h-full grid grid-cols-2">
-    <div />
-    <div class="h-full bg-white" />
-  </div>
-  <!-- Content -->
-  <div class="absolute w-screen h-screen">
-    <div class="container p-0 h-full bg-white grid grid-cols-12 gap-6">
-      <div class="col-span-3 bg-gray-50">
+  <div>
+    <!-- Content -->
+    <div class="container mx-auto p-0 h-full grid grid-cols-12 gap-8">
+      <div class="col-span-3 pt-12 h-screen sticky top-0">
         <Sidebar />
       </div>
-      <div class="col-span-9 overflow-y-auto py-6">
-        <router-view />
+      <div class="col-span-9 relative py-12 px-8">
+        <div class="bg-white absolute inset-y-0 left-0 -right-full"></div>
+        <div class="relative">
+          <router-view />
+        </div>
       </div>
     </div>
   </div>

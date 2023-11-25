@@ -3,10 +3,11 @@ import { renderTrpcPanel } from 'trpc-panel'
 
 import { appRouter } from '..'
 import config from '../config'
+import { isDevelopment } from '../util/is-production'
 
 const koaRouter = new Router()
 
-if (process.env.NODE_ENV !== 'production') {
+if (isDevelopment()) {
   koaRouter.get('/debug', async (ctx) => {
     ctx.headers['content-type'] = 'text/html'
     ctx.body = renderTrpcPanel(appRouter, {
