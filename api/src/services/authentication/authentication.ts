@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 import { authenticationLogin } from '../../authentication'
+import prisma from '../../prisma'
 import { router, publicProcedure } from '../../trpc'
 
 const ZAuthenticateLoginInputSchema = z.object({
@@ -10,6 +11,25 @@ const ZAuthenticateLoginInputSchema = z.object({
 
 export const authenticationRouter = router({
   login: publicProcedure.input(ZAuthenticateLoginInputSchema).mutation(async ({ input }) => {
-    return authenticationLogin(input)
+    const authResult = await authenticationLogin(input)
+    const person = await prisma.person.findFirstOrThrow({
+      where: {
+        account: {
+          id: authResult.user.id,
+        },
+      },
+      select: {
+        id: true,
+        firstname: true,
+        lastname: true,
+      },
+    })
+    return {
+      ...authResult,
+      user: {
+        ...authResult.user,
+        person,
+      },
+    }
   }),
 })

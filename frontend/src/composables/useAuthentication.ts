@@ -2,7 +2,11 @@ import { computed, ref } from 'vue'
 
 import { apiClient } from '../api'
 
-export const loggedInAccount = ref()
+import type { RouterOutput } from '@codeanker/api'
+
+type LoggedInAccount = RouterOutput['authentication']['login']['user']
+
+export const loggedInAccount = ref<LoggedInAccount>()
 export const isAuthenticated = computed(() => loggedInAccount.value !== undefined)
 
 export const loginPending = ref(false)
