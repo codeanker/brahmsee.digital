@@ -14,7 +14,7 @@ import Sidebar from '@/components/LayoutComponents/Sidebar/Sidebar.vue'
       <div class="col-span-3 bg-gray-50 border-r border-gray-300">
         <Sidebar />
       </div>
-      <div class="col-span-6">
+      <div class="col-span-9">
         <router-view />
       </div>
     </div>
