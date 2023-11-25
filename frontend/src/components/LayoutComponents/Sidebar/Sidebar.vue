@@ -17,12 +17,14 @@ import SidebarItems, { type NavItem, type TeamItem } from './SidebarItems.vue'
 import { logout, loggedInAccount } from '@/composables/useAuthentication'
 import personProfileImage from '@/helpers/personProfileImage'
 
+let mainRoute = '/veranstaltung/1'
+
 const navigation: NavItem[] = [
-  { name: 'Dashboard', route: '/dashboard', icon: RocketLaunchIcon, current: false },
-  { name: 'Anmeldungen', route: '', icon: UserGroupIcon, current: false },
-  { name: 'Auswertung', route: '', icon: ChartBarIcon, current: false },
-  { name: 'Lageplan', route: '', icon: MapIcon, current: false },
-  { name: 'Programm', route: '', icon: ScissorsIcon, current: false },
+  { name: 'Dashboard', route: mainRoute + '/dashboard', icon: RocketLaunchIcon, current: false },
+  { name: 'Anmeldungen', route: mainRoute + '/anmeldungen', icon: UserGroupIcon, current: false },
+  { name: 'Auswertung', route: mainRoute + '/auswertung', icon: ChartBarIcon, current: false },
+  { name: 'Lageplan', route: mainRoute + '/lageplan', icon: MapIcon, current: false },
+  { name: 'Programm', route: mainRoute + '/programm', icon: ScissorsIcon, current: false },
   // { name: 'Unterbringung', route: '', icon: HomeIcon, current: false },
   // { name: 'Finanzen', route: '', icon: BanknotesIcon, current: false },
 ]
