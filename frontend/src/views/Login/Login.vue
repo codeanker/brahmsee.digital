@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
@@ -9,13 +9,20 @@ import Loading from '@/components/UIComponents/Loading.vue'
 import { login, loginError, loginPending } from '@/composables/useAuthentication'
 
 const router = useRouter()
+const route = useRoute()
 
 const email = ref('')
 const password = ref('')
 
 async function loginWithRecirect() {
   const response = await login({ email: email.value, password: password.value })
-  if (response) router.push({ name: 'Dashboard' })
+  if (response) {
+    if (route.query.redirect) {
+      return router.push(route.query.redirect as string)
+    } else {
+      return router.push({ name: 'Dashboard' })
+    }
+  }
 }
 
 const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.env.VITE_APP_COMMIT_HASH || 'unknown'}`
