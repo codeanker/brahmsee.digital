@@ -9,6 +9,7 @@ export async function createMock(runId: string) {
     data: {
       email: `log+${runId}@codeanker.de`,
       password: await hashPassword(accountPassword),
+      activatedAt: new Date(),
       role: 'ADMIN',
       person: {
         create: {
