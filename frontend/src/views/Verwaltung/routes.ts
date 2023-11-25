@@ -1,6 +1,6 @@
 import type { Route } from '@/router'
 
-const routesEinstellungen: Route[] = [
+const routesVerwaltung: Route[] = [
   {
     name: 'Alle Benutzer',
     path: '/verwaltung/benutzer',
@@ -71,4 +71,4 @@ const routesEinstellungen: Route[] = [
   },
 ]
 
-export default routesEinstellungen
+export default routesVerwaltung
