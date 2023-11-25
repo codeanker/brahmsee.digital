@@ -9,6 +9,9 @@
     "docs",
     "packages/*"
   ],
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "start": "docker-compose -f docker-compose-services.yml -f docker-compose.yml build && docker-compose -f docker-compose-services.yml -f docker-compose.yml up",
     "start:api": "npm run dev -w ./api",
