@@ -102,7 +102,21 @@
 				"panel": "new",
 				"close": true
 			}
-
+		},
+		{
+			"type": "shell",
+			"label": "run:reset_db",
+			"command": "npx prisma migrate reset",
+			"problemMatcher": [],
+			"options": {
+        "cwd": "${workspaceFolder}/api"
+      },
+			"presentation": {
+				"reveal": "always",
+				"revealProblems": "onProblem",
+				"panel": "new",
+				"close": true
+			}
 		}
 	]
 }
