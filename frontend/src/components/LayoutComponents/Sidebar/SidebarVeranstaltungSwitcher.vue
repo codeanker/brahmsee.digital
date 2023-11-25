@@ -19,6 +19,7 @@ const veranstaltungTitle = (id: number) => {
   return veranstaltungen.value.find((veranstaltung) => veranstaltung.id === id)?.name
 }
 watch(selectedVeranstaltung, (newValue) => {
+  localStorage.setItem('letzteVeranstaltung', newValue.toString())
   router.push(`/veranstaltung/${newValue}/dashboard`)
 })
 </script>

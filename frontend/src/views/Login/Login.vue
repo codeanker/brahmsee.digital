@@ -20,7 +20,9 @@ async function loginWithRecirect() {
     if (route.query.redirect) {
       return router.push(route.query.redirect as string)
     } else {
-      return router.push({ name: 'Dashboard' })
+      let letzteVeranstaltung = localStorage.getItem('letzteVeranstaltung')
+      if (letzteVeranstaltung) return router.push(`/veranstaltung/${letzteVeranstaltung}/dashboard`)
+      else return router.push({ name: 'Dashboard', params: { veranstaltungId: letzteVeranstaltung } })
     }
   }
 }
