@@ -16,12 +16,6 @@ export type Route = RouteRecordRaw & {
 }
 
 const routes: Route[] = [
-  {
-    name: 'Developer',
-    path: '/developer',
-    component: () => import('../views/Developer.vue'),
-  },
-
   ...routesAuth,
   ...routesAusschreibungen,
   {
@@ -37,6 +31,13 @@ const routes: Route[] = [
         name: 'Dashboard',
         path: '/dashboard',
         component: () => import('../views/Dashboard.vue'),
+        meta: {
+          breadcrumbs: [
+            {
+              text: 'Dashboard',
+            },
+          ],
+        },
       },
     ],
   },
