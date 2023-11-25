@@ -9,7 +9,7 @@ import { type BasicInputDefaultProps } from './defaultProps'
 const props = withDefaults(
   defineProps<
     BasicInputDefaultProps<string> & {
-      type?: 'text' | 'number' | 'password' | 'email'
+      type?: 'text' | 'email'
       autocapitalize?: 'off' | 'on' | 'words' | 'characters'
       inputClass?: string
       disableValidation?: boolean

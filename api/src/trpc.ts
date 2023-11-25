@@ -35,33 +35,39 @@ const loggerMiddleware = middleware(async (opts) => {
   return result
 })
 
+async function getAuthContext(accountId: number | undefined, roles: Role[]) {
+  if (accountId === undefined) {
+    throw new TRPCError({ code: 'UNAUTHORIZED' })
+  }
+  const account = await prisma.account.findUniqueOrThrow({
+    where: { id: accountId },
+    select: {
+      id: true,
+      role: true,
+    },
+  })
+  if (!roles.includes(account.role) && roles.length > 0) {
+    // if roles is empty, the resource is public
+    throw new TRPCError({
+      code: 'FORBIDDEN',
+      message: `You are not allowed to access this resource "${roles}" with "${account.role}"`,
+    })
+  }
+  return {
+    ctx: {
+      account: account,
+      accountId: account.id,
+    },
+  }
+}
+
 const isAuthed = (roles: Role[]) =>
   t.middleware(async (opts) => {
-    const { ctx } = opts
-    if (ctx.accountId === undefined) {
-      throw new TRPCError({ code: 'UNAUTHORIZED' })
-    }
-    const account = await prisma.account.findUniqueOrThrow({
-      where: { id: ctx.accountId },
-      select: {
-        id: true,
-        role: true,
-      },
-    })
-    if (!roles.includes(account.role) && roles.length > 0) {
-      // if roles is empty, the resource is public
-      throw new TRPCError({
-        code: 'FORBIDDEN',
-        message: `You are not allowed to access this resource "${roles}" with "${account.role}"`,
-      })
-    }
-    return opts.next({
-      ctx: {
-        account: account,
-        accountId: ctx.accountId,
-      },
-    })
+    const context = await getAuthContext(opts.ctx.accountId, roles)
+    return opts.next(context)
   })
+
+export type AuthenticatedContext = Awaited<ReturnType<typeof getAuthContext>>
 
 export const router = t.router
 export const mergeRouters = t.mergeRouters

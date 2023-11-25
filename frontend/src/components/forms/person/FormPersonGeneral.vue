@@ -43,8 +43,8 @@ const {
 } = useAsyncState(
   async () => {
     // @todo typing
-    await apiClient.person.managementCreate.mutate({
-      data: userCopy.value as unknown as RouterInput['person']['managementCreate']['data'],
+    await apiClient.person.verwaltungCreate.mutate({
+      data: userCopy.value as unknown as RouterInput['person']['VerwaltungCreate']['data'],
     })
     router.back()
   },
@@ -59,9 +59,9 @@ const {
 } = useAsyncState(
   async () => {
     // @todo typing
-    await apiClient.person.managementPatch.mutate({
+    await apiClient.person.verwaltungPatch.mutate({
       id: userCopy.value.id,
-      data: userCopy.value as unknown as RouterInput['person']['managementPatch']['data'],
+      data: userCopy.value as unknown as RouterInput['person']['VerwaltungPatch']['data'],
     })
 
     if (props.isSelf) {

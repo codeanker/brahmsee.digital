@@ -1,10 +1,14 @@
+import { authenticationLogin } from '../authentication'
 import prisma from '../prisma'
 
-export async function createMock() {
+import { hashPassword } from '@codeanker/authentication'
+
+export async function createMock(runId: string) {
+  const accountPassword = 'test'
   const account = await prisma.account.create({
     data: {
-      email: 'log@codeanker.de',
-      password: '123',
+      email: `log+${runId}@codeanker.de`,
+      password: await hashPassword(accountPassword),
       role: 'ADMIN',
       person: {
         create: {
@@ -14,13 +18,18 @@ export async function createMock() {
       },
     },
   })
-  return { account }
+  const { accessToken } = await authenticationLogin({
+    email: account.email,
+    password: accountPassword,
+  })
+
+  return { account, accountPassword, accessToken }
 }
 
-export async function cleanup() {
+export async function cleanup(runId: string) {
   await prisma.account.deleteMany({
     where: {
-      email: 'log@codeanker.de',
+      email: `log+${runId}@codeanker.de`,
     },
   })
 }

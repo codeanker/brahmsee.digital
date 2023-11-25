@@ -2,7 +2,7 @@ import z from 'zod'
 
 import prisma from '../../prisma'
 
-export const ZUnterveranstaltungCreateInputSchema = z.strictObject({
+export const ZUnterveranstaltungVerwaltungCreateInputSchema = z.strictObject({
   data: z.strictObject({
     veranstaltungId: z.number().int(),
     maxTeilnehmende: z.number().int(),
@@ -13,13 +13,15 @@ export const ZUnterveranstaltungCreateInputSchema = z.strictObject({
   }),
 })
 
-export type TUnterveranstaltungCreateInputSchema = z.infer<typeof ZUnterveranstaltungCreateInputSchema>
+export type TUnterveranstaltungVerwaltungCreateInputSchema = z.infer<
+  typeof ZUnterveranstaltungVerwaltungCreateInputSchema
+>
 
-type UnterveranstaltungCreateOptions = {
-  input: TUnterveranstaltungCreateInputSchema
+type UnterveranstaltungVerwaltungCreateOptions = {
+  input: TUnterveranstaltungVerwaltungCreateInputSchema
 }
 
-export async function unterveranstaltungCreate(options: UnterveranstaltungCreateOptions) {
+export async function unterveranstaltungVerwaltungCreate(options: UnterveranstaltungVerwaltungCreateOptions) {
   return prisma.unterveranstaltung.create({
     data: options.input.data,
     select: {

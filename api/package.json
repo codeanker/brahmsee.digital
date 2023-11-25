@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsx src/server.ts",
+    "start": "npx prisma migrate deploy && tsx src/server.ts",
     "dev": "tsx watch --clear-screen=false src/server.ts",
     "createAccount": "tsx src/scripts/createAccount.ts",
     "postinstall": "prisma generate"

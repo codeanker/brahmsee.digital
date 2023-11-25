@@ -1,22 +1,23 @@
 import z from 'zod'
 
 import prisma from '../../prisma'
+import type { AuthenticatedContext } from '../../trpc'
 import { defineQuery } from '../../types/ZQuery'
 
-export const ZPersonManagementListInputSchema = defineQuery({
+export const ZPersonVerwaltungListInputSchema = defineQuery({
   filter: z.strictObject({
     firstname: z.string().optional(),
     lastname: z.string().optional(),
   }),
 })
 
-export type TPersonManagementListInputSchema = z.infer<typeof ZPersonManagementListInputSchema>
+export type TPersonVerwaltungListInputSchema = z.infer<typeof ZPersonVerwaltungListInputSchema>
 
-type PersonManagementListOptions = {
-  input: TPersonManagementListInputSchema
+type PersonVerwaltungListOptions = AuthenticatedContext & {
+  input: TPersonVerwaltungListInputSchema
 }
 
-export async function personManagementList(options: PersonManagementListOptions) {
+export async function personVerwaltungList(options: PersonVerwaltungListOptions) {
   const { skip, take } = options.input.pagination
   const list = await prisma.person.findMany({
     skip,

@@ -33,6 +33,19 @@
 			"presentation": {
 				"reveal": "silent",
 				"panel": "new",
+				"group": "misc",
+				"close": false
+			}
+		},
+		{
+			"type": "npm",
+			"script": "test",
+			"label": "start:test",
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"group": "misc",
 				"close": false
 			}
 		},
@@ -41,6 +54,7 @@
 			"dependsOn": [
 				"start:api",
 				"start:frontend",
+				"start:test",
 				"start:docs"
 			],
 			"problemMatcher": []
@@ -57,7 +71,6 @@
 				"reveal": "always",
 				"revealProblems": "onProblem",
 				"panel": "new",
-				"group": "start",
 				"close": true
 			}
 		},
@@ -76,5 +89,20 @@
 				"close": false
 			}
 		},
+		{
+			"type": "shell",
+			"label": "install:playwright",
+			"command": "npx playwright install && npx playwright install-deps",
+			"options": {
+      },
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "always",
+				"revealProblems": "onProblem",
+				"panel": "new",
+				"close": true
+			}
+
+		}
 	]
 }

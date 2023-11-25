@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { CheckIcon, ClipboardIcon, CodeBracketIcon, EyeIcon } from '@heroicons/vue/24/outline'
 import { useClipboard } from '@vueuse/core'
 import SshPre from 'simple-syntax-highlighter'
 import { defineProps, ref } from 'vue'
@@ -28,11 +29,11 @@ const showCode = ref(false)
     <div class="grid lg:grid-cols-3 gap-6 grid-cols-1">
       <div class="mt-8 lg:mt-8 space-y-2">
         <div class="flex justify-between items-center">
-          <h2>{{ name }}</h2>
+          <h5 class="mb-0">{{ name }}</h5>
         </div>
-        <h3>
+        <p>
           {{ description }}
-        </h3>
+        </p>
       </div>
       <div class="col-span-2">
         <div class="flex justify-end mb-2 items-center">
@@ -42,22 +43,28 @@ const showCode = ref(false)
               :class="{ 'bg-white': !showCode }"
               @click="showCode = false"
             >
-              faEye Preview
+              <EyeIcon class="w-6 h-6" />
             </div>
             <div
               class="py-0.5 px-2 items-center flex cursor-pointer border-slate-100 border rounded-lg"
               :class="{ 'bg-white': showCode }"
               @click="showCode = true"
             >
-              faCode Code
+              <CodeBracketIcon class="w-6 h-6" />
             </div>
           </div>
           <div
             class="cursor-pointer px-2"
             @click="copyCode"
           >
-            v-if="!copied" faCopy faCheck
-            {{ copied }}
+            <ClipboardIcon
+              v-if="!copied"
+              class="w-6 h-6"
+            />
+            <CheckIcon
+              v-else
+              class="w-6 h-6"
+            />
           </div>
         </div>
 
@@ -71,7 +78,6 @@ const showCode = ref(false)
                 :src="lines"
                 class="bg-white z-10 object-cover object-center w-full h-full"
               /> -->
-              line
             </div>
             <div class="relative p-4 flex justify-center">
               <slot />
@@ -93,7 +99,12 @@ const showCode = ref(false)
             >{{ jsCode }}</SshPre
           >
         </div>
-        <div class="flex justify-end mt-2 items-center text-sm text-slate-600">Erstellt am: {{ date }}</div>
+        <div
+          v-if="date"
+          class="flex justify-end mt-2 items-center text-sm text-slate-600"
+        >
+          Erstellt am: {{ date }}
+        </div>
       </div>
     </div>
   </div>
