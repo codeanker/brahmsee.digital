@@ -24,6 +24,7 @@ const routes: Route[] = [
   ...routesAuth,
   {
     path: '/',
+    redirect: { name: 'Login' },
     component: () => import('../layouts/BaseLayout.vue'),
     children: [...routesDashboard, ...routesPerson, ...routesVeranstaltungen, ...routesEinstellungen],
   },
