@@ -23,7 +23,7 @@ async function startProcess() {
 const endProcess = await startProcess();
 
 const prismaMigrate = Deno.run({
-  cmd: ["npm", "exec", "prisma", "migrate", "deploy"],
+  cmd: ["npm", "run", "migrate:api"],
 });
 await prismaMigrate.status();
 prismaMigrate.close();
