@@ -9,7 +9,7 @@ import { veranstaltungRouter } from './veranstaltung/veranstaltung'
 
 export const serviceRouter = router({
   person: personRouter,
-  authenication: authenticationRouter,
+  authentication: authenticationRouter,
   gliederung: gliederungRouter,
   account: accountRouter,
   anmeldung: anmeldungRouter,
