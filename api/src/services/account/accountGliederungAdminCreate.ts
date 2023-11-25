@@ -1,5 +1,7 @@
+import { TRPCError } from '@trpc/server'
 import z from 'zod'
 
+import prisma from '../../prisma'
 import type { AuthenticatedContext } from '../../trpc'
 
 import { accountVerwaltungCreate } from './accountVerwaltungCreate'
@@ -21,6 +23,21 @@ type AccountGliederungAdminCreateOptions = AuthenticatedContext & {
 }
 
 export async function accountGliederungAdminCreate(options: AccountGliederungAdminCreateOptions) {
+  const gliederung = await prisma.gliederung.findUniqueOrThrow({
+    where: {
+      id: options.input.data.gliederungId,
+    },
+    select: {
+      id: true,
+      adminIds: true,
+    },
+  })
+  if (gliederung.adminIds !== null && gliederung.adminIds.length > 0) {
+    throw new TRPCError({
+      code: 'FORBIDDEN',
+      message: 'Gliederung hat bereits einen Admin',
+    })
+  }
   return accountVerwaltungCreate({
     input: {
       data: {

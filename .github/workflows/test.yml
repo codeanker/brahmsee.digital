@@ -10,8 +10,9 @@ on:
     branches: [development]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
+    container: node:20-bullseye
     services:
       postgres:
         image: postgres
