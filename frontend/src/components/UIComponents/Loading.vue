@@ -24,16 +24,25 @@ const getSize = computed(() => {
       return '6'
   }
 })
+
+const getColor = computed(() => {
+  switch (props.color) {
+    case 'primary' || 'secondary' || 'success' || 'warning' || 'danger':
+      return props.color + '-600'
+    default:
+      return 'white'
+  }
+})
 </script>
 
 <template>
   <SunIcon
     class="spinner inline-block"
-    :class="`w-${getSize} h-${getSize} text-${color}`"
+    :class="`w-${getSize} h-${getSize} text-${getColor}`"
   ></SunIcon>
 </template>
 
-<style>
+<style scoped>
 .spinner {
   animation: rotateMe 2s linear infinite;
 }

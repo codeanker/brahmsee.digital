@@ -10,7 +10,7 @@ const { state: gliederungenList } = useAsyncState(async () => {
 </script>
 
 <template>
-  <div class="container">
+  <div>
     <h5>Gliederungen</h5>
     <div class="flow-root">
       <p class="mt-8 text-sm text-gray-500">
