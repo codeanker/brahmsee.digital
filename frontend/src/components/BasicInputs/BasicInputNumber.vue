@@ -8,9 +8,7 @@ import { type BasicInputDefaultProps } from './defaultProps'
 
 const props = withDefaults(
   defineProps<
-    BasicInputDefaultProps<string> & {
-      type?: 'text' | 'email'
-      autocapitalize?: 'off' | 'on' | 'words' | 'characters'
+    BasicInputDefaultProps<number> & {
       inputClass?: string
       disableValidation?: boolean
     }
@@ -47,8 +45,7 @@ const { model, errorMessage } = props.disableValidation
         :id="id || name || label"
         v-model="model"
         :name="id || name || label"
-        :type="type"
-        :autocapitalize="autocapitalize"
+        type="number"
         :placeholder="placeholder || label || name"
         :class="[{ 'rounded-r-none': $slots.append }, inputClass]"
         :disabled="disabled"
