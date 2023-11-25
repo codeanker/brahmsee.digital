@@ -1,6 +1,7 @@
 import z from 'zod'
 
 import prisma from '../../prisma'
+import type { AuthenticatedContext } from '../../trpc'
 import { defineQuery } from '../../types/ZQuery'
 
 export const ZGliederungManagementListInputSchema = defineQuery({
@@ -11,7 +12,7 @@ export const ZGliederungManagementListInputSchema = defineQuery({
 
 export type TGliederungManagementListInputSchema = z.infer<typeof ZGliederungManagementListInputSchema>
 
-type GliederungManagementListOptions = {
+type GliederungManagementListOptions = AuthenticatedContext & {
   input: TGliederungManagementListInputSchema
 }
 

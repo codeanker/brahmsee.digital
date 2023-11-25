@@ -1,16 +1,14 @@
 import z from 'zod'
 
 import prisma from '../../prisma'
+import type { AuthenticatedContext } from '../../trpc'
 
 export const ZPersonAuthenticatedGetInputSchema = z.undefined()
 
 export type TPersonAuthenticatedGetInputSchema = z.infer<typeof ZPersonAuthenticatedGetInputSchema>
 
-type PersonAuthenticatedGetOptions = {
+type PersonAuthenticatedGetOptions = AuthenticatedContext & {
   input: TPersonAuthenticatedGetInputSchema
-  ctx: {
-    accountId: number
-  }
 }
 
 export async function personAuthenticatedGet(options: PersonAuthenticatedGetOptions) {

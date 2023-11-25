@@ -1,6 +1,7 @@
 import z from 'zod'
 
 import prisma from '../../prisma'
+import type { AuthenticatedContext } from '../../trpc'
 
 export const ZAnmeldungAblehnenInputSchema = z.strictObject({
   data: z.strictObject({
@@ -10,7 +11,7 @@ export const ZAnmeldungAblehnenInputSchema = z.strictObject({
 
 export type TAnmeldungAblehnenInputSchema = z.infer<typeof ZAnmeldungAblehnenInputSchema>
 
-type AnmeldungAblehnenOptions = {
+type AnmeldungAblehnenOptions = AuthenticatedContext & {
   input: TAnmeldungAblehnenInputSchema
 }
 

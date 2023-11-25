@@ -1,6 +1,7 @@
 import z from 'zod'
 
 import prisma from '../../prisma'
+import type { AuthenticatedContext } from '../../trpc'
 import { defineQuery } from '../../types/ZQuery'
 
 export const ZPersonManagementListInputSchema = defineQuery({
@@ -12,7 +13,7 @@ export const ZPersonManagementListInputSchema = defineQuery({
 
 export type TPersonManagementListInputSchema = z.infer<typeof ZPersonManagementListInputSchema>
 
-type PersonManagementListOptions = {
+type PersonManagementListOptions = AuthenticatedContext & {
   input: TPersonManagementListInputSchema
 }
 

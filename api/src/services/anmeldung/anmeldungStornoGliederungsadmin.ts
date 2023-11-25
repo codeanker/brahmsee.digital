@@ -2,6 +2,7 @@ import z from 'zod'
 
 import { throwIfNotGliederungsadmin } from '../../helpers/throwIfNotGliederungsadmin'
 import prisma from '../../prisma'
+import type { AuthenticatedContext } from '../../trpc'
 
 export const ZAnmeldungStornoGliederungsadminInputSchema = z.strictObject({
   data: z.strictObject({
@@ -11,11 +12,8 @@ export const ZAnmeldungStornoGliederungsadminInputSchema = z.strictObject({
 
 export type TAnmeldungStornoGliederungsadminInputSchema = z.infer<typeof ZAnmeldungStornoGliederungsadminInputSchema>
 
-type AnmeldungStornoGliederungsadminOptions = {
+type AnmeldungStornoGliederungsadminOptions = AuthenticatedContext & {
   input: TAnmeldungStornoGliederungsadminInputSchema
-  ctx: {
-    accountId: number
-  }
 }
 
 export async function anmeldungStornoGliederungsadmin(options: AnmeldungStornoGliederungsadminOptions) {

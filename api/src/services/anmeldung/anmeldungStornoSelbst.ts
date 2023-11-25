@@ -1,6 +1,7 @@
 import z from 'zod'
 
 import prisma from '../../prisma'
+import type { AuthenticatedContext } from '../../trpc'
 
 export const ZAnmeldungStornoSelfInputSchema = z.strictObject({
   data: z.strictObject({
@@ -10,11 +11,8 @@ export const ZAnmeldungStornoSelfInputSchema = z.strictObject({
 
 export type TAnmeldungStornoSelfInputSchema = z.infer<typeof ZAnmeldungStornoSelfInputSchema>
 
-type AnmeldungStornoSelfOptions = {
+type AnmeldungStornoSelfOptions = AuthenticatedContext & {
   input: TAnmeldungStornoSelfInputSchema
-  ctx: {
-    accountId: number
-  }
 }
 /**
  * Storniert die Anmeldung der angemeldeten Person.

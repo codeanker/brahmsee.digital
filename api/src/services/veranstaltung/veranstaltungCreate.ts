@@ -1,6 +1,7 @@
 import z from 'zod'
 
 import prisma from '../../prisma'
+import type { AuthenticatedContext } from '../../trpc'
 
 export const ZVeranstaltungCreateInputSchema = z.strictObject({
   data: z.strictObject({
@@ -17,7 +18,7 @@ export const ZVeranstaltungCreateInputSchema = z.strictObject({
 
 export type TVeranstaltungCreateInputSchema = z.infer<typeof ZVeranstaltungCreateInputSchema>
 
-type VeranstaltungCreateOptions = {
+type VeranstaltungCreateOptions = AuthenticatedContext & {
   input: TVeranstaltungCreateInputSchema
 }
 
