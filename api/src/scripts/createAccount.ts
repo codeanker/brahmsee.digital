@@ -1,9 +1,7 @@
 import { input, password as passwordInput, select } from '@inquirer/prompts'
 
 import { getEnumOptions, roleMapping } from '../enumMappings'
-import prisma from '../prisma'
-
-import { hashPassword } from '@codeanker/authentication'
+import { accountVerwaltungCreate } from '../services/account/accountVerwaltungCreate'
 
 createUser()
 async function createUser() {
@@ -20,16 +18,14 @@ async function createUser() {
       }
     }),
   })) as keyof typeof roleMapping
-  await prisma.account.create({
-    data: {
-      email: email,
-      password: await hashPassword(password),
-      role: roleId,
-      person: {
-        create: {
-          firstname: firstname,
-          lastname: lastname,
-        },
+  await accountVerwaltungCreate({
+    input: {
+      data: {
+        email: email,
+        firstname: firstname,
+        lastname: lastname,
+        password: password,
+        roleId: roleId,
       },
     },
   })
