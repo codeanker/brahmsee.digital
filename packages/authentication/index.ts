@@ -81,8 +81,8 @@ export function createAuthentication<EnitiyId>({
     }
   }
 
-  async function getEntityIdFromHeader(authorizationHeader: string) {
-    if (authorizationHeader.startsWith('Bearer ')) {
+  async function getEntityIdFromHeader(authorizationHeader: string | undefined) {
+    if (authorizationHeader?.startsWith('Bearer ')) {
       const token = authorizationHeader.substring(7, authorizationHeader.length)
       const { sub: id } = verify(token, jwtSecret)
       return id
