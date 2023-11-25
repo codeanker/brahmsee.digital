@@ -14,6 +14,10 @@ import {
   unterveranstaltungVerwaltungCreate,
 } from './unterveranstaltungVerwaltungCreate'
 import {
+  ZUnterveranstaltungVerwaltungListInputSchema,
+  unterveranstaltungVerwaltungList,
+} from './unterveranstaltungVerwaltungList'
+import {
   ZUnterveranstaltungVerwaltungPatchInputSchema,
   unterveranstaltungVerwaltungPatch,
 } from './unterveranstaltungVerwaltungPatch'
@@ -29,6 +33,9 @@ export const unterveranstaltungRouter = router({
   verwaltungCreate: protectedProcedure(['ADMIN'])
     .input(ZUnterveranstaltungVerwaltungCreateInputSchema)
     .mutation(unterveranstaltungVerwaltungCreate),
+  verwaltungList: protectedProcedure(['ADMIN'])
+    .input(ZUnterveranstaltungVerwaltungListInputSchema)
+    .query(unterveranstaltungVerwaltungList),
   verwaltungPatch: protectedProcedure(['ADMIN'])
     .input(ZUnterveranstaltungVerwaltungPatchInputSchema)
     .mutation(unterveranstaltungVerwaltungPatch),
