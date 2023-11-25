@@ -8,7 +8,7 @@ const props = withDefaults(
     size: 'sm' | 'md' | 'lg'
   }>(),
   {
-    color: 'secondary',
+    color: 'primary',
     size: 'sm',
   }
 )
@@ -27,10 +27,10 @@ const getSize = computed(() => {
 
 const getColor = computed(() => {
   switch (props.color) {
-    case 'primary' || 'secondary' || 'success' || 'warning' || 'danger':
-      return props.color + '-600'
-    default:
+    case 'white':
       return 'white'
+    default:
+      return props.color + '-600'
   }
 })
 </script>
