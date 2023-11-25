@@ -58,6 +58,9 @@ enum QualificationSchwimmer {
 }
 
 enum QualificationErsteHilfe {
+  EINWEISER_EHSH
+  AUSBILDER_EHSH_MODUL_1_2
+  AUSBILDER_EHSH_MODUL_3
   MODULE_1
   MODULE_2
   MODULE_3
