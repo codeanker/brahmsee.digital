@@ -6,7 +6,7 @@ import { type Context } from './context'
 import { logger } from './logger'
 import { trpc_call_duration } from './metrics'
 import prisma from './prisma'
-// import { isDevelopment } from './util/is-production'
+import { isDevelopment } from './util/is-production'
 
 const t = initTRPC.context<Context>().create({
   transformer: superjson,
@@ -26,12 +26,11 @@ const loggerMiddleware = middleware(async (opts) => {
     durationMs
   )
 
-  // const stack = isDevelopment() ? result.error.stack : result.error.message
-
   if (result.ok) logger.info(`[${opts.ctx.accountId ?? 'public'}] ${meta.path}.${meta.type} [${durationMs}ms]`)
   else {
+    const stack = isDevelopment() ? result.error.stack : result.error.message
     // maybe dont log all errors
-    logger.error(`[${opts.ctx.accountId ?? 'public'}] ${meta.path}.${meta.type} [${durationMs}ms]`)
+    logger.error(`[${opts.ctx.accountId ?? 'public'}] ${meta.path}.${meta.type} [${durationMs}ms] ${stack}`)
   }
   return result
 })
