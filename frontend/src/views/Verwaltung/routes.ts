@@ -66,7 +66,7 @@ const routesVerwaltung: Route[] = [
   },
   {
     name: 'Veranstaltungsdetails',
-    path: '/verwaltung/veranstaltung/:id',
+    path: '/verwaltung/veranstaltung/:veranstaltungId',
     component: () => import('./Veranstaltungen/VerwaltungVeranstaltungDetail.vue'),
   },
 ]
