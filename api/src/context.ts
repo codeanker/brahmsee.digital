@@ -8,7 +8,7 @@ export async function createContext({ req }: trpcNext.CreateNextContextOptions) 
   try {
     const accountId = await getEntityIdFromHeader(req.headers.authorization)
     return {
-      accountId,
+      accountId: typeof accountId === 'string' ? parseInt(accountId) : accountId,
     }
   } catch (error) {
     logger.error(error)

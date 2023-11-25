@@ -8,11 +8,11 @@ const router = useRoute()
 
 const { state: gliederung } = useAsyncState(async () => {
   return apiClient.gliederung.managementGet.query({ id: parseInt(router.params.gliederungId as string) })
-}, [])
+}, null)
 </script>
 
 <template>
-  <div class="container">
+  <div>
     <h5>Gliederungen Detail ```verwaltung/gliederungen/:id```</h5>
     {{ gliederung }}
   </div>

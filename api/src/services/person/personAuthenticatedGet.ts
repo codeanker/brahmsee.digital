@@ -9,19 +9,23 @@ export type TPersonAuthenticatedGetInputSchema = z.infer<typeof ZPersonAuthentic
 type PersonAuthenticatedGetOptions = {
   input: TPersonAuthenticatedGetInputSchema
   ctx: {
-    accountId: string
+    accountId: number
   }
 }
 
 export async function personAuthenticatedGet(options: PersonAuthenticatedGetOptions) {
-  return prisma.person.findUniqueOrThrow({
+  return prisma.account.findUniqueOrThrow({
     where: {
-      accountId: parseInt(options.ctx.accountId),
+      id: options.ctx.accountId,
     },
     select: {
-      id: true,
-      firstname: true,
-      lastname: true,
+      person: {
+        select: {
+          id: true,
+          firstname: true,
+          lastname: true,
+        },
+      },
     },
   })
 }
