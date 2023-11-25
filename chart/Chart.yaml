@@ -1,0 +1,7 @@
+apiVersion: v2
+name: brahmsee.digital
+description: Helm Chart for K8S deployment of brahmsee.digital
+
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
