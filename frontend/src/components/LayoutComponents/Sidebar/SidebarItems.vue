@@ -41,9 +41,11 @@ const isCurrentRoute = (path: string) => {
         <template v-if="!item.disabled">
           <router-link
             :to="item.route"
+            :href="item.route"
+            :target="item.route.startsWith('/') ? '' : '_blank'"
             class="flex items-center space-x-3 p-2 rounded-lg cursor-pointer hover:bg-gray-100 transition-all"
             :class="{
-              'text-primary-500': isCurrentRoute(item.route),
+              'text-primary-600': isCurrentRoute(item.route),
             }"
           >
             <component
@@ -73,7 +75,7 @@ const isCurrentRoute = (path: string) => {
               <div class="h-5 aspect-square flex items-center justify-center relative">
                 <div
                   v-if="isCurrentRoute(child.route)"
-                  class="rounded-full h-1.5 aspect-square bg-primary-500 absolute z-50"
+                  class="rounded-full h-1.5 aspect-square bg-primary-600 absolute z-50"
                 ></div>
               </div>
               <router-link
@@ -81,7 +83,7 @@ const isCurrentRoute = (path: string) => {
                 :to="child.route"
                 class="flex items-center text-sm flex-grow"
                 :class="{
-                  'text-primary-500': isCurrentRoute(child.route),
+                  'text-primary-600': isCurrentRoute(child.route),
                   'cursor-not-allowed': child.disabled,
                 }"
               >
@@ -92,11 +94,11 @@ const isCurrentRoute = (path: string) => {
                 :href="child.route"
                 class="flex items-center text-sm flex-grow"
                 :class="{
-                  'text-primary-500': isCurrentRoute(child.route),
+                  'text-primary-600': isCurrentRoute(child.route),
                   'cursor-not-allowed': child.disabled,
                 }"
               >
-                {{ child.name }}
+                {{ child.name }}123
               </a>
 
               <!-- Badge -->

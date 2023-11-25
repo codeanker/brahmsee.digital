@@ -13,7 +13,7 @@ const { state: veranstaltung } = useAsyncState(async () => {
 
 <template>
   <div>
-    <h5>Veranstaltungen Detail {{ veranstaltung.veranstaltung.name }}</h5>
+    <h5>Veranstaltungen Detail {{ veranstaltung?.name }}</h5>
     {{ veranstaltung }}
   </div>
 </template>

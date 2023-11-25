@@ -49,7 +49,7 @@ export async function veranstaltungVerwaltungGet(options: VeranstaltungVerwaltun
     },
   })
   return {
-    veranstaltung,
+    ...veranstaltung,
     anmeldungen,
   }
 }
