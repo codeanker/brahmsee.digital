@@ -1,5 +1,12 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
+import { useRoute } from 'vue-router'
+
+defineProps<{
+  navigation: Array<SidebarItem | DividerItem>
+}>()
+
+const route = useRoute()
 
 export interface SidebarItem {
   type: 'SidebarItem'
@@ -7,7 +14,6 @@ export interface SidebarItem {
   icon: Component
   route: string
   children?: SidebarItem[]
-  current: boolean
 }
 
 export interface DividerItem {
@@ -15,9 +21,9 @@ export interface DividerItem {
   name: string
 }
 
-defineProps<{
-  navigation: Array<SidebarItem | DividerItem>
-}>()
+const isCurrentRoute = (path: string) => {
+  return path === route.path
+}
 </script>
 
 <template>
@@ -30,7 +36,10 @@ defineProps<{
       >
         <router-link
           :to="item.route"
-          class="flex items-center space-x-3 p-2 rounded-lg cursor-pointer hover:bg-gray-200 transition-all"
+          class="flex items-center space-x-3 p-2 rounded-lg cursor-pointer hover:bg-gray-100 transition-all"
+          :class="{
+            'text-primary-500': isCurrentRoute(item.route),
+          }"
         >
           <component
             :is="item.icon"
@@ -38,15 +47,33 @@ defineProps<{
           />
           <div class="grow text-sm">{{ item.name }}</div>
         </router-link>
-        <div class="flex flex-col">
-          <router-link
+        <div class="flex flex-col relative">
+          <div
             v-for="child in item.children"
             :key="child.name"
-            :to="child.route"
-            class="flex items-center text-sm"
+            class="flex items-center space-x-3 p-2 rounded-lg cursor-pointer hover:bg-gray-100 transition-all"
           >
-            {{ child.name }}
-          </router-link>
+            <!-- Current indicator -->
+            <div class="h-5 aspect-square flex items-center justify-center relative">
+              <div
+                v-if="isCurrentRoute(child.route)"
+                class="rounded-full h-1.5 aspect-square bg-primary-500 absolute z-50"
+              ></div>
+            </div>
+            <router-link
+              :to="child.route"
+              class="flex items-center text-sm"
+              :class="{
+                'text-primary-500': isCurrentRoute(child.route),
+              }"
+            >
+              {{ child.name }}
+            </router-link>
+          </div>
+          <!-- side line -->
+          <div class="absolute w-5 h-full flex items-center justify-center left-2">
+            <div class="rounded-full w-0.5 h-full bg-primary-200"></div>
+          </div>
         </div>
       </div>
       <div
