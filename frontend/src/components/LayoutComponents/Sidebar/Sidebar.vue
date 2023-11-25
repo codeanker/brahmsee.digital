@@ -34,12 +34,14 @@ const navigation: Array<SidebarItem | DividerItem> = [
         name: 'CREW',
         route: mainRoute + '/anmeldungen/crew',
         icon: UserGroupIcon,
+        disabled: true,
       },
       {
         type: 'SidebarItem',
         name: 'Gliederungen',
         route: mainRoute + '/anmeldungen/gliederungen',
         icon: UserGroupIcon,
+        disabled: true,
       },
       {
         type: 'SidebarItem',
@@ -49,9 +51,9 @@ const navigation: Array<SidebarItem | DividerItem> = [
       },
     ],
   },
-  { type: 'SidebarItem', name: 'Auswertung', route: mainRoute + '/auswertung', icon: ChartBarIcon },
-  { type: 'SidebarItem', name: 'Lageplan', route: mainRoute + '/lageplan', icon: MapIcon },
-  { type: 'SidebarItem', name: 'Programm', route: mainRoute + '/programm', icon: MegaphoneIcon },
+  { type: 'SidebarItem', name: 'Auswertung', route: mainRoute + '/auswertung', icon: ChartBarIcon, disabled: true },
+  { type: 'SidebarItem', name: 'Lageplan', route: mainRoute + '/lageplan', icon: MapIcon, disabled: true },
+  { type: 'SidebarItem', name: 'Programm', route: mainRoute + '/programm', icon: MegaphoneIcon, disabled: true },
   { type: 'DividerItem', name: 'Verwaltung' },
   { type: 'SidebarItem', name: 'Gliederungen', route: '/verwaltung/gliederungen', icon: MapPinIcon },
   {
@@ -59,6 +61,7 @@ const navigation: Array<SidebarItem | DividerItem> = [
     name: 'Veranstaltungen',
     route: '/verwaltung/veranstaltung',
     icon: CalendarDaysIcon,
+    badge: 'Neu',
   },
   { type: 'SidebarItem', name: 'Benutzer:innen', route: '/verwaltung/benutzer', icon: UsersIcon },
   { type: 'SidebarItem', name: 'Orte', route: '/verwaltung/orte', icon: GlobeEuropeAfricaIcon },
@@ -72,7 +75,7 @@ const navigation: Array<SidebarItem | DividerItem> = [
 <template>
   <div class="h-full flex flex-col text-primary-900 font-medium">
     <!-- Sidebar Header -->
-    <div class="flex items-center p-2 space-x-3 rounded-xl bg-primary-500">
+    <div class="flex items-center p-2 space-x-3 rounded-xl bg-primary-500 my-4">
       <div class="shrink-0 h-8 w-8 bg-primary-100 rounded-lg flex items-center justify-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"

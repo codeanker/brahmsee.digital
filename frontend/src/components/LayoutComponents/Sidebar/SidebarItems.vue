@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { LockClosedIcon } from '@heroicons/vue/24/outline'
 import type { Component } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -15,6 +16,8 @@ export interface SidebarItem {
   route: string
   children?: SidebarItem[]
   showChildren?: boolean
+  badge?: string
+  disabled?: boolean
 }
 
 export interface DividerItem {
@@ -35,52 +38,96 @@ const isCurrentRoute = (path: string) => {
         :key="item.name"
         class="flex flex-col"
       >
-        <router-link
-          :to="item.route"
-          class="flex items-center space-x-3 p-2 rounded-lg cursor-pointer hover:bg-gray-100 transition-all"
-          :class="{
-            'text-primary-500': isCurrentRoute(item.route),
-          }"
-        >
-          <component
-            :is="item.icon"
-            class="h-5 aspect-square"
-          />
-          <div class="grow text-sm">{{ item.name }}</div>
-        </router-link>
-
-        <!-- Children container -->
-        <div
-          class="flex flex-col relative transition-maxheight overflow-hidden"
-          :class="{ open: isCurrentRoute(item.route) }"
-        >
-          <div
-            v-for="child in item.children"
-            :key="child.name"
+        <template v-if="!item.disabled">
+          <router-link
+            :to="item.route"
             class="flex items-center space-x-3 p-2 rounded-lg cursor-pointer hover:bg-gray-100 transition-all"
+            :class="{
+              'text-primary-500': isCurrentRoute(item.route),
+            }"
           >
-            <!-- Current indicator -->
-            <div class="h-5 aspect-square flex items-center justify-center relative">
-              <div
-                v-if="isCurrentRoute(child.route)"
-                class="rounded-full h-1.5 aspect-square bg-primary-500 absolute z-50"
-              ></div>
-            </div>
-            <router-link
-              :to="child.route"
-              class="flex items-center text-sm"
-              :class="{
-                'text-primary-500': isCurrentRoute(child.route),
-              }"
+            <component
+              :is="item.icon"
+              class="h-5 aspect-square"
+            />
+            <div class="grow text-sm">{{ item.name }}</div>
+            <!-- Badge -->
+            <div
+              v-if="item.badge"
+              class="text-xs uppercase rounded-sm bg-secondary-100 text-secondary-600 px-1 py-0.5"
             >
-              {{ child.name }}
-            </router-link>
+              {{ item.badge }}
+            </div>
+          </router-link>
+          <!-- Children container -->
+          <div
+            class="flex flex-col relative transition-maxheight overflow-hidden"
+            :class="{ open: isCurrentRoute(item.route) }"
+          >
+            <div
+              v-for="child in item.children"
+              :key="child.name"
+              class="flex items-center space-x-3 p-2 rounded-lg cursor-pointer hover:bg-gray-100 transition-all"
+            >
+              <!-- Current indicator -->
+              <div class="h-5 aspect-square flex items-center justify-center relative">
+                <div
+                  v-if="isCurrentRoute(child.route)"
+                  class="rounded-full h-1.5 aspect-square bg-primary-500 absolute z-50"
+                ></div>
+              </div>
+              <template v-if="!child.disabled">
+                <router-link
+                  :to="child.route"
+                  class="flex items-center text-sm flex-grow"
+                  :class="{
+                    'text-primary-500': isCurrentRoute(child.route),
+                  }"
+                >
+                  {{ child.name }}
+                </router-link>
+              </template>
+              <template v-else>
+                <div class="flex items-center text-sm flex-grow cursor-not-allowed">
+                  {{ child.name }}
+                </div>
+              </template>
+
+              <!-- Badge -->
+              <div
+                v-if="child.badge"
+                class="text-xs uppercase rounded-sm bg-secondary-100 text-secondary-600 px-1 py-0.5"
+              >
+                {{ child.badge }}
+              </div>
+              <!-- Locked / Disabled -->
+              <component
+                :is="LockClosedIcon"
+                v-if="child.disabled"
+                class="h-5 aspect-square"
+              />
+            </div>
+            <!-- side line -->
+            <div class="absolute w-5 h-full flex items-center justify-center left-2">
+              <div class="rounded-full w-0.5 h-full bg-primary-200"></div>
+            </div>
           </div>
-          <!-- side line -->
-          <div class="absolute w-5 h-full flex items-center justify-center left-2">
-            <div class="rounded-full w-0.5 h-full bg-primary-200"></div>
+        </template>
+        <template v-else>
+          <div class="flex items-center space-x-3 p-2 rounded-lg cursor-not-allowed">
+            <component
+              :is="item.icon"
+              class="h-5 aspect-square"
+            />
+            <div class="grow text-sm">{{ item.name }}</div>
+            <!-- Locked / Disabled -->
+            <component
+              :is="LockClosedIcon"
+              v-if="item.disabled"
+              class="h-5 aspect-square"
+            />
           </div>
-        </div>
+        </template>
       </div>
       <div
         v-else
