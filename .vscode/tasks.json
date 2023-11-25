@@ -4,7 +4,7 @@
 		{
 			"type": "npm",
 			"script": "start:frontend",
-			"label": "Start frontend",
+			"label": "start:frontend",
 			"problemMatcher": [],
 			"presentation": {
 				"reveal": "always",
@@ -16,7 +16,7 @@
 		{
 			"type": "npm",
 			"script": "start:api",
-			"label": "Start api",
+			"label": "start:api",
 			"problemMatcher": [],
 			"presentation": {
 				"reveal": "always",
@@ -26,12 +26,43 @@
 			}
 		},
 		{
-			"label": "Start apps",
+			"label": "start:apps",
 			"dependsOn": [
 				"Start frontend",
 				"Start api"
 			],
 			"problemMatcher": []
-		}
+		},
+		{
+			"label": "run:migration",
+			"type": "shell",
+			"command": "npx prisma migrate deploy & npx prisma generate",
+			"options": {
+        "cwd": "${workspaceFolder}/api"
+      },
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "always",
+				"revealProblems": "onProblem",
+				"panel": "new",
+				"group": "start",
+				"close": true
+			}
+		},
+		{
+			"type": "npm",
+			"script": "createAccount",
+			"label": "run:createAccount",
+			"problemMatcher": [],
+			"options": {
+        "cwd": "${workspaceFolder}/api"
+      },
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"group": "start",
+				"close": false
+			}
+		},
 	]
 }
