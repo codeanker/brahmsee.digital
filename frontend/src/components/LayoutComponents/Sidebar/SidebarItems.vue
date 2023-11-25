@@ -26,13 +26,15 @@ defineProps<{
       <div
         v-if="item.type === 'SidebarItem'"
         :key="item.name"
-        class="flex items-center space-x-3 p-2 rounded-lg cursor-pointer hover:bg-gray-200 transition-all"
+        class="flex flex-col p-2 rounded-lg cursor-pointer hover:bg-gray-200 transition-all"
       >
-        <component
-          :is="item.icon"
-          class="h-5 aspect-square"
-        />
-        <div class="grow text-sm">{{ item.name }}</div>
+        <div class="flex items-center space-x-3">
+          <component
+            :is="item.icon"
+            class="h-5 aspect-square"
+          />
+          <div class="grow text-sm">{{ item.name }}</div>
+        </div>
       </div>
       <div
         v-else
