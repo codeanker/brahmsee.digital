@@ -24,7 +24,7 @@ const veranstaltungTitle = (id: number) => {
 watch(selectedVeranstaltung, (newValue) => {
   localStorage.setItem('letzteVeranstaltung', newValue.toString())
   emit('setVeranstaltung', newValue)
-  router.push(`/veranstaltung/${newValue}/dashboard`)
+  router.push({ params: { veranstaltungId: newValue.toString() } })
 })
 </script>
 
