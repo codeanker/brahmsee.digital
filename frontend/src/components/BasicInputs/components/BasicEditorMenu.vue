@@ -116,11 +116,11 @@ const items = [
   //   title: 'Clear Format',
   //   action: () => props.editor.chain().focus().clearNodes().unsetAllMarks().run(),
   // },
-  {
-    icon: 'arrow-go-back-line',
-    title: 'Link hinzufügen',
-    action: () => props.editor.chain().focus().undo().run(),
-  },
+  // {
+  //   icon: 'arrow-go-back-line',
+  //   title: 'Link hinzufügen',
+  //   action: () => props.editor.chain().focus().undo().run(),
+  // },
   {
     type: 'divider',
   },
