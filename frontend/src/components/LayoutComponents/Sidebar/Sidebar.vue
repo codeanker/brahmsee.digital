@@ -21,7 +21,18 @@ import personProfileImage from '@/helpers/personProfileImage'
 
 const navigation: Array<SidebarItem | DividerItem> = [
   { type: 'SidebarItem', name: 'Dashboard', route: '/dashboard', icon: HomeIcon, current: false },
-  { type: 'SidebarItem', name: 'Anmeldungen', route: '/anmeldungen', icon: UserGroupIcon, current: false },
+  {
+    type: 'SidebarItem',
+    name: 'Anmeldungen',
+    route: '/anmeldungen',
+    icon: UserGroupIcon,
+    current: false,
+    children: [
+      { type: 'SidebarItem', name: 'Anmeldungen', route: '/anmeldungen', icon: UserGroupIcon, current: false },
+      { type: 'SidebarItem', name: 'Anmeldungen', route: '/anmeldungen', icon: UserGroupIcon, current: false },
+      { type: 'SidebarItem', name: 'Anmeldungen', route: '/anmeldungen', icon: UserGroupIcon, current: false },
+    ],
+  },
   { type: 'SidebarItem', name: 'Auswertung', route: '/auswertungen', icon: ChartBarIcon, current: false },
   { type: 'SidebarItem', name: 'Lageplan', route: '/auswertungen', icon: MapIcon, current: false },
   { type: 'SidebarItem', name: 'Programm', route: '/programm', icon: MegaphoneIcon, current: false },
