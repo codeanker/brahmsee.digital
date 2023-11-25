@@ -29,7 +29,7 @@ const fill = (person) => {
     email: person?.email,
     password: person?.password ?? '',
     gender: person?.gender || 'null',
-    birthdate: person?.birthday === undefined ? 'null' : dayjs(person.birthday).toDate(),
+    birthday: person?.birthday === undefined ? 'null' : dayjs(person.birthday).toDate(),
     role: 'ADMIN', // TODO: Select
   }
 }
@@ -44,7 +44,7 @@ const {
   async () => {
     // @todo typing
     await apiClient.person.verwaltungCreate.mutate({
-      data: userCopy.value as unknown as RouterInput['person']['VerwaltungCreate']['data'],
+      data: userCopy.value as unknown as RouterInput['person']['verwaltungCreate']['data'],
     })
     router.back()
   },
@@ -61,7 +61,7 @@ const {
     // @todo typing
     await apiClient.person.verwaltungPatch.mutate({
       id: userCopy.value.id,
-      data: userCopy.value as unknown as RouterInput['person']['VerwaltungPatch']['data'],
+      data: userCopy.value as unknown as RouterInput['person']['verwaltungPatch']['data'],
     })
 
     if (props.isSelf) {
@@ -114,9 +114,9 @@ const reset = () => {
 
       <div class="sm:col-span-3">
         <BasicDatepicker
-          v-model="userCopy.birthdate"
+          v-model="userCopy.birthday"
           label="Geburtsdatum"
-          name="birthdate"
+          name="birthday"
           required
           :utc="true"
           format="dd.MM.yyyy"
