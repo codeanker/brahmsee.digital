@@ -4,6 +4,7 @@ import { ref } from 'vue'
 import ComponentPreview from './components/ComponentPreview.vue'
 
 import BasicCheckbox from '@/components/BasicInputs/BasicCheckbox.vue'
+import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
 import Button from '@/components/UIComponents/Button.vue'
@@ -11,6 +12,7 @@ import Loading from '@/components/UIComponents/Loading.vue'
 
 let checkboxModel = ref(false)
 let basicInputModel = ref('')
+let basicDatepickerModel = ref('')
 
 const loadingCode = `
 <Loading color="primary" />
@@ -144,6 +146,18 @@ const basicInputCode = `
             v-model="checkboxModel"
             label="Checkbox"
           ></BasicCheckbox>
+        </div>
+      </ComponentPreview>
+      <ComponentPreview
+        name="Checkbox"
+        description="Checkbox component"
+        :code="checkboxCode"
+      >
+        <div class="flex items-center space-x-2">
+          <BasicDatepicker
+            v-model="basicDatepickerModel"
+            label="Datepicker"
+          ></BasicDatepicker>
         </div>
       </ComponentPreview>
     </div>
