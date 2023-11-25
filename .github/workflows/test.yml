@@ -33,6 +33,8 @@ jobs:
           node-version: 20.x
           cache: "npm"
       - run: npm ci
-      - run: npx playwright install --with-deps
-      - run: npx -w api prisma migrate reset --force
-	    - run: npm run test
+      - name: Playwright deps
+        run: npx playwright install --with-deps
+      - name: Prisma Migration
+        run: npx -w api prisma migrate reset --force
+      - run: npm run test:all
