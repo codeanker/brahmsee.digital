@@ -13,6 +13,8 @@ import {
   RocketLaunchIcon,
   BookOpenIcon,
 } from '@heroicons/vue/24/outline'
+import { ref, computed } from 'vue'
+import { useRoute } from 'vue-router'
 
 import SidebarItems, { type DividerItem, type SidebarItem } from './SidebarItems.vue'
 import SidebarVeranstaltungSwitcher from './SidebarVeranstaltungSwitcher.vue'
@@ -20,42 +22,55 @@ import SidebarVeranstaltungSwitcher from './SidebarVeranstaltungSwitcher.vue'
 import { logout, loggedInAccount } from '@/composables/useAuthentication'
 import personProfileImage from '@/helpers/personProfileImage'
 
-let mainRoute = '/veranstaltung/1'
+const route = useRoute()
 
-const navigation: Array<SidebarItem | DividerItem> = [
-  { type: 'SidebarItem', name: 'Dashboard', route: mainRoute + '/dashboard', icon: RocketLaunchIcon },
+let veranstaltungId = ref(parseInt(route.params.veranstaltungId as string))
+const mainRoute = computed(() => '/veranstaltung/' + veranstaltungId.value)
+
+function setVeranstaltung(id: number) {
+  veranstaltungId.value = id
+}
+
+const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
+  { type: 'SidebarItem', name: 'Dashboard', route: mainRoute.value + '/dashboard', icon: RocketLaunchIcon },
   {
     type: 'SidebarItem',
     name: 'Anmeldungen',
-    route: mainRoute + '/anmeldungen',
+    route: mainRoute.value + '/anmeldungen',
     icon: UserGroupIcon,
     showChildren: false,
     children: [
       {
         type: 'SidebarItem',
         name: 'CREW',
-        route: mainRoute + '/anmeldungen/crew',
+        route: mainRoute.value + '/anmeldungen/crew',
         icon: UserGroupIcon,
         disabled: true,
       },
       {
         type: 'SidebarItem',
         name: 'Gliederungen',
-        route: mainRoute + '/anmeldungen/gliederungen',
+        route: mainRoute.value + '/anmeldungen/gliederungen',
         icon: UserGroupIcon,
         disabled: true,
       },
       {
         type: 'SidebarItem',
         name: 'Teilnehmende',
-        route: mainRoute + '/anmeldungen/teilnehmende',
+        route: mainRoute.value + '/anmeldungen/teilnehmende',
         icon: UserGroupIcon,
       },
     ],
   },
-  { type: 'SidebarItem', name: 'Auswertung', route: mainRoute + '/auswertung', icon: ChartBarIcon, disabled: true },
-  { type: 'SidebarItem', name: 'Lageplan', route: mainRoute + '/lageplan', icon: MapIcon, disabled: true },
-  { type: 'SidebarItem', name: 'Programm', route: mainRoute + '/programm', icon: MegaphoneIcon, disabled: true },
+  {
+    type: 'SidebarItem',
+    name: 'Auswertung',
+    route: mainRoute.value + '/auswertung',
+    icon: ChartBarIcon,
+    disabled: true,
+  },
+  { type: 'SidebarItem', name: 'Lageplan', route: mainRoute.value + '/lageplan', icon: MapIcon, disabled: true },
+  { type: 'SidebarItem', name: 'Programm', route: mainRoute.value + '/programm', icon: MegaphoneIcon, disabled: true },
   { type: 'DividerItem', name: 'Verwaltung' },
   { type: 'SidebarItem', name: 'Gliederungen', route: '/verwaltung/gliederungen', icon: MapPinIcon },
   {
@@ -72,13 +87,13 @@ const navigation: Array<SidebarItem | DividerItem> = [
   { type: 'SidebarItem', name: 'Dokumentation', route: 'http://127.0.0.1:5173/', icon: BookOpenIcon },
   // { name: 'Unterbringung', route: '', icon: HomeIcon },
   // { name: 'Finanzen', route: '', icon: BanknotesIcon },
-]
+])
 </script>
 
 <template>
   <div class="h-full flex flex-col text-primary-900 font-medium">
     <!-- Sidebar Header -->
-    <SidebarVeranstaltungSwitcher />
+    <SidebarVeranstaltungSwitcher @set-veranstaltung="setVeranstaltung" />
 
     <!-- Sidebar Item List -->
     <SidebarItems
