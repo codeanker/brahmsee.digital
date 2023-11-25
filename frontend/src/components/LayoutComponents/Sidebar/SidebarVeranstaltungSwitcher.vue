@@ -1,35 +1,35 @@
 <script setup lang="ts">
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/vue'
 import { CheckIcon, ChevronDownIcon } from '@heroicons/vue/24/outline'
+import { useAsyncState } from '@vueuse/core'
 import { ref } from 'vue'
+import { useRoute } from 'vue-router'
 
-let selectedVeranstaltung = ref('brahmsee24')
-let veranstaltungen = [
-  {
-    id: 'brahmsee24',
-    name: 'Brahmsee 2024',
-  },
-  {
-    id: 'vorbereitung24',
-    name: 'Vorbereitungstreffen 2024',
-  },
-]
-const veranstaltungTitle = (id: string) => {
-  return veranstaltungen.find((veranstaltung) => veranstaltung.id === id)?.name
+import { apiClient } from '@/api'
+
+const router = useRoute()
+
+const { state: veranstaltungen } = useAsyncState(async () => {
+  return apiClient.veranstaltung.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
+}, [])
+
+let selectedVeranstaltung = ref(router.params.veranstaltungId)
+const veranstaltungTitle = (id: number) => {
+  return veranstaltungen.value.find((veranstaltung) => veranstaltung.id === id)?.name
 }
 </script>
 
 <template>
-  <div>
+  <div class="mb-4">
     <Listbox v-model="selectedVeranstaltung">
       <ListboxButton
-        class="text-white bg-primary-500 hover:bg-primary-600 focus:outline-primary-500 btn w-full rounded-xl flex items-center space-x-3 mb-4 text-left"
+        class="text-white bg-primary-600 hover:bg-primary-500 focus:outline-primary-600 btn w-full rounded-xl flex items-center space-x-3 text-left"
       >
         <div class="shrink-0 h-8 w-8 bg-primary-100 rounded-lg flex items-center justify-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 576 512"
-            class="h-5 aspect-square text-primary-500"
+            class="h-5 aspect-square text-primary-600"
             fill="currentColor"
           >
             <path
@@ -63,7 +63,7 @@ const veranstaltungTitle = (id: string) => {
           >
             <li
               :class="[
-                active ? 'bg-primary-500 text-white' : 'text-gray-900',
+                active ? 'bg-primary-600 text-white' : 'text-gray-900',
                 'relative cursor-default select-none py-2 pl-3 pr-9',
               ]"
             >
@@ -74,7 +74,7 @@ const veranstaltungTitle = (id: string) => {
               <span
                 v-if="selected"
                 :class="[
-                  active ? 'text-white' : 'text-primary-500',
+                  active ? 'text-white' : 'text-primary-600',
                   'absolute inset-y-0 right-0 flex items-center pr-4',
                 ]"
               >
