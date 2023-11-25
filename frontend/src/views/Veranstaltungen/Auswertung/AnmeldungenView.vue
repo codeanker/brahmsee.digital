@@ -1,1 +1,1 @@
-<template>AuswertungAnmeldungenView</template>
+<template><div>Auswertung View</div></template>

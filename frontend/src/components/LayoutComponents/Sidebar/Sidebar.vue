@@ -19,12 +19,43 @@ import SidebarItems, { type DividerItem, type SidebarItem } from './SidebarItems
 import { logout, loggedInAccount } from '@/composables/useAuthentication'
 import personProfileImage from '@/helpers/personProfileImage'
 
+let mainRoute = '/veranstaltung/1'
+
 const navigation: Array<SidebarItem | DividerItem> = [
   { type: 'SidebarItem', name: 'Dashboard', route: '/dashboard', icon: HomeIcon, current: false },
-  { type: 'SidebarItem', name: 'Anmeldungen', route: '/anmeldungen', icon: UserGroupIcon, current: false },
-  { type: 'SidebarItem', name: 'Auswertung', route: '/auswertungen', icon: ChartBarIcon, current: false },
-  { type: 'SidebarItem', name: 'Lageplan', route: '/auswertungen', icon: MapIcon, current: false },
-  { type: 'SidebarItem', name: 'Programm', route: '/programm', icon: MegaphoneIcon, current: false },
+  {
+    type: 'SidebarItem',
+    name: 'Anmeldungen',
+    route: mainRoute + '/anmeldungen',
+    icon: UserGroupIcon,
+    current: false,
+    children: [
+      {
+        type: 'SidebarItem',
+        name: 'CREW',
+        route: mainRoute + '/anmeldungen/crew',
+        icon: UserGroupIcon,
+        current: false,
+      },
+      {
+        type: 'SidebarItem',
+        name: 'Gliederungen',
+        route: mainRoute + '/anmeldungen/gliederungen',
+        icon: UserGroupIcon,
+        current: false,
+      },
+      {
+        type: 'SidebarItem',
+        name: 'Teilnehmende',
+        route: mainRoute + '/anmeldungen/teilnehmende',
+        icon: UserGroupIcon,
+        current: false,
+      },
+    ],
+  },
+  { type: 'SidebarItem', name: 'Auswertung', route: mainRoute + '/auswertungen', icon: ChartBarIcon, current: false },
+  { type: 'SidebarItem', name: 'Lageplan', route: mainRoute + '/auswertungen', icon: MapIcon, current: false },
+  { type: 'SidebarItem', name: 'Programm', route: mainRoute + '/programm', icon: MegaphoneIcon, current: false },
   { type: 'DividerItem', name: 'Verwaltung' },
   { type: 'SidebarItem', name: 'Gliederungen', route: '/verwaltung/gliederungen', icon: MapPinIcon, current: false },
   {
