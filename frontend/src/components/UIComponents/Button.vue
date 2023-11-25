@@ -26,7 +26,7 @@ const colors: Record<Color, string> = {
     :is="to === undefined ? 'button' : 'router-link'"
     type="button"
     :class="colors[color]"
-    class="btn w-full rounded-xl"
+    class="btn w-full rounded-lg"
     :to="to"
   >
     <slot></slot>
