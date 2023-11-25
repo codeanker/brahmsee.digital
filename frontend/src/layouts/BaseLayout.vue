@@ -5,7 +5,6 @@ import Breadcrumbs from '@/components/UIComponents/Breadcrumbs.vue'
 
 <template>
   <div>
-    <!-- Content -->
     <div class="container mx-auto p-0 h-full grid grid-cols-12 gap-8">
       <div class="col-span-3 pt-12 h-screen sticky top-0">
         <Sidebar />
