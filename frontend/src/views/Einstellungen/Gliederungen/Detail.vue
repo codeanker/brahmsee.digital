@@ -8,7 +8,7 @@ const router = useRoute()
 
 const { state: gliederung } = useAsyncState(async () => {
   return apiClient.gliederung.managementGet.query({ id: parseInt(router.params.gliederungId as string) })
-}, [])
+}, null)
 </script>
 
 <template>

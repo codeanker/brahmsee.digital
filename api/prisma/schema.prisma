@@ -27,7 +27,6 @@ model Person {
   lastname    String
   birthday    DateTime? @db.Date
   gender      Gender?
-  accountId   Int?         @unique
   anmeldungen Anmeldung[]
   gliederungId Int?
   gliederung   Gliederung? @relation(fields: [gliederungId], references: [id])

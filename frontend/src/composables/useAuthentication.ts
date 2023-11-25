@@ -23,12 +23,12 @@ export async function login({ email, password }: { email: string; password: stri
 }
 
 export async function reAuthenticate() {
+  if (localStorage.getItem('jwt') === null) return false
   try {
-    loggedInAccount.value = await apiClient.person.authenticatedGet.query()
+    return await apiClient.person.authenticatedGet.query()
   } catch (error) {
-    console.error(error)
+    return false
   }
-  return loggedInAccount.value
 }
 
 export async function logout() {
