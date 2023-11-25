@@ -37,6 +37,9 @@ module.exports = {
       borderColor: {
         transparent: 'transparent',
       },
+      backgroundImage: {
+        public: "url('/src/assets/images/publicBg.webp')",
+      },
     },
   },
   safelist: [

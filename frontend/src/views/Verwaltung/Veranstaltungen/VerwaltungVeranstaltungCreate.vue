@@ -5,6 +5,7 @@ import { apiClient } from '@/api'
 import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import BasicInputNumber from '@/components/BasicInputs/BasicInputNumber.vue'
+import Button from '@/components/UIComponents/Button.vue'
 import type { RouterInput } from '@codeanker/api'
 import { ValidateForm } from '@codeanker/validation'
 
@@ -27,7 +28,10 @@ async function create() {
 </script>
 
 <template>
-  <ValidateForm @submit="create">
+  <ValidateForm
+    class="space-y-4"
+    @submit="create"
+  >
     <h5>Veranstaltung anlegen</h5>
     <BasicInput
       v-model="model.name"
@@ -72,17 +76,19 @@ async function create() {
     <BasicInputNumber
       v-model="model.maxTeilnehmende"
       required
-      type="number"
       label="Maximale Teilnehmenden Zahl"
       placeholder="Maximale Teilnehmenden Zahl"
     />
     <BasicInputNumber
       v-model="model.teilnahmegebuehr"
       required
-      type="number"
       label="Teilnahmegebühr"
       placeholder="Teilnahmegebühr"
     />
-    <button type="submit">Anlegen</button>
+    <Button
+      type="submit"
+      color="primary"
+      >Anlegen</Button
+    >
   </ValidateForm>
 </template>

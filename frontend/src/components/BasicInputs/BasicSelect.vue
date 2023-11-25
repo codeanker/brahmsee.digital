@@ -1,7 +1,6 @@
 <script setup lang="ts">
-// import { faAngleDown } from '@fortawesome/pro-solid-svg-icons'
-// import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/vue'
+import { ChevronDownIcon } from '@heroicons/vue/24/outline'
 
 import useValidationModel from '../../composables/useValidationModel'
 
@@ -24,6 +23,7 @@ const { model, errorMessage } = useValidationModel(props, emit)
   <div :id="id || name || label">
     <label
       v-if="label"
+      class="font-medium"
       :for="id || name || label"
       >{{ label }}</label
     >
@@ -34,10 +34,7 @@ const { model, errorMessage } = useValidationModel(props, emit)
     >
       <ListboxButton class="input-style flex items-center justify-between">
         {{ options.find((option) => option.value === modelValue)?.label || placeholder || 'Bitte wählen...' }}
-        <!-- <FontAwesomeIcon
-          :icon="faAngleDown"
-          class="text-gray-500"
-        /> -->
+        <ChevronDownIcon class="h-5 text-gray-500" />
       </ListboxButton>
       <div class="relative mt-1">
         <transition

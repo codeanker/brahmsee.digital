@@ -3,9 +3,9 @@
 <svg version="1.1" id="TEXT" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 196.7 216.8" style="enable-background:new 0 0 196.7 216.8;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:none;stroke:#231F20;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;}
-	.st1{fill:#231F20;}
-	.st2{enable-background:new    ;}
+	.st0{color:#000;fill:none;stroke:#000;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;}
+	.st1{fill:#000;color:#000;}
+	.st2{enable-background:new    ;color:#000;}
 </style>
 <path class="st0" d="M161.4,164h-59.7l29.9-88.1L161.4,164z"/>
 <path class="st0" d="M127.3,90.1l25.1,73.9"/>

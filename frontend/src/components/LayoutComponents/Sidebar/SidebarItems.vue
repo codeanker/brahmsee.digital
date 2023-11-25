@@ -3,12 +3,6 @@ import { LockClosedIcon } from '@heroicons/vue/24/outline'
 import type { Component } from 'vue'
 import { useRoute } from 'vue-router'
 
-defineProps<{
-  navigation: Array<SidebarItem | DividerItem>
-}>()
-
-const route = useRoute()
-
 export interface SidebarItem {
   type: 'SidebarItem'
   name: string
@@ -24,6 +18,12 @@ export interface DividerItem {
   type: 'DividerItem'
   name: string
 }
+
+defineProps<{
+  navigation: Array<SidebarItem | DividerItem>
+}>()
+
+const route = useRoute()
 
 const isCurrentRoute = (path: string) => {
   return path === route.path
