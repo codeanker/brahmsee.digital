@@ -26,10 +26,22 @@
 			}
 		},
 		{
+			"type": "npm",
+			"script": "start:docs",
+			"label": "start:docs",
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "silent",
+				"panel": "new",
+				"close": false
+			}
+		},
+		{
 			"label": "start:apps",
 			"dependsOn": [
 				"start:api",
-				"start:frontend"
+				"start:frontend",
+				"start:docs"
 			],
 			"problemMatcher": []
 		},
