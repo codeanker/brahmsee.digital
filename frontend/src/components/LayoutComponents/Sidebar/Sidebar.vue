@@ -22,55 +22,50 @@ import personProfileImage from '@/helpers/personProfileImage'
 let mainRoute = '/veranstaltung/1'
 
 const navigation: Array<SidebarItem | DividerItem> = [
-  { type: 'SidebarItem', name: 'Dashboard', route: '/dashboard', icon: HomeIcon, current: false },
+  { type: 'SidebarItem', name: 'Dashboard', route: '/dashboard', icon: HomeIcon },
   {
     type: 'SidebarItem',
     name: 'Anmeldungen',
     route: mainRoute + '/anmeldungen',
     icon: UserGroupIcon,
-    current: false,
     children: [
       {
         type: 'SidebarItem',
         name: 'CREW',
         route: mainRoute + '/anmeldungen/crew',
         icon: UserGroupIcon,
-        current: false,
       },
       {
         type: 'SidebarItem',
         name: 'Gliederungen',
         route: mainRoute + '/anmeldungen/gliederungen',
         icon: UserGroupIcon,
-        current: false,
       },
       {
         type: 'SidebarItem',
         name: 'Teilnehmende',
         route: mainRoute + '/anmeldungen/teilnehmende',
         icon: UserGroupIcon,
-        current: false,
       },
     ],
   },
-  { type: 'SidebarItem', name: 'Auswertung', route: mainRoute + '/auswertungen', icon: ChartBarIcon, current: false },
-  { type: 'SidebarItem', name: 'Lageplan', route: mainRoute + '/auswertungen', icon: MapIcon, current: false },
-  { type: 'SidebarItem', name: 'Programm', route: mainRoute + '/programm', icon: MegaphoneIcon, current: false },
+  { type: 'SidebarItem', name: 'Auswertung', route: mainRoute + '/auswertungen', icon: ChartBarIcon },
+  { type: 'SidebarItem', name: 'Lageplan', route: mainRoute + '/auswertungen', icon: MapIcon },
+  { type: 'SidebarItem', name: 'Programm', route: mainRoute + '/programm', icon: MegaphoneIcon },
   { type: 'DividerItem', name: 'Verwaltung' },
-  { type: 'SidebarItem', name: 'Gliederungen', route: '/verwaltung/gliederungen', icon: MapPinIcon, current: false },
+  { type: 'SidebarItem', name: 'Gliederungen', route: '/verwaltung/gliederungen', icon: MapPinIcon },
   {
     type: 'SidebarItem',
     name: 'Veranstaltungen',
     route: '/verwaltung/veranstaltung',
     icon: CalendarDaysIcon,
-    current: false,
   },
-  { type: 'SidebarItem', name: 'Benutzer:innen', route: '/verwaltung/benutzer', icon: UsersIcon, current: false },
-  { type: 'SidebarItem', name: 'Orte', route: '/verwaltung/orte', icon: GlobeEuropeAfricaIcon, current: false },
+  { type: 'SidebarItem', name: 'Benutzer:innen', route: '/verwaltung/benutzer', icon: UsersIcon },
+  { type: 'SidebarItem', name: 'Orte', route: '/verwaltung/orte', icon: GlobeEuropeAfricaIcon },
   { type: 'DividerItem', name: 'Entwicklung' },
-  { type: 'SidebarItem', name: 'Komponenten', route: '/develeopment/components', icon: CubeIcon, current: false },
-  // { name: 'Unterbringung', route: '', icon: HomeIcon, current: false },
-  // { name: 'Finanzen', route: '', icon: BanknotesIcon, current: false },
+  { type: 'SidebarItem', name: 'Komponenten', route: '/develeopment/components', icon: CubeIcon },
+  // { name: 'Unterbringung', route: '', icon: HomeIcon },
+  // { name: 'Finanzen', route: '', icon: BanknotesIcon },
 ]
 </script>
 
@@ -96,7 +91,7 @@ const navigation: Array<SidebarItem | DividerItem> = [
     <!-- User Management -->
     <div class="flex items-center space-x-3 py-4 border-t border-gray-300">
       <img
-        class="h-10 w-10 rounded-full bg-green-700 shrink-0"
+        class="h-8 aspect-square rounded-full bg-green-700 shrink-0"
         :src="personProfileImage(loggedInAccount)"
         alt=""
       />
