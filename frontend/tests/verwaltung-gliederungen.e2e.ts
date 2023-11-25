@@ -4,9 +4,11 @@ import dayjs from 'dayjs'
 import { Browser, chromium, BrowserContext, firefox, webkit, Page } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
 
+import { insertJwtToken } from './helpers/insertJwtToken'
+
 import { testUtils } from '@codeanker/api'
 
-describe(`Feature: Login`, () => {
+describe(`View: verwaltung/gliederungen`, () => {
   let browser: Browser
   let context: BrowserContext
   let name = ''
@@ -23,16 +25,14 @@ describe(`Feature: Login`, () => {
     browser?.close()
     await testUtils.cleanup(runId)
   })
-  it('Der Standard Nutzer kann sich anmelden.', async () => {
+  it('Gliederung auflisten', async () => {
     const page = await context.newPage()
-    await page.goto(`https://localhost.codeanker.com:8080/login`)
-    await page.getByPlaceholder('E-Mail').click()
-    await page.getByPlaceholder('E-Mail').fill(data.account.email)
-    await page.getByPlaceholder('Passwort').click()
-    await page.getByPlaceholder('Passwort').fill(data.accountPassword)
-    await page.getByPlaceholder('Passwort').press('Enter')
-    await page.screenshot({ path: `${__dirname}/screenshots/${name}_login.png` })
-    await vi.waitUntil(() => !page.url().includes('login'))
+    await insertJwtToken(page, data.accessToken)
+
+    await page.goto(`https://localhost.codeanker.com:8080/verwaltung/gliederungen`)
+    await vi.waitUntil(async () => (await page.getByText('DLRG Bundesverband').isVisible()) === true)
+    await page.screenshot({ path: `${__dirname}/screenshots/${name}_verwaltung-gliederung.png` })
   })
-  it.skip('Passwort kann zurück gesetzt werden.', async () => {})
+  it.skip('Gliederung erstellen', async () => {})
+  it.skip('Gliederung details ansehen', async () => {})
 })
