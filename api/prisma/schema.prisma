@@ -22,15 +22,15 @@ enum Gender {
 }
 
 model Person {
-  id          Int         @id @default(autoincrement())
-  firstname   String
-  lastname    String
-  birthday    DateTime? @db.Date
-  gender      Gender?
-  anmeldungen Anmeldung[]
+  id           Int         @id @default(autoincrement())
+  firstname    String
+  lastname     String
+  birthday     DateTime?   @db.Date
+  gender       Gender?
+  anmeldungen  Anmeldung[]
   gliederungId Int?
   gliederung   Gliederung? @relation(fields: [gliederungId], references: [id])
-  account     Account?
+  account      Account?
 }
 
 model Account {
@@ -38,8 +38,9 @@ model Account {
   email    String  @unique
   password String
   role     Role
-  personId Int?   @unique
+  personId Int?    @unique
   person   Person? @relation(fields: [personId], references: [id])
+  gliederung Gliederung[]
 }
 
 model Gliederung {
@@ -48,6 +49,8 @@ model Gliederung {
   edv                  String               @unique
   unterveranstaltungen Unterveranstaltung[]
   personen             Person[]
+  adminIds             Int[]
+  admins               Account[]
 }
 
 enum AnmeldungStatus {
