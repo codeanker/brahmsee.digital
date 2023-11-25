@@ -11,7 +11,7 @@ import Sidebar from '@/components/LayoutComponents/Sidebar/Sidebar.vue'
   <!-- Content -->
   <div class="absolute w-screen h-screen">
     <div class="container p-0 h-full bg-white grid grid-cols-12 gap-6">
-      <div class="col-span-3 bg-gray-50 border-r border-gray-300">
+      <div class="col-span-3 bg-gray-50">
         <Sidebar />
       </div>
       <div class="col-span-9 overflow-y-auto py-6">

@@ -72,7 +72,7 @@ const navigation: Array<SidebarItem | DividerItem> = [
 <template>
   <div class="h-full flex flex-col pr-6 text-primary-900 font-medium">
     <!-- Sidebar Header -->
-    <div class="flex items-center p-2 space-x-3 rounded-xl bg-primary-500">
+    <div class="flex items-center p-2 space-x-3 rounded-xl bg-primary-500 my-4">
       <div class="shrink-0 h-8 w-8 bg-primary-100 rounded-lg flex items-center justify-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"
