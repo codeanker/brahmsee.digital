@@ -17,6 +17,7 @@ export const ZVeranstaltungVerwaltungPatchInputSchema = z.strictObject({
     beschreibung: z.string().optional(),
     datenschutz: z.string().optional(),
     teilnahmeBedigungen: z.string().optional(),
+    zielgruppe: z.string().optional(),
   }),
 })
 

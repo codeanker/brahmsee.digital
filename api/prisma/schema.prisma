@@ -207,6 +207,7 @@ model Veranstaltung {
   beschreibung         String?
   datenschutz          String?
   teilnahmeBedingungen String?
+  zielgruppe           String?
 }
 
 enum MahlzeitType {
