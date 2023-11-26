@@ -14,6 +14,7 @@ export const ZVeranstaltungVerwaltungPatchInputSchema = z.strictObject({
     meldeschluss: z.date().optional(),
     maxTeilnehmende: z.number().int().optional(),
     teilnahmegebuehr: z.number().int().optional(),
+    beschreibung: z.string().optional(),
   }),
 })
 
