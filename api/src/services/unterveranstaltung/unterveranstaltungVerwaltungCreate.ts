@@ -1,3 +1,4 @@
+import { UnterveranstaltungType } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma'
@@ -10,6 +11,7 @@ export const ZUnterveranstaltungVerwaltungCreateInputSchema = z.strictObject({
     meldebeginn: z.string().datetime(),
     meldeschluss: z.string().datetime(),
     gliederungId: z.number().int(),
+    type: z.nativeEnum(UnterveranstaltungType),
   }),
 })
 
