@@ -4,9 +4,9 @@ import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { apiClient } from '@/api'
-import InfoList from '@/components/InfoList.vue'
 import PublicHeader from '@/components/LayoutComponents/PublicHeader.vue'
 import Button from '@/components/UIComponents/Button.vue'
+import InfoList from '@/components/UIComponents/InfoList.vue'
 
 const route = useRoute()
 const router = useRouter()
