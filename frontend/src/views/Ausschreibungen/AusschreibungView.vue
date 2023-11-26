@@ -40,26 +40,29 @@ fetchUnterveranstaltung()
 
 <template>
   <div class="lg:pb-10 lg:px-20 xl:px-28 2xl:px-40">
-    <!-- Header -->
-    <PublicHeader />
-    <div class="text-3xl font-medium mb-5">Ausschreibung {{ unterveranstaltung?.veranstaltung.name }}</div>
-    <!-- List -->
-    <InfoList :infos="keyInfos" />
-    <div class="my-5">
-      {{ unterveranstaltung?.beschreibung }}
-    </div>
-    <Button
-      color="primary"
-      class="w-full lg:w-auto justify-center mb-20"
-      @click="() => router.push('/ausschreibung/' + route.params.ausschreibungId + '/anmeldung')"
-      >Jetzt anmelden</Button
-    >
-    <div class="flex items-center justify-between">
-      <img
-        class="h-8"
-        src="@/assets/images/gliederung_sh.png"
-      />
-      <div class="text-sm text-gray-500 text-right">v1.0.0-#123456</div>
-    </div>
+    <template v-if="unterveranstaltung">
+      <!-- Header -->
+      <PublicHeader :gliederung="unterveranstaltung.gliederung" />
+      <div class="text-3xl font-medium mb-5">Ausschreibung {{ unterveranstaltung?.veranstaltung.name }}</div>
+      <!-- List -->
+      <InfoList :infos="keyInfos" />
+      <div class="my-5">
+        {{ unterveranstaltung?.beschreibung }}
+      </div>
+      <Button
+        color="primary"
+        class="w-full lg:w-auto justify-center mb-20"
+        @click="() => router.push('/ausschreibung/' + route.params.ausschreibungId + '/anmeldung')"
+        >Jetzt anmelden</Button
+      >
+      <div class="flex items-center justify-between">
+        <img
+          class="h-8"
+          src="@/assets/images/gliederung_sh.png"
+        />
+        <div class="text-sm text-gray-500 text-right">v1.0.0-#123456</div>
+      </div>
+    </template>
+    <template v-else> Keine Ausschreibung gefunden </template>
   </div>
 </template>
