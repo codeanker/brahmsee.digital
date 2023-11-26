@@ -10,9 +10,11 @@ import Button from '../UIComponents/Button.vue'
       src="@/assets/images/gliederung_test.png"
       class="h-12 lg:h-16"
     />
-    <Button color="secondary">
+    <Button
+      color="secondary"
+      title="Kontaktiere uns"
+    >
       <ChatBubbleOvalLeftEllipsisIcon class="h-5" />
-      <div class="hidden lg:inline-block ml-2">Kontaktiere uns</div>
     </Button>
   </div>
 </template>

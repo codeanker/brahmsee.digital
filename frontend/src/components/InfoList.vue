@@ -12,7 +12,7 @@ defineProps<{
   <div
     v-for="info in infos"
     :key="info.title"
-    class="even:bg-gray-50 text-sm grid grid-cols-2 gap-3 rounded-lg min-h-[50px] px-3"
+    class="odd:bg-gray-50 text-sm grid grid-cols-2 gap-3 rounded-lg min-h-[50px] px-3"
   >
     <div class="font-medium flex items-center">
       {{ info.title }}

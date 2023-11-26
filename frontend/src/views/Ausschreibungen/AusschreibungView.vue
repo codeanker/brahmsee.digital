@@ -1,16 +1,41 @@
 <script setup lang="ts">
+import { useAsyncState, formatDate } from '@vueuse/core'
+import { computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+
+import { apiClient } from '@/api'
 import InfoList from '@/components/InfoList.vue'
 import PublicHeader from '@/components/LayoutComponents/PublicHeader.vue'
 import Button from '@/components/UIComponents/Button.vue'
 
-const keyInfos = [
-  { title: 'Beginn', value: 'Freitag, 26. Mai 2023 16:00 Uhr', small: true },
-  { title: 'Ende', value: 'Montag, 29. Mai 2023 14:00 Uhr', small: true },
-  { title: 'Veranstaltungsort', value: 'Waldheim am Brahmsee, 24631 Langwedel', small: true },
-  { title: 'Teilnahmebeitrag', value: '79€ pro Person' },
-  { title: 'Meldeschluss', value: '01.04.2023' },
-  { title: 'Zielgruppe', value: '6 -13 Jahre' },
-]
+const route = useRoute()
+const router = useRouter()
+
+const keyInfos = computed(() => {
+  if (unterveranstaltung.value) {
+    return [
+      {
+        title: 'Beginn',
+        value: `${formatDate(unterveranstaltung.value.veranstaltung.beginn, 'DD.MM.YYYY HH:mm')}` + ' Uhr',
+      },
+      {
+        title: 'Ende',
+        value: `${formatDate(unterveranstaltung.value.veranstaltung.ende, 'DD.MM.YYYY HH:mm')}` + ' Uhr',
+      },
+      { title: 'Veranstaltungsort', value: unterveranstaltung.value.veranstaltung.ort, small: true },
+      { title: 'Teilnahmebeitrag', value: unterveranstaltung.value.teilnahmegebuehr + '€ pro Person' },
+      { title: 'Meldeschluss', value: formatDate(unterveranstaltung.value.meldeschluss, 'DD.MM.YYYY') },
+      { title: 'Zielgruppe', value: '6 -13 Jahre' },
+    ]
+  } else {
+    return []
+  }
+})
+
+const { state: unterveranstaltung, execute: fetchUnterveranstaltung } = useAsyncState(async () => {
+  return apiClient.unterveranstaltung.publicGet.query({ id: Number(route.params.ausschreibungId) })
+}, undefined)
+fetchUnterveranstaltung()
 </script>
 
 <template>
@@ -18,17 +43,15 @@ const keyInfos = [
     <!-- Header -->
     <PublicHeader />
     <div class="text-3xl font-medium mb-5">Ausschreibung Landeskindertreffen</div>
-    <div class="mb-5">Wir wollen mit Euch über Pfingsten an den Brahmsee fahren.</div>
     <!-- List -->
     <InfoList :infos="keyInfos" />
     <div class="my-5">
-      Weiterer Text zu Bedingungen oder Informationen für die Teilnehmer den ich hier nicht weiter ausführen möchte.
-      Deshalb kommt hier jetzt ein Losem ipsum dolor sit amet, onsetetur sadipscing elitr, sed diam nonumy eirmod tempor
-      invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+      {{ unterveranstaltung?.beschreibung }}
     </div>
     <Button
       color="primary"
-      class="w-full justify-center mb-20"
+      class="w-full lg:w-auto justify-center mb-20"
+      @click="() => router.push('/ausschreibung/' + route.params.ausschreibungId + '/anmeldung')"
       >Jetzt anmelden</Button
     >
     <div class="flex items-center justify-between">
