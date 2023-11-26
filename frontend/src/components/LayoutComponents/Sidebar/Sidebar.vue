@@ -24,7 +24,10 @@ import personProfileImage from '@/helpers/personProfileImage'
 
 const route = useRoute()
 
-let veranstaltungId = ref(parseInt(route.params.veranstaltungId as string))
+let veranstaltungId = ref()
+if (route.params.veranstaltungId !== undefined && typeof route.params.veranstaltungId === 'string') {
+  veranstaltungId.value = parseInt(route.params.veranstaltungId)
+}
 const mainRoute = computed(() => '/veranstaltung/' + veranstaltungId.value)
 
 function setVeranstaltung(id: number) {
@@ -32,13 +35,20 @@ function setVeranstaltung(id: number) {
 }
 
 const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
-  { type: 'SidebarItem', name: 'Dashboard', route: mainRoute.value + '/dashboard', icon: RocketLaunchIcon },
+  {
+    type: 'SidebarItem',
+    name: 'Dashboard',
+    route: mainRoute.value + '/dashboard',
+    icon: RocketLaunchIcon,
+    disabled: veranstaltungId.value === undefined,
+  },
   {
     type: 'SidebarItem',
     name: 'Anmeldungen',
     route: mainRoute.value + '/anmeldungen',
     icon: UserGroupIcon,
     showChildren: false,
+    disabled: veranstaltungId.value === undefined,
     children: [
       {
         type: 'SidebarItem',
@@ -59,6 +69,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
         name: 'Teilnehmende',
         route: mainRoute.value + '/anmeldungen/teilnehmende',
         icon: UserGroupIcon,
+        disabled: veranstaltungId.value === undefined,
       },
     ],
   },
