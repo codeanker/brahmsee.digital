@@ -135,7 +135,7 @@ model Person {
   notfallkontaktIds            Int[]
   notfallkontakte              Notfallkontakt[]
   addressId                    Int?
-  addresse                     Adresse?                     @relation(fields: [addressId], references: [id])
+  address                     Address?                     @relation(fields: [addressId], references: [id])
 }
 
 model Account {
@@ -195,7 +195,7 @@ model Anmeldung {
   tshirtBestellt       Boolean            @default(false)
 }
 
-model Adresse {
+model Address {
   id     Int      @id @default(autoincrement())
   street String
   number String
@@ -208,8 +208,8 @@ model Adresse {
 model Ort {
   id            Int             @id @default(autoincrement())
   name          String
-  adresseId     Int?
-  adresse       Adresse?        @relation(fields: [adresseId], references: [id])
+  addressId     Int?
+  address       Address?        @relation(fields: [addressId], references: [id])
   Veranstaltung Veranstaltung[]
 }
 

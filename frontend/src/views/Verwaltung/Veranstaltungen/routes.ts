@@ -4,7 +4,7 @@ const veranstaltungRoutes: Route[] = [
   {
     name: 'Verwaltung Veranstaltungen',
     path: 'veranstaltung',
-    redirect: { name: 'Alle Veranstaltungen' },
+    redirect: { name: 'Verwaltung Alle Veranstaltungen' },
     meta: {
       breadcrumbs: [
         {

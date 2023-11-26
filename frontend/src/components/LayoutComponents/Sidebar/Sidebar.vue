@@ -80,7 +80,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     icon: CalendarDaysIcon,
     badge: 'Neu',
   },
-  { type: 'SidebarItem', name: 'Benutzer:innen', route: '/verwaltung/benutzer', icon: UsersIcon },
+  { type: 'SidebarItem', name: 'Personen', route: '/verwaltung/persons', icon: UsersIcon },
   { type: 'SidebarItem', name: 'Orte', route: '/verwaltung/orte', icon: GlobeEuropeAfricaIcon },
   { type: 'DividerItem', name: 'Entwicklung' },
   { type: 'SidebarItem', name: 'Komponenten', route: '/development/components', icon: CubeIcon },

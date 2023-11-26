@@ -2,9 +2,9 @@ import type { Route } from '@/router'
 
 const routesPerson: Route[] = [
   {
-    name: 'Verawltung Personen',
+    name: 'Verwaltung Personen',
     path: 'persons',
-    redirect: { name: 'Alle Benutzer' },
+    redirect: { name: 'Verwaltung Alle Benutzer' },
     meta: {
       breadcrumbs: [
         {
