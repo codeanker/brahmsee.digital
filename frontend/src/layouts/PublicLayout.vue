@@ -7,7 +7,7 @@ const route = useRoute()
 </script>
 
 <template>
-  <div class="w-full h-full flex flex-col lg:grid lg:grid-cols-2 bg-white lg:overflow-hidden">
+  <div class="w-full lg:h-full flex flex-col lg:grid lg:grid-cols-2 bg-white lg:overflow-hidden">
     <div class="hidden lg:block h-full overflow-y-auto">
       <router-view />
     </div>
