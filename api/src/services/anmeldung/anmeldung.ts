@@ -1,24 +1,27 @@
 import { protectedProcedure, publicProcedure, router } from '../../trpc'
 
-import { ZAnmeldungAblehnenInputSchema, anmeldungAblehnen } from './anmeldungAblehnen'
-import { ZAnmeldungAnnehmenInputSchema, anmeldungAnnehmen } from './anmeldungAnnehmen'
-import { ZAnmeldungCreateInputSchema, anmeldungCreate } from './anmeldungCreate'
-import { ZAnmeldungStornoInputSchema, anmeldungStorno } from './anmeldungStorno'
-import {
-  ZAnmeldungStornoGliederungsadminInputSchema,
-  anmeldungStornoGliederungsadmin,
-} from './anmeldungStornoGliederungsadmin'
-import { ZAnmeldungStornoSelfInputSchema, anmeldungStornoSelf } from './anmeldungStornoSelbst'
+import { ZAnmeldungGliederungStornoInputSchema, anmeldungGliederungStorno } from './anmeldungGliederungStorno'
+import { ZAnmeldungPublicCreateInputSchema, anmeldungPublicCreate } from './anmeldungPublicCreate'
+import { ZAnmeldungTeilnehmerStornoInputSchema, anmeldungTeilnehmerStorno } from './anmeldungTeilnehmerStorno'
+import { ZAnmeldungVerwaltungAblehnenInputSchema, anmeldungVerwaltungAblehnen } from './anmeldungVerwaltungAblehnen'
+import { ZAnmeldungVerwaltungAnnehmenInputSchema, anmeldungVerwaltungAnnehmen } from './anmeldungVerwaltungAnnehmen'
+import { ZAnmeldungVerwaltungStornoInputSchema, anmeldungVerwaltungStorno } from './anmeldungVerwaltungStorno'
 
 export const anmeldungRouter = router({
-  anmeldungCreate: publicProcedure.input(ZAnmeldungCreateInputSchema).mutation(anmeldungCreate),
-  anmeldungAnnehmen: protectedProcedure(['ADMIN']).input(ZAnmeldungAnnehmenInputSchema).mutation(anmeldungAnnehmen),
-  anmeldungAblehnen: protectedProcedure(['ADMIN']).input(ZAnmeldungAblehnenInputSchema).mutation(anmeldungAblehnen),
-  anmeldungStorno: protectedProcedure(['ADMIN']).input(ZAnmeldungStornoInputSchema).mutation(anmeldungStorno),
-  anmeldungStornoSelf: protectedProcedure(['ADMIN'])
-    .input(ZAnmeldungStornoSelfInputSchema)
-    .mutation(anmeldungStornoSelf),
-  anmeldungStornoGliederungsadmin: protectedProcedure(['ADMIN', 'GLIEDERUNG_ADMIN'])
-    .input(ZAnmeldungStornoGliederungsadminInputSchema)
-    .mutation(anmeldungStornoGliederungsadmin),
+  anmeldungPublicCreate: publicProcedure.input(ZAnmeldungPublicCreateInputSchema).mutation(anmeldungPublicCreate),
+  anmeldungVerwaltungAnnehmen: protectedProcedure(['ADMIN'])
+    .input(ZAnmeldungVerwaltungAnnehmenInputSchema)
+    .mutation(anmeldungVerwaltungAnnehmen),
+  anmeldungVerwaltungAblehnen: protectedProcedure(['ADMIN'])
+    .input(ZAnmeldungVerwaltungAblehnenInputSchema)
+    .mutation(anmeldungVerwaltungAblehnen),
+  anmeldungVerwaltungStorno: protectedProcedure(['ADMIN'])
+    .input(ZAnmeldungVerwaltungStornoInputSchema)
+    .mutation(anmeldungVerwaltungStorno),
+  anmeldungTeilnehmerStorno: protectedProcedure(['ADMIN'])
+    .input(ZAnmeldungTeilnehmerStornoInputSchema)
+    .mutation(anmeldungTeilnehmerStorno),
+  anmeldungGliederungStorno: protectedProcedure(['ADMIN', 'GLIEDERUNG_ADMIN'])
+    .input(ZAnmeldungGliederungStornoInputSchema)
+    .mutation(anmeldungGliederungStorno),
 })
