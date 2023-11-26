@@ -11,7 +11,7 @@ on:
 
 jobs:
   prepare:
-    name: 🔨 Initialisieren
+    name: 🔨 Prepare
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -21,8 +21,15 @@ jobs:
           node-version: 20.x
           cache: "npm"
       - run: npm ci
+      - name: Copy .env
+        run: cp -n api/.env.example api/.env
+      - name: set test env
+        run: sed -i 's/NODE_ENV=development/NODE_ENV=test/g' api/.env
+      - name: Prisma Migration
+        run: npx -w api prisma migrate reset --force
 
   test:
+    name: 🧪 Test
     needs: prepare
     runs-on: ubuntu-latest
     container: node:20-bullseye
@@ -41,11 +48,10 @@ jobs:
     steps:
       - name: Playwright deps
         run: npx playwright install --with-deps
-      - name: Prisma Migration
-        run: npx -w api prisma migrate reset --force
       - run: npm run test:all
 
   lint:
+    name: ✨ Lint
     needs: prepare
     runs-on: ubuntu-latest
     steps:
