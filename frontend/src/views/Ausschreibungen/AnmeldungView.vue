@@ -6,6 +6,7 @@ import BasicCheckbox from '@/components/BasicInputs/BasicCheckbox.vue'
 import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
+import PublicFooter from '@/components/LayoutComponents/PublicFooter.vue'
 import PublicHeader from '@/components/LayoutComponents/PublicHeader.vue'
 import Button from '@/components/UIComponents/Button.vue'
 
@@ -121,19 +122,13 @@ const test = ref({ name: '', geschlect: '', date: '', boolean1: false })
         v-model="test.boolean1"
         class="mt-1"
       />
-      <div class="font-medium">Ich habe die Datenschutzerklärung gelesen und akzeptiere diese.</div>
+      <div class="font-medium">Ich habe die gesonderten Datenschutzerklärung gelesen und akzeptiere diese.</div>
     </div>
     <Button
       color="primary"
       class="w-full lg:w-auto justify-center mb-20"
       >Anmelden</Button
     >
-    <div class="flex items-center justify-between">
-      <img
-        class="h-8"
-        src="@/assets/images/gliederung_sh.png"
-      />
-      <div class="text-sm text-gray-500 text-right">v1.0.0-#123456</div>
-    </div>
+    <PublicFooter />
   </div>
 </template>

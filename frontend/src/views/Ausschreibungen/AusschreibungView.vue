@@ -4,6 +4,8 @@ import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { apiClient } from '@/api'
+import CookieAgreement from '@/components/LayoutComponents/CookieAgreement.vue'
+import PublicFooter from '@/components/LayoutComponents/PublicFooter.vue'
 import PublicHeader from '@/components/LayoutComponents/PublicHeader.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import InfoList from '@/components/UIComponents/InfoList.vue'
@@ -39,6 +41,7 @@ fetchUnterveranstaltung()
 </script>
 
 <template>
+  <CookieAgreement />
   <div class="lg:pb-10 lg:px-20 xl:px-28 2xl:px-40">
     <template v-if="unterveranstaltung">
       <!-- Header -->
@@ -55,14 +58,8 @@ fetchUnterveranstaltung()
         @click="() => router.push('/ausschreibung/' + route.params.ausschreibungId + '/anmeldung')"
         >Jetzt anmelden</Button
       >
-      <div class="flex items-center justify-between">
-        <img
-          class="h-8"
-          src="@/assets/images/gliederung_sh.png"
-        />
-        <div class="text-sm text-gray-500 text-right">v1.0.0-#123456</div>
-      </div>
     </template>
     <template v-else> Keine Ausschreibung gefunden </template>
+    <PublicFooter />
   </div>
 </template>

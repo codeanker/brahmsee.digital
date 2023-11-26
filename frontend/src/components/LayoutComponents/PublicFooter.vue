@@ -1,0 +1,34 @@
+<script setup lang="ts">
+let version = import.meta.env.VITE_APP_VERSION || '0.0.0'
+let commitHash = import.meta.env.VITE_APP_COMMIT_HASH || '000000'
+</script>
+
+<template>
+  <div class="flex flex-col lg:flex-row items-start justify-center lg:items-center lg:justify-between">
+    <img
+      class="h-10 mb-5 lg:mb-0"
+      src="@/assets/images/gliederung_sh.png"
+    />
+    <div
+      class="flex flex-col space-y-3 lg:space-y-0 text-sm lg:text-xs text-gray-500 text-left lg:text-right leading-4"
+    >
+      <a
+        class="hover:text-gray-700 transition-all"
+        href="https://schleswig-holstein.dlrg-jugend.de/impressum-und-datenschutz/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Impressum und Datenshutz
+      </a>
+      <a
+        class="hover:text-gray-700 transition-all"
+        href="https://schleswig-holstein.dlrg-jugend.de/impressum-und-datenschutz/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Cookie-Einstellungen
+      </a>
+      <div>v{{ version }}#{{ commitHash }}</div>
+    </div>
+  </div>
+</template>
