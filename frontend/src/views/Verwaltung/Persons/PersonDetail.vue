@@ -10,7 +10,6 @@ import FormPersonGeneral from '@/components/forms/person/FormPersonGeneral.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import { loggedInAccount, logout } from '@/composables/useAuthentication'
 import personProfileImage from '@/helpers/personProfileImage'
-import router from '@/router'
 
 const secondaryNavigation = [{ name: 'Account', href: '#', current: true }]
 
@@ -43,7 +42,6 @@ const { execute: updatePassword, error: errorPassword } = useAsyncState(
 const { execute: deleteUser, error: errorDelete } = useAsyncState(
   async () => {
     await apiClient.person.verwaltungRemove.mutate({ id: person.value!.id })
-    await router.push({ name: 'Users' })
   },
   null,
   { immediate: false }
@@ -60,7 +58,7 @@ const { execute: deleteUser, error: errorDelete } = useAsyncState(
       >
         <li class="text-gray-600">
           <router-link
-            :to="{ name: 'Users' }"
+            :to="{ name: 'Verwaltung Alle Benutzer' }"
             class="flex flex-row items-center gap-2"
           >
             <ArrowLeftIcon class="h-4 w-4" />
