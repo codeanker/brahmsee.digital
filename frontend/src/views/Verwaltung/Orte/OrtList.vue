@@ -42,7 +42,7 @@ const { state: ortenList } = useAsyncState(async () => {
             :key="ort.id"
             class="cursor-pointer even:bg-gray-50 hover:bg-gray-100"
             :title="ort.name + ' bearbeiten'"
-            @click="router.push({ name: 'Verwaltung Ortsdetails', params: { ortId: ort.id } })"
+            @click="router.push({ name: 'Verwaltung Ortdetails', params: { ortId: ort.id } })"
           >
             <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
               <div class="text-gray-900">{{ ort.id }}</div>
