@@ -16,7 +16,7 @@ const routesVerwaltung: Route[] = [
         },
       ],
     },
-    children: [...gliederungRoutes, ...orteRoutes, ...routesPerson, ...veranstaltungRoutes],
+    children: [...gliederungRoutes, ...orteRoutes, ...routesPerson, ...veranstaltungRoutes, ...orteRoutes],
   },
 ]
 

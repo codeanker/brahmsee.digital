@@ -10,22 +10,60 @@ on:
     branches: [development]
 
 jobs:
-  prepare:
-    name: 🔨 Prepare
+  lint:
+    name: ✨ Lint
     runs-on: ubuntu-latest
     container: node:20-bullseye
     steps:
       - uses: actions/checkout@v3
-      # - name: Use Node.js 20.x
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: 20.x
-      #     cache: "npm"
+      - name: Cache node modules
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+        name: List the state of node modules
+        continue-on-error: true
+        run: npm list
       - run: npm ci
+      - run: npm run lint
+
+  typecheck:
+    name: 🙆‍♀️ Typecheck
+    runs-on: ubuntu-latest
+    container: node:20-bullseye
+    steps:
+      - uses: actions/checkout@v3
+      - name: Cache node modules
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+        name: List the state of node modules
+        continue-on-error: true
+        run: npm list
+      - run: npm ci
+      - run: npm run typecheck
 
   test:
     name: 🧪 Test
-    needs: prepare
     runs-on: ubuntu-latest
     container: node:20-bullseye
     services:
@@ -42,21 +80,27 @@ jobs:
           --health-retries 5
     steps:
       - uses: actions/checkout@v3
-      - name: Copy .env
-        run: cp -n api/.env.example api/.env
+      - name: Cache node modules
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+        name: List the state of node modules
+        continue-on-error: true
+        run: npm list
+      - run: npm ci
+      - run: cp -n api/.env.example api/.env
       - name: set test env
         run: sed -i 's/NODE_ENV=development/NODE_ENV=test/g' api/.env
-      - name: Prisma Migration
-        run: npx -w api prisma migrate reset --force
-      - name: Playwright deps
-        run: npx playwright install --with-deps
+      - run: npx -w api prisma migrate reset --force
+      - run: npx playwright install --with-deps
       - run: npm run test:all
-
-  lint:
-    name: ✨ Lint
-    needs: prepare
-    runs-on: ubuntu-latest
-    container: node:20-bullseye
-    steps:
-      - uses: actions/checkout@v3
-      - run: npm run lint

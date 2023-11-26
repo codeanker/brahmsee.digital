@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import { useAsyncState } from '@vueuse/core'
 import { ref } from 'vue'
 
 import { apiClient } from '@/api'
 import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import BasicInputNumber from '@/components/BasicInputs/BasicInputNumber.vue'
+import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import type { RouterInput } from '@codeanker/api'
 import { ValidateForm } from '@codeanker/validation'
@@ -13,12 +15,16 @@ let model = ref<Partial<RouterInput['veranstaltung']['verwaltungCreate']['data']
   name: '',
   beginn: new Date(),
   ende: new Date(),
-  ort: '',
+  ortId: undefined,
   meldebeginn: undefined,
   meldeschluss: undefined,
   maxTeilnehmende: undefined,
   teilnahmegebuehr: undefined,
 })
+
+const { state: orte } = useAsyncState(async () => {
+  return apiClient.ort.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
+}, [])
 
 async function create() {
   await apiClient.veranstaltung.verwaltungCreate.mutate({
@@ -53,11 +59,12 @@ async function create() {
       label="Ende"
       placeholder="Veranstaltungsende"
     />
-    <BasicInput
-      v-model="model.ort"
+    <BasicSelect
+      v-model="model.ortId"
       required
       label="Ort"
       placeholder="Veranstaltungsort"
+      :options="orte.map((ort) => ({ label: ort.name, value: ort.id }))"
     />
     <BasicDatepicker
       v-model="model.meldebeginn"
