@@ -10,7 +10,7 @@ import Button from '@/components/UIComponents/Button.vue'
 import { ValidateForm } from '@codeanker/validation'
 
 const stammdatenForm = ref<IStammdaten>({})
-const registrationForm = ref()
+const registrationForm = ref({})
 
 function submit() {
   // eslint-disable-next-line
