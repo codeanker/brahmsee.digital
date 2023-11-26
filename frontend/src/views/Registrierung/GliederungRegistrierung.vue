@@ -1,16 +1,21 @@
 <script setup lang="ts">
-import { PlusSmallIcon } from '@heroicons/vue/24/outline'
 import { ref } from 'vue'
 
 import BasicCheckbox from '@/components/BasicInputs/BasicCheckbox.vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
+import type { INotfallkontakte } from '@/components/forms/anmeldung/Notfallkontakte.vue'
+import Notfallkontakte from '@/components/forms/anmeldung/Notfallkontakte.vue'
 import Stammdaten, { type IStammdaten } from '@/components/forms/anmeldung/Stammdaten.vue'
 import PublicHeader from '@/components/LayoutComponents/PublicHeader.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import { ValidateForm } from '@codeanker/validation'
 
 const stammdatenForm = ref<IStammdaten>({})
-const registrationForm = ref({})
+const notfallKontaktdatenForm = ref<INotfallkontakte>({})
+const registrationForm = ref<{
+  name?: string
+  boolean1?: boolean
+}>({})
 
 function submit() {
   // eslint-disable-next-line
@@ -65,8 +70,7 @@ function submit() {
         />
       </div>
       <hr class="my-5" />
-      <div class="font-medium mb-5">Notfallkontakte</div>
-      <Button color="secondary"><PlusSmallIcon class="h-5 mr-2" />Notfallkontakt hinzufügen</Button>
+      <Notfallkontakte v-model="notfallKontaktdatenForm"></Notfallkontakte>
       <hr class="my-5" />
       <div class="flex items-start mb-5 space-x-3">
         <BasicCheckbox

@@ -13,7 +13,7 @@ defineProps<{
     <div class="h-3/4 border-r-2 border-black rounded-full" />
     <div class="text-black text-xl flex flex-col leading-6 mulish">
       <div>Jugend</div>
-      <div>{{ name }}</div>
+      <div v-if="name">{{ name }}</div>
     </div>
   </div>
 </template>
