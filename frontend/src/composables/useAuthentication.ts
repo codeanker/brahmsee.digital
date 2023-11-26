@@ -1,4 +1,5 @@
 import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 import { apiClient } from '../api'
 
@@ -11,6 +12,8 @@ export const isAuthenticated = computed(() => loggedInAccount.value !== undefine
 
 export const loginPending = ref(false)
 export const loginError = ref<Error | null>(null)
+
+const router = useRouter()
 
 export async function login({ email, password }: { email: string; password: string }) {
   loginPending.value = true
@@ -37,6 +40,7 @@ export async function reAuthenticate() {
 }
 
 export async function logout() {
+  router.push({ name: 'login' })
   localStorage.removeItem('jwt')
   loggedInAccount.value = undefined
 }
