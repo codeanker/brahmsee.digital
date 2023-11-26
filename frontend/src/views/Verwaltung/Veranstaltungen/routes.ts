@@ -2,7 +2,7 @@ import type { Route } from '@/router'
 
 const veranstaltungRoutes: Route[] = [
   {
-    name: 'Veranstaltungen',
+    name: 'Verwaltung Veranstaltungen',
     path: 'veranstaltung',
     redirect: { name: 'Alle Veranstaltungen' },
     meta: {
@@ -14,7 +14,7 @@ const veranstaltungRoutes: Route[] = [
     },
     children: [
       {
-        name: 'Alle Veranstaltungen',
+        name: 'Verwaltung Alle Veranstaltungen',
         path: 'liste',
         component: () => import('./VeranstaltungList.vue'),
         meta: {
@@ -26,7 +26,7 @@ const veranstaltungRoutes: Route[] = [
         },
       },
       {
-        name: 'Veranstaltung erstellen',
+        name: 'Verwaltung Veranstaltung erstellen',
         path: 'erstellen',
         component: () => import('./VeranstaltungCreate.vue'),
         meta: {
@@ -38,8 +38,8 @@ const veranstaltungRoutes: Route[] = [
         },
       },
       {
-        name: 'Veranstaltgungsdetails',
-        path: ':veranstaltungId',
+        name: 'Verwaltung Veranstaltgungsdetails',
+        path: 'detail',
         component: () => import('./VeranstaltungDetail.vue'),
         meta: {
           breadcrumbs: [

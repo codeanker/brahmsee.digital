@@ -2,7 +2,7 @@ import type { Route } from '@/router'
 
 const gliederungRoutes: Route[] = [
   {
-    name: 'Gliederungen',
+    name: 'Verwaltung Gliederungen',
     path: 'gliederungen',
     redirect: { name: 'Alle Gliederungen' },
     meta: {
@@ -14,7 +14,7 @@ const gliederungRoutes: Route[] = [
     },
     children: [
       {
-        name: 'Alle Gliederungen',
+        name: 'Verwaltung Alle Gliederungen',
         path: 'liste',
         component: () => import('./GliederungList.vue'),
         meta: {
@@ -26,7 +26,7 @@ const gliederungRoutes: Route[] = [
         },
       },
       {
-        name: 'Gliederung erstellen',
+        name: 'Verwaltung Gliederung erstellen',
         path: 'erstellen',
         component: () => import('./GliederungCreate.vue'),
         meta: {
@@ -38,7 +38,7 @@ const gliederungRoutes: Route[] = [
         },
       },
       {
-        name: 'Gliederungsdetails',
+        name: 'Verwaltung Gliederungsdetails',
         path: ':gliederungId',
         component: () => import('./GliederungDetail.vue'),
         meta: {
@@ -50,7 +50,7 @@ const gliederungRoutes: Route[] = [
         },
       },
       {
-        name: 'Gliederung Account anfragen',
+        name: 'Verwaltung Gliederung Account anfragen',
         path: 'anfrage',
         component: () => import('./GliederungAccountanfrage.vue'),
         meta: {

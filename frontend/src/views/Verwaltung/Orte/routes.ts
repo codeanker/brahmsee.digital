@@ -2,7 +2,7 @@ import type { Route } from '@/router'
 
 const orteRoutes: Route[] = [
   {
-    name: 'Orte',
+    name: 'Verwaltung Orte',
     path: 'orte',
     redirect: { name: 'Alle Orte' },
     meta: {
@@ -14,7 +14,7 @@ const orteRoutes: Route[] = [
     },
     children: [
       {
-        name: 'Alle Orte',
+        name: 'Verwaltung Alle Orte',
         path: 'liste',
         component: () => import('./OrtList.vue'),
         meta: {
@@ -26,7 +26,7 @@ const orteRoutes: Route[] = [
         },
       },
       {
-        name: 'Ort erstellen',
+        name: 'Verwaltung Ort erstellen',
         path: 'erstellen',
         component: () => import('./OrtCreate.vue'),
         meta: {
@@ -38,7 +38,7 @@ const orteRoutes: Route[] = [
         },
       },
       {
-        name: 'Ortdetails',
+        name: 'Verwaltung Ortdetails',
         path: ':ortId',
         component: () => import('./OrtDetail.vue'),
         meta: {
