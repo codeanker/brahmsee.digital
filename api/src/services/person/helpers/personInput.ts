@@ -11,6 +11,8 @@ import {
 } from '@prisma/client'
 import { z } from 'zod'
 
+import { addressInput } from '../../address/helpers/addressInput'
+
 import { kontaktInput } from './kontaktInput'
 
 export const personInput = {
@@ -20,12 +22,7 @@ export const personInput = {
   gender: z.nativeEnum(Gender),
   email: z.string().email(),
   telefon: z.string(),
-  addresse: z.strictObject({
-    street: z.string(),
-    number: z.string(),
-    zip: z.string(),
-    city: z.string(),
-  }),
+  addresse: addressInput,
   essgewohnheit: z.nativeEnum(Essgewohnheit),
   nahrungsmittelIntoleranzen: z.array(z.nativeEnum(NahrungsmittelIntoleranz)),
   weitereIntoleranzen: z.array(z.string()).optional(),
