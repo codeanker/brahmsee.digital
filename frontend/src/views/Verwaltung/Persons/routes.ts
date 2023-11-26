@@ -1,22 +1,22 @@
 import type { Route } from '@/router'
 
-const userRoutes: Route[] = [
+const routesPerson: Route[] = [
   {
-    name: 'Verwaltung Benutzer',
-    path: 'benutzer',
+    name: 'Verawltung Personen',
+    path: 'persons',
     redirect: { name: 'Alle Benutzer' },
     meta: {
       breadcrumbs: [
         {
-          text: 'Benutzer',
+          text: 'Personen',
         },
       ],
     },
     children: [
       {
         name: 'Verwaltung Alle Benutzer',
-        path: 'liste',
-        component: () => import('./BenutzerList.vue'),
+        path: 'list',
+        component: () => import('./PersonList.vue'),
         meta: {
           breadcrumbs: [
             {
@@ -27,8 +27,8 @@ const userRoutes: Route[] = [
       },
       {
         name: 'Verwaltung Benutzer erstellen',
-        path: 'erstellen',
-        component: () => import('./BenutzerCreate.vue'),
+        path: 'create',
+        component: () => import('./PersonCreate.vue'),
         meta: {
           breadcrumbs: [
             {
@@ -39,8 +39,8 @@ const userRoutes: Route[] = [
       },
       {
         name: 'Verwaltung Benutzerdetails',
-        path: ':benutzerId',
-        component: () => import('./BenutzerDetail.vue'),
+        path: ':personId/detail',
+        component: () => import('./PersonDetail.vue'),
         meta: {
           breadcrumbs: [
             {
@@ -53,4 +53,4 @@ const userRoutes: Route[] = [
   },
 ]
 
-export default userRoutes
+export default routesPerson

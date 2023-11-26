@@ -1,12 +1,8 @@
 <script setup lang="ts">
-import { ArrowPathIcon, UsersIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 
-import { apiClient } from '../../api'
-
-import BasicHeader from '@/components/LayoutComponents/BasicHeader.vue'
+import { apiClient } from '@/api'
 import Badge from '@/components/UIComponents/Badge.vue'
-import Button from '@/components/UIComponents/Button.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
 import personProfileImage from '@/helpers/personProfileImage'
 import router from '@/router'
@@ -21,30 +17,8 @@ fetchPersons()
 
 <template>
   <div class="px-4 sm:px-6 lg:px-8">
-    <BasicHeader
-      title="Benutzer"
-      subtitle="Liste aller Benutzer mit Zugriff auf dieses System."
-    >
-      <template #content>
-        <div class="flex flex-row gap-4">
-          <Button
-            :to="{ name: 'UserCreate' }"
-            color="primary"
-          >
-            Hinzufügen</Button
-          >
-          <Button
-            color="secondary"
-            @click="fetchPersons"
-          >
-            <ArrowPathIcon class="h-5 w-5" />
-          </Button>
-        </div>
-      </template>
-      <template #icon>
-        <UsersIcon class="h-8 w-8" />
-      </template>
-    </BasicHeader>
+    <h3>Benutzer</h3>
+
     <div class="flow-root">
       <p class="mt-8 text-sm text-gray-500">
         <b>Tipp</b>: Zum Bearbeiten eines Nutzers die entsprechende Zeile anklicken.
@@ -84,7 +58,7 @@ fetchPersons()
             :key="person.id"
             class="cursor-pointer even:bg-gray-50 hover:bg-gray-100"
             :title="person.firstname + ' ' + person.lastname + ' bearbeiten'"
-            @click="router.push({ name: 'UserDetail', params: { personId: person.id } })"
+            @click="router.push({ name: 'Verwaltung Benutzerdetails', params: { personId: person.id } })"
           >
             <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
               <div class="flex items-center">

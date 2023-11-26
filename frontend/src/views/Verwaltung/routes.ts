@@ -1,6 +1,6 @@
-import userRoutes from './Benutzer/routes'
 import gliederungRoutes from './Gliederungen/routes'
 import orteRoutes from './Orte/routes'
+import routesPerson from './Persons/routes'
 import veranstaltungRoutes from './Veranstaltungen/routes'
 
 import type { Route } from '@/router'
@@ -16,7 +16,7 @@ const routesVerwaltung: Route[] = [
         },
       ],
     },
-    children: [...userRoutes, ...gliederungRoutes, ...orteRoutes, ...veranstaltungRoutes],
+    children: [...gliederungRoutes, ...orteRoutes, ...routesPerson, ...veranstaltungRoutes],
   },
 ]
 
