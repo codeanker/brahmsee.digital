@@ -8,20 +8,20 @@ import { ZAnmeldungVerwaltungAnnehmenInputSchema, anmeldungVerwaltungAnnehmen } 
 import { ZAnmeldungVerwaltungStornoInputSchema, anmeldungVerwaltungStorno } from './anmeldungVerwaltungStorno'
 
 export const anmeldungRouter = router({
-  anmeldungPublicCreate: publicProcedure.input(ZAnmeldungPublicCreateInputSchema).mutation(anmeldungPublicCreate),
-  anmeldungVerwaltungAnnehmen: protectedProcedure(['ADMIN'])
+  publicCreate: publicProcedure.input(ZAnmeldungPublicCreateInputSchema).mutation(anmeldungPublicCreate),
+  verwaltungAnnehmen: protectedProcedure(['ADMIN'])
     .input(ZAnmeldungVerwaltungAnnehmenInputSchema)
     .mutation(anmeldungVerwaltungAnnehmen),
-  anmeldungVerwaltungAblehnen: protectedProcedure(['ADMIN'])
+  verwaltungAblehnen: protectedProcedure(['ADMIN'])
     .input(ZAnmeldungVerwaltungAblehnenInputSchema)
     .mutation(anmeldungVerwaltungAblehnen),
-  anmeldungVerwaltungStorno: protectedProcedure(['ADMIN'])
+  verwaltungStorno: protectedProcedure(['ADMIN'])
     .input(ZAnmeldungVerwaltungStornoInputSchema)
     .mutation(anmeldungVerwaltungStorno),
-  anmeldungTeilnehmerStorno: protectedProcedure(['ADMIN'])
+  teilnehmerStorno: protectedProcedure(['ADMIN'])
     .input(ZAnmeldungTeilnehmerStornoInputSchema)
     .mutation(anmeldungTeilnehmerStorno),
-  anmeldungGliederungStorno: protectedProcedure(['ADMIN', 'GLIEDERUNG_ADMIN'])
+  gliederungStorno: protectedProcedure(['ADMIN', 'GLIEDERUNG_ADMIN'])
     .input(ZAnmeldungGliederungStornoInputSchema)
     .mutation(anmeldungGliederungStorno),
 })
