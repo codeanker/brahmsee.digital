@@ -79,12 +79,17 @@ const identificationOptions = ref([
         placeholder="Straße und Hausnummer eingeben"
       />
       <BasicInput
-        v-model="model.name"
+        v-model="model.number"
         label="Postleitzahl"
         placeholder="Postleitzahl eingeben"
       />
       <BasicInput
-        v-model="model.name"
+        v-model="model.zip"
+        label="Postleitzahl"
+        placeholder="Postleitzahl eingeben"
+      />
+      <BasicInput
+        v-model="model.city"
         label="Ort"
         placeholder="Ort eingeben"
       />
