@@ -14,6 +14,8 @@ export const ZVeranstaltungVerwaltungCreateInputSchema = z.strictObject({
     maxTeilnehmende: z.number().int(),
     teilnahmegebuehr: z.number().int(),
     beschreibung: z.string().optional(),
+    datenschutz: z.string().optional(),
+    teilnahmeBedigungen: z.string().optional(),
   }),
 })
 

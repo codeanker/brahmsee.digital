@@ -29,6 +29,8 @@ export async function veranstaltungVerwaltungGet(options: VeranstaltungVerwaltun
       maxTeilnehmende: true,
       teilnahmegebuehr: true,
       beschreibung: true,
+      datenschutz: true,
+      teilnahmeBedingungen: true,
     },
   })
   const anmeldungen = await prisma.anmeldung.findMany({

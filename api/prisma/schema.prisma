@@ -205,6 +205,8 @@ model Veranstaltung {
   unterveranstaltungen Unterveranstaltung[]
   mahlzeiten           Mahlzeit[]
   beschreibung         String?
+  datenschutz          String?
+  teilnahmeBedingungen String?
 }
 
 enum MahlzeitType {
