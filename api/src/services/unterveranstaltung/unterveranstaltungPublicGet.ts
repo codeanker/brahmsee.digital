@@ -30,7 +30,11 @@ export async function unterveranstaltungPublicGet(options: UnterveranstaltungPub
           name: true,
           beginn: true,
           ende: true,
-          ort: true,
+          ort: {
+            select: {
+              name: true,
+            },
+          },
           datenschutz: true,
           teilnahmeBedingungen: true,
           zielgruppe: true,
