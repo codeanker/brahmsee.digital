@@ -49,7 +49,7 @@ export async function anmeldungPublicCreate(options: AnmeldungPublicCreateOption
       qualifikationenSanitaeter: options.input.data.qualifikationenSanitaeter,
       qualifikationenFunk: options.input.data.qualifikationenFunk,
       konfektionsgroesse: options.input.data.konfektionsgroesse,
-      addresses: {
+      address: {
         create: options.input.data.addresse,
       },
       notfallkontakte: {
