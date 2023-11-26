@@ -28,6 +28,37 @@ jobs:
           --health-retries 5
     steps:
       - uses: actions/checkout@v3
+      # - name: Use Node.js 20.x
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: 20.x
+      #     cache: "npm"
+      - run: npm ci
+      - name: Copy .env
+        run: cp -n api/.env.example api/.env
+      - name: set test env
+        run: sed -i 's/NODE_ENV=development/NODE_ENV=test/g' api/.env
+      - name: Prisma Migration
+        run: npx -w api prisma migrate reset --force
+  db:
+    name: 🗂️ Init DB
+    needs: prepare
+    runs-on: ubuntu-latest
+    container: node:20-bullseye
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: brahmsee.digital
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v3
       - name: Use Node.js 20.x
         uses: actions/setup-node@v3
         with:
@@ -43,9 +74,11 @@ jobs:
 
   test:
     name: 🧪 Test
-    needs: prepare
+    needs: [prepare, db]
     runs-on: ubuntu-latest
+    container: node:20-bullseye
     steps:
+      - run: npm ci
       - name: Playwright deps
         run: npx playwright install --with-deps
       - run: npm run test:all
@@ -54,5 +87,7 @@ jobs:
     name: ✨ Lint
     needs: prepare
     runs-on: ubuntu-latest
+    container: node:20-bullseye
     steps:
+      - run: npm ci
       - run: npm run lint
