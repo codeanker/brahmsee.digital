@@ -74,7 +74,9 @@ function formatDate(indate) {
             :key="veranstaltung.id"
             class="cursor-pointer even:bg-gray-50 hover:bg-gray-100"
             :title="veranstaltung.name + ' bearbeiten'"
-            @click="router.push({ name: 'Veranstaltungsdetails', params: { veranstaltungId: veranstaltung.id } })"
+            @click="
+              router.push({ name: 'Verwaltung Veranstaltungsdetails', params: { veranstaltungId: veranstaltung.id } })
+            "
           >
             <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
               <div class="text-gray-900">{{ veranstaltung.id }}</div>

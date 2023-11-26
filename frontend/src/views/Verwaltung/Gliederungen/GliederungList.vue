@@ -39,7 +39,7 @@ const { state: gliederungenList } = useAsyncState(async () => {
             :key="gliederung.id"
             class="cursor-pointer even:bg-gray-50 hover:bg-gray-100"
             :title="gliederung.name + ' bearbeiten'"
-            @click="router.push({ name: 'Gliederungsdetails', params: { gliederungId: gliederung.id } })"
+            @click="router.push({ name: 'Verwaltung Gliederungsdetails', params: { gliederungId: gliederung.id } })"
           >
             <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
               <div class="text-gray-900">{{ gliederung.edv }}</div>
