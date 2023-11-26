@@ -37,6 +37,7 @@ export async function unterveranstaltungPublicGet(options: UnterveranstaltungPub
           name: true,
         },
       },
+      beschreibung: true,
     },
   })
   return unterveranstaltung
