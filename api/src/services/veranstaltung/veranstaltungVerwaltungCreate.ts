@@ -8,7 +8,7 @@ export const ZVeranstaltungVerwaltungCreateInputSchema = z.strictObject({
     name: z.string(),
     beginn: z.date(),
     ende: z.date(),
-    ort: z.string(),
+    ortId: z.number().int(),
     meldebeginn: z.date(),
     meldeschluss: z.date(),
     maxTeilnehmende: z.number().int(),
