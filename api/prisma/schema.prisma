@@ -134,6 +134,8 @@ model Person {
   konfektionsgroesse           Konfektionsgroesse?
   notfallkontaktIds            Int[]
   notfallkontakte              Notfallkontakt[]
+  addressId                    Int?
+  addresse                     Adresse?                     @relation(fields: [addressId], references: [id])
 }
 
 model Account {
@@ -169,6 +171,7 @@ model GliederungToAccount {
   accountId    Int
   account      Account               @relation(fields: [accountId], references: [id])
   role         GliederungAccountRole
+
   @@unique([gliederungId, accountId])
 }
 
@@ -192,14 +195,33 @@ model Anmeldung {
   tshirtBestellt       Boolean            @default(false)
 }
 
+model Adresse {
+  id     Int      @id @default(autoincrement())
+  street String
+  number String
+  zip    String
+  city   String
+  Ort    Ort[]
+  Person Person[]
+}
+
+model Ort {
+  id            Int             @id @default(autoincrement())
+  name          String
+  adresseId     Int?
+  adresse       Adresse?        @relation(fields: [adresseId], references: [id])
+  Veranstaltung Veranstaltung[]
+}
+
 model Veranstaltung {
   id                   Int                  @id @default(autoincrement())
   name                 String
   beginn               DateTime             @db.Date
   ende                 DateTime             @db.Date
-  meldebeginn          DateTime             @db.Date
-  meldeschluss         DateTime             @db.Date
-  ort                  String               @default("Brahmsee")
+  meldebeginn          DateTime
+  meldeschluss         DateTime
+  ortId                Int?
+  ort                  Ort?                 @relation(fields: [ortId], references: [id])
   maxTeilnehmende      Int
   teilnahmegebuehr     Int
   unterveranstaltungen Unterveranstaltung[]
@@ -231,16 +253,16 @@ enum UnterveranstaltungType {
 }
 
 model Unterveranstaltung {
-  id               Int           @id @default(autoincrement())
+  id               Int                    @id @default(autoincrement())
   maxTeilnehmende  Int
   teilnahmegebuehr Int
-  meldebeginn      DateTime      @db.Date
-  meldeschluss     DateTime      @db.Date
+  meldebeginn      DateTime
+  meldeschluss     DateTime
   veranstaltungId  Int
-  veranstaltung    Veranstaltung @relation(fields: [veranstaltungId], references: [id])
+  veranstaltung    Veranstaltung          @relation(fields: [veranstaltungId], references: [id])
   gliederungId     Int
-  gliederung       Gliederung    @relation(fields: [gliederungId], references: [id])
+  gliederung       Gliederung             @relation(fields: [gliederungId], references: [id])
   Anmeldung        Anmeldung[]
   beschreibung     String?
-  type            UnterveranstaltungType @default(GLIEDERUNG)
+  type             UnterveranstaltungType @default(GLIEDERUNG)
 }

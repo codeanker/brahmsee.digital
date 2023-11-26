@@ -4,7 +4,6 @@ import { useRoute, useRouter } from 'vue-router'
 
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
-import PublicHeaderBg from '@/components/LayoutComponents/PublicHeaderBg.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import Loading from '@/components/UIComponents/Loading.vue'
 import { login, loginError, loginPending } from '@/composables/useAuthentication'
@@ -32,61 +31,58 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
 </script>
 
 <template>
-  <div class="grid grid-cols-1 lg:grid-cols-2 h-screen">
-    <div class="container flex flex-col gap-6 justify-center items-center">
-      <p class="text-4xl font-bold">Herzlich Willkommen!</p>
+  <div class="container flex flex-col h-full gap-6 justify-center items-center">
+    <p class="text-4xl font-bold">Herzlich Willkommen!</p>
 
-      <p>Bitte gib unten deine Zugangsdaten ein.</p>
+    <p>Bitte gib unten deine Zugangsdaten ein.</p>
 
-      <form
-        class="space-y-8"
-        @submit.prevent="loginWithRecirect"
+    <form
+      class="space-y-8"
+      @submit.prevent="loginWithRecirect"
+    >
+      <BasicInput
+        v-model="email"
+        type="email"
+        class="w-full"
+        placeholder="E-Mail"
+        label="E-Mail"
+      ></BasicInput>
+      <BasicPassword
+        v-model="password"
+        class="w-full"
+        placeholder="Passwort"
+        label="Passwort"
+      ></BasicPassword>
+      <Button
+        color="primary"
+        type="submit"
+        :disabled="loginPending"
+        full
       >
-        <BasicInput
-          v-model="email"
-          type="email"
-          class="w-full"
-          placeholder="E-Mail"
-          label="E-Mail"
-        ></BasicInput>
-        <BasicPassword
-          v-model="password"
-          class="w-full"
-          placeholder="Passwort"
-          label="Passwort"
-        ></BasicPassword>
-        <Button
-          color="primary"
-          type="submit"
-          :disabled="loginPending"
-          full
-        >
-          <template v-if="loginPending">
-            <Loading color="white"></Loading>
-          </template>
-          <template v-else> Login </template>
-        </Button>
-        <Button
-          color="secondary"
-          full
-          class="hidden"
-          @click="router.push({ name: 'RegistrationStart' })"
-        >
-          Registrieren
-        </Button>
-      </form>
-
-      <div
-        v-if="loginError"
-        class="bg-danger-400 mb-2 mt-5 rounded p-3 text-center text-white"
+        <template v-if="loginPending">
+          <Loading color="white"></Loading>
+        </template>
+        <template v-else> Login </template>
+      </Button>
+      <Button
+        color="secondary"
+        full
+        class="hidden"
+        @click="router.push({ name: 'RegistrationStart' })"
       >
-        {{ loginError }}
-      </div>
+        Registrieren
+      </Button>
+    </form>
 
-      <div class="mb-2 text-center text-gray-300">
-        {{ version }}
-      </div>
+    <div
+      v-if="loginError"
+      class="bg-danger-400 mb-2 mt-5 rounded p-3 text-center text-white"
+    >
+      {{ loginError }}
     </div>
-    <PublicHeaderBg class="hidden lg:block" />
+
+    <div class="mb-2 text-center text-gray-300">
+      {{ version }}
+    </div>
   </div>
 </template>
