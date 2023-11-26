@@ -5,7 +5,7 @@ defineProps<{
   icon: string
   title: string
   action: () => void
-  isActive: (() => boolean) | null
+  isActive?: () => boolean
 }>()
 </script>
 
