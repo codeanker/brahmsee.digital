@@ -25,7 +25,7 @@ const keyInfos = computed(() => {
       { title: 'Veranstaltungsort', value: unterveranstaltung.value.veranstaltung.ort, small: true },
       { title: 'Teilnahmebeitrag', value: unterveranstaltung.value.teilnahmegebuehr + '€ pro Person' },
       { title: 'Meldeschluss', value: formatDate(unterveranstaltung.value.meldeschluss, 'DD.MM.YYYY') },
-      { title: 'Zielgruppe', value: '6 -13 Jahre' },
+      { title: 'Zielgruppe', value: unterveranstaltung.value.veranstaltung.zielgruppe },
     ]
   } else {
     return []
@@ -39,10 +39,10 @@ fetchUnterveranstaltung()
 </script>
 
 <template>
-  <div class="lg:py-10 lg:px-20 xl:px-28 2xl:px-40">
+  <div class="lg:pb-10 lg:px-20 xl:px-28 2xl:px-40">
     <!-- Header -->
     <PublicHeader />
-    <div class="text-3xl font-medium mb-5">Ausschreibung Landeskindertreffen</div>
+    <div class="text-3xl font-medium mb-5">Ausschreibung {{ unterveranstaltung?.veranstaltung.name }}</div>
     <!-- List -->
     <InfoList :infos="keyInfos" />
     <div class="my-5">

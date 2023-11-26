@@ -2,7 +2,7 @@ import type { Route } from '@/router'
 
 const userRoutes: Route[] = [
   {
-    name: 'Benutzer',
+    name: 'Verwaltung Benutzer',
     path: 'benutzer',
     redirect: { name: 'Alle Benutzer' },
     meta: {
@@ -14,7 +14,7 @@ const userRoutes: Route[] = [
     },
     children: [
       {
-        name: 'Alle Benutzer',
+        name: 'Verwaltung Alle Benutzer',
         path: 'liste',
         component: () => import('./BenutzerList.vue'),
         meta: {
@@ -26,7 +26,7 @@ const userRoutes: Route[] = [
         },
       },
       {
-        name: 'Benutzer erstellen',
+        name: 'Verwaltung Benutzer erstellen',
         path: 'erstellen',
         component: () => import('./BenutzerCreate.vue'),
         meta: {
@@ -38,7 +38,7 @@ const userRoutes: Route[] = [
         },
       },
       {
-        name: 'Benutzerdetails',
+        name: 'Verwaltung Benutzerdetails',
         path: ':benutzerId',
         component: () => import('./BenutzerDetail.vue'),
         meta: {
