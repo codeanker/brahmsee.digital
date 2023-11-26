@@ -1,6 +1,5 @@
 import { protectedProcedure, publicProcedure, router } from '../../trpc'
 
-import { ZUnterveranstaltungGetInputSchema, unterveranstaltungGet } from './unterveranstaltungGet'
 import {
   ZUnterveranstaltungGliederungCreateInputSchema,
   unterveranstaltungGliederungCreate,
@@ -13,6 +12,7 @@ import {
   ZUnterveranstaltungGliederungPatchInputSchema,
   unterveranstaltungGliederungPatch,
 } from './unterveranstaltungGliederungPatch'
+import { ZUnterveranstaltungPublicGetInputSchema, unterveranstaltungPublicGet } from './unterveranstaltungPublicGet'
 import {
   ZUnterveranstaltungVerwaltungCreateInputSchema,
   unterveranstaltungVerwaltungCreate,
@@ -27,7 +27,7 @@ import {
 } from './unterveranstaltungVerwaltungPatch'
 
 export const unterveranstaltungRouter = router({
-  get: publicProcedure.input(ZUnterveranstaltungGetInputSchema).query(unterveranstaltungGet),
+  publicGet: publicProcedure.input(ZUnterveranstaltungPublicGetInputSchema).query(unterveranstaltungPublicGet),
   gliederungCreate: protectedProcedure(['GLIEDERUNG_ADMIN'])
     .input(ZUnterveranstaltungGliederungCreateInputSchema)
     .mutation(unterveranstaltungGliederungCreate),
