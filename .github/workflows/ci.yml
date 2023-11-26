@@ -13,6 +13,19 @@ jobs:
   prepare:
     name: 🔨 Prepare
     runs-on: ubuntu-latest
+    container: node:20-bullseye
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: brahmsee.digital
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js 20.x
@@ -32,19 +45,6 @@ jobs:
     name: 🧪 Test
     needs: prepare
     runs-on: ubuntu-latest
-    container: node:20-bullseye
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: brahmsee.digital
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       - name: Playwright deps
         run: npx playwright install --with-deps
