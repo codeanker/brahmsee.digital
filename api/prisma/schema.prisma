@@ -204,6 +204,10 @@ model Veranstaltung {
   teilnahmegebuehr     Int
   unterveranstaltungen Unterveranstaltung[]
   mahlzeiten           Mahlzeit[]
+  beschreibung         String?
+  datenschutz          String?
+  teilnahmeBedingungen String?
+  zielgruppe           String?
 }
 
 enum MahlzeitType {
@@ -221,6 +225,11 @@ model Mahlzeit {
   anmeldung       Anmeldung[]
 }
 
+enum UnterveranstaltungType {
+  CREW
+  GLIEDERUNG
+}
+
 model Unterveranstaltung {
   id               Int           @id @default(autoincrement())
   maxTeilnehmende  Int
@@ -233,4 +242,5 @@ model Unterveranstaltung {
   gliederung       Gliederung    @relation(fields: [gliederungId], references: [id])
   Anmeldung        Anmeldung[]
   beschreibung     String?
+  type            UnterveranstaltungType @default(GLIEDERUNG)
 }

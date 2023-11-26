@@ -13,6 +13,10 @@ export const ZVeranstaltungVerwaltungCreateInputSchema = z.strictObject({
     meldeschluss: z.date(),
     maxTeilnehmende: z.number().int(),
     teilnahmegebuehr: z.number().int(),
+    beschreibung: z.string().optional(),
+    datenschutz: z.string().optional(),
+    teilnahmeBedigungen: z.string().optional(),
+    zielgruppe: z.string().optional(),
   }),
 })
 

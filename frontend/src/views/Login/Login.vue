@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
+import PublicHeaderBg from '@/components/LayoutComponents/PublicHeaderBg.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import Loading from '@/components/UIComponents/Loading.vue'
 import { login, loginError, loginPending } from '@/composables/useAuthentication'
@@ -31,16 +32,14 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
 </script>
 
 <template>
-  <div class="container flex h-screen max-w-sm flex-col justify-between pt-32">
-    <div>
-      <div class="mb-32 flex justify-center">
-        <img
-          src="@/assets/images/logo.svg"
-          class="w-64"
-        />
-      </div>
+  <div class="grid grid-cols-1 lg:grid-cols-2 h-screen">
+    <div class="container flex flex-col gap-6 justify-center items-center">
+      <p class="text-4xl font-bold">Herzlich Willkommen!</p>
+
+      <p>Bitte gib unten deine Zugangsdaten ein.</p>
+
       <form
-        class="space-y-2"
+        class="space-y-8"
         @submit.prevent="loginWithRecirect"
       >
         <BasicInput
@@ -76,15 +75,18 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
           Registrieren
         </Button>
       </form>
+
       <div
         v-if="loginError"
         class="bg-danger-400 mb-2 mt-5 rounded p-3 text-center text-white"
       >
         {{ loginError }}
       </div>
+
+      <div class="mb-2 text-center text-gray-300">
+        {{ version }}
+      </div>
     </div>
-    <div class="mb-2 text-center text-gray-300">
-      {{ version }}
-    </div>
+    <PublicHeaderBg class="hidden lg:block" />
   </div>
 </template>

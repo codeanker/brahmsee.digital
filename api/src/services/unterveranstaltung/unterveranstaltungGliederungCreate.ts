@@ -12,6 +12,7 @@ export const ZUnterveranstaltungGliederungCreateInputSchema = z.strictObject({
     teilnahmegebuehr: z.number({ description: 'In Cent' }).int(),
     meldebeginn: z.date(),
     meldeschluss: z.date(),
+    beschreibung: z.string().optional(),
   }),
 })
 
@@ -52,6 +53,7 @@ export async function unterveranstaltungGliederungCreate(options: Unterveranstal
   return prisma.unterveranstaltung.create({
     data: {
       ...options.input.data,
+      type: 'GLIEDERUNG',
       gliederungId: gliederung.id,
     },
     select: {

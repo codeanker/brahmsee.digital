@@ -2,6 +2,7 @@ import { computed, ref } from 'vue'
 
 import { apiClient } from '../api'
 
+import router from '@/router'
 import type { RouterOutput } from '@codeanker/api'
 
 type LoggedInAccount = RouterOutput['authentication']['login']['user']
@@ -27,7 +28,7 @@ export async function login({ email, password }: { email: string; password: stri
 }
 
 export async function reAuthenticate() {
-  if (localStorage.getItem('jwt') === undefined) return false
+  if (localStorage.getItem('jwt') === null) return false
   try {
     loggedInAccount.value = await apiClient.person.authenticatedGet.query()
     return loggedInAccount.value
@@ -37,6 +38,7 @@ export async function reAuthenticate() {
 }
 
 export async function logout() {
+  router.push({ name: 'Login' })
   localStorage.removeItem('jwt')
   loggedInAccount.value = undefined
 }

@@ -5,10 +5,12 @@ withDefaults(
   defineProps<{
     color?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger'
     to?: RouterLinkProps['to']
+    full?: boolean
   }>(),
   {
     color: 'primary',
     size: 'sm',
+    full: false,
   }
 )
 type Color = 'primary' | 'secondary' | 'success' | 'warning' | 'danger'
@@ -25,7 +27,7 @@ const colors: Record<Color, string> = {
   <component
     :is="to === undefined ? 'button' : 'router-link'"
     type="button"
-    :class="colors[color]"
+    :class="[{ 'w-full justify-center': full }, colors[color]]"
     class="btn flex space-x-2 rounded-lg"
     :to="to"
   >
