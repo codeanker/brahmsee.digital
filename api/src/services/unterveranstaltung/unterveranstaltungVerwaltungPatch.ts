@@ -10,6 +10,7 @@ export const ZUnterveranstaltungVerwaltungPatchInputSchema = z.strictObject({
     teilnahmegebuehr: z.number({ description: 'In Cent' }).int(),
     meldebeginn: z.date(),
     meldeschluss: z.date(),
+    beschreibung: z.string(),
   }),
 })
 

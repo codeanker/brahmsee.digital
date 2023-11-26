@@ -12,6 +12,7 @@ export const ZUnterveranstaltungVerwaltungCreateInputSchema = z.strictObject({
     meldeschluss: z.date(),
     gliederungId: z.number().int(),
     type: z.nativeEnum(UnterveranstaltungType),
+    beschreibung: z.string(),
   }),
 })
 
