@@ -24,6 +24,7 @@ jobs:
 
   test:
     needs: prepare
+    runs-on: ubuntu-latest
     container: node:20-bullseye
     services:
       postgres:
@@ -46,5 +47,6 @@ jobs:
 
   lint:
     needs: prepare
+    runs-on: ubuntu-latest
     steps:
       - run: npm run lint
