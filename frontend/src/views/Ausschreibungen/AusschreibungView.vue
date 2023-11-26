@@ -14,7 +14,7 @@ const keyInfos = [
 </script>
 
 <template>
-  <div class="lg:py-10 lg:px-20 xl:px-28 2xl:px-40">
+  <div class="lg:pb-10 lg:px-20 xl:px-28 2xl:px-40">
     <!-- Header -->
     <PublicHeader />
     <div class="text-3xl font-medium mb-5">Ausschreibung Landeskindertreffen</div>
