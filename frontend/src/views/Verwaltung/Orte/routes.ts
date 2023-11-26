@@ -4,7 +4,7 @@ const orteRoutes: Route[] = [
   {
     name: 'Verwaltung Orte',
     path: 'orte',
-    redirect: { name: 'Alle Orte' },
+    redirect: { name: 'Verwaltung Alle Orte' },
     meta: {
       breadcrumbs: [
         {

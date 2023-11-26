@@ -4,7 +4,7 @@ const gliederungRoutes: Route[] = [
   {
     name: 'Verwaltung Gliederungen',
     path: 'gliederungen',
-    redirect: { name: 'Alle Gliederungen' },
+    redirect: { name: 'Verwaltung Alle Gliederungen' },
     meta: {
       breadcrumbs: [
         {
