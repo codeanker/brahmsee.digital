@@ -1,5 +1,7 @@
 import { protectedProcedure, publicProcedure, router } from '../../trpc'
 
+import { ZAnmeldungGliederungAblehnenInputSchema, anmeldungGliederungAblehnen } from './anmeldungGliederungAblehnen'
+import { ZAnmeldungGliederungAnnehmenInputSchema, anmeldungGliederungAnnehmen } from './anmeldungGliederungAnnehmen'
 import { ZAnmeldungGliederungStornoInputSchema, anmeldungGliederungStorno } from './anmeldungGliederungStorno'
 import { ZAnmeldungPublicCreateInputSchema, anmeldungPublicCreate } from './anmeldungPublicCreate'
 import { ZAnmeldungTeilnehmerStornoInputSchema, anmeldungTeilnehmerStorno } from './anmeldungTeilnehmerStorno'
@@ -21,7 +23,13 @@ export const anmeldungRouter = router({
   teilnehmerStorno: protectedProcedure(['ADMIN'])
     .input(ZAnmeldungTeilnehmerStornoInputSchema)
     .mutation(anmeldungTeilnehmerStorno),
-  gliederungStorno: protectedProcedure(['ADMIN', 'GLIEDERUNG_ADMIN'])
+  gliederungStorno: protectedProcedure(['GLIEDERUNG_ADMIN'])
     .input(ZAnmeldungGliederungStornoInputSchema)
     .mutation(anmeldungGliederungStorno),
+  gliederungAnnehmen: protectedProcedure(['GLIEDERUNG_ADMIN'])
+    .input(ZAnmeldungGliederungAnnehmenInputSchema)
+    .mutation(anmeldungGliederungAnnehmen),
+  gliederungAblehnen: protectedProcedure(['GLIEDERUNG_ADMIN'])
+    .input(ZAnmeldungGliederungAblehnenInputSchema)
+    .mutation(anmeldungGliederungAblehnen),
 })
