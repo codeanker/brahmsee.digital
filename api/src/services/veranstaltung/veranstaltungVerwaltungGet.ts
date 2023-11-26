@@ -23,7 +23,11 @@ export async function veranstaltungVerwaltungGet(options: VeranstaltungVerwaltun
       name: true,
       beginn: true,
       ende: true,
-      ort: true,
+      ort: {
+        select: {
+          name: true,
+        },
+      },
       meldebeginn: true,
       meldeschluss: true,
       maxTeilnehmende: true,

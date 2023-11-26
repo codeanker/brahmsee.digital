@@ -76,7 +76,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
   {
     type: 'SidebarItem',
     name: 'Veranstaltungen',
-    route: '/verwaltung/veranstaltung',
+    route: '/verwaltung/veranstaltung/liste',
     icon: CalendarDaysIcon,
     badge: 'Neu',
   },

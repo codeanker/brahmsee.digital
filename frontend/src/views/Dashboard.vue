@@ -15,6 +15,7 @@ const createDemoVeranstaltung = async () => {
       teilnahmegebuehr: 79,
     },
   })
+  alert('Veranstaltung wurde erstellt')
 }
 
 const createDemoUnterveranstaltung = async () => {
@@ -31,6 +32,7 @@ const createDemoUnterveranstaltung = async () => {
       type: 'GLIEDERUNG',
     },
   })
+  alert('Unterveranstaltung wurde erstellt')
 }
 </script>
 

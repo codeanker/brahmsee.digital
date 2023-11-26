@@ -2,14 +2,24 @@
 import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/vue/24/outline'
 
 import Button from '../UIComponents/Button.vue'
+
+import GliederungLogo from '@/components/UIComponents/GliederungLogo.vue'
+
+interface Gliederung {
+  name: string
+}
+
+defineProps<{
+  gliederung: Gliederung
+}>()
 </script>
 
 <template>
-  <div class="flex items-center top-0 sticky bg-white z-10 justify-between mb-4 py-6">
-    <img
-      src="@/assets/images/gliederung_test.png"
-      class="h-12 lg:h-16"
-    />
+  <div
+    v-if="gliederung"
+    class="flex items-center top-0 sticky bg-white z-10 justify-between mb-4 py-6"
+  >
+    <GliederungLogo :name="gliederung?.name" />
     <Button
       color="secondary"
       title="Kontaktiere uns"
