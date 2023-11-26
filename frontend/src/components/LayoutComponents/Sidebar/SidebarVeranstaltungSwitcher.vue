@@ -17,10 +17,13 @@ const { state: veranstaltungen } = useAsyncState(async () => {
   return apiClient.veranstaltung.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
 }, [])
 
-let selectedVeranstaltung: Ref<number> = ref(+route.params.veranstaltungId)
+let selectedVeranstaltung: Ref<number> = ref(
+  +route.params.veranstaltungId || parseInt(localStorage.getItem('letzteVeranstaltung') as string)
+)
 const veranstaltungTitle = (id: number) => {
   return veranstaltungen.value.find((veranstaltung) => veranstaltung.id === id)?.name
 }
+
 watch(selectedVeranstaltung, (newValue) => {
   localStorage.setItem('letzteVeranstaltung', newValue.toString())
   emit('setVeranstaltung', newValue)

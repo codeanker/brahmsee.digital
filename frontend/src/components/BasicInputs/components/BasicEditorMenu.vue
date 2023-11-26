@@ -7,20 +7,35 @@ const props = defineProps<{
   editor: Editor
 }>()
 
-const items = [
+type TMenuItem =
+  | {
+      type: 'divider'
+    }
+  | {
+      type: 'button'
+      icon: string
+      title: string
+      action: () => void
+      isActive?: () => boolean
+    }
+
+const items: TMenuItem[] = [
   {
+    type: 'button',
     icon: 'bold',
     title: 'Bold',
     action: () => props.editor.chain().focus().toggleBold().run(),
     isActive: () => props.editor.isActive('bold'),
   },
   {
+    type: 'button',
     icon: 'italic',
     title: 'Italic',
     action: () => props.editor.chain().focus().toggleItalic().run(),
     isActive: () => props.editor.isActive('italic'),
   },
   {
+    type: 'button',
     icon: 'strikethrough',
     title: 'Strike',
     action: () => props.editor.chain().focus().toggleStrike().run(),
@@ -33,6 +48,7 @@ const items = [
   //   isActive: () => props.editor.isActive('code'),
   // },
   {
+    type: 'button',
     icon: 'mark-pen-line',
     title: 'Highlight',
     action: () => props.editor.chain().focus().toggleHighlight().run(),
@@ -48,30 +64,35 @@ const items = [
   //   isActive: () => props.editor.isActive('heading', { level: 1 }),
   // },
   {
+    type: 'button',
     icon: 'h-2',
     title: 'Heading 2',
     action: () => props.editor.chain().focus().toggleHeading({ level: 2 }).run(),
     isActive: () => props.editor.isActive('heading', { level: 2 }),
   },
   {
+    type: 'button',
     icon: 'h-3',
     title: 'Heading 3',
     action: () => props.editor.chain().focus().toggleHeading({ level: 3 }).run(),
     isActive: () => props.editor.isActive('heading', { level: 3 }),
   },
   {
+    type: 'button',
     icon: 'paragraph',
     title: 'Paragraph',
     action: () => props.editor.chain().focus().setParagraph().run(),
     isActive: () => props.editor.isActive('paragraph'),
   },
   {
+    type: 'button',
     icon: 'list-unordered',
     title: 'Bullet List',
     action: () => props.editor.chain().focus().toggleBulletList().run(),
     isActive: () => props.editor.isActive('bulletList'),
   },
   {
+    type: 'button',
     icon: 'list-ordered',
     title: 'Ordered List',
     action: () => props.editor.chain().focus().toggleOrderedList().run(),
@@ -125,11 +146,13 @@ const items = [
     type: 'divider',
   },
   {
+    type: 'button',
     icon: 'arrow-go-back-line',
     title: 'Undo',
     action: () => props.editor.chain().focus().undo().run(),
   },
   {
+    type: 'button',
     icon: 'arrow-go-forward-line',
     title: 'Redo',
     action: () => props.editor.chain().focus().redo().run(),

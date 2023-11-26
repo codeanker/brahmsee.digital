@@ -1,6 +1,8 @@
 import { PrismaClient, PrismaPromise } from '@prisma/client'
 
-const gliederungen: { edv: string; name: string }[] = [
+import { Seeder } from '.'
+
+export const gliederungen: { edv: string; name: string }[] = [
   { edv: '1600000', name: 'DLRG Bundesverband' },
   { edv: '0100000', name: 'Landesverband Baden e.V.' },
   { edv: '0101000', name: 'Bezirk Bodensee-Konstanz e.V.' },
@@ -1962,7 +1964,7 @@ const gliederungen: { edv: string; name: string }[] = [
   { edv: '1602019', name: 'Ortsgruppe IuK' },
 ]
 
-export async function importGliederungen(prisma: PrismaClient) {
+const importGliederungen: Seeder = async (prisma: PrismaClient) => {
   const transactions: PrismaPromise<any>[] = []
   transactions.push(
     ...gliederungen.map((gliederung) =>
@@ -1976,3 +1978,5 @@ export async function importGliederungen(prisma: PrismaClient) {
   )
   await prisma.$transaction(transactions)
 }
+
+export default importGliederungen
