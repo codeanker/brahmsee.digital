@@ -7,10 +7,10 @@ import type { AuthenticatedContext } from '../../trpc'
 export const ZUnterveranstaltungGliederungPatchInputSchema = z.strictObject({
   data: z.strictObject({
     unterveranstaltungId: z.number().int(),
-    maxTeilnehmende: z.number().int(),
-    teilnahmegebuehr: z.number({ description: 'In Cent' }).int(),
-    meldebeginn: z.date(),
-    meldeschluss: z.date(),
+    maxTeilnehmende: z.number().int().optional(),
+    teilnahmegebuehr: z.number({ description: 'In Cent' }).int().optional(),
+    meldebeginn: z.date().optional(),
+    meldeschluss: z.date().optional(),
     beschreibung: z.string().optional(),
   }),
 })
