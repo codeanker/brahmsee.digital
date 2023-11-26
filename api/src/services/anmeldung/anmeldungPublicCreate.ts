@@ -12,7 +12,7 @@ import z from 'zod'
 
 import prisma from '../../prisma'
 
-export const ZAnmeldungCreateInputSchema = z.strictObject({
+export const ZAnmeldungPublicCreateInputSchema = z.strictObject({
   data: z.strictObject({
     unterveranstaltungId: z.number().int(),
     firstname: z.string(),
@@ -22,7 +22,7 @@ export const ZAnmeldungCreateInputSchema = z.strictObject({
     telefon: z.string(),
     essgewohnheit: z.nativeEnum(Essgewohnheit),
     nahrungsmittelIntoleranzen: z.array(z.nativeEnum(NahrungsmittelIntoleranz)),
-    weitereIntoleranzen: z.string().optional(),
+    weitereIntoleranzen: z.array(z.string()).optional(),
     qualifikationenFahrerlaubnis: z.array(z.nativeEnum(QualificationFahrerlaubnis)).optional(),
     qualifikationenSchwimmer: z.array(z.nativeEnum(QualificationSchwimmer)).optional(),
     qualifikationenErsteHilfe: z.array(z.nativeEnum(QualificationErsteHilfe)).optional(),
@@ -51,13 +51,13 @@ export const ZAnmeldungCreateInputSchema = z.strictObject({
   }),
 })
 
-export type TAnmeldungCreateInputSchema = z.infer<typeof ZAnmeldungCreateInputSchema>
+export type TAnmeldungPublicCreateInputSchema = z.infer<typeof ZAnmeldungPublicCreateInputSchema>
 
-type AnmeldungCreateOptions = {
-  input: TAnmeldungCreateInputSchema
+type AnmeldungPublicCreateOptions = {
+  input: TAnmeldungPublicCreateInputSchema
 }
 
-export async function anmeldungCreate(options: AnmeldungCreateOptions) {
+export async function anmeldungPublicCreate(options: AnmeldungPublicCreateOptions) {
   const unterveranstaltung = await prisma.unterveranstaltung.findFirstOrThrow({
     where: {
       id: options.input.data.unterveranstaltungId,

@@ -1,4 +1,4 @@
-const emailRegex = new RegExp(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/)
+const emailRegex = new RegExp('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$')
 const errorMessage = 'Die Email hat nicht das korrekte Format'
 export async function emailValid(value: unknown) {
   if (typeof value !== 'string') return errorMessage

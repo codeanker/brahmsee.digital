@@ -3,21 +3,21 @@ import z from 'zod'
 import prisma from '../../prisma'
 import type { AuthenticatedContext } from '../../trpc'
 
-export const ZAnmeldungStornoSelfInputSchema = z.strictObject({
+export const ZAnmeldungTeilnehmerStornoInputSchema = z.strictObject({
   data: z.strictObject({
     unterveranstaltungId: z.number().int(),
   }),
 })
 
-export type TAnmeldungStornoSelfInputSchema = z.infer<typeof ZAnmeldungStornoSelfInputSchema>
+export type TAnmeldungTeilnehmerStornoInputSchema = z.infer<typeof ZAnmeldungTeilnehmerStornoInputSchema>
 
-type AnmeldungStornoSelfOptions = AuthenticatedContext & {
-  input: TAnmeldungStornoSelfInputSchema
+type AnmeldungTeilnehmerStornoOptions = AuthenticatedContext & {
+  input: TAnmeldungTeilnehmerStornoInputSchema
 }
 /**
  * Storniert die Anmeldung der angemeldeten Person.
  */
-export async function anmeldungStornoSelf(options: AnmeldungStornoSelfOptions) {
+export async function anmeldungTeilnehmerStorno(options: AnmeldungTeilnehmerStornoOptions) {
   const anmeldung = await prisma.anmeldung.findFirstOrThrow({
     where: {
       unterveranstaltungId: options.input.data.unterveranstaltungId,

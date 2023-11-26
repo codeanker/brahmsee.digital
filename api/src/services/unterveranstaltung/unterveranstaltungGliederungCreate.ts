@@ -52,6 +52,7 @@ export async function unterveranstaltungGliederungCreate(options: Unterveranstal
   return prisma.unterveranstaltung.create({
     data: {
       ...options.input.data,
+      type: 'GLIEDERUNG',
       gliederungId: gliederung.id,
     },
     select: {
