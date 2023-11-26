@@ -11,21 +11,27 @@ import InfoList from '@/components/UIComponents/InfoList.vue'
 const route = useRoute()
 const router = useRouter()
 
-const keyInfos = computed(() => {
+interface KeyInfo {
+  title: string
+  value: string
+  small?: boolean
+}
+
+const keyInfos = computed<KeyInfo[]>(() => {
   if (unterveranstaltung.value) {
     return [
       {
         title: 'Beginn',
-        value: `${formatDate(unterveranstaltung.value.veranstaltung.beginn, 'DD.MM.YYYY HH:mm')}` + ' Uhr',
+        value: `${formatDate(unterveranstaltung.value.veranstaltung.beginn, 'DD.MM.YYYY HH:mm')} Uhr`,
       },
       {
         title: 'Ende',
-        value: `${formatDate(unterveranstaltung.value.veranstaltung.ende, 'DD.MM.YYYY HH:mm')}` + ' Uhr',
+        value: `${formatDate(unterveranstaltung.value.veranstaltung.ende, 'DD.MM.YYYY HH:mm')} Uhr`,
       },
-      { title: 'Veranstaltungsort', value: unterveranstaltung.value.veranstaltung.ort, small: true },
+      { title: 'Veranstaltungsort', value: unterveranstaltung.value.veranstaltung.ort?.name ?? '', small: true },
       { title: 'Teilnahmebeitrag', value: unterveranstaltung.value.teilnahmegebuehr + '€ pro Person' },
       { title: 'Meldeschluss', value: formatDate(unterveranstaltung.value.meldeschluss, 'DD.MM.YYYY') },
-      { title: 'Zielgruppe', value: unterveranstaltung.value.veranstaltung.zielgruppe },
+      { title: 'Zielgruppe', value: unterveranstaltung.value.veranstaltung.zielgruppe ?? '' },
     ]
   } else {
     return []
