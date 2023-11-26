@@ -4,19 +4,19 @@ import { getGliederungRequireAdmin } from '../../helpers/getGliederungRequireAdm
 import prisma from '../../prisma'
 import type { AuthenticatedContext } from '../../trpc'
 
-export const ZAnmeldungGliederungStornoInputSchema = z.strictObject({
+export const ZAnmeldungGliederungAnnehmenInputSchema = z.strictObject({
   data: z.strictObject({
     anmeldungId: z.number().int(),
   }),
 })
 
-export type TAnmeldungGliederungStornoInputSchema = z.infer<typeof ZAnmeldungGliederungStornoInputSchema>
+export type TAnmeldungGliederungAnnehmenInputSchema = z.infer<typeof ZAnmeldungGliederungAnnehmenInputSchema>
 
-type AnmeldungGliederungStornoOptions = AuthenticatedContext & {
-  input: TAnmeldungGliederungStornoInputSchema
+type AnmeldungGliederungAnnehmenOptions = AuthenticatedContext & {
+  input: TAnmeldungGliederungAnnehmenInputSchema
 }
 
-export async function anmeldungGliederungStorno(options: AnmeldungGliederungStornoOptions) {
+export async function anmeldungGliederungAnnehmen(options: AnmeldungGliederungAnnehmenOptions) {
   const gliederung = await getGliederungRequireAdmin(options.ctx.accountId)
 
   return prisma.anmeldung.update({
@@ -27,7 +27,7 @@ export async function anmeldungGliederungStorno(options: AnmeldungGliederungStor
       },
     },
     data: {
-      status: 'STORNIERT',
+      status: 'ANGENOMMEN',
     },
     select: {
       id: true,
