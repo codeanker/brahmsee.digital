@@ -27,9 +27,13 @@ export async function unterveranstaltungPublicGet(options: UnterveranstaltungPub
       type: true,
       veranstaltung: {
         select: {
+          name: true,
           beginn: true,
           ende: true,
           ort: true,
+          datenschutz: true,
+          teilnahmeBedingungen: true,
+          zielgruppe: true,
         },
       },
       gliederung: {
@@ -37,6 +41,7 @@ export async function unterveranstaltungPublicGet(options: UnterveranstaltungPub
           name: true,
         },
       },
+      beschreibung: true,
     },
   })
   return unterveranstaltung

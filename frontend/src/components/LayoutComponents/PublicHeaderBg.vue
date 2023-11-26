@@ -1,5 +1,5 @@
 <template>
-  <div class="relative h-72 lg:h-screen">
+  <div>
     <div class="w-full h-full bg-public bg-center bg-cover"></div>
     <div class="absolute top-0 left-0 w-full h-full backdrop-blur-sm"></div>
     <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black/10">

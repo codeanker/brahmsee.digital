@@ -31,5 +31,8 @@
 			]
 		}
 	},
-	"onCreateCommand": "npm ci"
+	"onCreateCommand": {
+		"dependencies": "npm ci",
+		"environment": "cp -n api/.env.example api/.env"
+	}
 }

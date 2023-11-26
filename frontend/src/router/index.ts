@@ -6,6 +6,7 @@ import routesAusschreibungen from '@/views/Ausschreibungen/routes'
 import routesDevelopment from '@/views/Development/routes'
 import routesAuth from '@/views/Login/routes'
 import routesPerson from '@/views/Persons/routes'
+import routesRegistrierung from '@/views/Registrierung/routes'
 import routesVeranstaltungen from '@/views/Veranstaltungen/routes'
 import routesVerwaltung from '@/views/Verwaltung/routes'
 
@@ -18,6 +19,7 @@ export type Route = RouteRecordRaw & {
 const routes: Route[] = [
   ...routesAuth,
   ...routesAusschreibungen,
+  ...routesRegistrierung,
   {
     path: '/',
     redirect: { name: 'Login' },

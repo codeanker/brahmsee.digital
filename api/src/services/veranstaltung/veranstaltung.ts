@@ -1,11 +1,11 @@
 import { protectedProcedure, router } from '../../trpc'
 
-import { ZVeranstaltungVerwaltungGetInputSchema, veranstaltungVerwaltungGet } from './veranstaltungGet'
-import { ZVeranstaltungenVerwaltungListInputSchema, veranstaltungenVerwaltungList } from './veranstaltungList'
 import {
   ZVeranstaltungVerwaltungCreateInputSchema,
   veranstaltungVerwaltungCreate,
 } from './veranstaltungVerwaltungCreate'
+import { ZVeranstaltungVerwaltungGetInputSchema, veranstaltungVerwaltungGet } from './veranstaltungVerwaltungGet'
+import { ZVeranstaltungenVerwaltungListInputSchema, veranstaltungenVerwaltungList } from './veranstaltungVerwaltungList'
 import { ZVeranstaltungVerwaltungPatchInputSchema, veranstaltungVerwaltungPatch } from './veranstaltungVerwaltungPatch'
 
 export const veranstaltungRouter = router({

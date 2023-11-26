@@ -204,6 +204,10 @@ model Veranstaltung {
   teilnahmegebuehr     Int
   unterveranstaltungen Unterveranstaltung[]
   mahlzeiten           Mahlzeit[]
+  beschreibung         String?
+  datenschutz          String?
+  teilnahmeBedingungen String?
+  zielgruppe           String?
 }
 
 enum MahlzeitType {
