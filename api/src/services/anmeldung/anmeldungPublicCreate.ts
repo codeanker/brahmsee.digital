@@ -1,13 +1,11 @@
 import { z } from 'zod'
 
 import prisma from '../../prisma'
-import { getNotfallkontakte } from '../person/helpers/getNotfallkontakte'
-import { personInput } from '../person/helpers/personInput'
+import { personDto, getPersonCreateData } from '../person/dto/person.dto'
 
 export const ZAnmeldungPublicCreateInputSchema = z.strictObject({
-  data: z.strictObject({
+  data: personDto.extend({
     unterveranstaltungId: z.number().int(),
-    ...personInput,
     mahlzeitenIds: z.array(z.number().int()).optional(),
     uebernachtungsTage: z.array(z.date()).optional(),
     tshirtBestellt: z.boolean().optional(),
@@ -30,31 +28,9 @@ export async function anmeldungPublicCreate(options: AnmeldungPublicCreateOption
     },
   })
 
-  const notfallKontakte = getNotfallkontakte(
-    options.input.data.notfallkontaktPersonen,
-    options.input.data.erziehungsberechtigtePersonen
-  )
   return prisma.person.create({
     data: {
-      firstname: options.input.data.firstname,
-      lastname: options.input.data.lastname,
-      birthday: options.input.data.birthday,
-      gender: options.input.data.gender,
-      essgewohnheit: options.input.data.essgewohnheit,
-      nahrungsmittelIntoleranzen: options.input.data.nahrungsmittelIntoleranzen,
-      weitereIntoleranzen: options.input.data.weitereIntoleranzen,
-      qualifikationenFahrerlaubnis: options.input.data.qualifikationenFahrerlaubnis,
-      qualifikationenSchwimmer: options.input.data.qualifikationenSchwimmer,
-      qualifikationenErsteHilfe: options.input.data.qualifikationenErsteHilfe,
-      qualifikationenSanitaeter: options.input.data.qualifikationenSanitaeter,
-      qualifikationenFunk: options.input.data.qualifikationenFunk,
-      konfektionsgroesse: options.input.data.konfektionsgroesse,
-      address: {
-        create: options.input.data.addresse,
-      },
-      notfallkontakte: {
-        create: notfallKontakte,
-      },
+      ...getPersonCreateData(options.input.data),
       anmeldungen: {
         create: {
           unterveranstaltungId: unterveranstaltung.id,

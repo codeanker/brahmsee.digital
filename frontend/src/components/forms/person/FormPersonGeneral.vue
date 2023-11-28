@@ -34,17 +34,17 @@ const fill = (person) => {
   }
 }
 
-const userCopy = ref(fill(props.person) ?? { role: 'ADMIN' })
+const personCopy = ref(fill(props.person) ?? { role: 'ADMIN' })
 
 const {
-  execute: createUser,
+  execute: createPerson,
   error: errorCreate,
   isLoading: isLoadingCreate,
 } = useAsyncState(
   async () => {
     // @todo typing
     await apiClient.person.verwaltungCreate.mutate({
-      data: userCopy.value as unknown as RouterInput['person']['verwaltungCreate']['data'],
+      data: personCopy.value as unknown as RouterInput['person']['verwaltungCreate']['data'],
     })
     router.back()
   },
@@ -53,15 +53,15 @@ const {
 )
 
 const {
-  execute: updateUser,
+  execute: updatePerson,
   // error: errorUpdate,
   isLoading: isLoadingUpdate,
 } = useAsyncState(
   async () => {
     // @todo typing
     await apiClient.person.verwaltungPatch.mutate({
-      id: userCopy.value.id,
-      data: userCopy.value as unknown as RouterInput['person']['verwaltungPatch']['data'],
+      id: personCopy.value.id,
+      data: personCopy.value as unknown as RouterInput['person']['verwaltungPatch']['data'],
     })
 
     if (props.isSelf) {
@@ -78,16 +78,16 @@ const handle = async (event: Event) => {
   event.preventDefault()
   switch (props.mode) {
     case 'create':
-      await createUser()
+      await createPerson()
       break
     case 'update':
-      await updateUser()
+      await updatePerson()
       break
   }
 }
 
 const reset = () => {
-  userCopy.value = props.person ?? {}
+  personCopy.value = props.person ?? {}
 }
 </script>
 
@@ -96,7 +96,7 @@ const reset = () => {
     <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
       <div class="sm:col-span-3">
         <BasicInput
-          v-model="userCopy.firstname"
+          v-model="personCopy.firstname"
           label="Vorname"
           name="firstname"
           required
@@ -105,7 +105,7 @@ const reset = () => {
 
       <div class="sm:col-span-3">
         <BasicInput
-          v-model="userCopy.lastname"
+          v-model="personCopy.lastname"
           label="Nachname"
           name="lastname"
           required
@@ -114,7 +114,7 @@ const reset = () => {
 
       <div class="sm:col-span-3">
         <BasicDatepicker
-          v-model="userCopy.birthday"
+          v-model="personCopy.birthday"
           label="Geburtsdatum"
           name="birthday"
           required
@@ -125,7 +125,7 @@ const reset = () => {
 
       <div class="sm:col-span-3">
         <BasicSelect
-          v-model="userCopy.gender"
+          v-model="personCopy.gender"
           label="Geschlecht"
           name="gender"
           :options="[
@@ -147,7 +147,7 @@ const reset = () => {
 
       <div class="col-span-full">
         <BasicInput
-          v-model="userCopy.email"
+          v-model="personCopy.email"
           label="Email"
           name="email"
           type="email"
@@ -160,7 +160,7 @@ const reset = () => {
         class="col-span-full"
       >
         <BasicPassword
-          v-model="userCopy.password"
+          v-model="personCopy.password"
           label="Passwort"
           required
         />

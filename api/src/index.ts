@@ -9,3 +9,5 @@ export type AppRouter = typeof appRouter
 export type RouterInput = inferRouterInputs<AppRouter>
 export type RouterOutput = inferRouterOutputs<AppRouter>
 export * as testUtils from './lib/testUtils'
+
+export { type TPersonDto } from './services/person/dto/person.dto'
