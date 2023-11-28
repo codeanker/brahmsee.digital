@@ -4,7 +4,7 @@ import { loginPending, reAuthenticate, loggedInAccount } from '@/composables/use
 
 export default function makeGuard(): NavigationGuardWithThis<undefined> {
   return async function (to, _from, next) {
-    if (!loggedInAccount.value && !loginPending.value) {
+    if (!loggedInAccount.value && !loginPending.value && localStorage.getItem('jwt') !== null) {
       await reAuthenticate()
     }
     if (loggedInAccount.value) {

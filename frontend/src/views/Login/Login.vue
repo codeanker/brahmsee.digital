@@ -41,6 +41,7 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
       @submit.prevent="loginWithRecirect"
     >
       <BasicInput
+        id="email"
         v-model="email"
         type="email"
         class="w-full"
@@ -48,6 +49,7 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
         label="E-Mail"
       ></BasicInput>
       <BasicPassword
+        id="password"
         v-model="password"
         class="w-full"
         placeholder="Passwort"
