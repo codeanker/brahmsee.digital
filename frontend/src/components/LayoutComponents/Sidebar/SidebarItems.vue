@@ -3,11 +3,13 @@ import { LockClosedIcon } from '@heroicons/vue/24/outline'
 import type { Component } from 'vue'
 import { useRoute } from 'vue-router'
 
+import AppLink from '@/components/AppLink.vue'
+
 export interface SidebarItem {
   type: 'SidebarItem'
   name: string
   icon: Component
-  route: string
+  route: SidebarItemRoute
   children?: SidebarItem[]
   showChildren?: boolean
   badge?: string
@@ -19,14 +21,21 @@ export interface DividerItem {
   name: string
 }
 
+export type SidebarItemRoute =
+  | {
+      name: string
+    }
+  | string
+
 defineProps<{
   navigation: Array<SidebarItem | DividerItem>
 }>()
 
 const route = useRoute()
 
-const isCurrentRoute = (path: string) => {
-  return path === route.path
+function isCurrentRoute(checkRoute: SidebarItemRoute) {
+  if (typeof checkRoute === 'string') return false
+  return checkRoute.name === route.name || route.matched.some((record) => record.name === checkRoute.name)
 }
 </script>
 
@@ -39,14 +48,10 @@ const isCurrentRoute = (path: string) => {
         class="flex flex-col"
       >
         <template v-if="!item.disabled">
-          <router-link
+          <AppLink
             :to="item.route"
-            :href="item.route"
-            :target="item.route.startsWith('/') ? '' : '_blank'"
             class="flex items-center space-x-3 p-2 rounded-lg cursor-pointer hover:bg-gray-100 transition-all"
-            :class="{
-              'text-primary-600': isCurrentRoute(item.route),
-            }"
+            active-class="text-primary-600"
           >
             <component
               :is="item.icon"
@@ -60,7 +65,7 @@ const isCurrentRoute = (path: string) => {
             >
               {{ item.badge }}
             </div>
-          </router-link>
+          </AppLink>
           <!-- Children container -->
           <div
             class="flex flex-col relative transition-maxheight overflow-hidden"
@@ -78,28 +83,16 @@ const isCurrentRoute = (path: string) => {
                   class="rounded-full h-1.5 aspect-square bg-primary-600 absolute z-50"
                 ></div>
               </div>
-              <router-link
-                v-if="child.route.startsWith('/')"
+              <AppLink
                 :to="child.route"
                 class="flex items-center text-sm flex-grow"
+                active-class="text-primary-600"
                 :class="{
-                  'text-primary-600': isCurrentRoute(child.route),
                   'cursor-not-allowed': child.disabled,
                 }"
               >
                 {{ child.name }}
-              </router-link>
-              <a
-                v-else
-                :href="child.route"
-                class="flex items-center text-sm flex-grow"
-                :class="{
-                  'text-primary-600': isCurrentRoute(child.route),
-                  'cursor-not-allowed': child.disabled,
-                }"
-              >
-                {{ child.name }}123
-              </a>
+              </AppLink>
 
               <!-- Badge -->
               <div

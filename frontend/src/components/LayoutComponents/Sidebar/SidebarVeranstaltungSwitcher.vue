@@ -2,14 +2,11 @@
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/vue'
 import { CheckIcon, ChevronDownIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
-import { ref, type Ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { apiClient } from '@/api'
 
-const emit = defineEmits<{
-  (event: 'setVeranstaltung', eventArgs: number): void
-}>()
 const route = useRoute()
 const router = useRouter()
 
@@ -17,17 +14,16 @@ const { state: veranstaltungen } = useAsyncState(async () => {
   return apiClient.veranstaltung.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
 }, [])
 
-let selectedVeranstaltung: Ref<number> = ref(
+let selectedVeranstaltung = ref<number>(
   +route.params.veranstaltungId || parseInt(localStorage.getItem('letzteVeranstaltung') as string)
 )
 const veranstaltungTitle = (id: number) => {
   return veranstaltungen.value.find((veranstaltung) => veranstaltung.id === id)?.name
 }
 
-watch(selectedVeranstaltung, (newValue) => {
+watch(selectedVeranstaltung, async (newValue) => {
   localStorage.setItem('letzteVeranstaltung', newValue.toString())
-  emit('setVeranstaltung', newValue)
-  router.push({ params: { veranstaltungId: newValue.toString() } })
+  await router.push({ params: { veranstaltungId: newValue } })
 })
 </script>
 

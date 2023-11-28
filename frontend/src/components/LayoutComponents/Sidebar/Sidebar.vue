@@ -13,7 +13,7 @@ import {
   RocketLaunchIcon,
   BookOpenIcon,
 } from '@heroicons/vue/24/outline'
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 import SidebarItems, { type DividerItem, type SidebarItem } from './SidebarItems.vue'
@@ -24,28 +24,29 @@ import personProfileImage from '@/helpers/personProfileImage'
 
 const route = useRoute()
 
-let veranstaltungId = ref()
-if (route.params.veranstaltungId !== undefined && typeof route.params.veranstaltungId === 'string') {
-  veranstaltungId.value = parseInt(route.params.veranstaltungId)
-}
-const mainRoute = computed(() => '/veranstaltung/' + veranstaltungId.value)
-
-function setVeranstaltung(id: number) {
-  veranstaltungId.value = id
-}
+const veranstaltungId = computed(() => {
+  if (route.params.veranstaltungId !== undefined && typeof route.params.veranstaltungId === 'string') {
+    return parseInt(route.params.veranstaltungId)
+  }
+  const letzteVeranstaltung = localStorage.getItem('letzteVeranstaltung')
+  if (letzteVeranstaltung !== null) {
+    return parseInt(letzteVeranstaltung)
+  }
+  return undefined
+})
 
 const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
   {
     type: 'SidebarItem',
     name: 'Dashboard',
-    route: mainRoute.value + '/dashboard',
+    route: { name: 'Dashboard' },
     icon: RocketLaunchIcon,
     disabled: veranstaltungId.value === undefined,
   },
   {
     type: 'SidebarItem',
     name: 'Anmeldungen',
-    route: mainRoute.value + '/anmeldungen',
+    route: { name: 'VeranstaltungAnmeldung', params: { veranstaltungId: veranstaltungId.value } },
     icon: UserGroupIcon,
     showChildren: false,
     disabled: veranstaltungId.value === undefined,
@@ -53,21 +54,21 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
       {
         type: 'SidebarItem',
         name: 'CREW',
-        route: mainRoute.value + '/anmeldungen/crew',
+        route: { name: 'VeranstaltungAnmeldungenCrew', params: { veranstaltungId: veranstaltungId.value } },
         icon: UserGroupIcon,
         disabled: true,
       },
       {
         type: 'SidebarItem',
         name: 'Gliederungen',
-        route: mainRoute.value + '/anmeldungen/gliederungen',
+        route: { name: 'VeranstaltungAnmeldungenGliederungen', params: { veranstaltungId: veranstaltungId.value } },
         icon: UserGroupIcon,
         disabled: true,
       },
       {
         type: 'SidebarItem',
         name: 'Teilnehmende',
-        route: mainRoute.value + '/anmeldungen/teilnehmende',
+        route: { name: 'VeranstaltungAnmeldungenTeilnehmende', params: { veranstaltungId: veranstaltungId.value } },
         icon: UserGroupIcon,
         disabled: veranstaltungId.value === undefined,
       },
@@ -76,25 +77,37 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
   {
     type: 'SidebarItem',
     name: 'Auswertung',
-    route: mainRoute.value + '/auswertung',
+    route: { name: 'VeranstaltungAuswertung', params: { veranstaltungId: veranstaltungId.value } },
     icon: ChartBarIcon,
     disabled: true,
   },
-  { type: 'SidebarItem', name: 'Lageplan', route: mainRoute.value + '/lageplan', icon: MapIcon, disabled: true },
-  { type: 'SidebarItem', name: 'Programm', route: mainRoute.value + '/programm', icon: MegaphoneIcon, disabled: true },
+  {
+    type: 'SidebarItem',
+    name: 'Lageplan',
+    route: { name: 'VeranstaltungLageplan', params: { veranstaltungId: veranstaltungId.value } },
+    icon: MapIcon,
+    disabled: true,
+  },
+  {
+    type: 'SidebarItem',
+    name: 'Programm',
+    route: { name: 'VeranstaltungProgramm', params: { veranstaltungId: veranstaltungId.value } },
+    icon: MegaphoneIcon,
+    disabled: true,
+  },
   { type: 'DividerItem', name: 'Verwaltung' },
-  { type: 'SidebarItem', name: 'Gliederungen', route: '/verwaltung/gliederungen', icon: MapPinIcon },
+  { type: 'SidebarItem', name: 'Gliederungen', route: { name: 'Verwaltung Alle Gliederungen' }, icon: MapPinIcon },
   {
     type: 'SidebarItem',
     name: 'Veranstaltungen',
-    route: '/verwaltung/veranstaltung/liste',
+    route: { name: 'Verwaltung Alle Veranstaltungen' },
     icon: CalendarDaysIcon,
     badge: 'Neu',
   },
-  { type: 'SidebarItem', name: 'Personen', route: '/verwaltung/persons', icon: UsersIcon },
-  { type: 'SidebarItem', name: 'Orte', route: '/verwaltung/orte', icon: GlobeEuropeAfricaIcon },
+  { type: 'SidebarItem', name: 'Personen', route: { name: 'Verwaltung Alle Benutzer' }, icon: UsersIcon },
+  { type: 'SidebarItem', name: 'Orte', route: { name: 'Verwaltung Alle Orte' }, icon: GlobeEuropeAfricaIcon },
   { type: 'DividerItem', name: 'Entwicklung' },
-  { type: 'SidebarItem', name: 'Komponenten', route: '/development/components', icon: CubeIcon },
+  { type: 'SidebarItem', name: 'Komponenten', route: { name: 'Komponenten' }, icon: CubeIcon },
   { type: 'SidebarItem', name: 'Dokumentation', route: 'http://127.0.0.1:5173/', icon: BookOpenIcon },
   // { name: 'Unterbringung', route: '', icon: HomeIcon },
   // { name: 'Finanzen', route: '', icon: BanknotesIcon },
@@ -104,7 +117,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
 <template>
   <div class="h-full flex flex-col text-primary-900 font-medium">
     <!-- Sidebar Header -->
-    <SidebarVeranstaltungSwitcher @set-veranstaltung="setVeranstaltung" />
+    <SidebarVeranstaltungSwitcher />
 
     <!-- Sidebar Item List -->
     <SidebarItems
