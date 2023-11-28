@@ -1,13 +1,13 @@
 import { router } from '../trpc'
 
-import { accountRouter } from './account/account'
-import { anmeldungRouter } from './anmeldung/anmeldung'
-import { authenticationRouter } from './authentication/authentication'
-import { gliederungRouter } from './gliederung/gliederung'
-import { ortRouter } from './ort/ort'
-import { personRouter } from './person/person'
-import { unterveranstaltungRouter } from './unterveranstaltung/unterveranstaltung'
-import { veranstaltungRouter } from './veranstaltung/veranstaltung'
+import { accountRouter } from './account/account.router'
+import { anmeldungRouter } from './anmeldung/anmeldung.router'
+import { authenticationRouter } from './authentication/authentication.router'
+import { gliederungRouter } from './gliederung/gliederung.router'
+import { ortRouter } from './ort/ort.router'
+import { personRouter } from './person/person.router'
+import { unterveranstaltungRouter } from './unterveranstaltung/unterveranstaltung.router'
+import { veranstaltungRouter } from './veranstaltung/veranstaltung.router'
 
 export const serviceRouter = router({
   person: personRouter,
