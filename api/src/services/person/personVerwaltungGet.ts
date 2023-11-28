@@ -14,7 +14,7 @@ type PersonVerwaltungGetOptions = AuthenticatedContext & {
 }
 
 export async function personVerwaltungGet(options: PersonVerwaltungGetOptions) {
-  return prisma.person.findFirstOrThrow({
+  return prisma.person.findUniqueOrThrow({
     where: {
       id: options.input.id,
     },

@@ -7,7 +7,7 @@ export const { getEntityIdFromHeader, authenticationLogin, sign } = createAuthen
   jwtSecret: config.authentication.secret,
   expiresIn: config.authentication.expiresIn,
   async getEnityByEmail(email) {
-    const account = await prisma.account.findFirstOrThrow({
+    const account = await prisma.account.findUniqueOrThrow({
       where: {
         email,
         activatedAt: {

@@ -20,7 +20,7 @@ type AccountChangePasswordOptions = AuthenticatedContext & {
 }
 
 export async function accountChangePassword(options: AccountChangePasswordOptions) {
-  const { password } = await prisma.account.findFirstOrThrow({
+  const { password } = await prisma.account.findUniqueOrThrow({
     where: {
       id: options.input.id,
     },

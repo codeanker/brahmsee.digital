@@ -21,7 +21,7 @@ type AnmeldungPublicCreateOptions = {
 }
 
 export async function anmeldungPublicCreate(options: AnmeldungPublicCreateOptions) {
-  const unterveranstaltung = await prisma.unterveranstaltung.findFirstOrThrow({
+  const unterveranstaltung = await prisma.unterveranstaltung.findUniqueOrThrow({
     where: {
       id: options.input.data.unterveranstaltungId,
     },

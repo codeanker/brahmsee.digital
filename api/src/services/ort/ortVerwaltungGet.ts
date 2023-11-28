@@ -14,7 +14,7 @@ type OrtVerwaltungGetOptions = AuthenticatedContext & {
 }
 
 export async function ortVerwaltungGet(options: OrtVerwaltungGetOptions) {
-  return prisma.ort.findFirstOrThrow({
+  return prisma.ort.findUniqueOrThrow({
     where: {
       id: options.input.id,
     },

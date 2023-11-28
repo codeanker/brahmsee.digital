@@ -14,7 +14,7 @@ type GliederungVerwaltungGetOptions = AuthenticatedContext & {
 }
 
 export async function gliederungVerwaltungGet(options: GliederungVerwaltungGetOptions) {
-  return prisma.gliederung.findFirstOrThrow({
+  return prisma.gliederung.findUniqueOrThrow({
     where: {
       id: options.input.id,
     },

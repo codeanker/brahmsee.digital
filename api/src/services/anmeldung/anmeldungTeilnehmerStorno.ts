@@ -5,7 +5,7 @@ import type { AuthenticatedContext } from '../../trpc'
 
 export const ZAnmeldungTeilnehmerStornoInputSchema = z.strictObject({
   data: z.strictObject({
-    unterveranstaltungId: z.number().int(),
+    anmeldungId: z.number().int(),
   }),
 })
 
@@ -18,9 +18,9 @@ type AnmeldungTeilnehmerStornoOptions = AuthenticatedContext & {
  * Storniert die Anmeldung der angemeldeten Person.
  */
 export async function anmeldungTeilnehmerStorno(options: AnmeldungTeilnehmerStornoOptions) {
-  const anmeldung = await prisma.anmeldung.findFirstOrThrow({
+  return prisma.anmeldung.update({
     where: {
-      unterveranstaltungId: options.input.data.unterveranstaltungId,
+      id: options.input.data.anmeldungId,
       person: {
         is: {
           account: {
@@ -30,14 +30,6 @@ export async function anmeldungTeilnehmerStorno(options: AnmeldungTeilnehmerStor
           },
         },
       },
-    },
-    select: {
-      id: true,
-    },
-  })
-  return prisma.anmeldung.update({
-    where: {
-      id: anmeldung.id,
     },
     data: {
       status: 'STORNIERT',

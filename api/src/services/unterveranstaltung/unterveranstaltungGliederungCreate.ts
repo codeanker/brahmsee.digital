@@ -27,7 +27,7 @@ type UnterveranstaltungGliederungCreateOptions = AuthenticatedContext & {
 export async function unterveranstaltungGliederungCreate(options: UnterveranstaltungGliederungCreateOptions) {
   // check logged in user is admin of gliederung
   const gliederung = await getGliederungRequireAdmin(options.ctx.accountId)
-  const veranstaltung = await prisma.veranstaltung.findFirstOrThrow({
+  const veranstaltung = await prisma.veranstaltung.findUniqueOrThrow({
     where: {
       id: options.input.data.veranstaltungId,
     },

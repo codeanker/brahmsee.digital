@@ -13,7 +13,7 @@ type UnterveranstaltungPublicGetOptions = {
 }
 
 export async function unterveranstaltungPublicGet(options: UnterveranstaltungPublicGetOptions) {
-  const unterveranstaltung = await prisma.unterveranstaltung.findFirstOrThrow({
+  const unterveranstaltung = await prisma.unterveranstaltung.findUniqueOrThrow({
     where: {
       id: options.input.id,
     },

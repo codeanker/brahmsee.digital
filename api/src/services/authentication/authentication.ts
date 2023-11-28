@@ -12,18 +12,21 @@ const ZAuthenticateLoginInputSchema = z.object({
 export const authenticationRouter = router({
   login: publicProcedure.input(ZAuthenticateLoginInputSchema).mutation(async ({ input }) => {
     const authResult = await authenticationLogin(input)
-    const person = await prisma.person.findFirstOrThrow({
+    const account = await prisma.account.findUniqueOrThrow({
       where: {
-        account: {
-          id: authResult.user.id,
-        },
+        id: authResult.user.id,
       },
       select: {
-        id: true,
-        firstname: true,
-        lastname: true,
+        person: {
+          select: {
+            id: true,
+            firstname: true,
+            lastname: true,
+          },
+        },
       },
     })
+    const person = account.person
     return {
       ...authResult,
       user: {

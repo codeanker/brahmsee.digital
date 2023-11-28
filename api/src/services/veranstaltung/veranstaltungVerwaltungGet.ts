@@ -14,7 +14,7 @@ type VeranstaltungVerwaltungGetOptions = AuthenticatedContext & {
 }
 
 export async function veranstaltungVerwaltungGet(options: VeranstaltungVerwaltungGetOptions) {
-  const veranstaltung = await prisma.veranstaltung.findUnique({
+  const veranstaltungWithunterveranstaltungen = await prisma.veranstaltung.findUniqueOrThrow({
     where: {
       id: options.input.id,
     },
@@ -28,6 +28,21 @@ export async function veranstaltungVerwaltungGet(options: VeranstaltungVerwaltun
           name: true,
         },
       },
+      unterveranstaltungen: {
+        select: {
+          Anmeldung: {
+            select: {
+              person: {
+                select: {
+                  firstname: true,
+                  lastname: true,
+                  birthday: true,
+                },
+              },
+            },
+          },
+        },
+      },
       meldebeginn: true,
       meldeschluss: true,
       maxTeilnehmende: true,
@@ -38,24 +53,8 @@ export async function veranstaltungVerwaltungGet(options: VeranstaltungVerwaltun
       zielgruppe: true,
     },
   })
-  const anmeldungen = await prisma.anmeldung.findMany({
-    where: {
-      unterveranstaltung: {
-        is: {
-          veranstaltungId: options.input.id,
-        },
-      },
-    },
-    select: {
-      person: {
-        select: {
-          firstname: true,
-          lastname: true,
-          birthday: true,
-        },
-      },
-    },
-  })
+  const { unterveranstaltungen, ...veranstaltung } = veranstaltungWithunterveranstaltungen
+  const anmeldungen = unterveranstaltungen.flatMap((u) => u.Anmeldung)
   return {
     ...veranstaltung,
     anmeldungen,
