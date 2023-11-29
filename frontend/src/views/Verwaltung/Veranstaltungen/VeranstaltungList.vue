@@ -86,7 +86,10 @@ function formatDate(indate) {
             </td>
             <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
               <div class="font-medium text-gray-900">
-                {{ formatDate(veranstaltung.beginn) }}-{{ formatDate(veranstaltung.ende) }}
+                {{ formatDate(veranstaltung.beginn)
+                }}<span v-if="veranstaltung.beginn.getTime() !== veranstaltung.ende.getTime()"
+                  >-{{ formatDate(veranstaltung.ende) }}</span
+                >
               </div>
             </td>
             <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
