@@ -1,7 +1,8 @@
 import { input, password as passwordInput, select } from '@inquirer/prompts'
 
 import { getEnumOptions, roleMapping } from '../enumMappings'
-import { accountVerwaltungCreate } from '../services/account/accountVerwaltungCreate'
+import prisma from '../prisma'
+import { getAccountCreateData } from '../services/account/schema/account.schema'
 
 createUser()
 async function createUser() {
@@ -18,16 +19,17 @@ async function createUser() {
       }
     }),
   })) as keyof typeof roleMapping
-  await accountVerwaltungCreate({
-    input: {
-      data: {
-        email: email,
-        firstname: firstname,
-        lastname: lastname,
-        password: password,
-        roleId: roleId,
-        isActiv: true,
-      },
+  await prisma.account.create({
+    data: await getAccountCreateData({
+      email: email,
+      firstname: firstname,
+      lastname: lastname,
+      password: password,
+      roleId: roleId,
+      isActiv: true,
+    }),
+    select: {
+      id: true,
     },
   })
   // eslint-disable-next-line no-console

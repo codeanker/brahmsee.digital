@@ -4,16 +4,10 @@ import z from 'zod'
 import prisma from '../../prisma'
 import type { AuthenticatedContext } from '../../trpc'
 
-import { accountVerwaltungCreate } from './accountVerwaltungCreate'
+import { accountSchema, getAccountCreateData } from './schema/account.schema'
 
 export const ZAccountGliederungAdminCreateInputSchema = z.strictObject({
-  data: z.strictObject({
-    firstname: z.string(),
-    lastname: z.string(),
-    password: z.string(),
-    email: z.string().email(),
-    gliederungId: z.number().int(),
-  }),
+  data: accountSchema.omit({ roleId: true, isActiv: true }),
 })
 
 export type TAccountGliederungAdminCreateInputSchema = z.infer<typeof ZAccountGliederungAdminCreateInputSchema>
@@ -25,7 +19,7 @@ type AccountGliederungAdminCreateOptions = AuthenticatedContext & {
 export async function accountGliederungAdminCreate(options: AccountGliederungAdminCreateOptions) {
   const gliederung = await prisma.gliederung.findUniqueOrThrow({
     where: {
-      id: options.input.data.gliederungId,
+      id: options.input.data.adminInGliederungId,
     },
     select: {
       id: true,
@@ -43,17 +37,18 @@ export async function accountGliederungAdminCreate(options: AccountGliederungAdm
       message: 'Gliederung hat bereits einen Admin',
     })
   }
-  return accountVerwaltungCreate({
-    input: {
-      data: {
-        firstname: options.input.data.firstname,
-        lastname: options.input.data.lastname,
-        password: options.input.data.password,
-        email: options.input.data.email,
-        roleId: 'GLIEDERUNG_ADMIN',
-        isActiv: true,
-        adminInGliederungId: options.input.data.gliederungId,
-      },
+  await prisma.account.create({
+    data: await getAccountCreateData({
+      email: options.input.data.email,
+      firstname: options.input.data.firstname,
+      lastname: options.input.data.lastname,
+      password: options.input.data.password,
+      roleId: 'GLIEDERUNG_ADMIN',
+      isActiv: false,
+      adminInGliederungId: options.input.data.adminInGliederungId,
+    }),
+    select: {
+      id: true,
     },
   })
 }
