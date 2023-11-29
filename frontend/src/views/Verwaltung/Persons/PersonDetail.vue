@@ -8,8 +8,8 @@ import { apiClient } from '@/api'
 import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
 import FormPersonGeneral from '@/components/forms/person/FormPersonGeneral.vue'
 import Button from '@/components/UIComponents/Button.vue'
+import UserLogo from '@/components/UIComponents/UserLogo.vue'
 import { loggedInAccount, logout } from '@/composables/useAuthentication'
-import personProfileImage from '@/helpers/personProfileImage'
 
 const secondaryNavigation = [{ name: 'Account', href: '#', current: true }]
 
@@ -85,10 +85,12 @@ const { execute: deleteUser, error: errorDelete } = useAsyncState(
       <div>
         <h2 class="text-base font-semibold leading-7">Profil Informationen</h2>
         <p class="mt-1 text-sm leading-6 text-gray-400">Hier kannst du das Nutzerprofil bearbeiten.</p>
-        <img
-          :src="personProfileImage(person, 512)"
-          class="mt-12 h-64 w-64 flex-none rounded-full border-4 border-gray-800 bg-gray-800 object-cover"
-        />
+        <div class="h-10 w-10">
+          <UserLogo
+            v-if="person !== null"
+            :name="person.firstname + ' ' + person.lastname"
+          />
+        </div>
       </div>
 
       <FormPersonGeneral

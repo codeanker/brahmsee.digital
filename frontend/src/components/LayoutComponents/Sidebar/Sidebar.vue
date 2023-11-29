@@ -19,8 +19,8 @@ import { useRoute } from 'vue-router'
 import SidebarItems, { type DividerItem, type SidebarItem } from './SidebarItems.vue'
 import SidebarVeranstaltungSwitcher from './SidebarVeranstaltungSwitcher.vue'
 
+import UserLogo from '@/components/UIComponents/UserLogo.vue'
 import { logout, loggedInAccount } from '@/composables/useAuthentication'
-import personProfileImage from '@/helpers/personProfileImage'
 
 const route = useRoute()
 
@@ -127,11 +127,9 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
 
     <!-- User Management -->
     <div class="flex items-center space-x-3 py-4 border-t border-gray-300">
-      <img
-        class="h-8 aspect-square rounded-full bg-green-700 shrink-0"
-        :src="personProfileImage(loggedInAccount)"
-        alt=""
-      />
+      <div class="w-10 h-10">
+        <UserLogo :name="loggedInAccount?.person.firstname + ' ' + loggedInAccount?.person.lastname" />
+      </div>
       <div class="grow text-sm">Moin, {{ loggedInAccount?.person.firstname }}</div>
       <button
         type="button"

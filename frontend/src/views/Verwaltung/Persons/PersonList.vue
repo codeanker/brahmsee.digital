@@ -2,9 +2,7 @@
 import { useAsyncState } from '@vueuse/core'
 
 import { apiClient } from '@/api'
-import Badge from '@/components/UIComponents/Badge.vue'
-import { loggedInAccount } from '@/composables/useAuthentication'
-import personProfileImage from '@/helpers/personProfileImage'
+import UserLogo from '@/components/UIComponents/UserLogo.vue'
 import router from '@/router'
 
 const { state: personList, execute: fetchPersons } = useAsyncState(async () => {
@@ -27,6 +25,12 @@ fetchPersons()
         <thead>
           <tr>
             <th
+              width="12px"
+              class="text-sm text-gray-900"
+            >
+              A
+            </th>
+            <th
               scope="col"
               class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"
             >
@@ -36,13 +40,13 @@ fetchPersons()
               scope="col"
               class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
             >
-              Title
+              Geburtsdatum
             </th>
             <th
               scope="col"
               class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
             >
-              Status
+              Gliederung
             </th>
             <th
               scope="col"
@@ -60,36 +64,19 @@ fetchPersons()
             :title="person.firstname + ' ' + person.lastname + ' bearbeiten'"
             @click="router.push({ name: 'Verwaltung Benutzerdetails', params: { personId: person.id } })"
           >
-            <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-              <div class="flex items-center">
-                <div class="h-11 w-11 flex-shrink-0">
-                  <img
-                    class="h-11 w-11 rounded-full"
-                    :src="personProfileImage(person)"
-                    alt=""
-                  />
-                </div>
-                <div class="ml-4">
-                  <div class="font-medium text-gray-900">{{ person.firstname }} {{ person.lastname }}</div>
-                  <div class="mt-1 text-gray-500">{{ person.id }}</div>
-                </div>
-                <Badge
-                  v-if="person.id === loggedInAccount?.id"
-                  class="ml-4"
-                  >Du</Badge
-                >
+            <td class="whitespace-nowrap px-3">
+              <div class="h-9 w-9 flex-shrink-0">
+                <UserLogo :name="person.firstname + ' ' + person.lastname" />
               </div>
             </td>
-            <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-              <div class="text-gray-900">Arbeitsbereich</div>
-              <div class="mt-1 text-gray-500">Zusatzinfo</div>
+            <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
+              <div class="font-medium text-gray-900">{{ person.firstname }} {{ person.lastname }}</div>
             </td>
             <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-              <span
-                class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20"
-              >
-                Active
-              </span>
+              {{ person.birthday }}
+            </td>
+            <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+              {{ person.gliederungId }}
             </td>
             <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500"></td>
           </tr>
