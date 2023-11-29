@@ -3,10 +3,10 @@ import z from 'zod'
 import prisma from '../../prisma'
 import type { AuthenticatedContext } from '../../trpc'
 
-import { personDto, getPersonCreateData } from './dto/person.dto'
+import { personSchema, getPersonCreateData } from './schema/person.schema'
 
 export const ZPersonVerwaltungCreateInputSchema = z.strictObject({
-  data: personDto,
+  data: personSchema,
 })
 
 export type TPersonVerwaltungCreateInputSchema = z.infer<typeof ZPersonVerwaltungCreateInputSchema>

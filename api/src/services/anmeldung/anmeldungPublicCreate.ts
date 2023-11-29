@@ -1,10 +1,10 @@
 import { z } from 'zod'
 
 import prisma from '../../prisma'
-import { personDto, getPersonCreateData } from '../person/dto/person.dto'
+import { personSchema, getPersonCreateData } from '../person/schema/person.schema'
 
 export const ZAnmeldungPublicCreateInputSchema = z.strictObject({
-  data: personDto.extend({
+  data: personSchema.extend({
     unterveranstaltungId: z.number().int(),
     mahlzeitenIds: z.array(z.number().int()).optional(),
     uebernachtungsTage: z.array(z.date()).optional(),

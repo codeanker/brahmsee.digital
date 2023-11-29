@@ -19,7 +19,7 @@ export const apiClient = createTRPCProxyClient<AppRouter>({
   transformer: superjson,
   links: [
     httpBatchLink({
-      url: (host !== '/' ? host : '') + '/api/trpc',
+      url: (host !== '/' ? host : 'http://127.0.0.1:3030') + '/api/trpc',
       async headers() {
         const jwt = localStorage.getItem('jwt')
         return {

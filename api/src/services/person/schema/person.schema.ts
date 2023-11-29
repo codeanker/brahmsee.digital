@@ -11,18 +11,18 @@ import {
 } from '@prisma/client'
 import { z } from 'zod'
 
-import { addressDto } from '../../address/dto/address.dto'
-import { kontaktDto, type TKontaktDto } from '../../kontakt/dto/kontakt.dto'
+import { addressSchema } from '../../address/schema/address.schema'
+import { kontaktSchema, type TKontaktSchema } from '../../kontakt/schema/kontakt.schema'
 
-export type TPersonDto = z.infer<typeof personDto>
-export const personDto = z.strictObject({
+export type TPersonSchema = z.infer<typeof personSchema>
+export const personSchema = z.strictObject({
   firstname: z.string(),
   lastname: z.string(),
   birthday: z.string().datetime(),
   gender: z.nativeEnum(Gender),
   email: z.string().email(),
   telefon: z.string(),
-  addresse: addressDto,
+  addresse: addressSchema,
   essgewohnheit: z.nativeEnum(Essgewohnheit),
   nahrungsmittelIntoleranzen: z.array(z.nativeEnum(NahrungsmittelIntoleranz)),
   weitereIntoleranzen: z.array(z.string()).optional(),
@@ -32,11 +32,11 @@ export const personDto = z.strictObject({
   qualifikationenSanitaeter: z.array(z.nativeEnum(QualificationSanitaeter)).optional(),
   qualifikationenFunk: z.array(z.nativeEnum(QualificationFunk)).optional(),
   konfektionsgroesse: z.nativeEnum(Konfektionsgroesse).optional(),
-  erziehungsberechtigtePersonen: z.array(kontaktDto).optional(),
-  notfallkontaktPersonen: z.array(kontaktDto),
+  erziehungsberechtigtePersonen: z.array(kontaktSchema).optional(),
+  notfallkontaktPersonen: z.array(kontaktSchema),
 })
 
-export function getPersonCreateData(input: z.infer<typeof personDto>) {
+export function getPersonCreateData(input: z.infer<typeof personSchema>) {
   return {
     firstname: input.firstname,
     lastname: input.lastname,
@@ -61,8 +61,8 @@ export function getPersonCreateData(input: z.infer<typeof personDto>) {
 }
 
 export function getNotfallkontakte(
-  notfallkontaktPersonen: TKontaktDto[],
-  erziehungsberechtigtePersonen: TKontaktDto[] | undefined
+  notfallkontaktPersonen: TKontaktSchema[],
+  erziehungsberechtigtePersonen: TKontaktSchema[] | undefined
 ) {
   const notfallkontakte = [...notfallkontaktPersonen]
   if (erziehungsberechtigtePersonen) {

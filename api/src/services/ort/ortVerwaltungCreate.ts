@@ -2,12 +2,12 @@ import z from 'zod'
 
 import prisma from '../../prisma'
 import type { AuthenticatedContext } from '../../trpc'
-import { addressDto } from '../address/dto/address.dto'
+import { addressSchema } from '../address/schema/address.schema'
 
 export const ZOrtVerwaltungCreateInputSchema = z.strictObject({
   data: z.strictObject({
     name: z.string(),
-    address: addressDto.optional(),
+    address: addressSchema.optional(),
   }),
 })
 
