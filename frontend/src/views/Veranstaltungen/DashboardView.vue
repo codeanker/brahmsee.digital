@@ -39,7 +39,7 @@ const {
         <div class="col-span-1 lg:col-span-2 space-y-2">
           <KeyValue
             key-text="Veranstaltungsort"
-            :value-text="veranstaltung.ort"
+            :value-text="veranstaltung.ort?.name"
             :icon="MapPinIcon"
           ></KeyValue>
           <KeyValue
