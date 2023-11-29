@@ -6,7 +6,7 @@ services:
     container_name: postgres
     hostname: postgres
     ports:
-      - 5432:5432
+      - 127.0.0.1:5432:5432
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -17,7 +17,7 @@ services:
   admin:
     image: dpage/pgadmin4:7
     ports:
-      - 5433:80
+      - 127.0.0.1:5433:80
     environment:
       - PGADMIN_DEFAULT_EMAIL=admin@example.org
       - PGADMIN_DEFAULT_PASSWORD=admin

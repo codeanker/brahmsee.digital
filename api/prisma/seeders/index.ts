@@ -13,7 +13,7 @@ const prisma = new PrismaClient()
 await prisma.$connect()
 
 try {
-  for await (const seeder of seeders) {
+  for (const seeder of seeders) {
     await seeder(prisma)
   }
 } catch (e) {

@@ -1,4 +1,4 @@
-import { PrismaClient, PrismaPromise } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 
 import { Seeder } from '.'
 
@@ -1965,18 +1965,9 @@ export const gliederungen: { edv: string; name: string }[] = [
 ]
 
 const importGliederungen: Seeder = async (prisma: PrismaClient) => {
-  const transactions: PrismaPromise<any>[] = []
-  transactions.push(
-    ...gliederungen.map((gliederung) =>
-      prisma.gliederung.create({
-        data: {
-          edv: gliederung.edv,
-          name: gliederung.name,
-        },
-      })
-    )
-  )
-  await prisma.$transaction(transactions)
+  await prisma.gliederung.createMany({
+    data: gliederungen,
+  })
 }
 
 export default importGliederungen
