@@ -59,9 +59,9 @@ export function defineProcedure<
 >(config: {
   key: TProcedureKey
   method: TMethod
+  protection: TProtection
   inputSchema: TInputSchema
   handler: THandler
-  protection: TProtection
 }) {
   const procedure =
     config.protection.type === 'public' ? publicProcedure : protectedProcedure(config.protection.roleIds)
