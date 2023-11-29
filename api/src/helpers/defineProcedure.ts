@@ -57,10 +57,15 @@ export function defineProcedure<
     }
   >,
 >(config: {
+  /** Der Key unter dem der Endpunkt aufgerufen werden kann */
   key: TProcedureKey
+  /** Die trpc Methode. 'query' um Daten zu lesen und 'mutation' wenn Daten geändert werden */
   method: TMethod
+  /** Die Protection Art des Endpunktes */
   protection: TProtection
+  /** Das Schema der Eingabedaten */
   inputSchema: TInputSchema
+  /** Der Handler der die Daten verarbeitet */
   handler: THandler
 }) {
   const procedure =
