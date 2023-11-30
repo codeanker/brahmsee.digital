@@ -1,27 +1,25 @@
 import z from 'zod'
 
 import prisma from '../../prisma'
-import type { AuthenticatedContext } from '../../trpc'
+import { defineProcedure } from '../../types/defineProcedure'
 
 import { personSchema, getPersonCreateData } from './schema/person.schema'
 
-export const ZPersonVerwaltungCreateInputSchema = z.strictObject({
-  data: personSchema,
+export const personVerwaltungCreateProcedure = defineProcedure({
+  key: 'verwaltungCreate',
+  method: 'mutation',
+  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
+  inputSchema: z.strictObject({
+    data: personSchema,
+  }),
+  async handler(options) {
+    return prisma.person.create({
+      data: {
+        ...getPersonCreateData(options.input.data),
+      },
+      select: {
+        id: true,
+      },
+    })
+  },
 })
-
-export type TPersonVerwaltungCreateInputSchema = z.infer<typeof ZPersonVerwaltungCreateInputSchema>
-
-type PersonVerwaltungCreateOptions = AuthenticatedContext & {
-  input: TPersonVerwaltungCreateInputSchema
-}
-
-export async function personVerwaltungCreate(options: PersonVerwaltungCreateOptions) {
-  return prisma.person.create({
-    data: {
-      ...getPersonCreateData(options.input.data),
-    },
-    select: {
-      id: true,
-    },
-  })
-}

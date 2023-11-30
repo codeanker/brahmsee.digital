@@ -1,27 +1,25 @@
 import z from 'zod'
 
 import prisma from '../../prisma'
-import type { AuthenticatedContext } from '../../trpc'
+import { defineProcedure } from '../../types/defineProcedure'
 
-export const ZAccountActivateInputSchema = z.strictObject({
-  data: z.strictObject({
-    accountId: z.number().int(),
+export const accountActivateProcedure = defineProcedure({
+  key: 'activate',
+  method: 'mutation',
+  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
+  inputSchema: z.strictObject({
+    data: z.strictObject({
+      accountId: z.number().int(),
+    }),
   }),
+  async handler(options) {
+    return prisma.account.update({
+      where: {
+        id: options.input.data.accountId,
+      },
+      data: {
+        activatedAt: new Date(),
+      },
+    })
+  },
 })
-
-export type TAccountActivateInputSchema = z.infer<typeof ZAccountActivateInputSchema>
-
-type AccountActivateOptions = AuthenticatedContext & {
-  input: TAccountActivateInputSchema
-}
-
-export async function accountActivate(options: AccountActivateOptions) {
-  return prisma.account.update({
-    where: {
-      id: options.input.data.accountId,
-    },
-    data: {
-      activatedAt: new Date(),
-    },
-  })
-}

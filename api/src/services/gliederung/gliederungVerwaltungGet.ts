@@ -1,27 +1,25 @@
 import z from 'zod'
 
 import prisma from '../../prisma'
-import type { AuthenticatedContext } from '../../trpc'
+import { defineProcedure } from '../../types/defineProcedure'
 
-export const ZGliederungVerwaltungGetInputSchema = z.strictObject({
-  id: z.number(),
+export const gliederungVerwaltungGetProcedure = defineProcedure({
+  key: 'verwaltungGet',
+  method: 'query',
+  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
+  inputSchema: z.strictObject({
+    id: z.number(),
+  }),
+  async handler(options) {
+    return prisma.gliederung.findUniqueOrThrow({
+      where: {
+        id: options.input.id,
+      },
+      select: {
+        id: true,
+        name: true,
+        edv: true,
+      },
+    })
+  },
 })
-
-export type TGliederungVerwaltungGetInputSchema = z.infer<typeof ZGliederungVerwaltungGetInputSchema>
-
-type GliederungVerwaltungGetOptions = AuthenticatedContext & {
-  input: TGliederungVerwaltungGetInputSchema
-}
-
-export async function gliederungVerwaltungGet(options: GliederungVerwaltungGetOptions) {
-  return prisma.gliederung.findUniqueOrThrow({
-    where: {
-      id: options.input.id,
-    },
-    select: {
-      id: true,
-      name: true,
-      edv: true,
-    },
-  })
-}

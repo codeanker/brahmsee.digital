@@ -1,24 +1,13 @@
-import { protectedProcedure, router } from '../../trpc'
+import { mergeRouters } from '../../trpc'
 
-import {
-  ZVeranstaltungVerwaltungCreateInputSchema,
-  veranstaltungVerwaltungCreate,
-} from './veranstaltungVerwaltungCreate'
-import { ZVeranstaltungVerwaltungGetInputSchema, veranstaltungVerwaltungGet } from './veranstaltungVerwaltungGet'
-import { ZVeranstaltungenVerwaltungListInputSchema, veranstaltungenVerwaltungList } from './veranstaltungVerwaltungList'
-import { ZVeranstaltungVerwaltungPatchInputSchema, veranstaltungVerwaltungPatch } from './veranstaltungVerwaltungPatch'
+import { veranstaltungVerwaltungCreateProcedure } from './veranstaltungVerwaltungCreate'
+import { veranstaltungVerwaltungGetProcedure } from './veranstaltungVerwaltungGet'
+import { veranstaltungVerwaltungListProcedure } from './veranstaltungVerwaltungList'
+import { veranstaltungVerwaltungPatchProcedure } from './veranstaltungVerwaltungPatch'
 
-export const veranstaltungRouter = router({
-  verwaltungCreate: protectedProcedure(['ADMIN'])
-    .input(ZVeranstaltungVerwaltungCreateInputSchema)
-    .mutation(veranstaltungVerwaltungCreate),
-  verwaltungPatch: protectedProcedure(['ADMIN'])
-    .input(ZVeranstaltungVerwaltungPatchInputSchema)
-    .mutation(veranstaltungVerwaltungPatch),
-  verwaltungGet: protectedProcedure(['ADMIN'])
-    .input(ZVeranstaltungVerwaltungGetInputSchema)
-    .query(veranstaltungVerwaltungGet),
-  verwaltungList: protectedProcedure(['ADMIN'])
-    .input(ZVeranstaltungenVerwaltungListInputSchema)
-    .query(veranstaltungenVerwaltungList),
-})
+export const veranstaltungRouter = mergeRouters(
+  veranstaltungVerwaltungCreateProcedure.router,
+  veranstaltungVerwaltungGetProcedure.router,
+  veranstaltungVerwaltungListProcedure.router,
+  veranstaltungVerwaltungPatchProcedure.router
+)

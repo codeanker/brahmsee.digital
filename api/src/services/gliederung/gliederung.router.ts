@@ -1,19 +1,13 @@
-import { router, protectedProcedure, publicProcedure } from '../../trpc'
+import { mergeRouters } from '../../trpc'
 
-import { gliederungPublicGet, ZGliederungPublicGetInputSchema } from './gliederungPublicGet'
-import { gliederungVerwaltungCreate, ZGliederungVerwaltungCreateInputSchema } from './gliederungVerwaltungCreate'
-import { ZGliederungVerwaltungGetInputSchema, gliederungVerwaltungGet } from './gliederungVerwaltungGet'
-import { ZGliederungVerwaltungListInputSchema, gliederungVerwaltungList } from './gliederungVerwaltungList'
+import { gliederungPublicGetProcedure } from './gliederungPublicGet'
+import { gliederungVerwaltungCreateProcedure } from './gliederungVerwaltungCreate'
+import { gliederungVerwaltungGetProcedure } from './gliederungVerwaltungGet'
+import { gliederungVerwaltungListProcedure } from './gliederungVerwaltungList'
 
-export const gliederungRouter = router({
-  publicGet: publicProcedure.input(ZGliederungPublicGetInputSchema).query(gliederungPublicGet),
-  verwaltungCreate: protectedProcedure(['ADMIN'])
-    .input(ZGliederungVerwaltungCreateInputSchema)
-    .mutation(gliederungVerwaltungCreate),
-  verwaltungGet: protectedProcedure(['ADMIN'])
-    .input(ZGliederungVerwaltungGetInputSchema)
-    .query(gliederungVerwaltungGet),
-  verwaltungList: protectedProcedure(['ADMIN'])
-    .input(ZGliederungVerwaltungListInputSchema)
-    .query(gliederungVerwaltungList),
-})
+export const gliederungRouter = mergeRouters(
+  gliederungPublicGetProcedure.router,
+  gliederungVerwaltungCreateProcedure.router,
+  gliederungVerwaltungGetProcedure.router,
+  gliederungVerwaltungListProcedure.router
+)

@@ -1,49 +1,19 @@
-import { protectedProcedure, publicProcedure, router } from '../../trpc'
+import { mergeRouters } from '../../trpc'
 
-import {
-  ZUnterveranstaltungGliederungCreateInputSchema,
-  unterveranstaltungGliederungCreate,
-} from './unterveranstaltungGliederungCreate'
-import {
-  ZUnterveranstaltungGliederungListInputSchema,
-  unterveranstaltungGliederungList,
-} from './unterveranstaltungGliederungList'
-import {
-  ZUnterveranstaltungGliederungPatchInputSchema,
-  unterveranstaltungGliederungPatch,
-} from './unterveranstaltungGliederungPatch'
-import { ZUnterveranstaltungPublicGetInputSchema, unterveranstaltungPublicGet } from './unterveranstaltungPublicGet'
-import {
-  ZUnterveranstaltungVerwaltungCreateInputSchema,
-  unterveranstaltungVerwaltungCreate,
-} from './unterveranstaltungVerwaltungCreate'
-import {
-  ZUnterveranstaltungVerwaltungListInputSchema,
-  unterveranstaltungVerwaltungList,
-} from './unterveranstaltungVerwaltungList'
-import {
-  ZUnterveranstaltungVerwaltungPatchInputSchema,
-  unterveranstaltungVerwaltungPatch,
-} from './unterveranstaltungVerwaltungPatch'
+import { unterveranstaltungGliederungCreateProcedure } from './unterveranstaltungGliederungCreate'
+import { unterveranstaltungGliederungListProcedure } from './unterveranstaltungGliederungList'
+import { unterveranstaltungGliederungPatchProcedure } from './unterveranstaltungGliederungPatch'
+import { unterveranstaltungPublicGetProcedure } from './unterveranstaltungPublicGet'
+import { unterveranstaltungVerwaltungCreateProcedure } from './unterveranstaltungVerwaltungCreate'
+import { unterveranstaltungVerwaltungListProcedure } from './unterveranstaltungVerwaltungList'
+import { unterveranstaltungVerwaltungPatchProcedure } from './unterveranstaltungVerwaltungPatch'
 
-export const unterveranstaltungRouter = router({
-  publicGet: publicProcedure.input(ZUnterveranstaltungPublicGetInputSchema).query(unterveranstaltungPublicGet),
-  gliederungCreate: protectedProcedure(['GLIEDERUNG_ADMIN'])
-    .input(ZUnterveranstaltungGliederungCreateInputSchema)
-    .mutation(unterveranstaltungGliederungCreate),
-  gliederungList: protectedProcedure(['GLIEDERUNG_ADMIN'])
-    .input(ZUnterveranstaltungGliederungListInputSchema)
-    .query(unterveranstaltungGliederungList),
-  gliederungPatch: protectedProcedure(['GLIEDERUNG_ADMIN'])
-    .input(ZUnterveranstaltungGliederungPatchInputSchema)
-    .mutation(unterveranstaltungGliederungPatch),
-  verwaltungCreate: protectedProcedure(['ADMIN'])
-    .input(ZUnterveranstaltungVerwaltungCreateInputSchema)
-    .mutation(unterveranstaltungVerwaltungCreate),
-  verwaltungList: protectedProcedure(['ADMIN'])
-    .input(ZUnterveranstaltungVerwaltungListInputSchema)
-    .query(unterveranstaltungVerwaltungList),
-  verwaltungPatch: protectedProcedure(['ADMIN'])
-    .input(ZUnterveranstaltungVerwaltungPatchInputSchema)
-    .mutation(unterveranstaltungVerwaltungPatch),
-})
+export const unterveranstaltungRouter = mergeRouters(
+  unterveranstaltungGliederungCreateProcedure.router,
+  unterveranstaltungGliederungListProcedure.router,
+  unterveranstaltungGliederungPatchProcedure.router,
+  unterveranstaltungPublicGetProcedure.router,
+  unterveranstaltungVerwaltungCreateProcedure.router,
+  unterveranstaltungVerwaltungListProcedure.router,
+  unterveranstaltungVerwaltungPatchProcedure.router
+)

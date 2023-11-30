@@ -1,25 +1,23 @@
 import z from 'zod'
 
 import prisma from '../../prisma'
-import type { AuthenticatedContext } from '../../trpc'
+import { defineProcedure } from '../../types/defineProcedure'
 
-export const ZPersonVerwaltungRemoveInputSchema = z.strictObject({
-  id: z.number().int(),
+export const personVerwaltungRemoveProcedure = defineProcedure({
+  key: 'verwaltungRemove',
+  method: 'mutation',
+  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
+  inputSchema: z.strictObject({
+    id: z.number().int(),
+  }),
+  async handler(options) {
+    return prisma.person.delete({
+      where: {
+        id: options.input.id,
+      },
+      select: {
+        id: true,
+      },
+    })
+  },
 })
-
-export type TPersonVerwaltungRemoveInputSchema = z.infer<typeof ZPersonVerwaltungRemoveInputSchema>
-
-type PersonVerwaltungRemoveOptions = AuthenticatedContext & {
-  input: TPersonVerwaltungRemoveInputSchema
-}
-
-export async function personVerwaltungRemove(options: PersonVerwaltungRemoveOptions) {
-  return prisma.person.delete({
-    where: {
-      id: options.input.id,
-    },
-    select: {
-      id: true,
-    },
-  })
-}

@@ -1,35 +1,21 @@
-import { protectedProcedure, publicProcedure, router } from '../../trpc'
+import { mergeRouters } from '../../trpc'
 
-import { ZAnmeldungGliederungAblehnenInputSchema, anmeldungGliederungAblehnen } from './anmeldungGliederungAblehnen'
-import { ZAnmeldungGliederungAnnehmenInputSchema, anmeldungGliederungAnnehmen } from './anmeldungGliederungAnnehmen'
-import { ZAnmeldungGliederungStornoInputSchema, anmeldungGliederungStorno } from './anmeldungGliederungStorno'
-import { ZAnmeldungPublicCreateInputSchema, anmeldungPublicCreate } from './anmeldungPublicCreate'
-import { ZAnmeldungTeilnehmerStornoInputSchema, anmeldungTeilnehmerStorno } from './anmeldungTeilnehmerStorno'
-import { ZAnmeldungVerwaltungAblehnenInputSchema, anmeldungVerwaltungAblehnen } from './anmeldungVerwaltungAblehnen'
-import { ZAnmeldungVerwaltungAnnehmenInputSchema, anmeldungVerwaltungAnnehmen } from './anmeldungVerwaltungAnnehmen'
-import { ZAnmeldungVerwaltungStornoInputSchema, anmeldungVerwaltungStorno } from './anmeldungVerwaltungStorno'
+import { anmeldungGliederungAblehnenProcedure } from './anmeldungGliederungAblehnen'
+import { anmeldungGliederungAnnehmenProcedure } from './anmeldungGliederungAnnehmen'
+import { anmeldungGliederungStornoProcedure } from './anmeldungGliederungStorno'
+import { anmeldungPublicCreateProcedure } from './anmeldungPublicCreate'
+import { anmeldungTeilnehmerStornoProcedure } from './anmeldungTeilnehmerStorno'
+import { anmeldungVerwaltungAblehnenProcedure } from './anmeldungVerwaltungAblehnen'
+import { anmeldungVerwaltungAnnehmenProcedure } from './anmeldungVerwaltungAnnehmen'
+import { anmeldungVerwaltungStornoProcedure } from './anmeldungVerwaltungStorno'
 
-export const anmeldungRouter = router({
-  publicCreate: publicProcedure.input(ZAnmeldungPublicCreateInputSchema).mutation(anmeldungPublicCreate),
-  verwaltungAnnehmen: protectedProcedure(['ADMIN'])
-    .input(ZAnmeldungVerwaltungAnnehmenInputSchema)
-    .mutation(anmeldungVerwaltungAnnehmen),
-  verwaltungAblehnen: protectedProcedure(['ADMIN'])
-    .input(ZAnmeldungVerwaltungAblehnenInputSchema)
-    .mutation(anmeldungVerwaltungAblehnen),
-  verwaltungStorno: protectedProcedure(['ADMIN'])
-    .input(ZAnmeldungVerwaltungStornoInputSchema)
-    .mutation(anmeldungVerwaltungStorno),
-  teilnehmerStorno: protectedProcedure(['ADMIN'])
-    .input(ZAnmeldungTeilnehmerStornoInputSchema)
-    .mutation(anmeldungTeilnehmerStorno),
-  gliederungStorno: protectedProcedure(['GLIEDERUNG_ADMIN'])
-    .input(ZAnmeldungGliederungStornoInputSchema)
-    .mutation(anmeldungGliederungStorno),
-  gliederungAnnehmen: protectedProcedure(['GLIEDERUNG_ADMIN'])
-    .input(ZAnmeldungGliederungAnnehmenInputSchema)
-    .mutation(anmeldungGliederungAnnehmen),
-  gliederungAblehnen: protectedProcedure(['GLIEDERUNG_ADMIN'])
-    .input(ZAnmeldungGliederungAblehnenInputSchema)
-    .mutation(anmeldungGliederungAblehnen),
-})
+export const anmeldungRouter = mergeRouters(
+  anmeldungGliederungAblehnenProcedure.router,
+  anmeldungGliederungAnnehmenProcedure.router,
+  anmeldungGliederungStornoProcedure.router,
+  anmeldungPublicCreateProcedure.router,
+  anmeldungTeilnehmerStornoProcedure.router,
+  anmeldungVerwaltungAblehnenProcedure.router,
+  anmeldungVerwaltungAnnehmenProcedure.router,
+  anmeldungVerwaltungStornoProcedure.router
+)

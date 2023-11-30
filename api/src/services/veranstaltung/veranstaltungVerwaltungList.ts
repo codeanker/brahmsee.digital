@@ -1,52 +1,50 @@
 import z from 'zod'
 
 import prisma from '../../prisma'
-import type { AuthenticatedContext } from '../../trpc'
-import { defineQuery } from '../../types/ZQuery'
+import { defineProcedure } from '../../types/defineProcedure'
+import { defineQuery } from '../../types/defineQuery'
 
-export const ZVeranstaltungenVerwaltungListInputSchema = defineQuery({
-  filter: z.strictObject({
-    name: z.string().optional(),
+export const veranstaltungVerwaltungListProcedure = defineProcedure({
+  key: 'verwaltungList',
+  method: 'query',
+  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
+  inputSchema: defineQuery({
+    filter: z.strictObject({
+      name: z.string().optional(),
+    }),
   }),
+  async handler(options) {
+    const { skip, take } = options.input.pagination
+    const veranstaltungen = await prisma.veranstaltung.findMany({
+      skip,
+      take,
+      select: {
+        id: true,
+        name: true,
+        beginn: true,
+        ende: true,
+        ort: {
+          select: {
+            name: true,
+          },
+        },
+        meldebeginn: true,
+        meldeschluss: true,
+        maxTeilnehmende: true,
+        teilnahmegebuehr: true,
+        unterveranstaltungen: {
+          select: {
+            id: true,
+            maxTeilnehmende: true,
+            teilnahmegebuehr: true,
+            meldebeginn: true,
+            meldeschluss: true,
+            gliederungId: true,
+          },
+        },
+      },
+    })
+
+    return veranstaltungen
+  },
 })
-
-export type TVeranstaltungenVerwaltungListInputSchema = z.infer<typeof ZVeranstaltungenVerwaltungListInputSchema>
-
-type VeranstaltungenVerwaltungListOptions = AuthenticatedContext & {
-  input: TVeranstaltungenVerwaltungListInputSchema
-}
-
-export async function veranstaltungenVerwaltungList(options: VeranstaltungenVerwaltungListOptions) {
-  const { skip, take } = options.input.pagination
-  const veranstaltungen = await prisma.veranstaltung.findMany({
-    skip,
-    take,
-    select: {
-      id: true,
-      name: true,
-      beginn: true,
-      ende: true,
-      ort: {
-        select: {
-          name: true,
-        },
-      },
-      meldebeginn: true,
-      meldeschluss: true,
-      maxTeilnehmende: true,
-      teilnahmegebuehr: true,
-      unterveranstaltungen: {
-        select: {
-          id: true,
-          maxTeilnehmende: true,
-          teilnahmegebuehr: true,
-          meldebeginn: true,
-          meldeschluss: true,
-          gliederungId: true,
-        },
-      },
-    },
-  })
-
-  return veranstaltungen
-}

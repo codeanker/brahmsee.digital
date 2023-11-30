@@ -1,7 +1,7 @@
 import z from 'zod'
 
-import { defineProcedure } from '../../helpers/defineProcedure'
 import prisma from '../../prisma'
+import { defineProcedure } from '../../types/defineProcedure'
 
 export const ortVerwaltungGetProcedure = defineProcedure({
   key: 'verwaltungGet',

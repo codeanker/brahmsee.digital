@@ -1,19 +1,13 @@
-import { protectedProcedure, router } from '../../trpc'
+import { mergeRouters } from '../../trpc'
 
-import { ZAccountActivateInputSchema, accountActivate } from './accountActivate'
-import { ZAccountChangePasswordInputSchema, accountChangePassword } from './accountChangePassword'
-import { ZAccountGliederungAdminCreateInputSchema, accountGliederungAdminCreate } from './accountGliederungAdminCreate'
-import { ZAccountVerwaltungCreateInputSchema, accountVerwaltungCreate } from './accountVerwaltungCreate'
+import { accountActivateProcedure } from './accountActivate'
+import { accountChangePasswordProcedure } from './accountChangePassword'
+import { accountGliederungAdminCreateProcedure } from './accountGliederungAdminCreate'
+import { accountVerwaltungCreateProcedure } from './accountVerwaltungCreate'
 
-export const accountRouter = router({
-  changePassword: protectedProcedure(['ADMIN', 'GLIEDERUNG_ADMIN'])
-    .input(ZAccountChangePasswordInputSchema)
-    .mutation(accountChangePassword),
-  verwaltungCreate: protectedProcedure(['ADMIN'])
-    .input(ZAccountVerwaltungCreateInputSchema)
-    .mutation(accountVerwaltungCreate),
-  gliederungAdminCreate: protectedProcedure(['ADMIN'])
-    .input(ZAccountGliederungAdminCreateInputSchema)
-    .mutation(accountGliederungAdminCreate),
-  activate: protectedProcedure(['ADMIN']).input(ZAccountActivateInputSchema).mutation(accountActivate),
-})
+export const accountRouter = mergeRouters(
+  accountActivateProcedure.router,
+  accountChangePasswordProcedure.router,
+  accountGliederungAdminCreateProcedure.router,
+  accountVerwaltungCreateProcedure.router
+)

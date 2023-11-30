@@ -5,7 +5,7 @@ import { apiClient } from '../api'
 import router from '@/router'
 import type { RouterOutput } from '@codeanker/api'
 
-type LoggedInAccount = RouterOutput['authentication']['login']['user']
+type LoggedInAccount = Awaited<RouterOutput['authentication']['login']>['user']
 
 export const loggedInAccount = ref<LoggedInAccount>()
 export const isAuthenticated = computed(() => loggedInAccount.value !== undefined)

@@ -2,6 +2,7 @@ import z from 'zod'
 
 import prisma from '../../prisma'
 import type { AuthenticatedContext } from '../../trpc'
+import { defineProcedure } from '../../types/defineProcedure'
 
 export const ZGliederungVerwaltungCreateInputSchema = z.strictObject({
   data: z.strictObject({
@@ -24,3 +25,23 @@ export async function gliederungVerwaltungCreate(options: GliederungVerwaltungCr
     },
   })
 }
+
+export const gliederungVerwaltungCreateProcedure = defineProcedure({
+  key: 'verwaltungCreate',
+  method: 'mutation',
+  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
+  inputSchema: z.strictObject({
+    data: z.strictObject({
+      name: z.string(),
+      edv: z.string(),
+    }),
+  }),
+  async handler(options) {
+    return prisma.gliederung.create({
+      data: options.input.data,
+      select: {
+        id: true,
+      },
+    })
+  },
+})

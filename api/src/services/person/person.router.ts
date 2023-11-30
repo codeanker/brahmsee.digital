@@ -1,24 +1,17 @@
-import { router, protectedProcedure } from '../../trpc'
+import { mergeRouters } from '../../trpc'
 
-import { personAuthenticatedGet, ZPersonAuthenticatedGetInputSchema } from './personAuthenticatedGet'
-import { personVerwaltungCreate, ZPersonVerwaltungCreateInputSchema } from './personVerwaltungCreate'
-import { personVerwaltungGet, ZPersonVerwaltungGetInputSchema } from './personVerwaltungGet'
-import { ZPersonVerwaltungListInputSchema, personVerwaltungList } from './personVerwaltungList'
-import { ZPersonVerwaltungPatchInputSchema, personVerwaltungPatch } from './personVerwaltungPatch'
-import { ZPersonVerwaltungRemoveInputSchema, personVerwaltungRemove } from './personVerwaltungRemove'
+import { personAuthenticatedGetProcedure } from './personAuthenticatedGet'
+import { personVerwaltungCreateProcedure } from './personVerwaltungCreate'
+import { personVerwaltungGetProcedure } from './personVerwaltungGet'
+import { personVerwaltungListProcedure } from './personVerwaltungList'
+import { personVerwaltungPatchProcedure } from './personVerwaltungPatch'
+import { personVerwaltungRemoveProcedure } from './personVerwaltungRemove'
 
-export const personRouter = router({
-  authenticatedGet: protectedProcedure([]).input(ZPersonAuthenticatedGetInputSchema).query(personAuthenticatedGet),
-  verwaltungCreate: protectedProcedure(['ADMIN'])
-    .input(ZPersonVerwaltungCreateInputSchema)
-    .mutation(personVerwaltungCreate),
-  verwaltungGet: protectedProcedure(['ADMIN']).input(ZPersonVerwaltungGetInputSchema).query(personVerwaltungGet),
-  verwaltungRemove: protectedProcedure(['ADMIN'])
-    .input(ZPersonVerwaltungRemoveInputSchema)
-    .mutation(personVerwaltungRemove),
-  verwaltungPatch: protectedProcedure(['ADMIN'])
-    .input(ZPersonVerwaltungPatchInputSchema)
-    .mutation(personVerwaltungPatch),
-  verwaltungList: protectedProcedure(['ADMIN']).input(ZPersonVerwaltungListInputSchema).query(personVerwaltungList),
-  // [additional routes]
-})
+export const personRouter = mergeRouters(
+  personAuthenticatedGetProcedure.router,
+  personVerwaltungGetProcedure.router,
+  personVerwaltungCreateProcedure.router,
+  personVerwaltungListProcedure.router,
+  personVerwaltungPatchProcedure.router,
+  personVerwaltungRemoveProcedure.router
+)

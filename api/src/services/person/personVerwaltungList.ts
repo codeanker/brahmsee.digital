@@ -1,31 +1,29 @@
 import z from 'zod'
 
 import prisma from '../../prisma'
-import type { AuthenticatedContext } from '../../trpc'
-import { defineQuery } from '../../types/ZQuery'
+import { defineProcedure } from '../../types/defineProcedure'
+import { defineQuery } from '../../types/defineQuery'
 
-export const ZPersonVerwaltungListInputSchema = defineQuery({
-  filter: z.strictObject({
-    firstname: z.string().optional(),
-    lastname: z.string().optional(),
+export const personVerwaltungListProcedure = defineProcedure({
+  key: 'verwaltungList',
+  method: 'query',
+  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
+  inputSchema: defineQuery({
+    filter: z.strictObject({
+      firstname: z.string().optional(),
+      lastname: z.string().optional(),
+    }),
   }),
+  async handler(options) {
+    const { skip, take } = options.input.pagination
+    const list = await prisma.person.findMany({
+      skip,
+      take,
+      where: {
+        firstname: options.input.filter.firstname,
+        lastname: options.input.filter.lastname,
+      },
+    })
+    return list
+  },
 })
-
-export type TPersonVerwaltungListInputSchema = z.infer<typeof ZPersonVerwaltungListInputSchema>
-
-type PersonVerwaltungListOptions = AuthenticatedContext & {
-  input: TPersonVerwaltungListInputSchema
-}
-
-export async function personVerwaltungList(options: PersonVerwaltungListOptions) {
-  const { skip, take } = options.input.pagination
-  const list = await prisma.person.findMany({
-    skip,
-    take,
-    where: {
-      firstname: options.input.filter.firstname,
-      lastname: options.input.filter.lastname,
-    },
-  })
-  return list
-}

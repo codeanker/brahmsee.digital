@@ -2,35 +2,29 @@ import z from 'zod'
 
 import { getGliederungRequireAdmin } from '../../helpers/getGliederungRequireAdmin'
 import prisma from '../../prisma'
-import type { AuthenticatedContext } from '../../trpc'
+import { defineProcedure } from '../../types/defineProcedure'
 
-export const ZAnmeldungGliederungAblehnenInputSchema = z.strictObject({
-  data: z.strictObject({
-    anmeldungId: z.number().int(),
+export const anmeldungGliederungAblehnenProcedure = defineProcedure({
+  key: 'gliederungAblehnen',
+  method: 'mutation',
+  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
+  inputSchema: z.strictObject({
+    data: z.strictObject({
+      anmeldungId: z.number().int(),
+    }),
   }),
-})
-
-export type TAnmeldungGliederungAblehnenInputSchema = z.infer<typeof ZAnmeldungGliederungAblehnenInputSchema>
-
-type AnmeldungGliederungAblehnenOptions = AuthenticatedContext & {
-  input: TAnmeldungGliederungAblehnenInputSchema
-}
-
-export async function anmeldungGliederungAblehnen(options: AnmeldungGliederungAblehnenOptions) {
-  const gliederung = await getGliederungRequireAdmin(options.ctx.accountId)
-
-  return prisma.anmeldung.update({
-    where: {
-      id: options.input.data.anmeldungId,
-      unterveranstaltung: {
-        gliederungId: gliederung.id,
+  async handler(options) {
+    const gliederung = await getGliederungRequireAdmin(options.ctx.accountId)
+    return prisma.anmeldung.update({
+      where: {
+        id: options.input.data.anmeldungId,
+        unterveranstaltung: {
+          gliederungId: gliederung.id,
+        },
       },
-    },
-    data: {
-      status: 'ABGELEHNT',
-    },
-    select: {
-      id: true,
-    },
-  })
-}
+      data: {
+        status: 'ABGELEHNT',
+      },
+    })
+  },
+})

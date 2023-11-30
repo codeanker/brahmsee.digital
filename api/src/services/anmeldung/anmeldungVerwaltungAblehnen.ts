@@ -1,27 +1,25 @@
 import z from 'zod'
 
 import prisma from '../../prisma'
-import type { AuthenticatedContext } from '../../trpc'
+import { defineProcedure } from '../../types/defineProcedure'
 
-export const ZAnmeldungVerwaltungAblehnenInputSchema = z.strictObject({
-  data: z.strictObject({
-    anmeldungId: z.number().int(),
+export const anmeldungVerwaltungAblehnenProcedure = defineProcedure({
+  key: 'verwaltungAblehnen',
+  method: 'mutation',
+  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN', 'GLIEDERUNG_ADMIN'] },
+  inputSchema: z.strictObject({
+    data: z.strictObject({
+      anmeldungId: z.number().int(),
+    }),
   }),
+  async handler(options) {
+    return prisma.anmeldung.update({
+      where: {
+        id: options.input.data.anmeldungId,
+      },
+      data: {
+        status: 'ABGELEHNT',
+      },
+    })
+  },
 })
-
-export type TAnmeldungVerwaltungAblehnenInputSchema = z.infer<typeof ZAnmeldungVerwaltungAblehnenInputSchema>
-
-type AnmeldungVerwaltungAblehnenOptions = AuthenticatedContext & {
-  input: TAnmeldungVerwaltungAblehnenInputSchema
-}
-
-export async function anmeldungVerwaltungAblehnen(options: AnmeldungVerwaltungAblehnenOptions) {
-  return prisma.anmeldung.update({
-    where: {
-      id: options.input.data.anmeldungId,
-    },
-    data: {
-      status: 'ABGELEHNT',
-    },
-  })
-}

@@ -1,24 +1,23 @@
 import z from 'zod'
 
 import prisma from '../../prisma'
+import { defineProcedure } from '../../types/defineProcedure'
 
-export const ZGliederungPublicGetInputSchema = z.strictObject({
-  gliederungId: z.number().int(),
+export const gliederungPublicGetProcedure = defineProcedure({
+  key: 'publicGet',
+  method: 'query',
+  protection: { type: 'public' },
+  inputSchema: z.strictObject({
+    gliederungId: z.number().int(),
+  }),
+  async handler(options) {
+    return prisma.gliederung.findUniqueOrThrow({
+      where: {
+        id: options.input.gliederungId,
+      },
+      select: {
+        name: true,
+      },
+    })
+  },
 })
-
-export type TGliederungPublicGetInputSchema = z.infer<typeof ZGliederungPublicGetInputSchema>
-
-type GliederungPublicGetOptions = {
-  input: TGliederungPublicGetInputSchema
-}
-
-export async function gliederungPublicGet(options: GliederungPublicGetOptions) {
-  return prisma.gliederung.findUniqueOrThrow({
-    where: {
-      id: options.input.gliederungId,
-    },
-    select: {
-      name: true,
-    },
-  })
-}

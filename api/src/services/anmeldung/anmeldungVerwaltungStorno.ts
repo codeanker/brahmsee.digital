@@ -1,27 +1,25 @@
 import z from 'zod'
 
 import prisma from '../../prisma'
-import type { AuthenticatedContext } from '../../trpc'
+import { defineProcedure } from '../../types/defineProcedure'
 
-export const ZAnmeldungVerwaltungStornoInputSchema = z.strictObject({
-  data: z.strictObject({
-    anmeldungId: z.number().int(),
+export const anmeldungVerwaltungStornoProcedure = defineProcedure({
+  key: 'verwaltungStorno',
+  method: 'mutation',
+  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
+  inputSchema: z.strictObject({
+    data: z.strictObject({
+      anmeldungId: z.number().int(),
+    }),
   }),
+  async handler(options) {
+    return prisma.anmeldung.update({
+      where: {
+        id: options.input.data.anmeldungId,
+      },
+      data: {
+        status: 'STORNIERT',
+      },
+    })
+  },
 })
-
-export type TAnmeldungVerwaltungStornoInputSchema = z.infer<typeof ZAnmeldungVerwaltungStornoInputSchema>
-
-type AnmeldungVerwaltungStornoOptions = AuthenticatedContext & {
-  input: TAnmeldungVerwaltungStornoInputSchema
-}
-
-export async function anmeldungVerwaltungStorno(options: AnmeldungVerwaltungStornoOptions) {
-  return prisma.anmeldung.update({
-    where: {
-      id: options.input.data.anmeldungId,
-    },
-    data: {
-      status: 'STORNIERT',
-    },
-  })
-}
