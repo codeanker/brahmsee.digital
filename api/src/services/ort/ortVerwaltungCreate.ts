@@ -1,34 +1,32 @@
 import z from 'zod'
 
+import { defineProcedure } from '../../helpers/defineProcedure'
 import prisma from '../../prisma'
-import type { AuthenticatedContext } from '../../trpc'
 import { addressSchema } from '../address/schema/address.schema'
 
-export const ZOrtVerwaltungCreateInputSchema = z.strictObject({
-  data: z.strictObject({
-    name: z.string(),
-    address: addressSchema.optional(),
+export const ortVerwaltungCreateProcedure = defineProcedure({
+  key: 'verwaltungCreate',
+  method: 'mutation',
+  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
+  inputSchema: z.strictObject({
+    data: z.strictObject({
+      name: z.string(),
+      address: addressSchema.optional(),
+    }),
   }),
+  async handler(options) {
+    return prisma.ort.create({
+      data: {
+        name: options.input.data.name,
+        address: options.input.data.address
+          ? {
+              create: options.input.data.address,
+            }
+          : undefined,
+      },
+      select: {
+        id: true,
+      },
+    })
+  },
 })
-
-export type TOrtVerwaltungCreateInputSchema = z.infer<typeof ZOrtVerwaltungCreateInputSchema>
-
-type OrtVerwaltungCreateOptions = AuthenticatedContext & {
-  input: TOrtVerwaltungCreateInputSchema
-}
-
-export async function ortVerwaltungCreate(options: OrtVerwaltungCreateOptions) {
-  return prisma.ort.create({
-    data: {
-      name: options.input.data.name,
-      address: options.input.data.address
-        ? {
-            create: options.input.data.address,
-          }
-        : undefined,
-    },
-    select: {
-      id: true,
-    },
-  })
-}

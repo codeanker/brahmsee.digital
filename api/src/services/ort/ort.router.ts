@@ -1,12 +1,11 @@
-import { protectedProcedure, router } from '../../trpc'
+import { mergeRouters } from '../../trpc'
 
-import { ZOrtVerwaltungCreateInputSchema, ortVerwaltungCreate } from './ortVerwaltungCreate'
-import { ZOrtVerwaltungGetInputSchema, ortVerwaltungGet } from './ortVerwaltungGet'
-import { ZOrtVerwaltungListInputSchema, ortVerwaltungList } from './ortVerwaltungList'
+import { ortVerwaltungCreateProcedure } from './ortVerwaltungCreate'
+import { ortVerwaltungGetProcedure } from './ortVerwaltungGet'
+import { ortVerwaltungListProcedure } from './ortVerwaltungList'
 
-export const ortRouter = router({
-  verwaltungCreate: protectedProcedure(['ADMIN']).input(ZOrtVerwaltungCreateInputSchema).mutation(ortVerwaltungCreate),
-  verwaltungGet: protectedProcedure(['ADMIN']).input(ZOrtVerwaltungGetInputSchema).query(ortVerwaltungGet),
-  verwaltungList: protectedProcedure(['ADMIN']).input(ZOrtVerwaltungListInputSchema).query(ortVerwaltungList),
-  // TODO: add your API methods here
-})
+export const ortRouter = mergeRouters(
+  ortVerwaltungCreateProcedure.router,
+  ortVerwaltungGetProcedure.router,
+  ortVerwaltungListProcedure.router
+)
