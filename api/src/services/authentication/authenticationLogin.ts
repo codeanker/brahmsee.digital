@@ -7,7 +7,7 @@ import { defineProcedure } from '../../types/defineProcedure'
 export const authenticationLoginProcedure = defineProcedure({
   key: 'login',
   method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
+  protection: { type: 'public' },
   inputSchema: z.strictObject({
     email: z.string(),
     password: z.string(),
