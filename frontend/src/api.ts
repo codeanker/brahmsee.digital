@@ -3,7 +3,7 @@ import superjson from 'superjson'
 
 import type { AppRouter } from '@codeanker/api'
 
-const host = import.meta.env[`VITE_APP_API_HOST`] || 'http://127.0.0.1:3030'
+const host = import.meta.env[`VITE_APP_API_HOST`] || '/'
 
 declare global {
   interface BigInt {
