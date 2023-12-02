@@ -193,6 +193,7 @@ model Anmeldung {
   mahlzeiten           Mahlzeit[]
   uebernachtungsTage   DateTime[]         @db.Date
   tshirtBestellt       Boolean            @default(false)
+  email                String
 }
 
 model Address {

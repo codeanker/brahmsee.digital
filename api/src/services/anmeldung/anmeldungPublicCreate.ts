@@ -14,6 +14,7 @@ export const anmeldungPublicCreateProcedure = defineProcedure({
       mahlzeitenIds: z.array(z.number().int()).optional(),
       uebernachtungsTage: z.array(z.date()).optional(),
       tshirtBestellt: z.boolean().optional(),
+      email: z.string().email(),
     }),
   }),
   async handler(options) {
