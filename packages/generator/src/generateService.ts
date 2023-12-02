@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from 'fs/promises'
 import path from 'path'
 
-import { applyInserts } from './utlils'
+import { applyInserts, checkFileExists } from './utlils'
 
 import type { GeneratorContext } from '.'
 
@@ -20,6 +20,10 @@ export const ${name}Router = mergeRouters(
 `
 
   await mkdir(sericeDir, { recursive: true })
+  const alreadyExists = await checkFileExists(servicePath)
+  if (alreadyExists) {
+    throw new Error(`Service ${name} already exists`)
+  }
   await writeFile(servicePath, content)
 
   const inserts = [

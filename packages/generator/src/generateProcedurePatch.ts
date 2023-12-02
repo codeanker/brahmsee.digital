@@ -7,6 +7,7 @@ import {
   addProcedureToRouter,
   getProtectionContent,
   toPascalCase,
+  checkFileExists,
 } from './utlils'
 
 import type { GeneratorContext } from './index'
@@ -20,6 +21,10 @@ export async function generateProcedurePatch(procedure: ProcedureOptions, contex
   const procedureAction = `${procedure.usecase}${toPascalCase(procedureType)}`
   const procedurePath = path.join(sericeDir, `${procedureFileName}.ts`)
 
+  const alreadyExists = await checkFileExists(procedurePath)
+  if (alreadyExists) {
+    throw new Error(`Procedure ${procedureFileName} already exists`)
+  }
   const content = `import z from 'zod'
 
 import prisma from '../../prisma'

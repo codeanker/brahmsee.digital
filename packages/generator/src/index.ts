@@ -23,10 +23,10 @@ const context: GeneratorContext = {
   servicesDir: path.join(apiDir, 'src/services'),
 }
 
-await generateService('test', context)
-await generateProcedureGet({ service: 'test', usecase: 'testen', protection: 'public' }, context)
-await generateProcedureList({ service: 'test', usecase: 'testen', protection: 'public' }, context)
-await generateProcedureCreate({ service: 'test', usecase: 'testen', protection: 'public' }, context)
-await generateProcedurePatch({ service: 'test', usecase: 'testen', protection: 'public' }, context)
-await generateProcedureDelete({ service: 'test', usecase: 'testen', protection: 'public' }, context)
-await generateProcedureAction({ service: 'test', usecase: 'testen', protection: 'public' }, context)
+await generateService('test2', context)
+await generateProcedureGet({ service: 'test2', usecase: 'testen', protection: 'public' }, context)
+await generateProcedureList({ service: 'test2', usecase: 'testen', protection: 'public' }, context)
+await generateProcedureCreate({ service: 'test2', usecase: 'testen', protection: 'public' }, context)
+await generateProcedurePatch({ service: 'test2', usecase: 'testen', protection: 'public' }, context)
+await generateProcedureDelete({ service: 'test2', usecase: 'testen', protection: 'public' }, context)
+await generateProcedureAction({ service: 'test2', usecase: 'testen', protection: 'public' }, context)

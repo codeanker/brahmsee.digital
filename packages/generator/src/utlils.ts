@@ -1,4 +1,4 @@
-import { readFile, writeFile } from 'fs/promises'
+import { access, constants, readFile, writeFile } from 'fs/promises'
 import path from 'path'
 
 export type ProcedureOptions = {
@@ -93,4 +93,9 @@ export async function addListProcedureToRouter(
   const replacedContent = applyInserts(lines, inserts)
 
   await writeFile(routerPath, replacedContent.join('\n'))
+}
+export function checkFileExists(file) {
+  return access(file, constants.F_OK)
+    .then(() => true)
+    .catch(() => false)
 }
