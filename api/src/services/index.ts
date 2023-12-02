@@ -8,6 +8,7 @@ import { ortRouter } from './ort/ort.router'
 import { personRouter } from './person/person.router'
 import { unterveranstaltungRouter } from './unterveranstaltung/unterveranstaltung.router'
 import { veranstaltungRouter } from './veranstaltung/veranstaltung.router'
+// Add Imports here - do not delete this line
 
 export const serviceRouter = router({
   person: personRouter,
@@ -18,4 +19,5 @@ export const serviceRouter = router({
   veranstaltung: veranstaltungRouter,
   unterveranstaltung: unterveranstaltungRouter,
   ort: ortRouter,
+  // Add Routers here - do not delete this line
 })
