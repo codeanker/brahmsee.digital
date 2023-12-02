@@ -13,7 +13,7 @@
     "node": ">=20"
   },
   "scripts": {
-    "start": "docker-compose -f docker-compose-services.yml -f docker-compose.yml build && docker-compose -f docker-compose-services.yml -f docker-compose.yml up",
+    "start:services": "docker-compose -f docker-compose-services.yml up --build",
     "start:api": "npm run dev -w ./api",
     "start:frontend": "npm run dev -w ./frontend",
     "start:docs": "npm run docs:dev -w ./docs",

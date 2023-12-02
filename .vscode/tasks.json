@@ -33,7 +33,7 @@
 			"presentation": {
 				"reveal": "silent",
 				"panel": "new",
-				"group": "misc",
+				"group": "start",
 				"close": false
 			}
 		},
@@ -45,7 +45,19 @@
 			"presentation": {
 				"reveal": "always",
 				"panel": "new",
-				"group": "misc",
+				"group": "start",
+				"close": false
+			}
+		},
+		{
+			"type": "npm",
+			"script": "start:services",
+			"label": "start:services",
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"group": "start",
 				"close": false
 			}
 		},
@@ -56,6 +68,15 @@
 				"start:frontend",
 				"start:test",
 				"start:docs"
+			],
+			"problemMatcher": []
+		},
+		{
+			"label": "start:apps and services",
+			"dependsOn": [
+				"start:api",
+				"start:frontend",
+				"start:services"
 			],
 			"problemMatcher": []
 		},
