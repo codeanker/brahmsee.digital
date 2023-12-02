@@ -1,16 +1,16 @@
 import { writeFile } from 'fs/promises'
 import path from 'path'
 
+import { toPascalCase } from '../helpers/casing'
+import { checkFileExists } from '../helpers/files'
+
 import {
   type ProcedureOptions,
   getProcedureFileName,
-  toPascalCase,
   addListProcedureToRouter,
   getProtectionContent,
-  checkFileExists,
+  type GeneratorContext,
 } from './utlils'
-
-import type { GeneratorContext } from './index'
 
 export async function generateProcedureList(procedure: ProcedureOptions, context: GeneratorContext) {
   const sericeDir = path.join(context.servicesDir, procedure.service)

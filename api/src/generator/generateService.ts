@@ -1,9 +1,9 @@
 import { mkdir, readFile, writeFile } from 'fs/promises'
 import path from 'path'
 
-import { applyInserts, checkFileExists } from './utlils'
+import { checkFileExists } from '../helpers/files'
 
-import type { GeneratorContext } from '.'
+import { applyInserts, type GeneratorContext } from './utlils'
 
 export async function generateService(name: string, context: GeneratorContext) {
   const sericeDir = path.join(context.servicesDir, name)

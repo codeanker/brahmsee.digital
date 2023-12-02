@@ -1,5 +1,11 @@
-import { access, constants, readFile, writeFile } from 'fs/promises'
+import { readFile, writeFile } from 'fs/promises'
 import path from 'path'
+
+import { toPascalCase } from '../helpers/casing'
+
+export type GeneratorContext = {
+  servicesDir: string
+}
 
 export type ProcedureOptions = {
   service: string
@@ -31,10 +37,6 @@ export function getProtectionContent(protection: ProcedureOptions['protection'])
     case 'restrictToRoleIds':
       return "{ type: 'restrictToRoleIds', roleIds: ['ADMIN'] }"
   }
-}
-
-export function toPascalCase(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
 export function getProcedureFileName(procedure: ProcedureOptions, procedureType: ProcedureType) {
@@ -93,9 +95,4 @@ export async function addListProcedureToRouter(
   const replacedContent = applyInserts(lines, inserts)
 
   await writeFile(routerPath, replacedContent.join('\n'))
-}
-export function checkFileExists(file) {
-  return access(file, constants.F_OK)
-    .then(() => true)
-    .catch(() => false)
 }
