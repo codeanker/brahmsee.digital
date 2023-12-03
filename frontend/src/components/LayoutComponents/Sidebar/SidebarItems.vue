@@ -68,8 +68,8 @@ function isCurrentRoute(checkRoute: SidebarItemRoute) {
           </AppLink>
           <!-- Children container -->
           <div
-            class="flex flex-col relative transition-maxheight overflow-hidden"
-            :class="{ open: isCurrentRoute(item.route) }"
+            v-if="isCurrentRoute(item.route)"
+            class="flex flex-col relative overflow-hidden"
           >
             <div
               v-for="child in item.children"
@@ -140,16 +140,3 @@ function isCurrentRoute(checkRoute: SidebarItemRoute) {
     </template>
   </div>
 </template>
-
-<style scoped lang="scss">
-.transition-maxheight {
-  transition-property: max-height;
-  transition-duration: 1s;
-  transition-timing-function: ease-in-out;
-  max-height: 0;
-}
-
-.open {
-  max-height: 5000px;
-}
-</style>
