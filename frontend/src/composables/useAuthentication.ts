@@ -28,7 +28,15 @@ export async function login({ email, password }: { email: string; password: stri
 }
 
 export async function reAuthenticate() {
-  if (localStorage.getItem('jwt') === null) return false
+  const storedJwt = localStorage.getItem('jwt')
+  if (storedJwt === null) return false
+  const payload = parseJwt(storedJwt)
+  const expirationDate = new Date(payload.exp * 1000)
+  const now = new Date()
+  if (expirationDate < now) {
+    localStorage.removeItem('jwt')
+    return false
+  }
   try {
     loggedInAccount.value = await apiClient.person.authenticatedGet.query()
     return loggedInAccount.value
@@ -41,4 +49,13 @@ export async function logout() {
   router.push({ name: 'Login' })
   localStorage.removeItem('jwt')
   loggedInAccount.value = undefined
+}
+
+function parseJwt(jwt: string) {
+  const [, payload] = jwt.split('.')
+  return JSON.parse(atob(payload)) as {
+    exp: number
+    iat: number
+    sub: string
+  }
 }

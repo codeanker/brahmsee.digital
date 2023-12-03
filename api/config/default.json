@@ -17,5 +17,5 @@
     "default": 10,
     "max": 50
   },
-  "loggingLevel": "debug"
+  "loggingLevel": "info"
 }
