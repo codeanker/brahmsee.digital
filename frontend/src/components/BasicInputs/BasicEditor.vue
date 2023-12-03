@@ -99,7 +99,7 @@ watch(
 </template>
 
 <style lang="scss" scoped>
-::v-deep .ProseMirror {
+:deep(.ProseMirror) {
   padding: 0.4em 0.66em;
   min-height: 10em;
   word-break: auto-phrase;
