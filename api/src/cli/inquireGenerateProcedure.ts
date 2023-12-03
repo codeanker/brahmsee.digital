@@ -20,7 +20,7 @@ export async function inquireGenerateProcedure(args: ProcedureArgs, context: Gen
       {
         type: 'list',
         name: 'service',
-        message: 'Which service do you want to use?',
+        message: 'What is the service of the procedure?',
         choices: services,
       },
     ])) as { service: string }
@@ -34,7 +34,7 @@ export async function inquireGenerateProcedure(args: ProcedureArgs, context: Gen
       {
         type: 'input',
         name: 'usecase',
-        message: 'What is the name of the usecase?',
+        message: 'What is the usecase of the procedure?',
       },
     ])) as { usecase: string }
     usecase = usecaseAnswer.usecase
@@ -49,10 +49,17 @@ export async function inquireGenerateProcedure(args: ProcedureArgs, context: Gen
         type: 'list',
         name: 'action',
         message: 'Which action do you want to use?',
-        choices: ['get', 'list', 'create', 'patch', 'delete', 'action'],
+        choices: [
+          'get - get a single entity',
+          'list - get a list and count of entities',
+          'create - create a new entity',
+          'patch - update an entity',
+          'delete - delete an entity',
+          'action - custom action',
+        ],
       },
-    ])) as { action: GenerateProcedureType }
-    action = actionAnswer.action
+    ])) as { action: string }
+    action = actionAnswer.action.split(' ')[0] as GenerateProcedureType
   }
 
   let protection
