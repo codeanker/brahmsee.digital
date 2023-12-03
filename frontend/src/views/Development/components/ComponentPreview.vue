@@ -2,7 +2,7 @@
 import { CheckIcon, ClipboardIcon, CodeBracketIcon, EyeIcon } from '@heroicons/vue/24/outline'
 import { useClipboard } from '@vueuse/core'
 import SshPre from 'simple-syntax-highlighter'
-import { defineProps, ref } from 'vue'
+import { ref } from 'vue'
 import 'simple-syntax-highlighter/dist/sshpre.css'
 
 const props = defineProps<{
