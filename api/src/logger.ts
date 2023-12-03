@@ -1,13 +1,13 @@
 import { createLogger, format, transports } from 'winston'
 
-import { isDevelopment } from './util/is-production'
+import config from './config'
 
 const myFormat = format.printf(({ level, message, label, timestamp }) => {
   return `${timestamp} [${label}] ${level} >> ${message}`
 })
 
 export const logger = createLogger({
-  level: isDevelopment() ? 'debug' : 'info',
+  level: config.loggingLevel,
   format: format.combine(
     format.label({
       label: 'main',

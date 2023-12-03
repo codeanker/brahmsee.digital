@@ -7,7 +7,6 @@ import { PrismaClient } from '@prisma/client'
 
 import config from './config'
 import { logger } from './logger'
-import { isDevelopment } from './util/is-production'
 
 const log = logger.child({ label: 'db' })
 
@@ -25,7 +24,7 @@ const client = new PrismaClient({
   },
 })
 
-if (isDevelopment()) {
+if (config.loggingLevel === 'debug') {
   client.$on('query', (e) => {
     log.debug(e.query)
   })

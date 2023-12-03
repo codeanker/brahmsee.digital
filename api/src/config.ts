@@ -28,6 +28,7 @@ export const configSchema = z.strictObject({
     default: z.number(),
     max: z.number(),
   }),
+  loggingLevel: z.string(),
 })
 
 export default configSchema.parse(baseConfig)
