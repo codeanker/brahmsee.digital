@@ -9,7 +9,7 @@ import type { GeneratorContext } from '../generator/utlils'
 import { pascalToCamelCase } from '../helpers/casing'
 import { getDirectories } from '../helpers/files'
 
-import ignoreList from './ignoreList.json'
+import { ignoreList } from './ignoreList'
 import { inquireGenerateProcedure } from './inquireGenerateProcedure'
 import { inquireGenerateService } from './inquireGenerateService'
 
