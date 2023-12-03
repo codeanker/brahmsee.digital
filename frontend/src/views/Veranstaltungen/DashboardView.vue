@@ -1,35 +1,18 @@
 <script setup lang="ts">
 import { BanknotesIcon, ClockIcon, MapPinIcon, UserGroupIcon } from '@heroicons/vue/24/outline'
-import { formatDate, useAsyncState } from '@vueuse/core'
-import { watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { formatDate } from '@vueuse/core'
 
-import { apiClient } from '@/api'
+import { useVeranstaltung } from '../../composables/useVeranstaltung'
+
 import KeyValue from '@/components/UIComponents/KeyValue.vue'
 import Loading from '@/components/UIComponents/Loading.vue'
 
-const route = useRoute()
-
-watch(
-  () => route.params.veranstaltungId,
-  () => {
-    veranstaltung.value = null
-    execute()
-  }
-)
-
-const {
-  state: veranstaltung,
-  execute,
-  isLoading,
-} = useAsyncState(async () => {
-  return apiClient.veranstaltung.verwaltungGet.query({ id: parseInt(route.params.veranstaltungId as string) })
-}, null)
+const { veranstaltung } = useVeranstaltung()
 </script>
 
 <template>
   <div>
-    <div v-if="isLoading || !veranstaltung"><Loading color="primary" /> Loading...</div>
+    <div v-if="!veranstaltung"><Loading color="primary" /> Loading...</div>
     <div v-else>
       <h2>{{ veranstaltung?.name }}</h2>
       <p class="text-gray-500">

@@ -1,23 +1,7 @@
 <script setup lang="ts">
-import { useAsyncState } from '@vueuse/core'
-import { watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useVeranstaltung } from '../../../composables/useVeranstaltung'
 
-import { apiClient } from '@/api'
-
-const route = useRoute()
-
-watch(
-  () => route.params.veranstaltungId,
-  () => {
-    veranstaltung.value = null
-    execute()
-  }
-)
-
-const { state: veranstaltung, execute } = useAsyncState(async () => {
-  return apiClient.veranstaltung.verwaltungGet.query({ id: parseInt(route.params.veranstaltungId as string) })
-}, null)
+const { veranstaltung } = useVeranstaltung()
 </script>
 
 <template>
