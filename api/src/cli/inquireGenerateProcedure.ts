@@ -40,13 +40,13 @@ export async function inquireGenerateProcedure(args: ProcedureArgs, context: Gen
     usecase = usecaseAnswer.usecase
   }
 
-  let action
+  let action: GenerateProcedureType[]
   if (args.action !== undefined) {
-    action = args.action
+    action = [args.action]
   } else {
     const actionAnswer = (await inquirer.prompt([
       {
-        type: 'list',
+        type: 'checkbox',
         name: 'action',
         message: 'Which action do you want to use?',
         choices: [
@@ -58,8 +58,8 @@ export async function inquireGenerateProcedure(args: ProcedureArgs, context: Gen
           'action - custom action',
         ],
       },
-    ])) as { action: string }
-    action = actionAnswer.action.split(' ')[0] as GenerateProcedureType
+    ])) as { action: string[] }
+    action = actionAnswer.action.map((a) => a.split(' ')[0]) as GenerateProcedureType[]
   }
 
   let protection
@@ -78,24 +78,26 @@ export async function inquireGenerateProcedure(args: ProcedureArgs, context: Gen
   } else {
     protection = await inquireProtection()
   }
-  switch (action) {
-    case 'get':
-      await generateProcedureGet({ service, usecase, protection }, context)
-      break
-    case 'list':
-      await generateProcedureList({ service, usecase, protection }, context)
-      break
-    case 'create':
-      await generateProcedureCreate({ service, usecase, protection }, context)
-      break
-    case 'patch':
-      await generateProcedurePatch({ service, usecase, protection }, context)
-      break
-    case 'delete':
-      await generateProcedureDelete({ service, usecase, protection }, context)
-      break
-    case 'action':
-      await generateProcedureAction({ service, usecase, protection }, context)
-      break
+  for (const actionItem of action) {
+    switch (actionItem) {
+      case 'get':
+        await generateProcedureGet({ service, usecase, protection }, context)
+        break
+      case 'list':
+        await generateProcedureList({ service, usecase, protection }, context)
+        break
+      case 'create':
+        await generateProcedureCreate({ service, usecase, protection }, context)
+        break
+      case 'patch':
+        await generateProcedurePatch({ service, usecase, protection }, context)
+        break
+      case 'delete':
+        await generateProcedureDelete({ service, usecase, protection }, context)
+        break
+      case 'action':
+        await generateProcedureAction({ service, usecase, protection }, context)
+        break
+    }
   }
 }
