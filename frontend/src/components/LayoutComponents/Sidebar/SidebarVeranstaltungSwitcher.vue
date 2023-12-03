@@ -25,6 +25,12 @@ watch(selectedVeranstaltung, async (newValue) => {
   localStorage.setItem('letzteVeranstaltung', newValue.toString())
   await router.push({ params: { veranstaltungId: newValue } })
 })
+
+watch(veranstaltungen, (loadedVeranstaltungen) => {
+  if (!selectedVeranstaltung.value && loadedVeranstaltungen.length > 0) {
+    selectedVeranstaltung.value = loadedVeranstaltungen[0].id
+  }
+})
 </script>
 
 <template>
