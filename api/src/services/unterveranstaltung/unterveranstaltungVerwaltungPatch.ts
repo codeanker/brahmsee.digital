@@ -8,10 +8,10 @@ export const unterveranstaltungVerwaltungPatchProcedure = defineProcedure({
   method: 'mutation',
   protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
   inputSchema: z.strictObject({
+    id: z.number().int(),
     data: z.strictObject({
-      unterveranstaltungId: z.number().int(),
       maxTeilnehmende: z.number().int().optional(),
-      teilnahmegebuehr: z.number({ description: 'In Cent' }).int().optional(),
+      teilnahmegebuehr: z.number({ description: 'In Cent' }).optional(),
       meldebeginn: z.date().optional(),
       meldeschluss: z.date().optional(),
       beschreibung: z.string().optional(),
@@ -20,7 +20,7 @@ export const unterveranstaltungVerwaltungPatchProcedure = defineProcedure({
   async handler(options) {
     return prisma.unterveranstaltung.update({
       where: {
-        id: options.input.data.unterveranstaltungId,
+        id: options.input.id,
       },
       data: options.input.data,
       select: {

@@ -2,9 +2,9 @@ import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 
 import authenticationGuard from './authenticationGuard'
 
-import routesAusschreibungen from '@/views/Ausschreibungen/routes'
 import routesDevelopment from '@/views/Development/routes'
 import routesAuth from '@/views/Login/routes'
+import routesPublicAnmeldung from '@/views/PublicAnmeldung/routes'
 import routesRegistrierung from '@/views/Registrierung/routes'
 import routesVeranstaltungen from '@/views/Veranstaltungen/routes'
 import routesVerwaltung from '@/views/Verwaltung/routes'
@@ -17,7 +17,7 @@ export type Route = RouteRecordRaw & {
 
 const routes: Route[] = [
   ...routesAuth,
-  ...routesAusschreibungen,
+  ...routesPublicAnmeldung,
   ...routesRegistrierung,
   {
     path: '/',

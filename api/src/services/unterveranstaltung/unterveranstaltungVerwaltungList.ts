@@ -1,3 +1,4 @@
+import type { Prisma } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma'
@@ -10,18 +11,20 @@ export const unterveranstaltungVerwaltungListProcedure = defineProcedure({
   protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
   inputSchema: defineQuery({
     filter: z.strictObject({
+      veranstaltungId: z.number().optional(),
       gliederungId: z.number().optional(),
-      name: z.string().optional(),
     }),
   }),
   async handler(options) {
     const { skip, take } = options.input.pagination
-    const where =
-      options.input.filter.gliederungId != null
-        ? {
-            gliederungId: options.input.filter.gliederungId,
-          }
-        : undefined
+    const where: Prisma.UnterveranstaltungWhereInput = {}
+
+    if (options.input.filter.gliederungId !== undefined) {
+      where.gliederungId = options.input.filter.gliederungId
+    }
+    if (options.input.filter.veranstaltungId !== undefined) {
+      where.veranstaltungId = options.input.filter.veranstaltungId
+    }
     const veranstaltungen = await prisma.unterveranstaltung.findMany({
       skip,
       take,

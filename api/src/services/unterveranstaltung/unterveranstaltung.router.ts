@@ -6,6 +6,7 @@ import { unterveranstaltungGliederungListProcedure } from './unterveranstaltungG
 import { unterveranstaltungGliederungPatchProcedure } from './unterveranstaltungGliederungPatch'
 import { unterveranstaltungPublicGetProcedure } from './unterveranstaltungPublicGet'
 import { unterveranstaltungVerwaltungCreateProcedure } from './unterveranstaltungVerwaltungCreate'
+import { unterveranstaltungVerwaltungGetProcedure } from './unterveranstaltungVerwaltungGet'
 import { unterveranstaltungVerwaltungListProcedure } from './unterveranstaltungVerwaltungList'
 import { unterveranstaltungVerwaltungPatchProcedure } from './unterveranstaltungVerwaltungPatch'
 // Import Routes here - do not delete this line
@@ -18,5 +19,6 @@ export const unterveranstaltungRouter = mergeRouters(
   unterveranstaltungVerwaltungCreateProcedure.router,
   unterveranstaltungVerwaltungListProcedure.router,
   unterveranstaltungVerwaltungPatchProcedure.router,
+  unterveranstaltungVerwaltungGetProcedure.router,
   // Add Routes here - do not delete this line
 )

@@ -7,17 +7,17 @@ const routesAusschreibungen: Route[] = [
     component: () => import('@/layouts/PublicLayout.vue'),
     children: [
       {
-        name: 'Ausschreibung',
+        name: 'Public Ausschreibung',
         path: '/ausschreibung/:ausschreibungId',
-        component: () => import('@/views/Ausschreibungen/AusschreibungView.vue'),
+        component: () => import('./PublicAusschreibungView.vue'),
         meta: {
           public: true,
         },
       },
       {
-        name: 'Anmeldung',
+        name: 'Public Anmeldung',
         path: '/ausschreibung/:ausschreibungId/anmeldung',
-        component: () => import('@/views/Ausschreibungen/AnmeldungView.vue'),
+        component: () => import('./PublicAnmeldungView.vue'),
         meta: {
           public: true,
           hidePublicHeaderBgOnMobile: true,

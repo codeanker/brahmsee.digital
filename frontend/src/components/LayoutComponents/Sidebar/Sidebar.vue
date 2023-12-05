@@ -104,6 +104,13 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     icon: CalendarDaysIcon,
     badge: 'Neu',
   },
+  {
+    type: 'SidebarItem',
+    name: 'Ausschreibungen',
+    route: { name: 'VeranstaltungAusschreibungList', params: { veranstaltungId: veranstaltungId.value } },
+    icon: CalendarDaysIcon,
+    badge: 'Neu',
+  },
   { type: 'SidebarItem', name: 'Personen', route: { name: 'Verwaltung Alle Benutzer' }, icon: UsersIcon },
   { type: 'SidebarItem', name: 'Orte', route: { name: 'Verwaltung Alle Orte' }, icon: GlobeEuropeAfricaIcon },
   { type: 'DividerItem', name: 'Entwicklung' },
