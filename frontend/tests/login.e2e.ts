@@ -25,7 +25,7 @@ describe(`Feature: Login`, () => {
   })
   it('Der Standard Nutzer kann sich anmelden.', async () => {
     const page = await context.newPage()
-    await page.goto(`https://localhost.codeanker.com:8080/login`)
+    await page.goto(`https://localhost:8080/login`)
     await page.getByPlaceholder('E-Mail').click()
     await page.getByPlaceholder('E-Mail').fill(data.account.email)
     await page.getByPlaceholder('Passwort').click()
