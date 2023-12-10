@@ -29,7 +29,7 @@ describe(`View: verwaltung/benutzer`, () => {
     const page = await context.newPage()
     await insertJwtToken(page, data.accessToken)
 
-    await page.goto(`https://localhost.codeanker.com:8080/verwaltung/benutzer`)
+    await page.goto(`https://localhost:8080/verwaltung/benutzer`)
     await page.waitForLoadState('networkidle')
     // await page.screenshot({ path: `${__dirname}/screenshots/${name}_verwaltung-benutzer.png` })
   })

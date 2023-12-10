@@ -29,7 +29,7 @@ describe(`View: verwaltung/gliederungen`, () => {
     const page = await context.newPage()
     await insertJwtToken(page, data.accessToken)
 
-    await page.goto(`https://localhost.codeanker.com:8080/verwaltung/gliederungen`)
+    await page.goto(`https://localhost:8080/verwaltung/gliederungen`)
     await vi.waitUntil(async () => (await page.getByText('DLRG Bundesverband').isVisible()) === true)
     // await page.screenshot({ path: `${__dirname}/screenshots/${name}_verwaltung-gliederung.png` })
   })
@@ -37,7 +37,7 @@ describe(`View: verwaltung/gliederungen`, () => {
     const page = await context.newPage()
     await insertJwtToken(page, data.accessToken)
 
-    await page.goto(`https://localhost.codeanker.com:8080/verwaltung/gliederungen`)
+    await page.goto(`https://localhost:8080/verwaltung/gliederungen`)
     await page.getByRole('button', { name: 'Erstellen' }).click()
     await vi.waitUntil(async () => (await page.getByRole('button', { name: 'Speichern' }).isVisible()) === true)
     // await page.screenshot({ path: `${__dirname}/screenshots/${name}_verwaltung-gliederung-detail.png` })
