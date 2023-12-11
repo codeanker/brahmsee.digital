@@ -4,7 +4,7 @@
         "./api"
     ],
     "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true,
+        "source.fixAll.eslint": "always"
     },
     "editor.tabSize": 2,
     "files.trimTrailingWhitespace": true,
