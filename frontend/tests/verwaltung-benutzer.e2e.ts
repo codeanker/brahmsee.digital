@@ -27,7 +27,7 @@ describe(`View: verwaltung/benutzer`, () => {
   })
   it('Ist View angelegt', async () => {
     const page = await context.newPage()
-    await insertJwtToken(page, data.accessToken)
+    await insertJwtToken(page, data.accessToken, data.veranstaltung.id)
 
     await page.goto(`https://localhost:8080/verwaltung/benutzer`)
     await page.waitForLoadState('networkidle')

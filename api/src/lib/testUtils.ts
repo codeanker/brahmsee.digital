@@ -24,7 +24,14 @@ export async function createMock(runId: string) {
     password: accountPassword,
   })
 
-  return { account, accountPassword, accessToken }
+  const veranstaltung = await prisma.veranstaltung.findFirstOrThrow({
+    take: 1,
+    select: {
+      id: true,
+    },
+  })
+
+  return { account, accountPassword, accessToken, veranstaltung }
 }
 
 export async function cleanup(runId: string) {

@@ -27,24 +27,24 @@ describe(`View: verwaltung/gliederungen`, () => {
   })
   it('Gliederung auflisten', async () => {
     const page = await context.newPage()
-    await insertJwtToken(page, data.accessToken)
+    await insertJwtToken(page, data.accessToken, data.veranstaltung.id)
 
-    await page.goto(`https://localhost:8080/verwaltung/gliederungen`)
+    await page.goto(`https://localhost:8080/verwaltung/gliederungen/liste`)
     await vi.waitUntil(async () => (await page.getByText('DLRG Bundesverband').isVisible()) === true)
     // await page.screenshot({ path: `${__dirname}/screenshots/${name}_verwaltung-gliederung.png` })
   })
   it.skip('Gliederung erstellen ist sichtbar', async () => {
     const page = await context.newPage()
-    await insertJwtToken(page, data.accessToken)
+    await insertJwtToken(page, data.accessToken, data.veranstaltung.id)
 
-    await page.goto(`https://localhost:8080/verwaltung/gliederungen`)
+    await page.goto(`https://localhost:8080/verwaltung/gliederungen/liste`)
     await page.getByRole('button', { name: 'Erstellen' }).click()
     await vi.waitUntil(async () => (await page.getByRole('button', { name: 'Speichern' }).isVisible()) === true)
     // await page.screenshot({ path: `${__dirname}/screenshots/${name}_verwaltung-gliederung-detail.png` })
   })
   it.skip('Gliederung details ansehen', async () => {
     const page = await context.newPage()
-    await insertJwtToken(page, data.accessToken)
+    await insertJwtToken(page, data.accessToken, data.veranstaltung.id)
 
     await page.goto(`https://localhost.codeanker.com:8080/verwaltung/gliederungen`)
     await page.getByText('DLRG Bundesverband').click()
