@@ -57,6 +57,7 @@ const {
       data: ortCopy.value as unknown as RouterInput['ort']['verwaltungPatch']['data'],
     })
     props.onUpdate?.()
+    router.back()
   },
   null,
   { immediate: false }

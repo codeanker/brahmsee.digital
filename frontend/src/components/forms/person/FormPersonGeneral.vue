@@ -66,6 +66,7 @@ const {
     }
 
     props.onUpdate?.()
+    router.back()
   },
   null,
   { immediate: false }
