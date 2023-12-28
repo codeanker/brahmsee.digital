@@ -28,7 +28,7 @@ const fill = (ort) => {
   }
 }
 
-const ortId = parseInt(props.ort.id as string)
+const ortId = parseInt(props.ort?.id as string)
 const ortCopy = ref(fill(props.ort))
 
 const {
