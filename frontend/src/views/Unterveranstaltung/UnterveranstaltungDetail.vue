@@ -18,6 +18,6 @@ const { state: unterveranstaltung } = useAsyncState(async () => {
   <div>
     <h5>Veranstaltungen Detail</h5>
     {{ unterveranstaltung }}
-    <Button :to="{ name: 'VeranstaltungUnterveranstaltungEdit' }">Bearbeiten</Button>
+    <Button :to="{ name: 'UnterveranstaltungEdit' }">Bearbeiten</Button>
   </div>
 </template>

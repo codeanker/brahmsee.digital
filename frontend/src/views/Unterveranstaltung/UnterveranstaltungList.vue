@@ -29,7 +29,7 @@ function formatDate(indate) {
       </p>
       <RouterLink
         class="text-primary-600"
-        :to="{ name: 'VeranstaltungUnterveranstaltungCreate' }"
+        :to="{ name: 'UnterveranstaltungCreate' }"
         >Ausschreibung erstellen</RouterLink
       >
       <table class="min-w-full divide-y divide-gray-300">
@@ -69,7 +69,7 @@ function formatDate(indate) {
             title="bearbeiten"
             @click="
               router.push({
-                name: 'VeranstaltungUnterveranstaltungDetail',
+                name: 'UnterveranstaltungDetail',
                 params: { unterveranstaltungId: unterveranstaltung.id },
               })
             "
