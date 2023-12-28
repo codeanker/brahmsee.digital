@@ -25,10 +25,11 @@ export const unterveranstaltungGliederungListProcedure = defineProcedure({
       },
       select: {
         id: true,
+        beschreibung: true,
+        maxTeilnehmende: true,
+        teilnahmegebuehr: true,
         meldebeginn: true,
         meldeschluss: true,
-        teilnahmegebuehr: true,
-        maxTeilnehmende: true,
       },
     })
 
