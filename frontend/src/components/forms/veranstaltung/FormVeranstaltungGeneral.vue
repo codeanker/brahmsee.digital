@@ -25,7 +25,7 @@ const fill = (veranstaltung) => {
     name: veranstaltung?.name,
     beginn: veranstaltung?.beginn,
     ende: veranstaltung?.ende,
-    ortId: veranstaltung?.ortId,
+    ortId: veranstaltung?.ort?.id,
     meldebeginn: veranstaltung?.meldebeginn ?? '',
     meldeschluss: veranstaltung?.meldeschluss ?? '',
     maxTeilnehmende: veranstaltung?.maxTeilnehmende ?? '',
