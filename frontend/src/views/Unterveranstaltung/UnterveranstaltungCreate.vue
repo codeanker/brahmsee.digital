@@ -7,6 +7,8 @@ const route = useRoute()
 </script>
 
 <template>
-  {{ route.params }}
-  <FormUnterveranstaltungGeneral mode="create" />
+  <FormUnterveranstaltungGeneral
+    :veranstaltung-id="route.params.veranstaltungId"
+    mode="create"
+  />
 </template>

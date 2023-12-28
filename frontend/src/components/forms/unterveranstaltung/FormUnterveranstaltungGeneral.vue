@@ -3,7 +3,10 @@ import { useAsyncState } from '@vueuse/core'
 import { ref } from 'vue'
 
 import { apiClient } from '@/api'
+import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
 import BasicEditor from '@/components/BasicInputs/BasicEditor.vue'
+import BasicInputNumber from '@/components/BasicInputs/BasicInputNumber.vue'
+import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
 import router from '@/router'
@@ -13,23 +16,31 @@ import { ValidateForm } from '@codeanker/validation'
 const props = defineProps<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   unterveranstaltung?: any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  veranstaltungId?: any
   mode: 'create' | 'update'
   onUpdate?: () => void
 }>()
 
-const fill = (unterveranstaltung) => {
+const fill = (unterveranstaltung, veranstaltungId) => {
   return {
     beschreibung: unterveranstaltung?.beschreibung,
     maxTeilnehmende: unterveranstaltung?.maxTeilnehmende,
     meldebeginn: unterveranstaltung?.meldebeginn,
     meldeschluss: unterveranstaltung?.meldeschluss,
     teilnahmegebuehr: unterveranstaltung?.teilnahmegebuehr,
+    veranstaltungId: parseInt(veranstaltungId),
   }
 }
 
 const unterveranstaltungId = parseInt(props.unterveranstaltung?.id as string)
-const unterveranstaltungCopy = ref(fill(props.unterveranstaltung))
-const veranstaltung = props.unterveranstaltung?.veranstaltung
+const unterveranstaltungCopy = ref(fill(props.unterveranstaltung, props.veranstaltungId))
+
+const { state: veranstaltungen } = useAsyncState(async () => {
+  if (loggedInAccount.value?.role === 'ADMIN')
+    return apiClient.veranstaltung.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
+  return apiClient.veranstaltung.gliederungList.query()
+}, [])
 
 const {
   execute: createUnterveranstaltung,
@@ -91,19 +102,67 @@ const handle = async () => {
 </script>
 
 <template>
-  <pre>{{ unterveranstaltung }}</pre>
-  <pre>{{ veranstaltung }}</pre>
-  <h5>Unterveranstaltung: {{ veranstaltung?.name }}</h5>
+  <h5>Ausschreibung:</h5>
   <ValidateForm
     class="mt-10"
     @submit="handle"
   >
     <div class="grid grid-cols-1 lg:grid-cols-6 gap-6">
+      <div
+        v-if="mode === 'create'"
+        class="lg:col-span-full"
+      >
+        <BasicSelect
+          v-model="unterveranstaltungCopy.veranstaltungId"
+          required
+          label="Veranstaltung"
+          placeholder="Veranstaltungsort"
+          :options="
+            veranstaltungen.map((veranstaltungen) => ({ label: veranstaltungen.name, value: veranstaltungen.id }))
+          "
+        />
+      </div>
+      <div class="lg:col-span-3">
+        <BasicDatepicker
+          v-model="unterveranstaltungCopy.meldebeginn"
+          required
+          format="dd.MM.yyyy"
+          label="Meldebeginn"
+          placeholder="Meldebeginn"
+        />
+      </div>
+
+      <div class="lg:col-span-3">
+        <BasicDatepicker
+          v-model="unterveranstaltungCopy.meldeschluss"
+          required
+          format="dd.MM.yyyy"
+          label="Meldeschluss"
+          placeholder="Meldeschluss"
+        />
+      </div>
+      <div class="lg:col-span-3">
+        <BasicInputNumber
+          v-model="unterveranstaltungCopy.teilnahmegebuehr"
+          required
+          label="Teilnahmegebühr"
+          placeholder="Teilnahmegebühr"
+        />
+      </div>
+      <div class="lg:col-span-3">
+        <BasicInputNumber
+          v-model="unterveranstaltungCopy.maxTeilnehmende"
+          required
+          label="Maximale Teilnehmenden Zahl"
+          placeholder="Maximale Teilnehmenden Zahl"
+        />
+      </div>
+
       <div class="lg:col-span-full">
         <BasicEditor
           v-model="unterveranstaltungCopy.beschreibung"
           required
-          label="Unterveranstaltung"
+          label="Beschreibung"
         />
       </div>
     </div>
