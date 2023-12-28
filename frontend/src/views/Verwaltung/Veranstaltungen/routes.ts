@@ -39,7 +39,7 @@ const veranstaltungRoutes: Route[] = [
       },
       {
         name: 'Verwaltung Veranstaltungsdetails',
-        path: 'detail',
+        path: ':veranstaltungId/detail',
         component: () => import('./VeranstaltungDetail.vue'),
         meta: {
           breadcrumbs: [

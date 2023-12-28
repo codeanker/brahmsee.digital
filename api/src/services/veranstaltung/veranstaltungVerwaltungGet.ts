@@ -23,6 +23,7 @@ export const veranstaltungVerwaltungGetProcedure = defineProcedure({
         ort: {
           select: {
             name: true,
+            id: true,
           },
         },
         unterveranstaltungen: {
