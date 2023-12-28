@@ -18,7 +18,14 @@ export const ortVerwaltungGetProcedure = defineProcedure({
       select: {
         id: true,
         name: true,
-        address: true,
+        address: {
+          select: {
+            zip: true,
+            city: true,
+            street: true,
+            number: true,
+          },
+        },
       },
     })
   },

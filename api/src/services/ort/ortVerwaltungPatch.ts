@@ -43,6 +43,10 @@ export const ortVerwaltungPatchProcedure = defineProcedure({
       where: {
         id: input.id,
       },
+      select: {
+        name: true,
+        address: true,
+      },
     })
   },
 })
