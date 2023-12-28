@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */ // Prettier ignored is because this file is generated
 import { mergeRouters } from '../../trpc'
 
-import { veranstaltungListProcedure } from './veranstaltungPublicList'
+import { veranstaltungGliederungListProcedure } from './veranstaltungGliederungList'
 import { veranstaltungVerwaltungCreateProcedure } from './veranstaltungVerwaltungCreate'
 import { veranstaltungVerwaltungGetProcedure } from './veranstaltungVerwaltungGet'
 import { veranstaltungVerwaltungListProcedure } from './veranstaltungVerwaltungList'
@@ -13,7 +13,6 @@ export const veranstaltungRouter = mergeRouters(
   veranstaltungVerwaltungGetProcedure.router,
   veranstaltungVerwaltungListProcedure.router,
   veranstaltungVerwaltungPatchProcedure.router,
-
-  veranstaltungListProcedure.router,
+  veranstaltungGliederungListProcedure.router,
   // Add Routes here - do not delete this line
 )
