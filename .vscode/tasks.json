@@ -66,8 +66,7 @@
 			"dependsOn": [
 				"start:api",
 				"start:frontend",
-				"start:test",
-				"start:docs"
+				"start:test"
 			],
 			"problemMatcher": []
 		},
