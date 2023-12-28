@@ -4,11 +4,13 @@ import { mergeRouters } from '../../trpc'
 import { ortVerwaltungCreateProcedure } from './ortVerwaltungCreate'
 import { ortVerwaltungGetProcedure } from './ortVerwaltungGet'
 import { ortVerwaltungListProcedure } from './ortVerwaltungList'
+import { ortVerwaltungRemoveProcedure } from './ortVerwaltungRemove'
 // Import Routes here - do not delete this line
 
 export const ortRouter = mergeRouters(
   ortVerwaltungCreateProcedure.router,
   ortVerwaltungGetProcedure.router,
   ortVerwaltungListProcedure.router,
+  ortVerwaltungRemoveProcedure.router,
   // Add Routes here - do not delete this line
 )
