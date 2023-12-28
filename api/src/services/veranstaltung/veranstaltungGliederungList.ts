@@ -3,8 +3,8 @@ import z from 'zod'
 import prisma from '../../prisma'
 import { defineProcedure } from '../../types/defineProcedure'
 
-export const veranstaltungListProcedure = defineProcedure({
-  key: 'publicList',
+export const veranstaltungGliederungListProcedure = defineProcedure({
+  key: 'gliederungList',
   method: 'query',
   protection: { type: 'restrictToRoleIds', roleIds: ['GLIEDERUNG_ADMIN', 'ADMIN'] },
   inputSchema: z.string().optional(),
