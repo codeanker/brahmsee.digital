@@ -3,6 +3,7 @@ import {
   Gender,
   Konfektionsgroesse,
   NahrungsmittelIntoleranz,
+  Prisma,
   QualificationErsteHilfe,
   QualificationFahrerlaubnis,
   QualificationFunk,
@@ -11,7 +12,7 @@ import {
 } from '@prisma/client'
 import { z } from 'zod'
 
-import { addressSchema } from '../../address/schema/address.schema'
+import { addressSchema, findAddress } from '../../address/schema/address.schema'
 import { kontaktSchema, type TKontaktSchema } from '../../kontakt/schema/kontakt.schema'
 
 export type TPersonSchema = z.infer<typeof personSchema>
@@ -36,7 +37,11 @@ export const personSchema = z.strictObject({
   notfallkontaktPersonen: z.array(kontaktSchema),
 })
 
-export function getPersonCreateData(input: z.infer<typeof personSchema>) {
+export async function getPersonCreateData(
+  input: z.infer<typeof personSchema>
+): Promise<Prisma.PersonCreateArgs['data']> {
+  const existingAddress = await findAddress(input.addresse)
+
   return {
     firstname: input.firstname,
     lastname: input.lastname,
@@ -52,7 +57,17 @@ export function getPersonCreateData(input: z.infer<typeof personSchema>) {
     qualifikationenFunk: input.qualifikationenFunk,
     konfektionsgroesse: input.konfektionsgroesse,
     address: {
-      create: input.addresse,
+      connectOrCreate: {
+        create: {
+          zip: input.addresse.zip!,
+          city: input.addresse.city!,
+          street: input.addresse.street!,
+          number: input.addresse.number!,
+        },
+        where: {
+          id: existingAddress?.id,
+        },
+      },
     },
     notfallkontakte: {
       create: getNotfallkontakte(input.notfallkontaktPersonen, input.erziehungsberechtigtePersonen),

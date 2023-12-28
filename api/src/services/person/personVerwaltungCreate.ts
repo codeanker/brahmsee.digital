@@ -14,9 +14,7 @@ export const personVerwaltungCreateProcedure = defineProcedure({
   }),
   async handler(options) {
     return prisma.person.create({
-      data: {
-        ...getPersonCreateData(options.input.data),
-      },
+      data: await getPersonCreateData(options.input.data),
       select: {
         id: true,
       },

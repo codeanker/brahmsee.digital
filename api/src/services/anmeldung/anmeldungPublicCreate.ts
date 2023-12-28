@@ -27,9 +27,11 @@ export const anmeldungPublicCreateProcedure = defineProcedure({
       },
     })
 
+    const personData = await getPersonCreateData(options.input.data)
+
     return prisma.person.create({
       data: {
-        ...getPersonCreateData(options.input.data),
+        ...personData,
         anmeldungen: {
           create: {
             unterveranstaltungId: unterveranstaltung.id,
