@@ -26,6 +26,7 @@ export const veranstaltungVerwaltungListProcedure = defineProcedure({
         ort: {
           select: {
             name: true,
+            id: true,
           },
         },
         meldebeginn: true,
