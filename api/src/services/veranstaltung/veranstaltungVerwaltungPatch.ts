@@ -8,8 +8,8 @@ export const veranstaltungVerwaltungPatchProcedure = defineProcedure({
   method: 'mutation',
   protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
   inputSchema: z.strictObject({
+    id: z.number(),
     data: z.strictObject({
-      id: z.number(),
       name: z.string().optional(),
       beginn: z.date().optional(),
       ende: z.date().optional(),
@@ -20,14 +20,14 @@ export const veranstaltungVerwaltungPatchProcedure = defineProcedure({
       teilnahmegebuehr: z.number().int().optional(),
       beschreibung: z.string().optional(),
       datenschutz: z.string().optional(),
-      teilnahmeBedigungen: z.string().optional(),
+      teilnahmeBedingungen: z.string().optional(),
       zielgruppe: z.string().optional(),
     }),
   }),
   async handler(options) {
     return prisma.veranstaltung.update({
       where: {
-        id: options.input.data.id,
+        id: options.input.id,
       },
       data: {
         name: options.input.data.name,
@@ -39,6 +39,7 @@ export const veranstaltungVerwaltungPatchProcedure = defineProcedure({
         teilnahmegebuehr: options.input.data.teilnahmegebuehr,
         beschreibung: options.input.data.beschreibung,
         datenschutz: options.input.data.datenschutz,
+        teilnahmeBedingungen: options.input.data.teilnahmeBedingungen,
         zielgruppe: options.input.data.zielgruppe,
         ortId: options.input.data.ortId,
       },

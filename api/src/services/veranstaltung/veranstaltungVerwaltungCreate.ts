@@ -19,7 +19,7 @@ export const veranstaltungVerwaltungCreateProcedure = defineProcedure({
       teilnahmegebuehr: z.number().int(),
       beschreibung: z.string().optional(),
       datenschutz: z.string().optional(),
-      teilnahmeBedigungen: z.string().optional(),
+      teilnahmeBedingungen: z.string().optional(),
       zielgruppe: z.string().optional(),
     }),
   }),
