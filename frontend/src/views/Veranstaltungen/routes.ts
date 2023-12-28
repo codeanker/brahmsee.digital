@@ -1,5 +1,4 @@
 import anmeldungenRoutes from './Anmeldungen/routes'
-import { routesVeranstaltungAusschreibung } from './Ausschreibung/routes'
 import auswertungRoutes from './Auswertung/routes'
 import programmRoutes from './Programm/routes'
 
@@ -45,7 +44,6 @@ const routesVeranstaltungen: Route[] = [
       ...anmeldungenRoutes,
       ...auswertungRoutes,
       ...programmRoutes,
-      ...routesVeranstaltungAusschreibung,
     ],
   },
 ]
