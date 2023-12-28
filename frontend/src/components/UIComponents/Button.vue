@@ -15,7 +15,7 @@ withDefaults(
     disabled: false,
   }
 )
-type Color = 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'transparent'
+type Color = 'primary' | 'secondary' | 'success' | 'warning' | 'danger'
 const colors: Record<Color, string> = {
   primary: 'text-white bg-primary-600 hover:bg-primary-500',
   secondary: 'bg-primary-200 hover:bg-primary-300 text-primary-800',
