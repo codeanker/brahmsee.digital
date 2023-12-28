@@ -1,5 +1,7 @@
 export * from './role'
 export * from './getEnumOptions'
+export * from './Gender'
+export * from './Essgewohnheit'
 export * from './Konfektionsgroesse'
 export * from './NahrungsmittelIntoleranz'
 export * from './QualificationErsteHilfe'

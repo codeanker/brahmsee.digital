@@ -74,8 +74,8 @@ async function create() {
     <BasicInputNumber
       v-model="ausschreibung.teilnahmegebuehr"
       required
-      label="Maximale Teilnehmende"
-      placeholder="Maximale Teilnehmende"
+      label="Teilnahmegebühr"
+      placeholder="Teilnahmegebühr"
     />
     <BasicDatepicker
       v-model="ausschreibung.meldebeginn"
