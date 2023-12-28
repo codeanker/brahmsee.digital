@@ -32,6 +32,7 @@ export const ortVerwaltungListProcedure = defineProcedure({
       select: {
         id: true,
         name: true,
+        address: true,
       },
     })
   },

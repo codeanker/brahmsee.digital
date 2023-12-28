@@ -36,6 +36,12 @@ const { state: ortenList } = useAsyncState(async () => {
             >
               Name
             </th>
+            <th
+              scope="col"
+              class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+            >
+              Ort
+            </th>
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-200 bg-white">
@@ -51,6 +57,9 @@ const { state: ortenList } = useAsyncState(async () => {
             </td>
             <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
               <div class="font-medium text-gray-900">{{ ort.name }}</div>
+            </td>
+            <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
+              <div class="font-medium text-gray-900">{{ ort.address?.city }}</div>
             </td>
           </tr>
         </tbody>
