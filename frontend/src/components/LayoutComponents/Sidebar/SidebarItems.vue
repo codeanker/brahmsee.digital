@@ -14,11 +14,13 @@ export interface SidebarItem {
   showChildren?: boolean
   badge?: string
   disabled?: boolean
+  visible?: boolean
 }
 
 export interface DividerItem {
   type: 'DividerItem'
   name: string
+  visible?: boolean
 }
 
 export type SidebarItemRoute =
@@ -47,7 +49,7 @@ function isCurrentRoute(checkRoute: SidebarItemRoute) {
         :key="item.name"
         class="flex flex-col"
       >
-        <template v-if="!item.disabled">
+        <template v-if="!item.disabled && item.visible">
           <AppLink
             :to="item.route"
             class="flex items-center space-x-3 p-2 rounded-lg cursor-pointer hover:bg-gray-100 transition-all"
@@ -114,7 +116,7 @@ function isCurrentRoute(checkRoute: SidebarItemRoute) {
             </div>
           </div>
         </template>
-        <template v-else>
+        <template v-if="item.disabled && item.visible">
           <div class="flex items-center space-x-3 p-2 rounded-lg cursor-not-allowed">
             <component
               :is="item.icon"
@@ -131,7 +133,7 @@ function isCurrentRoute(checkRoute: SidebarItemRoute) {
         </template>
       </div>
       <div
-        v-else
+        v-if="item.type === 'DividerItem' && item.visible"
         :key="item.name + item.type"
         class="pt-8 pb-1"
       >

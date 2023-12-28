@@ -15,6 +15,7 @@ export const personAuthenticatedGetProcedure = defineProcedure({
       },
       select: {
         id: true,
+        role: true,
         person: {
           select: {
             id: true,

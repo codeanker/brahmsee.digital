@@ -11,7 +11,6 @@ import {
   CubeIcon,
   CalendarDaysIcon,
   RocketLaunchIcon,
-  BookOpenIcon,
 } from '@heroicons/vue/24/outline'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
@@ -35,6 +34,10 @@ const veranstaltungId = computed(() => {
   return undefined
 })
 
+const hasPermissionToView = (permission) => {
+  return permission.includes(loggedInAccount.value?.role)
+}
+
 const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
   {
     type: 'SidebarItem',
@@ -42,6 +45,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     route: { name: 'Dashboard' },
     icon: RocketLaunchIcon,
     disabled: veranstaltungId.value === undefined,
+    visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
   },
   {
     type: 'SidebarItem',
@@ -50,6 +54,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     icon: UserGroupIcon,
     showChildren: false,
     disabled: veranstaltungId.value === undefined,
+    visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
     children: [
       {
         type: 'SidebarItem',
@@ -57,6 +62,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
         route: { name: 'VeranstaltungAnmeldungenCrew', params: { veranstaltungId: veranstaltungId.value } },
         icon: UserGroupIcon,
         disabled: true,
+        visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
       },
       {
         type: 'SidebarItem',
@@ -64,6 +70,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
         route: { name: 'VeranstaltungAnmeldungenGliederungen', params: { veranstaltungId: veranstaltungId.value } },
         icon: UserGroupIcon,
         disabled: true,
+        visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
       },
       {
         type: 'SidebarItem',
@@ -71,6 +78,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
         route: { name: 'VeranstaltungAnmeldungenTeilnehmende', params: { veranstaltungId: veranstaltungId.value } },
         icon: UserGroupIcon,
         disabled: veranstaltungId.value === undefined,
+        visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
       },
     ],
   },
@@ -80,6 +88,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     route: { name: 'VeranstaltungAuswertung', params: { veranstaltungId: veranstaltungId.value } },
     icon: ChartBarIcon,
     disabled: true,
+    visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
   },
   {
     type: 'SidebarItem',
@@ -87,6 +96,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     route: { name: 'VeranstaltungLageplan', params: { veranstaltungId: veranstaltungId.value } },
     icon: MapIcon,
     disabled: true,
+    visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
   },
   {
     type: 'SidebarItem',
@@ -94,15 +104,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     route: { name: 'VeranstaltungProgramm', params: { veranstaltungId: veranstaltungId.value } },
     icon: MegaphoneIcon,
     disabled: true,
-  },
-  { type: 'DividerItem', name: 'Verwaltung' },
-  { type: 'SidebarItem', name: 'Gliederungen', route: { name: 'Verwaltung Alle Gliederungen' }, icon: MapPinIcon },
-  {
-    type: 'SidebarItem',
-    name: 'Veranstaltungen',
-    route: { name: 'Verwaltung Alle Veranstaltungen' },
-    icon: CalendarDaysIcon,
-    badge: 'Neu',
+    visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
   },
   {
     type: 'SidebarItem',
@@ -110,14 +112,46 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     route: { name: 'VeranstaltungAusschreibungList', params: { veranstaltungId: veranstaltungId.value } },
     icon: CalendarDaysIcon,
     badge: 'Neu',
+    visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
   },
-  { type: 'SidebarItem', name: 'Personen', route: { name: 'Verwaltung Alle Benutzer' }, icon: UsersIcon },
-  { type: 'SidebarItem', name: 'Orte', route: { name: 'Verwaltung Alle Orte' }, icon: GlobeEuropeAfricaIcon },
-  { type: 'DividerItem', name: 'Entwicklung' },
-  { type: 'SidebarItem', name: 'Komponenten', route: { name: 'Komponenten' }, icon: CubeIcon },
-  { type: 'SidebarItem', name: 'Dokumentation', route: 'http://127.0.0.1:5173/', icon: BookOpenIcon },
-  // { name: 'Unterbringung', route: '', icon: HomeIcon },
-  // { name: 'Finanzen', route: '', icon: BanknotesIcon },
+  { type: 'DividerItem', name: 'Verwaltung', visible: hasPermissionToView(['ADMIN']) },
+  {
+    type: 'SidebarItem',
+    name: 'Gliederungen',
+    route: { name: 'Verwaltung Alle Gliederungen' },
+    icon: MapPinIcon,
+    visible: hasPermissionToView(['ADMIN']),
+  },
+  {
+    type: 'SidebarItem',
+    name: 'Veranstaltungen',
+    route: { name: 'Verwaltung Alle Veranstaltungen' },
+    icon: CalendarDaysIcon,
+    badge: 'Neu',
+    visible: hasPermissionToView(['ADMIN']),
+  },
+  {
+    type: 'SidebarItem',
+    name: 'Personen',
+    route: { name: 'Verwaltung Alle Benutzer' },
+    icon: UsersIcon,
+    visible: hasPermissionToView(['ADMIN']),
+  },
+  {
+    type: 'SidebarItem',
+    name: 'Orte',
+    route: { name: 'Verwaltung Alle Orte' },
+    icon: GlobeEuropeAfricaIcon,
+    visible: hasPermissionToView(['ADMIN']),
+  },
+  { type: 'DividerItem', name: 'Entwicklung', visible: hasPermissionToView(['ADMIN']) },
+  {
+    type: 'SidebarItem',
+    name: 'Komponenten',
+    route: { name: 'Komponenten' },
+    icon: CubeIcon,
+    visible: hasPermissionToView(['ADMIN']),
+  },
 ])
 </script>
 
@@ -131,6 +165,8 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
       :navigation="navigation"
       class="grow"
     />
+
+    {{ loggedInAccount }}
 
     <!-- User Management -->
     <div class="flex items-center space-x-3 py-4 border-t border-gray-300">

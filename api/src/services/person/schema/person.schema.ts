@@ -12,7 +12,7 @@ import {
 } from '@prisma/client'
 import { z } from 'zod'
 
-import { addressSchema, findAddress } from '../../address/schema/address.schema'
+import { addressSchema, createOrUpdateAddress } from '../../address/schema/address.schema'
 import { kontaktSchema, type TKontaktSchema } from '../../kontakt/schema/kontakt.schema'
 
 export type TPersonSchema = z.infer<typeof personSchema>
@@ -22,8 +22,9 @@ export const personSchema = z.strictObject({
   birthday: z.string().datetime(),
   gender: z.nativeEnum(Gender),
   email: z.string().email(),
+  gliederungId: z.number(),
   telefon: z.string(),
-  addresse: addressSchema,
+  address: addressSchema,
   essgewohnheit: z.nativeEnum(Essgewohnheit),
   nahrungsmittelIntoleranzen: z.array(z.nativeEnum(NahrungsmittelIntoleranz)),
   weitereIntoleranzen: z.array(z.string()).optional(),
@@ -40,13 +41,14 @@ export const personSchema = z.strictObject({
 export async function getPersonCreateData(
   input: z.infer<typeof personSchema>
 ): Promise<Prisma.PersonCreateArgs['data']> {
-  const existingAddress = await findAddress(input.addresse)
+  const addressId = await createOrUpdateAddress(input.address)
 
   return {
     firstname: input.firstname,
     lastname: input.lastname,
     birthday: input.birthday,
     gender: input.gender,
+    gliederungId: input.gliederungId,
     essgewohnheit: input.essgewohnheit,
     nahrungsmittelIntoleranzen: input.nahrungsmittelIntoleranzen,
     weitereIntoleranzen: input.weitereIntoleranzen,
@@ -56,19 +58,7 @@ export async function getPersonCreateData(
     qualifikationenSanitaeter: input.qualifikationenSanitaeter,
     qualifikationenFunk: input.qualifikationenFunk,
     konfektionsgroesse: input.konfektionsgroesse,
-    address: {
-      connectOrCreate: {
-        create: {
-          zip: input.addresse.zip!,
-          city: input.addresse.city!,
-          street: input.addresse.street!,
-          number: input.addresse.number!,
-        },
-        where: {
-          id: existingAddress?.id,
-        },
-      },
-    },
+    addressId: addressId,
     notfallkontakte: {
       create: getNotfallkontakte(input.notfallkontaktPersonen, input.erziehungsberechtigtePersonen),
     },

@@ -8,7 +8,7 @@ import { defineProcedure } from '../../types/defineProcedure'
 export const unterveranstaltungGliederungCreateProcedure = defineProcedure({
   key: 'gliederungCreate',
   method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: ['GLIEDERUNG_ADMIN'] },
+  protection: { type: 'restrictToRoleIds', roleIds: ['GLIEDERUNG_ADMIN', 'ADMIN'] },
   inputSchema: z.strictObject({
     data: z.strictObject({
       veranstaltungId: z.number().int(),

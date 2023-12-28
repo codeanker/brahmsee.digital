@@ -8,7 +8,7 @@ import { defineQuery } from '../../types/defineQuery'
 export const unterveranstaltungGliederungListProcedure = defineProcedure({
   key: 'gliederungList',
   method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: ['GLIEDERUNG_ADMIN'] },
+  protection: { type: 'restrictToRoleIds', roleIds: ['GLIEDERUNG_ADMIN', 'ADMIN'] },
   inputSchema: defineQuery({
     filter: z.strictObject({
       name: z.string().optional(),

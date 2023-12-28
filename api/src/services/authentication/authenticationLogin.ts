@@ -19,6 +19,7 @@ export const authenticationLoginProcedure = defineProcedure({
         id: authResult.user.id,
       },
       select: {
+        role: true,
         person: {
           select: {
             id: true,
@@ -34,6 +35,7 @@ export const authenticationLoginProcedure = defineProcedure({
       user: {
         ...authResult.user,
         person,
+        role: account.role,
       },
     }
   },

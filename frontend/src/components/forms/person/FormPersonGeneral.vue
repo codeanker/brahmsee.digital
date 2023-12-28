@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { useAsyncState } from '@vueuse/core'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 import { apiClient } from '@/api'
 import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
-import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
 import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import { reAuthenticate } from '@/composables/useAuthentication'
@@ -25,11 +24,9 @@ const fill = (person) => {
   return {
     firstname: person?.firstname,
     lastname: person?.lastname,
-    email: person?.email,
-    password: person?.password ?? '',
-    gender: person?.gender || 'null',
-    birthday: person?.birthday === undefined ? 'null' : dayjs(person.birthday).toDate(),
-    role: 'ADMIN', // TODO: Select
+    gliederungId: person?.gliederungId,
+    gender: person?.gender,
+    birthday: person?.birthday === undefined ? 'null' : dayjs(person.birthday).toDate().toISOString(),
   }
 }
 
@@ -85,6 +82,17 @@ const handle = async (event: Event) => {
       break
   }
 }
+
+const { state: gliederungen } = useAsyncState(async () => {
+  return apiClient.gliederung.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
+}, [])
+
+const gliederungOptions = computed(() => {
+  return gliederungen.value.map((gliederung) => ({
+    label: gliederung.name,
+    value: gliederung.id,
+  }))
+})
 </script>
 
 <template>
@@ -141,23 +149,12 @@ const handle = async (event: Event) => {
         />
       </div>
 
-      <div class="col-span-full">
-        <BasicInput
-          v-model="personCopy.email"
-          label="Email"
-          name="email"
-          type="email"
-          required
-        />
-      </div>
-
-      <div
-        v-if="mode === 'create'"
-        class="col-span-full"
-      >
-        <BasicPassword
-          v-model="personCopy.password"
-          label="Passwort"
+      <div class="sm:col-span-3">
+        <BasicSelect
+          v-model="personCopy.gliederungId"
+          label="Gliederung"
+          name="gliederungId"
+          :options="gliederungOptions"
           required
         />
       </div>

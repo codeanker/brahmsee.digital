@@ -11,10 +11,10 @@ export const personVerwaltungPatchProcedure = defineProcedure({
   inputSchema: z.strictObject({
     id: z.number().int(),
     data: z.strictObject({
-      email: z.string(),
       firstname: z.string(),
       lastname: z.string(),
-      birthday: z.string().nullable(),
+      birthday: z.string(),
+      gliederungId: z.number().int().nullable(),
       gender: z.nativeEnum(Gender).nullable(),
     }),
   }),

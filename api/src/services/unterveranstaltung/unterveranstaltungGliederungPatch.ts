@@ -7,10 +7,10 @@ import { defineProcedure } from '../../types/defineProcedure'
 export const unterveranstaltungGliederungPatchProcedure = defineProcedure({
   key: 'gliederungPatch',
   method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: ['GLIEDERUNG_ADMIN'] },
+  protection: { type: 'restrictToRoleIds', roleIds: ['GLIEDERUNG_ADMIN', 'ADMIN'] },
   inputSchema: z.strictObject({
+    id: z.number().int(),
     data: z.strictObject({
-      unterveranstaltungId: z.number().int(),
       maxTeilnehmende: z.number().int().optional(),
       teilnahmegebuehr: z.number({ description: 'In Cent' }).int().optional(),
       meldebeginn: z.date().optional(),
@@ -22,7 +22,7 @@ export const unterveranstaltungGliederungPatchProcedure = defineProcedure({
     const gliederung = await getGliederungRequireAdmin(options.ctx.accountId)
     return prisma.unterveranstaltung.update({
       where: {
-        id: options.input.data.unterveranstaltungId,
+        id: options.input.id,
         gliederungId: gliederung.id,
       },
       data: options.input.data,

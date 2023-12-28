@@ -19,6 +19,9 @@ export const personVerwaltungGetProcedure = defineProcedure({
         id: true,
         firstname: true,
         lastname: true,
+        gliederungId: true,
+        gender: true,
+        birthday: true,
       },
     })
   },
