@@ -2,13 +2,11 @@
 import { TrashIcon } from '@heroicons/vue/24/outline'
 import { ref, watch } from 'vue'
 
-import BasicCheckbox from '@/components/BasicInputs/BasicCheckbox.vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import type { TKontaktSchema } from '@codeanker/api/src/services/kontakt/schema/kontakt.schema'
 
 const props = defineProps<{
   modelValue: Partial<TKontaktSchema>
-  showNotfallKontakt?: boolean
   showRemoveOption?: boolean
 }>()
 
@@ -37,27 +35,24 @@ watch(
       v-model="kontakt.firstname"
       label="Vorname"
       placeholder="Vorname eingeben"
+      required
     />
     <BasicInput
       v-model="kontakt.lastname"
       label="Nachname"
       placeholder="Nachname eingeben"
+      required
     />
     <BasicInput
       v-model="kontakt.telefon"
       label="Mobiltelefonnummer"
       placeholder="Mobiltelefonnummer eingeben"
+      required
     />
     <div
       class="flex items-end h-full"
       :class="{ 'justify-end': showRemoveOption }"
     >
-      <BasicCheckbox
-        v-if="showNotfallKontakt"
-        v-model="kontakt.isNotfallKontakt"
-        label="Ist ein Notfallkontakt"
-        class="mb-2"
-      />
       <a
         v-if="showRemoveOption"
         class="text-red-600 hover:underline mb-2 cursor-pointer text-sm flex items-center"

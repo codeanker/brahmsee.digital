@@ -18,7 +18,7 @@ const password = ref({
 })
 
 const route = useRoute()
-const { state: person, execute: fetchUser } = useAsyncState(async () => {
+const { state: person } = useAsyncState(async () => {
   const personId = route.params.personId as string
   const result = await apiClient.person.verwaltungGet.query({ id: parseInt(personId) })
   isSelf.value = result?.id === loggedInAccount.value?.id
@@ -50,12 +50,9 @@ const { execute: deleteUser, error: errorDelete } = useAsyncState(
   <div class="mt-10">
     <h2 class="text-base font-semibold leading-7">Stammdaten</h2>
     <FormPersonGeneral
-      v-if="person !== null"
-      :person="person"
-      :is-self="isSelf"
-      class="md:col-span-2"
-      mode="update"
-      @update="() => fetchUser()"
+      :loading="true"
+      :error="{ name: 'moin', message: 'oin' }"
+      mode="create"
     />
   </div>
 

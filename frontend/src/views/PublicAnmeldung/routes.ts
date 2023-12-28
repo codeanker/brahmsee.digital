@@ -23,6 +23,16 @@ const routesAusschreibungen: Route[] = [
           hidePublicHeaderBgOnMobile: true,
         },
       },
+      {
+        name: 'Public Anmeldung Result',
+        path: '/ausschreibung/:ausschreibungId/anmeldung/result',
+        component: () => import('./PublicAnmeldungResultView.vue'),
+        meta: {
+          public: true,
+          hidePublicHeaderBgOnMobile: true,
+          useFullheight: true,
+        },
+      },
     ],
   },
 ]
