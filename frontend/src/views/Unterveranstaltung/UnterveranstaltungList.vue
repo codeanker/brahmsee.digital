@@ -3,6 +3,7 @@ import { useAsyncState } from '@vueuse/core'
 import { useRouter } from 'vue-router'
 
 import { apiClient } from '@/api'
+import { loggedInAccount } from '@/composables/useAuthentication'
 
 const router = useRouter()
 
@@ -45,13 +46,26 @@ function formatDate(indate) {
               scope="col"
               class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
             >
+              Veranstaltung
+            </th>
+            <th
+              v-if="loggedInAccount?.role === 'ADMIN'"
+              scope="col"
+              class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+            >
+              Gliederung
+            </th>
+            <th
+              scope="col"
+              class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+            >
               Meldeschluss
             </th>
             <th
               scope="col"
               class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
             >
-              Teilnahmegebühr
+              Gebühr
             </th>
             <th
               scope="col"
@@ -76,6 +90,15 @@ function formatDate(indate) {
           >
             <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
               <div class="text-gray-900">{{ unterveranstaltung.id }}</div>
+            </td>
+            <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
+              <div class="text-gray-900">{{ unterveranstaltung.veranstaltung.name }}</div>
+            </td>
+            <td
+              v-if="loggedInAccount?.role === 'ADMIN'"
+              class="whitespace-nowrap py-5 pl-4 pr-3 text-sm"
+            >
+              <div class="text-gray-900">{{ unterveranstaltung.gliederung.name }}</div>
             </td>
             <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
               <div class="font-medium text-gray-900">
