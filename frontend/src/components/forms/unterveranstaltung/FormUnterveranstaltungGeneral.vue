@@ -22,25 +22,33 @@ const props = defineProps<{
   onUpdate?: () => void
 }>()
 
-const fill = (unterveranstaltung, veranstaltungId) => {
+const fill = (unterveranstaltung) => {
   return {
     beschreibung: unterveranstaltung?.beschreibung,
     maxTeilnehmende: unterveranstaltung?.maxTeilnehmende,
     meldebeginn: unterveranstaltung?.meldebeginn,
     meldeschluss: unterveranstaltung?.meldeschluss,
     teilnahmegebuehr: unterveranstaltung?.teilnahmegebuehr,
-    veranstaltungId: parseInt(veranstaltungId),
+    veranstaltungId: unterveranstaltung?.veranstaltung?.id,
   }
 }
 
 const unterveranstaltungId = parseInt(props.unterveranstaltung?.id as string)
-const unterveranstaltungCopy = ref(fill(props.unterveranstaltung, props.veranstaltungId))
+const unterveranstaltungCopy = ref(fill(props.unterveranstaltung))
+
+if (props.mode === 'create') {
+  unterveranstaltungCopy.value.veranstaltungId = props?.veranstaltungId
+}
 
 const { state: veranstaltungen } = useAsyncState(async () => {
   if (loggedInAccount.value?.role === 'ADMIN')
     return apiClient.veranstaltung.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
   return apiClient.veranstaltung.gliederungList.query()
 }, [])
+
+// const { state: gliederungen } = useAsyncState(async () => {
+//   return apiClient.gliederung.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
+// }, [])
 
 const {
   execute: createUnterveranstaltung,
@@ -122,6 +130,18 @@ const handle = async () => {
           "
         />
       </div>
+      <!-- <div
+        v-if="mode === 'create' && loggedInAccount?.role === 'ADMIN'"
+        class="lg:col-span-full"
+      >
+        <BasicSelect
+          v-model="unterveranstaltungCopy.gliederungId"
+          required
+          label="Gliederung"
+          placeholder="Gliederung"
+          :options="gliederungen.map((gliederung) => ({ label: gliederung.name, value: gliederung.id }))"
+        />
+      </div> -->
       <div class="lg:col-span-3">
         <BasicDatepicker
           v-model="unterveranstaltungCopy.meldebeginn"

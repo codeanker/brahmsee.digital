@@ -113,7 +113,6 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     name: 'Ausschreibungen',
     route: { name: 'UnterveranstaltungList', params: { veranstaltungId: veranstaltungId.value } },
     icon: MegaphoneIcon,
-    badge: 'Neu',
     visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
   },
   { type: 'DividerItem', name: 'Verwaltung', visible: hasPermissionToView(['ADMIN']) },
@@ -129,7 +128,6 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     name: 'Veranstaltungen',
     route: { name: 'Verwaltung Alle Veranstaltungen' },
     icon: CalendarDaysIcon,
-    badge: 'Neu',
     visible: hasPermissionToView(['ADMIN']),
   },
   {
