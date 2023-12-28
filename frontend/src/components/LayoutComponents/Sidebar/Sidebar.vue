@@ -166,8 +166,6 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
       class="grow"
     />
 
-    {{ loggedInAccount }}
-
     <!-- User Management -->
     <div class="flex items-center space-x-3 py-4 border-t border-gray-300">
       <div class="w-10 h-10">
