@@ -24,6 +24,7 @@ export const unterveranstaltungGliederungGetProcedure = defineProcedure({
         meldeschluss: true,
         veranstaltung: {
           select: {
+            id: true,
             name: true,
             beginn: true,
             ende: true,

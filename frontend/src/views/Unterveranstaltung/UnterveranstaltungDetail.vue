@@ -7,9 +7,9 @@ import Button from '@/components/UIComponents/Button.vue'
 
 const router = useRoute()
 
-const { state: ausschreibung } = useAsyncState(async () => {
+const { state: unterveranstaltung } = useAsyncState(async () => {
   return apiClient.unterveranstaltung.verwaltungGet.query({
-    id: parseInt(router.params.ausschreibungId as string),
+    id: parseInt(router.params.unterveranstaltungId as string),
   })
 }, undefined)
 </script>
@@ -17,7 +17,7 @@ const { state: ausschreibung } = useAsyncState(async () => {
 <template>
   <div>
     <h5>Veranstaltungen Detail</h5>
-    {{ ausschreibung }}
-    <Button :to="{ name: 'VeranstaltungAusschreibungEdit' }">Bearbeiten</Button>
+    {{ unterveranstaltung }}
+    <Button :to="{ name: 'UnterveranstaltungEdit' }">Bearbeiten</Button>
   </div>
 </template>

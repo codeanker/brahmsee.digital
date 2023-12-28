@@ -11,6 +11,7 @@ import {
   CubeIcon,
   CalendarDaysIcon,
   RocketLaunchIcon,
+  PuzzlePieceIcon,
 } from '@heroicons/vue/24/outline'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
@@ -102,16 +103,16 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     type: 'SidebarItem',
     name: 'Programm',
     route: { name: 'VeranstaltungProgramm', params: { veranstaltungId: veranstaltungId.value } },
-    icon: MegaphoneIcon,
+    icon: PuzzlePieceIcon,
     disabled: true,
     visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
   },
+  { type: 'DividerItem', name: 'Ausschreibung', visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']) },
   {
     type: 'SidebarItem',
     name: 'Ausschreibungen',
-    route: { name: 'VeranstaltungAusschreibungList', params: { veranstaltungId: veranstaltungId.value } },
-    icon: CalendarDaysIcon,
-    badge: 'Neu',
+    route: { name: 'UnterveranstaltungList', params: { veranstaltungId: veranstaltungId.value } },
+    icon: MegaphoneIcon,
     visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
   },
   { type: 'DividerItem', name: 'Verwaltung', visible: hasPermissionToView(['ADMIN']) },
@@ -127,7 +128,6 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     name: 'Veranstaltungen',
     route: { name: 'Verwaltung Alle Veranstaltungen' },
     icon: CalendarDaysIcon,
-    badge: 'Neu',
     visible: hasPermissionToView(['ADMIN']),
   },
   {

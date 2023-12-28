@@ -6,6 +6,7 @@ import routesDevelopment from '@/views/Development/routes'
 import routesAuth from '@/views/Login/routes'
 import routesPublicAnmeldung from '@/views/PublicAnmeldung/routes'
 import routesRegistrierung from '@/views/Registrierung/routes'
+import { routesUnterveranstaltung } from '@/views/Unterveranstaltung/routes'
 import routesVeranstaltungen from '@/views/Veranstaltungen/routes'
 import routesVerwaltung from '@/views/Verwaltung/routes'
 
@@ -27,6 +28,7 @@ const routes: Route[] = [
       ...routesVeranstaltungen,
       ...routesVerwaltung,
       ...routesDevelopment,
+      ...routesUnterveranstaltung,
       {
         name: 'Dashboard',
         path: '/dashboard',

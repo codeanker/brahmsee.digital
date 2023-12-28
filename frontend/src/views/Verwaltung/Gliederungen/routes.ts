@@ -26,7 +26,7 @@ const gliederungRoutes: Route[] = [
         },
       },
       {
-        name: 'Verwaltung Gliederung erstellen',
+        name: 'Verwaltung Gliederung Erstellen',
         path: 'erstellen',
         component: () => import('./GliederungCreate.vue'),
         meta: {
