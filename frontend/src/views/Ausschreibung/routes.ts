@@ -27,7 +27,7 @@ export const routesVeranstaltungAusschreibung: Route[] = [
       },
       {
         name: 'VeranstaltungAusschreibungCreate',
-        path: 'create',
+        path: 'create/:veranstaltungId?',
         component: () => import('./VeranstaltungAusschreibungCreate.vue'),
         meta: {
           breadcrumbs: [

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 
 import authenticationGuard from './authenticationGuard'
 
+import { routesVeranstaltungAusschreibung } from '@/views/Ausschreibung/routes'
 import routesDevelopment from '@/views/Development/routes'
 import routesAuth from '@/views/Login/routes'
 import routesPublicAnmeldung from '@/views/PublicAnmeldung/routes'
@@ -27,6 +28,7 @@ const routes: Route[] = [
       ...routesVeranstaltungen,
       ...routesVerwaltung,
       ...routesDevelopment,
+      ...routesVeranstaltungAusschreibung,
       {
         name: 'Dashboard',
         path: '/dashboard',

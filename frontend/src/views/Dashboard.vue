@@ -2,16 +2,18 @@
 import { useAsyncState } from '@vueuse/core'
 
 import { apiClient } from '@/api'
+import { loggedInAccount } from '@/composables/useAuthentication'
 
 const { state: veranstaltungenList } = useAsyncState(async () => {
-  return apiClient.veranstaltung.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
+  if (loggedInAccount.value?.role === 'ADMIN')
+    return apiClient.veranstaltung.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
+  return apiClient.veranstaltung.gliederungList.query()
 }, [])
 </script>
 
 <template>
   <div class="dashboard">
     <h5>Aktuelle Veranstaltungen</h5>
-
     <div class="mx-auto mt-16 max-w-7xlsm:mt-32">
       <div
         class="isolate mx-auto mt-10 grid max-w-md grid-cols-1 gap-8 md:max-w-2xl lg:grid-cols-2 lg:max-w-4xl xl:mx-0 xl:max-w-none"
@@ -29,9 +31,13 @@ const { state: veranstaltungenList } = useAsyncState(async () => {
             <span class="text-4xl font-bold tracking-tight text-gray-900">10</span>
             <span class="text-sm font-semibold leading-6 text-gray-600">/500 Plätzen</span>
           </p>
-          <a
+          <router-link
+            :to="{
+              name: 'VeranstaltungAusschreibungCreate',
+              params: { veranstaltungId: veranstaltung.id.toString() },
+            }"
             class="cursor-pointer mt-6 block rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 text-primary-600 ring-1 ring-inset ring-primary-200 hover:ring-primary-300"
-            >Ausschreibung erstellen</a
+            >Ausschreibung erstellen</router-link
           >
           <ul
             role="list"
