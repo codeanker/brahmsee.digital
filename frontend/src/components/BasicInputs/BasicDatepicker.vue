@@ -26,6 +26,7 @@ const props = withDefaults(
     flow?: typeof VueDatePicker.flow
     utc?: typeof VueDatePicker.utc
     vertical?: boolean
+    required?: boolean
     modelAuto?: boolean
     timezone?: string
     presetRanges?: typeof VueDatePicker.presetRanges
@@ -100,6 +101,7 @@ const { model, errorMessage } = useValidationModel(props, emit)
         :enable-time-picker="timePicker || enableTimePicker"
         :format="format"
         :model-type="modelType"
+        :required="required"
       />
     </BasicFormGroup>
   </div>
