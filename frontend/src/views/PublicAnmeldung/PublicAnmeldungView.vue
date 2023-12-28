@@ -33,10 +33,7 @@ const {
       gliederungId: Number(unterveranstaltung.value?.gliederung.id),
     },
   })
-  router.push({
-    name: 'public-anmeldung-result',
-    params: { ausschreibungId: route.params.ausschreibungId },
-  })
+  router.push('/ausschreibung/' + route.params.ausschreibungId + '/anmeldung/result')
 }, undefined)
 
 fetchUnterveranstaltung()

@@ -43,12 +43,7 @@ fetchUnterveranstaltung()
           <Button
             class="w-full flex justify-center"
             color="secondary"
-            @click="
-              router.push({
-                name: 'public-unterveranstaltung',
-                params: { unterveranstaltungId: unterveranstaltung.id },
-              })
-            "
+            @click="router.push('/ausschreibung/' + route.params.ausschreibungId + '/anmeldung')"
           >
             Weitere Person anmelden
           </Button>
