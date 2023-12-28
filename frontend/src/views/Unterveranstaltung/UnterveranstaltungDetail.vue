@@ -16,7 +16,7 @@ const { state: unterveranstaltung } = useAsyncState(async () => {
 
 <template>
   <div>
-    <h5>Veranstaltungen Detail</h5>
+    <h5>Ausschreibung Detail</h5>
     {{ unterveranstaltung }}
     <Button :to="{ name: 'UnterveranstaltungEdit' }">Bearbeiten</Button>
   </div>
