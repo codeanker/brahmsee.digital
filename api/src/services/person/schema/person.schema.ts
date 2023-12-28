@@ -19,7 +19,7 @@ export type TPersonSchema = z.infer<typeof personSchema>
 export const personSchema = z.strictObject({
   firstname: z.string(),
   lastname: z.string(),
-  birthday: z.string().datetime(),
+  birthday: z.date(),
   gender: z.nativeEnum(Gender),
   email: z.string().email(),
   gliederungId: z.number(),

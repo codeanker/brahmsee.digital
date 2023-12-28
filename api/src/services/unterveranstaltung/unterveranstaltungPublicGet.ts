@@ -40,6 +40,7 @@ export const unterveranstaltungPublicGetProcedure = defineProcedure({
         },
         gliederung: {
           select: {
+            id: true,
             name: true,
           },
         },
