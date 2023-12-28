@@ -19,6 +19,11 @@ fetchPersons()
     <p class="mt-8 text-sm text-gray-500">
       <b>Tipp</b>: Zum Bearbeiten eines Nutzers die entsprechende Zeile anklicken.
     </p>
+    <RouterLink
+      class="text-primary-600"
+      :to="{ name: 'Verwaltung Benutzer erstellen' }"
+      >Benutzer erstellen</RouterLink
+    >
     <table class="min-w-full divide-y divide-gray-300">
       <thead>
         <tr>
