@@ -25,7 +25,7 @@ export const veranstaltungGliederungListProcedure = defineProcedure({
       },
     })
 
-    await prisma.veranstaltung.findMany({
+    return await prisma.veranstaltung.findMany({
       where: {
         OR: [
           {
