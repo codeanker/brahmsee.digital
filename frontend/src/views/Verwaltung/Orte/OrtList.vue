@@ -13,7 +13,9 @@ const { state: ortenList } = useAsyncState(async () => {
   <div>
     <h5>Orte</h5>
     <div class="flow-root">
-      <p class="mt-8 text-sm text-gray-500"><b>Tipp</b>: Zum Bearbeiten einer Ort die entsprechende Zeile anklicken.</p>
+      <p class="mt-8 text-sm text-gray-500">
+        <b>Tipp</b>: Zum Bearbeiten eines Ortes die entsprechende Zeile anklicken.
+      </p>
       <RouterLink
         class="text-primary-600"
         :to="{ name: 'Verwaltung Ort erstellen' }"
