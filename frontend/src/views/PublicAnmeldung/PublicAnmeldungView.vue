@@ -31,7 +31,7 @@ const anmeldung = ref<Partial<RouterInput['anmeldung']['publicCreate']['data']>>
   gender: undefined,
   email: undefined,
   telefon: undefined,
-  addresse: {
+  address: {
     street: '',
     number: '',
     zip: '',
@@ -132,28 +132,28 @@ const tempWeitereInteloranzen = ref('')
     </div>
     <hr class="my-5" />
     <div
-      v-if="anmeldung.addresse"
+      v-if="anmeldung.address"
       class="grid grid-flow-row lg:grid-cols-2 gap-5"
     >
       <div class="col-span-2 flex items-end space-x-5">
         <BasicInput
-          v-model="anmeldung.addresse.street"
+          v-model="anmeldung.address.street"
           label="Straße und Hausnummer"
           placeholder="Straße eingeben"
           class="grow"
         />
         <BasicInput
-          v-model="anmeldung.addresse.number"
+          v-model="anmeldung.address.number"
           placeholder="Hausnummer eingeben"
         />
       </div>
       <BasicInput
-        v-model="anmeldung.addresse.zip"
+        v-model="anmeldung.address.zip"
         label="Postleitzahl"
         placeholder="Postleitzahl eingeben"
       />
       <BasicInput
-        v-model="anmeldung.addresse.city"
+        v-model="anmeldung.address.city"
         label="Ort"
         placeholder="Ort eingeben"
       />
