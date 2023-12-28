@@ -33,7 +33,7 @@ const { state: veranstaltungenList } = useAsyncState(async () => {
           </p>
           <router-link
             :to="{
-              name: 'VeranstaltungAusschreibungCreate',
+              name: 'VeranstaltungUnterveranstaltungCreate',
               params: { veranstaltungId: veranstaltung.id.toString() },
             }"
             class="cursor-pointer mt-6 block rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 text-primary-600 ring-1 ring-inset ring-primary-200 hover:ring-primary-300"

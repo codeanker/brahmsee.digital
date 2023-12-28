@@ -1,22 +1,22 @@
 import type { Route } from '@/router'
 
-export const routesVeranstaltungAusschreibung: Route[] = [
+export const routesVeranstaltungUnterveranstaltung: Route[] = [
   {
     name: 'VeranstaltungAuschreibungen',
-    path: 'ausschreibung',
-    redirect: { name: 'VeranstaltungAusschreibungList' },
+    path: 'unterveranstaltung',
+    redirect: { name: 'VeranstaltungUnterveranstaltungList' },
     meta: {
       breadcrumbs: [
         {
-          text: 'Ausschreibung',
+          text: 'Ausschreibungen',
         },
       ],
     },
     children: [
       {
-        name: 'VeranstaltungAusschreibungList',
+        name: 'VeranstaltungUnterveranstaltungList',
         path: 'list',
-        component: () => import('./VeranstaltungAusschreibungList.vue'),
+        component: () => import('./VeranstaltungUnterveranstaltungList.vue'),
         meta: {
           breadcrumbs: [
             {
@@ -26,9 +26,9 @@ export const routesVeranstaltungAusschreibung: Route[] = [
         },
       },
       {
-        name: 'VeranstaltungAusschreibungCreate',
+        name: 'VeranstaltungUnterveranstaltungCreate',
         path: 'create/:veranstaltungId?',
-        component: () => import('./VeranstaltungAusschreibungCreate.vue'),
+        component: () => import('./VeranstaltungUnterveranstaltungCreate.vue'),
         meta: {
           breadcrumbs: [
             {
@@ -38,9 +38,9 @@ export const routesVeranstaltungAusschreibung: Route[] = [
         },
       },
       {
-        name: 'VeranstaltungAusschreibungEdit',
-        path: ':ausschreibungId/edit',
-        component: () => import('./VeranstaltungAusschreibungEdit.vue'),
+        name: 'VeranstaltungUnterveranstaltungEdit',
+        path: ':unterveranstaltungId/edit',
+        component: () => import('./VeranstaltungUnterveranstaltungEdit.vue'),
         meta: {
           breadcrumbs: [
             {
@@ -50,9 +50,9 @@ export const routesVeranstaltungAusschreibung: Route[] = [
         },
       },
       {
-        name: 'VeranstaltungAusschreibungDetail',
-        path: ':ausschreibungId',
-        component: () => import('./VeranstaltungAusschreibungDetail.vue'),
+        name: 'VeranstaltungUnterveranstaltungDetail',
+        path: ':unterveranstaltungId',
+        component: () => import('./VeranstaltungUnterveranstaltungDetail.vue'),
         meta: {
           breadcrumbs: [
             {
