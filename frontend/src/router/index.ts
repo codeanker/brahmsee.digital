@@ -32,7 +32,7 @@ const routes: Route[] = [
       {
         name: 'Dashboard',
         path: '/dashboard',
-        component: () => import('../views/Dashboard.vue'),
+        component: () => import('../views/Dashboard/Dashboard.vue'),
         meta: {
           breadcrumbs: [
             {

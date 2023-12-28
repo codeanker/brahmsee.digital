@@ -1,31 +1,23 @@
 import z from 'zod'
 
+import { getGliederungRequireAdmin } from '../../helpers/getGliederungRequireAdmin'
 import prisma from '../../prisma'
 import { defineProcedure } from '../../types/defineProcedure'
 
 export const veranstaltungGliederungListProcedure = defineProcedure({
   key: 'gliederungList',
   method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: ['GLIEDERUNG_ADMIN', 'ADMIN'] },
+  protection: { type: 'restrictToRoleIds', roleIds: ['GLIEDERUNG_ADMIN'] },
   inputSchema: z.string().optional(),
   async handler({ ctx }) {
-    const meineGliederungen = await prisma.gliederungToAccount.findMany({
-      where: {
-        accountId: ctx.accountId,
-      },
-      select: {
-        gliederungId: true,
-      },
-    })
+    const gliederung = await getGliederungRequireAdmin(ctx.accountId)
     const meineUnterveranstaltungen = await prisma.unterveranstaltung.findMany({
       where: {
-        gliederungId: {
-          in: meineGliederungen.map((g) => g.gliederungId),
-        },
+        gliederungId: gliederung.id,
       },
     })
 
-    return await prisma.veranstaltung.findMany({
+    const data = await prisma.veranstaltung.findMany({
       where: {
         OR: [
           {
@@ -48,5 +40,19 @@ export const veranstaltungGliederungListProcedure = defineProcedure({
         ],
       },
     })
+
+    return await Promise.all(
+      data.map(async (v) => {
+        const unterveranstaltung = await prisma.unterveranstaltung.findFirst({
+          where: {
+            veranstaltungId: v.id,
+          },
+        })
+        return {
+          data: v,
+          hasUnterveranstaltung: unterveranstaltung !== null,
+        }
+      })
+    )
   },
 })

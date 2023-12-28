@@ -19,6 +19,17 @@ async function createUser() {
       }
     }),
   })) as keyof typeof roleMapping
+
+  async function selectGliederung(): Promise<number> {
+    return await select({
+      message: 'Deine Gliederung',
+      choices: (await prisma.gliederung.findMany()).map((v) => ({
+        name: v.name,
+        value: v.id,
+      })),
+    })
+  }
+
   await prisma.account.create({
     data: await getAccountCreateData({
       email: email,
@@ -27,6 +38,7 @@ async function createUser() {
       password: password,
       roleId: roleId,
       isActiv: true,
+      adminInGliederungId: roleId === 'GLIEDERUNG_ADMIN' ? await selectGliederung() : undefined,
     }),
     select: {
       id: true,
