@@ -1,14 +1,15 @@
 <script setup lang="ts">
+import { FaceFrownIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState, formatDate } from '@vueuse/core'
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { apiClient } from '@/api'
-import CookieAgreement from '@/components/LayoutComponents/CookieAgreement.vue'
 import PublicFooter from '@/components/LayoutComponents/PublicFooter.vue'
 import PublicHeader from '@/components/LayoutComponents/PublicHeader.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import InfoList from '@/components/UIComponents/InfoList.vue'
+import Loading from '@/components/UIComponents/Loading.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -40,16 +41,23 @@ const keyInfos = computed<KeyInfo[]>(() => {
   }
 })
 
-const { state: unterveranstaltung, execute: fetchUnterveranstaltung } = useAsyncState(async () => {
+const {
+  state: unterveranstaltung,
+  execute: fetchUnterveranstaltung,
+  isLoading,
+} = useAsyncState(async () => {
   return apiClient.unterveranstaltung.publicGet.query({ id: Number(route.params.ausschreibungId) })
 }, undefined)
 fetchUnterveranstaltung()
 </script>
 
 <template>
-  <CookieAgreement />
-  <div class="lg:pb-10 lg:px-20 xl:px-28 2xl:px-40">
-    <template v-if="unterveranstaltung">
+  <!-- <CookieAgreement /> -->
+  <div class="lg:pb-10 lg:px-20 xl:px-28 2xl:px-40 flex flex-col h-full">
+    <div
+      v-if="unterveranstaltung && !isLoading"
+      class="grow"
+    >
       <!-- Header -->
       <PublicHeader :gliederung="unterveranstaltung.gliederung" />
       <div class="text-3xl font-medium mb-5">Ausschreibung {{ unterveranstaltung?.veranstaltung.name }}</div>
@@ -64,8 +72,23 @@ fetchUnterveranstaltung()
         @click="() => router.push('/ausschreibung/' + route.params.ausschreibungId + '/anmeldung')"
         >Jetzt anmelden</Button
       >
-    </template>
-    <template v-else> Keine Ausschreibung gefunden </template>
+    </div>
+    <div
+      v-else
+      class="grow flex flex-col items-center justify-center font-semibold"
+    >
+      <template v-if="isLoading">
+        <Loading
+          size="md"
+          class="mb-2"
+        />
+        Lade Daten...
+      </template>
+      <template v-else>
+        <FaceFrownIcon class="w-20 h-20 text-primary-500 mb-5" />
+        Keine Ausschreibung gefunden
+      </template>
+    </div>
     <PublicFooter />
   </div>
 </template>

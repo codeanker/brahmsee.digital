@@ -8,3 +8,5 @@ export const NahrungsmittelIntoleranzMapping = defineEnumMapping<NahrungsmittelI
   GLUTEN: { human: 'Gluten' },
   SCHWEIN: { human: 'Schweinefleisch' },
 })
+
+export type NahrungsmittelIntoleranzEnum = NahrungsmittelIntoleranz
