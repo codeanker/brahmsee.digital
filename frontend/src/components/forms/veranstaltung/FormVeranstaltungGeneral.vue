@@ -91,7 +91,6 @@ const { state: orte } = useAsyncState(async () => {
 </script>
 
 <template>
-  {{ veranstaltungCopy }}
   <ValidateForm @submit="handle">
     <div class="grid grid-cols-1 lg:grid-cols-6 gap-6">
       <div class="lg:col-span-full">
