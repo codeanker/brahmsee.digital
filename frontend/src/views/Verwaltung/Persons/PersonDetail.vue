@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ArrowLeftIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
@@ -8,10 +7,7 @@ import { apiClient } from '@/api'
 import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
 import FormPersonGeneral from '@/components/forms/person/FormPersonGeneral.vue'
 import Button from '@/components/UIComponents/Button.vue'
-import UserLogo from '@/components/UIComponents/UserLogo.vue'
 import { loggedInAccount, logout } from '@/composables/useAuthentication'
-
-const secondaryNavigation = [{ name: 'Account', href: '#', current: true }]
 
 const isSelf = ref(false)
 const password = ref({
@@ -49,118 +45,76 @@ const { execute: deleteUser, error: errorDelete } = useAsyncState(
 </script>
 
 <template>
-  <header class="border-b border-white/5">
-    <!-- Secondary navigation -->
-    <nav class="flex overflow-x-auto py-4">
-      <ul
-        role="list"
-        class="flex min-w-full flex-none gap-x-6 px-4 text-sm font-semibold leading-6 text-gray-400 sm:px-6 lg:px-8"
-      >
-        <li class="text-gray-600">
-          <router-link
-            :to="{ name: 'Verwaltung Alle Benutzer' }"
-            class="flex flex-row items-center gap-2"
-          >
-            <ArrowLeftIcon class="h-4 w-4" />
-            <span>Zurück</span>
-          </router-link>
-        </li>
-        <li
-          v-for="item in secondaryNavigation"
-          :key="item.name"
-        >
-          <a
-            :href="item.href"
-            :class="item.current ? 'border-b-2 border-indigo-500 text-indigo-500' : ''"
-            >{{ item.name }}</a
-          >
-        </li>
-      </ul>
-    </nav>
-  </header>
+  <h5>Person: {{ person?.firstname }} {{ person?.lastname }}</h5>
 
-  <!-- Settings forms -->
-  <div class="divide-y divide-white/5">
-    <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
-      <div>
-        <h2 class="text-base font-semibold leading-7">Profil Informationen</h2>
-        <p class="mt-1 text-sm leading-6 text-gray-400">Hier kannst du das Nutzerprofil bearbeiten.</p>
-        <div class="h-10 w-10">
-          <UserLogo
-            v-if="person !== null"
-            :name="person.firstname + ' ' + person.lastname"
+  <div class="mt-10">
+    <h2 class="text-base font-semibold leading-7">Stammdaten</h2>
+    <FormPersonGeneral
+      v-if="person !== null"
+      :person="person"
+      :is-self="isSelf"
+      class="md:col-span-2"
+      mode="update"
+      @update="() => fetchUser()"
+    />
+  </div>
+
+  <div class="mt-10">
+    <h2 class="text-base font-semibold leading-7">Passwort ändern</h2>
+    <p class="mt-1 text-sm leading-6 text-gray-500">Hier kann das Passwort des Accounts geändert werden.</p>
+
+    <div class="md:col-span-2">
+      <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+        <div
+          v-if="isSelf"
+          class="col-span-full"
+        >
+          <BasicPassword
+            v-model="password.password_old"
+            label="Aktuelles Passwort"
+            required
+          />
+        </div>
+
+        <div class="col-span-full">
+          <BasicPassword
+            v-model="password.password"
+            label="Neues Passwort"
+            required
+          />
+        </div>
+
+        <div class="col-span-full">
+          <BasicPassword
+            v-model="password.password_confirm"
+            label="Passwort bestätigen"
+            required
           />
         </div>
       </div>
 
-      <FormPersonGeneral
-        v-if="person !== null"
-        :person="person"
-        :is-self="isSelf"
-        class="md:col-span-2"
-        mode="update"
-        @update="() => fetchUser()"
-      />
-    </div>
-
-    <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
-      <div>
-        <h2 class="text-base font-semibold leading-7">Passwort ändern</h2>
-        <p class="mt-1 text-sm leading-6 text-gray-400">Hier kann das Passwort des Accounts geändert werden.</p>
-      </div>
-
-      <div class="md:col-span-2">
-        <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
-          <div
-            v-if="isSelf"
-            class="col-span-full"
-          >
-            <BasicPassword
-              v-model="password.password_old"
-              label="Aktuelles Passwort"
-              required
-            />
-          </div>
-
-          <div class="col-span-full">
-            <BasicPassword
-              v-model="password.password"
-              label="Neues Passwort"
-              required
-            />
-          </div>
-
-          <div class="col-span-full">
-            <BasicPassword
-              v-model="password.password_confirm"
-              label="Passwort bestätigen"
-              required
-            />
-          </div>
-        </div>
-
-        <div class="mt-8 flex gap-4">
-          <Button
-            color="primary"
-            @click="updatePassword"
-          >
-            Speichern
-          </Button>
-        </div>
-
-        <div
-          v-if="errorPassword"
-          class="bg-danger-400 mb-2 mt-5 rounded p-3 text-center text-white"
+      <div class="mt-8 flex gap-4">
+        <Button
+          color="primary"
+          :disabled="true"
+          @click="updatePassword"
         >
-          {{ errorPassword }}
-        </div>
+          Speichern
+        </Button>
+      </div>
+
+      <div
+        v-if="errorPassword"
+        class="bg-danger-400 mb-2 mt-5 rounded p-3 text-center text-white"
+      >
+        {{ errorPassword }}
       </div>
     </div>
 
-    <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+    <div class="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2">
       <div>
         <h2 class="text-base font-semibold leading-7">Account löschen</h2>
-        <p class="mt-1 text-sm leading-6 text-gray-400">
+        <p class="mt-1 text-sm leading-6 text-gray-500">
           Du benötigst diesen Account nicht mehr? Hier kannst Du das Konto löschen. Dieser Vorgang ist nicht rückgängig
           zu machen. Alle Informationen, die mit diesem Konto verbunden sind, werden dauerhaft gelöscht.
         </p>
@@ -170,6 +124,7 @@ const { execute: deleteUser, error: errorDelete } = useAsyncState(
         <Button
           v-if="!isSelf"
           color="danger"
+          :disabled="true"
           @click="deleteUser"
         >
           Ja, diesen Account löschen

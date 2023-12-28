@@ -23,7 +23,6 @@ const props = defineProps<{
 
 const fill = (person) => {
   return {
-    id: person?.id,
     firstname: person?.firstname,
     lastname: person?.lastname,
     email: person?.email,
@@ -34,6 +33,7 @@ const fill = (person) => {
   }
 }
 
+const personId = parseInt(props.person?.id as string)
 const personCopy = ref(fill(props.person) ?? { role: 'ADMIN' })
 
 const {
@@ -60,7 +60,7 @@ const {
   async () => {
     // @todo typing
     await apiClient.person.verwaltungPatch.mutate({
-      id: personCopy.value.id,
+      id: personId,
       data: personCopy.value as unknown as RouterInput['person']['verwaltungPatch']['data'],
     })
 
@@ -85,15 +85,11 @@ const handle = async (event: Event) => {
       break
   }
 }
-
-const reset = () => {
-  personCopy.value = props.person ?? {}
-}
 </script>
 
 <template>
   <form @submit="handle">
-    <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+    <div class="grid grid-cols-1 sm:grid-cols-6 gap-6">
       <div class="sm:col-span-3">
         <BasicInput
           v-model="personCopy.firstname"
@@ -169,19 +165,12 @@ const reset = () => {
 
     <div class="mt-8 flex gap-4">
       <Button
-        type="reset"
-        color="warning"
-        @click="reset"
-      >
-        Zurücksetzen
-      </Button>
-      <Button
         type="submit"
         color="primary"
         @click="handle"
       >
         <span v-if="!isLoadingCreate && !isLoadingUpdate">Speichern</span>
-        <span v-else><i class="fa-sharp fa-light fa-spinner-third fa-2xl"></i></span>
+        <span v-else>Loading...</span>
       </Button>
     </div>
 
