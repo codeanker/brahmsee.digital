@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { ChevronLeftIcon, PlusSmallIcon, CheckIcon } from '@heroicons/vue/24/outline'
+import { ChevronLeftIcon, PlusSmallIcon, CheckIcon, FaceFrownIcon } from '@heroicons/vue/24/outline'
+import { useAsyncState } from '@vueuse/core'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
+import { apiClient } from '@/api'
 import BasicCheckbox from '@/components/BasicInputs/BasicCheckbox.vue'
 import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
@@ -12,6 +14,7 @@ import PublicHeader from '@/components/LayoutComponents/PublicHeader.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import KontaktItem from '@/components/UIComponents/KontaktItem.vue'
+import Loading from '@/components/UIComponents/Loading.vue'
 import type { RouterInput } from '@codeanker/api'
 import { GenderMapping } from '@codeanker/api/src/enumMappings/'
 import { EssgewohnheitMapping } from '@codeanker/api/src/enumMappings/Essgewohnheit'
@@ -25,6 +28,7 @@ const route = useRoute()
 
 const anmeldung = ref<Partial<RouterInput['anmeldung']['publicCreate']['data']>>({
   unterveranstaltungId: Number(route.params.ausschreibungId),
+  gliederungId: undefined,
   firstname: undefined,
   lastname: undefined,
   birthday: undefined,
@@ -90,207 +94,271 @@ const toggleOption = (option) => {
 }
 
 const tempWeitereInteloranzen = ref('')
+
+const {
+  state: unterveranstaltung,
+  execute: fetchUnterveranstaltung,
+  isLoading,
+} = useAsyncState(async () => {
+  return apiClient.unterveranstaltung.publicGet.query({ id: Number(route.params.ausschreibungId) })
+}, undefined)
+fetchUnterveranstaltung()
+
+const {
+  execute: createAnmeldung,
+  error: errorCreate,
+  isLoading: isLoadingCreate,
+} = useAsyncState(
+  async () => {
+    await apiClient.anmeldung.publicCreate.mutate({
+      data: {
+        ...(anmeldung.value as RouterInput['anmeldung']['publicCreate']['data']),
+        erziehungsberechtigtePersonen: [erziehungsberechtigtePerson.value as TKontaktSchema],
+        notfallkontaktPersonen: [...(notfallkontaktPersonen.value as TKontaktSchema[])],
+        nahrungsmittelIntoleranzen:
+          nahrungsmittelIntoleranzen.value as RouterInput['anmeldung']['publicCreate']['data']['nahrungsmittelIntoleranzen'],
+        weitereIntoleranzen: weitereIntoleranzen.value,
+      },
+    })
+  },
+  null,
+  { immediate: false }
+)
 </script>
 
 <template>
-  <div
-    v-if="anmeldung"
-    class="lg:py-10 lg:px-20 xl:px-28 2xl:px-40"
-  >
-    <!-- Header -->
-    <PublicHeader />
-    <Button
-      class="mb-10"
-      color="secondary"
-      @click="router.back()"
-      ><ChevronLeftIcon class="h-5 mr-2" />Zurück zur Aussschreibung</Button
-    >
-    <div class="text-3xl font-medium">Anmeldung</div>
-    <div class="mb-5">Zum Landeskindertreffen am Brahmsee 2023</div>
-    <!-- Form -->
-    <div class="grid grid-flow-row lg:grid-cols-2 gap-5">
-      <BasicInput
-        v-model="anmeldung.firstname"
-        label="Vorname"
-        placeholder="Vornamen eingeben"
-      />
-      <BasicInput
-        v-model="anmeldung.lastname"
-        label="Nachname"
-        placeholder="Nachname eingeben"
-      />
-      <BasicSelect
-        v-model="anmeldung.gender"
-        label="Geschlecht"
-        :options="geschlechtOptions"
-      />
-      <BasicDatepicker
-        v-model="anmeldung.birthday"
-        label="Geburtsdatum"
-        placeholder="Geburtsdatum auswählen"
-      />
-    </div>
-    <hr class="my-5" />
+  <div class="lg:py-10 lg:px-20 xl:px-28 2xl:px-40 flex flex-col h-full">
     <div
-      v-if="anmeldung.address"
-      class="grid grid-flow-row lg:grid-cols-2 gap-5"
+      v-if="anmeldung && !isLoading"
+      class="grow"
     >
-      <div class="col-span-2 flex items-end space-x-5">
+      <!-- Header -->
+      <PublicHeader />
+      <Button
+        class="mb-10"
+        color="secondary"
+        @click="router.back()"
+        ><ChevronLeftIcon class="h-5 mr-2" />Zurück zur Aussschreibung</Button
+      >
+      <div class="text-3xl font-medium">Anmeldung</div>
+      <div class="mb-5">Zum {{ unterveranstaltung?.veranstaltung.name }}</div>
+      <!-- Form -->
+      <div class="grid grid-flow-row lg:grid-cols-2 gap-5">
         <BasicInput
-          v-model="anmeldung.address.street"
-          label="Straße und Hausnummer"
-          placeholder="Straße eingeben"
-          class="grow"
+          v-model="anmeldung.firstname"
+          label="Vorname"
+          placeholder="Vorname eingeben"
         />
         <BasicInput
-          v-model="anmeldung.address.number"
-          placeholder="Hausnummer eingeben"
+          v-model="anmeldung.lastname"
+          label="Nachname"
+          placeholder="Nachname eingeben"
+        />
+        <BasicSelect
+          v-model="anmeldung.gender"
+          label="Geschlecht"
+          :options="geschlechtOptions"
+        />
+        <BasicDatepicker
+          v-model="anmeldung.birthday"
+          label="Geburtsdatum"
+          format="dd.MM.yyyy HH:mm"
+          placeholder="Geburtsdatum auswählen"
         />
       </div>
-      <BasicInput
-        v-model="anmeldung.address.zip"
-        label="Postleitzahl"
-        placeholder="Postleitzahl eingeben"
-      />
-      <BasicInput
-        v-model="anmeldung.address.city"
-        label="Ort"
-        placeholder="Ort eingeben"
-      />
-    </div>
-    <hr class="my-5" />
-    <div class="grid grid-flow-row lg:grid-cols-2 gap-5">
-      <BasicInput
-        v-model="anmeldung.email"
-        label="E-Mail Adresse"
-        placeholder="E-Mail Adresse eingeben"
-      />
-      <BasicInput
-        v-model="anmeldung.telefon"
-        label="Mobiltelefonnummer"
-        placeholder="Mobiltelefonnummer eingeben"
-      />
-    </div>
-    <hr class="my-5" />
-    <div class="font-medium mb-5">Erziehungsberechtigte Person</div>
-    <KontaktItem
-      v-model="erziehungsberechtigtePerson"
-      show-notfall-kontakt
-    />
-    <hr class="my-5" />
-    <div class="font-medium mb-5">Notfallkontakte</div>
-    <div
-      v-for="(_notfallkontaktPerson, index) in notfallkontaktPersonen"
-      :key="index"
-    >
-      <KontaktItem
-        v-model="notfallkontaktPersonen[index]"
-        show-remove-option
-        @remove="notfallkontaktPersonen.splice(index, 1)"
-      />
-      <hr
-        v-if="index < notfallkontaktPersonen.length - 1"
-        class="my-5"
-      />
-    </div>
-    <Button
-      color="secondary"
-      class="mt-5"
-      @click="notfallkontaktPersonen.push(notfallkontaktPersonenTemplate)"
-      ><PlusSmallIcon class="h-5 mr-2" />Notfallkontakt hinzufügen</Button
-    >
-    <hr class="my-5" />
-    <div class="grid grid-flow-row gap-5">
-      <BasicSelect
-        v-model="anmeldung.essgewohnheit"
-        label="Essgewohnheit"
-        :options="essgewohnheitOptions"
-      />
-      <label class="mb-0 font-medium">Nahrungsmittelintoleranzen</label>
-      <div class="grid grid-flow-row gap-2">
-        <div
-          v-for="option in nahrungsmittelIntoleranzOptions"
-          :key="option.value"
-          class="bg-gray-100 rounded-lg p-3 flex items-center justify-between cursor-pointer hover:bg-gray-50 transition-all"
-          :class="{
-            'bg-primary-200': nahrungsmittelIntoleranzen?.includes(option.value),
-          }"
-          @click="toggleOption(option.value)"
-        >
-          {{ option.label }}
-          <CheckIcon
-            v-if="nahrungsmittelIntoleranzen?.includes(option.value)"
-            class="h-5 text-primary-950"
+      <hr class="my-5" />
+      <div
+        v-if="anmeldung.address"
+        class="grid grid-flow-row lg:grid-cols-2 gap-5"
+      >
+        <div class="col-span-2 flex items-end space-x-5">
+          <BasicInput
+            v-model="anmeldung.address.street"
+            label="Straße und Hausnummer"
+            placeholder="Straße eingeben"
+            class="grow"
+          />
+          <BasicInput
+            v-model="anmeldung.address.number"
+            placeholder="Hausnummer eingeben"
           />
         </div>
+        <BasicInput
+          v-model="anmeldung.address.zip"
+          label="Postleitzahl"
+          placeholder="Postleitzahl eingeben"
+        />
+        <BasicInput
+          v-model="anmeldung.address.city"
+          label="Ort"
+          placeholder="Ort eingeben"
+        />
       </div>
-      <BasicInput
-        v-model="tempWeitereInteloranzen"
-        label="Weitere Intoleranzen"
-        placeholder="Weitere Intoleranzen eingeben"
-      >
-        <template #append>
-          <div
-            class="py-2 px-4 bg-primary-200 rounded-r-lg flex items-center text-primary-800 cursor-pointer hover:bg-primary-300 transition-all"
-            @click="
-              () => {
-                if (!tempWeitereInteloranzen) return
-                weitereIntoleranzen?.push(tempWeitereInteloranzen)
-                tempWeitereInteloranzen = ''
-              }
-            "
-          >
-            <PlusSmallIcon class="h-5 mr-2" /> Hinzufügen
-          </div>
-        </template>
-      </BasicInput>
+      <hr class="my-5" />
+      <div class="grid grid-flow-row lg:grid-cols-2 gap-5">
+        <BasicInput
+          v-model="anmeldung.email"
+          label="E-Mail Adresse"
+          placeholder="E-Mail Adresse eingeben"
+        />
+        <BasicInput
+          v-model="anmeldung.telefon"
+          label="Mobiltelefonnummer"
+          placeholder="Mobiltelefonnummer eingeben"
+        />
+      </div>
+      <hr class="my-5" />
+      <div class="font-medium mb-5">Erziehungsberechtigte Person</div>
+      <KontaktItem
+        v-model="erziehungsberechtigtePerson"
+        show-notfall-kontakt
+      />
+      <hr class="my-5" />
+      <div class="font-medium mb-5">Notfallkontakte</div>
       <div
-        v-if="weitereIntoleranzen?.length !== 0"
-        class="flex flex-wrap space-x-2"
+        v-for="(_notfallkontaktPerson, index) in notfallkontaktPersonen"
+        :key="index"
       >
-        <Badge
-          v-for="item in weitereIntoleranzen"
-          :key="item"
-        >
-          {{ item }}
-        </Badge>
+        <KontaktItem
+          v-model="notfallkontaktPersonen[index]"
+          show-remove-option
+          @remove="notfallkontaktPersonen.splice(index, 1)"
+        />
+        <hr
+          v-if="index < notfallkontaktPersonen.length - 1"
+          class="my-5"
+        />
       </div>
+      <Button
+        color="secondary"
+        class="mt-5"
+        @click="notfallkontaktPersonen.push(notfallkontaktPersonenTemplate)"
+        ><PlusSmallIcon class="h-5 mr-2" />Notfallkontakt hinzufügen</Button
+      >
+      <hr class="my-5" />
+      <div class="grid grid-flow-row gap-5">
+        <BasicSelect
+          v-model="anmeldung.essgewohnheit"
+          label="Essgewohnheit"
+          :options="essgewohnheitOptions"
+        />
+        <label class="mb-0 font-medium">Nahrungsmittelintoleranzen</label>
+        <div class="grid grid-flow-row gap-2">
+          <div
+            v-for="option in nahrungsmittelIntoleranzOptions"
+            :key="option.value"
+            class="bg-gray-100 rounded-lg p-3 flex items-center justify-between cursor-pointer hover:bg-gray-50 transition-all"
+            :class="{
+              'bg-primary-200': nahrungsmittelIntoleranzen?.includes(option.value),
+            }"
+            @click="toggleOption(option.value)"
+          >
+            {{ option.label }}
+            <CheckIcon
+              v-if="nahrungsmittelIntoleranzen?.includes(option.value)"
+              class="h-5 text-primary-950"
+            />
+          </div>
+        </div>
+        <BasicInput
+          v-model="tempWeitereInteloranzen"
+          label="Weitere Intoleranzen"
+          placeholder="Weitere Intoleranzen eingeben"
+        >
+          <template #append>
+            <div
+              class="py-2 px-4 bg-primary-200 rounded-r-lg flex items-center text-primary-800 cursor-pointer hover:bg-primary-300 transition-all"
+              @click="
+                () => {
+                  if (!tempWeitereInteloranzen) return
+                  weitereIntoleranzen?.push(tempWeitereInteloranzen)
+                  tempWeitereInteloranzen = ''
+                }
+              "
+            >
+              <PlusSmallIcon class="h-5 mr-2" /> Hinzufügen
+            </div>
+          </template>
+        </BasicInput>
+        <div
+          v-if="weitereIntoleranzen?.length !== 0"
+          class="flex flex-wrap space-x-2"
+        >
+          <Badge
+            v-for="item in weitereIntoleranzen"
+            :key="item"
+          >
+            {{ item }}
+          </Badge>
+        </div>
+      </div>
+      <hr class="my-5" />
+      <div class="font-medium mb-5">T-Shirt Bestellung</div>
+      <div class="grid grid-flow-row lg:grid-cols-2 gap-5 items-start">
+        <BasicCheckbox
+          v-model="anmeldung.tshirtBestellt"
+          label="Ich möchte ein T-Shirt bestellen"
+          class="mt-1 font-medium"
+        />
+        <BasicSelect
+          v-if="anmeldung.tshirtBestellt"
+          v-model="anmeldung.konfektionsgroesse"
+          label="Konfektionsgröße"
+          :options="konfektionsgroesseOptions"
+        />
+      </div>
+      <hr class="my-5" />
+      <div class="flex items-start mb-5 space-x-3">
+        <BasicCheckbox
+          v-model="acceptTeilnahmebedingungen"
+          label="Ich habe die allgemeinen Teilnahmebedingungen gelesen und akzeptiere diese."
+          class="mt-1 font-medium"
+        />
+      </div>
+      <div class="flex items-start mb-10 space-x-3">
+        <BasicCheckbox
+          v-model="acceptDatenschutz"
+          label="Ich habe die gesonderten Datenschutzerklärung gelesen und akzeptiere diese."
+          class="mt-1 font-medium"
+        />
+      </div>
+      <div class="flex items-center justify-between">
+        <Button
+          color="primary"
+          class="w-full lg:w-auto justify-center mb-20"
+          @click="createAnmeldung"
+        >
+          <template v-if="isLoadingCreate">
+            <Loading
+              size="md"
+              class="mb-2"
+            />
+          </template>
+          Anmelden
+        </Button>
+        <div class="text-danger-500 text-right">
+          <template v-if="errorCreate">
+            {{ errorCreate }}
+          </template>
+        </div>
+      </div>
+      <PublicFooter />
     </div>
-    <hr class="my-5" />
-    <div class="font-medium mb-5">T-Shirt Bestellung</div>
-    <div class="grid grid-flow-row lg:grid-cols-2 gap-5 items-start">
-      <BasicCheckbox
-        v-model="anmeldung.tshirtBestellt"
-        label="Ich möchte ein T-Shirt bestellen"
-        class="mt-1 font-medium"
-      />
-      <BasicSelect
-        v-if="anmeldung.tshirtBestellt"
-        v-model="anmeldung.konfektionsgroesse"
-        label="Konfektionsgröße"
-        :options="konfektionsgroesseOptions"
-      />
-    </div>
-    <hr class="my-5" />
-    <div class="flex items-start mb-5 space-x-3">
-      <BasicCheckbox
-        v-model="acceptTeilnahmebedingungen"
-        label="Ich habe die allgemeinen Teilnahmebedingungen gelesen und akzeptiere diese."
-        class="mt-1 font-medium"
-      />
-    </div>
-    <div class="flex items-start mb-10 space-x-3">
-      <BasicCheckbox
-        v-model="acceptDatenschutz"
-        label="Ich habe die gesonderten Datenschutzerklärung gelesen und akzeptiere diese."
-        class="mt-1 font-medium"
-      />
-    </div>
-    <Button
-      color="primary"
-      class="w-full lg:w-auto justify-center mb-20"
-      >Anmelden</Button
+    <div
+      v-else
+      class="grow flex flex-col items-center justify-center font-semibold"
     >
-    <PublicFooter />
+      <template v-if="isLoading">
+        <Loading
+          size="md"
+          class="mb-2"
+        />
+        Lade Daten...
+      </template>
+      <template v-else>
+        <FaceFrownIcon class="w-20 h-20 text-primary-500 mb-5" />
+        Es ist ein Fehler aufgetreten
+      </template>
+    </div>
   </div>
 </template>
