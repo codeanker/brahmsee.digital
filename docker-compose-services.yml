@@ -15,7 +15,7 @@ services:
       - postgres-data:/var/lib/postgresql/data
 
   admin:
-    image: dpage/pgadmin4:7
+    image: dpage/pgadmin4:8
     ports:
       - 127.0.0.1:5433:80
     environment:
