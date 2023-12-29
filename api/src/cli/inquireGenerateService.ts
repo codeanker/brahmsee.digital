@@ -1,6 +1,6 @@
 import inquirer from 'inquirer'
 
-import { generateService } from '../generator/generateService'
+import { generateService } from './generator/generateService'
 
 export async function inquireGenerateService(missingServices, context) {
   const prismOrCustomAnswer = (await inquirer.prompt([

@@ -1,8 +1,8 @@
 import { writeFile } from 'fs/promises'
 import path from 'path'
 
-import { toPascalCase } from '../util/casing'
-import { checkFileExists } from '../util/files'
+import { toPascalCase } from '../../util/casing'
+import { checkFileExists } from '../../util/files'
 
 import {
   type ProcedureOptions,
@@ -12,12 +12,12 @@ import {
   type GeneratorContext,
 } from './utlils'
 
-export async function generateProcedureDelete(procedure: ProcedureOptions, context: GeneratorContext) {
+export async function generateProcedureGet(procedure: ProcedureOptions, context: GeneratorContext) {
   const sericeDir = path.join(context.servicesDir, procedure.service)
-  const procedureType = 'delete'
+  const procedureType = 'get'
   const procedureFileName = getProcedureFileName(procedure, procedureType)
   const procedureAction = `${procedure.usecase}${toPascalCase(procedureType)}`
-  const procedureMethod = 'mutation'
+  const procedureMethod = 'query'
   const procedurePath = path.join(sericeDir, `${procedureFileName}.ts`)
 
   const alreadyExists = await checkFileExists(procedurePath)
@@ -38,7 +38,7 @@ export const ${procedureFileName}Procedure = defineProcedure({
     id: z.number().int(),
   }),
   async handler(options) {
-    return prisma.${procedure.service}.delete({
+    return prisma.${procedure.service}.findUniqueOrThrow({
       where: {
         id: options.input.id,
       },

@@ -1,8 +1,8 @@
 import { writeFile } from 'fs/promises'
 import path from 'path'
 
-import { toPascalCase } from '../util/casing'
-import { checkFileExists } from '../util/files'
+import { toPascalCase } from '../../util/casing'
+import { checkFileExists } from '../../util/files'
 
 import {
   type ProcedureOptions,

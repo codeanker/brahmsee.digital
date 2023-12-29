@@ -1,8 +1,8 @@
 import { writeFile } from 'fs/promises'
 import path from 'path'
 
-import { toPascalCase } from '../util/casing'
-import { checkFileExists } from '../util/files'
+import { toPascalCase } from '../../util/casing'
+import { checkFileExists } from '../../util/files'
 
 import {
   type ProcedureOptions,
@@ -12,8 +12,8 @@ import {
   type GeneratorContext,
 } from './utlils'
 
-export async function generateProcedureCreate(procedure: ProcedureOptions, context: GeneratorContext) {
-  const procedureType = 'create'
+export async function generateProcedurePatch(procedure: ProcedureOptions, context: GeneratorContext) {
+  const procedureType = 'patch'
   const procedureMethod = 'mutation'
 
   const sericeDir = path.join(context.servicesDir, procedure.service)
@@ -25,7 +25,6 @@ export async function generateProcedureCreate(procedure: ProcedureOptions, conte
   if (alreadyExists) {
     throw new Error(`Procedure ${procedureFileName} already exists`)
   }
-
   const content = `import z from 'zod'
 
 import prisma from '../../prisma'
@@ -36,10 +35,14 @@ export const ${procedureFileName}Procedure = defineProcedure({
   method: '${procedureMethod}',
   protection: ${getProtectionContent(procedure.protection)},
   inputSchema: z.strictObject({
+    id: z.number().int(),
     data: z.strictObject({}),
   }),
   async handler(options) {
-    return prisma.${procedure.service}.create({
+    return prisma.${procedure.service}.update({
+      where: {
+        id: options.input.id,
+      },
       data: options.input.data,
       select: {
         id: true,

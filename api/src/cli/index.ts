@@ -4,11 +4,12 @@ import { fileURLToPath } from 'url'
 import { Prisma } from '@prisma/client'
 import { Command } from 'commander'
 
-import { generateService } from '../generator/generateService'
-import type { GeneratorContext } from '../generator/utlils'
+import pkg from '../../../package.json'
 import { pascalToCamelCase } from '../util/casing'
 import { getDirectories } from '../util/files'
 
+import { generateService } from './generator/generateService'
+import type { GeneratorContext } from './generator/utlils'
 import { ignoreList } from './ignoreList'
 import { inquireGenerateProcedure } from './inquireGenerateProcedure'
 import { inquireGenerateService } from './inquireGenerateService'
@@ -31,7 +32,7 @@ const missingServices = prismaServices
   .filter((service) => !ignoreList.includes(service))
 
 const program = new Command()
-program.version('0.0.1')
+program.version(pkg.version)
 
 program
   .command('service')

@@ -1,8 +1,8 @@
 import { writeFile } from 'fs/promises'
 import path from 'path'
 
-import { toPascalCase } from '../util/casing'
-import { checkFileExists } from '../util/files'
+import { toPascalCase } from '../../util/casing'
+import { checkFileExists } from '../../util/files'
 
 import {
   type ProcedureOptions,
@@ -12,12 +12,13 @@ import {
   type GeneratorContext,
 } from './utlils'
 
-export async function generateProcedureGet(procedure: ProcedureOptions, context: GeneratorContext) {
+export async function generateProcedureCreate(procedure: ProcedureOptions, context: GeneratorContext) {
+  const procedureType = 'create'
+  const procedureMethod = 'mutation'
+
   const sericeDir = path.join(context.servicesDir, procedure.service)
-  const procedureType = 'get'
   const procedureFileName = getProcedureFileName(procedure, procedureType)
   const procedureAction = `${procedure.usecase}${toPascalCase(procedureType)}`
-  const procedureMethod = 'query'
   const procedurePath = path.join(sericeDir, `${procedureFileName}.ts`)
 
   const alreadyExists = await checkFileExists(procedurePath)
@@ -35,13 +36,11 @@ export const ${procedureFileName}Procedure = defineProcedure({
   method: '${procedureMethod}',
   protection: ${getProtectionContent(procedure.protection)},
   inputSchema: z.strictObject({
-    id: z.number().int(),
+    data: z.strictObject({}),
   }),
   async handler(options) {
-    return prisma.${procedure.service}.findUniqueOrThrow({
-      where: {
-        id: options.input.id,
-      },
+    return prisma.${procedure.service}.create({
+      data: options.input.data,
       select: {
         id: true,
       },

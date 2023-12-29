@@ -1,13 +1,12 @@
 import inquirer from 'inquirer'
 
-import { generateProcedureAction } from '../generator/generateProcedureAction'
-import { generateProcedureCreate } from '../generator/generateProcedureCreate'
-import { generateProcedureDelete } from '../generator/generateProcedureDelete'
-import { generateProcedureGet } from '../generator/generateProcedureGet'
-import { generateProcedureList } from '../generator/generateProcedureList'
-import { generateProcedurePatch } from '../generator/generateProcedurePatch'
-import type { GenerateProcedureType, GeneratorContext } from '../generator/utlils'
-
+import { generateProcedureAction } from './generator/generateProcedureAction'
+import { generateProcedureCreate } from './generator/generateProcedureCreate'
+import { generateProcedureDelete } from './generator/generateProcedureDelete'
+import { generateProcedureGet } from './generator/generateProcedureGet'
+import { generateProcedureList } from './generator/generateProcedureList'
+import { generateProcedurePatch } from './generator/generateProcedurePatch'
+import type { GenerateProcedureType, GeneratorContext } from './generator/utlils'
 import { inquireProtection } from './inquireProtection'
 
 type ProcedureArgs = { service?: string; usecase?: string; action?: GenerateProcedureType; protection?: string }
