@@ -1,5 +1,4 @@
 import cors from '@koa/cors'
-import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
 import Koa from 'koa'
 import helmet from 'koa-helmet'
 import serve from 'koa-static'
@@ -44,7 +43,3 @@ app.use(async (ctx, next) => {
 
 app.listen(config.server.port, config.server.host)
 logger.info(`app listening on http://0.0.0.0:${config.server.port}`)
-
-export type AppRouter = typeof appRouter
-export type RouterInput = inferRouterInputs<AppRouter>
-export type RouterOutput = inferRouterOutputs<AppRouter>
