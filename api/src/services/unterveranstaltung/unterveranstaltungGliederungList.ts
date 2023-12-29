@@ -1,9 +1,9 @@
 import z from 'zod'
 
-import { getGliederungRequireAdmin } from '../../helpers/getGliederungRequireAdmin'
 import prisma from '../../prisma'
 import { defineProcedure } from '../../types/defineProcedure'
 import { defineQuery } from '../../types/defineQuery'
+import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin'
 
 export const unterveranstaltungGliederungListProcedure = defineProcedure({
   key: 'gliederungList',

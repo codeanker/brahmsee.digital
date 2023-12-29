@@ -1,8 +1,8 @@
 import z from 'zod'
 
-import { getGliederungRequireAdmin } from '../../helpers/getGliederungRequireAdmin'
 import prisma from '../../prisma'
 import { defineProcedure } from '../../types/defineProcedure'
+import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin'
 
 export const anmeldungVerwaltungAnnehmenProcedure = defineProcedure({
   key: 'verwaltungAnnehmen',

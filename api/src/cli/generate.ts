@@ -6,8 +6,8 @@ import { Command } from 'commander'
 
 import { generateService } from '../generator/generateService'
 import type { GeneratorContext } from '../generator/utlils'
-import { pascalToCamelCase } from '../helpers/casing'
-import { getDirectories } from '../helpers/files'
+import { pascalToCamelCase } from '../util/casing'
+import { getDirectories } from '../util/files'
 
 import { ignoreList } from './ignoreList'
 import { inquireGenerateProcedure } from './inquireGenerateProcedure'

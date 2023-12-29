@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from 'fs/promises'
 import path from 'path'
 
-import { checkFileExists } from '../helpers/files'
+import { checkFileExists } from '../util/files'
 
 import { applyInserts, type GeneratorContext } from './utlils'
 
