@@ -6,6 +6,7 @@
     "dbaeumer.vscode-eslint",
     "GitHub.vscode-pull-request-github",
     "bradlc.vscode-tailwindcss",
-    "Prisma.prisma"
+    "Prisma.prisma",
+    "actboy168.tasks"
   ]
 }

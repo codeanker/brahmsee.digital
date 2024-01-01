@@ -27,7 +27,8 @@
 				"GitHub.vscode-pull-request-github",
 				"bradlc.vscode-tailwindcss",
 				"prisma.prisma",
-				"github.copilot"
+				"github.copilot",
+				"actboy168.tasks"
 			]
 		}
 	},

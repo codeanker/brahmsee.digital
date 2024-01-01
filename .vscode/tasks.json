@@ -11,6 +11,11 @@
 				"panel": "new",
 				"group": "start",
 				"close": false
+			},
+			"options": {
+				"statusbar": {
+					"hide" : true
+				}
 			}
 		},
 		{
@@ -23,6 +28,11 @@
 				"panel": "new",
 				"group": "start",
 				"close": false
+			},
+			"options": {
+				"statusbar": {
+					"hide" : true
+				}
 			}
 		},
 		{
@@ -35,6 +45,11 @@
 				"panel": "new",
 				"group": "start",
 				"close": false
+			},
+			"options": {
+				"statusbar": {
+					"hide" : true
+				}
 			}
 		},
 		{
@@ -47,6 +62,11 @@
 				"panel": "new",
 				"group": "start",
 				"close": false
+			},
+			"options": {
+				"statusbar": {
+					"hide" : true
+				}
 			}
 		},
 		{
@@ -59,6 +79,11 @@
 				"panel": "new",
 				"group": "start",
 				"close": false
+			},
+			"options": {
+				"statusbar": {
+					"hide" : true
+				}
 			}
 		},
 		{
@@ -77,7 +102,12 @@
 				"start:frontend",
 				"start:services"
 			],
-			"problemMatcher": []
+			"problemMatcher": [],
+			"options": {
+				"statusbar": {
+					"hide" : true
+				}
+			}
 		},
 		{
 			"label": "run:migration",
@@ -100,21 +130,28 @@
 			"label": "run:createAccount",
 			"problemMatcher": [],
 			"options": {
-        "cwd": "${workspaceFolder}/api"
-      },
+        "cwd": "${workspaceFolder}/api",
+				"statusbar": {
+					"hide" : true
+				}
+			},
 			"presentation": {
 				"reveal": "always",
 				"panel": "new",
 				"group": "start",
 				"close": false
-			}
+			},
+
 		},
 		{
 			"type": "shell",
 			"label": "install:playwright",
 			"command": "npx playwright install && npx playwright install-deps",
 			"options": {
-      },
+				"statusbar": {
+					"hide" : true
+				}
+			},
 			"problemMatcher": [],
 			"presentation": {
 				"reveal": "always",
@@ -129,8 +166,11 @@
 			"command": "npx prisma migrate reset",
 			"problemMatcher": [],
 			"options": {
-        "cwd": "${workspaceFolder}/api"
-      },
+        "cwd": "${workspaceFolder}/api",
+				"statusbar": {
+					"hide" : true
+				}
+			},
 			"presentation": {
 				"reveal": "always",
 				"revealProblems": "onProblem",
