@@ -66,6 +66,7 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
         </template>
         <template v-else> Login </template>
       </Button>
+      <a href="/api/connect/dlrg">OAuth Dlrg</a>
       <Button
         color="secondary"
         full
