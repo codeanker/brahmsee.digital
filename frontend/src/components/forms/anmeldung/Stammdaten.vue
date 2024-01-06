@@ -4,6 +4,7 @@ import { ref, computed } from 'vue'
 import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
+import { GenderMapping, getEnumOptions } from '@codeanker/api/src/enumMappings'
 
 export interface IStammdaten {
   firstname?: string
@@ -31,20 +32,7 @@ const model = computed({
   },
 })
 
-const identificationOptions = ref([
-  {
-    label: 'Männlich',
-    value: 'm',
-  },
-  {
-    label: 'Weiblich',
-    value: 'w',
-  },
-  {
-    label: 'Divers',
-    value: 'd',
-  },
-])
+const identificationOptions = ref(getEnumOptions(GenderMapping))
 </script>
 
 <template>
