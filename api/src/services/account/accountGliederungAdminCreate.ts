@@ -40,6 +40,8 @@ export const accountGliederungAdminCreateProcedure = defineProcedure({
         firstname: options.input.data.firstname,
         lastname: options.input.data.lastname,
         password: options.input.data.password,
+        birthday: options.input.data.birthday,
+        gender: options.input.data.gender,
         roleId: 'GLIEDERUNG_ADMIN',
         isActiv: false,
         adminInGliederungId: options.input.data.adminInGliederungId,
