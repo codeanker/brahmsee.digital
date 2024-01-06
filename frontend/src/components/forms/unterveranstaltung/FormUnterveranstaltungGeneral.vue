@@ -46,10 +46,6 @@ const { state: veranstaltungen } = useAsyncState(async () => {
   return apiClient.veranstaltung.gliederungList.query()
 }, [])
 
-// const { state: gliederungen } = useAsyncState(async () => {
-//   return apiClient.gliederung.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
-// }, [])
-
 const {
   execute: createUnterveranstaltung,
   error: errorCreate,
