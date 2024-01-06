@@ -118,9 +118,16 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
   { type: 'DividerItem', name: 'Verwaltung', visible: hasPermissionToView(['ADMIN']) },
   {
     type: 'SidebarItem',
-    name: 'Gliederungen',
-    route: { name: 'Verwaltung Alle Gliederungen' },
-    icon: MapPinIcon,
+    name: 'Accounts',
+    route: { name: 'Verwaltung Alle Accounts' },
+    icon: UsersIcon,
+    visible: hasPermissionToView(['ADMIN']),
+  },
+  {
+    type: 'SidebarItem',
+    name: 'Personen',
+    route: { name: 'Verwaltung Alle Personen' },
+    icon: UsersIcon,
     visible: hasPermissionToView(['ADMIN']),
   },
   {
@@ -132,9 +139,9 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
   },
   {
     type: 'SidebarItem',
-    name: 'Personen',
-    route: { name: 'Verwaltung Alle Benutzer' },
-    icon: UsersIcon,
+    name: 'Gliederungen',
+    route: { name: 'Verwaltung Alle Gliederungen' },
+    icon: MapPinIcon,
     visible: hasPermissionToView(['ADMIN']),
   },
   {
