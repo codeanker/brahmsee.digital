@@ -34,7 +34,7 @@ export const accountGliederungAdminCreateProcedure = defineProcedure({
         message: 'Gliederung hat bereits einen Admin',
       })
     }
-    await prisma.account.create({
+    return await prisma.account.create({
       data: await getAccountCreateData({
         email: options.input.data.email,
         firstname: options.input.data.firstname,
@@ -46,6 +46,9 @@ export const accountGliederungAdminCreateProcedure = defineProcedure({
         isActiv: false,
         adminInGliederungId: options.input.data.adminInGliederungId,
       }),
+      select: {
+        id: true,
+      },
     })
   },
 })
