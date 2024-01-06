@@ -26,7 +26,7 @@ const routesPerson: Route[] = [
         },
       },
       {
-        name: 'Verwaltung Personen erstellen',
+        name: 'Verwaltung Person erstellen',
         path: 'create',
         component: () => import('./PersonCreate.vue'),
         meta: {

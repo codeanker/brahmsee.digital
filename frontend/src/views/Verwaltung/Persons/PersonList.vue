@@ -21,8 +21,8 @@ fetchPersons()
     </p>
     <RouterLink
       class="text-primary-600"
-      :to="{ name: 'Verwaltung Benutzer erstellen' }"
-      >Benutzer erstellen</RouterLink
+      :to="{ name: 'Verwaltung Person erstellen' }"
+      >Person erstellen</RouterLink
     >
     <table class="min-w-full divide-y divide-gray-300">
       <thead>
