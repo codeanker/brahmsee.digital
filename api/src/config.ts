@@ -10,6 +10,8 @@ const __dirname = path.dirname(__filename)
 const baseConfig = config.util.loadFileConfigs(path.join(__dirname, '..', 'config'))
 
 export const configSchema = z.strictObject({
+  clientUrl: z.string(),
+
   server: z.strictObject({
     host: z.string(),
     port: z.number(),
@@ -22,6 +24,9 @@ export const configSchema = z.strictObject({
   authentication: z.strictObject({
     secret: z.string(),
     expiresIn: z.string(),
+    dlrg: z.strictObject({
+      client_id: z.string(),
+    }),
   }),
 
   paginate: z.strictObject({

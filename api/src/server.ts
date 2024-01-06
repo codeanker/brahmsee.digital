@@ -1,6 +1,8 @@
 import cors from '@koa/cors'
+import grant from 'grant'
 import Koa from 'koa'
 import helmet from 'koa-helmet'
+import session from 'koa-session'
 import serve from 'koa-static'
 import { createKoaMiddleware } from 'trpc-koa-adapter'
 
@@ -24,6 +26,31 @@ app.use(cors({ origin: '*' }))
 app.use(serve('./static', { defer: false }))
 app.use(cacheControl)
 
+// koa-session is required by grant
+app.keys = ['grant']
+app.use(session({}, app))
+
+// grant is used for oauth
+app.use(
+  grant.koa()({
+    defaults: {
+      origin: `${config.clientUrl}/api`,
+      transport: 'session',
+    },
+    dlrg: {
+      transport: 'session',
+      oauth: 2,
+      response: ['token', 'profile'],
+      authorize_url: 'https://iam.dlrg.net/auth/realms/master/protocol/openid-connect/auth',
+      access_url: 'https://iam.dlrg.net/auth/realms/master/protocol/openid-connect/token',
+      key: config.authentication.dlrg.client_id,
+      scope: ['profile', 'email'],
+      state: true,
+      pkce: true,
+      callback: '/api/auth/dlrg/callback',
+    },
+  })
+)
 // initialize trpc middleware
 app.use(
   createKoaMiddleware({
