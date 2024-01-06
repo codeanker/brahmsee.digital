@@ -51,7 +51,7 @@ function submit() {
           label="Gliederung"
           class="col-span-2"
           required
-          placeholder="Gliederung"
+          placeholder="Gliederung eingeben"
         />
         <BasicInput
           v-model="registrationForm.email"
