@@ -15,7 +15,7 @@
   },
 
   "db": {
-    "url": "postgresql://postgres:postgres@localhost:5432/brahmsee.digital?schema=public"
+    "url": "postgresql://postgres:postgres@postgres:5432/brahmsee.digital?schema=public"
   },
 
   "paginate": {
