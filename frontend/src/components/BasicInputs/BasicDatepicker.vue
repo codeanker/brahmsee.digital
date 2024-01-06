@@ -36,6 +36,10 @@ const props = withDefaults(
     enableTimePicker?: boolean
     format?: typeof VueDatePicker.format
     modelType?: typeof VueDatePicker.modelType
+    disabledDates?: {
+      from?: Date
+      to?: Date
+    }
   }>(),
   {
     placeholder: undefined,
@@ -104,6 +108,8 @@ const { model, errorMessage } = useValidationModel(props, emit)
         :format="format"
         :model-type="modelType"
         :required="required"
+        :min-date="disabledDates?.to"
+        :max-date="disabledDates?.from"
       />
     </BasicFormGroup>
   </div>
