@@ -1,8 +1,9 @@
-import { Gender } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma'
 import { defineProcedure } from '../../types/defineProcedure'
+
+import { getPersonCreateData, personSchema } from './schema/person.schema'
 
 export const personVerwaltungPatchProcedure = defineProcedure({
   key: 'verwaltungPatch',
@@ -10,20 +11,14 @@ export const personVerwaltungPatchProcedure = defineProcedure({
   protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
   inputSchema: z.strictObject({
     id: z.number().int(),
-    data: z.strictObject({
-      firstname: z.string(),
-      lastname: z.string(),
-      birthday: z.string(),
-      gliederungId: z.number().int().nullable(),
-      gender: z.nativeEnum(Gender).nullable(),
-    }),
+    data: personSchema,
   }),
   async handler(options) {
     return prisma.person.update({
       where: {
         id: options.input.id,
       },
-      data: options.input.data,
+      data: await getPersonCreateData(options.input.data),
       select: {
         id: true,
       },

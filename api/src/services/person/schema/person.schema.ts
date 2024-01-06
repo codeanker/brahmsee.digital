@@ -21,7 +21,6 @@ export const personSchema = z.strictObject({
   lastname: z.string(),
   birthday: z.date(),
   gender: z.nativeEnum(Gender),
-  email: z.string().email(),
   gliederungId: z.number(),
   telefon: z.string(),
   address: addressSchema,

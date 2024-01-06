@@ -1,79 +1,78 @@
 <script setup lang="ts">
-import { PlusIcon, CheckIcon } from '@heroicons/vue/24/outline'
-import { ref } from 'vue'
+import { CheckIcon, PlusIcon } from '@heroicons/vue/24/outline'
+import { useAsyncState } from '@vueuse/core'
+import { computed, ref } from 'vue'
 
+import type { IStammdaten } from '../anmeldung/Stammdaten.vue'
+import Stammdaten from '../anmeldung/Stammdaten.vue'
+
+import { apiClient } from '@/api'
 import BasicCheckbox from '@/components/BasicInputs/BasicCheckbox.vue'
-import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
+import BasicTypeahead from '@/components/BasicInputs/BasicTypeahead.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import KontaktItem from '@/components/UIComponents/KontaktItem.vue'
 import Loading from '@/components/UIComponents/Loading.vue'
-import type { RouterInput } from '@codeanker/api'
+import type { RouterInput, RouterOutput } from '@codeanker/api'
 import type { NahrungsmittelIntoleranzEnum } from '@codeanker/api/src/enumMappings'
 import { KonfektionsgroesseMapping, getEnumOptions } from '@codeanker/api/src/enumMappings'
 import { EssgewohnheitMapping } from '@codeanker/api/src/enumMappings/Essgewohnheit'
-import { GenderMapping } from '@codeanker/api/src/enumMappings/Gender'
 import { NahrungsmittelIntoleranzMapping } from '@codeanker/api/src/enumMappings/NahrungsmittelIntoleranz'
 import type { TKontaktSchema } from '@codeanker/api/src/services/kontakt/schema/kontakt.schema'
-import type { TPersonSchema } from '@codeanker/api/src/services/person/schema/person.schema'
 import { ValidateForm } from '@codeanker/validation'
 
+type Person = Awaited<RouterOutput['person']['verwaltungGet']>
+
 const props = defineProps<{
-  loading: boolean
-  error: Error
+  person?: Person
   isPublicAnmeldung?: boolean
-  submitText?: string
+  onUpdate?: () => void
 }>()
 
-const emit = defineEmits<{
-  (event: 'submit', value: Partial<RouterInput['anmeldung']['publicCreate']['data']>): void
-}>()
+const edit = computed(() => props.person !== undefined)
 
-const person = ref<Partial<TPersonSchema>>({
-  firstname: undefined,
-  lastname: undefined,
-  birthday: undefined,
-  gender: undefined,
-  email: undefined,
-  gliederungId: undefined,
-  telefon: undefined,
-  address: {
-    street: '',
-    number: '',
-    zip: '',
-    city: '',
-  },
-  essgewohnheit: undefined,
-  nahrungsmittelIntoleranzen: undefined,
-  weitereIntoleranzen: undefined,
-  qualifikationenFahrerlaubnis: undefined,
-  qualifikationenSchwimmer: undefined,
-  qualifikationenErsteHilfe: undefined,
-  qualifikationenSanitaeter: undefined,
-  qualifikationenFunk: undefined,
-  konfektionsgroesse: undefined,
-  erziehungsberechtigtePersonen: [],
-  notfallkontaktPersonen: [],
+async function queryGliederungen(searchTerm: string) {
+  return apiClient.gliederung.verwaltungList.query({ filter: { name: searchTerm }, pagination: { take: 100, skip: 0 } })
+}
+
+const stammdatenForm = ref<IStammdaten>({
+  firstname: props.person?.firstname,
+  lastname: props.person?.lastname,
+  birthday: props.person?.birthday,
+  gender: props.person?.gender ?? undefined,
 })
+
+const data = ref({
+  ...props.person,
+  address: {
+    zip: props.person?.address?.zip ?? '',
+    city: props.person?.address?.city ?? '',
+    street: props.person?.address?.street ?? '',
+    number: props.person?.address?.number ?? '',
+  },
+  essgewohnheit: props.person?.essgewohnheit ?? undefined,
+  konfektionsgroesse: props.person?.konfektionsgroesse ?? undefined,
+})
+const gliederung = ref(props.person?.gliederung)
 
 const anmeldung = ref<Partial<RouterInput['anmeldung']['publicCreate']['data']>>({
   tshirtBestellt: undefined,
 })
 
-const erziehungsberechtigtePerson = ref<Partial<TKontaktSchema>>({
-  firstname: undefined,
-  lastname: undefined,
-  telefon: undefined,
-})
+/* const erziehungsberechtigtePerson = ref<TKontaktSchema>({
+  firstname: '',
+  lastname: '',
+  telefon: '',
+}) */
 
-const notfallkontaktPersonen = ref<Partial<TKontaktSchema>[]>([])
+const notfallkontaktPersonen = ref<TKontaktSchema[]>([])
 
-const notfallkontaktPersonenTemplate = ref<Partial<TKontaktSchema>>({
-  firstname: undefined,
-  lastname: undefined,
-  telefon: undefined,
+const notfallkontaktPersonenTemplate = ref<TKontaktSchema>({
+  firstname: '',
+  lastname: '',
+  telefon: '',
 })
 
 const nahrungsmittelIntoleranzen = ref<Partial<NahrungsmittelIntoleranzEnum>[]>([])
@@ -83,7 +82,6 @@ const weitereIntoleranzen = ref<string[]>([])
 const acceptTeilnahmebedingungen = ref(props.isPublicAnmeldung ? false : true)
 const acceptDatenschutz = ref(props.isPublicAnmeldung ? false : true)
 
-const geschlechtOptions = getEnumOptions(GenderMapping)
 const essgewohnheitOptions = getEnumOptions(EssgewohnheitMapping)
 const nahrungsmittelIntoleranzOptions = getEnumOptions(NahrungsmittelIntoleranzMapping)
 const konfektionsgroesseOptions = getEnumOptions(KonfektionsgroesseMapping)
@@ -98,108 +96,94 @@ const toggleOption = (option) => {
 
 const tempWeitereInteloranzen = ref('')
 
-const emitSubmit = () => {
-  let toSubmit = { ...person.value }
-  if (props.isPublicAnmeldung) {
-    toSubmit = {
-      ...toSubmit,
-      ...anmeldung.value,
-      erziehungsberechtigtePersonen: [erziehungsberechtigtePerson.value as TKontaktSchema],
-      notfallkontaktPersonen: [...(notfallkontaktPersonen.value as TKontaktSchema[])],
-      nahrungsmittelIntoleranzen:
-        nahrungsmittelIntoleranzen.value as RouterInput['anmeldung']['publicCreate']['data']['nahrungsmittelIntoleranzen'],
-      weitereIntoleranzen: weitereIntoleranzen.value,
+const { execute, isLoading } = useAsyncState(
+  async () => {
+    let endpoint
+    if (edit.value) {
+      endpoint = apiClient.person.verwaltungPatch
+    } else {
+      endpoint = apiClient.person.verwaltungCreate
     }
-  }
-  emit('submit', toSubmit)
-}
+
+    const payload = {
+      id: data.value.id,
+      data: {
+        ...stammdatenForm.value,
+        gliederungId: gliederung.value!.id,
+        telefon: '123',
+        address: data.value.address,
+        notfallkontaktPersonen: notfallkontaktPersonen.value,
+        essgewohnheit: data.value.essgewohnheit,
+        konfektionsgroesse: 'XL',
+        nahrungsmittelIntoleranzen: nahrungsmittelIntoleranzen.value,
+      },
+    }
+    if (!edit.value) {
+      delete payload.id
+    }
+    await endpoint.mutate(payload)
+
+    props.onUpdate?.()
+  },
+  null,
+  { immediate: false }
+)
 </script>
 
 <template>
-  <ValidateForm @submit="emitSubmit">
+  <Stammdaten v-model="stammdatenForm" />
+
+  <ValidateForm>
     <div class="grid grid-flow-row lg:grid-cols-2 gap-5">
-      <BasicInput
-        id="personFirstname"
-        v-model="person.firstname"
-        label="Vorname"
-        placeholder="Vorname eingeben"
-        required
-      />
-      <BasicInput
-        id="personLastname"
-        v-model="person.lastname"
-        label="Nachname"
-        placeholder="Nachname eingeben"
-        required
-      />
-      <BasicSelect
-        v-model="person.gender"
-        required
-        label="Geschlecht"
-        :options="geschlechtOptions"
-      />
-      <BasicDatepicker
-        v-model="person.birthday"
-        required
-        label="Geburtsdatum"
-        format="dd.MM.yyyy HH:mm"
-        placeholder="Geburtsdatum auswählen"
-      />
-    </div>
-    <hr class="my-5" />
-    <div
-      v-if="person.address"
-      class="grid grid-flow-row lg:grid-cols-2 gap-5"
-    >
       <div class="col-span-2 flex items-end space-x-5">
         <BasicInput
-          v-model="person.address.street"
+          v-model="data.address.street"
           label="Straße und Hausnummer"
           placeholder="Straße eingeben"
           class="grow"
           required
         />
         <BasicInput
-          v-model="person.address.number"
+          v-model="data.address.number"
           placeholder="Hausnummer eingeben"
           required
         />
       </div>
       <BasicInput
-        v-model="person.address.zip"
+        v-model="data.address.zip"
         label="Postleitzahl"
         placeholder="Postleitzahl eingeben"
         required
       />
       <BasicInput
-        v-model="person.address.city"
+        v-model="data.address.city"
         label="Ort"
         placeholder="Ort eingeben"
         required
       />
     </div>
+
     <hr class="my-5" />
-    <div class="grid grid-flow-row lg:grid-cols-2 gap-5">
-      <BasicInput
-        v-model="person.email"
-        label="E-Mail Adresse"
-        placeholder="E-Mail Adresse eingeben"
-        required
-      />
-      <BasicInput
-        v-model="person.telefon"
-        label="Mobiltelefonnummer"
-        placeholder="Mobiltelefonnummer eingeben"
-        required
-      />
-    </div>
-    <hr class="my-5" />
-    <div class="font-medium mb-5">Erziehungsberechtigte Person</div>
+
+    <BasicTypeahead
+      v-model="gliederung"
+      :query="queryGliederungen"
+      :input-formatter="(result) => result?.name"
+      :result-formatter="(result) => result.name"
+      :strict="true"
+      required
+      label="Gliederung"
+      placeholder="Gliederung eingeben"
+    />
+
+    <!-- <div class="font-medium mb-5">Erziehungsberechtigte Person</div>
     <KontaktItem
       v-model="erziehungsberechtigtePerson"
       show-notfall-kontakt
-    />
+    /> -->
+
     <hr class="my-5" />
+
     <div class="font-medium mb-5">Notfallkontakte</div>
     <div
       v-for="(_notfallkontaktPerson, index) in notfallkontaktPersonen"
@@ -224,7 +208,7 @@ const emitSubmit = () => {
     <hr class="my-5" />
     <div class="grid grid-flow-row gap-5">
       <BasicSelect
-        v-model="person.essgewohnheit"
+        v-model="data.essgewohnheit"
         label="Essgewohnheit"
         :options="essgewohnheitOptions"
         required
@@ -290,7 +274,7 @@ const emitSubmit = () => {
         />
         <BasicSelect
           v-if="anmeldung.tshirtBestellt"
-          v-model="person.konfektionsgroesse"
+          v-model="data.konfektionsgroesse"
           label="Konfektionsgröße"
           :options="konfektionsgroesseOptions"
         />
@@ -317,19 +301,16 @@ const emitSubmit = () => {
       <Button
         color="primary"
         class="w-full lg:w-auto justify-center mb-20 items-center space-x-2"
-        :disabled="loading || !acceptTeilnahmebedingungen || !acceptDatenschutz"
+        :disabled="isLoading || !acceptTeilnahmebedingungen || !acceptDatenschutz"
         type="submit"
+        @click="execute"
       >
-        <template v-if="loading">
+        <template v-if="isLoading">
           <Loading color="white" />
         </template>
-        {{ submitText || 'Speichern' }}
+        <span>Speichern</span>
       </Button>
-      <div class="text-danger-500 text-right">
-        <template v-if="error">
-          {{ error }}
-        </template>
-      </div>
     </div>
   </ValidateForm>
+  <!-- <div v-if="error">{{ error }}</div> -->
 </template>
