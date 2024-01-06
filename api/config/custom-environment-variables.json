@@ -10,5 +10,9 @@
 
   "authentication": {
     "secret": "AUTHENTICATION_SECRET"
+  },
+  "mail":{
+    "sendMails": "MAIL_SENDMAILS",
+    "sendgridApiKey": "MAIL_SENDGRID_APIKEY"
   }
 }

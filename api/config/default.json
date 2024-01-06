@@ -22,5 +22,9 @@
     "default": 10,
     "max": 50
   },
-  "loggingLevel": "info"
+  "loggingLevel": "info",
+  "mail":{
+    "sendMails": true,
+    "sendgridApiKey": ""
+  }
 }

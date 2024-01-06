@@ -29,6 +29,11 @@ export const configSchema = z.strictObject({
     }),
   }),
 
+  mail: z.strictObject({
+    sendMails: z.boolean(),
+    sendgridApiKey: z.string(),
+  }),
+
   paginate: z.strictObject({
     default: z.number(),
     max: z.number(),
