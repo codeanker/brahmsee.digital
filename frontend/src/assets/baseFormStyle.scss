@@ -34,3 +34,16 @@
 .btn-link{
   @apply active:bg-gray-100 border border-transparent;
 }
+
+
+//* BasicEditor */
+mark{
+  &.highlight{
+    @apply bg-primary-100 p-0.5 rounded-sm text-primary-800;
+  }
+}
+
+.prose{
+  --tw-prose-counters: #000 !important;
+  --tw-prose-links: rgb(22 163 74);
+}
