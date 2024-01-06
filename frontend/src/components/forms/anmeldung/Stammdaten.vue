@@ -50,49 +50,31 @@ const identificationOptions = ref([
 <template>
   <div>
     <div class="grid grid-flow-row lg:grid-cols-2 gap-5">
-      <BasicSelect
-        v-model="model.gender"
-        label="Geschlecht"
-        :options="identificationOptions"
-      />
       <BasicInput
         v-model="model.firstname"
         label="Vorname"
         placeholder="Vornamen eingeben"
+        required
       />
       <BasicInput
         v-model="model.lastname"
         label="Nachname"
         placeholder="Nachname eingeben"
+        required
+      />
+      <BasicSelect
+        v-model="model.gender"
+        label="Geschlecht"
+        required
+        :options="identificationOptions"
       />
       <BasicDatepicker
         v-model="model.birthday"
         label="Geburtsdatum"
+        format="dd.MM.yyyy"
+        required
         placeholder="Geburtsdatum auswählen"
       />
     </div>
-    <hr class="my-5" />
-    <!-- <div class="grid grid-flow-row lg:grid-cols-2 gap-5">
-      <BasicInput
-        v-model="model.street"
-        label="Straße und Hausnummer"
-        placeholder="Straße und Hausnummer eingeben"
-      />
-      <BasicInput
-        v-model="model.number"
-        label="Postleitzahl"
-        placeholder="Postleitzahl eingeben"
-      />
-      <BasicInput
-        v-model="model.zip"
-        label="Postleitzahl"
-        placeholder="Postleitzahl eingeben"
-      />
-      <BasicInput
-        v-model="model.city"
-        label="Ort"
-        placeholder="Ort eingeben"
-      />
-    </div> -->
   </div>
 </template>
