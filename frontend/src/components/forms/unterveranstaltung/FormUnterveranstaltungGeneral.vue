@@ -107,7 +107,9 @@ const handle = async () => {
 </script>
 
 <template>
-  <h5>Ausschreibung:</h5>
+  <h5>
+    Ausschreibung <span v-if="unterveranstaltung">{{ unterveranstaltung.veranstaltung.name }}</span>
+  </h5>
   <ValidateForm
     class="mt-10"
     @submit="handle"

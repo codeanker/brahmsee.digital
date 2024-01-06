@@ -53,7 +53,7 @@ module.exports = {
     { pattern: /bg-white/ },
     { pattern: /(w|h)-(6|12|24)/ },
   ],
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
   corePlugins: {
     preflight: true,
   },
