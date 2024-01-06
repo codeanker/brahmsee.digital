@@ -5,12 +5,15 @@ import { ref } from 'vue'
 import { apiClient } from '@/api'
 import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
 import BasicEditor from '@/components/BasicInputs/BasicEditor.vue'
+import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import BasicInputNumber from '@/components/BasicInputs/BasicInputNumber.vue'
 import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
+import BasicTypeahead from '@/components/BasicInputs/BasicTypeahead.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
 import router from '@/router'
 import type { RouterInput } from '@codeanker/api'
+import { UnterveranstaltungTypeMapping, getEnumOptions } from '@codeanker/api/src/enumMappings'
 import { ValidateForm } from '@codeanker/validation'
 
 const props = defineProps<{
@@ -22,24 +25,23 @@ const props = defineProps<{
   onUpdate?: () => void
 }>()
 
-const fill = (unterveranstaltung) => {
-  return {
-    beschreibung: unterveranstaltung?.beschreibung,
-    maxTeilnehmende: unterveranstaltung?.maxTeilnehmende,
-    meldebeginn: unterveranstaltung?.meldebeginn,
-    meldeschluss: unterveranstaltung?.meldeschluss,
-    teilnahmegebuehr: unterveranstaltung?.teilnahmegebuehr,
-    veranstaltungId: unterveranstaltung?.veranstaltung?.id,
-  }
-}
+const unterveranstaltungCopy = ref({
+  beschreibung: props.unterveranstaltung?.beschreibung,
+  maxTeilnehmende: props.unterveranstaltung?.maxTeilnehmende,
+  meldebeginn: props.unterveranstaltung?.meldebeginn,
+  meldeschluss: props.unterveranstaltung?.meldeschluss,
+  teilnahmegebuehr: props.unterveranstaltung?.teilnahmegebuehr,
+  veranstaltungId: props.unterveranstaltung?.veranstaltung?.id,
+  gliederungId: props.unterveranstaltung?.gliederung?.id,
+  type: props.unterveranstaltung?.type,
+})
 
 const unterveranstaltungId = parseInt(props.unterveranstaltung?.id as string)
-const unterveranstaltungCopy = ref(fill(props.unterveranstaltung))
+const gliederung = ref(props.unterveranstaltung?.gliederung)
 
 if (props.mode === 'create') {
   unterveranstaltungCopy.value.veranstaltungId = props?.veranstaltungId
 }
-
 const { state: veranstaltungen } = useAsyncState(async () => {
   if (loggedInAccount.value?.role === 'ADMIN')
     return apiClient.veranstaltung.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
@@ -54,10 +56,13 @@ const {
   async () => {
     // @todo typing
     if (loggedInAccount.value?.role === 'ADMIN') {
-      await apiClient.unterveranstaltung.gliederungCreate.mutate({
+      unterveranstaltungCopy.value.gliederungId = gliederung.value.id
+      await apiClient.unterveranstaltung.verwaltungCreate.mutate({
         data: unterveranstaltungCopy.value as unknown as RouterInput['unterveranstaltung']['verwaltungCreate']['data'],
       })
     } else {
+      delete unterveranstaltungCopy.value.gliederungId
+      delete unterveranstaltungCopy.value.type
       await apiClient.unterveranstaltung.gliederungCreate.mutate({
         data: unterveranstaltungCopy.value as unknown as RouterInput['unterveranstaltung']['gliederungCreate']['data'],
       })
@@ -76,11 +81,17 @@ const {
   async () => {
     // @todo typing
     if (loggedInAccount.value?.role === 'ADMIN') {
-      await apiClient.unterveranstaltung.gliederungPatch.mutate({
+      delete unterveranstaltungCopy.value.gliederungId
+      delete unterveranstaltungCopy.value.veranstaltungId
+      delete unterveranstaltungCopy.value.type
+      await apiClient.unterveranstaltung.verwaltungPatch.mutate({
         id: unterveranstaltungId,
         data: unterveranstaltungCopy.value as unknown as RouterInput['unterveranstaltung']['verwaltungPatch']['data'],
       })
     } else {
+      delete unterveranstaltungCopy.value.gliederungId
+      delete unterveranstaltungCopy.value.veranstaltungId
+      delete unterveranstaltungCopy.value.type
       await apiClient.unterveranstaltung.gliederungPatch.mutate({
         id: unterveranstaltungId,
         data: unterveranstaltungCopy.value as unknown as RouterInput['unterveranstaltung']['gliederungPatch']['data'],
@@ -103,6 +114,10 @@ const handle = async () => {
       await updateUnterveranstaltung()
       break
   }
+}
+
+async function queryObjectGliederungen(searchTerm) {
+  return apiClient.gliederung.publicList.query({ filter: { name: searchTerm }, pagination: { take: 100, skip: 0 } })
 }
 </script>
 
@@ -129,18 +144,40 @@ const handle = async () => {
           "
         />
       </div>
-      <!-- <div
-        v-if="mode === 'create' && loggedInAccount?.role === 'ADMIN'"
+      <template v-if="mode === 'create' && loggedInAccount?.role === 'ADMIN'">
+        <div class="lg:col-span-3">
+          <BasicTypeahead
+            v-model="gliederung"
+            :query="queryObjectGliederungen"
+            :input-formatter="(result) => result?.name"
+            :result-formatter="(result) => result.name"
+            :strict="true"
+            label="Gliederung"
+            required
+            placeholder="Gliederung eingeben"
+          />
+        </div>
+        <div class="lg:col-span-3">
+          <BasicSelect
+            v-model="unterveranstaltungCopy.type"
+            required
+            label="Veranstaltungstyp"
+            placeholder="Typ"
+            :options="getEnumOptions(UnterveranstaltungTypeMapping)"
+          />
+        </div>
+      </template>
+      <div
+        v-if="mode === 'update' && loggedInAccount?.role === 'ADMIN'"
         class="lg:col-span-full"
       >
-        <BasicSelect
-          v-model="unterveranstaltungCopy.gliederungId"
-          required
+        <BasicInput
+          :model-value="gliederung.name + ' (' + gliederung.edv + ')'"
           label="Gliederung"
-          placeholder="Gliederung"
-          :options="gliederungen.map((gliederung) => ({ label: gliederung.name, value: gliederung.id }))"
+          class="col-span-2"
+          disabled
         />
-      </div> -->
+      </div>
       <div class="lg:col-span-3">
         <BasicDatepicker
           v-model="unterveranstaltungCopy.meldebeginn"
@@ -148,6 +185,10 @@ const handle = async () => {
           format="dd.MM.yyyy"
           label="Meldebeginn"
           placeholder="Meldebeginn"
+          :disabled-dates="{
+            to: new Date(unterveranstaltung.veranstaltung.meldebeginn),
+            from: new Date(unterveranstaltung.veranstaltung.meldeschluss),
+          }"
         />
       </div>
 
@@ -158,6 +199,10 @@ const handle = async () => {
           format="dd.MM.yyyy"
           label="Meldeschluss"
           placeholder="Meldeschluss"
+          :disabled-dates="{
+            to: new Date(unterveranstaltung.veranstaltung.meldebeginn),
+            from: new Date(unterveranstaltung.veranstaltung.meldeschluss),
+          }"
         />
       </div>
       <div class="lg:col-span-3">

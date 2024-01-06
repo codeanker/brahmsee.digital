@@ -39,6 +39,7 @@ export const unterveranstaltungGliederungGetProcedure = defineProcedure({
             datenschutz: true,
           },
         },
+        gliederung: true,
       },
     })
   },
