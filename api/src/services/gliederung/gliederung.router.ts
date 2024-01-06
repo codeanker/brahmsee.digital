@@ -2,6 +2,7 @@
 import { mergeRouters } from '../../trpc'
 
 import { gliederungPublicGetProcedure } from './gliederungPublicGet'
+import { gliederungPublicListProcedure } from './gliederungPublicList'
 import { gliederungVerwaltungCreateProcedure } from './gliederungVerwaltungCreate'
 import { gliederungVerwaltungGetProcedure } from './gliederungVerwaltungGet'
 import { gliederungVerwaltungListProcedure } from './gliederungVerwaltungList'
@@ -10,6 +11,7 @@ import { gliederungVerwaltungPatchProcedure } from './gliederungVerwaltungPatch'
 
 export const gliederungRouter = mergeRouters(
   gliederungPublicGetProcedure.router,
+  gliederungPublicListProcedure.router,
   gliederungVerwaltungCreateProcedure.router,
   gliederungVerwaltungGetProcedure.router,
   gliederungVerwaltungListProcedure.router,
