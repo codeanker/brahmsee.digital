@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import Document from '@tiptap/extension-document'
+import { Document } from '@tiptap/extension-document'
 import { Highlight } from '@tiptap/extension-highlight'
-import Link from '@tiptap/extension-link'
-import Paragraph from '@tiptap/extension-paragraph'
-import Text from '@tiptap/extension-text'
-import StarterKit from '@tiptap/starter-kit'
+import { Link } from '@tiptap/extension-link'
+import { Paragraph } from '@tiptap/extension-paragraph'
+import { Text } from '@tiptap/extension-text'
+import { StarterKit } from '@tiptap/starter-kit'
 import { Editor, EditorContent } from '@tiptap/vue-3'
 import { useVModel } from '@vueuse/core'
 import { watch } from 'vue'
@@ -84,6 +84,7 @@ watch(
     :id="id"
     :name="name"
     :label="label"
+    :required="required"
     :error-message="errorMessage"
   >
     <div

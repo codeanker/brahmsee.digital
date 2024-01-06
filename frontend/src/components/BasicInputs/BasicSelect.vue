@@ -25,7 +25,12 @@ const { model, errorMessage } = useValidationModel(props, emit)
       v-if="label"
       class="font-medium"
       :for="id || name || label"
-      >{{ label }}</label
+      >{{ label }}
+      <span
+        v-if="required"
+        class="text-danger-600"
+        >*</span
+      ></label
     >
     <Listbox
       v-model="model"

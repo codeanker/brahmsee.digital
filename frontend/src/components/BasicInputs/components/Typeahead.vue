@@ -210,7 +210,7 @@ const highlight = computed(() => {
               <slot v-bind="{ item, active, selected }">
                 <li
                   :class="[
-                    'relative cursor-default select-none px-3 py-2',
+                    'relative cursor-pointer select-none px-3 py-2',
                     active ? 'bg-primary-600 text-white' : 'text-gray-900',
                   ]"
                 >

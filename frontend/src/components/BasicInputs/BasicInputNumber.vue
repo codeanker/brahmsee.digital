@@ -38,6 +38,7 @@ const { model, errorMessage } = props.disableValidation
     :id="id"
     :name="name"
     :label="label"
+    :required="required"
     :error-message="errorMessage"
   >
     <div class="align-items-center flex">

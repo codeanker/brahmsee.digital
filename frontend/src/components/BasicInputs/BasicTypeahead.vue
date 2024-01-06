@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import useValidationModel from '../../composables/useValidationModel'
 
-import BasicValidationFeedback from './components/BasicValidationFeedback.vue'
+import BasicFormGroup from './components/BasicFormGroup.vue'
 import Typeahead from './components/Typeahead.vue'
 import { type BasicInputDefaultProps } from './defaultProps'
 
@@ -34,26 +34,28 @@ const { model, errorMessage } = useValidationModel(props, emit)
 </script>
 
 <template>
-  <div>
-    <label
-      v-if="label"
-      :for="id || name || label"
-      >{{ label }}</label
-    >
-    <Typeahead
-      v-model="model"
-      :query="query"
-      :input-formatter="inputFormatter"
-      :result-formatter="resultFormatter"
-      :sync="sync"
-      :immediate="immediate"
-      :debounce-time="debounceTime"
-      :strict="strict"
-    >
-      <template #default="slotData">
-        <slot v-bind="slotData" />
-      </template>
-    </Typeahead>
-    <BasicValidationFeedback :error-message="errorMessage" />
-  </div>
+  <BasicFormGroup
+    :id="id"
+    :name="name"
+    :label="label"
+    :required="required"
+    :error-message="errorMessage"
+  >
+    <div>
+      <Typeahead
+        v-model="model"
+        :query="query"
+        :input-formatter="inputFormatter"
+        :result-formatter="resultFormatter"
+        :sync="sync"
+        :immediate="immediate"
+        :debounce-time="debounceTime"
+        :strict="strict"
+      >
+        <template #default="slotData">
+          <slot v-bind="slotData" />
+        </template>
+      </Typeahead>
+    </div>
+  </BasicFormGroup>
 </template>

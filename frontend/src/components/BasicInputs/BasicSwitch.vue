@@ -40,7 +40,12 @@ const { model, errorMessage } = useValidationModel(props, emit)
       v-if="label"
       class="ml-2"
       :for="id || name || label"
-      >{{ label }}</label
+      >{{ label }}
+      <span
+        v-if="required"
+        class="text-danger-600"
+        >*</span
+      ></label
     >
     <BasicValidationFeedback :error-message="errorMessage" />
   </div>

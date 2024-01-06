@@ -25,6 +25,7 @@ const { model, errorMessage } = useValidationModel(props, emit)
     :id="id"
     :name="name"
     :label="label"
+    :required="required"
     :error-message="errorMessage"
   >
     <textarea
