@@ -44,6 +44,11 @@ async function getAuthContext(accountId: number | undefined, roles: Role[]) {
     select: {
       id: true,
       role: true,
+      person: {
+        select: {
+          gliederungId: true,
+        },
+      },
     },
   })
   if (!roles.includes(account.role) && roles.length > 0) {
