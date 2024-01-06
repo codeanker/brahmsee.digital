@@ -1,6 +1,11 @@
 
 [type='text'], [type='email'], [type='url'], [type='password'], [type='number'], [type='date'], [type='datetime-local'], [type='month'], [type='search'], [type='tel'], [type='time'], [type='week'], [multiple], textarea, select, .input-style {
   @apply block w-full py-2 px-4 text-gray-900 bg-gray-100 border-gray-100 border rounded-lg transition focus:border-primary-700 ring-0 focus:ring-0 leading-5 focus:outline-none;
+
+  &:disabled, &.disabled {
+    @apply bg-gray-50 text-gray-500 cursor-not-allowed;
+  }
+
 }
 
 .btn{
@@ -12,12 +17,28 @@
     @apply bg-primary-700;
   }
 
+  &:disabled:checked {
+    @apply bg-gray-50 text-gray-500 cursor-not-allowed;
+  }
+
+  &:disabled:not(:checked) {
+    @apply bg-gray-50 text-gray-500 cursor-not-allowed;
+  }
+
   @apply w-4 h-4 bg-white border-gray-400 rounded transition text-primary-700 checked:bg-primary-700 checked:border-primary-700 focus:ring-primary-700;
 }
 
 [type='radio'] {
   &:checked:hover {
     @apply bg-primary-700;
+  }
+
+  &:disabled:checked {
+    @apply bg-gray-50 text-gray-500 cursor-not-allowed;
+  }
+
+  &:disabled:not(:checked) {
+    @apply bg-gray-50 text-gray-500 cursor-not-allowed;
   }
 
   @apply w-4 h-4 bg-white border-gray-400 rounded-full transition text-primary-700 checked:bg-primary-700 checked:border-primary-700 focus:ring-primary-700;
