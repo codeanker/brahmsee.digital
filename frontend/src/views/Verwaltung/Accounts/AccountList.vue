@@ -26,11 +26,9 @@ function formatDate(date: Date | null): string {
 
 <template>
   <h5>Accounts</h5>
-  <p>Mit einem Account können sich Personen in der Verwaltung anmelden.</p>
+
   <div class="flow-root">
-    <p class="mt-8 text-sm text-gray-500">
-      <b>Tipp</b>: Zum Bearbeiten eines Accounts die entsprechende Zeile anklicken.
-    </p>
+    <p class="mt-8 text-sm text-gray-500">Mit einem Account können sich Personen in der Verwaltung anmelden.</p>
 
     <RouterLink
       class="text-primary-600"
