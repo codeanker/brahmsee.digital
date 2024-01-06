@@ -9,15 +9,27 @@ interface Gliederung {
   name?: string
 }
 
-defineProps<{
-  gliederung?: Gliederung
-}>()
+withDefaults(
+  defineProps<{
+    gliederung?: Gliederung
+    showContactButton?: boolean
+  }>(),
+  {
+    showContactButton: false,
+    gliederung: () => {
+      return {
+        name: 'Schleswig-Holstein',
+      }
+    },
+  }
+)
 </script>
 
 <template>
   <div class="flex items-center top-0 sticky bg-white z-10 justify-between mb-4 py-6">
     <GliederungLogo :name="gliederung?.name ? gliederung?.name : ''" />
     <Button
+      v-if="showContactButton"
       color="secondary"
       title="Kontaktiere uns"
     >
