@@ -49,6 +49,8 @@ const { model, errorMessage } = useValidationModel(props, emit)
         :result-formatter="resultFormatter"
         :sync="sync"
         :immediate="immediate"
+        :placeholder="placeholder"
+        :name="name"
         :debounce-time="debounceTime"
         :strict="strict"
       >

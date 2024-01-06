@@ -25,6 +25,10 @@ const props = withDefaults(
     sync?: boolean
     /** Ob ein Ergebnis von der Query ausgewählt werden muss oder ob auch ein Freitext erlaubt ist */
     strict?: boolean
+    label?: string
+    name?: string
+    disabled?: boolean
+    placeholder?: string
   }>(),
 
   {
@@ -164,6 +168,8 @@ const highlight = computed(() => {
       <div class="relative">
         <ComboboxInput
           class="input-style"
+          :disabled="disabled"
+          :placeholder="placeholder || label || name"
           :display-value="inputFormatter"
           @change="updateSearchTerm"
         />
