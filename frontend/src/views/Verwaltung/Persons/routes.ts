@@ -4,7 +4,7 @@ const routesPerson: Route[] = [
   {
     name: 'Verwaltung Personen',
     path: 'persons',
-    redirect: { name: 'Verwaltung Alle Benutzer' },
+    redirect: { name: 'Verwaltung Alle Personen' },
     meta: {
       breadcrumbs: [
         {
@@ -14,7 +14,7 @@ const routesPerson: Route[] = [
     },
     children: [
       {
-        name: 'Verwaltung Alle Benutzer',
+        name: 'Verwaltung Alle Personen',
         path: 'list',
         component: () => import('./PersonList.vue'),
         meta: {
@@ -26,7 +26,7 @@ const routesPerson: Route[] = [
         },
       },
       {
-        name: 'Verwaltung Benutzer erstellen',
+        name: 'Verwaltung Personen erstellen',
         path: 'create',
         component: () => import('./PersonCreate.vue'),
         meta: {
@@ -38,7 +38,7 @@ const routesPerson: Route[] = [
         },
       },
       {
-        name: 'Verwaltung Benutzerdetails',
+        name: 'Verwaltung Persondetails',
         path: ':personId/detail',
         component: () => import('./PersonDetail.vue'),
         meta: {
