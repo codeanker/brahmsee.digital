@@ -21,6 +21,7 @@ export const personAuthenticatedGetProcedure = defineProcedure({
             id: true,
             firstname: true,
             lastname: true,
+            gliederungId: true,
           },
         },
       },

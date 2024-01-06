@@ -6,7 +6,7 @@ import { apiClient } from '@/api'
 import Button from '@/components/UIComponents/Button.vue'
 import router from '@/router'
 import { roleMapping } from '@codeanker/api/src/enumMappings'
-import { dayjs } from '@codeanker/helpers'
+import { formatDate } from '@codeanker/helpers'
 
 const { state: accountList, execute: fetchAccounts } = useAsyncState(async () => {
   const result = await apiClient.account.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
@@ -14,14 +14,6 @@ const { state: accountList, execute: fetchAccounts } = useAsyncState(async () =>
 }, [])
 
 fetchAccounts()
-
-function formatDate(date: Date | null): string {
-  if (!date) {
-    return ''
-  }
-
-  return dayjs(date).format('DD.MM.YYYY')
-}
 </script>
 
 <template>

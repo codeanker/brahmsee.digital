@@ -11,17 +11,21 @@ export const personVerwaltungGetProcedure = defineProcedure({
     id: z.number().int(),
   }),
   async handler(options) {
-    return prisma.person.findUniqueOrThrow({
+    return await prisma.person.findUniqueOrThrow({
       where: {
         id: options.input.id,
       },
-      select: {
-        id: true,
-        firstname: true,
-        lastname: true,
-        gliederungId: true,
-        gender: true,
-        birthday: true,
+      include: {
+        address: {
+          select: {
+            zip: true,
+            city: true,
+            street: true,
+            number: true,
+          },
+        },
+        notfallkontakte: true,
+        gliederung: true,
       },
     })
   },
