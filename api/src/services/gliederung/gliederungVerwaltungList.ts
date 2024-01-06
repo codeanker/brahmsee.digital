@@ -19,7 +19,10 @@ export const gliederungVerwaltungListProcedure = defineProcedure({
       skip,
       take,
       where: {
-        name: options.input.filter.name,
+        name: {
+          contains: options.input.filter.name,
+          mode: 'insensitive',
+        },
       },
       select: {
         id: true,
