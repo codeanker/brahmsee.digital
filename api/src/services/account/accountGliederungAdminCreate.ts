@@ -9,7 +9,7 @@ import { accountSchema, getAccountCreateData } from './schema/account.schema'
 export const accountGliederungAdminCreateProcedure = defineProcedure({
   key: 'gliederungAdminCreate',
   method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
+  protection: { type: 'public' },
   inputSchema: z.strictObject({
     data: accountSchema.omit({ roleId: true, isActiv: true }),
   }),
@@ -46,9 +46,6 @@ export const accountGliederungAdminCreateProcedure = defineProcedure({
         isActiv: false,
         adminInGliederungId: options.input.data.adminInGliederungId,
       }),
-      select: {
-        id: true,
-      },
     })
   },
 })
