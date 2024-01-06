@@ -5,10 +5,11 @@ import prisma from '../../prisma'
 import { defineProcedure } from '../../types/defineProcedure'
 
 import { hashPassword, passwordMatches } from '@codeanker/authentication'
+import { isStrongPassword } from '@codeanker/helpers'
 
 export const accountChangePasswordProcedure = defineProcedure({
   key: 'changePassword',
-  method: 'query',
+  method: 'mutation',
   protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN', 'GLIEDERUNG_ADMIN'] },
   inputSchema: z.strictObject({
     id: z.number().int(),
@@ -25,7 +26,8 @@ export const accountChangePasswordProcedure = defineProcedure({
         password: true,
       },
     })
-    if (!(await passwordMatches(password, options.input.password_old))) {
+
+    if (options.ctx.accountId === options.input.id && !(await passwordMatches(password, options.input.password_old))) {
       throw new TRPCError({
         code: 'UNAUTHORIZED',
         message: 'You must enter your old password to change it!',
@@ -36,6 +38,13 @@ export const accountChangePasswordProcedure = defineProcedure({
       throw new TRPCError({
         code: 'BAD_REQUEST',
         message: 'Password must be confirmed and match!',
+      })
+    }
+
+    if (!isStrongPassword(options.input.password)) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'Password must fulfill the security requirements!',
       })
     }
 
