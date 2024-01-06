@@ -73,6 +73,9 @@ const identificationOptions = ref([
         label="Geburtsdatum"
         format="dd.MM.yyyy"
         required
+        :disabled-dates="{
+          from: new Date(),
+        }"
         placeholder="Geburtsdatum auswählen"
       />
     </div>
