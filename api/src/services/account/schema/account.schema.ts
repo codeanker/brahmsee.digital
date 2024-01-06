@@ -1,4 +1,4 @@
-import { Role } from '@prisma/client'
+import { Gender, Role } from '@prisma/client'
 import { z } from 'zod'
 
 import { hashPassword } from '@codeanker/authentication'
@@ -6,12 +6,16 @@ import { hashPassword } from '@codeanker/authentication'
 export const accountSchema = z.strictObject({
   firstname: z.string(),
   lastname: z.string(),
+  birthday: z.date(),
+  gender: z.nativeEnum(Gender),
   password: z.string(),
   email: z.string().email(),
   roleId: z.nativeEnum(Role),
   isActiv: z.boolean().optional(),
   adminInGliederungId: z.number().int().optional(),
 })
+
+export type TAccountSchema = z.infer<typeof accountSchema>
 
 export async function getAccountCreateData(data: z.infer<typeof accountSchema>) {
   return {
@@ -22,6 +26,8 @@ export async function getAccountCreateData(data: z.infer<typeof accountSchema>) 
       create: {
         firstname: data.firstname,
         lastname: data.lastname,
+        gender: data.gender,
+        birthday: data.birthday,
       },
     },
     activatedAt: data.isActiv ? new Date() : null,
