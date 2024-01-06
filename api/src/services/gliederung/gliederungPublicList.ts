@@ -19,11 +19,15 @@ export const gliederungPublicListProcedure = defineProcedure({
       skip,
       take,
       where: {
-        name: options.input.filter.name,
+        name: {
+          contains: options.input.filter.name,
+          mode: 'insensitive',
+        },
       },
       select: {
         id: true,
         name: true,
+        edv: true,
       },
     })
     return list
