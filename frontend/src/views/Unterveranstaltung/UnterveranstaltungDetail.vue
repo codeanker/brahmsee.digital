@@ -56,14 +56,14 @@ const keyInfos = computed<KeyInfo[]>(() => {
   }
 })
 
-const titles = [
+const tabs = [
   { name: 'Ausschreibung', icon: MegaphoneIcon },
   { name: 'Bedingungen', icon: ClipboardDocumentListIcon },
   { name: 'Datenschutz', icon: ShieldCheckIcon },
 ]
 
 if (loggedInAccount.value?.role === 'ADMIN') {
-  titles.push({ name: 'Entwickler:in', icon: CodeBracketIcon })
+  tabs.push({ name: 'Entwickler:in', icon: CodeBracketIcon })
 }
 
 const publicLink = computed(() => {
@@ -94,7 +94,7 @@ function copyLink() {
     </div>
     <Tabs
       content-space="4"
-      :tabs="titles"
+      :tabs="tabs"
     >
       <Tab>
         <div class="p-6 bg-primary-100 rounded-md my-8 flex items-top space-x-4">
