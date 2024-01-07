@@ -12,6 +12,7 @@ import {
   CalendarDaysIcon,
   RocketLaunchIcon,
   PuzzlePieceIcon,
+  FingerPrintIcon,
 } from '@heroicons/vue/24/outline'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
@@ -120,7 +121,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     type: 'SidebarItem',
     name: 'Accounts',
     route: { name: 'Verwaltung Alle Accounts' },
-    icon: UsersIcon,
+    icon: FingerPrintIcon,
     visible: hasPermissionToView(['ADMIN']),
   },
   {
