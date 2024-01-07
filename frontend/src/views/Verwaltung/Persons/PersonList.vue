@@ -2,7 +2,6 @@
 import { useAsyncState } from '@vueuse/core'
 
 import { apiClient } from '@/api'
-import UserLogo from '@/components/UIComponents/UserLogo.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
 import router from '@/router'
 import { formatDate } from '@codeanker/helpers'
@@ -20,10 +19,9 @@ fetchPersons()
 
 <template>
   <h5>Personen</h5>
-  <p>Personen sind Teilnehmer an einer Veranstaltung. Eine Person kann optional einem Account zugeordnet werden.</p>
   <div class="flow-root">
     <p class="mt-8 text-sm text-gray-500">
-      <b>Tipp</b>: Zum Bearbeiten eines Nutzers die entsprechende Zeile anklicken.
+      Personen melden sich zu einer Veranstaltung an. Eine Person kann optional einem Account zugeordnet werden.
     </p>
     <RouterLink
       class="text-primary-600"
@@ -34,10 +32,6 @@ fetchPersons()
     <table class="min-w-full divide-y divide-gray-300">
       <thead>
         <tr>
-          <th
-            width="12px"
-            class="text-sm text-gray-900"
-          />
           <th
             scope="col"
             class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"
@@ -72,11 +66,6 @@ fetchPersons()
           :title="person.firstname + ' ' + person.lastname + ' bearbeiten'"
           @click="router.push({ name: 'Verwaltung Persondetails', params: { personId: person.id } })"
         >
-          <td class="whitespace-nowrap px-3">
-            <div class="h-9 w-9 flex-shrink-0">
-              <UserLogo :name="person.firstname + ' ' + person.lastname" />
-            </div>
-          </td>
           <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
             <div class="font-medium text-gray-900">{{ person.firstname }} {{ person.lastname }}</div>
           </td>
