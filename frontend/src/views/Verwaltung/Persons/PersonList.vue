@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import { CheckIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 
 import { apiClient } from '@/api'
 import { loggedInAccount } from '@/composables/useAuthentication'
 import router from '@/router'
-import { formatDate } from '@codeanker/helpers'
+import { dayjs, formatDate } from '@codeanker/helpers'
 
 const { state: personList, execute: fetchPersons } = useAsyncState(async () => {
   if (loggedInAccount.value?.role === 'ADMIN') {
@@ -42,7 +43,7 @@ fetchPersons()
             scope="col"
             class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
           >
-            Geburtsdatum
+            Alter
           </th>
           <th
             scope="col"
@@ -67,16 +68,26 @@ fetchPersons()
           @click="router.push({ name: 'Verwaltung Persondetails', params: { personId: person.id } })"
         >
           <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-            <div class="font-medium text-gray-900">{{ person.firstname }} {{ person.lastname }}</div>
+            <div class="text-gray-900">{{ person.firstname }} {{ person.lastname }}</div>
           </td>
           <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-            {{ formatDate(person.birthday) }}
+            <div v-if="person.birthday">
+              {{ dayjs().diff(person.birthday, 'year') }} Jahre
+              <br />
+              {{ formatDate(person.birthday) }}
+            </div>
           </td>
           <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
             {{ person.gliederung?.name }}
           </td>
           <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-            {{ person.account?.id !== undefined }}
+            <div class="flex items-center">
+              <CheckIcon
+                v-if="person.account?.id !== undefined"
+                class="h-5 w-5 text-primary-600"
+              ></CheckIcon>
+              vorhanden
+            </div>
           </td>
         </tr>
       </tbody>
