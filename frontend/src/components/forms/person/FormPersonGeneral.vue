@@ -3,6 +3,8 @@ import { CheckIcon, PlusIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 import { computed, ref } from 'vue'
 
+import type { IAddress } from '../anmeldung/Address.vue'
+import Address from '../anmeldung/Address.vue'
 import type { IStammdaten } from '../anmeldung/Stammdaten.vue'
 import Stammdaten from '../anmeldung/Stammdaten.vue'
 
@@ -44,14 +46,15 @@ const stammdatenForm = ref<IStammdaten>({
   gender: props.person?.gender ?? undefined,
 })
 
+const addressForm = ref<IAddress>({
+  street: props.person?.address?.street,
+  number: props.person?.address?.number,
+  zip: props.person?.address?.zip,
+  city: props.person?.address?.city,
+})
+
 const data = ref({
   ...props.person,
-  address: {
-    zip: props.person?.address?.zip ?? '',
-    city: props.person?.address?.city ?? '',
-    street: props.person?.address?.street ?? '',
-    number: props.person?.address?.number ?? '',
-  },
   essgewohnheit: props.person?.essgewohnheit ?? undefined,
   konfektionsgroesse: props.person?.konfektionsgroesse ?? undefined,
 })
@@ -109,9 +112,11 @@ const { execute, isLoading } = useAsyncState(
       id: data.value.id,
       data: {
         ...stammdatenForm.value,
+        address: {
+          ...addressForm.value,
+        },
         gliederungId: gliederung.value!.id,
         telefon: '123',
-        address: data.value.address,
         notfallkontaktPersonen: notfallkontaktPersonen.value,
         essgewohnheit: data.value.essgewohnheit,
         konfektionsgroesse: 'XL',
@@ -131,38 +136,10 @@ const { execute, isLoading } = useAsyncState(
 </script>
 
 <template>
-  <Stammdaten v-model="stammdatenForm" />
-
-  <ValidateForm>
-    <div class="grid grid-flow-row lg:grid-cols-2 gap-5">
-      <div class="col-span-2 flex items-end space-x-5">
-        <BasicInput
-          v-model="data.address.street"
-          label="Straße und Hausnummer"
-          placeholder="Straße eingeben"
-          class="grow"
-          required
-        />
-        <BasicInput
-          v-model="data.address.number"
-          placeholder="Hausnummer eingeben"
-          required
-        />
-      </div>
-      <BasicInput
-        v-model="data.address.zip"
-        label="Postleitzahl"
-        placeholder="Postleitzahl eingeben"
-        required
-      />
-      <BasicInput
-        v-model="data.address.city"
-        label="Ort"
-        placeholder="Ort eingeben"
-        required
-      />
-    </div>
-
+  <ValidateForm @submit="execute">
+    <Stammdaten v-model="stammdatenForm" />
+    <hr class="my-5" />
+    <Address v-model="addressForm"></Address>
     <hr class="my-5" />
 
     <BasicTypeahead
@@ -303,7 +280,6 @@ const { execute, isLoading } = useAsyncState(
         class="w-full lg:w-auto justify-center mb-20 items-center space-x-2"
         :disabled="isLoading || !acceptTeilnahmebedingungen || !acceptDatenschutz"
         type="submit"
-        @click="execute"
       >
         <template v-if="isLoading">
           <Loading color="white" />
