@@ -175,7 +175,7 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
           target="_blank"
           rel="noopener noreferrer"
           class="font-medium leading-6 text-gray-600 hover:text-primary-500"
-          >Supported by from CODEANKER</a
+          >Supported by CODEANKER</a
         >
       </p>
     </div>
