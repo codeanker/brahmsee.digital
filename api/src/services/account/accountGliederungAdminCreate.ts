@@ -45,18 +45,18 @@ export const accountGliederungAdminCreateProcedure = defineProcedure({
       isActiv: false,
       adminInGliederungId: options.input.data.adminInGliederungId,
     })
-    return await prisma.account
-      .create({
-        data: accountData,
-        select: {
-          id: true,
-        },
-      })
-      .then(() => {
-        sendMailConfirmEmailRequest({
-          email: accountData.email,
-          activationToken: accountData.activationToken,
-        })
-      })
+    const res = await prisma.account.create({
+      data: accountData,
+      select: {
+        id: true,
+      },
+    })
+
+    await sendMailConfirmEmailRequest({
+      email: accountData.email,
+      activationToken: accountData.activationToken,
+    })
+
+    return res
   },
 })
