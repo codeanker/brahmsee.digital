@@ -110,6 +110,21 @@
 			}
 		},
 		{
+			"label": "start:prisma",
+			"type": "shell",
+			"command": "npx prisma studio",
+			"options": {
+        "cwd": "${workspaceFolder}/api"
+      },
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "silent",
+				"revealProblems": "onProblem",
+				"panel": "new",
+				"close": true
+			}
+		},
+		{
 			"label": "run:migration",
 			"type": "shell",
 			"command": "npx prisma migrate deploy & npx prisma generate",
