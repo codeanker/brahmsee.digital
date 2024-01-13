@@ -1,21 +1,15 @@
 <script setup lang="ts">
 import { HandRaisedIcon, UserGroupIcon } from '@heroicons/vue/24/outline'
-
-import PublicFooter from '@/components/LayoutComponents/PublicFooter.vue'
-import PublicHeader from '@/components/LayoutComponents/PublicHeader.vue'
 </script>
 
 <template>
-  <div class="lg:py-10 lg:px-20 xl:px-28 2xl:px-40 flex flex-col h-full grow">
-    <!-- Header -->
-    <PublicHeader />
-    <div class="h-full grow">
-      <div class="my-10">
-        <div class="text-3xl font-medium">Registrierung</div>
-        <div class="mb-5">Wofür möchtest Du dich registrieren?</div>
-      </div>
-      <!-- Form -->
-      <div class="space-y-5">
+  <div class="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-md">
+      <h2 class="text-center text-4xl leading-9 tracking-tight text-primary-700 flex items-center justify-center">
+        Registrierung
+      </h2>
+      <p class="text-center">Wofür möchtest Du dich registrieren?</p>
+      <div class="mt-10 space-y-5">
         <RouterLink
           :to="{ name: 'CrewRegistrierung' }"
           class="w-full p-5 rounded-lg flex cursor-pointer transition-all ease-in-out border border-gray-200 hover:border-primary-600"
@@ -36,11 +30,13 @@ import PublicHeader from '@/components/LayoutComponents/PublicHeader.vue'
             <div>Erstelle Ausschreibungen und versende diese zur Anmeldung und verwalte diese.</div>
           </div>
         </RouterLink>
+        <RouterLink
+          :to="{ name: 'Login' }"
+          class="flex justify-center text-sm transition-all text-gray-600 hover:text-primary-600"
+        >
+          zurück
+        </RouterLink>
       </div>
-    </div>
-
-    <div class="flex flex-col">
-      <PublicFooter />
     </div>
   </div>
 </template>
