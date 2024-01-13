@@ -1,24 +1,23 @@
 <script setup lang="ts">
 import { FaceFrownIcon } from '@heroicons/vue/24/outline'
 
-import PublicFooter from '@/components/LayoutComponents/PublicFooter.vue'
-import PublicHeader from '@/components/LayoutComponents/PublicHeader.vue'
+import Button from '@/components/UIComponents/Button.vue'
 </script>
 
 <template>
-  <div class="lg:py-10 lg:px-20 xl:px-28 2xl:px-40 flex flex-col h-full grow">
-    <!-- Header -->
-    <PublicHeader />
-    <div class="h-full flex grow justify-center items-center">
-      <!-- Form -->
-      <div class="my-10 text-xl flex flex-col items-center">
-        <FaceFrownIcon class="h-20"></FaceFrownIcon>
-        <div>Diese Funktion steht leider noch nicht zur Verfügung.</div>
-      </div>
-    </div>
-
-    <div class="flex flex-col">
-      <PublicFooter />
+  <div class="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-md">
+      <h2 class="text-center text-4xl leading-9 tracking-tight text-primary-700 flex items-center justify-center">
+        <FaceFrownIcon class="h-14"></FaceFrownIcon> Oh nein
+      </h2>
+      <p class="text-center">Die Funktion steht leider noch nicht zur Verfügung.</p>
+      <Button
+        :to="{ name: 'Registrierung' }"
+        color="primary"
+        full
+        class="mt-5"
+        >zurück</Button
+      >
     </div>
   </div>
 </template>
