@@ -7,7 +7,7 @@ import { personSchema, getPersonCreateData } from '../person/schema/person.schem
 export const anmeldungPublicCreateProcedure = defineProcedure({
   key: 'publicCreate',
   method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
+  protection: { type: 'public' },
   inputSchema: z.strictObject({
     data: personSchema.extend({
       unterveranstaltungId: z.number().int(),
