@@ -59,7 +59,7 @@ const {
       </h2>
       <p class="text-center">Erstelle Ausschreibungen und versende diese zur Anmeldung und verwalte diese.</p>
 
-      <div class="h-full grow">
+      <div class="h-full grow mt-10">
         <!-- Form -->
         <ValidateForm
           class="grow"
