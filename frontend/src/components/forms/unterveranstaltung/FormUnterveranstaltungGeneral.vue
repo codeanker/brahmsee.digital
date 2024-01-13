@@ -44,11 +44,22 @@ if (props.mode === 'create') {
   unterveranstaltungCopy.value.veranstaltungId = props?.veranstaltungId
 }
 
-const { state: veranstaltungen } = useAsyncState(async () => {
-  if (loggedInAccount.value?.role === 'ADMIN')
-    return apiClient.veranstaltung.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
-  return apiClient.veranstaltung.gliederungList.query()
-}, [])
+function useVeranstaltungList(isAdmin: boolean) {
+  // return computed(() => {
+  if (isAdmin) {
+    const { state } = useAsyncState(async () => {
+      return apiClient.veranstaltung.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
+    }, [])
+    return state
+  } else {
+    const { state } = useAsyncState(async () => {
+      return apiClient.veranstaltung.gliederungList.query()
+    }, [])
+    return state
+  }
+}
+
+const veranstaltungen = useVeranstaltungList(loggedInAccount.value?.role === 'ADMIN')
 
 const {
   execute: createUnterveranstaltung,
@@ -126,9 +137,8 @@ const veranstaltung = computed(() => {
     unterveranstaltungCopy.value.meldebeginn = undefined
     // eslint-disable-next-line vue/no-side-effects-in-computed-properties
     unterveranstaltungCopy.value.meldeschluss = undefined
-    return veranstaltungen.value.find((item) => {
-      return item['id'] == unterveranstaltungCopy.value.veranstaltungId
-    })
+
+    return veranstaltungen.value.find((item) => item.id == unterveranstaltungCopy.value.veranstaltungId)
   } else {
     return props.unterveranstaltung?.veranstaltung
   }
