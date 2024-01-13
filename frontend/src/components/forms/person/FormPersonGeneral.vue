@@ -36,7 +36,7 @@ const props = defineProps<{
 const edit = computed(() => props.person !== undefined)
 
 async function queryGliederungen(searchTerm: string) {
-  return apiClient.gliederung.verwaltungList.query({ filter: { name: searchTerm }, pagination: { take: 100, skip: 0 } })
+  return apiClient.gliederung.publicList.query({ filter: { name: searchTerm }, pagination: { take: 100, skip: 0 } })
 }
 
 const stammdatenForm = ref<IStammdaten>({
