@@ -13,7 +13,7 @@ const route = useRoute()
       :class="{ hidden: route.meta?.hidePublicHeaderBgOnMobile }"
     />
     <div
-      class="p-6 lg:order-1 lg:col-span-2 2xl:col-span-1"
+      class="p-6 lg:order-1 lg:col-span-2 2xl:col-span-1 flex flex-col grow"
       :class="{ 'h-screen': route.meta?.useFullheight }"
     >
       <router-view />

@@ -159,12 +159,10 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
 
       <p class="mt-10 text-center text-sm text-gray-500">
         Noch kein Konto?
-        <a
-          href="https://github.com/codeanker/brahmsee.digital"
-          target="_blank"
-          rel="noopener noreferrer"
+        <RouterLink
+          :to="{ name: 'Registrierung' }"
           class="font-semibold leading-6 text-primary-600 hover:text-primary-500"
-          >Registriere dich jetzt</a
+          >Registriere dich jetzt</RouterLink
         >
       </p>
       <p class="flex items-center justify-center mt-20 text-center text-xs text-gray-500">

@@ -56,7 +56,7 @@ const feedback = computed(() => {
 </script>
 
 <template>
-  <div class="lg:py-10 lg:px-20 xl:px-28 2xl:px-40 flex flex-col h-full">
+  <div class="lg:py-10 lg:px-20 xl:px-28 2xl:px-40 flex flex-col h-full grow">
     <!-- Header -->
     <PublicHeader />
     <div
