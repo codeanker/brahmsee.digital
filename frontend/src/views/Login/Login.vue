@@ -7,6 +7,7 @@ import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import Loading from '@/components/UIComponents/Loading.vue'
 import { login, loginError, loginPending } from '@/composables/useAuthentication'
+import { ValidateForm } from '@codeanker/validation'
 
 const router = useRouter()
 const route = useRoute()
@@ -45,9 +46,9 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
         {{ loginError }}
       </div>
       <div class="bg-white px-6 py-12 border-primary-100 border sm:rounded-lg sm:px-12">
-        <form
+        <ValidateForm
           class="space-y-8"
-          @submit.prevent="loginWithRecirect"
+          @submit="loginWithRecirect"
         >
           <BasicInput
             id="email"
@@ -56,6 +57,7 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
             class="w-full"
             placeholder="E-Mail"
             label="E-Mail"
+            required
           ></BasicInput>
           <BasicPassword
             id="password"
@@ -63,6 +65,7 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
             class="w-full"
             placeholder="Passwort"
             label="Passwort"
+            required
           ></BasicPassword>
           <div class="flex items-center justify-end">
             <div class="text-sm">
@@ -84,7 +87,7 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
             </template>
             <template v-else> Anmelden </template>
           </Button>
-        </form>
+        </ValidateForm>
 
         <div>
           <div class="relative mt-10">
