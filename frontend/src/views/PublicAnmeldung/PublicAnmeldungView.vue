@@ -13,11 +13,7 @@ import Loading from '@/components/UIComponents/Loading.vue'
 const router = useRouter()
 const route = useRoute()
 
-const {
-  state: unterveranstaltung,
-  execute: fetchUnterveranstaltung,
-  isLoading,
-} = useAsyncState(async () => {
+const { state: unterveranstaltung, isLoading } = useAsyncState(async () => {
   return apiClient.unterveranstaltung.publicGet.query({ id: Number(route.params.ausschreibungId) })
 }, undefined)
 
@@ -35,8 +31,6 @@ const {
   })
   router.push('/ausschreibung/' + route.params.ausschreibungId + '/anmeldung/result')
 }, undefined)
-
-fetchUnterveranstaltung()
 </script>
 
 <template>
