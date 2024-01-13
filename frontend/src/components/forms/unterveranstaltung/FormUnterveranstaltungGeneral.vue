@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAsyncState } from '@vueuse/core'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 import { apiClient } from '@/api'
 import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
@@ -36,12 +36,14 @@ const unterveranstaltungCopy = ref({
   type: props.unterveranstaltung?.type,
 })
 
-const unterveranstaltungId = parseInt(props.unterveranstaltung?.id as string)
+const unterveranstaltungId = props.unterveranstaltung?.id
 const gliederung = ref(props.unterveranstaltung?.gliederung)
 
+// Wird benötig damit man direkt von einer Veranstaltung eine Unterveranstaltung anlegen kann ohne diese extra auswählen zu müssen
 if (props.mode === 'create') {
   unterveranstaltungCopy.value.veranstaltungId = props?.veranstaltungId
 }
+
 const { state: veranstaltungen } = useAsyncState(async () => {
   if (loggedInAccount.value?.role === 'ADMIN')
     return apiClient.veranstaltung.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
@@ -54,7 +56,6 @@ const {
   isLoading: isLoadingCreate,
 } = useAsyncState(
   async () => {
-    // @todo typing
     if (loggedInAccount.value?.role === 'ADMIN') {
       unterveranstaltungCopy.value.gliederungId = gliederung.value.id
       await apiClient.unterveranstaltung.verwaltungCreate.mutate({
@@ -75,11 +76,10 @@ const {
 
 const {
   execute: updateUnterveranstaltung,
-  // error: errorUpdate,
+  error: errorUpdate,
   isLoading: isLoadingUpdate,
 } = useAsyncState(
   async () => {
-    // @todo typing
     if (loggedInAccount.value?.role === 'ADMIN') {
       delete unterveranstaltungCopy.value.gliederungId
       delete unterveranstaltungCopy.value.veranstaltungId
@@ -119,6 +119,32 @@ const handle = async () => {
 async function queryObjectGliederungen(searchTerm) {
   return apiClient.gliederung.publicList.query({ filter: { name: searchTerm }, pagination: { take: 100, skip: 0 } })
 }
+
+const veranstaltung = computed(() => {
+  if (props.mode === 'create') {
+    // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+    unterveranstaltungCopy.value.meldebeginn = undefined
+    // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+    unterveranstaltungCopy.value.meldeschluss = undefined
+    return veranstaltungen.value.find((item) => {
+      return item['id'] == unterveranstaltungCopy.value.veranstaltungId
+    })
+  } else {
+    return props.unterveranstaltung?.veranstaltung
+  }
+})
+
+const disableddates = computed(() => {
+  let obj = {
+    to: undefined,
+    from: undefined,
+  }
+  if (veranstaltung.value) {
+    obj.to = veranstaltung.value.meldebeginn
+    obj.from = veranstaltung.value.meldeschluss
+  }
+  return obj
+})
 </script>
 
 <template>
@@ -139,9 +165,7 @@ async function queryObjectGliederungen(searchTerm) {
           required
           label="Veranstaltung"
           placeholder="Veranstaltungsort"
-          :options="
-            veranstaltungen.map((veranstaltungen) => ({ label: veranstaltungen.name, value: veranstaltungen.id }))
-          "
+          :options="veranstaltungen.map((veranstaltung) => ({ label: veranstaltung.name, value: veranstaltung.id }))"
         />
       </div>
       <template v-if="mode === 'create' && loggedInAccount?.role === 'ADMIN'">
@@ -185,10 +209,7 @@ async function queryObjectGliederungen(searchTerm) {
           format="dd.MM.yyyy"
           label="Meldebeginn"
           placeholder="Meldebeginn"
-          :disabled-dates="{
-            to: new Date(unterveranstaltung.veranstaltung.meldebeginn),
-            from: new Date(unterveranstaltung.veranstaltung.meldeschluss),
-          }"
+          :disabled-dates="disableddates"
         />
       </div>
 
@@ -199,10 +220,7 @@ async function queryObjectGliederungen(searchTerm) {
           format="dd.MM.yyyy"
           label="Meldeschluss"
           placeholder="Meldeschluss"
-          :disabled-dates="{
-            to: new Date(unterveranstaltung.veranstaltung.meldebeginn),
-            from: new Date(unterveranstaltung.veranstaltung.meldeschluss),
-          }"
+          :disabled-dates="disableddates"
         />
       </div>
       <div class="lg:col-span-3">
@@ -241,10 +259,10 @@ async function queryObjectGliederungen(searchTerm) {
     </div>
 
     <div
-      v-if="errorCreate"
+      v-if="errorCreate || errorUpdate"
       class="bg-danger-400 mb-2 mt-5 rounded p-3 text-center text-white"
     >
-      {{ errorCreate }}
+      {{ errorCreate }} {{ errorUpdate }}
     </div>
   </ValidateForm>
 </template>
