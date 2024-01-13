@@ -41,18 +41,20 @@ export const veranstaltungGliederungListProcedure = defineProcedure({
       },
     })
 
-    return await Promise.all(
-      data.map(async (v) => {
+    const mapped = await Promise.all(
+      data.map(async (veranstaltung) => {
         const unterveranstaltung = await prisma.unterveranstaltung.findFirst({
           where: {
-            veranstaltungId: v.id,
+            veranstaltungId: veranstaltung.id,
           },
         })
         return {
-          data: v,
+          ...veranstaltung,
           hasUnterveranstaltung: unterveranstaltung !== null,
         }
       })
     )
+
+    return mapped
   },
 })

@@ -18,7 +18,7 @@ let selectedVeranstaltung = ref<number>(
   +route.params.veranstaltungId || parseInt(localStorage.getItem('letzteVeranstaltung') as string)
 )
 const veranstaltungTitle = (id: number) => {
-  return veranstaltungen.value.find((veranstaltung) => veranstaltung.id === id)?.name
+  return veranstaltungen.value?.find((veranstaltung) => veranstaltung.id === id)?.name ?? []
 }
 
 watch(selectedVeranstaltung, async (newValue) => {

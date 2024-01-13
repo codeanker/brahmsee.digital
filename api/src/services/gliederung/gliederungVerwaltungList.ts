@@ -30,6 +30,7 @@ export const gliederungVerwaltungListProcedure = defineProcedure({
         edv: true,
       },
     })
+
     return list
   },
 })

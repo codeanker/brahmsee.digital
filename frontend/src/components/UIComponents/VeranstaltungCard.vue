@@ -2,9 +2,12 @@
 import Badge from './Badge.vue'
 
 interface Props {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  veranstaltung: any
-  hasUnterveranstaltung?: boolean
+  veranstaltung: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    [key: string]: any
+  } & {
+    hasUnterveranstaltung?: boolean
+  }
 }
 
 const { veranstaltung } = defineProps<Props>()
@@ -24,7 +27,7 @@ const { veranstaltung } = defineProps<Props>()
       <span class="text-sm font-semibold leading-6 text-gray-600">/500 Plätzen</span>
     </p>
 
-    <Badge v-if="hasUnterveranstaltung"> Ausschreibung erstellt </Badge>
+    <Badge v-if="veranstaltung.hasUnterveranstaltung"> Ausschreibung erstellt </Badge>
     <router-link
       v-else
       :to="{

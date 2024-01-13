@@ -12,8 +12,8 @@ const { state: veranstaltungen } = useAsyncState(async () => {
 <template>
   <VeranstaltungCard
     v-for="v in veranstaltungen"
-    :key="v.data.id"
-    :veranstaltung="v.data"
+    :key="v.id"
+    :veranstaltung="v"
     :has-unterveranstaltung="v.hasUnterveranstaltung"
   />
 </template>
