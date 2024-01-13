@@ -148,6 +148,7 @@ model Account {
   person              Person                @relation(fields: [personId], references: [id], onDelete: Cascade)
   activatedAt         DateTime?
   GliederungToAccount GliederungToAccount[]
+  activationToken     String?               @unique
 }
 
 model Gliederung {

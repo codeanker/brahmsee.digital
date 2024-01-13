@@ -3,7 +3,7 @@ import z from 'zod'
 import prisma from '../../prisma'
 import { defineProcedure } from '../../types/defineProcedure'
 
-import { accountSchema, getAccountCreateData } from './schema/account.schema'
+import { accountSchema, getAccountCreateData, sendMailConfirmEmailRequest } from './schema/account.schema'
 
 export const accountVerwaltungCreateProcedure = defineProcedure({
   key: 'verwaltungCreate',
@@ -13,11 +13,19 @@ export const accountVerwaltungCreateProcedure = defineProcedure({
     data: accountSchema,
   }),
   async handler(options) {
-    return prisma.account.create({
-      data: await getAccountCreateData(options.input.data),
-      select: {
-        id: true,
-      },
-    })
+    const accountData = await getAccountCreateData(options.input.data)
+    return prisma.account
+      .create({
+        data: accountData,
+        select: {
+          id: true,
+        },
+      })
+      .then(() => {
+        sendMailConfirmEmailRequest({
+          email: accountData.email,
+          activationToken: accountData.activationToken,
+        })
+      })
   },
 })

@@ -28,6 +28,7 @@ export const accountVerwaltungGetProcedure = defineProcedure({
             gender: true,
           },
         },
+        activationToken: true,
       },
     })
   },

@@ -4,7 +4,7 @@ import z from 'zod'
 import prisma from '../../prisma'
 import { defineProcedure } from '../../types/defineProcedure'
 
-import { accountSchema, getAccountCreateData } from './schema/account.schema'
+import { accountSchema, getAccountCreateData, sendMailConfirmEmailRequest } from './schema/account.schema'
 
 export const accountGliederungAdminCreateProcedure = defineProcedure({
   key: 'gliederungAdminCreate',
@@ -34,21 +34,29 @@ export const accountGliederungAdminCreateProcedure = defineProcedure({
         message: 'Gliederung hat bereits einen Admin',
       })
     }
-    return await prisma.account.create({
-      data: await getAccountCreateData({
-        email: options.input.data.email,
-        firstname: options.input.data.firstname,
-        lastname: options.input.data.lastname,
-        password: options.input.data.password,
-        birthday: options.input.data.birthday,
-        gender: options.input.data.gender,
-        roleId: 'GLIEDERUNG_ADMIN',
-        isActiv: false,
-        adminInGliederungId: options.input.data.adminInGliederungId,
-      }),
-      select: {
-        id: true,
-      },
+    const accountData = await getAccountCreateData({
+      email: options.input.data.email,
+      firstname: options.input.data.firstname,
+      lastname: options.input.data.lastname,
+      password: options.input.data.password,
+      birthday: options.input.data.birthday,
+      gender: options.input.data.gender,
+      roleId: 'GLIEDERUNG_ADMIN',
+      isActiv: false,
+      adminInGliederungId: options.input.data.adminInGliederungId,
     })
+    return await prisma.account
+      .create({
+        data: accountData,
+        select: {
+          id: true,
+        },
+      })
+      .then(() => {
+        sendMailConfirmEmailRequest({
+          email: accountData.email,
+          activationToken: accountData.activationToken,
+        })
+      })
   },
 })

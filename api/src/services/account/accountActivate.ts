@@ -9,15 +9,13 @@ export const accountActivateProcedure = defineProcedure({
   method: 'mutation',
   protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
   inputSchema: z.strictObject({
-    data: z.strictObject({
-      accountId: z.number().int(),
-    }),
+    accountId: z.number().int(),
   }),
   async handler(options) {
     prisma.account
       .update({
         where: {
-          id: options.input.data.accountId,
+          id: options.input.accountId,
         },
         data: {
           activatedAt: new Date(),
@@ -28,9 +26,6 @@ export const accountActivateProcedure = defineProcedure({
           to: res.email,
           subject: 'brahmsee.digital Account aktiviert',
           categories: ['account', 'activate'],
-          data: {
-            account: res,
-          },
           html: 'Dein brahmsee.digital Account wurde aktiviert.',
         })
       })

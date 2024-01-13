@@ -15,7 +15,6 @@ export type EMailParams = EMailTemplateConfig & {
   bcc?: string | string[]
   subject: string
   categories: string[]
-  data: any
   attachments?: {
     content: string | Buffer
     filename: string

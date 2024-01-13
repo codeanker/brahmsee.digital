@@ -1,0 +1,49 @@
+import z from 'zod'
+
+import prisma from '../../prisma'
+import { defineProcedure } from '../../types/defineProcedure'
+
+export const accountEmailConfirmProcedure = defineProcedure({
+  key: 'emailConfirm',
+  method: 'mutation',
+  protection: { type: 'public' },
+  inputSchema: z.strictObject({
+    activationToken: z.string(),
+  }),
+  async handler(options) {
+    const account = await prisma.account.findUnique({
+      where: {
+        activationToken: options.input.activationToken,
+      },
+      select: {
+        id: true,
+        activatedAt: true,
+      },
+    })
+
+    if (!account) {
+      return {
+        status: 'NoAccountFound',
+      }
+    }
+
+    if (account.activatedAt) {
+      return {
+        status: 'AccountAlreadyActivated',
+      }
+    }
+
+    await prisma.account.update({
+      where: {
+        id: account.id,
+      },
+      data: {
+        activatedAt: new Date(),
+      },
+    })
+
+    return {
+      status: 'AccountActivated',
+    }
+  },
+})

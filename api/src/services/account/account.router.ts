@@ -3,6 +3,8 @@ import { mergeRouters } from '../../trpc'
 
 import { accountActivateProcedure } from './accountActivate'
 import { accountChangePasswordProcedure } from './accountChangePassword'
+import { accountEmailConfirmProcedure } from './accountEmailConfirm'
+import { accountEmailConfirmRequestProcedure } from './accountEmailConfirmRequest'
 import { accountGliederungAdminCreateProcedure } from './accountGliederungAdminCreate'
 import { accountVerwaltungCreateProcedure } from './accountVerwaltungCreate'
 import { accountVerwaltungGetProcedure } from './accountVerwaltungGet'
@@ -18,5 +20,7 @@ export const accountRouter = mergeRouters(
   accountVerwaltungGetProcedure.router,
   accountVerwaltungListProcedure.router,
   accountVerwaltungPatchProcedure.router,
+  accountEmailConfirmRequestProcedure.router,
+  accountEmailConfirmProcedure.router,
   // Add Routes here - do not delete this line
 )

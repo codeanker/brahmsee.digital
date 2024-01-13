@@ -128,6 +128,13 @@ const handle = async () => {
     await createAccount()
   }
 }
+
+function requestEmailConfirmation() {
+  if (!props.account) {
+    return
+  }
+  apiClient.account.emailConfirmRequest.mutate({ accountId: props.account.id })
+}
 </script>
 
 <template>
@@ -190,6 +197,14 @@ const handle = async () => {
       </div>
     </div>
   </ValidateForm>
+
+  <Button
+    color="primary"
+    class="w-full lg:w-auto justify-center items-center space-x-2 mt-4"
+    type="button"
+    @click="requestEmailConfirmation"
+    >E-Mail bestätigung anfordern</Button
+  >
 
   <div
     v-if="edit"

@@ -14,6 +14,14 @@ const routesRegistrierung: Route[] = [
           public: true,
         },
       },
+      {
+        name: 'Email bestätigen',
+        path: 'confirm/:activationToken',
+        component: () => import('./EmailBestaetigen.vue'),
+        meta: {
+          public: true,
+        },
+      },
     ],
   },
 ]
