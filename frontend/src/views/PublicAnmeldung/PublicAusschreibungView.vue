@@ -63,9 +63,10 @@ fetchUnterveranstaltung()
       <div class="text-3xl font-medium mb-5">Ausschreibung {{ unterveranstaltung?.veranstaltung.name }}</div>
       <!-- List -->
       <InfoList :infos="keyInfos" />
-      <div class="my-5">
-        {{ unterveranstaltung?.beschreibung }}
-      </div>
+      <div
+        class="my-5"
+        v-html="unterveranstaltung?.beschreibung"
+      ></div>
       <Button
         color="primary"
         class="w-full lg:w-auto justify-center mb-20"
