@@ -37,7 +37,7 @@ const fill = (veranstaltung) => {
   }
 }
 
-const veranstaltungId = parseInt(props.veranstaltung?.id as string)
+const veranstaltungId = props.veranstaltung?.id
 const veranstaltungCopy = ref(fill(props.veranstaltung) ?? { role: 'ADMIN' })
 
 const {
