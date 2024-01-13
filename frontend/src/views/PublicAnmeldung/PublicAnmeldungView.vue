@@ -54,7 +54,7 @@ fetchUnterveranstaltung()
         ><ChevronLeftIcon class="h-5 mr-2" />Zurück zur Aussschreibung</Button
       >
       <div class="text-3xl font-medium">Anmeldung</div>
-      <div class="mb-5">Zum {{ unterveranstaltung?.veranstaltung.name }}</div>
+      <div class="mb-5">{{ unterveranstaltung?.veranstaltung.name }}</div>
       <!-- Form -->
       <FormPersonGeneral
         :loading="isLoadingCreate"
