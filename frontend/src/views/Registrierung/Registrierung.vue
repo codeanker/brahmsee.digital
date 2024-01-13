@@ -12,21 +12,25 @@ import { HandRaisedIcon, UserGroupIcon } from '@heroicons/vue/24/outline'
       <div class="mt-10 space-y-5">
         <RouterLink
           :to="{ name: 'CrewRegistrierung' }"
-          class="w-full p-5 rounded-lg flex cursor-pointer transition-all ease-in-out border border-gray-200 hover:border-primary-600"
+          class="w-full p-5 rounded-lg flex cursor-pointer transition-all ease-in-out border border-gray-200 hover:border-primary-600 group"
         >
-          <div class="mr-4"><HandRaisedIcon class="h-8 w-8"></HandRaisedIcon></div>
+          <div class="mr-4">
+            <HandRaisedIcon class="h-8 w-8 transition-all ease-in-out group-hover:text-primary-600"></HandRaisedIcon>
+          </div>
           <div class="">
-            <div class="font-medium text-lg">CREW-Mitglied</div>
+            <div class="font-medium text-lg transition-all ease-in-out group-hover:text-primary-600">CREW-Mitglied</div>
             <div>Registriere dich als CREW-Mitglied für unsere Veranstaltungen.</div>
           </div>
         </RouterLink>
         <RouterLink
           :to="{ name: 'GliederungRegistrierung' }"
-          class="w-full p-5 rounded-lg flex cursor-pointer transition-all ease-in-out border border-gray-200 hover:border-primary-600"
+          class="w-full p-5 rounded-lg flex cursor-pointer transition-all ease-in-out border border-gray-200 hover:border-primary-600 group"
         >
-          <div class="mr-4"><UserGroupIcon class="h-8 w-8"></UserGroupIcon></div>
+          <div class="mr-4">
+            <UserGroupIcon class="h-8 w-8 transition-all ease-in-out group-hover:text-primary-600"></UserGroupIcon>
+          </div>
           <div class="">
-            <div class="font-medium text-lg">Gliederung</div>
+            <div class="font-medium text-lg transition-all ease-in-out group-hover:text-primary-600">Gliederung</div>
             <div>Erstelle Ausschreibungen und versende diese zur Anmeldung und verwalte diese.</div>
           </div>
         </RouterLink>
