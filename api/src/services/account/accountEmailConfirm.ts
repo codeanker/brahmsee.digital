@@ -23,13 +23,7 @@ export const accountEmailConfirmProcedure = defineProcedure({
 
     if (!account) {
       return {
-        status: 'NoAccountFound',
-      }
-    }
-
-    if (account.activatedAt) {
-      return {
-        status: 'AccountAlreadyActivated',
+        status: 'InvalidLink',
       }
     }
 
@@ -39,6 +33,7 @@ export const accountEmailConfirmProcedure = defineProcedure({
       },
       data: {
         activatedAt: new Date(),
+        activationToken: null,
       },
     })
 

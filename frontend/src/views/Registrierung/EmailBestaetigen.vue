@@ -1,10 +1,5 @@
 <script setup lang="ts">
-import {
-  CheckCircleIcon,
-  ExclamationTriangleIcon,
-  QuestionMarkCircleIcon,
-  FaceFrownIcon,
-} from '@heroicons/vue/24/outline'
+import { CheckCircleIcon, FaceFrownIcon, QuestionMarkCircleIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -22,23 +17,15 @@ const { state: account, isLoading: isLoading } = useAsyncState(async () => {
 }, null)
 
 const feedback = computed(() => {
-  if (account.value?.status == 'AccountAlreadyActivated') {
-    return {
-      title: 'Der Link ist abgelaufen.',
-      message: 'Du hast dein Konto bereits bestätigt.',
-      showLoginButton: true,
-      icon: ExclamationTriangleIcon,
-    }
-  }
-  if (account.value?.status == 'NoAccountFound') {
+  if (account.value?.status == 'InvalidLink') {
     return {
       title: 'Der Link ist ungültig.',
-      message: 'Wir konnten keinen Account mit diesem Aktivierungscode finden.',
-      showLoginButton: true,
+      message: 'Stelle sicher, dass der Token in der URL Leiste richtig ist.',
+      showLoginButton: false,
       icon: QuestionMarkCircleIcon,
     }
   }
-  if (account.value?.status == 'Success') {
+  if (account.value?.status == 'AccountActivated') {
     return {
       title: 'E-Mail erfolgreich bestätigt.',
       message: 'Danke, dass Du deine E-Mail bestätigt hast. Du kannst dich jetzt einloggen.',
@@ -46,10 +33,11 @@ const feedback = computed(() => {
       icon: CheckCircleIcon,
     }
   }
+
   return {
-    title: '',
-    message: '',
-    showLoginButton: false,
+    title: 'Fehler',
+    message: 'Etwas ist schiefgelaufen.',
+    showLoginButton: true,
     icon: FaceFrownIcon,
   }
 })
