@@ -7,6 +7,7 @@ withDefaults(
     tabs: {
       name: string
       icon: FunctionalComponent
+      count?: number
     }[]
     contentSpace?: string
     defaultIndex?: number
@@ -46,6 +47,14 @@ withDefaults(
           />
           <span></span>
           {{ tab.name }}
+          <span
+            v-if="tab.count"
+            :class="[
+              selected ? 'bg-primary-100 text-primary-600' : 'bg-gray-100 text-gray-900',
+              'ml-3 hidden rounded-full py-0.5 px-2.5 text-xs font-medium md:inline-block',
+            ]"
+            >{{ tab.count }}</span
+          >
         </div>
       </Tab>
     </TabList>
