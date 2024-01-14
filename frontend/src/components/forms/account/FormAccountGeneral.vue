@@ -199,6 +199,7 @@ function requestEmailConfirmation() {
   </ValidateForm>
 
   <Button
+    v-if="account"
     color="primary"
     class="w-full lg:w-auto justify-center items-center space-x-2 mt-4"
     type="button"
