@@ -149,6 +149,7 @@ model Account {
   activatedAt         DateTime?
   GliederungToAccount GliederungToAccount[]
   activationToken     String?               @unique
+  passwordResetToken  String?               @unique
 }
 
 model Gliederung {

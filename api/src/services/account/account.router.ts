@@ -6,6 +6,7 @@ import { accountChangePasswordProcedure } from './accountChangePassword'
 import { accountEmailConfirmProcedure } from './accountEmailConfirm'
 import { accountEmailConfirmRequestProcedure } from './accountEmailConfirmRequest'
 import { accountGliederungAdminCreateProcedure } from './accountGliederungAdminCreate'
+import { accountPasswordResetProcedure } from './accountPasswordReset'
 import { accountVerwaltungCreateProcedure } from './accountVerwaltungCreate'
 import { accountVerwaltungGetProcedure } from './accountVerwaltungGet'
 import { accountVerwaltungListProcedure } from './accountVerwaltungList'
@@ -22,5 +23,6 @@ export const accountRouter = mergeRouters(
   accountVerwaltungPatchProcedure.router,
   accountEmailConfirmRequestProcedure.router,
   accountEmailConfirmProcedure.router,
+  accountPasswordResetProcedure.router
   // Add Routes here - do not delete this line
 )

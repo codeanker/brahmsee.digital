@@ -69,11 +69,11 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
           ></BasicPassword>
           <div class="flex items-center justify-end">
             <div class="text-sm">
-              <a
-                href="#"
+              <RouterLink
+                :to="{ name: 'PasswortReset' }"
                 class="font-semibold text-primary-600 hover:text-primary-500"
-                >Passwort vergessen?</a
-              >
+                >Passwort vergessen?
+              </RouterLink>
             </div>
           </div>
           <Button

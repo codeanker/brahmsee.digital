@@ -18,6 +18,7 @@ export const accountSchema = z.strictObject({
   isActiv: z.boolean().optional(),
   adminInGliederungId: z.number().int().optional(),
   activationToken: z.string().optional(),
+  passwordResetToken: z.string().optional(),
 })
 
 export type TAccountSchema = z.infer<typeof accountSchema>
