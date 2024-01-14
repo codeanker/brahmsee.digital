@@ -85,6 +85,12 @@ const showSet = computed(() => {
             </Button>
           </ValidateForm>
         </div>
+        <RouterLink
+          :to="{ name: 'Login' }"
+          class="flex justify-center text-sm transition-all text-gray-600 hover:text-primary-600"
+        >
+          zurück
+        </RouterLink>
       </div>
 
       <div v-if="showSet">
@@ -114,6 +120,12 @@ const showSet = computed(() => {
             </Button>
           </ValidateForm>
         </div>
+        <RouterLink
+          :to="{ name: 'Login' }"
+          class="flex justify-center text-sm transition-all text-gray-600 hover:text-primary-600"
+        >
+          zurück
+        </RouterLink>
       </div>
 
       <div v-if="!showReset && !showSet">
