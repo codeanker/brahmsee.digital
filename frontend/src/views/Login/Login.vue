@@ -45,7 +45,7 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
       >
         {{ loginError }}
       </div>
-      <div class="bg-white px-6 py-12 border-primary-100 border sm:rounded-lg sm:px-12">
+      <div class="bg-white px-6 py-12 sm:rounded-lg sm:px-12">
         <ValidateForm
           class="space-y-8"
           @submit="loginWithRecirect"
