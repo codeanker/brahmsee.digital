@@ -20,11 +20,11 @@ export async function login({ email, password }: { email: string; password: stri
     const authResult = await apiClient.authentication.login.mutate({ email, password })
     loggedInAccount.value = authResult.user
     localStorage.setItem('jwt', authResult.accessToken)
+    loginPending.value = false
     return authResult
   } catch (error) {
     loginError.value = error as Error
   }
-  loginPending.value = false
 }
 
 export async function reAuthenticate() {
