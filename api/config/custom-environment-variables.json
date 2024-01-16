@@ -4,6 +4,8 @@
     "port": "SERVER_PORT"
   },
 
+  "clientUrl": "CLIENT_URL",
+
   "db": {
     "url": "DATABASE_URL"
   },
