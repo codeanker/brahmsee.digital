@@ -11,6 +11,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum AccountStatus {
+  OPEN
+  ACTIVE
+  DISABLED
+}
+
 enum Role {
   GLIEDERUNG_ADMIN
   ADMIN
@@ -149,6 +155,7 @@ model Account {
   activatedAt         DateTime?
   GliederungToAccount GliederungToAccount[]
   activationToken     String?               @unique
+  status              AccountStatus         @default(OPEN)
   passwordResetToken  String?               @unique
 }
 
