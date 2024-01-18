@@ -1,4 +1,4 @@
-import { Gender, Role } from '@prisma/client'
+import { Gender, Role, AccountStatus } from '@prisma/client'
 import { v4 as uuidv4 } from 'uuid'
 import { z } from 'zod'
 
@@ -16,6 +16,7 @@ export const accountSchema = z.strictObject({
   email: z.string().email(),
   roleId: z.nativeEnum(Role),
   isActiv: z.boolean().optional(),
+  status: z.nativeEnum(AccountStatus).optional(),
   adminInGliederungId: z.number().int().optional(),
   activationToken: z.string().optional(),
   passwordResetToken: z.string().optional(),
