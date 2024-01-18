@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { TabGroup, TabList, Tab, TabPanels } from '@headlessui/vue'
-import type { FunctionalComponent } from 'vue'
+import { type FunctionalComponent } from 'vue'
 
 withDefaults(
   defineProps<{
     tabs: {
       name: string
       icon: FunctionalComponent
-      count?: number
+      count?: number | undefined
     }[]
     contentSpace?: string
     defaultIndex?: number
