@@ -112,7 +112,7 @@ function copyLink() {
                 readonly
               />
               <button
-                class="btn-primary rounded-l-none"
+                class="p-2 btn-primary rounded-l-none"
                 type="button"
                 @click="copyLink"
               >
