@@ -177,7 +177,7 @@ const highlight = computed(() => {
           <button
             v-if="model"
             type="button"
-            class="btn bg-transparent px-1"
+            class="bg-transparent px-1"
             @click="clear"
           >
             <!-- <FontAwesomeIcon
@@ -187,7 +187,7 @@ const highlight = computed(() => {
             /> -->
           </button>
           <ComboboxButton
-            class="btn bg-transparent px-1"
+            class="bg-transparent px-1"
             @click="filterItems(searchTerm)"
           >
             <!-- <FontAwesomeIcon

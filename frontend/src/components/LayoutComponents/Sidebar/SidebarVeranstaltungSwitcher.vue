@@ -37,7 +37,7 @@ watch(veranstaltungen, (loadedVeranstaltungen) => {
   <div class="mb-4">
     <Listbox v-model="selectedVeranstaltung">
       <ListboxButton
-        class="p-2 text-white bg-primary-600 hover:bg-primary-500 focus:outline-primary-600 btn w-full rounded-xl flex items-center space-x-3 text-left"
+        class="p-2 text-white bg-primary-600 hover:bg-primary-500 focus:outline-primary-600 w-full rounded-xl flex items-center space-x-3 text-left"
       >
         <div class="shrink-0 h-8 w-8 bg-primary-100 rounded-lg flex items-center justify-center">
           <svg

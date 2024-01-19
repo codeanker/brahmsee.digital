@@ -53,7 +53,7 @@ const { model, errorMessage } = props.disableValidation
       <div class="flex-shrink-0">
         <button
           type="button"
-          class="btn rounded-l-none border border-solid border-gray-100 bg-gray-100"
+          class="p-2 rounded-md rounded-l-none border border-solid border-gray-100 bg-gray-100"
           @click="passwordVisible = !passwordVisible"
         >
           <EyeSlashIcon
