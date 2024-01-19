@@ -34,6 +34,16 @@ export const accountVerwaltungListProcedure = defineProcedure({
             lastname: true,
           },
         },
+        GliederungToAccount: {
+          select: {
+            role: true,
+            gliederung: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
       },
     })
     return list

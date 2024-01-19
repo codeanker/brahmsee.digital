@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { CheckIcon, UsersIcon, PlusIcon, UserIcon, InformationCircleIcon } from '@heroicons/vue/24/outline'
+import { PlusIcon, UsersIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 
 import { apiClient } from '@/api'
+import Badge from '@/components/UIComponents/Badge.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
+import { getStatusColor } from '@/helpers/getStatusColors'
 import router from '@/router'
 import { dayjs, formatDate } from '@codeanker/helpers'
 
@@ -19,10 +21,7 @@ const { state: personList } = useAsyncState(
   { immediate: true }
 )
 
-const tabs = [
-  { name: 'Personen', icon: UsersIcon },
-  { name: 'Account Anfragen', icon: UserIcon, count: 1 },
-]
+const tabs = [{ name: 'Personen', icon: UsersIcon }]
 </script>
 
 <template>
@@ -103,41 +102,17 @@ const tabs = [
               </td>
               <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
                 <div class="flex items-center">
-                  <CheckIcon
-                    v-if="person.account?.id !== undefined"
-                    class="h-5 w-5 text-primary-600"
-                  ></CheckIcon>
-                  vorhanden
+                  <Badge
+                    v-if="person.account"
+                    :color="getStatusColor(person.account.status)"
+                    :title="formatDate(person.account.activatedAt)"
+                    >{{ person.account.status }}</Badge
+                  >
                 </div>
               </td>
             </tr>
           </tbody>
         </table>
-      </Tab>
-      <Tab>
-        <div class="my-10 flex justify-between">
-          <div>
-            <div class="text-lg font-semibold text-gray-900">Account anfragen</div>
-            <p class="max-w-2xl text-sm text-gray-500">
-              Die folgenden Personen haben sich für einen Gliederungsaccount registriert.
-            </p>
-          </div>
-        </div>
-        <div class="rounded-md bg-blue-50 p-4">
-          <div class="flex">
-            <div class="flex-shrink-0">
-              <InformationCircleIcon
-                class="h-5 w-5 text-blue-400"
-                aria-hidden="true"
-              />
-            </div>
-            <div class="ml-3 flex-1 md:flex md:justify-between">
-              <p class="text-sm text-blue-700 mb-0">
-                Hier sollen alle Registrierungsanfragen sichtbar sein und genehmigt werden können.
-              </p>
-            </div>
-          </div>
-        </div>
       </Tab>
     </Tabs>
   </div>
