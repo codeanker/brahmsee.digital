@@ -1,17 +1,19 @@
 <script setup lang="ts">
+import { type StatusColors } from '@/helpers/getStatusColors'
+
 withDefaults(
   defineProps<{
-    color?: Color
+    color?: StatusColors
   }>(),
   {
-    color: 'danger',
+    color: 'muted',
   }
 )
-type Color = 'muted' | 'primary' | 'success' | 'warning' | 'danger'
-const colors: Record<Color, string> = {
+
+const colors: Record<StatusColors, string> = {
   muted: 'bg-gray-50 text-gray-600 ring-gray-500/10',
-  primary: 'bg-primary-50 text-primary-600 ring-primary-500/10',
-  success: 'bg-primary-50 text-primary-600 ring-primary-500/10',
+  primary: 'bg-primary-600 text-white ring-primary-500/10',
+  secondary: 'bg-primary-50 text-primary-600 ring-primary-500/10',
   warning: 'bg-yellow-50 text-yellow-600 ring-yellow-500/10',
   danger: 'bg-red-50 text-red-600 ring-red-500/10',
 }

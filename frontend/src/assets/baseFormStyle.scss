@@ -8,10 +8,6 @@
 
 }
 
-.btn{
-  @apply transition text-center leading-5 text-base cursor-pointer rounded focus:outline-none focus:ring-0 py-2 px-4 inline-block;
-}
-
 [type='checkbox'] {
   &:checked:hover {
     @apply bg-primary-700;

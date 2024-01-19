@@ -18,8 +18,7 @@ let basicEditorValue = ref(
   '<p>Ich bin ein <strong>Editor</strong> der als <em><s>solcher</s></em> verwendet werden kann. ich biete verschiedene <mark class="highlight">Möglichkeiten</mark>. </p>'
 )
 
-const loadingCode = `
-<Loading color="primary" />
+const loadingCode = `<Loading color="primary" />
 <Loading color="secondary" />
 <Loading color="warning" />
 <Loading color="danger" />
@@ -29,16 +28,17 @@ const loadingCode = `
 <Loading size="sm" />
 <Loading size="md" />
 <Loading size="lg" />`
-const badgeCode = `<Badge>Badge</Badge>`
-const buttonCode = `
-<Button :to="{ name: 'DashboardView' }">Primary Link</Button>
+const badgeCode = `<Badge>Badge</Badge>
+<Badge color="primary">Badge</Badge>
+<Badge color="warning">Badge</Badge>
+<Badge color="danger">Badge</Badge>`
+const buttonCode = `<Button :to="{ name: 'DashboardView' }">Primary Link</Button>
 <Button color="primary">Primary</Button>
 <Button color="secondary">Secondary</Button>
 <Button color="success">Success</Button>
 <Button color="warning">Warning</Button>
 <Button color="danger">Danger</Button>`
-const checkboxCode = `
-<!-- Minimal -->
+const checkboxCode = `<!-- Minimal -->
 <BasicCheckbox
   v-model="checkboxModel"
   label="Checkbox"
@@ -52,8 +52,7 @@ const checkboxCode = `
   required
   disabled
 ></BasicCheckbox>`
-const basicInputCode = `
-<BasicInput
+const basicInputCode = `<BasicInput
   id="BasicInput"
   v-model="basicInputModel"
   label="BasicInput"
@@ -67,8 +66,7 @@ const basicInputCode = `
   name="BasicInput"
   disabled
 ></BasicInput>`
-const basicEditorCode = `
-<BasicEditor
+const basicEditorCode = `<BasicEditor
   id="BasicEditor"
   v-model="editorValue"
   label="Beschreibung"
@@ -108,6 +106,9 @@ const basicEditorCode = `
       >
         <div class="flex items-center space-x-2">
           <Badge>Badge</Badge>
+          <Badge color="primary">Badge</Badge>
+          <Badge color="warning">Badge</Badge>
+          <Badge color="danger">Badge</Badge>
         </div>
       </ComponentPreview>
       <ComponentPreview
@@ -115,11 +116,10 @@ const basicEditorCode = `
         description="Button component"
         :code="buttonCode"
       >
-        <div class="flex items-center space-x-2">
+        <div class="flex items-center flex-wrap">
           <Button>Primary Link</Button>
           <Button color="primary">Primary</Button>
-          <Button color="secondary">Secondary</Button>
-          <Button color="success">Success</Button>
+          <Button color="secondary">Success</Button>
           <Button color="warning">Warning</Button>
           <Button color="danger">Danger</Button>
         </div>
