@@ -18,6 +18,7 @@ const createVeranstaltung: Seeder = async (prisma: PrismaClient) => {
       meldeschluss: new Date(),
       maxTeilnehmende: 500,
       teilnahmegebuehr: 100,
+      beschreibung: 'Ich bin die Beschreibung',
       ort: {
         create: {
           name: 'Waldheim am Brahmsee',
