@@ -4,6 +4,7 @@ import { useAsyncState } from '@vueuse/core'
 import { useVeranstaltung } from '../../../composables/useVeranstaltung'
 
 import { apiClient } from '@/api'
+import { loggedInAccount } from '@/composables/useAuthentication'
 import router from '@/router'
 import { dayjs, formatDate } from '@codeanker/helpers'
 
@@ -45,6 +46,7 @@ const { state: anmeldungen } = useAsyncState(
           Alter
         </th>
         <th
+          v-if="loggedInAccount?.role === 'ADMIN'"
           scope="col"
           class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
         >
@@ -88,7 +90,10 @@ const { state: anmeldungen } = useAsyncState(
         <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
           <div class="flex items-center">Todo: {{ anmeldung.status }}</div>
         </td>
-        <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+        <td
+          v-if="loggedInAccount?.role === 'ADMIN'"
+          class="whitespace-nowrap px-3 py-5 text-sm text-gray-500"
+        >
           Größe <span v-if="anmeldung.tshirtBestellt">{{ anmeldung.person.konfektionsgroesse }}</span>
         </td>
       </tr>
