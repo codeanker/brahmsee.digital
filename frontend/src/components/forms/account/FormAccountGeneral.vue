@@ -219,6 +219,7 @@ const tabs = computed(() => {
             :append="true"
             class="w-full"
             label="Status"
+            required
             button-style="w-full text-left"
           >
             <template #buttonContent>
