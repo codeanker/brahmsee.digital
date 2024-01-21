@@ -21,6 +21,7 @@ const createAccount: Seeder = async (prisma: PrismaClient) => {
       email,
       password: await hashPassword(password),
       role: 'ADMIN',
+      status: 'ACTIVE',
       activatedAt: new Date(),
       person: {
         create: {
