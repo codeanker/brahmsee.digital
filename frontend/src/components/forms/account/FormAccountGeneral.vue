@@ -39,6 +39,8 @@ const edit = computed(() => props.account !== undefined)
 const stammdatenForm = ref<IStammdaten>({
   firstname: props.account?.person?.firstname ?? '',
   lastname: props.account?.person?.lastname ?? '',
+  birthday: props.account?.person?.birthday ?? null,
+  gender: props.account?.person?.gender ?? 'MALE',
 })
 const accountForm = ref({
   email: props.account?.email ?? '',

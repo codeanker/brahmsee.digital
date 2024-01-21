@@ -126,6 +126,8 @@ model Person {
   lastname                     String
   birthday                     DateTime?                    @db.Date
   gender                       Gender?
+  email                        String
+  telefon                      String
   anmeldungen                  Anmeldung[]
   gliederungId                 Int?
   gliederung                   Gliederung?                  @relation(fields: [gliederungId], references: [id], onDelete: SetNull)
@@ -203,7 +205,6 @@ model Anmeldung {
   mahlzeiten           Mahlzeit[]
   uebernachtungsTage   DateTime[]         @db.Date
   tshirtBestellt       Boolean            @default(false)
-  email                String
 }
 
 model Address {

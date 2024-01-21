@@ -14,7 +14,12 @@ import type { RouterInput } from '@codeanker/api'
 import type { TAccountSchema } from '@codeanker/api/src/services/account/schema/account.schema'
 import { ValidateForm } from '@codeanker/validation'
 
-const stammdatenForm = ref<IStammdaten>({})
+const stammdatenForm = ref<IStammdaten>({
+  firstname: '',
+  lastname: '',
+  gender: 'MALE',
+  birthday: null,
+})
 
 const registrationForm = ref<{
   dataprivacy?: boolean

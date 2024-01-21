@@ -5,9 +5,10 @@ import { hashPassword } from '@codeanker/authentication'
 
 export async function createMock(runId: string) {
   const accountPassword = 'test'
+  const email = `log+${runId}@codeanker.de`
   const account = await prisma.account.create({
     data: {
-      email: `log+${runId}@codeanker.de`,
+      email,
       password: await hashPassword(accountPassword),
       activatedAt: new Date(),
       role: 'ADMIN',
@@ -15,6 +16,8 @@ export async function createMock(runId: string) {
         create: {
           firstname: 'Test',
           lastname: 'User',
+          email,
+          telefon: '+49 123 4567890',
         },
       },
     },

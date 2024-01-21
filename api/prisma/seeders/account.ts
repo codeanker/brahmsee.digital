@@ -27,6 +27,8 @@ const createAccount: Seeder = async (prisma: PrismaClient) => {
         create: {
           firstname: 'Gabi',
           lastname: 'Musterfrau',
+          telefon: '+49 123 4567890',
+          email,
         },
       },
     },

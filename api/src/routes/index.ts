@@ -42,6 +42,8 @@ koaRouter.get('/auth/callback', async (ctx: any) => {
           create: {
             firstname: 'Gabi',
             lastname: 'Musterfrau',
+            email: profile.email as string,
+            telefon: '+49 123 4567890',
           },
         },
       },

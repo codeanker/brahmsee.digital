@@ -35,6 +35,8 @@ export async function getAccountCreateData(data: z.infer<typeof accountSchema>) 
         lastname: data.lastname,
         gender: data.gender,
         birthday: data.birthday,
+        email: data.email,
+        telefon: '',
       },
     },
     activatedAt: data.isActiv ? new Date() : null,
