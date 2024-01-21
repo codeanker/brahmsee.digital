@@ -143,13 +143,6 @@ const handle = async () => {
   }
 }
 
-function requestEmailConfirmation() {
-  if (!props.account) {
-    return
-  }
-  apiClient.account.emailConfirmRequest.mutate({ accountId: props.account.id })
-}
-
 const tabs = computed(() => {
   let tabs = [{ name: 'Allgemein', icon: FingerPrintIcon }]
   if (edit.value) tabs.push({ name: 'Sicherheit', icon: KeyIcon })
@@ -386,13 +379,4 @@ const tabs = computed(() => {
       </div>
     </Tab>
   </Tabs>
-
-  <Button
-    v-if="account"
-    color="primary"
-    class="w-full lg:w-auto justify-center items-center space-x-2 mt-4"
-    type="button"
-    @click="requestEmailConfirmation"
-    >E-Mail bestätigung anfordern</Button
-  >
 </template>
