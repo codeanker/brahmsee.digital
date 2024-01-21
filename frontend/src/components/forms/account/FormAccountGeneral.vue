@@ -48,7 +48,10 @@ const accountForm = ref({
 })
 
 const roles = getEnumOptions(roleMapping)
-const statusOptions = getEnumOptions(AccountStatusMapping)
+const statusOptions = getEnumOptions(AccountStatusMapping).filter(
+  (option) => option.value === 'DISABLED' || option.value === 'ACTIVE'
+)
+
 const getStatusHuman = computed(() => statusOptions.find((status) => status.value === accountForm.value.status)?.label)
 
 const password = ref({
@@ -88,6 +91,7 @@ const { execute: updateAccount } = useAsyncState(
       data: {
         email: accountForm.value.email,
         role: accountForm.value.roleId as RouterInput['account']['verwaltungPatch']['data']['role'],
+        status: accountForm.value.status as RouterInput['account']['verwaltungPatch']['data']['status'],
       },
     })
 
