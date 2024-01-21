@@ -44,7 +44,6 @@ export const anmeldungPublicCreateProcedure = defineProcedure({
               : undefined,
             uebernachtungsTage: options.input.data.uebernachtungsTage,
             tshirtBestellt: options.input.data.tshirtBestellt,
-            email: options.input.data.email,
           },
         },
       },
