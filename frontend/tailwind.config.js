@@ -24,7 +24,7 @@ module.exports = {
         warning: colors.yellow,
         danger: colors.red,
         primary: colors.green,
-        secondary: colors.indigo,
+        secondary: colors.green,
         gray: colors.slate,
         white: colors.white,
         black: colors.black,
@@ -48,7 +48,7 @@ module.exports = {
     },
   },
   safelist: [
-    { pattern: /bg-(info|success|danger|warning|primary)-(100|200)/ },
+    { pattern: /bg-(info|success|danger|warning|primary|secondary)-(100|200|600)/ },
     { pattern: /text-(info|success|danger|warning|primary)-(600|700)/ },
     { pattern: /bg-white/ },
     { pattern: /(w|h)-(6|12|24)/ },

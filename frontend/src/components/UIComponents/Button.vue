@@ -29,7 +29,7 @@ const colors: Record<Color, string> = {
     :is="to === undefined ? 'button' : 'router-link'"
     type="button"
     :disabled="disabled"
-    :class="[{ 'w-full justify-center': full, 'cursor-not-allowed': disabled }, colors[color]]"
+    :class="[{ 'w-full justify-center': full, 'hover:cursor-not-allowed': disabled }, colors[color]]"
     class="space-x-2 rounded-lg transition text-center leading-5 text-base cursor-pointer focus:outline-none focus:ring-0 py-2 px-4"
     :to="to"
   >

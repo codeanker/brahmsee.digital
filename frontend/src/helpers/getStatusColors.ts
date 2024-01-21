@@ -5,7 +5,7 @@ export type StatusColors = 'muted' | 'primary' | 'secondary' | 'warning' | 'dang
  * @param status
  * @returns string
  */
-export const getStatusColor = (status: string) => {
+export const getStatusColor = (status?: string) => {
   switch (status) {
     case 'OPEN':
       return 'warning'
