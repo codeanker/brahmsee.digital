@@ -41,6 +41,7 @@ async function createUser() {
       adminInGliederungId: roleId === 'GLIEDERUNG_ADMIN' ? await selectGliederung() : undefined,
       birthday: new Date(),
       gender: 'FEMALE',
+      status: 'ACTIVE',
     }),
     select: {
       id: true,
