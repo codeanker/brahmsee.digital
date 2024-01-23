@@ -77,7 +77,7 @@ const notfallKontakteForm = ref<INotfallKontakte>({
 })
 
 const essgewohnheitenForm = ref<IEssgewohnheiten>({
-  essgewohnheit: 'OMNIVORE',
+  essgewohnheit: 'VEGETARISCH',
   intoleranzen: {
     FRUCTOSE: false,
     GLUTEN: false,
