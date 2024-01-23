@@ -45,7 +45,7 @@ export async function getAccountCreateData(data: z.infer<typeof accountSchema>) 
         ? {
             create: {
               gliederungId: data.adminInGliederungId,
-              role: 'DELIGATIONSLEITER' as const,
+              role: 'DELEGATIONSLEITER' as const,
             },
           }
         : undefined,

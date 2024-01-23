@@ -28,7 +28,7 @@ export const accountGliederungAdminCreateProcedure = defineProcedure({
         },
       },
     })
-    if (gliederung.GliederungToAccount.filter((relation) => relation.role === 'DELIGATIONSLEITER').length > 0) {
+    if (gliederung.GliederungToAccount.filter((relation) => relation.role === 'DELEGATIONSLEITER').length > 0) {
       throw new TRPCError({
         code: 'FORBIDDEN',
         message: 'Gliederung hat bereits einen Admin',

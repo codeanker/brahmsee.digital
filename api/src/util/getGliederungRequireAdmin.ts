@@ -13,7 +13,7 @@ export async function getGliederungRequireAdmin(accountId: number) {
       GliederungToAccount: {
         some: {
           accountId,
-          role: 'DELIGATIONSLEITER',
+          role: 'DELEGATIONSLEITER',
         },
       },
     },
