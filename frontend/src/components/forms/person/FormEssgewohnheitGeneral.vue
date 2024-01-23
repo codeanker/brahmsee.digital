@@ -2,6 +2,10 @@
 import { CheckIcon, PlusIcon } from '@heroicons/vue/24/outline'
 import { computed, ref } from 'vue'
 
+import appleWholeRegular from '@/assets/images/icons/apple-whole-regular.svg'
+import cowRegular from '@/assets/images/icons/cow-regular.svg'
+import pigRegular from '@/assets/images/icons/pig-regular.svg'
+import wheatAwnRegular from '@/assets/images/icons/wheat-awn-regular.svg'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
@@ -46,6 +50,19 @@ const tempWeitereInteloranzen = ref('')
 const toggleOption = (option: keyof typeof NahrungsmittelIntoleranzMapping) => {
   model.value.intoleranzen[option] = !model.value.intoleranzen[option]
 }
+
+const getNahrungsmittelIcon = (NahrungsmittelIntoleranz) => {
+  switch (NahrungsmittelIntoleranz) {
+    case 'FRUCTOSE':
+      return appleWholeRegular
+    case 'LAKTOSE':
+      return cowRegular
+    case 'GLUTEN':
+      return wheatAwnRegular
+    case 'SCHWEIN':
+      return pigRegular
+  }
+}
 </script>
 
 <template>
@@ -67,7 +84,13 @@ const toggleOption = (option: keyof typeof NahrungsmittelIntoleranzMapping) => {
       }"
       @click="toggleOption(option.value)"
     >
-      {{ option.label }}
+      <div class="flex items-center">
+        <img
+          :src="getNahrungsmittelIcon(option.value)"
+          class="h-5 w-5 mr-2"
+        />
+        {{ option.label }}
+      </div>
       <CheckIcon
         v-if="model.intoleranzen[option.value]"
         class="h-5 text-primary-950"
