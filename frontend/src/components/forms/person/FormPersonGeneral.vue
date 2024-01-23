@@ -111,7 +111,7 @@ const submit = () => {
 </script>
 
 <template>
-  <ValidateForm>
+  <ValidateForm @submit="submit">
     <Stammdaten v-model="stammdatenForm" />
     <hr class="my-5" />
 
@@ -163,8 +163,7 @@ const submit = () => {
       color="primary"
       class="w-full justify-center mt-5 mb-20 disabled:bg-gray-300"
       :disabled="isPublicAnmeldung && (!acceptTeilnahmebedingungen || !acceptDatenschutz)"
-      type="button"
-      @click="submit"
+      type="submit"
     >
       <template v-if="isLoading">
         <Loading color="white" />
