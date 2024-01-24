@@ -6,3 +6,7 @@
   font-weight: 400;
   src: url('./fonts/mulish-v13-latin_latin-ext-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
+
+h5 {
+  @apply ml-10 mt-3 lg:ml-0 lg:mt-0;
+}

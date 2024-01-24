@@ -164,7 +164,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
 </script>
 
 <template>
-  <div class="h-full flex flex-col text-primary-900 font-medium">
+  <div class="h-full flex flex-col text-primary-900 font-medium p-6 pb-0 lg:px-0 lg:pt-12">
     <!-- Sidebar Header -->
     <SidebarVeranstaltungSwitcher />
 

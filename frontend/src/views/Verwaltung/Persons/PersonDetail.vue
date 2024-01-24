@@ -87,7 +87,7 @@ if (loggedInAccount.value?.role === 'ADMIN') {
     :tabs="tabs"
   >
     <Tab>
-      <div class="flex justify-between items-center mt-10 mb-5">
+      <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
         <div class="text-lg font-semibold text-gray-900">Stammdaten</div>
       </div>
       <FormPersonGeneral

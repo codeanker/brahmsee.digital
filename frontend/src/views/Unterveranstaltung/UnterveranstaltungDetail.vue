@@ -141,7 +141,7 @@ function copyLink() {
           </div>
         </div>
 
-        <div class="flex justify-between items-center mt-10 mb-5">
+        <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
           <div class="text-lg font-semibold text-gray-900">Veranstaltungsdaten</div>
           <RouterLink
             class="text-primary-600"
@@ -152,7 +152,7 @@ function copyLink() {
 
         <InfoList :infos="keyInfos" />
 
-        <div class="mt-10 mb-5 text-lg font-semibold text-gray-900">Beschreibung</div>
+        <div class="mt-5 lg:mt-10 mb-5 text-lg font-semibold text-gray-900">Beschreibung</div>
         <div class="px-3 py-5">
           <div
             class="prose prose-neutra"
