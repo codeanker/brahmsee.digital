@@ -48,7 +48,7 @@ const { execute: create } = useAsyncState(
 
 <template>
   <h5>Person erstellen</h5>
-  <div class="mt-10">
+  <div class="mt-5 lg:mt-10">
     <h2 class="text-base font-semibold leading-7">Stammdaten</h2>
     <FormPersonGeneral
       :is-loading="false"

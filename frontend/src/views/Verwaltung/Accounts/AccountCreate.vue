@@ -5,7 +5,7 @@ import FormAccountGeneral from '@/components/forms/account/FormAccountGeneral.vu
 <template>
   <h5>Account erstellen</h5>
 
-  <div class="mt-10">
+  <div class="mt-5 lg:mt-10">
     <FormAccountGeneral />
   </div>
 </template>

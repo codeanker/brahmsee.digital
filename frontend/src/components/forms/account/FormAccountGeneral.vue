@@ -185,7 +185,7 @@ const tabs = computed(() => {
         <Stammdaten v-model="stammdatenForm" />
       </div>
 
-      <h2 class="text-base font-semibold leading-7 mt-10">Accountdaten</h2>
+      <h2 class="text-base font-semibold leading-7 mt-5 lg:mt-10">Accountdaten</h2>
       <ValidateForm
         class="mt-5"
         @submit="handle"

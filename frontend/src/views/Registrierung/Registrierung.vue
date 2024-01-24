@@ -9,7 +9,7 @@ import { HandRaisedIcon, UserGroupIcon } from '@heroicons/vue/24/outline'
         Registrierung
       </h2>
       <p class="text-center">Wofür möchtest Du dich registrieren?</p>
-      <div class="mt-10 space-y-5">
+      <div class="mt-5 lg:mt-10 space-y-5">
         <RouterLink
           :to="{ name: 'CrewRegistrierung' }"
           class="w-full p-5 rounded-lg flex cursor-pointer transition-all ease-in-out border border-gray-200 hover:border-primary-600 group"

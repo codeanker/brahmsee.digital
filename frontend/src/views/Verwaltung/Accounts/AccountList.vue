@@ -38,7 +38,7 @@ const tabs = computed(() => [
 
   <div class="flow-root">
     <Tabs
-      class="mt-10"
+      class="mt-5 lg:mt-10"
       content-space="4"
       :tabs="tabs"
     >
