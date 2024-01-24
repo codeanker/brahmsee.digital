@@ -77,6 +77,9 @@ function isCurrentRoute(checkRoute: SidebarItemRoute) {
               v-for="child in item.children"
               :key="child.name"
               class="flex items-center space-x-3 p-2 rounded-lg cursor-pointer hover:bg-gray-100 transition-all"
+              :class="{
+                'cursor-not-allowed': child.disabled,
+              }"
             >
               <!-- Current indicator -->
               <div class="h-5 aspect-square flex items-center justify-center relative">
@@ -86,15 +89,19 @@ function isCurrentRoute(checkRoute: SidebarItemRoute) {
                 ></div>
               </div>
               <AppLink
+                v-if="!child.disabled && child.visible"
                 :to="child.route"
                 class="flex items-center text-sm flex-grow"
                 active-class="text-primary-600"
-                :class="{
-                  'cursor-not-allowed': child.disabled,
-                }"
               >
                 {{ child.name }}
               </AppLink>
+              <div
+                v-if="child.disabled && child.visible"
+                class="flex items-center text-sm flex-grow cursor-not-allowed"
+              >
+                {{ child.name }}
+              </div>
 
               <!-- Badge -->
               <div
@@ -108,6 +115,9 @@ function isCurrentRoute(checkRoute: SidebarItemRoute) {
                 :is="LockClosedIcon"
                 v-if="child.disabled"
                 class="h-5 aspect-square"
+                :class="{
+                  'cursor-not-allowed': child.disabled,
+                }"
               />
             </div>
             <!-- side line -->
