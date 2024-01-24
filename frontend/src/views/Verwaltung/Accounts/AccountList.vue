@@ -135,7 +135,7 @@ const tabs = computed(() => [
           </div>
         </div>
         <table
-          v-if="accountRequest.length > 0"
+          v-if="accountRequest.length"
           class="min-w-full divide-y divide-gray-300"
         >
           <thead>
@@ -199,7 +199,10 @@ const tabs = computed(() => [
             </tr>
           </tbody>
         </table>
-        <div class="rounded-md bg-blue-50 p-4">
+        <div
+          v-if="accountRequest.length <= 0"
+          class="rounded-md bg-blue-50 p-4"
+        >
           <div class="flex">
             <div class="flex-shrink-0">
               <CheckCircleIcon
