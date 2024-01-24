@@ -32,6 +32,21 @@ const createVeranstaltung: Seeder = async (prisma: PrismaClient) => {
           },
         },
       },
+      unterveranstaltungen: {
+        create: {
+          teilnahmegebuehr: 13.37,
+          maxTeilnehmende: 800,
+          meldebeginn: new Date(),
+          meldeschluss: new Date(),
+          beschreibung: 'Ich bin die Beschreibung',
+          type: 'GLIEDERUNG',
+          gliederung: {
+            connect: {
+              edv: '1205013',
+            },
+          },
+        },
+      },
     },
   })
 }
