@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CodeBracketIcon, FingerPrintIcon, InformationCircleIcon, UserIcon } from '@heroicons/vue/24/outline'
+import { CodeBracketIcon, InformationCircleIcon, TicketIcon, UserIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 import { useRoute } from 'vue-router'
 
@@ -62,7 +62,7 @@ const { execute: update } = useAsyncState(
 
 const tabs = [
   { name: 'Stammdaten', icon: UserIcon },
-  { name: 'Account', icon: FingerPrintIcon },
+  { name: 'Anmeldungen', icon: TicketIcon },
 ]
 
 if (loggedInAccount.value?.role === 'ADMIN') {
@@ -100,8 +100,8 @@ if (loggedInAccount.value?.role === 'ADMIN') {
     </Tab>
     <Tab>
       <div class="my-10">
-        <div class="text-lg font-semibold text-gray-900">Account</div>
-        <p class="max-w-2xl text-sm text-gray-500">Informationen zum Account</p>
+        <div class="text-lg font-semibold text-gray-900">Anmeldungen</div>
+        <p class="max-w-2xl text-sm text-gray-500">Informationen zu Anmeldungen</p>
       </div>
       <div class="rounded-md bg-blue-50 p-4">
         <div class="flex">
@@ -112,7 +112,9 @@ if (loggedInAccount.value?.role === 'ADMIN') {
             />
           </div>
           <div class="ml-3 flex-1 md:flex md:justify-between">
-            <p class="text-sm text-blue-700 mb-0">Hier sollen später Account Informationen sichtbar sein.</p>
+            <p class="text-sm text-blue-700 mb-0">
+              Hier sollen später die Anmeldungen sichtbar sein und der Status geändert werden können.
+            </p>
           </div>
         </div>
       </div>
