@@ -7,6 +7,7 @@ import {
   DocumentDuplicateIcon,
   RocketLaunchIcon,
   UserGroupIcon,
+  CheckCircleIcon,
 } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 import { computed } from 'vue'
@@ -164,7 +165,10 @@ function copyLink() {
           <div class="text-lg font-semibold text-gray-900">Anmeldungen</div>
           <p class="max-w-2xl text-sm text-gray-500">Die folgenden Personen haben sich angemeldet</p>
         </div>
-        <table class="min-w-full divide-y divide-gray-300">
+        <table
+          v-if="anmeldungen.length"
+          class="min-w-full divide-y divide-gray-300"
+        >
           <thead>
             <tr>
               <th
@@ -233,6 +237,22 @@ function copyLink() {
             </tr>
           </tbody>
         </table>
+        <div class="rounded-md bg-blue-50 p-4">
+          <div
+            v-if="anmeldungen.length <= 0"
+            class="flex"
+          >
+            <div class="flex-shrink-0">
+              <CheckCircleIcon
+                class="h-5 w-5 text-blue-400"
+                aria-hidden="true"
+              />
+            </div>
+            <div class="ml-3 flex-1 md:flex md:justify-between">
+              <p class="text-sm text-blue-700 mb-0">Es gibt bisher keine Anmeldungen.</p>
+            </div>
+          </div>
+        </div>
       </Tab>
       <Tab>
         <div class="my-10">

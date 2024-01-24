@@ -65,6 +65,13 @@ const getEssgewohnheitIcon = (essgewohnheit) => {
       return seedlingRegular
   }
 }
+
+const addWeitereIntoleranzen = () => {
+  if (!tempWeitereInteloranzen.value) return
+  if (model.value.weitereIntoleranzen.includes(tempWeitereInteloranzen.value)) return
+  model.value.weitereIntoleranzen.push(tempWeitereInteloranzen.value)
+  tempWeitereInteloranzen.value = ''
+}
 </script>
 
 <template>
@@ -141,17 +148,12 @@ const getEssgewohnheitIcon = (essgewohnheit) => {
     label="Weitere Intoleranzen"
     placeholder="Weitere Intoleranzen eingeben"
     class="mt-5"
+    @keyup.enter="addWeitereIntoleranzen"
   >
     <template #append>
       <div
         class="py-2 px-4 bg-primary-200 rounded-r-lg flex items-center text-primary-800 cursor-pointer hover:bg-primary-300 transition-all"
-        @click="
-          () => {
-            if (!tempWeitereInteloranzen) return
-            model.weitereIntoleranzen.push(tempWeitereInteloranzen)
-            tempWeitereInteloranzen = ''
-          }
-        "
+        @click="addWeitereIntoleranzen"
       >
         <PlusIcon class="h-5 mr-2" />
         <span>Hinzufügen</span>
