@@ -13,6 +13,7 @@ import {
   RocketLaunchIcon,
   PuzzlePieceIcon,
   FingerPrintIcon,
+  TicketIcon,
 } from '@heroicons/vue/24/outline'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
@@ -53,7 +54,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     type: 'SidebarItem',
     name: 'Anmeldungen',
     route: { name: 'VeranstaltungAnmeldung', params: { veranstaltungId: veranstaltungId.value } },
-    icon: UserGroupIcon,
+    icon: TicketIcon,
     showChildren: false,
     disabled: veranstaltungId.value === undefined,
     visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
