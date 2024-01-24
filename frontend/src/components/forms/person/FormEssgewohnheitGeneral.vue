@@ -79,7 +79,7 @@ const addWeitereIntoleranzen = () => {
     :right="false"
     :append="true"
     class="w-full"
-    label="Status"
+    label="Essgewohnheit"
     required
     button-style="w-full text-left"
   >
