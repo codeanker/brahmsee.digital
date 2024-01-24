@@ -29,7 +29,7 @@ enum Gender {
 }
 
 enum Essgewohnheit {
-  OMNIVORE
+  OMNIVOR
   VEGETARISCH
   VEGAN
 }
@@ -171,7 +171,7 @@ model Gliederung {
 }
 
 enum GliederungAccountRole {
-  DELIGATIONSLEITER
+  DELEGATIONSLEITER
   BETREUER
   TEILNEHMER
 }

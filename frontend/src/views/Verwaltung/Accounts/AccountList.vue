@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { FingerPrintIcon, PlusIcon, UserIcon } from '@heroicons/vue/24/outline'
+import { FingerPrintIcon, CheckCircleIcon, PlusIcon, UserIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 import { computed } from 'vue'
 
@@ -134,7 +134,10 @@ const tabs = computed(() => [
             </p>
           </div>
         </div>
-        <table class="min-w-full divide-y divide-gray-300">
+        <table
+          v-if="accountRequest.length > 0"
+          class="min-w-full divide-y divide-gray-300"
+        >
           <thead>
             <tr>
               <th
@@ -196,6 +199,19 @@ const tabs = computed(() => [
             </tr>
           </tbody>
         </table>
+        <div class="rounded-md bg-blue-50 p-4">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <CheckCircleIcon
+                class="h-5 w-5 text-blue-400"
+                aria-hidden="true"
+              />
+            </div>
+            <div class="ml-3 flex-1 md:flex md:justify-between">
+              <p class="text-sm text-blue-700 mb-0">Es gibt keine offenen Account anfragen.</p>
+            </div>
+          </div>
+        </div>
       </Tab>
     </Tabs>
   </div>

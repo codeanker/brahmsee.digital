@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import { CheckIcon, PlusIcon } from '@heroicons/vue/24/outline'
+import { MenuItem } from '@headlessui/vue'
+import { CheckIcon, ChevronDownIcon, PlusIcon } from '@heroicons/vue/24/outline'
 import { computed, ref } from 'vue'
 
+import carrotRegular from '@/assets/images/icons/carrot-regular.svg'
+import seedlingRegular from '@/assets/images/icons/seedling-regular.svg'
+import steakRegular from '@/assets/images/icons/steak-regular.svg'
+import BasicDropdown from '@/components/BasicInputs/BasicDropdown.vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
-import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
 import {
   EssgewohnheitMapping,
@@ -46,15 +50,70 @@ const tempWeitereInteloranzen = ref('')
 const toggleOption = (option: keyof typeof NahrungsmittelIntoleranzMapping) => {
   model.value.intoleranzen[option] = !model.value.intoleranzen[option]
 }
+
+const getEssgewohnheitHuman = computed(
+  () => essgewohnheitOptions.find((essgewohnheit) => essgewohnheit.value === model.value.essgewohnheit)?.label
+)
+
+const getEssgewohnheitIcon = (essgewohnheit) => {
+  switch (essgewohnheit) {
+    case 'OMNIVOR':
+      return steakRegular
+    case 'VEGETARISCH':
+      return carrotRegular
+    case 'VEGAN':
+      return seedlingRegular
+  }
+}
 </script>
 
 <template>
-  <BasicSelect
-    v-model="model.essgewohnheit"
-    label="Essgewohnheit"
-    :options="essgewohnheitOptions"
+  <BasicDropdown
+    :right="false"
+    :append="true"
+    class="w-full"
+    label="Status"
     required
-  />
+    button-style="w-full text-left"
+  >
+    <template #buttonContent>
+      <button
+        type="button"
+        class="input-style w-full text-left flex justify-between items-center"
+      >
+        <slot>
+          <div class="flex space-x-2 items-center">
+            <img
+              :src="getEssgewohnheitIcon(model.essgewohnheit)"
+              class="h-5 w-5 mr-1"
+            />
+            <span>{{ getEssgewohnheitHuman }}</span>
+          </div>
+        </slot>
+        <ChevronDownIcon class="h-5 text-gray-500" />
+      </button>
+    </template>
+    <template #dropdownContent>
+      <MenuItem
+        as="div"
+        class=""
+      >
+        <button
+          v-for="essgewohnheit in essgewohnheitOptions"
+          :key="essgewohnheit.value"
+          type="button"
+          class="hover:bg-primary-100 rounded items-center flex py-2 px-4 w-full space-x-2 text-left"
+          @click="model.essgewohnheit = essgewohnheit.value"
+        >
+          <img
+            :src="getEssgewohnheitIcon(essgewohnheit.value)"
+            class="h-5 w-5 mr-1"
+          />
+          <span>{{ essgewohnheit.label }}</span>
+        </button>
+      </MenuItem>
+    </template>
+  </BasicDropdown>
 
   <p class="font-medium mt-5">Nahrungsmittelintoleranzen</p>
   <div class="flex flex-col gap-2">
@@ -67,7 +126,9 @@ const toggleOption = (option: keyof typeof NahrungsmittelIntoleranzMapping) => {
       }"
       @click="toggleOption(option.value)"
     >
-      {{ option.label }}
+      <div class="flex items-center">
+        {{ option.label }}
+      </div>
       <CheckIcon
         v-if="model.intoleranzen[option.value]"
         class="h-5 text-primary-950"
