@@ -171,7 +171,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     <!-- Sidebar Item List -->
     <SidebarItems
       :navigation="navigation"
-      class="grow"
+      class="grow overflow-y-auto"
     />
 
     <!-- User Management -->
