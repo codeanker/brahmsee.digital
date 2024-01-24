@@ -237,11 +237,11 @@ function copyLink() {
             </tr>
           </tbody>
         </table>
-        <div class="rounded-md bg-blue-50 p-4">
-          <div
-            v-if="anmeldungen.length <= 0"
-            class="flex"
-          >
+        <div
+          v-if="anmeldungen.length <= 0"
+          class="rounded-md bg-blue-50 p-4"
+        >
+          <div class="flex">
             <div class="flex-shrink-0">
               <CheckCircleIcon
                 class="h-5 w-5 text-blue-400"
