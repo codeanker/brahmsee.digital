@@ -70,7 +70,7 @@ const setStatus = async (anmeldung, status) => {
     <div
       v-for="anmeldung in anmeldungenPerson"
       :key="anmeldung.id"
-      class="flex justify-between items-center py-4 border-t border-b border-gray-200"
+      class="flex flex-col md:flex-row md:justify-between md:items-center space-y-4 md:space-y-0 py-4 border-t border-b border-gray-200"
     >
       <div>
         <div class="flex space-x-1 items-center">
