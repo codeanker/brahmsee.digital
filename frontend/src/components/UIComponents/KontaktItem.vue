@@ -2,6 +2,8 @@
 import { TrashIcon } from '@heroicons/vue/24/outline'
 import { ref, watch } from 'vue'
 
+import BasicCheckbox from '../BasicInputs/BasicCheckbox.vue'
+
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import type { TKontaktSchema } from '@codeanker/api/src/services/kontakt/schema/kontakt.schema'
 
@@ -50,9 +52,13 @@ watch(
       required
     />
     <div
-      class="flex items-end h-full"
+      class="flex flex-row justify-between items-end h-full"
       :class="{ 'justify-end': showRemoveOption }"
     >
+      <BasicCheckbox
+        v-model="kontakt.istErziehungsberechtigt"
+        label="Erziehungsberechtigt?"
+      />
       <a
         v-if="showRemoveOption"
         class="text-red-600 hover:underline mb-2 cursor-pointer text-sm flex items-center"

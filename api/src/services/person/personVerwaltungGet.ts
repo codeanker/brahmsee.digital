@@ -24,7 +24,14 @@ export const personVerwaltungGetProcedure = defineProcedure({
             number: true,
           },
         },
-        notfallkontakte: true,
+        notfallkontakte: {
+          select: {
+            firstname: true,
+            lastname: true,
+            telefon: true,
+            istErziehungsberechtigt: true,
+          },
+        },
         gliederung: true,
       },
     })

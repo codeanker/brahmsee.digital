@@ -116,8 +116,9 @@ model Notfallkontakt {
   firstname               String
   lastname                String
   telefon                 String
-  istErziehungsberechtigt Boolean?
-  personen                Person[]
+  istErziehungsberechtigt Boolean  @default(false)
+  personId                Int
+  person                  Person  @relation(fields: [personId], references: [id], onDelete: Cascade)
 }
 
 model Person {
