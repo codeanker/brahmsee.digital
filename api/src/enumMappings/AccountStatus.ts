@@ -3,9 +3,9 @@ import { AccountStatus } from '@prisma/client'
 import { defineEnumMapping } from './defineEnumMapping'
 
 export const AccountStatusMapping = defineEnumMapping<AccountStatus>({
-  OPEN: { human: 'Offen' },
-  ACTIVE: { human: 'Aktiv' },
-  DISABLED: { human: 'Deaktiviert' },
+  OFFEN: { human: 'Offen' },
+  AKTIV: { human: 'Aktiv' },
+  DEAKTIVIERT: { human: 'Deaktiviert' },
 })
 
 export { AccountStatus }

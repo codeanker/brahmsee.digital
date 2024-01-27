@@ -25,6 +25,7 @@ module.exports = {
         danger: colors.red,
         primary: colors.green,
         secondary: colors.green,
+        muted: colors.gray,
         gray: colors.slate,
         white: colors.white,
         black: colors.black,
@@ -48,8 +49,8 @@ module.exports = {
     },
   },
   safelist: [
-    { pattern: /bg-(info|success|danger|warning|primary|secondary)-(100|200|600)/ },
-    { pattern: /text-(info|success|danger|warning|primary)-(600|700)/ },
+    { pattern: /bg-(info|success|danger|warning|primary|secondary|muted)-(100|200|600)/ },
+    { pattern: /text-(info|success|danger|warning|primary|muted)-(600|700)/ },
     { pattern: /bg-white/ },
     { pattern: /(w|h)-(6|12|24)/ },
   ],

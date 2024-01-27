@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, AccountStatus } from '@prisma/client'
 
 import { isProduction } from '../../src/util/is-production'
 
@@ -21,7 +21,7 @@ const createAccount: Seeder = async (prisma: PrismaClient) => {
       email,
       password: await hashPassword(password),
       role: 'ADMIN',
-      status: 'ACTIVE',
+      status: AccountStatus.AKTIV,
       activatedAt: new Date(),
       person: {
         create: {

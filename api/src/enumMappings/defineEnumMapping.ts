@@ -3,7 +3,7 @@ export type Prettify<T> = {
   // eslint-disable-next-line @typescript-eslint/ban-types
 } & {}
 
-export type EnumMapping<T extends string | number = string> = { [K in T]: { human: string } }
+export type EnumMapping<T extends string | number = string> = { [K in T]: { human: string; description?: string } }
 
 export function defineEnumMapping<T extends string | number>(mapping: Prettify<EnumMapping<T>>) {
   return mapping

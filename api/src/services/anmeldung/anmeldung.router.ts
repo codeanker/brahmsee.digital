@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */ // Prettier ignored is because this file is generated
 import { mergeRouters } from '../../trpc'
 
+import { anmeldungGliederungGetProcedure } from './anmeldungGliederungGet'
 import { anmeldungGliederungdListProcedure } from './anmeldungGliederungList'
 import { anmeldungPublicCreateProcedure } from './anmeldungPublicCreate'
 import { anmeldungTeilnehmerStornoProcedure } from './anmeldungTeilnehmerStorno'
@@ -17,6 +18,7 @@ export const anmeldungRouter = mergeRouters(
   anmeldungVerwaltungAnnehmenProcedure.router,
   anmeldungVerwaltungStornoProcedure.router,
   anmeldungVerwaltungListProcedure.router,
-  anmeldungGliederungdListProcedure.router
+  anmeldungGliederungdListProcedure.router,
+  anmeldungGliederungGetProcedure.router
   // Add Routes here - do not delete this line
 )

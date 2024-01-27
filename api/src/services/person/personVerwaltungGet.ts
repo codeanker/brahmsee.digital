@@ -15,7 +15,14 @@ export const personVerwaltungGetProcedure = defineProcedure({
       where: {
         id: options.input.id,
       },
-      include: {
+      select: {
+        id: true,
+        firstname: true,
+        lastname: true,
+        birthday: true,
+        gender: true,
+        email: true,
+        telefon: true,
         address: {
           select: {
             zip: true,

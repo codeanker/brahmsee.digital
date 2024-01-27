@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { CodeBracketIcon, InformationCircleIcon, TicketIcon, UserIcon } from '@heroicons/vue/24/outline'
+import { CodeBracketIcon, TicketIcon, UserIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 import { useRoute } from 'vue-router'
 
 import { apiClient } from '@/api'
+import FormAnmeldungGeneral from '@/components/forms/anmeldung/FormAnmeldungGeneral.vue'
 import FormPersonGeneral, { type FormPersonGeneralSubmit } from '@/components/forms/person/FormPersonGeneral.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
@@ -11,10 +12,11 @@ import { loggedInAccount } from '@/composables/useAuthentication'
 import type { NahrungsmittelIntoleranzEnum } from '@codeanker/api/src/enumMappings'
 
 const route = useRoute()
+
 const {
   state: person,
-  execute: refetch,
-  isLoading,
+  execute: refetchPerson,
+  isLoading: isLoading,
 } = useAsyncState(async () => {
   const personId = route.params.personId as string
   return await apiClient.person.verwaltungGet.query({ id: parseInt(personId) })
@@ -52,7 +54,7 @@ const { execute: update } = useAsyncState(
       },
     })
 
-    await refetch()
+    await refetchPerson()
   },
   null,
   {
@@ -82,6 +84,7 @@ if (loggedInAccount.value?.role === 'ADMIN') {
       </p>
     </div>
   </div>
+
   <Tabs
     content-space="4"
     :tabs="tabs"
@@ -103,21 +106,10 @@ if (loggedInAccount.value?.role === 'ADMIN') {
         <div class="text-lg font-semibold text-gray-900">Anmeldungen</div>
         <p class="max-w-2xl text-sm text-gray-500">Informationen zu Anmeldungen</p>
       </div>
-      <div class="rounded-md bg-blue-50 p-4">
-        <div class="flex">
-          <div class="flex-shrink-0">
-            <InformationCircleIcon
-              class="h-5 w-5 text-blue-400"
-              aria-hidden="true"
-            />
-          </div>
-          <div class="ml-3 flex-1 md:flex md:justify-between">
-            <p class="text-sm text-blue-700 mb-0">
-              Hier sollen später die Anmeldungen sichtbar sein und der Status geändert werden können.
-            </p>
-          </div>
-        </div>
-      </div>
+      <FormAnmeldungGeneral
+        v-if="person"
+        :person-id="person.id"
+      ></FormAnmeldungGeneral>
     </Tab>
     <Tab v-if="loggedInAccount?.role === 'ADMIN'">
       <div class="my-10">

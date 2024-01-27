@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type StatusColors } from '@/helpers/getStatusColors'
+import { type StatusColors } from '@/helpers/getAccountStatusColors'
 
 withDefaults(
   defineProps<{

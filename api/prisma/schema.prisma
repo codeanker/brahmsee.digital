@@ -12,9 +12,9 @@ datasource db {
 }
 
 enum AccountStatus {
-  OPEN
-  ACTIVE
-  DISABLED
+  OFFEN
+  AKTIV
+  DEAKTIVIERT
 }
 
 enum Role {
@@ -157,7 +157,7 @@ model Account {
   activatedAt         DateTime?
   GliederungToAccount GliederungToAccount[]
   activationToken     String?               @unique
-  status              AccountStatus         @default(OPEN)
+  status              AccountStatus         @default(OFFEN)
   passwordResetToken  String?               @unique
 }
 
@@ -189,7 +189,7 @@ model GliederungToAccount {
 
 enum AnmeldungStatus {
   OFFEN
-  ANGENOMMEN
+  BESTAETIGT
   STORNIERT
   ABGELEHNT
 }
