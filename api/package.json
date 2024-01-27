@@ -36,9 +36,11 @@
   "devDependencies": {
     "@inquirer/prompts": "^2.3.1",
     "@types/config": "^3.3.3",
-    "@types/koa": "^2.13.12",
+    "@types/http-status-codes": "^1.2.0",
+    "@types/koa": "^2.14.0",
+    "@types/koa-bodyparser": "^4.3.12",
     "@types/koa-router": "^7.4.8",
-    "@types/node": "^20.9.3",
+    "@types/node": "^20.11.1",
     "prisma": "^5.6.0",
     "tsx": "^4.2.0",
     "typescript": "^5.3.2"

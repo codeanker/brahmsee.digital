@@ -62,7 +62,7 @@ export async function getPersonCreateData(
     konfektionsgroesse: input.konfektionsgroesse,
     addressId: addressId,
     notfallkontakte: {
-      create: getNotfallkontakte(input.notfallkontaktPersonen, input.erziehungsberechtigtePersonen),
+      create: input.notfallkontaktPersonen,
     },
   }
 }

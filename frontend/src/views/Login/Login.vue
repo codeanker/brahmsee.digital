@@ -15,6 +15,17 @@ const route = useRoute()
 const email = ref('')
 const password = ref('')
 
+// read "jwt" from url hashbang
+if (location.hash) {
+  const hash = location.hash.substr(1)
+  const hashParams = new URLSearchParams(hash)
+  const jwt = hashParams.get('jwt')
+  if (jwt) {
+    localStorage.setItem('jwt', jwt)
+    location.hash = ''
+  }
+}
+
 async function loginWithRecirect() {
   const response = await login({ email: email.value, password: password.value })
   if (response) {

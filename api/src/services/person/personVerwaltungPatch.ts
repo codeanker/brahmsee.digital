@@ -13,12 +13,18 @@ export const personVerwaltungPatchProcedure = defineProcedure({
     id: z.number().int(),
     data: personSchema,
   }),
-  async handler(options) {
+  async handler({ input }) {
+    await prisma.notfallkontakt.deleteMany({
+      where: {
+        personId: input.id,
+      },
+    })
+
     return prisma.person.update({
       where: {
-        id: options.input.id,
+        id: input.id,
       },
-      data: await getPersonCreateData(options.input.data),
+      data: await getPersonCreateData(input.data),
       select: {
         id: true,
       },
