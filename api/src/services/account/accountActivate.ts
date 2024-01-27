@@ -2,6 +2,7 @@ import z from 'zod'
 
 import prisma from '../../prisma'
 import { defineProcedure } from '../../types/defineProcedure'
+import logActivity from '../../util/activity'
 import { sendMail } from '../../util/mail'
 
 export const accountActivateProcedure = defineProcedure({
@@ -20,6 +21,15 @@ export const accountActivateProcedure = defineProcedure({
         activatedAt: new Date(),
       },
     })
+
+    await logActivity({
+      type: 'OTHER',
+      description: `account was activated`,
+      subjectType: 'account',
+      subjectId: options.input.accountId,
+      causerId: options.ctx.accountId,
+    })
+
     await sendMail({
       to: account.email,
       subject: 'brahmsee.digital Account aktiviert',
