@@ -33,13 +33,11 @@ export interface FormPersonGeneralSubmit {
 }
 
 type Person = Awaited<RouterOutput['person']['verwaltungGet']>
-type Anmeldung = Awaited<RouterOutput['anmeldung']['verwaltungGet']>
 
 const props = defineProps<{
   isLoading: boolean
   isPublicAnmeldung?: boolean
   person?: Person
-  anmeldung?: Anmeldung
   submitText?: string
   error?: Error
 }>()
@@ -90,7 +88,7 @@ const essgewohnheitenForm = ref<IEssgewohnheiten>({
 })
 
 const tshirtForm = ref<ITShirtBestellung>({
-  bestellen: props.anmeldung?.tshirtBestellt ?? false,
+  bestellen: false,
   groesse: props.person?.konfektionsgroesse ?? 'JUNIOR_122_128',
 })
 
