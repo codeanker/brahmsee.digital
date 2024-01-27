@@ -31,6 +31,10 @@ export const personVerwaltungGetProcedure = defineProcedure({
             number: true,
           },
         },
+        nahrungsmittelIntoleranzen: true,
+        weitereIntoleranzen: true,
+        konfektionsgroesse: true,
+        essgewohnheit: true,
         notfallkontakte: {
           select: {
             firstname: true,
