@@ -2,6 +2,7 @@ import Router from 'koa-router'
 import { renderTrpcPanel } from 'trpc-panel'
 
 import { appRouter } from '..'
+import config from '../config'
 import { isDevelopment } from '../util/is-production'
 
 import connect from './connect'
