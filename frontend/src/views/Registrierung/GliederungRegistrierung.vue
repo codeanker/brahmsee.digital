@@ -14,7 +14,12 @@ import type { RouterInput } from '@codeanker/api'
 import type { TAccountSchema } from '@codeanker/api/src/services/account/schema/account.schema'
 import { ValidateForm } from '@codeanker/validation'
 
-const stammdatenForm = ref<IStammdaten>({})
+const stammdatenForm = ref<IStammdaten>({
+  firstname: '',
+  lastname: '',
+  gender: 'MALE',
+  birthday: null,
+})
 
 const registrationForm = ref<{
   dataprivacy?: boolean
@@ -59,7 +64,7 @@ const {
       </h2>
       <p class="text-center">Erstelle Ausschreibungen und versende diese zur Anmeldung und verwalte diese.</p>
 
-      <div class="h-full grow mt-10">
+      <div class="h-full grow mt-5 lg:mt-10">
         <!-- Form -->
         <ValidateForm
           class="grow"

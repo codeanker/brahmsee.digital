@@ -32,10 +32,17 @@ export const personVerwaltungListProcedure = defineProcedure({
         account: {
           select: {
             id: true,
+            activatedAt: true,
             role: true,
+            status: true,
             GliederungToAccount: {
               select: {
                 role: true,
+                gliederung: {
+                  select: {
+                    name: true,
+                  },
+                },
               },
             },
           },

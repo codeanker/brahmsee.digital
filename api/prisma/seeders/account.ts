@@ -21,11 +21,14 @@ const createAccount: Seeder = async (prisma: PrismaClient) => {
       email,
       password: await hashPassword(password),
       role: 'ADMIN',
+      status: 'ACTIVE',
       activatedAt: new Date(),
       person: {
         create: {
           firstname: 'Gabi',
           lastname: 'Musterfrau',
+          telefon: '+49 123 4567890',
+          email,
         },
       },
     },

@@ -1,4 +1,4 @@
-import { Role } from '@prisma/client'
+import { Role, AccountStatus } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma'
@@ -13,6 +13,7 @@ export const accountVerwaltungPatchProcedure = defineProcedure({
     data: z.strictObject({
       email: z.string().email(),
       role: z.nativeEnum(Role),
+      status: z.nativeEnum(AccountStatus).optional(),
     }),
   }),
   async handler(options) {

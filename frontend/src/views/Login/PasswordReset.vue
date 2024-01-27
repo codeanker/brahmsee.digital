@@ -56,7 +56,7 @@ const showSet = computed(() => {
       <p class="text-center">Nicht schlimm, hier kannst Du es zurücksetzen</p>
     </div>
 
-    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
+    <div class="mt-5 lg:mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
       <div v-if="showReset">
         <div class="bg-white px-6 py-12 sm:rounded-lg sm:px-12">
           <ValidateForm

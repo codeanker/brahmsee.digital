@@ -37,7 +37,7 @@ watch(veranstaltungen, (loadedVeranstaltungen) => {
   <div class="mb-4">
     <Listbox v-model="selectedVeranstaltung">
       <ListboxButton
-        class="text-white bg-primary-600 hover:bg-primary-500 focus:outline-primary-600 btn w-full rounded-xl flex items-center space-x-3 text-left"
+        class="p-2 text-white bg-primary-600 hover:bg-primary-500 focus:outline-primary-600 w-full rounded-xl flex items-center space-x-3 text-left"
       >
         <div class="shrink-0 h-8 w-8 bg-primary-100 rounded-lg flex items-center justify-center">
           <svg
@@ -53,7 +53,7 @@ watch(veranstaltungen, (loadedVeranstaltungen) => {
         </div>
         <div class="grow text-white leading-3">
           <p class="text-sm font-normal text-primary-200 mb-0">Veranstaltung</p>
-          <h6 class="mb-1">{{ veranstaltungTitle(selectedVeranstaltung) }}</h6>
+          <h6 class="mb-0">{{ veranstaltungTitle(selectedVeranstaltung) }}</h6>
         </div>
         <div class="flex-shrink-0">
           <ChevronDownIcon class="w-6 h-6"></ChevronDownIcon>

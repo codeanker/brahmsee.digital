@@ -2,6 +2,7 @@ import { z } from 'zod'
 
 import prisma from '../../prisma'
 import { defineProcedure } from '../../types/defineProcedure'
+import { sendMail } from '../../util/mail'
 import { personSchema, getPersonCreateData } from '../person/schema/person.schema'
 
 export const anmeldungPublicCreateProcedure = defineProcedure({
@@ -24,12 +25,18 @@ export const anmeldungPublicCreateProcedure = defineProcedure({
       },
       select: {
         id: true,
+        veranstaltung: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
       },
     })
 
     const personData = await getPersonCreateData(options.input.data)
 
-    return prisma.person.create({
+    const person = prisma.person.create({
       data: {
         ...personData,
         anmeldungen: {
@@ -44,7 +51,7 @@ export const anmeldungPublicCreateProcedure = defineProcedure({
               : undefined,
             uebernachtungsTage: options.input.data.uebernachtungsTage,
             tshirtBestellt: options.input.data.tshirtBestellt,
-            email: options.input.data.email,
+            createdAt: new Date(),
           },
         },
       },
@@ -52,5 +59,14 @@ export const anmeldungPublicCreateProcedure = defineProcedure({
         id: true,
       },
     })
+
+    sendMail({
+      to: options.input.data.email,
+      subject: 'brahmsee.digital Anmeldung erfolgreich',
+      categories: ['anmeldung', 'create'],
+      html: `Vielen Dank für deine Anmeldung zur Veranstaltung ${unterveranstaltung.veranstaltung.name} .`,
+    })
+
+    return person
   },
 })

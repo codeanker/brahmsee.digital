@@ -21,11 +21,27 @@ export const accountVerwaltungListProcedure = defineProcedure({
       where: {
         email: options.input.filter.email,
       },
-      include: {
+      select: {
+        id: true,
+        email: true,
+        activatedAt: true,
+        status: true,
+        role: true,
+        personId: true,
         person: {
           select: {
             firstname: true,
             lastname: true,
+          },
+        },
+        GliederungToAccount: {
+          select: {
+            role: true,
+            gliederung: {
+              select: {
+                name: true,
+              },
+            },
           },
         },
       },

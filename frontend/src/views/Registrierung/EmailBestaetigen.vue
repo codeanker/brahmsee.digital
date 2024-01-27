@@ -72,7 +72,7 @@ const feedback = computed(() => {
       <button
         v-if="feedback?.showLoginButton"
         type="button"
-        class="btn btn-primary"
+        class="btn-primary"
         @click="router.push({ name: 'Login' })"
       >
         Jetzt anmelden

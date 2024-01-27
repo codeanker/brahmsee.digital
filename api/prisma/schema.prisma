@@ -11,6 +11,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum AccountStatus {
+  OPEN
+  ACTIVE
+  DISABLED
+}
+
 enum Role {
   GLIEDERUNG_ADMIN
   ADMIN
@@ -23,7 +29,7 @@ enum Gender {
 }
 
 enum Essgewohnheit {
-  OMNIVORE
+  OMNIVOR
   VEGETARISCH
   VEGAN
 }
@@ -120,6 +126,8 @@ model Person {
   lastname                     String
   birthday                     DateTime?                    @db.Date
   gender                       Gender?
+  email                        String
+  telefon                      String
   anmeldungen                  Anmeldung[]
   gliederungId                 Int?
   gliederung                   Gliederung?                  @relation(fields: [gliederungId], references: [id], onDelete: SetNull)
@@ -150,6 +158,7 @@ model Account {
   activatedAt         DateTime?
   GliederungToAccount GliederungToAccount[]
   activationToken     String?               @unique
+  status              AccountStatus         @default(OPEN)
   passwordResetToken  String?               @unique
 }
 
@@ -163,7 +172,7 @@ model Gliederung {
 }
 
 enum GliederungAccountRole {
-  DELIGATIONSLEITER
+  DELEGATIONSLEITER
   BETREUER
   TEILNEHMER
 }
@@ -197,7 +206,7 @@ model Anmeldung {
   mahlzeiten           Mahlzeit[]
   uebernachtungsTage   DateTime[]         @db.Date
   tshirtBestellt       Boolean            @default(false)
-  email                String
+  createdAt            DateTime           @default(now())
 }
 
 model Address {

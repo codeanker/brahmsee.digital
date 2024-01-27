@@ -19,6 +19,7 @@ export const accountVerwaltungGetProcedure = defineProcedure({
         id: true,
         email: true,
         activatedAt: true,
+        status: true,
         role: true,
         person: {
           select: {

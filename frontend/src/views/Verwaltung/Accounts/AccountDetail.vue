@@ -29,7 +29,7 @@ const onUpdate = async () => {
 <template>
   <h5>Account: {{ account?.email }}</h5>
 
-  <div class="mt-10">
+  <div class="mt-5 lg:mt-10">
     <FormAccountGeneral
       v-if="account"
       :account="account"

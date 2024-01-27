@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useVModel } from '@vueuse/core'
+import type { InputTypeHTMLAttribute } from 'vue'
 
 import useValidationModel from '../../composables/useValidationModel'
 
@@ -9,7 +10,7 @@ import { type BasicInputDefaultProps } from './defaultProps'
 const props = withDefaults(
   defineProps<
     BasicInputDefaultProps<string> & {
-      type?: 'text' | 'email'
+      type?: InputTypeHTMLAttribute
       autocapitalize?: 'off' | 'on' | 'words' | 'characters'
       inputClass?: string
       disableValidation?: boolean
