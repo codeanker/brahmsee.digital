@@ -62,7 +62,7 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
 
-  test:e2e:
+  test-e2e:
     name: 🧪 Test e2e
     runs-on: ubuntu-latest
     container: node:20-bullseye
