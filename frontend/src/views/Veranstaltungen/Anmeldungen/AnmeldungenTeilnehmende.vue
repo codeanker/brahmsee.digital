@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { CheckCircleIcon } from '@heroicons/vue/24/outline'
+import { ArrowTopRightOnSquareIcon, CheckCircleIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 
 import { useVeranstaltung } from '../../../composables/useVeranstaltung'
 
 import { apiClient } from '@/api'
+import AnmeldungStatusSelect from '@/components/AnmeldungStatusSelect.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
-import router from '@/router'
-import { dayjs, formatDate } from '@codeanker/helpers'
+import { dayjs } from '@codeanker/helpers'
 
 const { veranstaltung } = useVeranstaltung()
 
@@ -49,24 +49,18 @@ const { state: anmeldungen } = useAsyncState(
         >
           Alter
         </th>
-        <th
-          v-if="loggedInAccount?.role === 'ADMIN'"
-          scope="col"
-          class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-        >
-          Gliederung
-        </th>
-        <th
-          scope="col"
-          class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-        >
-          Account
-        </th>
+
         <th
           scope="col"
           class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
         >
           T-Shirt
+        </th>
+        <th
+          scope="col"
+          class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+        >
+          Status
         </th>
       </tr>
     </thead>
@@ -74,31 +68,46 @@ const { state: anmeldungen } = useAsyncState(
       <tr
         v-for="anmeldung in anmeldungen"
         :key="anmeldung.id"
-        class="cursor-pointer even:bg-gray-50 hover:bg-gray-100"
+        class="even:bg-gray-50 hover:bg-gray-50"
         :title="anmeldung.person.firstname + ' ' + anmeldung.person.lastname + ' bearbeiten'"
-        @click="router.push({ name: 'Verwaltung Persondetails', params: { personId: anmeldung.person.id } })"
       >
         <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-          <div class="text-gray-900">{{ anmeldung.person.firstname }} {{ anmeldung.person.lastname }}</div>
-        </td>
-        <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-          <div v-if="anmeldung.person.birthday">
-            {{ dayjs().diff(anmeldung.person.birthday, 'year') }} Jahre
-            <br />
-            {{ formatDate(anmeldung.person.birthday) }}
+          <div class="text-gray-900 flex space-x-1 items-center">
+            <span>{{ anmeldung.person.firstname }} {{ anmeldung.person.lastname }}</span>
+            <RouterLink
+              target="_blank"
+              class="text-primary-600 hover:text-primary-700"
+              :to="{
+                name: 'Verwaltung Persondetails',
+                params: { personId: anmeldung.person.id },
+              }"
+            >
+              <ArrowTopRightOnSquareIcon class="h-4 w-4" />
+            </RouterLink>
           </div>
+          <span
+            v-if="loggedInAccount?.role === 'ADMIN'"
+            class="text-xs text-gray-500"
+            >{{ anmeldung.person.gliederung?.name }}</span
+          >
         </td>
         <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-          {{ anmeldung.person.gliederung?.name }}
+          <div v-if="anmeldung.person.birthday">{{ dayjs().diff(anmeldung.person.birthday, 'year') }} Jahre</div>
         </td>
+
         <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-          <div class="flex items-center">Todo: {{ anmeldung.status }}</div>
+          <span v-if="anmeldung.tshirtBestellt">{{ anmeldung.person.konfektionsgroesse }}</span>
+          <span v-else> - </span>
         </td>
-        <td
-          v-if="loggedInAccount?.role === 'ADMIN'"
-          class="whitespace-nowrap px-3 py-5 text-sm text-gray-500"
-        >
-          Größe <span v-if="anmeldung.tshirtBestellt">{{ anmeldung.person.konfektionsgroesse }}</span>
+        <td class="px-3 py-5 text-sm">
+          <div class="flex items-center">
+            <AnmeldungStatusSelect
+              v-if="veranstaltung"
+              :id="anmeldung.id"
+              :status="anmeldung.status"
+              :meldeschluss="veranstaltung.meldeschluss"
+            />
+          </div>
         </td>
       </tr>
     </tbody>

@@ -45,10 +45,14 @@ const setStatus = async (status) => {
     })
   }
   if (status == AnmeldungStatus.STORNIERT) {
-    // @ToDo
+    await apiClient.anmeldung.verwaltungStorno.mutate({
+      anmeldungId: props.id,
+    })
   }
   if (status == AnmeldungStatus.ABGELEHNT) {
-    // @ToDo
+    await apiClient.anmeldung.verwaltungAblehnen.mutate({
+      anmeldungId: props.id,
+    })
   }
 }
 </script>
