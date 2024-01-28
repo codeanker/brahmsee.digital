@@ -66,6 +66,8 @@ jobs:
     name: 🧪 Test e2e
     runs-on: ubuntu-latest
     container: node:20-bullseye
+    env:
+      HOME: /root
     services:
       postgres:
         image: postgres
@@ -104,8 +106,6 @@ jobs:
       - run: npx -w api prisma migrate reset --force
       - run: npx playwright install --with-deps
       - run: npm run test:all
-        env:
-          HOME: "~"
       - uses: actions/upload-artifact@v3
         if: always()
         with:
