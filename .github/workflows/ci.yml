@@ -62,8 +62,8 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
 
-  e2e-test:
-    name: 🧪 e2e Test
+  test:e2e:
+    name: 🧪 Test e2e
     runs-on: ubuntu-latest
     container: node:20-bullseye
     services:
@@ -104,6 +104,8 @@ jobs:
       - run: npx -w api prisma migrate reset --force
       - run: npx playwright install --with-deps
       - run: npm run test:all
+        env:
+          HOME: /root
       - uses: actions/upload-artifact@v3
         if: always()
         with:
