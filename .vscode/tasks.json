@@ -54,8 +54,25 @@
 		},
 		{
 			"type": "npm",
-			"script": "test",
-			"label": "start:test",
+			"script": "test:e2e",
+			"label": "run:test:e2e",
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"group": "start",
+				"close": false
+			},
+			"options": {
+				"statusbar": {
+					"hide" : true
+				}
+			}
+		},
+		{
+			"type": "npm",
+			"script": "test:e2e:ui",
+			"label": "start:test:e2e:ui",
 			"problemMatcher": [],
 			"presentation": {
 				"reveal": "always",
@@ -90,8 +107,7 @@
 			"label": "start:apps",
 			"dependsOn": [
 				"start:api",
-				"start:frontend",
-				"start:test"
+				"start:frontend"
 			],
 			"problemMatcher": []
 		},
@@ -128,6 +144,21 @@
 			"label": "run:migration",
 			"type": "shell",
 			"command": "npx prisma migrate deploy & npx prisma generate",
+			"options": {
+        "cwd": "${workspaceFolder}/api"
+      },
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "always",
+				"revealProblems": "onProblem",
+				"panel": "new",
+				"close": true
+			}
+		},
+		{
+			"label": "run:seeder",
+			"type": "shell",
+			"command": "npx prisma db seed",
 			"options": {
         "cwd": "${workspaceFolder}/api"
       },

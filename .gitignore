@@ -89,3 +89,8 @@ typings/
 reports
 **/tsconfig.tsbuildinfo
 tsconfig.tsbuildinfo
+.DS_Store
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

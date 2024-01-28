@@ -5,7 +5,7 @@ name: CI
 
 on:
   push:
-    branches: [development]
+    branches: [development e2e-test-rework]
   pull_request:
     branches: [development]
 
@@ -62,8 +62,8 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
 
-  test:
-    name: 🧪 Test
+  e2e-test:
+    name: 🧪 e2e Test
     runs-on: ubuntu-latest
     container: node:20-bullseye
     services:
@@ -104,3 +104,9 @@ jobs:
       - run: npx -w api prisma migrate reset --force
       - run: npx playwright install --with-deps
       - run: npm run test:all
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
