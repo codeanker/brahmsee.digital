@@ -69,7 +69,6 @@ const { state: anmeldungen } = useAsyncState(
         v-for="anmeldung in anmeldungen"
         :key="anmeldung.id"
         class="even:bg-gray-50 hover:bg-gray-50"
-        :title="anmeldung.person.firstname + ' ' + anmeldung.person.lastname + ' bearbeiten'"
       >
         <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
           <div class="text-gray-900 flex space-x-1 items-center">
