@@ -1,4 +1,5 @@
 export * from './AccountStatus'
+export * from './AnmeldungStatus'
 export * from './role'
 export * from './getEnumOptions'
 export * from './Gender'

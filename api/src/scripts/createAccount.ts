@@ -1,6 +1,6 @@
 import { input, password as passwordInput, select } from '@inquirer/prompts'
 
-import { getEnumOptions, roleMapping } from '../enumMappings'
+import { getEnumOptions, roleMapping, AccountStatus } from '../enumMappings'
 import prisma from '../prisma'
 import { getAccountCreateData } from '../services/account/schema/account.schema'
 
@@ -30,19 +30,24 @@ async function createUser() {
     })
   }
 
+  const accountData = await getAccountCreateData({
+    email: email,
+    firstname: firstname,
+    lastname: lastname,
+    password: password,
+    roleId: roleId,
+    isActiv: true,
+    adminInGliederungId: roleId === 'GLIEDERUNG_ADMIN' ? await selectGliederung() : undefined,
+    birthday: new Date(),
+    gender: 'FEMALE',
+  })
+
   await prisma.account.create({
-    data: await getAccountCreateData({
-      email: email,
-      firstname: firstname,
-      lastname: lastname,
-      password: password,
-      roleId: roleId,
-      isActiv: true,
-      adminInGliederungId: roleId === 'GLIEDERUNG_ADMIN' ? await selectGliederung() : undefined,
-      birthday: new Date(),
-      gender: 'FEMALE',
-      status: 'ACTIVE',
-    }),
+    data: {
+      ...accountData,
+      status: AccountStatus.AKTIV,
+      activationToken: '',
+    },
     select: {
       id: true,
     },

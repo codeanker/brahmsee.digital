@@ -7,7 +7,7 @@ import { apiClient } from '@/api'
 import Badge from '@/components/UIComponents/Badge.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
-import { getStatusColor } from '@/helpers/getStatusColors'
+import { getAccountStatusColor } from '@/helpers/getAccountStatusColors'
 import router from '@/router'
 import { roleMapping } from '@codeanker/api/src/enumMappings'
 import { formatDate } from '@codeanker/helpers'
@@ -24,7 +24,7 @@ const { state: accountList } = useAsyncState(
 )
 
 const accountRequest = computed(() => {
-  return accountList.value?.filter((account) => account.status === 'OPEN')
+  return accountList.value?.filter((account) => account.status === 'OFFEN')
 })
 
 const tabs = computed(() => [
@@ -116,7 +116,7 @@ const tabs = computed(() => [
               </td>
               <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
                 <Badge
-                  :color="getStatusColor(account.status)"
+                  :color="getAccountStatusColor(account.status)"
                   :title="formatDate(account.activatedAt)"
                   >{{ account.status }}</Badge
                 >
@@ -194,7 +194,7 @@ const tabs = computed(() => [
                 >
               </td>
               <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                <Badge :color="getStatusColor(account.status)">{{ account.status }}</Badge>
+                <Badge :color="getAccountStatusColor(account.status)">{{ account.status }}</Badge>
               </td>
             </tr>
           </tbody>

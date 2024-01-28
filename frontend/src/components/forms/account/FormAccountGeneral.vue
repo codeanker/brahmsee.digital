@@ -19,7 +19,7 @@ import Tab from '@/components/UIComponents/components/Tab.vue'
 import Loading from '@/components/UIComponents/Loading.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
-import { getStatusColor } from '@/helpers/getStatusColors'
+import { getAccountStatusColor } from '@/helpers/getAccountStatusColors'
 import router from '@/router'
 import type { RouterInput, RouterOutput } from '@codeanker/api'
 import { AccountStatusMapping, getEnumOptions, roleMapping } from '@codeanker/api/src/enumMappings'
@@ -50,9 +50,9 @@ const accountForm = ref({
 })
 
 const roles = getEnumOptions(roleMapping)
-const statusOptions = getEnumOptions(AccountStatusMapping).filter(
-  (option) => option.value === 'DISABLED' || option.value === 'ACTIVE'
-)
+const statusOptions = getEnumOptions(AccountStatusMapping)
+
+const availableOptions = statusOptions.filter((option) => option.value === 'DEAKTIVIERT' || option.value === 'AKTIV')
 
 const getStatusHuman = computed(() => statusOptions.find((status) => status.value === accountForm.value.status)?.label)
 
@@ -166,7 +166,7 @@ const tabs = computed(() => {
       </div>
       <Badge
         v-if="edit && props?.account?.status"
-        :color="getStatusColor(props.account.status)"
+        :color="getAccountStatusColor(props.account.status)"
         :title="formatDate(props.account.activatedAt)"
         >{{ props.account.status }}</Badge
       >
@@ -230,7 +230,7 @@ const tabs = computed(() => {
                   <div class="flex space-x-2 items-center">
                     <div
                       class="w-4 h-4 rounded-full"
-                      :class="`bg-${getStatusColor(accountForm.status)}-600`"
+                      :class="`bg-${getAccountStatusColor(accountForm.status)}-600`"
                     ></div>
                     <span>{{ getStatusHuman }}</span>
                   </div>
@@ -244,7 +244,7 @@ const tabs = computed(() => {
                 class=""
               >
                 <button
-                  v-for="status in statusOptions"
+                  v-for="status in availableOptions"
                   :key="status.value"
                   type="button"
                   class="hover:bg-primary-light rounded items-center flex p-2 w-full space-x-2 text-left"
@@ -252,7 +252,7 @@ const tabs = computed(() => {
                 >
                   <div
                     class="w-4 h-4 rounded-full"
-                    :class="`bg-${getStatusColor(status.value)}-600`"
+                    :class="`bg-${getAccountStatusColor(status.value)}-600`"
                   ></div>
                   <span>{{ status.label }}</span>
                 </button>

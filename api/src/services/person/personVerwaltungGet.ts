@@ -15,7 +15,14 @@ export const personVerwaltungGetProcedure = defineProcedure({
       where: {
         id: options.input.id,
       },
-      include: {
+      select: {
+        id: true,
+        firstname: true,
+        lastname: true,
+        birthday: true,
+        gender: true,
+        email: true,
+        telefon: true,
         address: {
           select: {
             zip: true,
@@ -24,7 +31,18 @@ export const personVerwaltungGetProcedure = defineProcedure({
             number: true,
           },
         },
-        notfallkontakte: true,
+        nahrungsmittelIntoleranzen: true,
+        weitereIntoleranzen: true,
+        konfektionsgroesse: true,
+        essgewohnheit: true,
+        notfallkontakte: {
+          select: {
+            firstname: true,
+            lastname: true,
+            telefon: true,
+            istErziehungsberechtigt: true,
+          },
+        },
         gliederung: true,
       },
     })

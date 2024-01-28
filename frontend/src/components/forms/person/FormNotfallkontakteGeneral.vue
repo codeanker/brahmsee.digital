@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { PlusIcon } from '@heroicons/vue/24/outline'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 import Button from '@/components/UIComponents/Button.vue'
 import KontaktItem from '@/components/UIComponents/KontaktItem.vue'
@@ -28,6 +28,13 @@ const model = computed({
     emit('update:modelValue', val)
   },
 })
+
+const personTemplate = ref<TKontaktSchema>({
+  firstname: '',
+  lastname: '',
+  telefon: '',
+  istErziehungsberechtigt: false,
+})
 </script>
 
 <template>
@@ -51,7 +58,7 @@ const model = computed({
   <Button
     color="secondary"
     class="mt-5 flex flex-row items-center justify-center w-full"
-    @click="model.personen.push({ firstname: '', lastname: '', telefon: '' })"
+    @click="model.personen.push(personTemplate)"
   >
     <PlusIcon class="h-5 mr-2" />
     <span>Notfallkontakt hinzufügen</span>

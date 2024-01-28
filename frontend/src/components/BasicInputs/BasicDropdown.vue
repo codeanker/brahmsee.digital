@@ -37,7 +37,7 @@ withDefaults(
     <Menu>
       <MenuButton
         class="btn"
-        :class="[buttonStyle]"
+        :class="[buttonStyle, { 'hover:cursor-not-allowed': disabled }]"
         :disabled="disabled"
         @click="(e) => e.stopPropagation()"
       >

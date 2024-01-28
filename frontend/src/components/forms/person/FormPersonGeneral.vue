@@ -73,23 +73,23 @@ const contactForm = ref<IContact>({
 })
 
 const notfallKontakteForm = ref<INotfallKontakte>({
-  personen: [],
+  personen: props.person?.notfallkontakte ?? [],
 })
 
 const essgewohnheitenForm = ref<IEssgewohnheiten>({
-  essgewohnheit: 'VEGETARISCH',
+  essgewohnheit: props.person?.essgewohnheit ?? 'VEGETARISCH',
   intoleranzen: {
-    FRUCTOSE: false,
-    GLUTEN: false,
-    LAKTOSE: false,
-    SCHWEIN: false,
+    FRUCTOSE: props.person?.nahrungsmittelIntoleranzen.includes('FRUCTOSE') ?? false,
+    GLUTEN: props.person?.nahrungsmittelIntoleranzen.includes('GLUTEN') ?? false,
+    LAKTOSE: props.person?.nahrungsmittelIntoleranzen.includes('LAKTOSE') ?? false,
+    SCHWEIN: props.person?.nahrungsmittelIntoleranzen.includes('SCHWEIN') ?? false,
   },
-  weitereIntoleranzen: [],
+  weitereIntoleranzen: props.person?.weitereIntoleranzen ?? [],
 })
 
 const tshirtForm = ref<ITShirtBestellung>({
   bestellen: false,
-  groesse: 'M',
+  groesse: props.person?.konfektionsgroesse ?? 'JUNIOR_122_128',
 })
 
 const gliederung = ref<Gliederung | null>(props.person?.gliederung ?? null)

@@ -7,7 +7,7 @@ import Badge from '@/components/UIComponents/Badge.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
-import { getStatusColor } from '@/helpers/getStatusColors'
+import { getAccountStatusColor } from '@/helpers/getAccountStatusColors'
 import router from '@/router'
 import { dayjs, formatDate } from '@codeanker/helpers'
 
@@ -104,7 +104,7 @@ const tabs = [{ name: 'Personen', icon: UsersIcon }]
                 <div class="flex items-center">
                   <Badge
                     v-if="person.account"
-                    :color="getStatusColor(person.account.status)"
+                    :color="getAccountStatusColor(person.account.status)"
                     :title="formatDate(person.account.activatedAt)"
                     >{{ person.account.status }}</Badge
                   >
