@@ -115,7 +115,7 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
 
           <div class="mt-6">
             <a
-              href="/api/connect/dlrg"
+              href="/api/connect/dlrg?mode=login"
               class="flex w-full items-center justify-center gap-3 rounded-md bg-[#e30613] px-3 py-2 text-sm font-semibold text-gray-900 hover:bg-[#CA0511] focus-visible:ring-transparent"
             >
               <svg
