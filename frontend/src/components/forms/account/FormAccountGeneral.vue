@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { MenuItem } from '@headlessui/vue'
-import { FingerPrintIcon, KeyIcon, TrashIcon, ChevronDownIcon } from '@heroicons/vue/24/outline'
+import { FingerPrintIcon, KeyIcon, TrashIcon, ChevronDownIcon, CheckCircleIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 import { computed, ref } from 'vue'
 
@@ -290,7 +290,10 @@ const tabs = computed(() => {
           <h2 class="text-base font-semibold leading-7">Passwort</h2>
         </div>
 
-        <div class="md:col-span-2">
+        <div
+          v-if="!account?.dlrgOauthId"
+          class="md:col-span-2"
+        >
           <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
             <div
               v-if="isSelf"
@@ -342,6 +345,25 @@ const tabs = computed(() => {
             class="bg-danger-400 mb-2 mt-5 rounded p-3 text-center"
           >
             {{ errorPassword }}
+          </div>
+        </div>
+
+        <div
+          v-if="account?.dlrgOauthId"
+          class="rounded-md bg-blue-50 p-4"
+        >
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <CheckCircleIcon
+                class="h-5 w-5 text-blue-400"
+                aria-hidden="true"
+              />
+            </div>
+            <div class="ml-3 flex-1 md:flex md:justify-between">
+              <p class="text-sm text-blue-700 mb-0">
+                Die Person hat sich via OAuth über das ISC angemeldet. Daher kann das Passwort nicht geändert werden.
+              </p>
+            </div>
           </div>
         </div>
       </div>
