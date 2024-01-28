@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { CheckCircleIcon } from '@heroicons/vue/24/outline'
-import { useAsyncState } from '@vueuse/core'
 import { ref } from 'vue'
 
 import { apiClient } from '@/api'
@@ -10,7 +9,7 @@ import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
 import BasicTypeahead from '@/components/BasicInputs/BasicTypeahead.vue'
 import Stammdaten, { type IStammdaten } from '@/components/forms/anmeldung/Stammdaten.vue'
 import Button from '@/components/UIComponents/Button.vue'
-import type { RouterInput } from '@codeanker/api'
+import type { RouterInput, RouterOutput } from '@codeanker/api'
 import type { TAccountSchema } from '@codeanker/api/src/services/account/schema/account.schema'
 import { ValidateForm } from '@codeanker/validation'
 
@@ -32,28 +31,59 @@ async function queryObject(searchTerm) {
   return apiClient.gliederung.publicList.query({ filter: { name: searchTerm }, pagination: { take: 100, skip: 0 } })
 }
 
-const {
-  execute: registerGliederung,
-  error: errorCreate,
-  state: account,
-} = useAsyncState(
-  async () => {
-    let accountData = <Partial<TAccountSchema>>{
+const errorCreate = ref<unknown | null>(null)
+const account = ref<null | Awaited<RouterOutput['account']['gliederungAdminCreate']>>(null)
+
+async function watiForOAuth(): Promise<string> {
+  const channel = new BroadcastChannel('auth')
+  return new Promise((resolve, reject) => {
+    channel.addEventListener('message', (event) => {
+      if (event.data.jwtOAuthToken) {
+        resolve(event.data.jwtOAuthToken)
+      } else {
+        reject(new Error('no jwtOAuthToken'))
+      }
+    })
+  })
+}
+
+type TAccountData = Partial<TAccountSchema> & {
+  jwtOAuthToken?: string
+}
+
+async function registerGliederung() {
+  try {
+    account.value = null
+    errorCreate.value = null
+    let accountData: TAccountData = {
       firstname: stammdatenForm.value.firstname,
       lastname: stammdatenForm.value.lastname,
       gender: stammdatenForm.value.gender,
-      birthday: stammdatenForm.value.birthday,
+      birthday: stammdatenForm.value.birthday ? new Date(stammdatenForm.value.birthday) : undefined,
       email: registrationForm.value.email,
       password: registrationForm.value.password,
       adminInGliederungId: registrationForm.value.gliederung?.id,
     }
-    return await apiClient.account.gliederungAdminCreate.mutate({
+
+    if (oauthRegistration.value) {
+      // first optain jwt containing the oauth sub id
+      // open new tab with oauth login
+      window.open('/api/connect/dlrg?mode=register', '_blank')
+
+      accountData.jwtOAuthToken = await watiForOAuth()
+      accountData.password = undefined
+      accountData.email = undefined
+    }
+
+    account.value = await apiClient.account.gliederungAdminCreate.mutate({
       data: accountData as unknown as RouterInput['account']['gliederungAdminCreate']['data'],
     })
-  },
-  null,
-  { immediate: false }
-)
+  } catch (error) {
+    errorCreate.value = error
+  }
+}
+
+const oauthRegistration = ref(false)
 </script>
 
 <template>
@@ -85,6 +115,7 @@ const {
               placeholder="Gliederung eingeben"
             />
             <BasicInput
+              v-if="!oauthRegistration"
               v-model="registrationForm.email"
               label="E-Mail Adresse"
               class="col-span-2"
@@ -93,6 +124,7 @@ const {
               placeholder="E-Mail Adresse eingeben"
             />
             <BasicPassword
+              v-if="!oauthRegistration"
               v-model="registrationForm.password"
               label="Passwort"
               class="col-span-2"
@@ -108,6 +140,13 @@ const {
               class="mt-1"
             />
             <div class="font-medium">Ich habe die Datenschutzerklärung gelesen und akzeptiere diese.</div>
+          </div>
+          <div class="flex items-start mb-5 space-x-3">
+            <BasicCheckbox
+              v-model="oauthRegistration"
+              class="mt-1"
+            />
+            <div class="font-medium">Mit DLRG Account Registrieren</div>
           </div>
           <div
             v-if="errorCreate"
