@@ -105,7 +105,7 @@ jobs:
       - run: npx playwright install --with-deps
       - run: npm run test:all
         env:
-          HOME: /root
+          HOME: "~"
       - uses: actions/upload-artifact@v3
         if: always()
         with:
