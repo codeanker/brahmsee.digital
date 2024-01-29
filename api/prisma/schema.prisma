@@ -12,9 +12,9 @@ datasource db {
 }
 
 enum AccountStatus {
-  OPEN
-  ACTIVE
-  DISABLED
+  OFFEN
+  AKTIV
+  DEAKTIVIERT
 }
 
 enum Role {
@@ -29,7 +29,7 @@ enum Gender {
 }
 
 enum Essgewohnheit {
-  OMNIVORE
+  OMNIVOR
   VEGETARISCH
   VEGAN
 }
@@ -116,8 +116,9 @@ model Notfallkontakt {
   firstname               String
   lastname                String
   telefon                 String
-  istErziehungsberechtigt Boolean?
-  personen                Person[]
+  istErziehungsberechtigt Boolean  @default(false)
+  personId                Int
+  person                  Person  @relation(fields: [personId], references: [id], onDelete: Cascade)
 }
 
 model Person {
@@ -126,6 +127,8 @@ model Person {
   lastname                     String
   birthday                     DateTime?                    @db.Date
   gender                       Gender?
+  email                        String
+  telefon                      String
   anmeldungen                  Anmeldung[]
   gliederungId                 Int?
   gliederung                   Gliederung?                  @relation(fields: [gliederungId], references: [id], onDelete: SetNull)
@@ -148,14 +151,15 @@ model Person {
 model Account {
   id                  Int                   @id @default(autoincrement())
   email               String                @unique
-  password            String
+  dlrgOauthId         String?                @unique
+  password            String?
   role                Role
   personId            Int                   @unique
   person              Person                @relation(fields: [personId], references: [id], onDelete: Cascade)
   activatedAt         DateTime?
   GliederungToAccount GliederungToAccount[]
   activationToken     String?               @unique
-  status              AccountStatus         @default(OPEN)
+  status              AccountStatus         @default(OFFEN)
   passwordResetToken  String?               @unique
 }
 
@@ -169,7 +173,7 @@ model Gliederung {
 }
 
 enum GliederungAccountRole {
-  DELIGATIONSLEITER
+  DELEGATIONSLEITER
   BETREUER
   TEILNEHMER
 }
@@ -187,7 +191,7 @@ model GliederungToAccount {
 
 enum AnmeldungStatus {
   OFFEN
-  ANGENOMMEN
+  BESTAETIGT
   STORNIERT
   ABGELEHNT
 }
@@ -203,7 +207,7 @@ model Anmeldung {
   mahlzeiten           Mahlzeit[]
   uebernachtungsTage   DateTime[]         @db.Date
   tshirtBestellt       Boolean            @default(false)
-  email                String
+  createdAt            DateTime           @default(now())
 }
 
 model Address {

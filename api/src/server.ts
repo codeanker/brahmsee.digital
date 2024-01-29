@@ -38,16 +38,16 @@ app.use(
       transport: 'session',
     },
     dlrg: {
+      dynamic: ['mode'],
       transport: 'session',
       oauth: 2,
       response: ['token', 'profile'],
       authorize_url: 'https://iam.dlrg.net/auth/realms/master/protocol/openid-connect/auth',
       access_url: 'https://iam.dlrg.net/auth/realms/master/protocol/openid-connect/token',
       key: config.authentication.dlrg.client_id,
-      scope: ['profile', 'email'],
-      state: true,
+      scope: ['profile'],
+      profile_url: 'https://iam.dlrg.net/auth/realms/master/protocol/openid-connect/userinfo',
       pkce: true,
-      callback: '/api/auth/dlrg/callback',
     },
   })
 )
@@ -62,11 +62,11 @@ app.use(
 
 app.use(router.routes())
 
-app.use(async (ctx, next) => {
-  // serve index.html as catch all
-  ctx.url = '/'
-  await serve('./static')(ctx, next)
-})
+// app.use(async (ctx, next) => {
+//   // serve index.html as catch all
+//   ctx.url = '/'
+//   await serve('./static')(ctx, next)
+// })
 
 app.listen(config.server.port, config.server.host)
 logger.info(`app listening on http://0.0.0.0:${config.server.port}`)

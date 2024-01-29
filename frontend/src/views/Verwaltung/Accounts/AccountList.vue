@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { FingerPrintIcon, PlusIcon, UserIcon } from '@heroicons/vue/24/outline'
+import { FingerPrintIcon, CheckCircleIcon, PlusIcon, UserIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 import { computed } from 'vue'
 
@@ -7,7 +7,7 @@ import { apiClient } from '@/api'
 import Badge from '@/components/UIComponents/Badge.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
-import { getStatusColor } from '@/helpers/getStatusColors'
+import { getAccountStatusColor } from '@/helpers/getAccountStatusColors'
 import router from '@/router'
 import { roleMapping } from '@codeanker/api/src/enumMappings'
 import { formatDate } from '@codeanker/helpers'
@@ -24,7 +24,7 @@ const { state: accountList } = useAsyncState(
 )
 
 const accountRequest = computed(() => {
-  return accountList.value?.filter((account) => account.status === 'OPEN')
+  return accountList.value?.filter((account) => account.status === 'OFFEN')
 })
 
 const tabs = computed(() => [
@@ -38,7 +38,7 @@ const tabs = computed(() => [
 
   <div class="flow-root">
     <Tabs
-      class="mt-10"
+      class="mt-5 lg:mt-10"
       content-space="4"
       :tabs="tabs"
     >
@@ -116,7 +116,7 @@ const tabs = computed(() => [
               </td>
               <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
                 <Badge
-                  :color="getStatusColor(account.status)"
+                  :color="getAccountStatusColor(account.status)"
                   :title="formatDate(account.activatedAt)"
                   >{{ account.status }}</Badge
                 >
@@ -134,7 +134,10 @@ const tabs = computed(() => [
             </p>
           </div>
         </div>
-        <table class="min-w-full divide-y divide-gray-300">
+        <table
+          v-if="accountRequest.length"
+          class="min-w-full divide-y divide-gray-300"
+        >
           <thead>
             <tr>
               <th
@@ -191,11 +194,27 @@ const tabs = computed(() => [
                 >
               </td>
               <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                <Badge :color="getStatusColor(account.status)">{{ account.status }}</Badge>
+                <Badge :color="getAccountStatusColor(account.status)">{{ account.status }}</Badge>
               </td>
             </tr>
           </tbody>
         </table>
+        <div
+          v-if="accountRequest.length <= 0"
+          class="rounded-md bg-blue-50 p-4"
+        >
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <CheckCircleIcon
+                class="h-5 w-5 text-blue-400"
+                aria-hidden="true"
+              />
+            </div>
+            <div class="ml-3 flex-1 md:flex md:justify-between">
+              <p class="text-sm text-blue-700 mb-0">Es gibt keine offenen Account anfragen.</p>
+            </div>
+          </div>
+        </div>
       </Tab>
     </Tabs>
   </div>

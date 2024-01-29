@@ -18,6 +18,7 @@ const createVeranstaltung: Seeder = async (prisma: PrismaClient) => {
       meldeschluss: new Date(),
       maxTeilnehmende: 500,
       teilnahmegebuehr: 100,
+      beschreibung: 'Ich bin die Beschreibung',
       ort: {
         create: {
           name: 'Waldheim am Brahmsee',
@@ -27,6 +28,21 @@ const createVeranstaltung: Seeder = async (prisma: PrismaClient) => {
               zip: '24631',
               number: '1',
               street: 'Am Waldheim',
+            },
+          },
+        },
+      },
+      unterveranstaltungen: {
+        create: {
+          teilnahmegebuehr: 13.37,
+          maxTeilnehmende: 800,
+          meldebeginn: new Date(),
+          meldeschluss: new Date(),
+          beschreibung: 'Ich bin die Beschreibung',
+          type: 'GLIEDERUNG',
+          gliederung: {
+            connect: {
+              edv: '1205013',
             },
           },
         },

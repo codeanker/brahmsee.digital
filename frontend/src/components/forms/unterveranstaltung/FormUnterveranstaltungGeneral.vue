@@ -45,7 +45,6 @@ if (props.mode === 'create') {
 }
 
 function useVeranstaltungList(isAdmin: boolean) {
-  // return computed(() => {
   if (isAdmin) {
     const { state } = useAsyncState(async () => {
       return apiClient.veranstaltung.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
@@ -162,7 +161,7 @@ const disableddates = computed(() => {
     Ausschreibung <span v-if="unterveranstaltung">{{ unterveranstaltung.veranstaltung.name }}</span>
   </h5>
   <ValidateForm
-    class="mt-10"
+    class="mt-5 lg:mt-10"
     @submit="handle"
   >
     <div class="grid grid-cols-1 lg:grid-cols-6 gap-6">

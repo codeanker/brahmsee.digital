@@ -26,21 +26,6 @@ export const veranstaltungVerwaltungGetProcedure = defineProcedure({
             id: true,
           },
         },
-        unterveranstaltungen: {
-          select: {
-            Anmeldung: {
-              select: {
-                person: {
-                  select: {
-                    firstname: true,
-                    lastname: true,
-                    birthday: true,
-                  },
-                },
-              },
-            },
-          },
-        },
         meldebeginn: true,
         meldeschluss: true,
         maxTeilnehmende: true,
@@ -51,11 +36,6 @@ export const veranstaltungVerwaltungGetProcedure = defineProcedure({
         zielgruppe: true,
       },
     })
-    const { unterveranstaltungen, ...veranstaltung } = veranstaltungWithunterveranstaltungen
-    const anmeldungen = unterveranstaltungen.flatMap((u) => u.Anmeldung)
-    return {
-      ...veranstaltung,
-      anmeldungen,
-    }
+    return veranstaltungWithunterveranstaltungen
   },
 })

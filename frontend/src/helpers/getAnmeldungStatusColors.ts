@@ -5,14 +5,16 @@ export type StatusColors = 'muted' | 'primary' | 'secondary' | 'warning' | 'dang
  * @param status
  * @returns string
  */
-export const getStatusColor = (status: string) => {
+export const getAnmeldungStatusColor = (status?: string) => {
   switch (status) {
-    case 'OPEN':
+    case 'OFFEN':
       return 'warning'
-    case 'ACTIVE':
+    case 'BESTAETIGT':
       return 'secondary'
-    case 'DISABLED':
+    case 'ABGELEHNT':
       return 'danger'
+    case 'STORNIERT':
+      return 'muted'
     default:
       return 'muted'
   }

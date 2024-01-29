@@ -4,11 +4,12 @@ import { useAsyncState } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
 
 import { apiClient } from '@/api'
-import FormPersonGeneral from '@/components/forms/person/FormPersonGeneral.vue'
+import FormPersonGeneral, { type FormPersonGeneralSubmit } from '@/components/forms/person/FormPersonGeneral.vue'
 import PublicFooter from '@/components/LayoutComponents/PublicFooter.vue'
 import PublicHeader from '@/components/LayoutComponents/PublicHeader.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import Loading from '@/components/UIComponents/Loading.vue'
+import { type NahrungsmittelIntoleranzEnum } from '@codeanker/api/src/enumMappings'
 
 const router = useRouter()
 const route = useRoute()
@@ -21,12 +22,36 @@ const {
   execute: createAnmeldung,
   error: errorCreate,
   isLoading: isLoadingCreate,
-} = useAsyncState(async (anmeldung) => {
+} = useAsyncState(async (anmeldung: FormPersonGeneralSubmit) => {
+  const nahrungsmittelIntoleranzen = Object.entries(anmeldung.essgewohnheiten.intoleranzen)
+    .filter((entry) => {
+      return entry[1]
+    })
+    .map((entry) => entry[0] as NahrungsmittelIntoleranzEnum)
+
   await apiClient.anmeldung.publicCreate.mutate({
     data: {
-      ...anmeldung,
       unterveranstaltungId: Number(route.params.ausschreibungId),
       gliederungId: Number(unterveranstaltung.value?.gliederung.id),
+
+      firstname: anmeldung.stammdaten.firstname,
+      lastname: anmeldung.stammdaten.lastname,
+      gender: anmeldung.stammdaten.gender,
+      birthday: anmeldung.stammdaten.birthday ?? new Date(),
+      email: anmeldung.contact.email,
+      telefon: anmeldung.contact.telefon,
+
+      address: {
+        ...anmeldung.address,
+      },
+
+      notfallkontaktPersonen: anmeldung.notfallKontakte.personen,
+      essgewohnheit: anmeldung.essgewohnheiten.essgewohnheit,
+      nahrungsmittelIntoleranzen,
+      weitereIntoleranzen: anmeldung.essgewohnheiten.weitereIntoleranzen,
+
+      tshirtBestellt: anmeldung.tshirt.bestellen,
+      konfektionsgroesse: anmeldung.tshirt.groesse,
     },
   })
   router.push('/ausschreibung/' + route.params.ausschreibungId + '/anmeldung/result')
@@ -34,7 +59,7 @@ const {
 </script>
 
 <template>
-  <div class="lg:py-10 lg:px-20 xl:px-28 2xl:px-40 flex flex-col h-full grow">
+  <div class="lg:py-10 lg:px-20 flex flex-col h-full grow">
     <div
       v-if="unterveranstaltung && !isLoading"
       class="grow"
@@ -45,13 +70,15 @@ const {
         class="mb-10"
         color="secondary"
         @click="router.back()"
-        ><ChevronLeftIcon class="h-5 mr-2" />Zurück zur Aussschreibung</Button
       >
+        <ChevronLeftIcon class="h-5 mr-2" />
+        <span>Zurück zur Aussschreibung</span>
+      </Button>
       <div class="text-3xl font-medium">Anmeldung</div>
       <div class="mb-5">{{ unterveranstaltung?.veranstaltung.name }}</div>
       <!-- Form -->
       <FormPersonGeneral
-        :loading="isLoadingCreate"
+        :is-loading="isLoadingCreate"
         :error="errorCreate as Error"
         submit-text="Anmelden"
         is-public-anmeldung

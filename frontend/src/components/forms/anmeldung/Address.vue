@@ -4,10 +4,10 @@ import { computed } from 'vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 
 export interface IAddress {
-  street?: string
-  number?: string
-  zip?: string
-  city?: string
+  street: string
+  number: string
+  zip: string
+  city: string
 }
 
 const props = withDefaults(

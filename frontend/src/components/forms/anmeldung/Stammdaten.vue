@@ -7,10 +7,10 @@ import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
 import { Gender, GenderMapping, getEnumOptions } from '@codeanker/api/src/enumMappings'
 
 export interface IStammdaten {
-  firstname?: string
-  lastname?: string
-  gender?: Gender
-  birthday?: Date | null
+  firstname: string
+  lastname: string
+  gender: Gender
+  birthday: Date | null
 }
 
 const props = withDefaults(
@@ -36,36 +36,34 @@ const identificationOptions = ref(getEnumOptions(GenderMapping))
 </script>
 
 <template>
-  <div>
-    <div class="grid grid-flow-row lg:grid-cols-2 gap-5">
-      <BasicInput
-        v-model="model.firstname"
-        label="Vorname"
-        placeholder="Vornamen eingeben"
-        required
-      />
-      <BasicInput
-        v-model="model.lastname"
-        label="Nachname"
-        placeholder="Nachname eingeben"
-        required
-      />
-      <BasicSelect
-        v-model="model.gender"
-        label="Geschlecht"
-        required
-        :options="identificationOptions"
-      />
-      <BasicDatepicker
-        v-model="model.birthday"
-        label="Geburtsdatum"
-        format="dd.MM.yyyy"
-        required
-        :disabled-dates="{
-          from: new Date(),
-        }"
-        placeholder="Geburtsdatum auswählen"
-      />
-    </div>
+  <div class="grid grid-flow-row lg:grid-cols-2 gap-5">
+    <BasicInput
+      v-model="model.firstname"
+      label="Vorname"
+      placeholder="Vornamen eingeben"
+      required
+    />
+    <BasicInput
+      v-model="model.lastname"
+      label="Nachname"
+      placeholder="Nachname eingeben"
+      required
+    />
+    <BasicSelect
+      v-model="model.gender"
+      label="Geschlecht"
+      required
+      :options="identificationOptions"
+    />
+    <BasicDatepicker
+      v-model="model.birthday"
+      label="Geburtsdatum"
+      format="dd.MM.yyyy"
+      required
+      :disabled-dates="{
+        from: new Date(),
+      }"
+      placeholder="Geburtsdatum auswählen"
+    />
   </div>
 </template>

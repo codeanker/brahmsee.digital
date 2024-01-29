@@ -11,7 +11,7 @@ export const accountVerwaltungGetProcedure = defineProcedure({
     id: z.number().int(),
   }),
   async handler(options) {
-    return prisma.account.findUniqueOrThrow({
+    const res = await prisma.account.findUniqueOrThrow({
       where: {
         id: options.input.id,
       },
@@ -19,7 +19,9 @@ export const accountVerwaltungGetProcedure = defineProcedure({
         id: true,
         email: true,
         activatedAt: true,
+        status: true,
         role: true,
+        dlrgOauthId: true,
         person: {
           select: {
             firstname: true,
@@ -31,5 +33,8 @@ export const accountVerwaltungGetProcedure = defineProcedure({
         activationToken: true,
       },
     })
+
+    if (res.dlrgOauthId != null) res.dlrgOauthId = 'true'
+    return res
   },
 })

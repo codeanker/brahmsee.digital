@@ -14,7 +14,7 @@ const role = computed(() => loggedInAccount.value?.role)
     <h5>Aktuelle Veranstaltungen</h5>
     <div class="mx-auto mt-16 max-w-7xlsm:mt-32">
       <div
-        class="isolate mx-auto mt-10 grid max-w-md grid-cols-1 gap-8 md:max-w-2xl lg:grid-cols-2 lg:max-w-4xl xl:mx-0 xl:max-w-none"
+        class="isolate mx-auto mt-5 lg:mt-10 grid max-w-md grid-cols-1 gap-8 md:max-w-2xl lg:grid-cols-2 lg:max-w-4xl xl:mx-0 xl:max-w-none"
       >
         <Verwaltung v-if="role === 'ADMIN'" />
         <Gliederung v-if="role === 'GLIEDERUNG_ADMIN'" />

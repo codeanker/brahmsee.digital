@@ -15,6 +15,17 @@ const route = useRoute()
 const email = ref('')
 const password = ref('')
 
+// read "jwt" from url hashbang
+if (location.hash) {
+  const hash = location.hash.substr(1)
+  const hashParams = new URLSearchParams(hash)
+  const jwt = hashParams.get('jwt')
+  if (jwt) {
+    localStorage.setItem('jwt', jwt)
+    location.hash = ''
+  }
+}
+
 async function loginWithRecirect() {
   const response = await login({ email: email.value, password: password.value })
   if (response) {
@@ -38,7 +49,7 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
       <p class="text-center">Melde dich zu deinem Konto an</p>
     </div>
 
-    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
+    <div class="mt-5 lg:mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
       <div
         v-if="loginError"
         class="bg-danger-100 text-danger-600 mb-10 rounded p-2 text-center"
@@ -90,7 +101,7 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
         </ValidateForm>
 
         <div>
-          <div class="relative mt-10">
+          <div class="relative mt-5 lg:mt-10">
             <div
               class="absolute inset-0 flex items-center"
               aria-hidden="true"
@@ -104,7 +115,7 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
 
           <div class="mt-6">
             <a
-              href="/api/connect/dlrg"
+              href="/api/connect/dlrg?mode=login"
               class="flex w-full items-center justify-center gap-3 rounded-md bg-[#e30613] px-3 py-2 text-sm font-semibold text-gray-900 hover:bg-[#CA0511] focus-visible:ring-transparent"
             >
               <svg
@@ -160,7 +171,7 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
         </div>
       </div>
 
-      <p class="mt-10 text-center text-sm text-gray-500">
+      <p class="mt-5 lg:mt-10 text-center text-sm text-gray-500">
         Noch kein Konto?
         <RouterLink
           :to="{ name: 'Registrierung' }"

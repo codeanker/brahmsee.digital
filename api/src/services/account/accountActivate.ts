@@ -12,23 +12,20 @@ export const accountActivateProcedure = defineProcedure({
     accountId: z.number().int(),
   }),
   async handler(options) {
-    prisma.account
-      .update({
-        where: {
-          id: options.input.accountId,
-        },
-        data: {
-          activatedAt: new Date(),
-        },
-      })
-      .then((res) => {
-        sendMail({
-          to: res.email,
-          subject: 'brahmsee.digital Account aktiviert',
-          categories: ['account', 'activate'],
-          html: 'Dein brahmsee.digital Account wurde aktiviert.',
-        })
-      })
+    const account = await prisma.account.update({
+      where: {
+        id: options.input.accountId,
+      },
+      data: {
+        activatedAt: new Date(),
+      },
+    })
+    await sendMail({
+      to: account.email,
+      subject: 'brahmsee.digital Account aktiviert',
+      categories: ['account', 'activate'],
+      html: 'Dein brahmsee.digital Account wurde aktiviert.',
+    })
 
     return 'activated'
   },

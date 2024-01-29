@@ -1,5 +1,6 @@
-import prisma from '../prisma'
+import { GliederungAccountRole } from '@prisma/client'
 
+import prisma from '../prisma'
 /**
  * get gliederung where `accountId` is admin
  *
@@ -13,7 +14,7 @@ export async function getGliederungRequireAdmin(accountId: number) {
       GliederungToAccount: {
         some: {
           accountId,
-          role: 'DELIGATIONSLEITER',
+          role: GliederungAccountRole.DELEGATIONSLEITER,
         },
       },
     },

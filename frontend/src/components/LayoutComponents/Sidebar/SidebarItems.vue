@@ -57,13 +57,13 @@ function isCurrentRoute(checkRoute: SidebarItemRoute) {
           >
             <component
               :is="item.icon"
-              class="hidden lg:inline h-5 aspect-square"
+              class="inline h-5 aspect-square"
             />
             <div class="grow text-sm">{{ item.name }}</div>
             <!-- Badge -->
             <div
               v-if="item.badge"
-              class="hidden lg:inline text-xs uppercase rounded-sm bg-secondary-100 text-secondary-600 px-1 py-0.5"
+              class="inline text-xs uppercase rounded-sm bg-secondary-100 text-secondary-600 px-1 py-0.5"
             >
               {{ item.badge }}
             </div>
@@ -77,6 +77,9 @@ function isCurrentRoute(checkRoute: SidebarItemRoute) {
               v-for="child in item.children"
               :key="child.name"
               class="flex items-center space-x-3 p-2 rounded-lg cursor-pointer hover:bg-gray-100 transition-all"
+              :class="{
+                'cursor-not-allowed': child.disabled,
+              }"
             >
               <!-- Current indicator -->
               <div class="h-5 aspect-square flex items-center justify-center relative">
@@ -86,20 +89,24 @@ function isCurrentRoute(checkRoute: SidebarItemRoute) {
                 ></div>
               </div>
               <AppLink
+                v-if="!child.disabled && child.visible"
                 :to="child.route"
                 class="flex items-center text-sm flex-grow"
                 active-class="text-primary-600"
-                :class="{
-                  'cursor-not-allowed': child.disabled,
-                }"
               >
                 {{ child.name }}
               </AppLink>
+              <div
+                v-if="child.disabled && child.visible"
+                class="flex items-center text-sm flex-grow cursor-not-allowed"
+              >
+                {{ child.name }}
+              </div>
 
               <!-- Badge -->
               <div
                 v-if="child.badge"
-                class="hidden lg:inline text-xs uppercase rounded-sm bg-secondary-100 text-secondary-600 px-1 py-0.5"
+                class="inline text-xs uppercase rounded-sm bg-secondary-100 text-secondary-600 px-1 py-0.5"
               >
                 {{ child.badge }}
               </div>
@@ -108,6 +115,9 @@ function isCurrentRoute(checkRoute: SidebarItemRoute) {
                 :is="LockClosedIcon"
                 v-if="child.disabled"
                 class="h-5 aspect-square"
+                :class="{
+                  'cursor-not-allowed': child.disabled,
+                }"
               />
             </div>
             <!-- side line -->
@@ -120,7 +130,7 @@ function isCurrentRoute(checkRoute: SidebarItemRoute) {
           <div class="flex items-center space-x-3 p-2 rounded-lg cursor-not-allowed">
             <component
               :is="item.icon"
-              class="hidden lg:inline h-5 aspect-square"
+              class="inline h-5 aspect-square"
             />
             <div class="grow text-sm">{{ item.name }}</div>
             <!-- Locked / Disabled -->

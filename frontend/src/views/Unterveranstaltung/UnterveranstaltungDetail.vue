@@ -2,20 +2,23 @@
 import {
   ClipboardDocumentListIcon,
   CodeBracketIcon,
-  MegaphoneIcon,
-  ShieldCheckIcon,
   DocumentDuplicateIcon,
+  MegaphoneIcon,
   RocketLaunchIcon,
+  ShieldCheckIcon,
+  UserGroupIcon,
 } from '@heroicons/vue/24/outline'
-import { useAsyncState, formatDate } from '@vueuse/core'
+import { useAsyncState } from '@vueuse/core'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { apiClient } from '@/api'
+import AnmeldungenTable from '@/components/AnmeldungenTable.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import InfoList from '@/components/UIComponents/InfoList.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
+import { formatDate } from '@codeanker/helpers'
 
 const route = useRoute()
 
@@ -29,6 +32,24 @@ const { state: unterveranstaltung } = useAsyncState(async () => {
   })
 }, undefined)
 
+const query = {
+  filter: {
+    unterveranstaltungId: parseInt(route.params.unterveranstaltungId as string),
+  },
+  pagination: { take: 100, skip: 0 },
+}
+
+const { state: anmeldungen } = useAsyncState(
+  async () => {
+    if (loggedInAccount.value?.role === 'ADMIN') return apiClient.anmeldung.verwaltungList.query(query)
+    return apiClient.anmeldung.gliederungList.query(query)
+  },
+  [],
+  {
+    immediate: true,
+  }
+)
+
 interface KeyInfo {
   title: string
   value: string
@@ -40,13 +61,13 @@ const keyInfos = computed<KeyInfo[]>(() => {
     return [
       {
         title: 'Beginn',
-        value: `${formatDate(unterveranstaltung.value.veranstaltung.beginn, 'DD.MM.YYYY')} Uhr`,
+        value: `${formatDate(unterveranstaltung.value.veranstaltung.beginn)} Uhr`,
       },
       {
         title: 'Ende',
-        value: `${formatDate(unterveranstaltung.value.veranstaltung.ende, 'DD.MM.YYYY')} Uhr`,
+        value: `${formatDate(unterveranstaltung.value.veranstaltung.ende)} Uhr`,
       },
-      { title: 'Meldeschluss', value: formatDate(unterveranstaltung.value.meldeschluss, 'DD.MM.YYYY') },
+      { title: 'Meldeschluss', value: formatDate(unterveranstaltung.value.meldeschluss) },
       { title: 'Veranstaltungsort', value: unterveranstaltung.value.veranstaltung.ort?.name ?? '' },
       { title: 'Teilnahmebeitrag', value: unterveranstaltung.value.teilnahmegebuehr + '€' },
       { title: 'Zielgruppe', value: unterveranstaltung.value.veranstaltung.zielgruppe ?? '' },
@@ -56,15 +77,18 @@ const keyInfos = computed<KeyInfo[]>(() => {
   }
 })
 
-const tabs = [
-  { name: 'Ausschreibung', icon: MegaphoneIcon },
-  { name: 'Bedingungen', icon: ClipboardDocumentListIcon },
-  { name: 'Datenschutz', icon: ShieldCheckIcon },
-]
-
-if (loggedInAccount.value?.role === 'ADMIN') {
-  tabs.push({ name: 'Entwickler:in', icon: CodeBracketIcon })
-}
+const tabs = computed(() => {
+  let tabs = [
+    { name: 'Ausschreibung', icon: MegaphoneIcon },
+    { name: 'Anmeldungen', icon: UserGroupIcon, count: anmeldungen.value.length },
+    { name: 'Bedingungen', icon: ClipboardDocumentListIcon },
+    { name: 'Datenschutz', icon: ShieldCheckIcon },
+  ]
+  if (loggedInAccount.value?.role === 'ADMIN') {
+    tabs.push({ name: 'Entwickler:in', icon: CodeBracketIcon })
+  }
+  return tabs
+})
 
 const publicLink = computed(() => {
   if (unterveranstaltung.value) {
@@ -112,7 +136,7 @@ function copyLink() {
                 readonly
               />
               <button
-                class="btn-primary rounded-l-none"
+                class="p-2 btn-primary rounded-l-none"
                 type="button"
                 @click="copyLink"
               >
@@ -122,7 +146,7 @@ function copyLink() {
           </div>
         </div>
 
-        <div class="flex justify-between items-center mt-10 mb-5">
+        <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
           <div class="text-lg font-semibold text-gray-900">Veranstaltungsdaten</div>
           <RouterLink
             class="text-primary-600"
@@ -133,13 +157,23 @@ function copyLink() {
 
         <InfoList :infos="keyInfos" />
 
-        <div class="mt-10 mb-5 text-lg font-semibold text-gray-900">Beschreibung</div>
+        <div class="mt-5 lg:mt-10 mb-5 text-lg font-semibold text-gray-900">Beschreibung</div>
         <div class="px-3 py-5">
           <div
             class="prose prose-neutra"
             v-html="unterveranstaltung?.beschreibung"
           ></div>
         </div>
+      </Tab>
+      <Tab>
+        <div class="my-10">
+          <div class="text-lg font-semibold text-gray-900">Anmeldungen</div>
+          <p class="max-w-2xl text-sm text-gray-500">Die folgenden Personen haben sich angemeldet</p>
+        </div>
+        <AnmeldungenTable
+          v-if="unterveranstaltung"
+          :unterveranstaltung-id="unterveranstaltung?.id"
+        />
       </Tab>
       <Tab>
         <div class="my-10">
