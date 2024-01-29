@@ -69,24 +69,25 @@ const stats = computed(() => {
   <!-- Stats-->
   <div
     v-if="showStats"
-    class="grid grid-cols-1 gap-px sm:grid-cols-2 lg:grid-cols-4"
+    class="grid grid-cols-2 gap-px lg:grid-cols-4 mb-6"
   >
     <div
       v-for="stat in stats"
       :key="stat.name"
-      class="mb-6"
+      class=""
     >
-      <div class="flex items-center space-x-2 text-sm text-gray-600">
+      <div class="flex items-start space-x-2 text-sm text-gray-600">
         <div
-          class="w-4 h-4 rounded-full shrink-0"
+          class="w-4 h-4 mt-1 rounded-full shrink-0"
           :class="`bg-${getAnmeldungStatusColor(stat.name)}-600`"
         ></div>
-        <div class="text-sm font-medium text-gray-500">{{ AnmeldungStatusMapping[stat.name].human }}</div>
+        <div>
+          <div class="text-sm font-medium text-gray-500">{{ AnmeldungStatusMapping[stat.name].human }}</div>
+          <p class="flex items-baseline gap-x-2">
+            <span class="text-2xl font-semibold tracking-tight text-gray-800">{{ stat.value }}</span>
+          </p>
+        </div>
       </div>
-
-      <p class="mt-2 flex items-baseline gap-x-2">
-        <span class="text-4xl font-semibold tracking-tight text-gray-800">{{ stat.value }}</span>
-      </p>
     </div>
   </div>
 
