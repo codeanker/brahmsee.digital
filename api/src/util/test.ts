@@ -1,3 +1,5 @@
+import { AccountStatus } from '@prisma/client'
+
 import { authenticationLogin } from '../authentication'
 import prisma from '../prisma'
 
@@ -20,6 +22,7 @@ export async function createMock(runId: string) {
           telefon: '+49 123 4567890',
         },
       },
+      status: AccountStatus.AKTIV,
     },
   })
   const { accessToken } = await authenticationLogin({
