@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import { ArrowTopRightOnSquareIcon, CheckCircleIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
+import { computed } from 'vue'
 
 import { apiClient } from '@/api'
 import AnmeldungStatusSelect from '@/components/AnmeldungStatusSelect.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
+import { getAnmeldungStatusColor } from '@/helpers/getAnmeldungStatusColors'
+import { AnmeldungStatus, AnmeldungStatusMapping } from '@codeanker/api/src/enumMappings'
 import { dayjs } from '@codeanker/helpers'
 
 const props = withDefaults(
   defineProps<{
     unterveranstaltungId?: number
     veranstaltungId?: number
+    showStats?: boolean
   }>(),
   {}
 )
@@ -41,9 +45,52 @@ function loadAnmeldungen() {
   }
 }
 const anmeldungen = loadAnmeldungen()
+
+const stats = computed(() => {
+  return [
+    { name: AnmeldungStatus.OFFEN, value: anmeldungen.value.filter((a) => a.status === AnmeldungStatus.OFFEN).length },
+    {
+      name: AnmeldungStatus.BESTAETIGT,
+      value: anmeldungen.value.filter((a) => a.status === AnmeldungStatus.BESTAETIGT).length,
+    },
+    {
+      name: AnmeldungStatus.STORNIERT,
+      value: anmeldungen.value.filter((a) => a.status === AnmeldungStatus.STORNIERT).length,
+    },
+    {
+      name: AnmeldungStatus.ABGELEHNT,
+      value: anmeldungen.value.filter((a) => a.status === AnmeldungStatus.ABGELEHNT).length,
+    },
+  ]
+})
 </script>
 
 <template>
+  <!-- Stats-->
+  <div
+    v-if="showStats"
+    class="grid grid-cols-1 gap-px sm:grid-cols-2 lg:grid-cols-4"
+  >
+    <div
+      v-for="stat in stats"
+      :key="stat.name"
+      class="mb-6"
+    >
+      <div class="flex items-center space-x-2 text-sm text-gray-600">
+        <div
+          class="w-4 h-4 rounded-full shrink-0"
+          :class="`bg-${getAnmeldungStatusColor(stat.name)}-600`"
+        ></div>
+        <div class="text-sm font-medium text-gray-500">{{ AnmeldungStatusMapping[stat.name].human }}</div>
+      </div>
+
+      <p class="mt-2 flex items-baseline gap-x-2">
+        <span class="text-4xl font-semibold tracking-tight text-gray-800">{{ stat.value }}</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- Stats-->
   <table
     v-if="anmeldungen.length"
     class="min-w-full divide-y divide-gray-300"

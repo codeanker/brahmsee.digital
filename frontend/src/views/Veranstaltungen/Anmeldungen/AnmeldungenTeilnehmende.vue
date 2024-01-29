@@ -19,8 +19,10 @@ const veranstaltungId = Number(route.params.veranstaltungId)
       </p>
     </div>
   </div>
+
   <AnmeldungenTable
     v-if="veranstaltung"
     :veranstaltung-id="veranstaltungId"
+    :show-stats="true"
   />
 </template>
