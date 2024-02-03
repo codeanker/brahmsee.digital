@@ -1,9 +1,9 @@
 
 [type='text'], [type='email'], [type='url'], [type='password'], [type='number'], [type='date'], [type='datetime-local'], [type='month'], [type='search'], [type='tel'], [type='time'], [type='week'], [multiple], textarea, select, .input-style {
-  @apply block w-full py-2 px-4 text-gray-900 bg-gray-100 border-gray-100 border rounded-lg transition focus:border-primary-700 ring-0 focus:ring-0 leading-5 focus:outline-none;
+  @apply block w-full py-2 px-4 text-gray-900 dark:text-gray-100 bg-gray-100 dark:bg-dark-secondary border-gray-100 dark:border-gray-700 border rounded-lg transition focus:border-primary-700 ring-0 focus:ring-0 leading-5 focus:outline-none dark:placeholder:text-gray-500;
 
   &:disabled, &.disabled {
-    @apply bg-gray-50 text-gray-500 cursor-not-allowed;
+    @apply bg-gray-50 dark:bg-gray-700 text-gray-50 cursor-not-allowed;
   }
 
 }
@@ -63,4 +63,8 @@ mark{
 .prose{
   --tw-prose-counters: #000 !important;
   --tw-prose-links: rgb(22 163 74);
+}
+
+hr{
+  @apply border-t border-gray-200 dark:border-gray-700 my-4;
 }

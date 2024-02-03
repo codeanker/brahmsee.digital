@@ -38,6 +38,7 @@ app.use(
       transport: 'session',
     },
     dlrg: {
+      dynamic: ['mode'],
       transport: 'session',
       oauth: 2,
       response: ['token', 'profile'],
@@ -46,7 +47,6 @@ app.use(
       key: config.authentication.dlrg.client_id,
       scope: ['profile'],
       profile_url: 'https://iam.dlrg.net/auth/realms/master/protocol/openid-connect/userinfo',
-      state: true,
       pkce: true,
     },
   })

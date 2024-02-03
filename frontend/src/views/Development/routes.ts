@@ -24,6 +24,18 @@ const routesDevelopment: Route[] = [
           ],
         },
       },
+      {
+        name: 'Mitwirkende',
+        path: 'mitwirkende',
+        component: () => import('./Mitwirkende.vue'),
+        meta: {
+          breadcrumbs: [
+            {
+              text: 'Mitwirkende',
+            },
+          ],
+        },
+      },
     ],
   },
 ]

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CheckCircleIcon } from '@heroicons/vue/24/outline'
-import { useAsyncState } from '@vueuse/core'
+import { CheckIcon } from '@heroicons/vue/24/solid'
 import { ref } from 'vue'
 
 import { apiClient } from '@/api'
@@ -10,7 +10,7 @@ import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
 import BasicTypeahead from '@/components/BasicInputs/BasicTypeahead.vue'
 import Stammdaten, { type IStammdaten } from '@/components/forms/anmeldung/Stammdaten.vue'
 import Button from '@/components/UIComponents/Button.vue'
-import type { RouterInput } from '@codeanker/api'
+import type { RouterInput, RouterOutput } from '@codeanker/api'
 import type { TAccountSchema } from '@codeanker/api/src/services/account/schema/account.schema'
 import { ValidateForm } from '@codeanker/validation'
 
@@ -32,28 +32,58 @@ async function queryObject(searchTerm) {
   return apiClient.gliederung.publicList.query({ filter: { name: searchTerm }, pagination: { take: 100, skip: 0 } })
 }
 
-const {
-  execute: registerGliederung,
-  error: errorCreate,
-  state: account,
-} = useAsyncState(
-  async () => {
-    let accountData = <Partial<TAccountSchema>>{
+const errorCreate = ref<unknown | null>(null)
+const account = ref<null | Awaited<RouterOutput['account']['gliederungAdminCreate']>>(null)
+
+async function watiForOAuth(): Promise<string> {
+  const channel = new BroadcastChannel('auth')
+  return new Promise((resolve, reject) => {
+    channel.addEventListener('message', (event) => {
+      if (event.data.jwtOAuthToken) {
+        resolve(event.data.jwtOAuthToken)
+      } else {
+        reject(new Error('no jwtOAuthToken'))
+      }
+    })
+  })
+}
+
+type TAccountData = Partial<TAccountSchema> & {
+  jwtOAuthToken?: string
+}
+
+async function registerGliederung() {
+  try {
+    account.value = null
+    errorCreate.value = null
+    let accountData: TAccountData = {
       firstname: stammdatenForm.value.firstname,
       lastname: stammdatenForm.value.lastname,
       gender: stammdatenForm.value.gender,
-      birthday: stammdatenForm.value.birthday,
+      birthday: stammdatenForm.value.birthday ? new Date(stammdatenForm.value.birthday) : undefined,
       email: registrationForm.value.email,
       password: registrationForm.value.password,
       adminInGliederungId: registrationForm.value.gliederung?.id,
     }
-    return await apiClient.account.gliederungAdminCreate.mutate({
+
+    if (oauthRegistration.value) {
+      // first optain jwt containing the oauth sub id
+      // open new tab with oauth login
+      window.open('/api/connect/dlrg?mode=register', '_blank')
+
+      accountData.jwtOAuthToken = await watiForOAuth()
+      accountData.password = undefined
+      accountData.email = undefined
+    }
+
+    account.value = await apiClient.account.gliederungAdminCreate.mutate({
       data: accountData as unknown as RouterInput['account']['gliederungAdminCreate']['data'],
     })
-  },
-  null,
-  { immediate: false }
-)
+  } catch (error) {
+    errorCreate.value = error
+  }
+}
+const oauthRegistration = ref()
 </script>
 
 <template>
@@ -64,7 +94,51 @@ const {
       </h2>
       <p class="text-center">Erstelle Ausschreibungen und versende diese zur Anmeldung und verwalte diese.</p>
 
-      <div class="h-full grow mt-5 lg:mt-10">
+      <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 my-5">
+        <div
+          class="relative w-full p-5 rounded-lg flex cursor-pointer transition-all ease-in-out border border-gray-200 hover:border-primary-500 group"
+          :class="{ 'border-primary-500': oauthRegistration }"
+          @click="oauthRegistration = true"
+        >
+          <CheckIcon
+            class="shrink-0 h-6 w-6 bg-primary-500 rounded-full p-1 text-white mr-2 opacity-0"
+            :class="{ 'opacity-100': oauthRegistration }"
+          ></CheckIcon>
+          <div class="">
+            <div
+              class="font-medium text-lg transition-all ease-in-out group-hover:text-primary-500"
+              :class="{ 'text-primary-500': oauthRegistration }"
+            >
+              mit DLRG-Account (ISC)
+            </div>
+            <div>Registriere dich bequem mit deinem DLRG-Account (ISC)</div>
+          </div>
+        </div>
+        <div
+          class="relative w-full p-5 rounded-lg flex cursor-pointer transition-all ease-in-out border border-gray-200 hover:border-primary-500 group"
+          :class="{ 'border-primary-500': oauthRegistration == false }"
+          @click="oauthRegistration = false"
+        >
+          <CheckIcon
+            class="shrink-0 h-6 w-6 bg-primary-500 rounded-full p-1 text-white mr-2 opacity-0"
+            :class="{ 'opacity-100': oauthRegistration == false }"
+          ></CheckIcon>
+          <div class="">
+            <div
+              class="font-medium text-lg transition-all ease-in-out group-hover:text-primary-500"
+              :class="{ 'text-primary-500': oauthRegistration == false }"
+            >
+              mit E-Mail und Passwort
+            </div>
+            <div>Registriere dich mit deiner E-Mail Adresse und einem Passwort</div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        v-if="oauthRegistration !== undefined"
+        class="h-full grow mt-5 lg:mt-10"
+      >
         <!-- Form -->
         <ValidateForm
           class="grow"
@@ -85,6 +159,7 @@ const {
               placeholder="Gliederung eingeben"
             />
             <BasicInput
+              v-if="!oauthRegistration"
               v-model="registrationForm.email"
               label="E-Mail Adresse"
               class="col-span-2"
@@ -93,6 +168,7 @@ const {
               placeholder="E-Mail Adresse eingeben"
             />
             <BasicPassword
+              v-if="!oauthRegistration"
               v-model="registrationForm.password"
               label="Passwort"
               class="col-span-2"
@@ -107,8 +183,18 @@ const {
               required
               class="mt-1"
             />
-            <div class="font-medium">Ich habe die Datenschutzerklärung gelesen und akzeptiere diese.</div>
+            <div class="font-medium">
+              Ich habe die
+              <RouterLink
+                :to="{ name: 'Datenschutz' }"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Datenschutzerklärung</RouterLink
+              >
+              gelesen und akzeptiere diese.
+            </div>
           </div>
+
           <div
             v-if="errorCreate"
             class="bg-danger-400 mb-5 rounded p-3 text-center text-white"
@@ -124,7 +210,7 @@ const {
         </ValidateForm>
         <RouterLink
           :to="{ name: 'Registrierung' }"
-          class="mt-5 flex justify-center text-sm transition-all text-gray-600 hover:text-primary-600"
+          class="mt-5 flex justify-center text-sm transition-all text-gray-500 hover:text-primary-500"
         >
           zurück
         </RouterLink>

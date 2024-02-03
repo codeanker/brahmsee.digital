@@ -31,6 +31,14 @@ const routesRegistrierung: Route[] = [
         },
       },
       {
+        name: 'GliederungRegistrierungCallback',
+        path: 'gliederung/callback',
+        component: () => import('./GliederungRegistrierungCallback.vue'),
+        meta: {
+          public: true,
+        },
+      },
+      {
         name: 'Email bestätigen',
         path: 'confirm/:activationToken',
         component: () => import('./EmailBestaetigen.vue'),
