@@ -81,7 +81,7 @@ function formatDate(indate) {
             <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
               <div class="text-gray-900">{{ veranstaltung.id }}</div>
             </td>
-            <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
+            <td class="py-5 pl-4 pr-3 text-sm">
               <div class="font-medium text-gray-900">{{ veranstaltung.name }}</div>
             </td>
             <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
