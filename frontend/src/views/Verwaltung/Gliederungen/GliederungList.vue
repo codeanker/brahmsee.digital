@@ -21,36 +21,36 @@ const { state: gliederungenList } = useAsyncState(async () => {
         :to="{ name: 'Verwaltung Gliederung Erstellen' }"
         >Gliederung erstellen</RouterLink
       >
-      <table class="min-w-full divide-y divide-gray-300">
+      <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
         <thead>
           <tr>
             <th
               scope="col"
-              class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+              class="px-3 py-3.5 text-left text-sm font-semibold"
             >
               EDV
             </th>
             <th
               scope="col"
-              class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+              class="px-3 py-3.5 text-left text-sm font-semibold"
             >
               Gliederung
             </th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-gray-200 bg-white">
+        <tbody class="divide-y divide-gray-200 dark:divide-gray-800 bg-white dark:bg-dark-primary">
           <tr
             v-for="gliederung in gliederungenList"
             :key="gliederung.id"
-            class="cursor-pointer even:bg-gray-50 hover:bg-gray-100"
+            class="cursor-pointer even:bg-gray-50 dark:even:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800"
             :title="gliederung.name + ' bearbeiten'"
             @click="router.push({ name: 'Verwaltung Gliederungsdetails', params: { gliederungId: gliederung.id } })"
           >
             <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-              <div class="text-gray-900">{{ gliederung.edv }}</div>
+              <div>{{ gliederung.edv }}</div>
             </td>
             <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-              <div class="font-medium text-gray-900">{{ gliederung.name }}</div>
+              <div class="font-medium">{{ gliederung.name }}</div>
             </td>
           </tr>
         </tbody>
