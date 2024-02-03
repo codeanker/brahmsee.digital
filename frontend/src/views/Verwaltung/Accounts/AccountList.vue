@@ -45,43 +45,41 @@ const tabs = computed(() => [
       <Tab>
         <div class="my-10 flex justify-between">
           <div>
-            <div class="text-lg font-semibold text-gray-900">Accounts</div>
-            <p class="max-w-2xl text-sm text-gray-500">
-              Hier findest Du alle Personen die sich zu Veranstaltungen angemeldet haben.
-            </p>
+            <div class="text-lg font-semibold">Accounts</div>
+            <p class="max-w-2xl text-sm">Hier findest Du alle Personen die sich zu Veranstaltungen angemeldet haben.</p>
           </div>
           <RouterLink
-            class="text-primary-600 flex items-center"
+            class="text-primary-500 flex items-center"
             :to="{ name: 'Verwaltung Account erstellen' }"
           >
             <PlusIcon class="h-5 w-5 mr-1"></PlusIcon>
             Account anlegen
           </RouterLink>
         </div>
-        <table class="min-w-full divide-y divide-gray-300">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
           <thead>
             <tr>
               <th
                 scope="col"
-                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"
+                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold"
               >
                 Name
               </th>
               <th
                 scope="col"
-                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"
+                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold"
               >
                 E-Mail Adresse
               </th>
               <th
                 scope="col"
-                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                class="px-3 py-3.5 text-left text-sm font-semibold"
               >
                 Rolle
               </th>
               <th
                 scope="col"
-                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                class="px-3 py-3.5 text-left text-sm font-semibold"
               >
                 Status
               </th>
@@ -99,9 +97,9 @@ const tabs = computed(() => [
                 <span>{{ account.person.firstname }} {{ account.person.lastname }}</span>
               </td>
               <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-                <div class="text-gray-900">{{ account.email }}</div>
+                <div>{{ account.email }}</div>
               </td>
-              <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+              <td class="whitespace-nowrap px-3 py-5 text-sm">
                 {{ roleMapping[account.role].human }}<br />
                 <span
                   v-if="
@@ -114,7 +112,7 @@ const tabs = computed(() => [
                   >{{ account.GliederungToAccount[0].gliederung.name }}</span
                 >
               </td>
-              <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+              <td class="whitespace-nowrap px-3 py-5 text-sm">
                 <Badge
                   :color="getAccountStatusColor(account.status)"
                   :title="formatDate(account.activatedAt)"
@@ -128,8 +126,8 @@ const tabs = computed(() => [
       <Tab>
         <div class="my-10 flex justify-between">
           <div>
-            <div class="text-lg font-semibold text-gray-900">Accounts</div>
-            <p class="max-w-2xl text-sm text-gray-500">
+            <div class="text-lg font-semibold">Accounts</div>
+            <p class="max-w-2xl text-sm">
               Hier findest Du alle Personen sich registriert haben und noch bestätigt werden müssen.
             </p>
           </div>
@@ -142,25 +140,25 @@ const tabs = computed(() => [
             <tr>
               <th
                 scope="col"
-                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"
+                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold"
               >
                 Name
               </th>
               <th
                 scope="col"
-                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"
+                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold"
               >
                 E-Mail Adresse
               </th>
               <th
                 scope="col"
-                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                class="px-3 py-3.5 text-left text-sm font-semibold"
               >
                 Rolle
               </th>
               <th
                 scope="col"
-                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                class="px-3 py-3.5 text-left text-sm font-semibold"
               >
                 Status
               </th>
@@ -178,9 +176,9 @@ const tabs = computed(() => [
                 <span>{{ account.person.firstname }} {{ account.person.lastname }}</span>
               </td>
               <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-                <div class="text-gray-900">{{ account.email }}</div>
+                <div>{{ account.email }}</div>
               </td>
-              <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+              <td class="whitespace-nowrap px-3 py-5 text-sm">
                 {{ roleMapping[account.role].human }}<br />
                 <span
                   v-if="
@@ -193,7 +191,7 @@ const tabs = computed(() => [
                   >{{ account.GliederungToAccount[0].gliederung.name }}</span
                 >
               </td>
-              <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+              <td class="whitespace-nowrap px-3 py-5 text-sm">
                 <Badge :color="getAccountStatusColor(account.status)">{{ account.status }}</Badge>
               </td>
             </tr>
