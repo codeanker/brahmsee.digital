@@ -64,7 +64,7 @@ export const anmeldungVerwaltungStornoProcedure = defineProcedure({
       if (!person) {
         throw new Error('Person not found')
       }
-      sendMail({
+      await sendMail({
         to: person.email,
         subject: 'Anmeldung storniert',
         categories: ['anemldung', 'storno'],

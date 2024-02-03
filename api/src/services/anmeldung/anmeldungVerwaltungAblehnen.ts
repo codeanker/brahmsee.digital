@@ -63,9 +63,9 @@ export const anmeldungVerwaltungAblehnenProcedure = defineProcedure({
       if (!person) {
         throw new Error('Person not found')
       }
-      sendMail({
+      await sendMail({
         to: person.email,
-        subject: 'Anmeldung bestätigt',
+        subject: 'Anmeldung abgelehnt',
         categories: ['anemldung', 'abgelehnt'],
         html: `Hallo ${person.firstname} ${person.lastname},\n\n\nDeine Anmeldung für ${anmeldung?.unterveranstaltung.veranstaltung.name} wurde abgelehnt.\n\nViele Grüße,\nDein Orga-Team`,
       })

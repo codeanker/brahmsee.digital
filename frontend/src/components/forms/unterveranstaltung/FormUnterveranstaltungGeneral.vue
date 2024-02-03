@@ -47,7 +47,6 @@ if (props.mode === 'create') {
 }
 
 function useVeranstaltungList(isAdmin: boolean) {
-  // return computed(() => {
   if (isAdmin) {
     const { state } = useAsyncState(async () => {
       return apiClient.veranstaltung.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
