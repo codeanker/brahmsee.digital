@@ -54,11 +54,19 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
   {
     type: 'SidebarItem',
     name: 'Anmeldungen',
+    route: { name: 'VeranstaltungAnmeldungenTeilnehmende', params: { veranstaltungId: veranstaltungId.value } },
+    icon: UserGroupIcon,
+    disabled: veranstaltungId.value === undefined,
+    visible: hasPermissionToView(['GLIEDERUNG_ADMIN']),
+  },
+  {
+    type: 'SidebarItem',
+    name: 'Anmeldungen',
     route: { name: 'VeranstaltungAnmeldung', params: { veranstaltungId: veranstaltungId.value } },
     icon: TicketIcon,
     showChildren: false,
     disabled: veranstaltungId.value === undefined,
-    visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
+    visible: hasPermissionToView(['ADMIN']),
     children: [
       {
         type: 'SidebarItem',
