@@ -24,6 +24,18 @@ export const routesPublic: Route[] = [
           ],
         },
       },
+      {
+        name: 'Impressum',
+        path: 'impressum',
+        component: () => import('./Impressum.vue'),
+        meta: {
+          breadcrumbs: [
+            {
+              text: 'Impressum',
+            },
+          ],
+        },
+      },
     ],
   },
 ]
