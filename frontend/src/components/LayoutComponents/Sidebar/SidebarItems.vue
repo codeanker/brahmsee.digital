@@ -52,8 +52,8 @@ function isCurrentRoute(checkRoute: SidebarItemRoute) {
         <template v-if="!item.disabled && item.visible">
           <AppLink
             :to="item.route"
-            class="flex items-center space-x-3 p-2 rounded-lg cursor-pointer hover:bg-gray-100 transition-all"
-            active-class="text-primary-600"
+            class="flex items-center space-x-3 p-2 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-all"
+            active-class="text-primary-600 dark:text-primary-400"
           >
             <component
               :is="item.icon"
@@ -76,7 +76,7 @@ function isCurrentRoute(checkRoute: SidebarItemRoute) {
             <div
               v-for="child in item.children"
               :key="child.name"
-              class="flex items-center space-x-3 p-2 rounded-lg cursor-pointer hover:bg-gray-100 transition-all"
+              class="flex items-center space-x-3 p-2 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-all"
               :class="{
                 'cursor-not-allowed': child.disabled,
               }"
@@ -85,14 +85,14 @@ function isCurrentRoute(checkRoute: SidebarItemRoute) {
               <div class="h-5 aspect-square flex items-center justify-center relative">
                 <div
                   v-if="isCurrentRoute(child.route)"
-                  class="rounded-full h-1.5 aspect-square bg-primary-600 absolute z-50"
+                  class="rounded-full h-1.5 aspect-square bg-primary-600 dark:bg-primary-400 absolute z-50"
                 ></div>
               </div>
               <AppLink
                 v-if="!child.disabled && child.visible"
                 :to="child.route"
                 class="flex items-center text-sm flex-grow"
-                active-class="text-primary-600"
+                active-class="text-primary-600 dark:text-primary-400"
               >
                 {{ child.name }}
               </AppLink>
@@ -122,7 +122,7 @@ function isCurrentRoute(checkRoute: SidebarItemRoute) {
             </div>
             <!-- side line -->
             <div class="absolute w-5 h-full flex items-center justify-center left-2">
-              <div class="rounded-full w-0.5 h-full bg-primary-200"></div>
+              <div class="rounded-full w-0.5 h-full bg-primary-200 dark:bg-gray-300"></div>
             </div>
           </div>
         </template>

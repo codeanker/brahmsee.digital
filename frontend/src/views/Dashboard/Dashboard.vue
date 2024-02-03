@@ -42,9 +42,7 @@ const role = computed(() => loggedInAccount.value?.role)
         />
       </div>
       <div class="mt-16 flex justify-center">
-        <p
-          class="relative rounded-full bg-gray-50 px-4 py-1.5 text-sm leading-6 text-gray-600 ring-1 ring-inset ring-gray-900/5"
-        >
+        <p class="relative rounded-full bg-gray-50 dark:bg-dark-secondary px-4 py-1.5 text-sm leading-6">
           <span class="hidden md:inline"
             >Förder:innen und Sponsor:innen unterstützen unsere Veranstaltungen durch Geld- und Sachspenden</span
           >
