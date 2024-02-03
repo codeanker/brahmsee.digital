@@ -61,10 +61,10 @@ const tabs = computed(() => {
 <template>
   <div>
     <h5 class="mb-10">Veranstaltung</h5>
-    <div class="bg-white pt-2 pb-8">
+    <div class="pt-2 pb-8">
       <div class="mx-auto max-w-2xl lg:mx-0">
-        <h2 class="mt-2 text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ veranstaltung?.name }}</h2>
-        <p class="mt-4 text-md leading-6 text-gray-600">
+        <h2 class="mt-2 text-2xl font-bold tracking-tight sm:text-4xl">{{ veranstaltung?.name }}</h2>
+        <p class="mt-4 text-md leading-6">
           Hier bearbeiten wir die Veranstaltung damit Gliederungen sich anmelden können.
         </p>
       </div>
@@ -75,7 +75,7 @@ const tabs = computed(() => {
     >
       <Tab>
         <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
-          <div class="text-lg font-semibold text-gray-900">Veranstaltungsdaten</div>
+          <div class="text-lg font-semibold">Veranstaltungsdaten</div>
           <RouterLink
             class="text-primary-600"
             :to="{ name: 'VerwaltungVeranstaltungEdit' }"
@@ -85,7 +85,7 @@ const tabs = computed(() => {
 
         <InfoList :infos="keyInfos" />
 
-        <div class="mt-5 lg:mt-10 mb-5 text-lg font-semibold text-gray-900">Beschreibung</div>
+        <div class="mt-5 lg:mt-10 mb-5 text-lg font-semibold">Beschreibung</div>
         <div class="px-3 py-5">
           <div
             class="prose prose-neutra"
@@ -95,7 +95,7 @@ const tabs = computed(() => {
       </Tab>
       <Tab>
         <div class="my-10">
-          <div class="text-lg font-semibold text-gray-900">Teilnahmebedingungen</div>
+          <div class="text-lg font-semibold">Teilnahmebedingungen</div>
           <p class="max-w-2xl text-sm text-gray-500">Bitte beachte die folgenden Teilnahmebedingungen</p>
         </div>
         <div
@@ -103,7 +103,7 @@ const tabs = computed(() => {
           v-html="veranstaltung?.teilnahmeBedingungen"
         ></div>
         <div class="my-10">
-          <div class="text-lg font-semibold text-gray-900">Datenschutz</div>
+          <div class="text-lg font-semibold">Datenschutz</div>
           <p class="max-w-2xl text-sm text-gray-500">Bitte beachte die Hinweise zum Datenschutz</p>
         </div>
         <div
@@ -113,7 +113,7 @@ const tabs = computed(() => {
       </Tab>
       <Tab>
         <div class="my-10">
-          <div class="text-lg font-semibold text-gray-900">Unterveranstaltungen</div>
+          <div class="text-lg font-semibold">Unterveranstaltungen</div>
           <p class="max-w-2xl text-sm text-gray-500">
             Zu dieser Veranstaltung wurden die folgenden Unterveranstaltungen erstellt.
           </p>
