@@ -1,29 +1,27 @@
 import { ActivityType } from '@prisma/client'
 
+import { logger } from '../logger'
 import prisma from '../prisma'
 
 interface Opts {
   type: ActivityType
-  description: string
+  description?: string
   causerId?: number
   metadata?: any
   subjectType: string
-  subjectId: number
+  subjectId?: number
 }
 
 export default async function logActivity(opts: Opts) {
   try {
     await prisma.activity.create({
       data: {
-        type: opts.type,
-        description: opts.description,
-        causerId: opts.causerId ?? undefined,
+        ...opts,
         metadata: opts.metadata ?? {},
-        subjectType: opts.subjectType,
-        subjectId: opts.subjectId,
       },
     })
-  } catch (error) {
+  } catch (error: any) {
+    logger.warn('Failed to insert activity record!', error)
     // ¯\_(ツ)_/¯
   }
 }

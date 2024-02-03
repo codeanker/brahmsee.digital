@@ -294,8 +294,8 @@ model Activity {
   id               Int      @id @default(autoincrement())
   timestamp        DateTime @default(now())
   type             ActivityType
-  description      String
-  subjectType      String?
+  description      String?
+  subjectType      String
   subjectId        Int?
   causerId         Int?
   causer           Account? @relation(fields: [causerId], references: [id], onDelete: SetNull)
