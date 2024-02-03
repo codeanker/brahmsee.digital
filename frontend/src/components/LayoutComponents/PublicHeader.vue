@@ -26,7 +26,7 @@ withDefaults(
 </script>
 
 <template>
-  <div class="flex items-center top-0 sticky bg-white z-10 justify-between mb-4 py-6">
+  <div class="flex items-center top-0 sticky bg-white dark:bg-dark-primary z-10 justify-between mb-4 py-6">
     <GliederungLogo :name="gliederung?.name ? gliederung?.name : ''" />
     <Button
       v-if="showContactButton"
