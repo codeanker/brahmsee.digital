@@ -2,6 +2,7 @@ import { z } from 'zod'
 
 import prisma from '../../prisma'
 import { defineProcedure } from '../../types/defineProcedure'
+import logActivity from '../../util/activity'
 import { sendMail } from '../../util/mail'
 import { personSchema, getPersonCreateData } from '../person/schema/person.schema'
 
@@ -36,7 +37,7 @@ export const anmeldungPublicCreateProcedure = defineProcedure({
 
     const personData = await getPersonCreateData(options.input.data)
 
-    const person = prisma.person.create({
+    const person = await prisma.person.create({
       data: {
         ...personData,
         anmeldungen: {
@@ -57,10 +58,23 @@ export const anmeldungPublicCreateProcedure = defineProcedure({
       },
       select: {
         id: true,
+        anmeldungen: {
+          take: 1,
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
       },
     })
 
-    sendMail({
+    await logActivity({
+      type: 'OTHER',
+      description: 'Recording new public registration',
+      subjectType: 'anmeldung',
+      subjectId: person.anmeldungen[0].id,
+    })
+
+    await sendMail({
       to: options.input.data.email,
       subject: 'brahmsee.digital Anmeldung erfolgreich',
       categories: ['anmeldung', 'create'],

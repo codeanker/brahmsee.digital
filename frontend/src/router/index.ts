@@ -8,6 +8,7 @@ import routesPublicAnmeldung from '@/views/PublicAnmeldung/routes'
 import routesRegistrierung from '@/views/Registrierung/routes'
 import { routesUnterveranstaltung } from '@/views/Unterveranstaltung/routes'
 import routesVeranstaltungen from '@/views/Veranstaltungen/routes'
+import routesActivity from '@/views/Verwaltung/Activity/routes'
 import routesVerwaltung from '@/views/Verwaltung/routes'
 
 export type Route = RouteRecordRaw & {
@@ -29,6 +30,7 @@ const routes: Route[] = [
       ...routesVerwaltung,
       ...routesDevelopment,
       ...routesUnterveranstaltung,
+      ...routesActivity,
       {
         name: 'Dashboard',
         path: '/dashboard',

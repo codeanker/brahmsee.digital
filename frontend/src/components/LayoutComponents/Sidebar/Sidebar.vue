@@ -14,6 +14,7 @@ import {
   PuzzlePieceIcon,
   FingerPrintIcon,
   TicketIcon,
+  RssIcon,
 } from '@heroicons/vue/24/outline'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
@@ -151,6 +152,13 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     name: 'Orte',
     route: { name: 'Verwaltung Alle Orte' },
     icon: GlobeEuropeAfricaIcon,
+    visible: hasPermissionToView(['ADMIN']),
+  },
+  {
+    type: 'SidebarItem',
+    name: 'Aktivität',
+    route: { name: 'Verwaltung Aktivitäten' },
+    icon: RssIcon,
     visible: hasPermissionToView(['ADMIN']),
   },
   { type: 'DividerItem', name: 'Entwicklung', visible: hasPermissionToView(['ADMIN']) },
