@@ -61,9 +61,9 @@ const people = [
 </script>
 
 <template>
-  <div class="bg-white py-10 px-8 md:px-8 lg:px-0">
-    <div class="mx-auto max-w-3xl text-base leading-7 text-gray-700">
-      <h1 class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Ein Open-Source Projekt</h1>
+  <div class="py-10 px-8 md:px-8 lg:px-0">
+    <div class="mx-auto max-w-3xl text-base leading-7">
+      <h1 class="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Ein Open-Source Projekt</h1>
       <p class="mt-6 text-xl leading-8">
         Diese Software wird als Open-Source Projekt entwickelt. Jede Person kann sich einbringen und an diesem Projekt
         mitarbeiten. Der Code ist öffentlich zugänglich und kann frei verwendet werden.
@@ -78,7 +78,7 @@ const people = [
           Open-Source zu entwickeln.
         </p>
         <figure class="mt-10 border-l border-primary-600 pl-9">
-          <blockquote class="font-semibold text-gray-900">
+          <blockquote class="font-semibold">
             <p>
               “Für das Landeskindertreffen wollte ich eine Software zur Anmeldung entwickeln und habe engagierte
               Menschen aus meinem beruflichen und privaten Umfeld gefunden.”
@@ -90,9 +90,7 @@ const people = [
               src="https://avatars.githubusercontent.com/u/9080990?v=4"
               alt=""
             />
-            <div class="text-sm leading-6">
-              <strong class="font-semibold text-gray-900">Daniel Swiatek</strong> – Initator
-            </div>
+            <div class="text-sm leading-6"><strong class="font-semibold">Daniel Swiatek</strong> – Initator</div>
           </figcaption>
         </figure>
 
@@ -112,7 +110,7 @@ const people = [
           ist willkommen! Deine Beteiligung macht einen Unterschied. Deine Expertise ist gefragt, und wir freuen uns
           darauf, mit dir gemeinsam an diesem spannenden Projekt zu arbeiten!"
         </p>
-        <h2 class="mt-16 text-2xl font-bold tracking-tight text-gray-900">Was ist Open Source?</h2>
+        <h2 class="mt-16 text-2xl font-bold tracking-tight">Was ist Open Source?</h2>
         <p class="mt-6">
           Open Source Software (OSS) bezeichnet Software, deren Quellcode öffentlich zugänglich ist und die unter einer
           Lizenz veröffentlicht wird, die es erlaubt, den Code, zu verwenden, zu ändern und zu verteilen. Im Gegensatz
@@ -122,7 +120,7 @@ const people = [
         </p>
         <ul
           role="list"
-          class="mt-8 max-w-xl space-y-8 text-gray-600"
+          class="mt-8 max-w-xl space-y-8"
         >
           <li class="flex gap-x-3">
             <CheckCircleIcon
@@ -130,9 +128,9 @@ const people = [
               aria-hidden="true"
             />
             <span
-              ><strong class="font-semibold text-gray-900">Freie Zugänglichkeit zum Quellcode:</strong> Das zentrale
-              Merkmal von Open Source Software ist die offene Verfügbarkeit des Quellcodes. Jede:r kann den Quellcode
-              einsehen, modifizieren und anpassen. Dies fördert Transparenz, ermöglicht Fehlerbehebungen und erlaubt es
+              ><strong class="font-semibold">Freie Zugänglichkeit zum Quellcode:</strong> Das zentrale Merkmal von Open
+              Source Software ist die offene Verfügbarkeit des Quellcodes. Jede:r kann den Quellcode einsehen,
+              modifizieren und anpassen. Dies fördert Transparenz, ermöglicht Fehlerbehebungen und erlaubt es
               Entwickler:innen weltweit, zur Verbesserung der Software beizutragen.</span
             >
           </li>
@@ -142,10 +140,10 @@ const people = [
               aria-hidden="true"
             />
             <span
-              ><strong class="font-semibold text-gray-900">Freie Verbreitung:</strong> Open Source Software kann frei
-              kopiert, weitergegeben und verteilt werden. Benutzer:innen haben die Freiheit, die Software zu nutzen, zu
-              teilen und sogar kommerziell zu vertreiben. Diese Freiheit zur Verbreitung fördert eine breite
-              Verfügbarkeit und unterstützt die Verbreitung der Software in verschiedenen Umgebungen.</span
+              ><strong class="font-semibold">Freie Verbreitung:</strong> Open Source Software kann frei kopiert,
+              weitergegeben und verteilt werden. Benutzer:innen haben die Freiheit, die Software zu nutzen, zu teilen
+              und sogar kommerziell zu vertreiben. Diese Freiheit zur Verbreitung fördert eine breite Verfügbarkeit und
+              unterstützt die Verbreitung der Software in verschiedenen Umgebungen.</span
             >
           </li>
         </ul>
@@ -156,7 +154,7 @@ const people = [
         </p>
       </div>
       <div
-        class="mx-auto flex flex-col gap-16 bg-white/5 px-6 py-16 ring-1 ring-white/10 lg:flex-row lg:items-center xl:gap-x-20 xl:px-20 border-t border-b mt-16"
+        class="mx-auto flex flex-col gap-16 bg-white/5 px-6 py-16 ring-1 ring-white/10 lg:flex-row lg:items-center xl:gap-x-20 xl:px-20 border-t border-b border-gray-200 dark:border-gray-800 mt-16"
       >
         <img
           class="h-32 w-32 flex-none rounded-full aspect-square"
@@ -182,39 +180,8 @@ const people = [
         </div>
       </div>
 
-      <div
-        class="absolute inset-x-0 -top-16 -z-10 flex transform-gpu justify-center overflow-hidden blur-3xl"
-        aria-hidden="true"
-      >
-        <div
-          class="aspect-[1318/752] w-[82.375rem] flex-none bg-gradient-to-r from-[#80caff] to-[#4f46e5] opacity-25"
-          style="
-            clip-path: polygon(
-              73.6% 51.7%,
-              91.7% 11.8%,
-              100% 46.4%,
-              97.4% 82.2%,
-              92.5% 84.9%,
-              75.7% 64%,
-              55.3% 47.5%,
-              46.5% 49.4%,
-              45% 62.9%,
-              50.3% 87.2%,
-              21.3% 64.1%,
-              0.1% 100%,
-              5.4% 51.1%,
-              21.4% 63.9%,
-              58.9% 0.2%,
-              73.6% 51.7%
-            );
-          "
-        />
-      </div>
-
       <div class="mt-16 max-w-2xl">
-        <h2 class="text-2xl font-bold tracking-tight text-gray-900">
-          Veilen Dank an alle Contributor:innen und Sponsoren
-        </h2>
+        <h2 class="text-2xl font-bold tracking-tight">Veilen Dank an alle Contributor:innen und Sponsoren</h2>
         <p class="mt-6">
           Ein großes Dankeschön geht an alle Contributor:innen und Sponsoren die an diesem Projekt mitgearbeitet haben.
         </p>
@@ -233,8 +200,8 @@ const people = [
             :src="person.imageUrl"
             alt=""
           />
-          <h3 class="mt-6 text-base font-semibold leading-7 tracking-tight text-gray-900 mb-0">{{ person.name }}</h3>
-          <p class="text-sm mb-0 leading-6 text-gray-600">{{ person.role }}</p>
+          <h3 class="mt-6 text-base font-semibold leading-7 tracking-tight mb-0">{{ person.name }}</h3>
+          <p class="text-sm mb-0 leading-6">{{ person.role }}</p>
         </li>
       </ul>
     </div>
