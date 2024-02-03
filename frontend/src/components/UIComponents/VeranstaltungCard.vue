@@ -16,17 +16,16 @@ const { veranstaltung } = defineProps<Props>()
 <template>
   <div
     :key="veranstaltung.id"
-    class="rounded-xl p-8 ring-1 ring-gray-200"
+    class="rounded-xl p-8 ring-1 ring-gray-200 dark:ring-dark-secondary"
   >
-    <h2 class="text-lg font-semibold leading-8 text-gray-900">
+    <h2 class="text-lg font-semibold leading-8">
       {{ veranstaltung.name }}
     </h2>
-    <p class="mt-4 text-sm leading-6 text-gray-600">Beschreibung der Veranstaltung</p>
+    <p class="mt-4 text-sm leading-6">Beschreibung der Veranstaltung</p>
     <p class="mt-6 flex items-baseline gap-x-1">
-      <span class="text-4xl font-bold tracking-tight text-gray-900">10</span>
-      <span class="text-sm font-semibold leading-6 text-gray-600">/500 Plätzen</span>
+      <span class="text-4xl font-bold tracking-tight">10</span>
+      <span class="text-sm font-semibold leading-6">/500 Plätzen</span>
     </p>
-
     <Badge v-if="veranstaltung.hasUnterveranstaltung"> Ausschreibung erstellt </Badge>
     <router-link
       v-else
