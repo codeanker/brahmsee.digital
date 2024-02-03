@@ -33,7 +33,7 @@ const showMobileMenu = ref(false)
         <Sidebar />
       </div>
       <div class="min-h-screen col-span-9 relative p-4 pb-12 lg:py-12 lg:px-8">
-        <div class="bg-white absolute inset-y-0 left-0 -right-full"></div>
+        <div class="bg-white dark:bg-dark-primary absolute inset-y-0 left-0 -right-full"></div>
         <MobileMenuButton
           ref="mobileMenuButton"
           @click="showMobileMenu = !showMobileMenu"

@@ -173,7 +173,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
 </script>
 
 <template>
-  <div class="h-full flex flex-col text-primary-900 font-medium p-6 pb-0 lg:px-0 lg:pt-12">
+  <div class="h-full flex flex-col text-primary-900 dark:text-gray-200 font-medium p-6 pb-0 lg:px-0 lg:pt-12">
     <!-- Sidebar Header -->
     <SidebarVeranstaltungSwitcher />
 
@@ -184,7 +184,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     />
 
     <!-- User Management -->
-    <div class="flex items-center space-x-3 py-4 border-t border-gray-300">
+    <div class="flex items-center space-x-3 py-4 border-t border-gray-300 dark:border-gray-600">
       <div class="w-10 h-10">
         <UserLogo :name="loggedInAccount?.person.firstname + ' ' + loggedInAccount?.person.lastname" />
       </div>

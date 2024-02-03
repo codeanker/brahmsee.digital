@@ -37,17 +37,17 @@ const showCode = ref(false)
       </div>
       <div class="col-span-2">
         <div class="flex justify-end mb-2 items-center">
-          <div class="bg-slate-100 rounded-lg flex">
+          <div class="bg-gray-100 dark:bg-gray-900 rounded-lg flex">
             <div
-              class="py-0.5 px-2 items-center flex cursor-pointer border-slate-100 border rounded-lg"
-              :class="{ 'bg-white': !showCode }"
+              class="py-0.5 px-2 items-center flex cursor-pointer border-gray-100 dark:border-gray-700 border rounded-lg"
+              :class="{ 'bg-white dark:bg-dark-primary': !showCode }"
               @click="showCode = false"
             >
               <EyeIcon class="w-6 h-6" />
             </div>
             <div
-              class="py-0.5 px-2 items-center flex cursor-pointer border-slate-100 border rounded-lg"
-              :class="{ 'bg-white': showCode }"
+              class="py-0.5 px-2 items-center flex cursor-pointer border-gray-100 dark:border-gray-700 border rounded-lg"
+              :class="{ 'bg-white dark:bg-dark-primary': showCode }"
               @click="showCode = true"
             >
               <CodeBracketIcon class="w-6 h-6" />
@@ -73,7 +73,7 @@ const showCode = ref(false)
           class="relative"
         >
           <div class="rounded-xl relative">
-            <div class="absolute inset-0 rounded-xl overflow-hidden border">
+            <div class="absolute inset-0 rounded-xl overflow-hidden border dark:border-gray-700">
               <!-- <img
                 :src="lines"
                 class="bg-white z-10 object-cover object-center w-full h-full"
