@@ -3,18 +3,20 @@ import { useAsyncState } from '@vueuse/core'
 import { computed, ref } from 'vue'
 
 import { apiClient } from '@/api'
-import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
 import BasicEditor from '@/components/BasicInputs/BasicEditor.vue'
-import BasicInput from '@/components/BasicInputs/BasicInput.vue'
-import BasicInputNumber from '@/components/BasicInputs/BasicInputNumber.vue'
-import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
-import BasicTypeahead from '@/components/BasicInputs/BasicTypeahead.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
 import router from '@/router'
 import type { RouterInput } from '@codeanker/api'
 import { UnterveranstaltungTypeMapping, getEnumOptions } from '@codeanker/api/src/enumMappings'
-import { ValidateForm } from '@codeanker/validation'
+import {
+  BasicInputSelect,
+  BasicInputNumber,
+  BasicInputDatepicker,
+  BasicInputTypeahead,
+  BasicInputText,
+} from '@codeanker/core-basic-inputs'
+import { ValidateForm } from '@codeanker/core-validation'
 
 const props = defineProps<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -170,7 +172,7 @@ const disableddates = computed(() => {
         v-if="mode === 'create'"
         class="lg:col-span-full"
       >
-        <BasicSelect
+        <BasicInputSelect
           v-model="unterveranstaltungCopy.veranstaltungId"
           required
           label="Veranstaltung"
@@ -180,7 +182,7 @@ const disableddates = computed(() => {
       </div>
       <template v-if="mode === 'create' && loggedInAccount?.role === 'ADMIN'">
         <div class="lg:col-span-3">
-          <BasicTypeahead
+          <BasicInputTypeahead
             v-model="gliederung"
             :query="queryObjectGliederungen"
             :input-formatter="(result) => result?.name"
@@ -192,7 +194,7 @@ const disableddates = computed(() => {
           />
         </div>
         <div class="lg:col-span-3">
-          <BasicSelect
+          <BasicInputSelect
             v-model="unterveranstaltungCopy.type"
             required
             label="Veranstaltungstyp"
@@ -205,7 +207,7 @@ const disableddates = computed(() => {
         v-if="mode === 'update' && loggedInAccount?.role === 'ADMIN'"
         class="lg:col-span-full"
       >
-        <BasicInput
+        <BasicInputText
           :model-value="gliederung.name + ' (' + gliederung.edv + ')'"
           label="Gliederung"
           class="col-span-2"
@@ -213,7 +215,7 @@ const disableddates = computed(() => {
         />
       </div>
       <div class="lg:col-span-3">
-        <BasicDatepicker
+        <BasicInputDatepicker
           v-model="unterveranstaltungCopy.meldebeginn"
           required
           format="dd.MM.yyyy"
@@ -224,7 +226,7 @@ const disableddates = computed(() => {
       </div>
 
       <div class="lg:col-span-3">
-        <BasicDatepicker
+        <BasicInputDatepicker
           v-model="unterveranstaltungCopy.meldeschluss"
           required
           format="dd.MM.yyyy"

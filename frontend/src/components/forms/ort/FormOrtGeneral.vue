@@ -4,10 +4,10 @@ import { useAsyncState } from '@vueuse/core'
 import { ref } from 'vue'
 
 import { apiClient } from '@/api'
-import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import router from '@/router'
 import type { RouterInput } from '@codeanker/api'
+import { BasicInputText } from '@codeanker/core-basic-inputs'
 
 const props = defineProps<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -88,35 +88,35 @@ const handle = async (event: Event) => {
 <template>
   <form @submit="handle">
     <div class="space-y-4">
-      <BasicInput
+      <BasicInputText
         v-model="ortCopy.name"
         label="Name"
         name="name"
         required
       />
       <div class="grid grid-cols-3 gap-4">
-        <BasicInput
+        <BasicInputText
           v-model="ortCopy.address.street"
           label="Straße"
           name="street"
           class="col-span-2"
           required
         />
-        <BasicInput
+        <BasicInputText
           v-model="ortCopy.address.number"
           label="Hausnummer"
           name="number"
           class="col-span-1"
           required
         />
-        <BasicInput
+        <BasicInputText
           v-model="ortCopy.address.zip"
           label="PLZ"
           name="zip"
           class="col-span-1"
           required
         />
-        <BasicInput
+        <BasicInputText
           v-model="ortCopy.address.city"
           label="Stadt"
           name="city"

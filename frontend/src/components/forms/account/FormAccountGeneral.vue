@@ -8,10 +8,6 @@ import type { IStammdaten } from '../anmeldung/Stammdaten.vue'
 import Stammdaten from '../anmeldung/Stammdaten.vue'
 
 import { apiClient } from '@/api'
-import BasicDropdown from '@/components/BasicInputs/BasicDropdown.vue'
-import BasicInput from '@/components/BasicInputs/BasicInput.vue'
-import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
-import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
 import PasswordStrength from '@/components/PasswordStrength.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
 import Button from '@/components/UIComponents/Button.vue'
@@ -23,8 +19,10 @@ import { getAccountStatusColor } from '@/helpers/getAccountStatusColors'
 import router from '@/router'
 import type { RouterInput, RouterOutput } from '@codeanker/api'
 import { AccountStatusMapping, getEnumOptions, roleMapping } from '@codeanker/api/src/enumMappings'
+import { BasicInputSelect, BasicInputPassword, BasicInputText } from '@codeanker/core-basic-inputs'
+import { Dropdown } from '@codeanker/core-ui-components'
+import { ValidateForm } from '@codeanker/core-validation'
 import { formatDate } from '@codeanker/helpers'
-import { ValidateForm } from '@codeanker/validation'
 
 type Account = Awaited<RouterOutput['account']['verwaltungGet']>
 
@@ -191,14 +189,14 @@ const tabs = computed(() => {
         @submit="handle"
       >
         <div class="grid grid-flow-row lg:grid-cols-2 gap-5">
-          <BasicInput
+          <BasicInputText
             id="accountEmail"
             v-model="accountForm.email"
             label="E-Mail Adresse"
             placeholder="E-Mail eingeben"
             required
           />
-          <BasicPassword
+          <BasicInputPassword
             v-if="!edit"
             id="accountPassword"
             v-model="accountForm.password"
@@ -206,20 +204,20 @@ const tabs = computed(() => {
             placeholder="Passwort eingeben"
             required
           />
-          <BasicSelect
+          <BasicInputSelect
             id="accountRole"
             v-model="accountForm.roleId"
             required
             label="Rolle"
             :options="roles"
           />
-          <BasicDropdown
+          <Dropdown
             :right="false"
             :append="true"
             class="w-full"
             label="Status"
             required
-            button-style="w-full text-left"
+            :button-style="['w-full text-left']"
           >
             <template #buttonContent>
               <button
@@ -258,7 +256,7 @@ const tabs = computed(() => {
                 </button>
               </MenuItem>
             </template>
-          </BasicDropdown>
+          </Dropdown>
         </div>
 
         <div class="flex flex-row items-center mt-8">
@@ -296,7 +294,7 @@ const tabs = computed(() => {
               v-if="isSelf"
               class="col-span-full"
             >
-              <BasicPassword
+              <BasicInputPassword
                 v-model="password.password_old"
                 label="Aktuelles Passwort"
                 required
@@ -304,7 +302,7 @@ const tabs = computed(() => {
             </div>
 
             <div class="col-span-full">
-              <BasicPassword
+              <BasicInputPassword
                 v-model="password.password"
                 label="Neues Passwort"
                 required
@@ -312,7 +310,7 @@ const tabs = computed(() => {
             </div>
 
             <div class="col-span-full">
-              <BasicPassword
+              <BasicInputPassword
                 v-model="password.password_confirm"
                 label="Passwort bestätigen"
                 required

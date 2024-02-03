@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import useValidationModel from '../../composables/useValidationModel'
+import { toRef } from 'vue'
 
-import BasicValidationFeedback from './components/BasicValidationFeedback.vue'
 import { type BasicInputDefaultProps } from './defaultProps'
+
+import { ValidationFeedback } from '@codeanker/core-ui-components'
+import { useValidatedModel } from '@codeanker/core-validation'
 
 const props = defineProps<
   BasicInputDefaultProps<string | number | boolean> & {
@@ -16,7 +18,16 @@ const props = defineProps<
 const emit = defineEmits<{
   (event: 'update:modelValue', eventArgs: string | number | boolean | undefined): void
 }>()
-const { model, errorMessage } = useValidationModel(props, emit)
+const { model, errorMessage } = useValidatedModel(
+  {
+    modelValue: toRef(props, 'modelValue'),
+    label: toRef(props, 'label'),
+    name: toRef(props, 'name'),
+    required: toRef(props, 'required'),
+    rules: toRef(props, 'rules'),
+  },
+  emit
+)
 </script>
 
 <template>
@@ -42,6 +53,6 @@ const { model, errorMessage } = useValidationModel(props, emit)
         {{ option.label }}
       </label>
     </div>
-    <BasicValidationFeedback :error-message="errorMessage" />
+    <ValidationFeedback :error-message="errorMessage" />
   </div>
 </template>

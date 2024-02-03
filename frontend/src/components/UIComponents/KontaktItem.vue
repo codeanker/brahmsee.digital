@@ -2,10 +2,8 @@
 import { TrashIcon } from '@heroicons/vue/24/outline'
 import { ref, watch } from 'vue'
 
-import BasicCheckbox from '../BasicInputs/BasicCheckbox.vue'
-
-import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import type { TKontaktSchema } from '@codeanker/api/src/services/kontakt/schema/kontakt.schema'
+import { BasicInputCheckbox, BasicInputText } from '@codeanker/core-basic-inputs'
 
 const props = defineProps<{
   modelValue: Partial<TKontaktSchema>
@@ -33,19 +31,19 @@ watch(
 <template>
   <!-- eslint-disable vue/no-mutating-props -->
   <div class="grid grid-flow-row lg:grid-cols-2 gap-5">
-    <BasicInput
+    <BasicInputText
       v-model="kontakt.firstname"
       label="Vorname"
       placeholder="Vorname eingeben"
       required
     />
-    <BasicInput
+    <BasicInputText
       v-model="kontakt.lastname"
       label="Nachname"
       placeholder="Nachname eingeben"
       required
     />
-    <BasicInput
+    <BasicInputText
       v-model="kontakt.telefon"
       label="Mobiltelefonnummer"
       placeholder="Mobiltelefonnummer eingeben"
@@ -55,7 +53,7 @@ watch(
       class="flex flex-row justify-between items-end h-full"
       :class="{ 'justify-end': showRemoveOption }"
     >
-      <BasicCheckbox
+      <BasicInputCheckbox
         v-model="kontakt.istErziehungsberechtigt"
         label="Erziehungsberechtigt?"
       />

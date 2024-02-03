@@ -7,13 +7,13 @@ import { Text } from '@tiptap/extension-text'
 import { StarterKit } from '@tiptap/starter-kit'
 import { Editor, EditorContent } from '@tiptap/vue-3'
 import { useVModel } from '@vueuse/core'
-import { watch } from 'vue'
-
-import useValidationModel from '../../composables/useValidationModel'
+import { toRef, watch } from 'vue'
 
 import BasicEditorMenu from './components/BasicEditorMenu.vue'
-import BasicFormGroup from './components/BasicFormGroup.vue'
 import { type BasicInputDefaultProps } from './defaultProps'
+
+import { InputWrapper } from '@codeanker/core-ui-components'
+import { useValidatedModel } from '@codeanker/core-validation'
 
 const props = withDefaults(
   defineProps<
@@ -37,7 +37,16 @@ const { model, errorMessage } = props.disableValidation
       model: useVModel(props, 'modelValue', emit),
       errorMessage: undefined,
     }
-  : useValidationModel(props, emit)
+  : useValidatedModel(
+      {
+        modelValue: toRef(props, 'modelValue'),
+        label: toRef(props, 'label'),
+        name: toRef(props, 'name'),
+        required: toRef(props, 'required'),
+        rules: toRef(props, 'rules'),
+      },
+      emit
+    )
 
 const editor = new Editor({
   extensions: [
@@ -80,7 +89,7 @@ watch(
 </script>
 
 <template>
-  <BasicFormGroup
+  <InputWrapper
     :id="id"
     :name="name"
     :label="label"
@@ -96,7 +105,7 @@ watch(
         <EditorContent :editor="editor" />
       </div>
     </div>
-  </BasicFormGroup>
+  </InputWrapper>
 </template>
 
 <style lang="scss" scoped>

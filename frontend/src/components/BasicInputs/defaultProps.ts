@@ -1,5 +1,4 @@
-import { type RuleFunction } from '@codeanker/validation'
-import { type RequiredRulesParams } from '@codeanker/validation/rules'
+import { type RuleFunction, type RequiredRulesParams } from '@codeanker/core-validation'
 
 export type BasicInputDefaultProps<TModelValue> = {
   id?: string

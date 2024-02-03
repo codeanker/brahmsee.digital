@@ -4,10 +4,10 @@ import { ChevronDownIcon } from '@heroicons/vue/24/outline'
 import { computed, ref } from 'vue'
 
 import { apiClient } from '@/api'
-import BasicDropdown from '@/components/BasicInputs/BasicDropdown.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
 import { getAnmeldungStatusColor } from '@/helpers/getAnmeldungStatusColors'
 import { AnmeldungStatus, AnmeldungStatusMapping, getEnumOptions, Role } from '@codeanker/api/src/enumMappings'
+import { Dropdown } from '@codeanker/core-ui-components'
 
 const props = withDefaults(
   defineProps<{
@@ -58,12 +58,12 @@ const setStatus = async (status) => {
 </script>
 
 <template>
-  <BasicDropdown
+  <Dropdown
     :right="false"
     :append="true"
     class="w-full"
     :disabled="!isStatusChangeAvailable"
-    button-style="w-full min-w-52 text-left"
+    :button-style="['w-full min-w-52 text-left']"
   >
     <template #buttonContent>
       <button
@@ -109,5 +109,5 @@ const setStatus = async (status) => {
         </button>
       </MenuItem>
     </template>
-  </BasicDropdown>
+  </Dropdown>
 </template>
