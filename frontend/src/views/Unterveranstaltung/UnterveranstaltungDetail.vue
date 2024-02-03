@@ -5,7 +5,6 @@ import {
   DocumentDuplicateIcon,
   MegaphoneIcon,
   RocketLaunchIcon,
-  ShieldCheckIcon,
   UserGroupIcon,
 } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
@@ -70,6 +69,7 @@ const keyInfos = computed<KeyInfo[]>(() => {
       { title: 'Meldeschluss', value: formatDate(unterveranstaltung.value.meldeschluss) },
       { title: 'Veranstaltungsort', value: unterveranstaltung.value.veranstaltung.ort?.name ?? '' },
       { title: 'Teilnahmebeitrag', value: unterveranstaltung.value.teilnahmegebuehr + '€' },
+      { title: 'max. Teilnahmezahl', value: unterveranstaltung.value.maxTeilnehmende + '' },
       { title: 'Zielgruppe', value: unterveranstaltung.value.veranstaltung.zielgruppe ?? '' },
     ]
   } else {
@@ -82,7 +82,6 @@ const tabs = computed(() => {
     { name: 'Ausschreibung', icon: MegaphoneIcon },
     { name: 'Anmeldungen', icon: UserGroupIcon, count: anmeldungen.value.length },
     { name: 'Bedingungen', icon: ClipboardDocumentListIcon },
-    { name: 'Datenschutz', icon: ShieldCheckIcon },
   ]
   if (loggedInAccount.value?.role === 'ADMIN') {
     tabs.push({ name: 'Entwickler:in', icon: CodeBracketIcon })
@@ -184,8 +183,6 @@ function copyLink() {
           class="prose prose-neutra"
           v-html="unterveranstaltung?.veranstaltung?.teilnahmeBedingungen"
         ></div>
-      </Tab>
-      <Tab>
         <div class="my-10">
           <div class="text-lg font-semibold text-gray-900">Datenschutz</div>
           <p class="max-w-2xl text-sm text-gray-500">Bitte beachte die Hinweise zum Datenschutz</p>
@@ -195,6 +192,7 @@ function copyLink() {
           v-html="unterveranstaltung?.veranstaltung?.datenschutz"
         ></div>
       </Tab>
+
       <Tab v-if="loggedInAccount?.role === 'ADMIN'">
         <div class="my-10">
           <div class="text-lg font-semibold text-gray-900">Entwickler:innen</div>

@@ -38,8 +38,20 @@ const veranstaltungRoutes: Route[] = [
         },
       },
       {
+        name: 'VerwaltungVeranstaltungEdit',
+        path: ':veranstaltungId/edit',
+        component: () => import('./VeranstaltungEdit.vue'),
+        meta: {
+          breadcrumbs: [
+            {
+              text: 'Veranstaltung bearbeiten',
+            },
+          ],
+        },
+      },
+      {
         name: 'Verwaltung Veranstaltungsdetails',
-        path: ':veranstaltungId/detail',
+        path: ':veranstaltungId',
         component: () => import('./VeranstaltungDetail.vue'),
         meta: {
           breadcrumbs: [
