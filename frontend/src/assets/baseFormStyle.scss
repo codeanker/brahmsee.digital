@@ -64,3 +64,7 @@ mark{
   --tw-prose-counters: #000 !important;
   --tw-prose-links: rgb(22 163 74);
 }
+
+hr{
+  @apply border-t border-gray-200 dark:border-gray-700 my-4;
+}
