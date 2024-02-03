@@ -12,22 +12,26 @@ let commitHash = import.meta.env.VITE_APP_COMMIT_HASH || '000000'
     <div
       class="flex flex-col space-y-3 lg:space-y-0 text-sm lg:text-xs text-gray-500 text-left lg:text-right leading-4"
     >
-      <a
+      <RouterLink
         class="hover:text-gray-700 transition-all"
-        href="https://schleswig-holstein.dlrg-jugend.de/impressum-und-datenschutz/"
+        :to="{
+          name: 'Impressum',
+        }"
         target="_blank"
         rel="noopener noreferrer"
       >
-        Impressum und Datenshutz
-      </a>
-      <a
+        Impressum
+      </RouterLink>
+      <RouterLink
         class="hover:text-gray-700 transition-all"
-        href="https://schleswig-holstein.dlrg-jugend.de/impressum-und-datenschutz/"
+        :to="{
+          name: 'Datenschutz',
+        }"
         target="_blank"
         rel="noopener noreferrer"
       >
-        Cookie-Einstellungen
-      </a>
+        Datenschutz
+      </RouterLink>
       <div>v{{ version }}#{{ commitHash }}</div>
     </div>
   </div>

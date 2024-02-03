@@ -4,6 +4,7 @@ import authenticationGuard from './authenticationGuard'
 
 import routesDevelopment from '@/views/Development/routes'
 import routesAuth from '@/views/Login/routes'
+import { routesPublic } from '@/views/Public/routes'
 import routesPublicAnmeldung from '@/views/PublicAnmeldung/routes'
 import routesRegistrierung from '@/views/Registrierung/routes'
 import { routesUnterveranstaltung } from '@/views/Unterveranstaltung/routes'
@@ -18,6 +19,7 @@ export type Route = RouteRecordRaw & {
 
 const routes: Route[] = [
   ...routesAuth,
+  ...routesPublic,
   ...routesPublicAnmeldung,
   ...routesRegistrierung,
   {
