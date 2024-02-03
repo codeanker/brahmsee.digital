@@ -77,7 +77,7 @@ function formatDate(indate) {
           </th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-gray-200 bg-white dark:bg-dark-primary">
+      <tbody class="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-dark-primary">
         <tr
           v-for="unterveranstaltung in unterveranstaltungenList"
           :key="unterveranstaltung.id"
