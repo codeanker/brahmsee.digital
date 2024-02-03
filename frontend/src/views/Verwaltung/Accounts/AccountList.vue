@@ -56,7 +56,7 @@ const tabs = computed(() => [
             Account anlegen
           </RouterLink>
         </div>
-        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
           <thead>
             <tr>
               <th
@@ -85,11 +85,11 @@ const tabs = computed(() => [
               </th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-200 bg-white">
+          <tbody class="divide-y divide-gray-200 bg-white dark:bg-dark-primary">
             <tr
               v-for="account in accountList"
               :key="account.id"
-              class="cursor-pointer even:bg-gray-50 hover:bg-gray-100"
+              class="cursor-pointer even:bg-gray-50 dark:even:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800"
               :title="account.email + ' bearbeiten'"
               @click="router.push({ name: 'Verwaltung Accountdetails', params: { accountId: account.id } })"
             >
@@ -168,7 +168,7 @@ const tabs = computed(() => [
             <tr
               v-for="account in accountRequest"
               :key="account.id"
-              class="cursor-pointer even:bg-gray-50 hover:bg-gray-100"
+              class="cursor-pointer even:bg-gray-50 dark:even:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800"
               :title="account.email + ' bearbeiten'"
               @click="router.push({ name: 'Verwaltung Accountdetails', params: { accountId: account.id } })"
             >
@@ -199,17 +199,17 @@ const tabs = computed(() => [
         </table>
         <div
           v-if="accountRequest.length <= 0"
-          class="rounded-md bg-blue-50 p-4"
+          class="rounded-md bg-blue-50 dark:bg-blue-950 text-blue-500 p-4"
         >
           <div class="flex">
             <div class="flex-shrink-0">
               <CheckCircleIcon
-                class="h-5 w-5 text-blue-400"
+                class="h-5 w-5"
                 aria-hidden="true"
               />
             </div>
             <div class="ml-3 flex-1 md:flex md:justify-between">
-              <p class="text-sm text-blue-700 mb-0">Es gibt keine offenen Account anfragen.</p>
+              <p class="text-sm mb-0">Es gibt keine offenen Account anfragen.</p>
             </div>
           </div>
         </div>
