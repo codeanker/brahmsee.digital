@@ -76,15 +76,15 @@ const stats = computed(() => {
       :key="stat.name"
       class=""
     >
-      <div class="flex items-start space-x-2 text-sm text-gray-600">
+      <div class="flex items-start space-x-2 text-sm">
         <div
           class="w-4 h-4 mt-1 rounded-full shrink-0"
           :class="`bg-${getAnmeldungStatusColor(stat.name)}-600`"
         ></div>
         <div>
-          <div class="text-sm font-medium text-gray-500">{{ AnmeldungStatusMapping[stat.name].human }}</div>
+          <div class="text-sm font-medium">{{ AnmeldungStatusMapping[stat.name].human }}</div>
           <p class="flex items-baseline gap-x-2">
-            <span class="text-2xl font-semibold tracking-tight text-gray-800">{{ stat.value }}</span>
+            <span class="text-2xl font-semibold tracking-tight">{{ stat.value }}</span>
           </p>
         </div>
       </div>
@@ -94,45 +94,45 @@ const stats = computed(() => {
   <!-- Stats-->
   <table
     v-if="anmeldungen.length"
-    class="min-w-full divide-y divide-gray-300"
+    class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
   >
     <thead>
       <tr>
         <th
           scope="col"
-          class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"
+          class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold"
         >
           Name
         </th>
         <th
           scope="col"
-          class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+          class="px-3 py-3.5 text-left text-sm font-semibold"
         >
           Alter
         </th>
 
         <th
           scope="col"
-          class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+          class="px-3 py-3.5 text-left text-sm font-semibold"
         >
           T-Shirt
         </th>
         <th
           scope="col"
-          class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+          class="px-3 py-3.5 text-left text-sm font-semibold"
         >
           Status
         </th>
       </tr>
     </thead>
-    <tbody class="divide-y divide-gray-200 bg-white">
+    <tbody class="divide-y divide-gray-200 bg-white dark:bg-dark-primary">
       <tr
         v-for="anmeldung in anmeldungen"
         :key="anmeldung.id"
-        class="even:bg-gray-50 hover:bg-gray-50"
+        class="even:bg-gray-50 dark:even:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800"
       >
         <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-          <div class="text-gray-900 flex space-x-1 items-center">
+          <div class="flex space-x-1 items-center">
             <span>{{ anmeldung.person.firstname }} {{ anmeldung.person.lastname }}</span>
             <RouterLink
               target="_blank"
@@ -147,15 +147,15 @@ const stats = computed(() => {
           </div>
           <span
             v-if="loggedInAccount?.role === 'ADMIN'"
-            class="text-xs text-gray-500"
+            class="text-xs"
             >{{ anmeldung.person.gliederung?.name }}</span
           >
         </td>
-        <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+        <td class="whitespace-nowrap px-3 py-5 text-sm">
           <div v-if="anmeldung.person.birthday">{{ dayjs().diff(anmeldung.person.birthday, 'year') }} Jahre</div>
         </td>
 
-        <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+        <td class="whitespace-nowrap px-3 py-5 text-sm">
           <span v-if="anmeldung.tshirtBestellt">{{ anmeldung.person.konfektionsgroesse }}</span>
           <span v-else> - </span>
         </td>
