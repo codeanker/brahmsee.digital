@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Badge from './Badge.vue'
+import Button from './Button.vue'
 
 interface Props {
   veranstaltung: {
@@ -16,7 +17,7 @@ const { veranstaltung } = defineProps<Props>()
 <template>
   <div
     :key="veranstaltung.id"
-    class="rounded-xl p-8 ring-1 ring-gray-200 dark:ring-dark-secondary"
+    class="rounded-xl p-8 ring-1 ring-gray-200 dark:ring-dark-secondary dark:bg-dark-secondary"
   >
     <h2 class="text-lg font-semibold leading-8">
       {{ veranstaltung.name }}
@@ -27,19 +28,19 @@ const { veranstaltung } = defineProps<Props>()
       <span class="text-sm font-semibold leading-6">/500 Plätzen</span>
     </p>
     <Badge v-if="veranstaltung.hasUnterveranstaltung"> Ausschreibung erstellt </Badge>
-    <router-link
+    <Button
       v-else
       :to="{
         name: 'UnterveranstaltungCreate',
         params: { veranstaltungId: veranstaltung.id.toString() },
       }"
-      class="cursor-pointer mt-6 block rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 text-primary-600 ring-1 ring-inset ring-primary-200 hover:ring-primary-300"
-      >Ausschreibung erstellen</router-link
+      class="mt-6 w-full"
+      >Ausschreibung erstellen</Button
     >
 
     <ul
       role="list"
-      class="mt-8 space-y-3 text-sm leading-6 text-gray-600"
+      class="mt-8 space-y-3 text-sm leading-6"
     >
       <li class="flex gap-x-3">
         <svg

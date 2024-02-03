@@ -34,54 +34,54 @@ function formatDate(indate) {
   <div>
     <table
       v-if="unterveranstaltungenList"
-      class="min-w-full divide-y divide-gray-300"
+      class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
     >
       <thead>
         <tr>
           <th
             scope="col"
-            class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+            class="px-3 py-3.5 text-left text-sm font-semibold"
           >
             Id
           </th>
           <th
             v-if="columns?.includes('veranstaltung')"
             scope="col"
-            class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+            class="px-3 py-3.5 text-left text-sm font-semibold"
           >
             Veranstaltung
           </th>
           <th
             scope="col"
-            class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+            class="px-3 py-3.5 text-left text-sm font-semibold"
           >
             Gliederung
           </th>
           <th
             scope="col"
-            class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+            class="px-3 py-3.5 text-left text-sm font-semibold"
           >
             Meldeschluss
           </th>
           <th
             scope="col"
-            class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+            class="px-3 py-3.5 text-left text-sm font-semibold"
           >
             Gebühr
           </th>
           <th
             scope="col"
-            class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+            class="px-3 py-3.5 text-left text-sm font-semibold"
           >
             max. TN
           </th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-gray-200 bg-white">
+      <tbody class="divide-y divide-gray-200 bg-white dark:bg-dark-primary">
         <tr
           v-for="unterveranstaltung in unterveranstaltungenList"
           :key="unterveranstaltung.id"
-          class="cursor-pointer even:bg-gray-50 hover:bg-gray-100"
+          class="cursor-pointer even:bg-gray-50 dark:even:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800"
           title="bearbeiten"
           @click="
             router.push({
@@ -91,30 +91,30 @@ function formatDate(indate) {
           "
         >
           <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-            <div class="text-gray-900">{{ unterveranstaltung.id }}</div>
+            <div>{{ unterveranstaltung.id }}</div>
           </td>
           <td
             v-if="columns?.includes('veranstaltung')"
             class="py-5 pl-4 pr-3 text-sm"
           >
-            <div class="text-gray-900">{{ unterveranstaltung.veranstaltung.name }}</div>
+            <div>{{ unterveranstaltung.veranstaltung.name }}</div>
           </td>
           <td
             v-if="loggedInAccount?.role === 'ADMIN'"
             class="whitespace-nowrap py-5 pl-4 pr-3 text-sm"
           >
-            <div class="text-gray-900">{{ unterveranstaltung.gliederung.name }}</div>
+            <div>{{ unterveranstaltung.gliederung.name }}</div>
           </td>
           <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-            <div class="font-medium text-gray-900">
+            <div class="font-medium">
               {{ formatDate(unterveranstaltung.meldeschluss) }}
             </div>
           </td>
           <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-            <div class="font-medium text-gray-900">{{ unterveranstaltung.teilnahmegebuehr }}€</div>
+            <div class="font-medium">{{ unterveranstaltung.teilnahmegebuehr }}€</div>
           </td>
           <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-            <div class="font-medium text-gray-900">{{ unterveranstaltung.maxTeilnehmende }}</div>
+            <div class="font-medium">{{ unterveranstaltung.maxTeilnehmende }}</div>
           </td>
         </tr>
       </tbody>
