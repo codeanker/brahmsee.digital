@@ -21,7 +21,7 @@ const createAnmeldung: Seeder = async function (prisma: PrismaClient) {
           telefon: '+49 123 4567890',
           gender: Gender.MALE,
           birthday: new Date(),
-          essgewohnheit: Essgewohnheit.OMNIVORE,
+          essgewohnheit: Essgewohnheit.OMNIVOR,
           konfektionsgroesse: 'XL',
           address: {
             create: {
