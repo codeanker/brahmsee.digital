@@ -26,7 +26,7 @@ withDefaults(
     :default-index="defaultIndex"
   >
     <TabList
-      class="border-b border-gray-300 -mb-px flex space-x-5"
+      class="border-b border-gray-300 dark:border-gray-700 -mb-px flex space-x-5"
       as="div"
       :class="[`mb-${contentSpace}`]"
     >
@@ -37,8 +37,8 @@ withDefaults(
         class="outline-none"
       >
         <div
-          class="text-sm cursor-pointer outline-none -mb-px rounded-t border-b-2 py-2 px-3 hover:text-primary-600 flex items-center"
-          :class="[selected ? 'text-primary-600 border-primary-600 ' : 'text-gray-500 border-transparent']"
+          class="text-sm cursor-pointer outline-none -mb-px rounded-t border-b-2 py-2 px-3 hover:text-primary-500 flex items-center"
+          :class="[selected ? 'text-primary-500 border-primary-500 ' : 'text-gray-500 border-transparent']"
         >
           <component
             :is="tab.icon"
@@ -50,7 +50,9 @@ withDefaults(
           <span
             v-if="tab.count"
             :class="[
-              selected ? 'bg-primary-100 text-primary-600' : 'bg-gray-100 text-gray-900',
+              selected
+                ? 'bg-gray-100 dark:bg-primary-800 text-primary-100'
+                : 'bg-gray-100 dark:bg-gray-900 text-gray-300',
               'ml-3 hidden rounded-full py-0.5 px-2.5 text-xs font-medium md:inline-block',
             ]"
             >{{ tab.count }}</span

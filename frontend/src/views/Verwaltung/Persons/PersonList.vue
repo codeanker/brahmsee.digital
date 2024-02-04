@@ -35,14 +35,12 @@ const tabs = [{ name: 'Personen', icon: UsersIcon }]
       <Tab>
         <div class="my-10 flex justify-between">
           <div>
-            <div class="text-lg font-semibold text-gray-900">Personen</div>
-            <p class="max-w-2xl text-sm text-gray-500">
-              Hier findest Du alle Personen die sich zu Veranstaltungen angemeldet haben.
-            </p>
+            <div class="text-lg font-semibold">Personen</div>
+            <p class="max-w-2xl text-sm">Hier findest Du alle Personen die sich zu Veranstaltungen angemeldet haben.</p>
           </div>
 
           <RouterLink
-            class="text-primary-600 flex items-center"
+            class="text-primary-500 flex items-center"
             :to="{ name: 'Verwaltung Person erstellen' }"
           >
             <PlusIcon class="h-5 w-5 mr-1"></PlusIcon>
@@ -50,57 +48,57 @@ const tabs = [{ name: 'Personen', icon: UsersIcon }]
           </RouterLink>
         </div>
 
-        <table class="min-w-full divide-y divide-gray-300">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
           <thead>
             <tr>
               <th
                 scope="col"
-                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"
+                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold"
               >
                 Name
               </th>
               <th
                 scope="col"
-                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                class="px-3 py-3.5 text-left text-sm font-semibold"
               >
                 Alter
               </th>
               <th
                 scope="col"
-                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                class="px-3 py-3.5 text-left text-sm font-semibold"
               >
                 Gliederung
               </th>
               <th
                 scope="col"
-                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                class="px-3 py-3.5 text-left text-sm font-semibold"
               >
                 Account
               </th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-200 bg-white">
+          <tbody class="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-dark-primary">
             <tr
               v-for="person in personList"
               :key="person.id"
-              class="cursor-pointer even:bg-gray-50 hover:bg-gray-100"
+              class="cursor-pointer even:bg-gray-50 dark:even:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800"
               :title="person.firstname + ' ' + person.lastname + ' bearbeiten'"
               @click="router.push({ name: 'Verwaltung Persondetails', params: { personId: person.id } })"
             >
               <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-                <div class="text-gray-900">{{ person.firstname }} {{ person.lastname }}</div>
+                <div>{{ person.firstname }} {{ person.lastname }}</div>
               </td>
-              <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+              <td class="whitespace-nowrap px-3 py-5 text-sm">
                 <div v-if="person.birthday">
                   {{ dayjs().diff(person.birthday, 'year') }} Jahre
                   <br />
                   {{ formatDate(person.birthday) }}
                 </div>
               </td>
-              <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+              <td class="whitespace-nowrap px-3 py-5 text-sm">
                 {{ person.gliederung?.name }}
               </td>
-              <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+              <td class="whitespace-nowrap px-3 py-5 text-sm">
                 <div class="flex items-center">
                   <Badge
                     v-if="person.account"

@@ -94,10 +94,10 @@ const files = [
 <template>
   <div>
     <h5 class="mb-10">Veranstaltung</h5>
-    <div class="bg-white pt-2 pb-8">
+    <div class="pt-2 pb-8">
       <div class="mx-auto max-w-2xl lg:mx-0">
-        <h2 class="mt-2 text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ veranstaltung?.name }}</h2>
-        <p class="mt-4 text-md leading-6 text-gray-600">
+        <h2 class="mt-2 text-2xl font-bold tracking-tight sm:text-4xl">{{ veranstaltung?.name }}</h2>
+        <p class="mt-4 text-md leading-6">
           Hier bearbeiten wir die Veranstaltung damit Gliederungen sich anmelden können.
         </p>
       </div>
@@ -108,7 +108,7 @@ const files = [
     >
       <Tab>
         <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
-          <div class="text-lg font-semibold text-gray-900">Veranstaltungsdaten</div>
+          <div class="text-lg font-semibold">Veranstaltungsdaten</div>
           <RouterLink
             class="text-primary-600"
             :to="{ name: 'VerwaltungVeranstaltungEdit' }"
@@ -118,7 +118,7 @@ const files = [
 
         <InfoList :infos="keyInfos" />
 
-        <div class="mt-5 lg:mt-10 mb-5 text-lg font-semibold text-gray-900">Beschreibung</div>
+        <div class="mt-5 lg:mt-10 mb-5 text-lg font-semibold">Beschreibung</div>
         <div class="px-3 py-5">
           <div
             class="prose prose-neutra"
@@ -128,7 +128,7 @@ const files = [
       </Tab>
       <Tab>
         <div class="my-10">
-          <div class="text-lg font-semibold text-gray-900">Dokumente</div>
+          <div class="text-lg font-semibold">Dokumente</div>
           <p class="max-w-2xl text-sm text-gray-500">Exports von Daten zu dieser Veranstaltung</p>
         </div>
         <ul
@@ -166,10 +166,10 @@ const files = [
                 >
               </div>
               <div
-                class="flex flex-1 items-center justify-between rounded-r-md border-b border-r border-t border-gray-200 bg-white"
+                class="flex flex-1 items-center justify-between rounded-r-md border-b border-r border-t border-gray-200 dark:"
               >
                 <div
-                  class="flex-1 px-4 py-2 text-sm text-gray-900"
+                  class="flex-1 px-4 py-2 text-sm transition-all"
                   :class="file.hoverColor"
                 >
                   {{ file.name }}
@@ -178,7 +178,7 @@ const files = [
                 <div class="flex-shrink-0 pr-2">
                   <button
                     type="button"
-                    class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-transparent bg-white text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                    class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-transparent text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
                     :class="file.hoverColor"
                   >
                     <ArrowDownTrayIcon
@@ -194,7 +194,7 @@ const files = [
       </Tab>
       <Tab>
         <div class="my-10">
-          <div class="text-lg font-semibold text-gray-900">Teilnahmebedingungen</div>
+          <div class="text-lg font-semibold">Teilnahmebedingungen</div>
           <p class="max-w-2xl text-sm text-gray-500">Bitte beachte die folgenden Teilnahmebedingungen</p>
         </div>
         <div
@@ -202,7 +202,7 @@ const files = [
           v-html="veranstaltung?.teilnahmeBedingungen"
         ></div>
         <div class="my-10">
-          <div class="text-lg font-semibold text-gray-900">Datenschutz</div>
+          <div class="text-lg font-semibold">Datenschutz</div>
           <p class="max-w-2xl text-sm text-gray-500">Bitte beachte die Hinweise zum Datenschutz</p>
         </div>
         <div
@@ -212,7 +212,7 @@ const files = [
       </Tab>
       <Tab>
         <div class="my-10">
-          <div class="text-lg font-semibold text-gray-900">Unterveranstaltungen</div>
+          <div class="text-lg font-semibold">Unterveranstaltungen</div>
           <p class="max-w-2xl text-sm text-gray-500">
             Zu dieser Veranstaltung wurden die folgenden Unterveranstaltungen erstellt.
           </p>

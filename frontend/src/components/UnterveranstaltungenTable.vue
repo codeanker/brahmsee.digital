@@ -77,7 +77,7 @@ function formatDate(indate) {
           </th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-gray-200 bg-white dark:bg-dark-primary">
+      <tbody class="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-dark-primary">
         <tr
           v-for="unterveranstaltung in unterveranstaltungenList"
           :key="unterveranstaltung.id"
@@ -121,17 +121,17 @@ function formatDate(indate) {
     </table>
     <div
       v-if="unterveranstaltungenList.length <= 0"
-      class="rounded-md bg-blue-50 p-4"
+      class="rounded-md bg-blue-50 dark:bg-blue-950 p-4 text-blue-500"
     >
       <div class="flex">
         <div class="flex-shrink-0">
           <CheckCircleIcon
-            class="h-5 w-5 text-blue-400"
+            class="h-5 w-5"
             aria-hidden="true"
           />
         </div>
         <div class="ml-3 flex-1 md:flex md:justify-between">
-          <p class="text-sm text-blue-700 mb-0">Es gibt bisher keine Anmeldungen.</p>
+          <p class="text-sm mb-0">Es gibt bisher keine Anmeldungen.</p>
         </div>
       </div>
     </div>

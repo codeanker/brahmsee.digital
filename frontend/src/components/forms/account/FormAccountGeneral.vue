@@ -154,15 +154,13 @@ const tabs = computed(() => {
 </script>
 
 <template>
-  <div class="bg-white pt-2 pb-8">
+  <div class="pt-2 pb-8">
     <div class="flex items-center justify-between">
       <div class="mx-auto max-w-xl lg:mx-0">
-        <h2 class="mt-2 text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">
+        <h2 class="mt-2 text-xl font-bold tracking-tight sm:text-2xl">
           <span>{{ stammdatenForm?.firstname }} {{ stammdatenForm?.lastname }}</span>
         </h2>
-        <p class="mt-2 text-md leading-6 text-gray-600">
-          Bearbeite die Accountdaten, Accounts sind Personen zugeordnet.
-        </p>
+        <p class="mt-2 text-md leading-6">Bearbeite die Accountdaten, Accounts sind Personen zugeordnet.</p>
       </div>
       <Badge
         v-if="edit && props?.account?.status"
@@ -332,7 +330,7 @@ const tabs = computed(() => {
 
           <div class="mt-8 flex gap-4">
             <Button
-              color="warning"
+              color="primary"
               :disabled="isLoadingPassword"
               @click="updatePassword"
             >

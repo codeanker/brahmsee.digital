@@ -9,9 +9,7 @@ let commitHash = import.meta.env.VITE_APP_COMMIT_HASH || '000000'
       class="h-10 mb-5 lg:mb-0"
       src="@/assets/images/gliederung_sh.png"
     />
-    <div
-      class="flex flex-col space-y-3 lg:space-y-0 text-sm lg:text-xs text-gray-500 text-left lg:text-right leading-4"
-    >
+    <div class="flex flex-col space-y-3 lg:space-y-0 text-sm lg:text-xs text-left lg:text-right leading-4">
       <RouterLink
         class="hover:text-gray-700 transition-all"
         :to="{

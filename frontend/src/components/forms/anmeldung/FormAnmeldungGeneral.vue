@@ -29,7 +29,7 @@ const { state: anmeldungenPerson } = useAsyncState(
     <div
       v-for="anmeldung in anmeldungenPerson"
       :key="anmeldung.id"
-      class="flex flex-col md:flex-row md:justify-between md:items-center space-y-4 md:space-y-0 py-4 border-t border-b border-gray-200"
+      class="flex flex-col md:flex-row md:justify-between md:items-center space-y-4 md:space-y-0 py-4 border-t border-b border-gray-200 dark:border-gray-700"
     >
       <div>
         <div class="flex space-x-1 items-center">

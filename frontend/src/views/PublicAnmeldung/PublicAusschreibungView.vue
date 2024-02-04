@@ -67,12 +67,12 @@ const tabs = [{ name: 'Ausschreibung', icon: MegaphoneIcon }]
       >
         <Tab>
           <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
-            <div class="text-lg font-semibold text-gray-900">Veranstaltungsdaten</div>
+            <div class="text-lg font-semibold">Veranstaltungsdaten</div>
           </div>
 
           <InfoList :infos="keyInfos" />
 
-          <div class="mt-5 lg:mt-10 mb-5 text-lg font-semibold text-gray-900">Beschreibung</div>
+          <div class="mt-5 lg:mt-10 mb-5 text-lg font-semibold">Beschreibung</div>
           <div class="px-3 py-5">
             <div
               class="prose prose-neutra"
