@@ -18,6 +18,9 @@ export const gliederungVerwaltungListProcedure = defineProcedure({
     const list = await prisma.gliederung.findMany({
       skip,
       take,
+      orderBy: {
+        name: 'asc',
+      },
       where: {
         name: {
           contains: options.input.filter.name,

@@ -89,3 +89,5 @@ typings/
 reports
 **/tsconfig.tsbuildinfo
 tsconfig.tsbuildinfo
+playwright-report/
+tests/tests-output/playwright

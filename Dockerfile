@@ -9,7 +9,6 @@ COPY api/package.json ./api/
 
 COPY packages/authentication/package.json ./packages/authentication/
 COPY packages/helpers/package.json ./packages/helpers/
-COPY packages/validation/package.json ./packages/validation/
 
 COPY package*.json ./
 COPY vendor/ ./vendor/

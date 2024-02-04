@@ -23,7 +23,9 @@
     "lint-staged": "lint-staged -c .lintstagedrc.js",
     "prepare": "husky install",
     "typecheck": "vue-tsc -b",
+    "preview": "docker compose -f docker-compose-preview.yml up --force-recreate",
     "test": "vitest",
+    "test:playwright": "playwright test",
     "test:all": "concurrently -n api,frontend,test -s command-test --kill-others \"npm run start:api\" \"npm run start:frontend\" \"npm run test -- run\"",
     "generate": "tsx ./api/src/cli/generate.ts"
   },
