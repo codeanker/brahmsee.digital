@@ -1,5 +1,12 @@
 <script setup lang="ts">
-import { ClipboardDocumentListIcon, MegaphoneIcon, WalletIcon } from '@heroicons/vue/24/outline'
+import {
+  ClipboardDocumentListIcon,
+  MegaphoneIcon,
+  WalletIcon,
+  DocumentIcon,
+  ArrowDownTrayIcon,
+  UsersIcon,
+} from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
@@ -51,11 +58,37 @@ const keyInfos = computed<KeyInfo[]>(() => {
 const tabs = computed(() => {
   let tabs = [
     { name: 'Allgemein', icon: WalletIcon },
+    { name: 'Dokumente', icon: DocumentIcon },
     { name: 'Bedingungen', icon: ClipboardDocumentListIcon },
     { name: 'Unterveranstaltungen', icon: MegaphoneIcon },
   ]
   return tabs
 })
+
+const getJWT = () => {
+  return localStorage.getItem('jwt')
+}
+
+const exportParams = `jwt=${getJWT()}&veranstaltungId=${route.params.veranstaltungId}`
+
+const files = [
+  {
+    name: 'Teilnehmendenliste',
+    icon: UsersIcon,
+    href: `/api/export/sheet/teilnehmendenliste?${exportParams}`,
+    description: 'Liste aller Teilnehmenden',
+    bgColor: 'bg-blue-600',
+    hoverColor: 'hover:text-blue-700',
+  },
+  {
+    name: 'Verpflegung',
+    initial: 'VP',
+    href: `/api/export/sheet/verpflegung?${exportParams}`,
+    description: 'Übersicht der Verpflegungswünsche',
+    bgColor: 'bg-primary-600',
+    hoverColor: 'hover:text-primary-700',
+  },
+]
 </script>
 
 <template>
@@ -92,6 +125,72 @@ const tabs = computed(() => {
             v-html="veranstaltung?.beschreibung"
           ></div>
         </div>
+      </Tab>
+      <Tab>
+        <div class="my-10">
+          <div class="text-lg font-semibold text-gray-900">Dokumente</div>
+          <p class="max-w-2xl text-sm text-gray-500">Exports von Daten zu dieser Veranstaltung</p>
+        </div>
+        <ul
+          role="list"
+          class="mt-3 grid grid-cols-1 gap-4"
+        >
+          <li
+            v-for="file in files"
+            :key="file.name"
+            class="col-span-1 flex rounded-md shadow-sm"
+          >
+            <a
+              :href="file.href"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex w-full"
+            >
+              <div
+                :class="[
+                  file.bgColor,
+                  'flex w-16 flex-shrink-0 items-center justify-center rounded-l-md text-sm font-medium text-white',
+                ]"
+              >
+                <component
+                  :is="file.icon"
+                  v-if="file.icon"
+                  class="h-7 w-7"
+                  aria-hidden="true"
+                ></component>
+
+                <span
+                  v-if="file.initial"
+                  class="text-lg"
+                  >{{ file.initial }}</span
+                >
+              </div>
+              <div
+                class="flex flex-1 items-center justify-between rounded-r-md border-b border-r border-t border-gray-200 bg-white"
+              >
+                <div
+                  class="flex-1 px-4 py-2 text-sm text-gray-900"
+                  :class="file.hoverColor"
+                >
+                  {{ file.name }}
+                  <p class="text-gray-500 mb-0">{{ file.description }}</p>
+                </div>
+                <div class="flex-shrink-0 pr-2">
+                  <button
+                    type="button"
+                    class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-transparent bg-white text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                    :class="file.hoverColor"
+                  >
+                    <ArrowDownTrayIcon
+                      class="h-5 w-5"
+                      aria-hidden="true"
+                    />
+                  </button>
+                </div>
+              </div>
+            </a>
+          </li>
+        </ul>
       </Tab>
       <Tab>
         <div class="my-10">
