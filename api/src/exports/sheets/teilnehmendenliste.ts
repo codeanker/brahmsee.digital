@@ -6,6 +6,7 @@ import { getEntityIdFromHeader } from '../../authentication'
 import { AnmeldungStatusMapping, GenderMapping } from '../../enumMappings'
 import prisma from '../../prisma'
 import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin'
+import { getSecurityWorksheet } from '../helpers/getSecurityWorksheet'
 
 export async function veranstaltungTeilnehmendenliste(ctx, next: () => Promise<void>) {
   const jwt = ctx.query.jwt
@@ -22,6 +23,15 @@ export async function veranstaltungTeilnehmendenliste(ctx, next: () => Promise<v
   const account = await prisma.account.findUnique({
     where: {
       id: parseInt(accountId),
+    },
+    select: {
+      role: true,
+      person: {
+        select: {
+          firstname: true,
+          lastname: true,
+        },
+      },
     },
   })
 
@@ -117,6 +127,10 @@ export async function veranstaltungTeilnehmendenliste(ctx, next: () => Promise<v
   const workbook = XLSX.utils.book_new()
   const worksheet = XLSX.utils.json_to_sheet(rows)
   XLSX.utils.book_append_sheet(workbook, worksheet, `Teilnehmendenliste`)
+
+  /** add Security Worksheet */
+  const { securityWorksheet, securityWorksheetName } = getSecurityWorksheet(XLSX, account, rows.length)
+  XLSX.utils.book_append_sheet(workbook, securityWorksheet, securityWorksheetName)
 
   const buf = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' })
   /* prepare response headers */
