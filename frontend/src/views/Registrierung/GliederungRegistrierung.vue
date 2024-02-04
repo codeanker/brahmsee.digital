@@ -4,15 +4,17 @@ import { CheckIcon } from '@heroicons/vue/24/solid'
 import { ref } from 'vue'
 
 import { apiClient } from '@/api'
-import BasicCheckbox from '@/components/BasicInputs/BasicCheckbox.vue'
-import BasicInput from '@/components/BasicInputs/BasicInput.vue'
-import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
-import BasicTypeahead from '@/components/BasicInputs/BasicTypeahead.vue'
 import Stammdaten, { type IStammdaten } from '@/components/forms/anmeldung/Stammdaten.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import type { RouterInput, RouterOutput } from '@codeanker/api'
 import type { TAccountSchema } from '@codeanker/api/src/services/account/schema/account.schema'
-import { ValidateForm } from '@codeanker/validation'
+import {
+  BasicInputCheckbox,
+  BasicInputTypeahead,
+  BasicInputText,
+  BasicInputPassword,
+} from '@codeanker/core-basic-inputs'
+import { ValidateForm } from '@codeanker/core-validation'
 
 const stammdatenForm = ref<IStammdaten>({
   firstname: '',
@@ -147,7 +149,7 @@ const oauthRegistration = ref()
           <Stammdaten v-model="stammdatenForm"></Stammdaten>
           <hr class="my-5" />
           <div class="grid grid-flow-row lg:grid-cols-2 gap-5">
-            <BasicTypeahead
+            <BasicInputTypeahead
               v-model="registrationForm.gliederung"
               :query="queryObject"
               :input-formatter="(result) => result?.name"
@@ -158,7 +160,7 @@ const oauthRegistration = ref()
               required
               placeholder="Gliederung eingeben"
             />
-            <BasicInput
+            <BasicInputText
               v-if="!oauthRegistration"
               v-model="registrationForm.email"
               label="E-Mail Adresse"
@@ -167,7 +169,7 @@ const oauthRegistration = ref()
               required
               placeholder="E-Mail Adresse eingeben"
             />
-            <BasicPassword
+            <BasicInputPassword
               v-if="!oauthRegistration"
               v-model="registrationForm.password"
               label="Passwort"
@@ -178,7 +180,7 @@ const oauthRegistration = ref()
           </div>
           <hr class="my-5" />
           <div class="flex items-start mb-5 space-x-3">
-            <BasicCheckbox
+            <BasicInputCheckbox
               v-model="registrationForm.dataprivacy"
               required
               class="mt-1"
@@ -194,7 +196,6 @@ const oauthRegistration = ref()
               gelesen und akzeptiere diese.
             </div>
           </div>
-
           <div
             v-if="errorCreate"
             class="bg-danger-400 mb-5 rounded p-3 text-center text-white"

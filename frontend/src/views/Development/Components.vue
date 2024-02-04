@@ -3,13 +3,11 @@ import { ref } from 'vue'
 
 import ComponentPreview from './components/ComponentPreview.vue'
 
-import BasicCheckbox from '@/components/BasicInputs/BasicCheckbox.vue'
-import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
 import BasicEditor from '@/components/BasicInputs/BasicEditor.vue'
-import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import Loading from '@/components/UIComponents/Loading.vue'
+import { BasicInputCheckbox, BasicInputDatepicker, BasicInputText } from '@codeanker/core-basic-inputs'
 
 let checkboxModel = ref(false)
 let basicInputModel = ref('')
@@ -133,20 +131,20 @@ const basicEditorCode = `<BasicEditor
         :code="basicInputCode"
       >
         <div class="flex items-center space-x-2">
-          <BasicInput
+          <BasicInputText
             id="BasicInput"
             v-model="basicInputModel"
             label="BasicInput"
             name="BasicInput"
             required
-          ></BasicInput>
-          <BasicInput
+          />
+          <BasicInputText
             id="BasicInput"
             v-model="basicInputModel"
             label="BasicInput"
             name="BasicInput"
             disabled
-          ></BasicInput>
+          />
         </div>
       </ComponentPreview>
       <ComponentPreview
@@ -155,10 +153,10 @@ const basicEditorCode = `<BasicEditor
         :code="checkboxCode"
       >
         <div class="flex items-center space-x-2">
-          <BasicCheckbox
+          <BasicInputCheckbox
             v-model="checkboxModel"
             label="Checkbox"
-          ></BasicCheckbox>
+          />
         </div>
       </ComponentPreview>
       <ComponentPreview
@@ -167,10 +165,10 @@ const basicEditorCode = `<BasicEditor
         :code="checkboxCode"
       >
         <div class="flex items-center space-x-2">
-          <BasicDatepicker
+          <BasicInputDatepicker
             v-model="basicDatepickerModel"
             label="Datepicker"
-          ></BasicDatepicker>
+          />
         </div>
       </ComponentPreview>
       <ComponentPreview

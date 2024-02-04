@@ -1,10 +1,8 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
 
-import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
-import BasicInput from '@/components/BasicInputs/BasicInput.vue'
-import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
 import { Gender, GenderMapping, getEnumOptions } from '@codeanker/api/src/enumMappings'
+import { BasicInputSelect, BasicInputDatepicker, BasicInputText } from '@codeanker/core-basic-inputs'
 
 export interface IStammdaten {
   firstname: string
@@ -37,25 +35,25 @@ const identificationOptions = ref(getEnumOptions(GenderMapping))
 
 <template>
   <div class="grid grid-flow-row lg:grid-cols-2 gap-5">
-    <BasicInput
+    <BasicInputText
       v-model="model.firstname"
       label="Vorname"
       placeholder="Vornamen eingeben"
       required
     />
-    <BasicInput
+    <BasicInputText
       v-model="model.lastname"
       label="Nachname"
       placeholder="Nachname eingeben"
       required
     />
-    <BasicSelect
+    <BasicInputSelect
       v-model="model.gender"
       label="Geschlecht"
       required
       :options="identificationOptions"
     />
-    <BasicDatepicker
+    <BasicInputDatepicker
       v-model="model.birthday"
       label="Geburtsdatum"
       format="dd.MM.yyyy"

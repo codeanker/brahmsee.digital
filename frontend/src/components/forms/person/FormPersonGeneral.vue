@@ -14,13 +14,12 @@ import type { ITShirtBestellung } from './FormTShirtBestellungGeneral.vue'
 import FormTShirtBestellungGeneral from './FormTShirtBestellungGeneral.vue'
 
 import { apiClient } from '@/api'
-import BasicCheckbox from '@/components/BasicInputs/BasicCheckbox.vue'
-import BasicTypeahead from '@/components/BasicInputs/BasicTypeahead.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import Loading from '@/components/UIComponents/Loading.vue'
 import type { RouterOutput } from '@codeanker/api'
 import type { Gliederung } from '@codeanker/api/src/services/gliederung/schema/gliederung.schema'
-import { ValidateForm } from '@codeanker/validation'
+import { BasicInputCheckbox, BasicInputTypeahead } from '@codeanker/core-basic-inputs'
+import { ValidateForm } from '@codeanker/core-validation'
 
 export interface FormPersonGeneralSubmit {
   stammdaten: IStammdaten
@@ -122,7 +121,7 @@ const submit = () => {
     <hr class="my-5" />
 
     <template v-if="!isPublicAnmeldung">
-      <BasicTypeahead
+      <BasicInputTypeahead
         v-model="gliederung"
         :query="queryGliederungen"
         :input-formatter="(result) => result?.name"
@@ -145,13 +144,13 @@ const submit = () => {
       <FormTShirtBestellungGeneral v-model="tshirtForm" />
       <hr class="my-5" />
 
-      <BasicCheckbox
+      <BasicInputCheckbox
         v-model="acceptTeilnahmebedingungen"
         label="Ich habe die allgemeinen Teilnahmebedingungen gelesen und akzeptiere diese."
         class="mt-1 font-medium"
         required
       />
-      <BasicCheckbox
+      <BasicInputCheckbox
         v-model="acceptDatenschutz"
         label="Ich habe die gesonderten Datenschutzerklärung gelesen und akzeptiere diese."
         class="mt-1 font-medium"

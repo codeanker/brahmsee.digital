@@ -9,8 +9,10 @@
   "dependencies": {
     "@codeanker/api": "*",
     "@codeanker/cookies": "^1.0.0",
+    "@codeanker/core-basic-inputs": "file:../vendor/codeanker-core-basic-inputs-1.0.0.tgz",
+    "@codeanker/core-ui-components": "file:../vendor/codeanker-core-ui-components-1.0.0.tgz",
+    "@codeanker/core-validation": "file:../vendor/codeanker-core-validation-1.0.0.tgz",
     "@codeanker/helpers": "^1.0.0",
-    "@codeanker/validation": "^1.0.0",
     "@headlessui/vue": "^1.7.16",
     "@heroicons/vue": "^2.0.18",
     "@tailwindcss/forms": "^0.5.7",

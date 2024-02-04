@@ -3,10 +3,10 @@ import { useAsyncState } from '@vueuse/core'
 import { ref } from 'vue'
 
 import { apiClient } from '@/api'
-import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import router from '@/router'
 import type { RouterInput } from '@codeanker/api'
+import { BasicInputText } from '@codeanker/core-basic-inputs'
 
 const props = defineProps<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -77,7 +77,7 @@ const handle = async (event: Event) => {
   <form @submit="handle">
     <div class="grid grid-cols-1 sm:grid-cols-6 gap-6">
       <div class="sm:col-span-3">
-        <BasicInput
+        <BasicInputText
           v-model="gliederungCopy.name"
           label="Name"
           name="name"
@@ -86,7 +86,7 @@ const handle = async (event: Event) => {
       </div>
 
       <div class="sm:col-span-3">
-        <BasicInput
+        <BasicInputText
           v-model="gliederungCopy.edv"
           label="EDV"
           name="edv"

@@ -5,11 +5,10 @@ import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { apiClient } from '@/api'
-import BasicInput from '@/components/BasicInputs/BasicInput.vue'
-import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import Loading from '@/components/UIComponents/Loading.vue'
-import { ValidateForm } from '@codeanker/validation'
+import { BasicInputPassword, BasicInputText } from '@codeanker/core-basic-inputs'
+import { ValidateForm } from '@codeanker/core-validation'
 
 const email = ref('')
 const password = ref('')
@@ -63,7 +62,7 @@ const showSet = computed(() => {
             class="space-y-8"
             @submit="requestPasswordReset('request')"
           >
-            <BasicInput
+            <BasicInputText
               id="email"
               v-model="email"
               type="email"
@@ -71,7 +70,7 @@ const showSet = computed(() => {
               placeholder="E-Mail"
               label="E-Mail"
               required
-            ></BasicInput>
+            />
             <Button
               color="primary"
               type="submit"
@@ -99,14 +98,14 @@ const showSet = computed(() => {
             class="space-y-8"
             @submit="requestPasswordReset('reset')"
           >
-            <BasicPassword
+            <BasicInputPassword
               id="password"
               v-model="password"
               class="w-full"
               placeholder="Passwort"
               label="Passwort"
               required
-            ></BasicPassword>
+            />
             <Button
               color="primary"
               type="submit"

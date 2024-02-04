@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import BasicInput from '@/components/BasicInputs/BasicInput.vue'
+import { BasicInputText, BasicInputPhone } from '@codeanker/core-basic-inputs'
 
 export interface IContact {
   email: string
@@ -30,16 +30,15 @@ const model = computed({
 
 <template>
   <div class="flex flex-col gap-y-5">
-    <BasicInput
+    <BasicInputText
       v-model="model.email"
       type="email"
       label="E-Mail"
       placeholder="Vornamen eingeben"
       required
     />
-    <BasicInput
+    <BasicInputPhone
       v-model="model.telefon"
-      type="tel"
       label="Telefonnummer"
       placeholder="Nachname eingeben"
       required

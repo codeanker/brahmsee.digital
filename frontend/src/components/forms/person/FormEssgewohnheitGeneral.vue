@@ -6,8 +6,6 @@ import { computed, ref } from 'vue'
 import carrotRegular from '@/assets/images/icons/carrot-regular.svg'
 import seedlingRegular from '@/assets/images/icons/seedling-regular.svg'
 import steakRegular from '@/assets/images/icons/steak-regular.svg'
-import BasicDropdown from '@/components/BasicInputs/BasicDropdown.vue'
-import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
 import {
   EssgewohnheitMapping,
@@ -15,6 +13,8 @@ import {
   getEnumOptions,
   type NahrungsmittelIntoleranzEnum,
 } from '@codeanker/api/src/enumMappings'
+import { BasicInputText } from '@codeanker/core-basic-inputs'
+import { Dropdown } from '@codeanker/core-ui-components'
 
 export interface IEssgewohnheiten {
   essgewohnheit: keyof typeof EssgewohnheitMapping
@@ -75,13 +75,13 @@ const addWeitereIntoleranzen = () => {
 </script>
 
 <template>
-  <BasicDropdown
+  <Dropdown
     :right="false"
     :append="true"
     class="w-full"
     label="Essgewohnheit"
     required
-    button-style="w-full text-left"
+    :button-style="['w-full text-left']"
   >
     <template #buttonContent>
       <button
@@ -120,7 +120,7 @@ const addWeitereIntoleranzen = () => {
         </button>
       </MenuItem>
     </template>
-  </BasicDropdown>
+  </Dropdown>
 
   <p class="font-medium mt-5">Nahrungsmittelintoleranzen</p>
   <div class="flex flex-col gap-2">
@@ -143,7 +143,7 @@ const addWeitereIntoleranzen = () => {
     </div>
   </div>
 
-  <BasicInput
+  <BasicInputText
     v-model="tempWeitereInteloranzen"
     label="Weitere Intoleranzen"
     placeholder="Weitere Intoleranzen eingeben"
@@ -159,7 +159,7 @@ const addWeitereIntoleranzen = () => {
         <span>Hinzufügen</span>
       </div>
     </template>
-  </BasicInput>
+  </BasicInputText>
 
   <div
     v-if="model.weitereIntoleranzen.length !== 0"

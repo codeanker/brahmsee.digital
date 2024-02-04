@@ -4,9 +4,8 @@ import type { z } from 'zod'
 
 import { protectedProcedure, publicProcedure, router } from '../trpc'
 
-type GetProcedureConfig<TProcedure extends ProcedureBuilder<any>> = TProcedure extends ProcedureBuilder<infer T>
-  ? T
-  : never
+type GetProcedureConfig<TProcedure extends ProcedureBuilder<any>> =
+  TProcedure extends ProcedureBuilder<infer T> ? T : never
 
 type ProtectedProcedureConfig = GetProcedureConfig<ReturnType<typeof protectedProcedure>>
 type PublicProcedureConfig = GetProcedureConfig<typeof publicProcedure>

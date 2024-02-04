@@ -2,12 +2,11 @@
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import BasicInput from '@/components/BasicInputs/BasicInput.vue'
-import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import Loading from '@/components/UIComponents/Loading.vue'
 import { login, loginError, loginPending } from '@/composables/useAuthentication'
-import { ValidateForm } from '@codeanker/validation'
+import { BasicInputPassword, BasicInputText } from '@codeanker/core-basic-inputs'
+import { ValidateForm } from '@codeanker/core-validation'
 
 const router = useRouter()
 const route = useRoute()
@@ -61,7 +60,7 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
           class="space-y-8"
           @submit="loginWithRecirect"
         >
-          <BasicInput
+          <BasicInputText
             id="email"
             v-model="email"
             type="email"
@@ -69,15 +68,15 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
             placeholder="E-Mail"
             label="E-Mail"
             required
-          ></BasicInput>
-          <BasicPassword
+          />
+          <BasicInputPassword
             id="password"
             v-model="password"
             class="w-full"
             placeholder="Passwort"
             label="Passwort"
             required
-          ></BasicPassword>
+          />
           <div class="flex items-center justify-end">
             <div class="text-sm">
               <RouterLink

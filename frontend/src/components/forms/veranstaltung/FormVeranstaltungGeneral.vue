@@ -3,15 +3,12 @@ import { useAsyncState } from '@vueuse/core'
 import { ref } from 'vue'
 
 import { apiClient } from '@/api'
-import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
 import BasicEditor from '@/components/BasicInputs/BasicEditor.vue'
-import BasicInput from '@/components/BasicInputs/BasicInput.vue'
-import BasicInputNumber from '@/components/BasicInputs/BasicInputNumber.vue'
-import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import router from '@/router'
 import type { RouterInput } from '@codeanker/api'
-import { ValidateForm } from '@codeanker/validation'
+import { BasicInputSelect, BasicInputNumber, BasicInputDatepicker, BasicInputText } from '@codeanker/core-basic-inputs'
+import { ValidateForm } from '@codeanker/core-validation'
 
 const props = defineProps<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -101,7 +98,7 @@ const { state: orte } = useAsyncState(async () => {
   >
     <div class="grid grid-cols-1 lg:grid-cols-6 gap-6">
       <div class="lg:col-span-full">
-        <BasicInput
+        <BasicInputText
           v-model="veranstaltungCopy.name"
           required
           label="Name"
@@ -110,7 +107,7 @@ const { state: orte } = useAsyncState(async () => {
       </div>
 
       <div class="lg:col-span-3">
-        <BasicDatepicker
+        <BasicInputDatepicker
           v-model="veranstaltungCopy.beginn"
           required
           format="dd.MM.yyyy"
@@ -120,7 +117,7 @@ const { state: orte } = useAsyncState(async () => {
       </div>
 
       <div class="lg:col-span-3">
-        <BasicDatepicker
+        <BasicInputDatepicker
           v-model="veranstaltungCopy.ende"
           required
           format="dd.MM.yyyy"
@@ -130,7 +127,7 @@ const { state: orte } = useAsyncState(async () => {
       </div>
 
       <div class="lg:col-span-3">
-        <BasicDatepicker
+        <BasicInputDatepicker
           v-model="veranstaltungCopy.meldebeginn"
           required
           format="dd.MM.yyyy"
@@ -140,7 +137,7 @@ const { state: orte } = useAsyncState(async () => {
       </div>
 
       <div class="lg:col-span-3">
-        <BasicDatepicker
+        <BasicInputDatepicker
           v-model="veranstaltungCopy.meldeschluss"
           required
           format="dd.MM.yyyy"
@@ -168,7 +165,7 @@ const { state: orte } = useAsyncState(async () => {
       </div>
 
       <div class="lg:col-span-3">
-        <BasicSelect
+        <BasicInputSelect
           v-model="veranstaltungCopy.ortId"
           required
           label="Ort"

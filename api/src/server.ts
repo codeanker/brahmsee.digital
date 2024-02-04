@@ -62,11 +62,11 @@ app.use(
 
 app.use(router.routes())
 
-// app.use(async (ctx, next) => {
-//   // serve index.html as catch all
-//   ctx.url = '/'
-//   await serve('./static')(ctx, next)
-// })
+app.use(async (ctx, next) => {
+  // serve index.html as catch all
+  ctx.url = '/'
+  await serve('./static')(ctx, next)
+})
 
 app.listen(config.server.port, config.server.host)
 logger.info(`app listening on http://0.0.0.0:${config.server.port}`)

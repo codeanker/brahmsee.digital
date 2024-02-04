@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import BasicCheckbox from '@/components/BasicInputs/BasicCheckbox.vue'
-import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
 import { KonfektionsgroesseMapping, getEnumOptions } from '@codeanker/api/src/enumMappings'
+import { BasicInputSelect, BasicInputCheckbox } from '@codeanker/core-basic-inputs'
 
 export interface ITShirtBestellung {
   bestellen: boolean
@@ -35,12 +34,12 @@ const konfektionsgroesseOptions = getEnumOptions(KonfektionsgroesseMapping)
 <template>
   <div class="font-medium mb-5">T-Shirt Bestellung</div>
   <div class="grid grid-flow-row lg:grid-cols-2 gap-5 items-start">
-    <BasicCheckbox
+    <BasicInputCheckbox
       v-model="model.bestellen"
       label="Ich möchte ein T-Shirt bestellen"
       class="mt-1 font-medium"
     />
-    <BasicSelect
+    <BasicInputSelect
       v-if="model.bestellen"
       v-model="model.groesse"
       label="Konfektionsgröße"

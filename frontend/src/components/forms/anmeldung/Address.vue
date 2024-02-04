@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 
-import BasicInput from '@/components/BasicInputs/BasicInput.vue'
+import { BasicInputText } from '@codeanker/core-basic-inputs'
 
 export interface IAddress {
   street: string
@@ -33,26 +33,26 @@ const model = computed({
 <template>
   <div>
     <div class="grid grid-flow-row lg:grid-cols-2 gap-5">
-      <BasicInput
+      <BasicInputText
         v-model="model.street"
         label="Straße"
         placeholder="Straße eingeben"
         class="grow"
         required
       />
-      <BasicInput
+      <BasicInputText
         v-model="model.number"
         label="Hausnummer"
         placeholder="Hausnummer eingeben"
         required
       />
-      <BasicInput
+      <BasicInputText
         v-model="model.zip"
         label="Postleitzahl"
         placeholder="Postleitzahl eingeben"
         required
       />
-      <BasicInput
+      <BasicInputText
         v-model="model.city"
         label="Ort"
         placeholder="Ort eingeben"
