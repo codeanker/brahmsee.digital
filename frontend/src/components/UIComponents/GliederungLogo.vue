@@ -19,8 +19,8 @@ const formattedName = computed(() => {
       src="@/assets/images/dlrg-jugend-vollfarbe.svg"
       class="h-full"
     />
-    <div class="h-3/4 border-r-2 border-black rounded-full" />
-    <div class="text-black text-xl flex flex-col leading-6 mulish">
+    <div class="h-3/4 border-r-2 border-black dark:border-gray-200 rounded-full" />
+    <div class="text-black dark:text-gray-200 text-xl flex flex-col leading-6 mulish">
       <div>DLRG-Jugend</div>
       <div>{{ formattedName }}</div>
     </div>

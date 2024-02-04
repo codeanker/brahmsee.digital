@@ -185,7 +185,16 @@ const oauthRegistration = ref()
               required
               class="mt-1"
             />
-            <div class="font-medium">Ich habe die Datenschutzerklärung gelesen und akzeptiere diese.</div>
+            <div class="font-medium">
+              Ich habe die
+              <RouterLink
+                :to="{ name: 'Datenschutz' }"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Datenschutzerklärung</RouterLink
+              >
+              gelesen und akzeptiere diese.
+            </div>
           </div>
           <div
             v-if="errorCreate"

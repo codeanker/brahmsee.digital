@@ -89,7 +89,13 @@ const { state: orte } = useAsyncState(async () => {
 </script>
 
 <template>
-  <ValidateForm @submit="handle">
+  <h5>
+    Veranstaltung <span v-if="veranstaltung">{{ veranstaltung.name }}</span>
+  </h5>
+  <ValidateForm
+    class="mt-5 lg:mt-10"
+    @submit="handle"
+  >
     <div class="grid grid-cols-1 lg:grid-cols-6 gap-6">
       <div class="lg:col-span-full">
         <BasicInputText

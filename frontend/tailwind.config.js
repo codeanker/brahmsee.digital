@@ -29,6 +29,10 @@ module.exports = {
         gray: colors.slate,
         white: colors.white,
         black: colors.black,
+        dark: {
+          primary: colors.gray[950],
+          secondary: colors.gray[900],
+        },
       },
       zIndex: {
         '-1': '-1',
