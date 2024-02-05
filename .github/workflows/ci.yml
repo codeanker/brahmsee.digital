@@ -36,9 +36,29 @@ jobs:
       - run: npm ci
       - run: npm run lint
 
+  prepare:
+    name: 🔨 Initialisieren
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.prop }}
+      commit: ${{ steps.set-commit.outputs.commit }}
+    steps:
+    - uses: actions/checkout@v4
+    - name: get version
+      id: version
+      uses: notiz-dev/github-action-json-property@v0.2.0
+      with:
+          path: 'package.json'
+          prop_path: 'version'
+    - name: set commit
+      id: set-commit
+      run: echo "commit=${GITHUB_SHA:0:7}" >> $GITHUB_OUTPUT
+
+
   # build and upload docker image to github container registry
   build:
     name: 🏗️ Build
+    needs: prepare
     runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU
@@ -63,6 +83,10 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            commitHash=${{needs.prepare.outputs.commit}}
+            version=${{needs.prepare.outputs.version}}
+            mode=${{ env.MODE }}
   typecheck:
     name: 🙆‍♀️ Typecheck
     runs-on: ubuntu-latest

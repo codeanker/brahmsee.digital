@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: {{ .Chart.Name }}-api
-          image: codeanker/{{ .Chart.Name }}-api:{{ .Values.global.commit }}
+          image: ghcr.io/codeanker/brahmsee.digital:{{ .Values.global.commit }}
           imagePullPolicy: Always
           ports:
             - containerPort: 80
