@@ -55,7 +55,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: codeanker/brahmsee.digital:latest
+          tags: ghcr.io/codeanker/brahmsee.digital:latest
   typecheck:
     name: 🙆‍♀️ Typecheck
     runs-on: ubuntu-latest
