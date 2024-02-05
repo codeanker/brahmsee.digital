@@ -51,11 +51,18 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/codeanker/brahmsee.digital:latest
+          tags: type=sha,prefix=
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          push: true
-          tags: ghcr.io/codeanker/brahmsee.digital:latest
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
   typecheck:
     name: 🙆‍♀️ Typecheck
     runs-on: ubuntu-latest
