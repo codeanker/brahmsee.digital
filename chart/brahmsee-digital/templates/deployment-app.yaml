@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Chart.Name }}-api
+  name: {{ .Chart.Name }}-app
   labels:
     {{- include "codeanker.label" . | indent 4 }}
 spec:
-  replicas: {{ .Values.api.replicaCount }}
+  replicas: {{ .Values.app.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Chart.Name }}-api
+      app: {{ .Chart.Name }}-app
   template:
     metadata:
       labels:
-        app: {{ .Chart.Name }}-api
+        app: {{ .Chart.Name }}-app
         {{- include "codeanker.label" . | indent 8 }}
     spec:
       containers:
-        - name: {{ .Chart.Name }}-api
+        - name: {{ .Chart.Name }}-app
           image: ghcr.io/codeanker/brahmsee.digital:{{ .Values.global.commit }}
           imagePullPolicy: Always
           ports:
@@ -33,7 +33,7 @@ spec:
 
             # Mail
             - name: MAIL_SENDMAILS
-              value: "{{ .Values.api.sendgrid.enabled }}"
+              value: "{{ .Values.app.sendgrid.enabled }}"
             - name: MAIL_SENDGRID_APIKEY
               valueFrom:
                 secretKeyRef:
@@ -83,16 +83,16 @@ spec:
           #   successThreshold: 1
           #   timeoutSeconds: 5
           resources:
-{{ toYaml .Values.api.resources | indent 12 }}
+{{ toYaml .Values.app.resources | indent 12 }}
       imagePullSecrets:
         - name: docker-key
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Chart.Name }}-api-svc
+  name: {{ .Chart.Name }}-app-svc
   labels:
-    app: {{ .Chart.Name }}-api
+    app: {{ .Chart.Name }}-app
     {{- include "codeanker.label" . | indent 4 }}
 spec:
   ports:
@@ -100,4 +100,4 @@ spec:
       port: 80
       targetPort: 80
   selector:
-    app: {{ .Chart.Name }}-api
+    app: {{ .Chart.Name }}-app
