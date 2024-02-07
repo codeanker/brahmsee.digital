@@ -30,7 +30,7 @@ export const configSchema = z.strictObject({
   }),
 
   mail: z.strictObject({
-    sendMails: z.boolean(),
+    sendMails: z.union([z.literal('true'), z.literal('false')]),
     sendgridApiKey: z.string(),
   }),
 
