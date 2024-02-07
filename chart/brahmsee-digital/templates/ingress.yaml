@@ -26,7 +26,7 @@ spec:
     - match:  Host(`{{ . }}`) && PathPrefix(`/`)
       kind: Rule
       services:
-        - name: {{ $.Chart.Name }}-api-svc
+        - name: {{ $.Chart.Name }}-app-svc
           port: 80
       middlewares:
         - name: stripapiprefix
