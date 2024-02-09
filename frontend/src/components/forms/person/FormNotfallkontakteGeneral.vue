@@ -4,7 +4,7 @@ import { computed, ref } from 'vue'
 
 import Button from '@/components/UIComponents/Button.vue'
 import KontaktItem from '@/components/UIComponents/KontaktItem.vue'
-import type { TKontaktSchema } from '@codeanker/api/src/services/kontakt/schema/kontakt.schema'
+import type { TKontaktSchema } from '@codeanker/api'
 
 export interface INotfallKontakte {
   personen: TKontaktSchema[]

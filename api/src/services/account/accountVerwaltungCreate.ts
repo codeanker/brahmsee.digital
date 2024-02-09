@@ -3,7 +3,8 @@ import z from 'zod'
 import prisma from '../../prisma'
 import { defineProcedure } from '../../types/defineProcedure'
 
-import { accountSchema, getAccountCreateData, sendMailConfirmEmailRequest } from './schema/account.schema'
+import { sendMailConfirmEmailRequest } from './helpers/sendMailConfirmEmailRequest'
+import { accountSchema, getAccountCreateData } from './schema/account.schema'
 
 export const accountVerwaltungCreateProcedure = defineProcedure({
   key: 'verwaltungCreate',
