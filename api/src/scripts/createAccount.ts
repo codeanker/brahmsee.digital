@@ -46,7 +46,7 @@ async function createUser() {
     data: {
       ...accountData,
       status: 'AKTIV',
-      activationToken: '',
+      activationToken: null,
     },
     select: {
       id: true,
