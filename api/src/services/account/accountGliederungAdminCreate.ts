@@ -8,7 +8,8 @@ import prisma from '../../prisma'
 import { ZOauthRegisterJwtPayloadSchema } from '../../routes/connect'
 import { defineProcedure } from '../../types/defineProcedure'
 
-import { getAccountCreateData, sendMailConfirmEmailRequest } from './schema/account.schema'
+import { sendMailConfirmEmailRequest } from './helpers/sendMailConfirmEmailRequest'
+import { getAccountCreateData } from './schema/account.schema'
 
 const ZAccountGliederungAdminCreateInput = z.strictObject({
   data: z.strictObject({

@@ -7,4 +7,4 @@ export const roleMapping = defineEnumMapping<Prisma.AccountCreateInput['role']>(
   ADMIN: { human: 'System Admin' },
 })
 
-export { Role }
+export { type Role }

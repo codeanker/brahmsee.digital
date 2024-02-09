@@ -24,7 +24,7 @@
   },
   "loggingLevel": "info",
   "mail":{
-    "sendMails": true,
+    "sendMails": "true",
     "sendgridApiKey": ""
   }
 }

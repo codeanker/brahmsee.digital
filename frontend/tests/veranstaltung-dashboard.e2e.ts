@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import dayjs from 'dayjs'
-import { Browser, chromium, BrowserContext, firefox, webkit, Page } from 'playwright'
+import { type Browser, chromium, type BrowserContext } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 
-import { testUtils } from '@codeanker/api'
+import * as testUtils from '@codeanker/api/test'
 
 describe(`View: veranstaltung/dashboard`, () => {
   let browser: Browser

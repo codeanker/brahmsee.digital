@@ -13,7 +13,7 @@ import Button from '@/components/UIComponents/Button.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
 import router from '@/router'
 import type { RouterInput } from '@codeanker/api'
-import { UnterveranstaltungTypeMapping, getEnumOptions } from '@codeanker/api/src/enumMappings'
+import { UnterveranstaltungTypeMapping, getEnumOptions } from '@codeanker/api'
 import { ValidateForm } from '@codeanker/validation'
 
 const props = defineProps<{

@@ -13,13 +13,13 @@ import {
   EssgewohnheitMapping,
   NahrungsmittelIntoleranzMapping,
   getEnumOptions,
-  type NahrungsmittelIntoleranzEnum,
-} from '@codeanker/api/src/enumMappings'
+  type NahrungsmittelIntoleranz,
+} from '@codeanker/api'
 
 export interface IEssgewohnheiten {
   essgewohnheit: keyof typeof EssgewohnheitMapping
   intoleranzen: {
-    [key in NahrungsmittelIntoleranzEnum]: boolean
+    [key in NahrungsmittelIntoleranz]: boolean
   }
   weitereIntoleranzen: string[]
 }
