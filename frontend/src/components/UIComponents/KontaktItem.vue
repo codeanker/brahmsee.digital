@@ -5,7 +5,7 @@ import { ref, watch } from 'vue'
 import BasicCheckbox from '../BasicInputs/BasicCheckbox.vue'
 
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
-import type { TKontaktSchema } from '@codeanker/api/src/services/kontakt/schema/kontakt.schema'
+import type { TKontaktSchema } from '@codeanker/api'
 
 const props = defineProps<{
   modelValue: Partial<TKontaktSchema>
