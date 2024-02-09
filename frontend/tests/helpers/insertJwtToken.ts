@@ -1,4 +1,4 @@
-import { Page } from 'playwright'
+import type { Page } from 'playwright'
 
 export async function insertJwtToken(page: Page, token: string, letzteVeranstaltung: number) {
   await page.goto(`https://localhost:8080/login`)

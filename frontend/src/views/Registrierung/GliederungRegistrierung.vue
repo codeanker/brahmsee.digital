@@ -10,8 +10,7 @@ import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
 import BasicTypeahead from '@/components/BasicInputs/BasicTypeahead.vue'
 import Stammdaten, { type IStammdaten } from '@/components/forms/anmeldung/Stammdaten.vue'
 import Button from '@/components/UIComponents/Button.vue'
-import type { RouterInput, RouterOutput } from '@codeanker/api'
-import type { TAccountSchema } from '@codeanker/api/src/services/account/schema/account.schema'
+import type { RouterInput, RouterOutput, TAccountSchema } from '@codeanker/api'
 import { ValidateForm } from '@codeanker/validation'
 
 const stammdatenForm = ref<IStammdaten>({

@@ -1,6 +1,5 @@
 {
   "name": "@codeanker/api",
-  "main": "./src/index.ts",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -8,6 +7,16 @@
     "dev": "tsx watch --clear-screen=false --env-file .env src/server.ts",
     "createAccount": "tsx src/scripts/createAccount.ts",
     "postinstall": "prisma generate"
+  },
+  "exports": {
+    ".": {
+      "import": "./src/client.ts",
+      "require": "./src/client.ts"
+    },
+    "./test": {
+      "import": "./src/util/test.ts",
+      "require": "./src/util/test.ts"
+    }
   },
   "prisma": {
     "seed": "tsx prisma/seeders/index.ts"
