@@ -8,4 +8,4 @@ export const GenderMapping = defineEnumMapping<Gender>({
   UNSPECIFIED: { human: 'Divers' },
 })
 
-export { Gender }
+export { type Gender }

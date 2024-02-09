@@ -7,7 +7,7 @@ import { apiClient } from '@/api'
 import AnmeldungStatusSelect from '@/components/AnmeldungStatusSelect.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
 import { getAnmeldungStatusColor } from '@/helpers/getAnmeldungStatusColors'
-import { AnmeldungStatus, AnmeldungStatusMapping } from '@codeanker/api/src/enumMappings'
+import { type AnmeldungStatus, AnmeldungStatusMapping } from '@codeanker/api'
 import { dayjs } from '@codeanker/helpers'
 
 const props = withDefaults(
@@ -46,20 +46,25 @@ function loadAnmeldungen() {
 }
 const anmeldungen = loadAnmeldungen()
 
-const stats = computed(() => {
+const stats = computed<
+  {
+    name: AnmeldungStatus
+    value: number
+  }[]
+>(() => {
   return [
-    { name: AnmeldungStatus.OFFEN, value: anmeldungen.value.filter((a) => a.status === AnmeldungStatus.OFFEN).length },
+    { name: 'OFFEN', value: anmeldungen.value.filter((a) => a.status === 'OFFEN').length },
     {
-      name: AnmeldungStatus.BESTAETIGT,
-      value: anmeldungen.value.filter((a) => a.status === AnmeldungStatus.BESTAETIGT).length,
+      name: 'BESTAETIGT',
+      value: anmeldungen.value.filter((a) => a.status === 'BESTAETIGT').length,
     },
     {
-      name: AnmeldungStatus.STORNIERT,
-      value: anmeldungen.value.filter((a) => a.status === AnmeldungStatus.STORNIERT).length,
+      name: 'STORNIERT',
+      value: anmeldungen.value.filter((a) => a.status === 'STORNIERT').length,
     },
     {
-      name: AnmeldungStatus.ABGELEHNT,
-      value: anmeldungen.value.filter((a) => a.status === AnmeldungStatus.ABGELEHNT).length,
+      name: 'ABGELEHNT',
+      value: anmeldungen.value.filter((a) => a.status === 'ABGELEHNT').length,
     },
   ]
 })
