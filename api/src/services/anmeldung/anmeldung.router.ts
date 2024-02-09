@@ -2,7 +2,7 @@
 import { mergeRouters } from '../../trpc'
 
 import { anmeldungGliederungGetProcedure } from './anmeldungGliederungGet'
-import { anmeldungGliederungdListProcedure } from './anmeldungGliederungList'
+import { anmeldungGliederungCountProcedure, anmeldungGliederungdListProcedure } from './anmeldungGliederungList'
 import { anmeldungPublicCreateProcedure } from './anmeldungPublicCreate'
 import { anmeldungTeilnehmerStornoProcedure } from './anmeldungTeilnehmerStorno'
 import { anmeldungVerwaltungAblehnenProcedure } from './anmeldungVerwaltungAblehnen'
@@ -21,5 +21,6 @@ export const anmeldungRouter = mergeRouters(
   anmeldungGliederungdListProcedure.router,
   anmeldungGliederungGetProcedure.router,
   anmeldungVerwaltungCountProcedure.router,
+  anmeldungGliederungCountProcedure.router
   // Add Routes here - do not delete this line
 )
