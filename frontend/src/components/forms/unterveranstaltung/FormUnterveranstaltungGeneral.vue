@@ -52,7 +52,7 @@ function useVeranstaltungList(isAdmin: boolean) {
     return state
   } else {
     const { state } = useAsyncState(async () => {
-      return apiClient.veranstaltung.gliederungList.query()
+      return apiClient.veranstaltung.gliederungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
     }, [])
     return state
   }

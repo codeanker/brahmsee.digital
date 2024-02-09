@@ -8,7 +8,7 @@ import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin'
 export const anmeldungGliederungdListProcedure = defineProcedure({
   key: 'gliederungList',
   method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
+  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN', 'GLIEDERUNG_ADMIN'] },
   inputSchema: defineQuery({
     filter: z.strictObject({
       unterveranstaltungId: z.number().optional(),

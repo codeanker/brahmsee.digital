@@ -5,15 +5,15 @@ import { apiClient } from '@/api'
 import VeranstaltungCard from '@/components/UIComponents/VeranstaltungCard.vue'
 
 const { state: veranstaltungen } = useAsyncState(async () => {
-  return apiClient.veranstaltung.gliederungList.query()
+  return apiClient.veranstaltung.gliederungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
 }, [])
 </script>
 
 <template>
   <VeranstaltungCard
-    v-for="v in veranstaltungen"
-    :key="v.id"
-    :veranstaltung="v"
-    :has-unterveranstaltung="v.hasUnterveranstaltung"
+    v-for="veranstaltung in veranstaltungen"
+    :key="veranstaltung.id"
+    :veranstaltung="veranstaltung"
+    :has-unterveranstaltungen="veranstaltung.unterveranstaltungen.length"
   />
 </template>
