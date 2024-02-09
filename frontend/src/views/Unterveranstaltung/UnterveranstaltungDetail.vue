@@ -31,23 +31,17 @@ const { state: unterveranstaltung } = useAsyncState(async () => {
   })
 }, undefined)
 
-const query = {
-  filter: {
-    unterveranstaltungId: parseInt(route.params.unterveranstaltungId as string),
-  },
-  pagination: { take: 100, skip: 0 },
-}
-
-const { state: anmeldungen } = useAsyncState(
-  async () => {
-    if (loggedInAccount.value?.role === 'ADMIN') return apiClient.anmeldung.verwaltungList.query(query)
-    return apiClient.anmeldung.gliederungList.query(query)
-  },
-  [],
-  {
-    immediate: true,
+const { state: countAnmeldungen } = useAsyncState(async () => {
+  if (loggedInAccount.value?.role === 'ADMIN') {
+    return apiClient.anmeldung.verwaltungCount.query({
+      filter: {
+        unterveranstaltungId: parseInt(route.params.unterveranstaltungId as string),
+      },
+    })
   }
-)
+}, [])
+
+// @ToDo count for Gliederungen
 
 interface KeyInfo {
   title: string
@@ -80,7 +74,7 @@ const keyInfos = computed<KeyInfo[]>(() => {
 const tabs = computed(() => {
   let tabs = [
     { name: 'Ausschreibung', icon: MegaphoneIcon },
-    { name: 'Anmeldungen', icon: UserGroupIcon, count: anmeldungen.value.length },
+    { name: 'Anmeldungen', icon: UserGroupIcon, count: countAnmeldungen.value.total },
     { name: 'Bedingungen', icon: ClipboardDocumentListIcon },
   ]
   if (loggedInAccount.value?.role === 'ADMIN') {

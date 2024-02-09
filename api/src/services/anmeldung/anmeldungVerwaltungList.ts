@@ -1,36 +1,43 @@
+import { AnmeldungStatus } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma'
 import { defineProcedure } from '../../types/defineProcedure'
 import { defineQuery } from '../../types/defineQuery'
 
+const filter = z.strictObject({
+  unterveranstaltungId: z.number().optional(),
+  veranstaltungId: z.number().optional(),
+})
+
+const where = (filter: { unterveranstaltungId?: number; veranstaltungId?: number }) => {
+  return {
+    OR: [
+      {
+        unterveranstaltungId: filter.unterveranstaltungId,
+      },
+      {
+        unterveranstaltung: {
+          veranstaltungId: filter.veranstaltungId,
+        },
+      },
+    ],
+  }
+}
+
 export const anmeldungVerwaltungListProcedure = defineProcedure({
   key: 'verwaltungList',
   method: 'query',
   protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
   inputSchema: defineQuery({
-    filter: z.strictObject({
-      unterveranstaltungId: z.number().optional(),
-      veranstaltungId: z.number().optional(),
-    }),
+    filter: filter,
   }),
   async handler(options) {
     const { skip, take } = options.input.pagination
     const anmeldungen = await prisma.anmeldung.findMany({
       skip,
       take,
-      where: {
-        OR: [
-          {
-            unterveranstaltungId: options.input.filter.unterveranstaltungId,
-          },
-          {
-            unterveranstaltung: {
-              veranstaltungId: options.input.filter.veranstaltungId,
-            },
-          },
-        ],
-      },
+      where: where(options.input.filter),
       select: {
         id: true,
         person: {
@@ -66,5 +73,31 @@ export const anmeldungVerwaltungListProcedure = defineProcedure({
     })
 
     return anmeldungen
+  },
+})
+
+export const anmeldungVerwaltungCountProcedure = defineProcedure({
+  key: 'verwaltungCount',
+  method: 'query',
+  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
+  inputSchema: z.strictObject({
+    filter: filter,
+  }),
+  async handler(options) {
+    const countEntries = await Promise.all(
+      Object.values(AnmeldungStatus).map(async (status) => {
+        return [
+          status,
+          await prisma.anmeldung.count({
+            where: {
+              ...where(options.input.filter),
+              status: status,
+            },
+          }),
+        ]
+      })
+    )
+    const total = countEntries.reduce((acc, [, count]) => acc + Number(count), 0)
+    return { total, ...Object.fromEntries(countEntries) }
   },
 })

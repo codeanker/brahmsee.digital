@@ -51,8 +51,8 @@ withDefaults(
             v-if="tab.count"
             :class="[
               selected
-                ? 'bg-gray-100 dark:bg-primary-800 text-primary-100'
-                : 'bg-gray-100 dark:bg-gray-900 text-gray-300',
+                ? 'bg-gray-100 dark:bg-primary-800 text-primary-600'
+                : 'bg-gray-100 dark:bg-gray-900 text-gray-500',
               'ml-3 hidden rounded-full py-0.5 px-2.5 text-xs font-medium md:inline-block',
             ]"
             >{{ tab.count }}</span
