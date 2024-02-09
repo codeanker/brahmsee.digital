@@ -84,28 +84,6 @@ async function oauthLogin(ctx: Context, profile: (typeof ZUserInfoReponse._type)
       ctx.redirect(`${config.clientUrl}/login#jwt=${jwt}`)
     }
   } else {
-    throw new Error('no account found')
-
-    // const newUser = await prisma.account.create({
-    //   data: {
-    //     email: profile.email as string,
-    //     password: '',
-    //     role: 'GLIEDERUNG_ADMIN',
-    //     activatedAt: new Date(),
-    //     person: {
-    //       create: {
-    //         firstname: 'Gabi',
-    //         lastname: 'Musterfrau',
-    //       },
-    //     },
-    //   },
-    //   select: {
-    //     id: true,
-    //   },
-    // })
-    // const jwt = sign({
-    //   sub: newUser.id.toString(),
-    // })
-    // ctx.redirect(`${config.clientUrl}/login#jwt=${jwt}`)
+    ctx.redirect(`${config.clientUrl}/registrierung`)
   }
 }
