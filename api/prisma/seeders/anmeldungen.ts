@@ -1,5 +1,12 @@
 import { fakerDE as faker } from '@faker-js/faker'
-import { AnmeldungStatus, Essgewohnheit, Gender, PrismaClient } from '@prisma/client'
+import {
+  AnmeldungStatus,
+  Essgewohnheit,
+  Gender,
+  Konfektionsgroesse,
+  NahrungsmittelIntoleranz,
+  PrismaClient,
+} from '@prisma/client'
 
 import { Seeder } from '.'
 
@@ -7,7 +14,7 @@ faker.seed(123)
 
 const createAnmeldung: Seeder = async function (prisma: PrismaClient) {
   const unterveranstaltung = await prisma.unterveranstaltung.findFirstOrThrow()
-  const entryCount = 100
+  const entryCount = 10000
 
   for (let i = 0; i < entryCount; i++) {
     const address = await prisma.address.create({
@@ -28,7 +35,8 @@ const createAnmeldung: Seeder = async function (prisma: PrismaClient) {
         email: faker.internet.email(),
         telefon: faker.string.numeric('+49151########'),
         essgewohnheit: faker.helpers.enumValue(Essgewohnheit),
-        konfektionsgroesse: faker.helpers.arrayElement(['S', 'M', 'L', 'XL', 'XXL']),
+        konfektionsgroesse: faker.helpers.enumValue(Konfektionsgroesse),
+        nahrungsmittelIntoleranzen: faker.helpers.arrayElements(Object.values(NahrungsmittelIntoleranz)),
         addressId: address.id,
         gliederungId: unterveranstaltung.gliederungId,
       },
