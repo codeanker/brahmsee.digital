@@ -8,7 +8,7 @@ import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin'
 import { getSecurityWorksheet } from '../helpers/getSecurityWorksheet'
 import { getWorkbookDefaultProps } from '../helpers/getWorkbookDefaultProps'
 
-export async function veranstaltungVerpflegung(ctx, next: () => Promise<void>) {
+export async function veranstaltungVerpflegung(ctx) {
   const jwt = ctx.query.jwt
   const accountId = await getEntityIdFromHeader('Bearer ' + jwt)
   const unterveranstaltungId = ctx.query.unterveranstaltungId
@@ -132,7 +132,6 @@ export async function veranstaltungVerpflegung(ctx, next: () => Promise<void>) {
   const filename = `${dayjs().format('YYYYMMDD-hhmm')}-Verpflegung.xlsx`
   ctx.res.setHeader('Content-Disposition', `attachment; filename="${filename}"`)
   ctx.res.setHeader('Content-Type', 'application/vnd.ms-excel')
-  await next()
   ctx.res.end(buf)
 }
 
