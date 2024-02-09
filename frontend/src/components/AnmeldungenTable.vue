@@ -47,6 +47,13 @@ const { state: countAnmeldungen } = useAsyncState(async () => {
         veranstaltungId: props.veranstaltungId,
       },
     })
+  } else {
+    return apiClient.anmeldung.gliederungCount.query({
+      filter: {
+        unterveranstaltungId: props.unterveranstaltungId,
+        veranstaltungId: props.veranstaltungId,
+      },
+    })
   }
 }, [])
 
