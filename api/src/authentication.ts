@@ -1,27 +1,28 @@
-// For more information about this file see https://dove.feathersjs.com/guides/cli/authentication.html
-import { AuthenticationService, JWTStrategy } from '@feathersjs/authentication'
-import { LocalStrategy } from '@feathersjs/authentication-local'
+import config from './config'
+import prisma from './prisma'
 
-import type { Application } from './declarations'
-import { resolveDispatch } from '@feathersjs/schema/lib'
-import { connection, event } from '@feathersjs/authentication/lib/hooks'
+import { createAuthentication } from '@codeanker/authentication'
 
-declare module './declarations' {
-  interface ServiceTypes {
-    authentication: AuthenticationService
-  }
-}
-
-export const authentication = (app: Application) => {
-  const authentication = new AuthenticationService(app)
-
-  authentication.register('jwt', new JWTStrategy())
-  authentication.register('local', new LocalStrategy())
-
-  app.use('authentication', authentication)
-  app.service('authentication').hooks({
-    around: {
-      create: [resolveDispatch(), event('login'), connection('login')]
+export const { getEntityIdFromHeader, authenticationLogin, sign } = createAuthentication({
+  jwtSecret: config.authentication.secret,
+  expiresIn: config.authentication.expiresIn,
+  async getEnityByEmail(email) {
+    const account = await prisma.account.findUniqueOrThrow({
+      where: {
+        email,
+        activatedAt: {
+          not: null,
+        },
+      },
+      select: {
+        id: true,
+        password: true,
+      },
+    })
+    if (account.password === null) throw new Error('Account has no password')
+    return {
+      id: account.id,
+      password: account.password,
     }
-  })
-}
+  },
+})

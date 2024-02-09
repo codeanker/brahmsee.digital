@@ -1,0 +1,24 @@
+name: Fly Deploy
+on:
+  push:
+    branches:
+      - development
+jobs:
+  deploy:
+    name: Deploy app
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: get version
+        id: version
+        uses: notiz-dev/github-action-json-property@v0.2.0
+        with:
+            path: 'package.json'
+            prop_path: 'version'
+      - name: set commit
+        id: set-commit
+        run: echo "commit=${GITHUB_SHA:0:7}" >> $GITHUB_OUTPUT
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: flyctl deploy --remote-only --build-arg version=${{steps.version.outputs.prop}} --build-arg commitHash=${{steps.set-commit.outputs.commit}}
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

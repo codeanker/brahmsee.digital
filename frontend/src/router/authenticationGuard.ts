@@ -1,20 +1,23 @@
-import useAuthentication from '@/composables/useAuthentication'
+import { type NavigationGuardWithThis } from 'vue-router'
 
-const publicRoutes = ['Login', 'RegistrationStart', 'RegisterLogin', 'RegisterUsername']
+import { loginPending, reAuthenticate, loggedInAccount } from '@/composables/useAuthentication'
 
-export default async function authenticationGuard(to, from, next) {
-  const { loginPending, reAuthenticate, user } = useAuthentication()
-
-  if (!user.value && !loginPending.value) {
-    await reAuthenticate()
-  }
-  if (user.value) {
-    if (to.name === 'Login') next({ name: 'Dashboard' })
-    else next()
-  } else {
-    if (publicRoutes.includes(to.name)) {
-      next()
+export default function makeGuard(): NavigationGuardWithThis<undefined> {
+  return async function (to, _from, next) {
+    if (!loggedInAccount.value && !loginPending.value && localStorage.getItem('jwt') !== null) {
+      await reAuthenticate()
     }
-    return next({ name: 'Login', query: { redirect: to.path, ...to.query } })
+    if (loggedInAccount.value) {
+      if (to.name === 'Login') {
+        return next({ name: 'Dashboard' })
+      } else {
+        return next()
+      }
+    } else {
+      if (to.meta.public) {
+        return next()
+      }
+      return next({ name: 'Login', query: { redirect: to.path, ...to.query } })
+    }
   }
 }

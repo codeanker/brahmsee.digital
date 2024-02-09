@@ -1,10 +1,14 @@
+<script setup lang="ts">
+import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
+</script>
+
 <template>
   <Menu
     as="div"
     class="relative inline-block text-left"
   >
     <div>
-      <MenuButton class="btn btn-primary">
+      <MenuButton class="btn-primary">
         Options
         <i class="faAngleDown"></i>
       </MenuButton>
@@ -64,7 +68,3 @@
     </transition>
   </Menu>
 </template>
-
-<script setup lang="ts">
-import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
-</script>

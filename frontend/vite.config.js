@@ -15,13 +15,18 @@ export default defineConfig({
     https: true,
     proxy: {
       '/api': {
-        target: process.env.VITE_APP_API_URL,
-        ws: true,
+        target: 'http://localhost:3030',
         rewrite: (path) => path.replace(/^\/api/, ''),
+        ws: true,
       },
     },
   },
   css: {
     devSourcemap: true,
-  }
+  },
+  build: {
+    rollupOptions: {
+      external: ['@codeanker/api'],
+    },
+  },
 })

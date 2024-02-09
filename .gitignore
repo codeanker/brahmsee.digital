@@ -87,4 +87,5 @@ typings/
 *.sln
 *.sw*
 reports
-api/tsconfig.tsbuildinfo
+**/tsconfig.tsbuildinfo
+tsconfig.tsbuildinfo

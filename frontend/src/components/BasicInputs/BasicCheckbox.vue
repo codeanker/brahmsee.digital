@@ -1,3 +1,16 @@
+<script setup lang="ts">
+import BasicValidationFeedback from './components/BasicValidationFeedback.vue'
+import { type BasicInputDefaultProps } from './defaultProps'
+
+import useValidationModel from '@/composables/useValidationModel'
+
+const props = defineProps<BasicInputDefaultProps<boolean>>()
+const emit = defineEmits<{
+  (event: 'update:modelValue', eventArgs: boolean | undefined): void
+}>()
+const { model, errorMessage } = useValidationModel(props, emit)
+</script>
+
 <template>
   <div class="flex items-center">
     <input
@@ -17,25 +30,3 @@
     <BasicValidationFeedback :error-message="errorMessage" />
   </div>
 </template>
-
-<script setup lang="ts">
-import { RuleFunction } from '@codeanker/validation'
-import useValidatedModel from '../../composables/useValidatedModel'
-import BasicValidationFeedback from './components/BasicValidationFeedback.vue'
-import { RequiredRulesParams } from '@codeanker/validation/rules'
-
-const props = defineProps<{
-  disabled?: boolean
-  id?: string
-  label?: string
-  name?: string
-  // eslint-disable-next-line vue/no-unused-properties
-  modelValue: boolean | undefined
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any, vue/no-unused-properties
-  rules?: RuleFunction[]
-  // eslint-disable-next-line vue/no-unused-properties
-  required?: RequiredRulesParams
-}>()
-const emit = defineEmits(['update:modelValue'])
-const { model, errorMessage } = useValidatedModel(props, emit)
-</script>

@@ -1,0 +1,283 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
+}
+
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+
+enum AccountStatus {
+  OFFEN
+  AKTIV
+  DEAKTIVIERT
+}
+
+enum Role {
+  GLIEDERUNG_ADMIN
+  ADMIN
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  UNSPECIFIED
+}
+
+enum Essgewohnheit {
+  OMNIVOR
+  VEGETARISCH
+  VEGAN
+}
+
+enum NahrungsmittelIntoleranz {
+  SCHWEIN
+  GLUTEN
+  LAKTOSE
+  FRUCTOSE
+}
+
+enum QualificationFahrerlaubnis {
+  B
+  BE
+  C
+  CE
+  D1
+  D
+  D1E
+  DE
+  T
+  L
+}
+
+enum QualificationSchwimmer {
+  BRONZE
+  SILBER
+  GOLD
+  JUNIORRETTER
+  RETTUNGSSCHWIMMER_BRONZE
+  RETTUNGSSCHWIMMER_SILBER
+  RETTUNGSSCHWIMMER_GOLD
+}
+
+enum QualificationErsteHilfe {
+  EINWEISER_EHSH
+  AUSBILDER_EHSH_MODUL_1_2
+  AUSBILDER_EHSH_MODUL_3
+  MODULE_1
+  MODULE_2
+  MODULE_3
+  AUSBILDUNG
+  KINDERNOTFAELLE
+  BILDUNGS_UND_BETREUUNGSEINRICHTUNGEN_KINDER
+  AUSBILDER
+}
+
+enum QualificationSanitaeter {
+  SAN_A
+  SAN_B
+  FORTBILDUNG
+  AUSBILDER
+}
+
+enum QualificationFunk {
+  DLRG_SPRECHFUNKER
+  BOS_SPRECHFUNKER_ANALOG
+  BOS_SPRECHFUNKER_DIGITAL
+  AUSBILDER_SPRECHFUNK
+  AUSBILDER_BOS_SPRECHFUNK
+  MULTIPLIKATOR_SPRECHFUNK
+  MULTIPLIKATOR_BOS_SPRECHFUNK
+  EINSATZFAEHIGKEIT
+}
+
+enum Konfektionsgroesse {
+  JUNIOR_98_104
+  JUNIOR_110_116
+  JUNIOR_122_128
+  JUNIOR_134_140
+  JUNIOR_146_152
+  JUNIOR_158_164
+  XS
+  S
+  M
+  L
+  XL
+  XXL
+  XXXL
+}
+
+model Notfallkontakt {
+  id                      Int      @id @default(autoincrement())
+  firstname               String
+  lastname                String
+  telefon                 String
+  istErziehungsberechtigt Boolean  @default(false)
+  personId                Int
+  person                  Person  @relation(fields: [personId], references: [id], onDelete: Cascade)
+}
+
+model Person {
+  id                           Int                          @id @default(autoincrement())
+  firstname                    String
+  lastname                     String
+  birthday                     DateTime?                    @db.Date
+  gender                       Gender?
+  email                        String
+  telefon                      String
+  anmeldungen                  Anmeldung[]
+  gliederungId                 Int?
+  gliederung                   Gliederung?                  @relation(fields: [gliederungId], references: [id], onDelete: SetNull)
+  account                      Account?
+  essgewohnheit                Essgewohnheit?
+  nahrungsmittelIntoleranzen   NahrungsmittelIntoleranz[]
+  weitereIntoleranzen          String[]
+  qualifikationenFahrerlaubnis QualificationFahrerlaubnis[]
+  qualifikationenSchwimmer     QualificationSchwimmer[]
+  qualifikationenErsteHilfe    QualificationErsteHilfe[]
+  qualifikationenSanitaeter    QualificationSanitaeter[]
+  qualifikationenFunk          QualificationFunk[]
+  konfektionsgroesse           Konfektionsgroesse?
+  notfallkontaktIds            Int[]
+  notfallkontakte              Notfallkontakt[]
+  addressId                    Int?
+  address                     Address?                     @relation(fields: [addressId], references: [id])
+}
+
+model Account {
+  id                  Int                   @id @default(autoincrement())
+  email               String                @unique
+  dlrgOauthId         String?                @unique
+  password            String?
+  role                Role
+  personId            Int                   @unique
+  person              Person                @relation(fields: [personId], references: [id], onDelete: Cascade)
+  activatedAt         DateTime?
+  GliederungToAccount GliederungToAccount[]
+  activationToken     String?               @unique
+  status              AccountStatus         @default(OFFEN)
+  passwordResetToken  String?               @unique
+}
+
+model Gliederung {
+  id                   Int                   @id @default(autoincrement())
+  name                 String
+  edv                  String                @unique
+  unterveranstaltungen Unterveranstaltung[]
+  personen             Person[]
+  GliederungToAccount  GliederungToAccount[]
+}
+
+enum GliederungAccountRole {
+  DELEGATIONSLEITER
+  BETREUER
+  TEILNEHMER
+}
+
+model GliederungToAccount {
+  id           Int                   @id @default(autoincrement())
+  gliederungId Int
+  gliederung   Gliederung            @relation(fields: [gliederungId], references: [id], onDelete: Cascade)
+  accountId    Int
+  account      Account               @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  role         GliederungAccountRole
+
+  @@unique([gliederungId, accountId])
+}
+
+enum AnmeldungStatus {
+  OFFEN
+  BESTAETIGT
+  STORNIERT
+  ABGELEHNT
+}
+
+model Anmeldung {
+  id                   Int                @id @default(autoincrement())
+  unterveranstaltungId Int
+  unterveranstaltung   Unterveranstaltung @relation(fields: [unterveranstaltungId], references: [id], onDelete: Cascade)
+  personId             Int
+  person               Person             @relation(fields: [personId], references: [id], onDelete: Cascade)
+  status               AnmeldungStatus    @default(OFFEN)
+  mahlzeitenIds        Int[]
+  mahlzeiten           Mahlzeit[]
+  uebernachtungsTage   DateTime[]         @db.Date
+  tshirtBestellt       Boolean            @default(false)
+  createdAt            DateTime           @default(now())
+}
+
+model Address {
+  id     Int      @id @default(autoincrement())
+  street String
+  number String
+  zip    String
+  city   String
+  Ort    Ort[]
+  Person Person[]
+}
+
+model Ort {
+  id            Int             @id @default(autoincrement())
+  name          String
+  addressId     Int?
+  address       Address?        @relation(fields: [addressId], references: [id], onDelete: SetNull)
+  Veranstaltung Veranstaltung[]
+}
+
+model Veranstaltung {
+  id                   Int                  @id @default(autoincrement())
+  name                 String
+  beginn               DateTime             @db.Date
+  ende                 DateTime             @db.Date
+  meldebeginn          DateTime
+  meldeschluss         DateTime
+  ortId                Int?
+  ort                  Ort?                 @relation(fields: [ortId], references: [id], onDelete: SetNull)
+  maxTeilnehmende      Int
+  teilnahmegebuehr     Int
+  unterveranstaltungen Unterveranstaltung[]
+  mahlzeiten           Mahlzeit[]
+  beschreibung         String?
+  datenschutz          String?
+  teilnahmeBedingungen String?
+  zielgruppe           String?
+}
+
+enum MahlzeitType {
+  FRUEHSTUECK
+  MITTAGESSEN
+  ABENDESSEN
+}
+
+model Mahlzeit {
+  id              Int           @id @default(autoincrement())
+  type            MahlzeitType
+  date            DateTime      @db.Date
+  veranstaltungId Int
+  veranstaltung   Veranstaltung @relation(fields: [veranstaltungId], references: [id], onDelete: Cascade)
+  anmeldung       Anmeldung[]
+}
+
+enum UnterveranstaltungType {
+  CREW
+  GLIEDERUNG
+}
+
+model Unterveranstaltung {
+  id               Int                    @id @default(autoincrement())
+  maxTeilnehmende  Int
+  teilnahmegebuehr Int
+  meldebeginn      DateTime
+  meldeschluss     DateTime
+  veranstaltungId  Int
+  veranstaltung    Veranstaltung          @relation(fields: [veranstaltungId], references: [id], onDelete: Cascade)
+  gliederungId     Int
+  gliederung       Gliederung             @relation(fields: [gliederungId], references: [id], onDelete: Cascade)
+  Anmeldung        Anmeldung[]
+  beschreibung     String?
+  type             UnterveranstaltungType @default(GLIEDERUNG)
+}

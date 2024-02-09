@@ -1,11 +1,4 @@
-import { app } from './app'
-import { logger } from './logger'
+import { serviceRouter } from './services'
+import { mergeRouters } from './trpc'
 
-const port = app.get('port')
-const host = app.get('host')
-
-process.on('unhandledRejection', (reason, p) => logger.error('Unhandled Rejection at: Promise ', p, reason))
-
-app.listen(port).then(() => {
-  logger.info(`Feathers app listening on http://${host}:${port}`)
-})
+export const appRouter = mergeRouters(serviceRouter)

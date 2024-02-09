@@ -1,11 +1,31 @@
-import rest from '@feathersjs/rest-client'
-import socketio from '@feathersjs/socketio-client'
-import io from 'socket.io-client'
-import { createClient } from '@codeanker/api'
+import { createTRPCProxyClient, httpBatchLink } from '@trpc/client'
+import superjson from 'superjson'
 
-const apiEndpoint = '/api'
-const restClient = rest(apiEndpoint).fetch(window.fetch.bind(window))
-const socketClient = io(apiEndpoint.replace('/api', ''), { transports: ['websocket'], path: '/api/socket.io' })
+import type { AppRouter } from '@codeanker/api'
 
-export const featherClient = createClient(restClient)
-export const featherSocketClient = createClient(socketio(socketClient))
+const host = import.meta.env[`VITE_APP_API_HOST`] || '/'
+
+declare global {
+  interface BigInt {
+    toJSON(): string
+  }
+}
+
+BigInt.prototype.toJSON = function (): string {
+  return this.toString()
+}
+
+export const apiClient = createTRPCProxyClient<AppRouter>({
+  transformer: superjson,
+  links: [
+    httpBatchLink({
+      url: (host !== '/' ? host : '') + '/api/trpc',
+      async headers() {
+        const jwt = localStorage.getItem('jwt')
+        return {
+          authorization: jwt !== null ? `Bearer ${jwt}` : undefined,
+        }
+      },
+    }),
+  ],
+})

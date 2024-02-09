@@ -1,5 +1,20 @@
 {
+  "server": {
+    "host": "SERVER_HOST",
+    "port": "SERVER_PORT"
+  },
+
+  "clientUrl": "CLIENT_URL",
+
+  "db": {
+    "url": "DATABASE_URL"
+  },
+
   "authentication": {
-    "secret": "FEATHERS_SECRET"
+    "secret": "AUTHENTICATION_SECRET"
+  },
+  "mail":{
+    "sendMails": "MAIL_SENDMAILS",
+    "sendgridApiKey": "MAIL_SENDGRID_APIKEY"
   }
 }

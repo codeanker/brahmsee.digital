@@ -1,87 +1,7 @@
-<template>
-  <div>
-    <Combobox v-model="model">
-      <div class="relative">
-        <ComboboxInput
-          class="input-style"
-          :display-value="inputFormatter"
-          @change="updateSearchTerm"
-        />
-        <div class="absolute inset-y-0 right-2 flex items-center">
-          <button
-            v-if="model"
-            type="button"
-            class="btn bg-transparent px-1"
-            @click="clear"
-          >
-            <i
-              fixed-width
-              class="fa-sharp fa-light fa-times text-gray-500"
-            ></i>
-          </button>
-          <ComboboxButton
-            class="btn bg-transparent px-1"
-            @click="filterItems(searchTerm)"
-          >
-            <i
-              :class="pending ? 'fa-spinner' : 'fa-chevron-down'"
-              fixed-width
-              class="fa-sharp fa-light text-gray-500"
-              :spin="pending"
-            ></i>
-          </ComboboxButton>
-        </div>
-        <transition
-          leave-active-class="transition ease-in duration-100"
-          leave-from-class="opacity-100"
-          leave-to-class="opacity-0"
-        >
-          <ComboboxOptions
-            v-if="items.length > 0"
-            class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
-          >
-            <ComboboxOption
-              v-for="(item, index) of items"
-              :key="'item' + index"
-              v-slot="{ active, selected }"
-              :value="item"
-            >
-              <slot v-bind="{ item, active, selected }">
-                <li
-                  :class="[
-                    'relative cursor-default select-none px-3 py-2',
-                    active ? 'bg-primary-600 text-white' : 'text-gray-900',
-                  ]"
-                >
-                  <!-- eslint-disable vue/no-v-html -->
-                  <span
-                    :class="['block truncate', selected && 'font-semibold']"
-                    v-html="highlight(resultFormatter(item))"
-                  >
-                  </span>
-                  <!-- eslint-enable vue/no-v-html -->
-                  <span
-                    v-if="selected"
-                    :class="[
-                      'absolute inset-y-0 right-0 flex items-center pr-4',
-                      active ? 'text-white' : 'text-primary-600',
-                    ]"
-                  >
-                    <i class="fa-sharp fa-light fa-check"></i>
-                  </span>
-                </li>
-              </slot>
-            </ComboboxOption>
-          </ComboboxOptions>
-        </transition>
-      </div>
-    </Combobox>
-  </div>
-</template>
-
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
 import { Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/vue'
+import { computed, ref, watch } from 'vue'
+
 import { debounce } from '@/helpers/debounce'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -91,29 +11,35 @@ const props = withDefaults(
   defineProps<{
     query: (term: string, controller: AbortController) => Promise<QueryResult> | QueryResult
     // eslint-disable-next-line vue/no-unused-properties
-    modelValue: object | string | null
+    modelValue: object | string | null | undefined
     /** Formatiert das ausgewählte Query-Ergebnis zu einem String, der in das Input geschrieben wird */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     inputFormatter?: (value: any) => string
     /** Formatiert die Query-Ergebnisse zu Strings, die in der Auswahl angezeigt werden */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     resultFormatter?: (value: any) => string
-    debounce?: number
+    debounceTime?: number
     /** Flag, die dafür sorgt, dass sofort bei Seitenaufruf schonmal gesucht wird */
     immediate?: boolean
     /** Flag, die gesetzt werden kann, wenn die query nicht async ist. Debounce wird geskipped */
     sync?: boolean
     /** Ob ein Ergebnis von der Query ausgewählt werden muss oder ob auch ein Freitext erlaubt ist */
     strict?: boolean
+    label?: string
+    name?: string
+    disabled?: boolean
+    placeholder?: string
   }>(),
 
   {
     inputFormatter: () => (result) => result,
     resultFormatter: () => (result) => result,
-    debounce: 200,
+    debounceTime: 200,
   }
 )
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits<{
+  (event: 'update:modelValue', eventArgs: string | object | null | undefined): void
+}>()
 
 // Bei Seitenaufrufs
 if (props.immediate) {
@@ -190,7 +116,7 @@ const debounceFilterItems = debounce(
     }
     pending.value = false
   },
-  props.sync ? 0 : props.debounce
+  props.sync ? 0 : props.debounceTime
 )
 
 /** Wenn ein Ergebnis gewählt wird, wird der searchTerm mit dem formatierten Wert geupdated */
@@ -235,3 +161,90 @@ const highlight = computed(() => {
   }
 })
 </script>
+
+<template>
+  <div>
+    <Combobox v-model="model">
+      <div class="relative">
+        <ComboboxInput
+          class="input-style"
+          :disabled="disabled"
+          :placeholder="placeholder || label || name"
+          :display-value="inputFormatter"
+          @change="updateSearchTerm"
+        />
+        <div class="absolute inset-y-0 right-2 flex items-center">
+          <button
+            v-if="model"
+            type="button"
+            class="bg-transparent px-1"
+            @click="clear"
+          >
+            <!-- <FontAwesomeIcon
+              :icon="faTimes"
+              fixed-width
+              class="text-gray-500"
+            /> -->
+          </button>
+          <ComboboxButton
+            class="bg-transparent px-1"
+            @click="filterItems(searchTerm)"
+          >
+            <!-- <FontAwesomeIcon
+              :icon="pending ? faSpinner : faChevronDown"
+              fixed-width
+              class="text-gray-500"
+              :spin="pending"
+            /> -->
+          </ComboboxButton>
+        </div>
+        <transition
+          leave-active-class="transition ease-in duration-100"
+          leave-from-class="opacity-100"
+          leave-to-class="opacity-0"
+        >
+          <ComboboxOptions
+            v-if="items.length > 0"
+            class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+          >
+            <ComboboxOption
+              v-for="(item, index) of items"
+              :key="'item' + index"
+              v-slot="{ active, selected }"
+              :value="item"
+            >
+              <slot v-bind="{ item, active, selected }">
+                <li
+                  :class="[
+                    'relative cursor-pointer select-none px-3 py-2',
+                    active ? 'bg-primary-600 text-white' : 'text-gray-900',
+                  ]"
+                >
+                  <!-- eslint-disable vue/no-v-html -->
+                  <span
+                    :class="['block truncate', selected && 'font-semibold']"
+                    v-html="highlight(resultFormatter(item))"
+                  >
+                  </span>
+                  <!-- eslint-enable vue/no-v-html -->
+                  <span
+                    v-if="selected"
+                    :class="[
+                      'absolute inset-y-0 right-0 flex items-center pr-4',
+                      active ? 'text-white' : 'text-primary-600',
+                    ]"
+                  >
+                    <!-- <FontAwesomeIcon
+                      :icon="faCheck"
+                      fixed-width
+                    /> -->
+                  </span>
+                </li>
+              </slot>
+            </ComboboxOption>
+          </ComboboxOptions>
+        </transition>
+      </div>
+    </Combobox>
+  </div>
+</template>

@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "Vue.volar",
+    "Vue.vscode-typescript-vue-plugin",
+    "eamodio.gitlens",
+    "dbaeumer.vscode-eslint",
+    "GitHub.vscode-pull-request-github",
+    "bradlc.vscode-tailwindcss",
+    "Prisma.prisma",
+    "actboy168.tasks"
+  ]
+}

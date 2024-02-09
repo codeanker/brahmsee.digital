@@ -1,13 +1,23 @@
-import { rooms } from './rooms/rooms'
-import { user } from './users/users'
-import { houses } from './houses/houses'
-// For more information about this file see https://dove.feathersjs.com/guides/cli/application.html#configure-functions
-import type { Application } from '../declarations'
+import { router } from '../trpc'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const services = (app: Application) => {
-  app.configure(rooms)
-  app.configure(user)
-  app.configure(houses)
-  // All services will be registered here
-}
+import { accountRouter } from './account/account.router'
+import { anmeldungRouter } from './anmeldung/anmeldung.router'
+import { authenticationRouter } from './authentication/authentication.router'
+import { gliederungRouter } from './gliederung/gliederung.router'
+import { ortRouter } from './ort/ort.router'
+import { personRouter } from './person/person.router'
+import { unterveranstaltungRouter } from './unterveranstaltung/unterveranstaltung.router'
+import { veranstaltungRouter } from './veranstaltung/veranstaltung.router'
+// Add Imports here - do not delete this line
+
+export const serviceRouter = router({
+  person: personRouter,
+  authentication: authenticationRouter,
+  gliederung: gliederungRouter,
+  account: accountRouter,
+  anmeldung: anmeldungRouter,
+  veranstaltung: veranstaltungRouter,
+  unterveranstaltung: unterveranstaltungRouter,
+  ort: ortRouter,
+  // Add Routers here - do not delete this line
+})

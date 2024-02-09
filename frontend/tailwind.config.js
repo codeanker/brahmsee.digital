@@ -1,20 +1,13 @@
 const colors = require('tailwindcss/colors')
 module.exports = {
   important: true,
-  content: ['./index.html', './public/**/*.html', './src/**/*.{js,jsx,ts,tsx,vue}'],
+  content: [
+    './index.html',
+    './public/**/*.html',
+    './src/**/*.{js,jsx,ts,tsx,vue}',
+    '../packages/**/*.{js,jsx,ts,tsx,vue}',
+  ],
   theme: {
-    colors: {
-      success: colors.lime,
-      warning: colors.yellow,
-      danger: colors.red,
-      gray: colors.gray,
-      primary: colors.green,
-      white: colors.white,
-      black: colors.black,
-      green: colors.green,
-      emerald: colors.emerald,
-      red: colors.red,
-    },
     container: {
       center: true,
       padding: '1rem',
@@ -26,6 +19,21 @@ module.exports = {
       },
     },
     extend: {
+      colors: {
+        success: colors.lime,
+        warning: colors.yellow,
+        danger: colors.red,
+        primary: colors.green,
+        secondary: colors.green,
+        muted: colors.gray,
+        gray: colors.slate,
+        white: colors.white,
+        black: colors.black,
+        dark: {
+          primary: colors.gray[950],
+          secondary: colors.gray[900],
+        },
+      },
       zIndex: {
         '-1': '-1',
         dropdown: '1000',
@@ -39,13 +47,18 @@ module.exports = {
       borderColor: {
         transparent: 'transparent',
       },
+      backgroundImage: {
+        public: "url('/src/assets/images/publicBg.webp')",
+      },
     },
   },
   safelist: [
-    { pattern: /bg-(info|success|danger|warning|primary)-(100|200)/ },
-    { pattern: /text-(info|success|danger|warning|primary)-(600|700)/ },
+    { pattern: /bg-(info|success|danger|warning|primary|secondary|muted)-(100|200|600)/ },
+    { pattern: /text-(info|success|danger|warning|primary|muted)-(600|700)/ },
+    { pattern: /bg-white/ },
+    { pattern: /(w|h)-(6|12|24)/ },
   ],
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
   corePlugins: {
     preflight: true,
   },

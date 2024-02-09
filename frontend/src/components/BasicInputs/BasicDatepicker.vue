@@ -1,46 +1,9 @@
-<template>
-  <BasicFormGroup
-    :id="id"
-    :name="name"
-    :label="label"
-    :error-message="errorMessage"
-  >
-    <VueDatePicker
-      :id="id || name || label"
-      v-model="model"
-      :name="id || name || label"
-      :placeholder="placeholder || label || name"
-      :class="{ 'rounded-r-none': $slots.append }"
-      input-class-name="input-style"
-      :range="range"
-      :auto-range="autoRange"
-      :multi-calendars="multiCalendars"
-      :month-picker="monthPicker"
-      :time-picker="timePicker"
-      :year-picker="yearPicker"
-      :week-picker="weekPicker"
-      :text-input="textInput"
-      :inline="inline"
-      :multi-dates="multiDates"
-      :flow="flow"
-      :utc="utc"
-      :vertical="vertical"
-      :model-auto="modelAuto"
-      :timezone="timezone"
-      :preset-ranges="presetRanges"
-      :close-on-scroll="closeOnScroll"
-      :auto-apply="autoApply"
-      :markers="markers"
-    />
-  </BasicFormGroup>
-</template>
-
 <script setup lang="ts">
 import VueDatePicker from '@vuepic/vue-datepicker'
-import useValidatedModel from '../../composables/useValidatedModel'
+
+import useValidationModel from '../../composables/useValidationModel'
+
 import BasicFormGroup from './components/BasicFormGroup.vue'
-import { RuleFunction } from '@codeanker/validation'
-import { RequiredRulesParams } from '@codeanker/validation/rules'
 
 const props = withDefaults(
   defineProps<{
@@ -50,10 +13,6 @@ const props = withDefaults(
     name?: string
     // eslint-disable-next-line vue/no-unused-properties
     modelValue: typeof VueDatePicker.modelValue
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any, vue/no-unused-properties
-    rules?: RuleFunction[]
-    // eslint-disable-next-line vue/no-unused-properties
-    required?: RequiredRulesParams
     range?: boolean
     autoRange?: typeof VueDatePicker.autoRange
     multiCalendars?: typeof VueDatePicker.multiCalendars
@@ -67,12 +26,20 @@ const props = withDefaults(
     flow?: typeof VueDatePicker.flow
     utc?: typeof VueDatePicker.utc
     vertical?: boolean
+    required?: boolean
     modelAuto?: boolean
     timezone?: string
     presetRanges?: typeof VueDatePicker.presetRanges
     closeOnScroll?: boolean
     autoApply?: boolean
     markers?: typeof VueDatePicker.markers
+    enableTimePicker?: boolean
+    format?: typeof VueDatePicker.format
+    modelType?: typeof VueDatePicker.modelType
+    disabledDates?: {
+      from?: Date
+      to?: Date
+    }
   }>(),
   {
     placeholder: undefined,
@@ -89,9 +56,61 @@ const props = withDefaults(
     presetRanges: undefined,
     markers: undefined,
     autoApply: true,
+    icon: undefined,
+    textInput: true,
+    format: 'dd.MM.yyyy HH:mm',
+    modelType: undefined,
   }
 )
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits<{
+  (event: 'update:modelValue', eventArgs: boolean | undefined): void
+}>()
 
-const { model, errorMessage } = useValidatedModel<typeof VueDatePicker.modelValue>(props, emit)
+const { model, errorMessage } = useValidationModel(props, emit)
 </script>
+
+<template>
+  <div>
+    <BasicFormGroup
+      :id="id"
+      :name="name"
+      :label="label"
+      :required="required"
+      :error-message="errorMessage"
+    >
+      <VueDatePicker
+        :id="id || name || label"
+        v-model="model"
+        :name="id || name || label"
+        :placeholder="placeholder || label || name"
+        :class="{ 'rounded-r-none': $slots.append }"
+        input-class-name="input-style"
+        :range="range"
+        :auto-range="autoRange"
+        :multi-calendars="multiCalendars"
+        :month-picker="monthPicker"
+        :time-picker="timePicker"
+        :year-picker="yearPicker"
+        :week-picker="weekPicker"
+        :text-input="textInput"
+        :inline="inline"
+        :multi-dates="multiDates"
+        :flow="flow"
+        :utc="utc"
+        :vertical="vertical"
+        :model-auto="modelAuto"
+        :timezone="timezone"
+        :preset-ranges="presetRanges"
+        :close-on-scroll="closeOnScroll"
+        :auto-apply="autoApply"
+        :markers="markers"
+        :enable-time-picker="timePicker || enableTimePicker"
+        :format="format"
+        :model-type="modelType"
+        :required="required"
+        :min-date="disabledDates?.to"
+        :max-date="disabledDates?.from"
+      />
+    </BasicFormGroup>
+  </div>
+</template>

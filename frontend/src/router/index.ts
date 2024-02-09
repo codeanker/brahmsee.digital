@@ -1,35 +1,57 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import authenticationGuard from './authenticationGuard.js'
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 
-import DashboardRoutes from '../views/Dashboard/_routes.js'
-import RegistrationRoutes from '../views/Registration/_routes.js'
-import LoginRoutes from '../views/Login/_routes.js'
-import UsersRoutes from '../views/Users/_routes.js'
-import HousesRoutes from '../views/Houses/_routes.js'
+import authenticationGuard from './authenticationGuard'
 
-const routes = [
+import routesDevelopment from '@/views/Development/routes'
+import routesAuth from '@/views/Login/routes'
+import { routesPublic } from '@/views/Public/routes'
+import routesPublicAnmeldung from '@/views/PublicAnmeldung/routes'
+import routesRegistrierung from '@/views/Registrierung/routes'
+import { routesUnterveranstaltung } from '@/views/Unterveranstaltung/routes'
+import routesVeranstaltungen from '@/views/Veranstaltungen/routes'
+import routesVerwaltung from '@/views/Verwaltung/routes'
+
+export type Route = RouteRecordRaw & {
+  meta?: {
+    public?: boolean
+  }
+}
+
+const routes: Route[] = [
+  ...routesAuth,
+  ...routesPublic,
+  ...routesPublicAnmeldung,
+  ...routesRegistrierung,
   {
     path: '/',
-    redirect: { name: 'Dashboard' },
-  },
-  {
-    name: 'Developer',
-    path: '/developer',
-    component: () => import('../views/Developer.vue'),
-  },
-  {
-    path: '/',
+    redirect: { name: 'Login' },
     component: () => import('../layouts/BaseLayout.vue'),
-    children: [...DashboardRoutes, ...RegistrationRoutes, ...UsersRoutes, ...HousesRoutes],
+    children: [
+      ...routesVeranstaltungen,
+      ...routesVerwaltung,
+      ...routesDevelopment,
+      ...routesUnterveranstaltung,
+      {
+        name: 'Dashboard',
+        path: '/dashboard',
+        component: () => import('../views/Dashboard/Dashboard.vue'),
+        meta: {
+          breadcrumbs: [
+            {
+              text: 'Dashboard',
+            },
+          ],
+        },
+      },
+    ],
   },
-  ...LoginRoutes,
 ]
 
 const router = createRouter({
   history: createWebHistory(),
-  routes: routes as RouteRecordRaw[],
+  routes,
 })
 
-router.beforeEach(authenticationGuard)
+router.beforeEach(authenticationGuard())
 
 export default router

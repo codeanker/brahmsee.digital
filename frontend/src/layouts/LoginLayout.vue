@@ -1,3 +1,5 @@
+<script setup lang="ts"></script>
+
 <template>
   <div>
     <!-- header -->
@@ -7,5 +9,3 @@
     <!-- footer -->
   </div>
 </template>
-
-<script setup></script>

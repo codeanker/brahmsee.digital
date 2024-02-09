@@ -184,6 +184,9 @@
                 &.dp__active_date{
                   @apply bg-primary-500 text-white;
                 }
+                &.dp__cell_disabled{
+                  @apply text-gray-400 cursor-not-allowed;
+                }
                 .dp__marker_dot{
                   @apply w-1.5 h-1.5 rounded-full bottom-0 absolute left-1/2 -translate-x-1/2 bg-danger-400;
                 }

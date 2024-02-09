@@ -1,10 +1,20 @@
-// For more information about this file see https://dove.feathersjs.com/guides/cli/logging.html
 import { createLogger, format, transports } from 'winston'
 
-// Configure the Winston logger. For the complete documentation see https://github.com/winstonjs/winston
+import config from './config'
+
+const myFormat = format.printf(({ level, message, label, timestamp }) => {
+  return `${timestamp} [${label}] ${level} >> ${message}`
+})
+
 export const logger = createLogger({
-  // To see more detailed errors, change this to 'debug'
-  level: 'info',
-  format: format.combine(format.splat(), format.simple()),
-  transports: [new transports.Console()]
+  level: config.loggingLevel,
+  format: format.combine(
+    format.label({
+      label: 'main',
+    }),
+    format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
+    format.colorize(),
+    myFormat
+  ),
+  transports: [new transports.Console()],
 })
