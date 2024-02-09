@@ -1,15 +1,4 @@
 apiVersion: traefik.containo.us/v1alpha1
-kind: Middleware
-metadata:
-  name: stripapiprefix
-  labels:
-    {{- include "codeanker.label" . | indent 4 }}
-spec:
-  stripPrefix:
-    prefixes:
-      - /api
----
-apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: ingressroutestripprefix
@@ -28,6 +17,4 @@ spec:
       services:
         - name: {{ $.Chart.Name }}-app-svc
           port: 80
-      middlewares:
-        - name: stripapiprefix
   {{- end }}
