@@ -9,7 +9,7 @@ import PublicFooter from '@/components/LayoutComponents/PublicFooter.vue'
 import PublicHeader from '@/components/LayoutComponents/PublicHeader.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import Loading from '@/components/UIComponents/Loading.vue'
-import { type NahrungsmittelIntoleranzEnum } from '@codeanker/api/src/enumMappings'
+import { type NahrungsmittelIntoleranz } from '@codeanker/api'
 
 const router = useRouter()
 const route = useRoute()
@@ -27,7 +27,7 @@ const {
     .filter((entry) => {
       return entry[1]
     })
-    .map((entry) => entry[0] as NahrungsmittelIntoleranzEnum)
+    .map((entry) => entry[0] as NahrungsmittelIntoleranz)
 
   await apiClient.anmeldung.publicCreate.mutate({
     data: {

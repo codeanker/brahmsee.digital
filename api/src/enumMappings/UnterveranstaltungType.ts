@@ -7,4 +7,4 @@ export const UnterveranstaltungTypeMapping = defineEnumMapping<Unterveranstaltun
   GLIEDERUNG: { human: 'Gliederung' },
 })
 
-export { UnterveranstaltungType }
+export { type UnterveranstaltungType }

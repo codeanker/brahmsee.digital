@@ -4,7 +4,7 @@ import { useAsyncState } from '@vueuse/core'
 import { apiClient } from '@/api'
 import FormPersonGeneral, { type FormPersonGeneralSubmit } from '@/components/forms/person/FormPersonGeneral.vue'
 import router from '@/router'
-import type { NahrungsmittelIntoleranzEnum } from '@codeanker/api/src/enumMappings'
+import type { NahrungsmittelIntoleranz } from '@codeanker/api'
 
 const { execute: create } = useAsyncState(
   async (anmeldung: FormPersonGeneralSubmit) => {
@@ -12,7 +12,7 @@ const { execute: create } = useAsyncState(
       .filter((entry) => {
         return entry[1]
       })
-      .map((entry) => entry[0] as NahrungsmittelIntoleranzEnum)
+      .map((entry) => entry[0] as NahrungsmittelIntoleranz)
 
     await apiClient.person.verwaltungCreate.mutate({
       data: {

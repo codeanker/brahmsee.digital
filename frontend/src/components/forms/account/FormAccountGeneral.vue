@@ -22,7 +22,7 @@ import { loggedInAccount } from '@/composables/useAuthentication'
 import { getAccountStatusColor } from '@/helpers/getAccountStatusColors'
 import router from '@/router'
 import type { RouterInput, RouterOutput } from '@codeanker/api'
-import { AccountStatusMapping, getEnumOptions, roleMapping } from '@codeanker/api/src/enumMappings'
+import { AccountStatusMapping, getEnumOptions, roleMapping } from '@codeanker/api'
 import { formatDate } from '@codeanker/helpers'
 import { ValidateForm } from '@codeanker/validation'
 
