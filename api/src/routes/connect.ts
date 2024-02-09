@@ -66,16 +66,23 @@ async function oauthLogin(ctx: Context, profile: (typeof ZUserInfoReponse._type)
     },
     select: {
       id: true,
+      status: true,
     },
   })
 
   // if user exists, return jwt
   if (existingUser) {
-    const jwt = sign({
-      sub: existingUser.id.toString(),
-    })
-    // important to redirect with hash, so the jwt is not sent to the server
-    ctx.redirect(`${config.clientUrl}/login#jwt=${jwt}`)
+    if (existingUser.status !== 'AKTIV') {
+      ctx.redirect(
+        `${config.clientUrl}/login#error=Account ist nicht aktiviert. Bitte wende dich an den Administrator.`
+      )
+    } else {
+      const jwt = sign({
+        sub: existingUser.id.toString(),
+      })
+      // important to redirect with hash, so the jwt is not sent to the server
+      ctx.redirect(`${config.clientUrl}/login#jwt=${jwt}`)
+    }
   } else {
     throw new Error('no account found')
 

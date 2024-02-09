@@ -12,14 +12,31 @@ const props = defineProps<{
   columns?: string[]
 }>()
 
-const { state: unterveranstaltungenList } = useAsyncState(async () => {
-  return apiClient.unterveranstaltung.verwaltungList.query({
-    filter: {
-      veranstaltungId: props.veranstaltungId,
-    },
-    pagination: { take: 100, skip: 0 },
-  })
-}, [])
+function loadUnterveranstaltungen() {
+  if (loggedInAccount.value?.role === 'ADMIN') {
+    const { state } = useAsyncState(async () => {
+      return apiClient.unterveranstaltung.verwaltungList.query({
+        filter: {
+          veranstaltungId: props.veranstaltungId,
+        },
+        pagination: { take: 100, skip: 0 },
+      })
+    }, [])
+    return state
+  } else {
+    const { state } = useAsyncState(async () => {
+      return apiClient.unterveranstaltung.gliederungList.query({
+        filter: {
+          veranstaltungId: props.veranstaltungId,
+        },
+        pagination: { take: 100, skip: 0 },
+      })
+    }, [])
+    return state
+  }
+}
+
+const unterveranstaltungen = loadUnterveranstaltungen()
 
 const router = useRouter()
 
@@ -33,7 +50,7 @@ function formatDate(indate) {
 <template>
   <div>
     <table
-      v-if="unterveranstaltungenList"
+      v-if="unterveranstaltungen"
       class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
     >
       <thead>
@@ -79,7 +96,7 @@ function formatDate(indate) {
       </thead>
       <tbody class="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-dark-primary">
         <tr
-          v-for="unterveranstaltung in unterveranstaltungenList"
+          v-for="unterveranstaltung in unterveranstaltungen"
           :key="unterveranstaltung.id"
           class="cursor-pointer even:bg-gray-50 dark:even:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800"
           title="bearbeiten"
@@ -120,7 +137,7 @@ function formatDate(indate) {
       </tbody>
     </table>
     <div
-      v-if="unterveranstaltungenList.length <= 0"
+      v-if="unterveranstaltungen.length <= 0"
       class="rounded-md bg-blue-50 dark:bg-blue-950 p-4 text-blue-500"
     >
       <div class="flex">
