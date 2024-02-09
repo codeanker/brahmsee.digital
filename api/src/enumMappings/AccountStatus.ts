@@ -8,4 +8,4 @@ export const AccountStatusMapping = defineEnumMapping<AccountStatus>({
   DEAKTIVIERT: { human: 'Deaktiviert' },
 })
 
-export { AccountStatus }
+export { type AccountStatus }

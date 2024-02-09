@@ -3,7 +3,7 @@ import { computed } from 'vue'
 
 import BasicCheckbox from '@/components/BasicInputs/BasicCheckbox.vue'
 import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
-import { KonfektionsgroesseMapping, getEnumOptions } from '@codeanker/api/src/enumMappings'
+import { KonfektionsgroesseMapping, getEnumOptions } from '@codeanker/api'
 
 export interface ITShirtBestellung {
   bestellen: boolean

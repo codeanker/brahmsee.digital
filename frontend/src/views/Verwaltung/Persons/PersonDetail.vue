@@ -9,7 +9,7 @@ import FormPersonGeneral, { type FormPersonGeneralSubmit } from '@/components/fo
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
-import type { NahrungsmittelIntoleranzEnum } from '@codeanker/api/src/enumMappings'
+import { type NahrungsmittelIntoleranz } from '@codeanker/api'
 
 const route = useRoute()
 
@@ -28,7 +28,7 @@ const { execute: update } = useAsyncState(
       .filter((entry) => {
         return entry[1]
       })
-      .map((entry) => entry[0] as NahrungsmittelIntoleranzEnum)
+      .map((entry) => entry[0] as NahrungsmittelIntoleranz)
 
     await apiClient.person.verwaltungPatch.mutate({
       id: person.value!.id,

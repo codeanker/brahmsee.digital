@@ -9,7 +9,7 @@ import Tab from '@/components/UIComponents/components/Tab.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
 import { getAccountStatusColor } from '@/helpers/getAccountStatusColors'
 import router from '@/router'
-import { roleMapping } from '@codeanker/api/src/enumMappings'
+import { roleMapping } from '@codeanker/api'
 import { formatDate } from '@codeanker/helpers'
 
 const { state: accountList } = useAsyncState(

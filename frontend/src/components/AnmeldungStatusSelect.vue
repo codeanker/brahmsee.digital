@@ -7,7 +7,7 @@ import { apiClient } from '@/api'
 import BasicDropdown from '@/components/BasicInputs/BasicDropdown.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
 import { getAnmeldungStatusColor } from '@/helpers/getAnmeldungStatusColors'
-import { AnmeldungStatus, AnmeldungStatusMapping, getEnumOptions, Role } from '@codeanker/api/src/enumMappings'
+import { type AnmeldungStatus, AnmeldungStatusMapping, getEnumOptions } from '@codeanker/api'
 
 const props = withDefaults(
   defineProps<{
@@ -21,10 +21,7 @@ const props = withDefaults(
 const currentStatus = ref(props.status)
 const statusOptions = getEnumOptions(AnmeldungStatusMapping)
 const availableOptions = statusOptions.filter(
-  (status) =>
-    status.value == AnmeldungStatus.ABGELEHNT ||
-    status.value == AnmeldungStatus.STORNIERT ||
-    status.value == AnmeldungStatus.BESTAETIGT
+  (status) => status.value == 'ABGELEHNT' || status.value == 'STORNIERT' || status.value == 'BESTAETIGT'
 )
 
 const getStatusHuman = computed(() => (anmeldungStatus) => {
@@ -32,24 +29,24 @@ const getStatusHuman = computed(() => (anmeldungStatus) => {
 })
 
 const isStatusChangeAvailable = computed(() => {
-  if (loggedInAccount.value?.role === Role.ADMIN || props.meldeschluss > new Date()) {
+  if (loggedInAccount.value?.role === 'ADMIN' || props.meldeschluss > new Date()) {
     return true
   }
   return false
 })
 
-const setStatus = async (status) => {
-  if (status == AnmeldungStatus.BESTAETIGT) {
+const setStatus = async (status: AnmeldungStatus) => {
+  if (status == 'BESTAETIGT') {
     await apiClient.anmeldung.verwaltungAnnehmen.mutate({
       anmeldungId: props.id,
     })
   }
-  if (status == AnmeldungStatus.STORNIERT) {
+  if (status == 'STORNIERT') {
     await apiClient.anmeldung.verwaltungStorno.mutate({
       anmeldungId: props.id,
     })
   }
-  if (status == AnmeldungStatus.ABGELEHNT) {
+  if (status == 'ABGELEHNT') {
     await apiClient.anmeldung.verwaltungAblehnen.mutate({
       anmeldungId: props.id,
     })
