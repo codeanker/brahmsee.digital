@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
@@ -24,6 +24,10 @@ if (location.hash) {
     localStorage.setItem('jwt', jwt)
     location.hash = ''
   }
+  const error = hashParams.get('error')
+  if (error) {
+    loginError.value = new Error(error)
+  }
 }
 
 async function loginWithRecirect() {
@@ -38,6 +42,10 @@ async function loginWithRecirect() {
     }
   }
 }
+
+const formatLoginError = computed(() => {
+  return loginError.value ? loginError.value.message.replace('TRPCClientError: ', '') : ''
+})
 
 const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.env.VITE_APP_COMMIT_HASH || 'unknown'}`
 </script>
@@ -54,7 +62,7 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
         v-if="loginError"
         class="bg-danger-100 text-danger-600 mb-10 rounded p-2 text-center"
       >
-        {{ loginError }}
+        {{ formatLoginError }}
       </div>
       <div class="px-6 py-12 sm:rounded-lg sm:px-12">
         <ValidateForm
