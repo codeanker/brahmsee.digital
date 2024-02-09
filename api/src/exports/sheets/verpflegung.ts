@@ -41,7 +41,7 @@ export async function veranstaltungVerpflegung(ctx) {
     return
   }
 
-  let gliederung
+  let gliederung: { id: number; name: string } | undefined
   if (account.role == Role.GLIEDERUNG_ADMIN) {
     try {
       gliederung = await getGliederungRequireAdmin(parseInt(accountId))
@@ -52,61 +52,96 @@ export async function veranstaltungVerpflegung(ctx) {
     }
   }
 
-  const anmeldungenList = await prisma.anmeldung.findMany({
+  const gliederungen = await prisma.gliederung.findMany({
     where: {
-      OR: [
-        {
-          unterveranstaltungId: parseInt(unterveranstaltungId || -1),
+      id: gliederung?.id,
+      unterveranstaltungen: {
+        some: {
+          OR: [
+            {
+              id: parseInt(unterveranstaltungId || -1),
+            },
+            {
+              veranstaltungId: parseInt(veranstaltungId || -1),
+            },
+          ],
         },
-        {
-          unterveranstaltung: {
-            veranstaltungId: parseInt(veranstaltungId || -1),
-          },
-        },
-      ],
-      unterveranstaltung: {
-        gliederungId: gliederung?.id,
       },
-      status: AnmeldungStatus.BESTAETIGT,
     },
     select: {
       id: true,
-      person: {
+      name: true,
+      unterveranstaltungen: {
+        where: {
+          OR: [
+            {
+              id: parseInt(unterveranstaltungId || -1),
+            },
+            {
+              veranstaltungId: parseInt(veranstaltungId || -1),
+            },
+          ],
+        },
         select: {
-          id: true,
-          gliederung: {
+          Anmeldung: {
+            where: {
+              status: AnmeldungStatus.BESTAETIGT,
+            },
             select: {
-              id: true,
-              name: true,
+              person: {
+                select: {
+                  id: true,
+                  essgewohnheit: true,
+                  nahrungsmittelIntoleranzen: true,
+                  weitereIntoleranzen: true,
+                },
+              },
             },
           },
-          essgewohnheit: true,
-          nahrungsmittelIntoleranzen: true,
-          weitereIntoleranzen: true,
         },
       },
     },
   })
 
-  const gliederungen = anmeldungenList
-    .map((anmeldung) => anmeldung.person.gliederung?.name)
-    .filter((value, index, self) => self.indexOf(value) === index)
+  const header = [
+    'id',
+    'Gliederung',
+    ...Object.values(Essgewohnheit),
+    '',
+    ...Object.values(NahrungsmittelIntoleranz),
+    '',
+    'weitere Intoleranzen',
+  ]
 
-  const anmeldungenGliederung = gliederungen.map((gliederung) => {
-    return anmeldungenList
-      .filter((anmeldung) => anmeldung.person.gliederung?.name === gliederung)
-      .map((anmeldung) => {
-        return {
-          gliederung: anmeldung.person.gliederung,
-          essgewohnheit: anmeldung.person.essgewohnheit,
-          nahrungsmittelIntoleranz:
-            anmeldung.person.nahrungsmittelIntoleranzen.length > 0 ? anmeldung.person.nahrungsmittelIntoleranzen : null,
-          weitereIntoleranzen: anmeldung.person.weitereIntoleranzen,
-        }
-      })
-  })
-
-  const rows = aggregiereDaten(anmeldungenGliederung)
+  const rows = gliederungen
+    .filter((gliederung) => gliederung.unterveranstaltungen[0]?.Anmeldung.length > 0) // Filtere Gliederungen ohne Anmeldungen
+    .map((gliederung) => {
+      const anmeldungen = gliederung.unterveranstaltungen[0].Anmeldung
+      const aggregatedEssgewohnheiten = Object.fromEntries(
+        Object.values(Essgewohnheit).map((essgewohnheit) => [
+          essgewohnheit,
+          anmeldungen.filter((anmeldung) => anmeldung.person.essgewohnheit === essgewohnheit).length,
+        ])
+      )
+      const aggregatedNahrungsmittelIntoleranzen = Object.fromEntries(
+        Object.values(NahrungsmittelIntoleranz).map((intoleranz) => [
+          intoleranz,
+          anmeldungen.filter((anmeldung) => anmeldung.person.nahrungsmittelIntoleranzen.includes(intoleranz)).length,
+        ])
+      )
+      const weitereIntoleranzen = Array.from(
+        new Set(anmeldungen.flatMap((anmeldung) => anmeldung.person.weitereIntoleranzen))
+      ).join(', ')
+      return [
+        gliederung.id,
+        gliederung.name,
+        ...Object.values(aggregatedEssgewohnheiten),
+        '',
+        ...Object.values(aggregatedNahrungsmittelIntoleranzen),
+        '',
+        weitereIntoleranzen,
+      ]
+    })
 
   const workbook = XLSX.utils.book_new()
 
@@ -118,7 +153,7 @@ export async function veranstaltungVerpflegung(ctx) {
     ...defaultWorkbookPros,
   }
 
-  const worksheet = XLSX.utils.json_to_sheet(rows)
+  const worksheet = XLSX.utils.json_to_sheet([header, ...rows])
   worksheet['!cols'] = [{ wch: 6 }, { wch: 40 }]
   XLSX.utils.book_append_sheet(workbook, worksheet, `Verpflegung`)
 
@@ -133,72 +168,4 @@ export async function veranstaltungVerpflegung(ctx) {
   ctx.res.setHeader('Content-Disposition', `attachment; filename="${filename}"`)
   ctx.res.setHeader('Content-Type', 'application/vnd.ms-excel')
   ctx.res.end(buf)
-}
-
-function aggregiereDaten(daten: any[][]) {
-  const result: any = []
-
-  daten.forEach((array) => {
-    const aggregatedData: any = {
-      gliederung: array[0].gliederung,
-      essgewohnheit: {},
-      nahrungsmittelIntoleranz: {},
-      weitereIntoleranzen: [],
-    }
-
-    array.forEach((eintrag) => {
-      const essgewohnheit = eintrag.essgewohnheit
-      const intoleranzen = eintrag.nahrungsmittelIntoleranz || []
-      // Aggregation der Essgewohnheiten
-      if (essgewohnheit) {
-        aggregatedData.essgewohnheit[essgewohnheit] = (aggregatedData.essgewohnheit[essgewohnheit] || 0) + 1
-      }
-
-      // Aggregation der Nahrungsmittel-Intoleranzen
-      intoleranzen.forEach((intoleranz: string) => {
-        aggregatedData.nahrungsmittelIntoleranz[intoleranz] =
-          (aggregatedData.nahrungsmittelIntoleranz[intoleranz] || 0) + 1
-      })
-
-      aggregatedData.weitereIntoleranzen = Array.from(
-        new Set(aggregatedData.weitereIntoleranzen.concat(eintrag.weitereIntoleranzen))
-      )
-    })
-
-    result.push(aggregatedData)
-  })
-
-  // Daten Transformieren damit diese exportiert werden können
-
-  return result.map((eintrag) => {
-    const result: any = {}
-
-    // Transformiere Essgewohnheiten
-    Object.keys(eintrag.essgewohnheit).forEach((essgewohnheit) => {
-      result[essgewohnheit] = eintrag.essgewohnheit[essgewohnheit]
-    })
-
-    // Füge fehlende Werte mit 0 hinzu
-    Object.values(Essgewohnheit).forEach((essgewohnheit) => {
-      if (!result[essgewohnheit]) result[essgewohnheit] = 0
-    })
-
-    result[''] = ''
-
-    // Transformiere Nahrungsmittel-Intoleranzen
-    Object.keys(eintrag.nahrungsmittelIntoleranz).forEach((intoleranz) => {
-      result[intoleranz] = eintrag.nahrungsmittelIntoleranz[intoleranz]
-    })
-
-    // Füge fehlende Werte mit 0 hinzu
-    Object.values(NahrungsmittelIntoleranz).forEach((intoleranz) => {
-      if (!result[intoleranz]) result[intoleranz] = 0
-    })
-
-    result[' '] = ''
-
-    result['weitere Intoleranzen'] = eintrag.weitereIntoleranzen.join(', ')
-
-    return { id: eintrag.gliederung.id, Gliederung: eintrag.gliederung.name, ...result }
-  })
 }
