@@ -51,47 +51,47 @@ function onClick({ subjectType, subjectId }: Activity) {
   </p>
 
   <div class="flow-root">
-    <table class="min-w-full divide-y divide-gray-300">
+    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
       <thead>
         <tr>
           <th
             scope="col"
-            class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"
+            class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold"
           >
             Datum
           </th>
           <th
             scope="col"
-            class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"
+            class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold"
           >
             Beschreibung
           </th>
           <th
             scope="col"
-            class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"
+            class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold"
           >
             Typ
           </th>
           <th
             scope="col"
-            class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+            class="px-3 py-3.5 text-left text-sm font-semibold"
           >
             Betroffen
           </th>
           <th
             scope="col"
-            class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+            class="px-3 py-3.5 text-left text-sm font-semibold"
           >
             Akteur
           </th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-gray-200 bg-white">
+      <tbody class="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-dark-primary">
         <!-- TODO: Detailseite und Verlinkung von Betroffen und Akteur -->
         <tr
           v-for="activity in activities"
           :key="activity.id"
-          class="cursor-pointer even:bg-gray-50 hover:bg-gray-100"
+          class="cursor-pointer even:bg-gray-50 dark:even:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800"
           @click="onClick(activity)"
         >
           <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
