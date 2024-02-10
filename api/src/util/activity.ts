@@ -22,6 +22,5 @@ export default async function logActivity(opts: Opts) {
     })
   } catch (error: any) {
     logger.warn('Failed to insert activity record!', error)
-    // ¯\_(ツ)_/¯
   }
 }
