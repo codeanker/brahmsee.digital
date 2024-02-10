@@ -25,7 +25,7 @@
     "typecheck": "vue-tsc -b",
     "test": "vitest",
     "test:all": "concurrently -n api,frontend,test -s command-test --kill-others \"npm run start:api\" \"npm run start:frontend\" \"npm run test -- run\"",
-    "generate": "tsx ./api/src/cli/generate.ts"
+    "generate": "tsx ./api/src/cli/index.ts"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",
