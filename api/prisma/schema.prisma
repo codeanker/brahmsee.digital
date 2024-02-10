@@ -292,7 +292,7 @@ enum ActivityType {
 
 model Activity {
   id               Int      @id @default(autoincrement())
-  timestamp        DateTime @default(now())
+  createdAt        DateTime @default(now())
   type             ActivityType
   description      String?
   subjectType      String
