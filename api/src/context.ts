@@ -1,10 +1,10 @@
 import { type inferAsyncReturnType } from '@trpc/server'
-import * as trpcNext from '@trpc/server/adapters/next'
+import type { CreateTrpcKoaContextOptions } from 'trpc-koa-adapter'
 
 import { getEntityIdFromHeader } from './authentication'
 import { logger } from './logger'
 
-export async function createContext({ req }: trpcNext.CreateNextContextOptions) {
+export async function createContext({ req }: CreateTrpcKoaContextOptions) {
   try {
     const accountId = await getEntityIdFromHeader(req.headers.authorization)
     return {

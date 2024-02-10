@@ -1,4 +1,4 @@
-import type { Role } from '@prisma/client'
+import type { ActivityType, Role } from '@prisma/client'
 import { TRPCError, initTRPC } from '@trpc/server'
 import superjson from 'superjson'
 
@@ -7,6 +7,7 @@ import { type Context } from './context'
 import { logger } from './logger'
 import { trpc_call_duration } from './metrics'
 import prisma from './prisma'
+import logActivity from './util/activity'
 
 const t = initTRPC.context<Context>().create({
   transformer: superjson,
@@ -32,6 +33,37 @@ const loggerMiddleware = middleware(async (opts) => {
     // maybe dont log all errors
     logger.error(`[${opts.ctx.accountId ?? 'public'}] ${meta.path}.${meta.type} [${durationMs}ms] ${stack}`)
   }
+  return result
+})
+
+const logActivityMiddleware = middleware(async (opts) => {
+  const result = await opts.next()
+
+  if (result.ok) {
+    let type: ActivityType | undefined = undefined
+    const [subject, operation] = opts.path.split('.')
+
+    if (operation.endsWith('Create')) {
+      type = 'CREATE'
+    } else if (operation.endsWith('Patch')) {
+      type = 'UPDATE'
+    } else if (operation.endsWith('Remove')) {
+      type = 'DELETE'
+    }
+
+    if (type !== undefined) {
+      logger.verbose(`Recording activity ${opts.path} of type ${type}`)
+      await logActivity({
+        // @ts-expect-error ist unknowmn
+        subjectId: type === 'CREATE' ? result.data?.id : opts.rawInput?.id,
+        subjectType: subject,
+        causerId: opts.ctx.accountId,
+        metadata: opts.rawInput,
+        type,
+      })
+    }
+  }
+
   return result
 })
 
@@ -96,4 +128,5 @@ export const publicProcedure = t.procedure.use(loggerMiddleware)
  *
  * @see https://trpc.io/docs/procedures
  */
-export const protectedProcedure = (roles: Role[]) => t.procedure.use(loggerMiddleware).use(isAuthed(roles))
+export const protectedProcedure = (roles: Role[]) =>
+  t.procedure.use(loggerMiddleware).use(isAuthed(roles)).use(logActivityMiddleware)
