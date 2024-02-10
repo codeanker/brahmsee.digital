@@ -20,7 +20,7 @@ export const activityVerwaltungListProcedure = defineProcedure({
       skip,
       take,
       orderBy: {
-        timestamp: 'desc',
+        createdAt: 'desc',
       },
       include: {
         causer: {
