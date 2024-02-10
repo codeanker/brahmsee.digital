@@ -8,7 +8,7 @@ import prisma from '../../prisma'
 import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin'
 import { getSecurityWorksheet } from '../helpers/getSecurityWorksheet'
 
-export async function veranstaltungTeilnehmendenliste(ctx, next: () => Promise<void>) {
+export async function veranstaltungTeilnehmendenliste(ctx) {
   const jwt = ctx.query.jwt
   const accountId = await getEntityIdFromHeader('Bearer ' + jwt)
   const unterveranstaltungId = ctx.query.unterveranstaltungId
@@ -138,6 +138,5 @@ export async function veranstaltungTeilnehmendenliste(ctx, next: () => Promise<v
   const filename = `${dayjs().format('YYYYMMDD-hhmm')}-Teilnehmenden.xlsx`
   ctx.res.setHeader('Content-Disposition', `attachment; filename="${filename}"`)
   ctx.res.setHeader('Content-Type', 'application/vnd.ms-excel')
-  await next()
   ctx.res.end(buf)
 }

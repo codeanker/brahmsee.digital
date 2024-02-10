@@ -4,11 +4,10 @@ import Button from './Button.vue'
 
 interface Props {
   veranstaltung: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    [key: string]: any
-  } & {
-    hasUnterveranstaltung?: boolean
+    id: number
+    name: string
   }
+  hasUnterveranstaltungen?: number
 }
 
 const { veranstaltung } = defineProps<Props>()
@@ -27,7 +26,7 @@ const { veranstaltung } = defineProps<Props>()
       <span class="text-4xl font-bold tracking-tight">10</span>
       <span class="text-sm font-semibold leading-6">/500 Plätzen</span>
     </p>
-    <Badge v-if="veranstaltung.hasUnterveranstaltung"> Ausschreibung erstellt </Badge>
+    <Badge v-if="hasUnterveranstaltungen"> Ausschreibung erstellt </Badge>
     <Button
       v-else
       :to="{

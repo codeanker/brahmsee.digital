@@ -19,32 +19,45 @@ const props = withDefaults(
   {}
 )
 
-function loadAnmeldungen() {
+const { state: anmeldungen } = useAsyncState(async () => {
   if (loggedInAccount.value?.role === 'ADMIN') {
-    const { state } = useAsyncState(async () => {
-      return apiClient.anmeldung.verwaltungList.query({
-        filter: {
-          unterveranstaltungId: props.unterveranstaltungId,
-          veranstaltungId: props.veranstaltungId,
-        },
-        pagination: { take: 100, skip: 0 },
-      })
-    }, [])
-    return state
+    return apiClient.anmeldung.verwaltungList.query({
+      filter: {
+        unterveranstaltungId: props.unterveranstaltungId,
+        veranstaltungId: props.veranstaltungId,
+      },
+      pagination: { take: 100, skip: 0 },
+    })
   } else {
-    const { state } = useAsyncState(async () => {
-      return apiClient.anmeldung.gliederungList.query({
-        filter: {
-          unterveranstaltungId: props.unterveranstaltungId,
-          veranstaltungId: props.veranstaltungId,
-        },
-        pagination: { take: 100, skip: 0 },
-      })
-    }, [])
-    return state
+    return apiClient.anmeldung.gliederungList.query({
+      filter: {
+        unterveranstaltungId: props.unterveranstaltungId,
+        veranstaltungId: props.veranstaltungId,
+      },
+      pagination: { take: 100, skip: 0 },
+    })
   }
-}
-const anmeldungen = loadAnmeldungen()
+}, [])
+
+const { state: countAnmeldungen } = useAsyncState(async () => {
+  if (loggedInAccount.value?.role === 'ADMIN') {
+    return apiClient.anmeldung.verwaltungCount.query({
+      filter: {
+        unterveranstaltungId: props.unterveranstaltungId,
+        veranstaltungId: props.veranstaltungId,
+      },
+    })
+  } else {
+    return apiClient.anmeldung.gliederungCount.query({
+      filter: {
+        unterveranstaltungId: props.unterveranstaltungId,
+        veranstaltungId: props.veranstaltungId,
+      },
+    })
+  }
+}, [])
+
+// @ToDo count for Gliederungen
 
 const stats = computed<
   {
@@ -53,19 +66,10 @@ const stats = computed<
   }[]
 >(() => {
   return [
-    { name: 'OFFEN', value: anmeldungen.value.filter((a) => a.status === 'OFFEN').length },
-    {
-      name: 'BESTAETIGT',
-      value: anmeldungen.value.filter((a) => a.status === 'BESTAETIGT').length,
-    },
-    {
-      name: 'STORNIERT',
-      value: anmeldungen.value.filter((a) => a.status === 'STORNIERT').length,
-    },
-    {
-      name: 'ABGELEHNT',
-      value: anmeldungen.value.filter((a) => a.status === 'ABGELEHNT').length,
-    },
+    { name: 'OFFEN', value: countAnmeldungen.value.OFFEN },
+    { name: 'BESTAETIGT', value: countAnmeldungen.value.BESTAETIGT },
+    { name: 'STORNIERT', value: countAnmeldungen.value.STORNIERT },
+    { name: 'ABGELEHNT', value: countAnmeldungen.value.ABGELEHNT },
   ]
 })
 </script>

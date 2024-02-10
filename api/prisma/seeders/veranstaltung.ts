@@ -1,3 +1,4 @@
+import { fakerDE as faker } from '@faker-js/faker'
 import { PrismaClient } from '@prisma/client'
 
 import { isProduction } from '../../src/util/is-production'
@@ -16,9 +17,12 @@ const createVeranstaltung: Seeder = async (prisma: PrismaClient) => {
       ende: new Date(),
       meldebeginn: new Date(),
       meldeschluss: new Date(),
-      maxTeilnehmende: 500,
-      teilnahmegebuehr: 100,
-      beschreibung: 'Ich bin die Beschreibung',
+      maxTeilnehmende: faker.number.int({ min: 7, max: 50 }),
+      teilnahmegebuehr: faker.number.int({ min: 80, max: 110 }),
+      beschreibung: faker.lorem.text(),
+      datenschutz: faker.lorem.text(),
+      teilnahmeBedingungen: faker.lorem.text(),
+      zielgruppe: faker.lorem.text(),
       ort: {
         create: {
           name: 'Waldheim am Brahmsee',
@@ -38,7 +42,7 @@ const createVeranstaltung: Seeder = async (prisma: PrismaClient) => {
           maxTeilnehmende: 800,
           meldebeginn: new Date(),
           meldeschluss: new Date(),
-          beschreibung: 'Ich bin die Beschreibung',
+          beschreibung: faker.lorem.text(),
           type: 'GLIEDERUNG',
           gliederung: {
             connect: {
