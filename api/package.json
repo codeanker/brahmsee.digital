@@ -29,6 +29,7 @@
     "@sendgrid/mail": "^8.1.0",
     "@trpc/server": "^10.28.1",
     "config": "^3.3.9",
+    "dayjs": "^1.11.10",
     "grant": "^5.4.22",
     "koa": "^2.14.2",
     "koa-helmet": "^7.0.2",
