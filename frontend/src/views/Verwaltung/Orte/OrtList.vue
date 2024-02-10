@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { PlusIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 
 import { apiClient } from '@/api'
@@ -11,14 +12,20 @@ const { state: ortenList } = useAsyncState(async () => {
 
 <template>
   <div>
-    <h5>Orte</h5>
-    <div class="flow-root">
-      <p class="mt-8 text-sm"><b>Tipp</b>: Zum Bearbeiten eines Ortes die entsprechende Zeile anklicken.</p>
+    <div class="flex items-center justify-between my-8">
+      <div class="flex flex-col">
+        <h5 class="mb-0">Orte</h5>
+        <p class="text-sm"><b>Tipp</b>: Zum Bearbeiten eines Ortes die entsprechende Zeile anklicken.</p>
+      </div>
       <RouterLink
-        class="text-primary-500"
+        class="text-primary-500 flex items-center"
         :to="{ name: 'Verwaltung Ort erstellen' }"
-        >Ort erstellen</RouterLink
       >
+        <PlusIcon class="h-5 w-5 mr-1"></PlusIcon>
+        Ort erstellen
+      </RouterLink>
+    </div>
+    <div class="flow-root">
       <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
         <thead>
           <tr>
