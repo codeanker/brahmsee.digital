@@ -1,16 +1,12 @@
 import { fakerDE as faker } from '@faker-js/faker'
 import { PrismaClient } from '@prisma/client'
 
-import { isProduction } from '../../src/util/is-production'
+import logActivity from '../../src/util/activity'
 
 import { Seeder } from '.'
 
 const createVeranstaltung: Seeder = async (prisma: PrismaClient) => {
-  if (isProduction()) {
-    return
-  }
-
-  await prisma.veranstaltung.create({
+  const veranstaltung = await prisma.veranstaltung.create({
     data: {
       name: 'Brahmsee 2024',
       beginn: new Date(),
@@ -52,6 +48,13 @@ const createVeranstaltung: Seeder = async (prisma: PrismaClient) => {
         },
       },
     },
+  })
+
+  await logActivity({
+    type: 'CREATE',
+    subjectType: 'veranstaltung',
+    subjectId: veranstaltung.id,
+    description: 'veranstaltung created via db seeder',
   })
 }
 

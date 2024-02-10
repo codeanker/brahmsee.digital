@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { PrismaClient, AccountStatus } from '@prisma/client'
 
+import logActivity from '../../src/util/activity'
 import { isProduction } from '../../src/util/is-production'
 
 import { Seeder } from '.'
@@ -16,7 +17,7 @@ const createAccount: Seeder = async (prisma: PrismaClient) => {
   const email = 'admin@example.org'
   const password = 'admin'
 
-  await prisma.account.create({
+  const res = await prisma.account.create({
     data: {
       email,
       password: await hashPassword(password),
@@ -32,6 +33,16 @@ const createAccount: Seeder = async (prisma: PrismaClient) => {
         },
       },
     },
+    select: {
+      id: true,
+    },
+  })
+
+  await logActivity({
+    type: 'CREATE',
+    description: `account was created via db seeder`,
+    subjectType: 'account',
+    subjectId: res.id,
   })
 
   console.log('Created default user account.')

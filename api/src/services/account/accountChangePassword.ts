@@ -3,6 +3,7 @@ import { z } from 'zod'
 
 import prisma from '../../prisma'
 import { defineProcedure } from '../../types/defineProcedure'
+import logActivity from '../../util/activity'
 
 import { hashPassword, passwordMatches } from '@codeanker/authentication'
 import { isStrongPassword } from '@codeanker/helpers'
@@ -60,6 +61,14 @@ export const accountChangePasswordProcedure = defineProcedure({
       data: {
         password: await hashPassword(options.input.password),
       },
+    })
+
+    await logActivity({
+      type: 'UPDATE',
+      subjectType: 'account',
+      subjectId: options.input.id,
+      causerId: options.ctx.accountId,
+      description: 'password changed',
     })
   },
 })
