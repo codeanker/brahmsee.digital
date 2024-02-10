@@ -67,12 +67,20 @@ export const anmeldungPublicCreateProcedure = defineProcedure({
       },
     })
 
-    await logActivity({
-      type: 'OTHER',
-      description: 'Recording new public registration',
-      subjectType: 'anmeldung',
-      subjectId: person.anmeldungen[0].id,
-    })
+    await Promise.all([
+      logActivity({
+        type: 'CREATE',
+        description: 'person created via public registration',
+        subjectType: 'person',
+        subjectId: person.id,
+      }),
+      logActivity({
+        type: 'CREATE',
+        description: 'new public registration',
+        subjectType: 'anmeldung',
+        subjectId: person.anmeldungen[0].id,
+      }),
+    ])
 
     await sendMail({
       to: options.input.data.email,

@@ -23,7 +23,7 @@ export const accountActivateProcedure = defineProcedure({
     })
 
     await logActivity({
-      type: 'OTHER',
+      type: 'UPDATE',
       description: `account was activated`,
       subjectType: 'account',
       subjectId: options.input.accountId,

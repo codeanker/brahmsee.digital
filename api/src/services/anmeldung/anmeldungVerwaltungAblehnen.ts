@@ -3,6 +3,7 @@ import z from 'zod'
 
 import prisma from '../../prisma'
 import { defineProcedure } from '../../types/defineProcedure'
+import logActivity from '../../util/activity'
 import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin'
 import { sendMail } from '../../util/mail'
 
@@ -49,6 +50,15 @@ export const anmeldungVerwaltungAblehnenProcedure = defineProcedure({
         status: AnmeldungStatus.ABGELEHNT,
       },
     })
+
+    await logActivity({
+      type: 'UPDATE',
+      description: `registration rejected`,
+      subjectType: 'anmeldung',
+      subjectId: res.id,
+      causerId: options.ctx.accountId,
+    })
+
     if (res.status == AnmeldungStatus.ABGELEHNT) {
       const person = await prisma.person.findUnique({
         where: {

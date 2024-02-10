@@ -2,6 +2,7 @@ import z from 'zod'
 
 import prisma from '../../prisma'
 import { defineProcedure } from '../../types/defineProcedure'
+import logActivity from '../../util/activity'
 
 export const anmeldungTeilnehmerStornoProcedure = defineProcedure({
   key: 'teilnehmerStorno',
@@ -13,7 +14,7 @@ export const anmeldungTeilnehmerStornoProcedure = defineProcedure({
     }),
   }),
   async handler(options) {
-    return prisma.anmeldung.update({
+    const res = await prisma.anmeldung.update({
       where: {
         id: options.input.data.anmeldungId,
         person: {
@@ -29,6 +30,17 @@ export const anmeldungTeilnehmerStornoProcedure = defineProcedure({
       data: {
         status: 'STORNIERT',
       },
+      select: {
+        id: true,
+      },
+    })
+
+    await logActivity({
+      type: 'UPDATE',
+      description: `registration canceled`,
+      subjectType: 'anmeldung',
+      subjectId: res.id,
+      causerId: options.ctx.accountId,
     })
   },
 })
