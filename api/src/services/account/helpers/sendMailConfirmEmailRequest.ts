@@ -3,7 +3,7 @@ import { sendMail } from '../../../util/mail'
 
 export async function sendMailConfirmEmailRequest(data: { email: string; activationToken: string }) {
   const activationUrl = `${config.clientUrl}/registrierung/confirm/${data.activationToken}`
-  sendMail({
+  await sendMail({
     to: data.email,
     subject: 'brahmsee.digital Bestätige deine E-Mail Adresse',
     categories: ['account', 'confirm'],

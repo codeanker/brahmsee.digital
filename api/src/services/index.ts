@@ -1,6 +1,7 @@
 import { router } from '../trpc'
 
 import { accountRouter } from './account/account.router'
+import { activityRouter } from './activity/activity.routes'
 import { anmeldungRouter } from './anmeldung/anmeldung.router'
 import { authenticationRouter } from './authentication/authentication.router'
 import { gliederungRouter } from './gliederung/gliederung.router'
@@ -19,5 +20,6 @@ export const serviceRouter = router({
   veranstaltung: veranstaltungRouter,
   unterveranstaltung: unterveranstaltungRouter,
   ort: ortRouter,
+  activity: activityRouter,
   // Add Routers here - do not delete this line
 })

@@ -1,5 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 
+import logActivity from '../../src/util/activity'
+
 import { Seeder } from '.'
 
 export const gliederungen: { edv: string; name: string }[] = [
@@ -1967,6 +1969,12 @@ export const gliederungen: { edv: string; name: string }[] = [
 const importGliederungen: Seeder = async (prisma: PrismaClient) => {
   await prisma.gliederung.createMany({
     data: gliederungen,
+  })
+
+  await logActivity({
+    type: 'CREATE',
+    subjectType: 'gliederung',
+    description: 'gliederung list created via db seeder',
   })
 }
 
