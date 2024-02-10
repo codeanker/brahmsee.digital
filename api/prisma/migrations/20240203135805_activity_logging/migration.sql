@@ -4,7 +4,7 @@ CREATE TYPE "ActivityType" AS ENUM ('CREATE', 'UPDATE', 'DELETE', 'OTHER');
 -- CreateTable
 CREATE TABLE "Activity" (
     "id" SERIAL NOT NULL,
-    "timestamp" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "type" "ActivityType" NOT NULL,
     "description" TEXT,
     "subjectType" TEXT NOT NULL,
