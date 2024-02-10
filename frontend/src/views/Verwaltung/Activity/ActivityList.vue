@@ -5,7 +5,7 @@ import { apiClient } from '@/api'
 import Badge from '@/components/UIComponents/Badge.vue'
 import type { StatusColors } from '@/helpers/getAnmeldungStatusColors'
 import router from '@/router'
-import type { Activity, ActivityType } from '@codeanker/api/src/services/activity/schema/activity.schema'
+import type { Activity, ActivityType } from '@codeanker/api'
 import { formatTimestamp } from '@codeanker/helpers'
 
 const { state: activities } = useAsyncState(async () => {
