@@ -7,7 +7,7 @@ export const ActivityTypeMapping = defineEnumMapping<ActivityType>({
   UPDATE: { human: 'Aktualisiert' },
   DELETE: { human: 'Gelöscht' },
   EMAIL: { human: 'E-Mail versandt' },
-  OTHER: { human: 'Anderes' },
+  OTHER: { human: 'Sonstiges' },
 })
 
 export type { Activity, ActivityType }
