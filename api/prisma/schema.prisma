@@ -287,6 +287,7 @@ enum ActivityType {
   CREATE
   UPDATE
   DELETE
+  EMAIL
   OTHER
 }
 

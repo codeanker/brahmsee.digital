@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "ActivityType" AS ENUM ('CREATE', 'UPDATE', 'DELETE', 'OTHER');
+CREATE TYPE "ActivityType" AS ENUM ('CREATE', 'UPDATE', 'DELETE', 'EMAIL', 'OTHER');
 
 -- CreateTable
 CREATE TABLE "Activity" (
