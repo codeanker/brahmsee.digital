@@ -93,7 +93,9 @@ function onClick({ subjectType, subjectId }: Activity) {
           </th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-dark-primary">
+      <tbody
+        class="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-dark-primary transition-colors duration-200"
+      >
         <!-- TODO: Detailseite und Verlinkung von Betroffen und Akteur -->
         <tr
           v-for="activity in activities"
@@ -127,7 +129,7 @@ function onClick({ subjectType, subjectId }: Activity) {
     </table>
     <div
       v-if="activities.length <= 0"
-      class="rounded-md bg-blue-50 dark:bg-blue-950 p-4 text-blue-500"
+      class="rounded-md bg-blue-50 dark:bg-blue-950 p-4 text-blue-500 transition-colors duration-200"
     >
       <div class="flex">
         <div class="flex-shrink-0">
