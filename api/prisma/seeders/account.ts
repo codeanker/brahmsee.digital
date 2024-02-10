@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { PrismaClient, AccountStatus } from '@prisma/client'
 
+import { logger } from '../../src/logger'
 import logActivity from '../../src/util/activity'
 import { isProduction } from '../../src/util/is-production'
 
@@ -45,9 +46,10 @@ const createAccount: Seeder = async (prisma: PrismaClient) => {
     subjectId: res.id,
   })
 
-  console.log('Created default user account.')
-  console.log('\tEmail: %s', email)
-  console.log('\tPassword: %s', password)
+  logger.info('Created default user account.', {
+    email,
+    password,
+  })
 }
 
 export default createAccount
