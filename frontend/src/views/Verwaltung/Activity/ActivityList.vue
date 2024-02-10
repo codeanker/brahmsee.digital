@@ -96,7 +96,7 @@ function onClick({ subjectType, subjectId }: Activity) {
         >
           <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
             <span>
-              {{ formatTimestamp(activity.timestamp) }}
+              {{ formatTimestamp(activity.createdAt) }}
             </span>
           </td>
           <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
