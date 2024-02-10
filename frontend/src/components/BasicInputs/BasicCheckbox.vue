@@ -21,12 +21,15 @@ const { model, errorMessage } = useValidationModel(props, emit)
       class="checkbox"
       :disabled="disabled"
     />
-    <label
-      v-if="label"
-      class="ml-2"
-      :for="id || name || label"
-      >{{ label }}</label
-    >
-    <BasicValidationFeedback :error-message="errorMessage" />
+    <div class="ml-2">
+      <label
+        v-if="label"
+        :for="id || name || label"
+      >
+        {{ label }}
+      </label>
+      <slot />
+    </div>
   </div>
+  <BasicValidationFeedback :error-message="errorMessage" />
 </template>
