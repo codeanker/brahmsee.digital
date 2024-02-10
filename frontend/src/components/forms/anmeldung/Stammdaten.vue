@@ -4,7 +4,7 @@ import { ref, computed } from 'vue'
 import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
-import { Gender, GenderMapping, getEnumOptions } from '@codeanker/api/src/enumMappings'
+import { type Gender, GenderMapping, getEnumOptions } from '@codeanker/api'
 
 export interface IStammdaten {
   firstname: string

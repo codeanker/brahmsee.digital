@@ -7,7 +7,7 @@ import { apiClient } from '@/api'
 import AnmeldungStatusSelect from '@/components/AnmeldungStatusSelect.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
 import { getAnmeldungStatusColor } from '@/helpers/getAnmeldungStatusColors'
-import { AnmeldungStatus, AnmeldungStatusMapping } from '@codeanker/api/src/enumMappings'
+import { type AnmeldungStatus, AnmeldungStatusMapping } from '@codeanker/api'
 import { dayjs } from '@codeanker/helpers'
 
 const props = withDefaults(
@@ -19,48 +19,57 @@ const props = withDefaults(
   {}
 )
 
-function loadAnmeldungen() {
+const { state: anmeldungen } = useAsyncState(async () => {
   if (loggedInAccount.value?.role === 'ADMIN') {
-    const { state } = useAsyncState(async () => {
-      return apiClient.anmeldung.verwaltungList.query({
-        filter: {
-          unterveranstaltungId: props.unterveranstaltungId,
-          veranstaltungId: props.veranstaltungId,
-        },
-        pagination: { take: 100, skip: 0 },
-      })
-    }, [])
-    return state
+    return apiClient.anmeldung.verwaltungList.query({
+      filter: {
+        unterveranstaltungId: props.unterveranstaltungId,
+        veranstaltungId: props.veranstaltungId,
+      },
+      pagination: { take: 100, skip: 0 },
+    })
   } else {
-    const { state } = useAsyncState(async () => {
-      return apiClient.anmeldung.gliederungList.query({
-        filter: {
-          unterveranstaltungId: props.unterveranstaltungId,
-          veranstaltungId: props.veranstaltungId,
-        },
-        pagination: { take: 100, skip: 0 },
-      })
-    }, [])
-    return state
+    return apiClient.anmeldung.gliederungList.query({
+      filter: {
+        unterveranstaltungId: props.unterveranstaltungId,
+        veranstaltungId: props.veranstaltungId,
+      },
+      pagination: { take: 100, skip: 0 },
+    })
   }
-}
-const anmeldungen = loadAnmeldungen()
+}, [])
 
-const stats = computed(() => {
+const { state: countAnmeldungen } = useAsyncState(async () => {
+  if (loggedInAccount.value?.role === 'ADMIN') {
+    return apiClient.anmeldung.verwaltungCount.query({
+      filter: {
+        unterveranstaltungId: props.unterveranstaltungId,
+        veranstaltungId: props.veranstaltungId,
+      },
+    })
+  } else {
+    return apiClient.anmeldung.gliederungCount.query({
+      filter: {
+        unterveranstaltungId: props.unterveranstaltungId,
+        veranstaltungId: props.veranstaltungId,
+      },
+    })
+  }
+}, [])
+
+// @ToDo count for Gliederungen
+
+const stats = computed<
+  {
+    name: AnmeldungStatus
+    value: number
+  }[]
+>(() => {
   return [
-    { name: AnmeldungStatus.OFFEN, value: anmeldungen.value.filter((a) => a.status === AnmeldungStatus.OFFEN).length },
-    {
-      name: AnmeldungStatus.BESTAETIGT,
-      value: anmeldungen.value.filter((a) => a.status === AnmeldungStatus.BESTAETIGT).length,
-    },
-    {
-      name: AnmeldungStatus.STORNIERT,
-      value: anmeldungen.value.filter((a) => a.status === AnmeldungStatus.STORNIERT).length,
-    },
-    {
-      name: AnmeldungStatus.ABGELEHNT,
-      value: anmeldungen.value.filter((a) => a.status === AnmeldungStatus.ABGELEHNT).length,
-    },
+    { name: 'OFFEN', value: countAnmeldungen.value.OFFEN },
+    { name: 'BESTAETIGT', value: countAnmeldungen.value.BESTAETIGT },
+    { name: 'STORNIERT', value: countAnmeldungen.value.STORNIERT },
+    { name: 'ABGELEHNT', value: countAnmeldungen.value.ABGELEHNT },
   ]
 })
 </script>

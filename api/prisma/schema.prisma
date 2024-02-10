@@ -145,7 +145,7 @@ model Person {
   notfallkontaktIds            Int[]
   notfallkontakte              Notfallkontakt[]
   addressId                    Int?
-  address                     Address?                     @relation(fields: [addressId], references: [id])
+  address                      Address?                     @relation(fields: [addressId], references: [id], onDelete: Cascade)
 }
 
 model Account {

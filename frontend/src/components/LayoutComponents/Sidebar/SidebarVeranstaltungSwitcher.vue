@@ -6,13 +6,26 @@ import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { apiClient } from '@/api'
+import { loggedInAccount } from '@/composables/useAuthentication'
 
 const route = useRoute()
 const router = useRouter()
 
-const { state: veranstaltungen } = useAsyncState(async () => {
-  return apiClient.veranstaltung.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
-}, [])
+function loadVeranstaltungen() {
+  if (loggedInAccount.value?.role === 'ADMIN') {
+    const { state } = useAsyncState(async () => {
+      return apiClient.veranstaltung.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
+    }, [])
+    return state
+  } else {
+    const { state } = useAsyncState(async () => {
+      return apiClient.veranstaltung.gliederungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
+    }, [])
+    return state
+  }
+}
+
+const veranstaltungen = loadVeranstaltungen()
 
 let selectedVeranstaltung = ref<number>(
   +route.params.veranstaltungId || parseInt(localStorage.getItem('letzteVeranstaltung') as string)

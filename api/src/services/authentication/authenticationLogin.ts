@@ -30,9 +30,6 @@ export const authenticationLoginProcedure = defineProcedure({
         status: true,
       },
     })
-    if (account.status !== 'AKTIV') {
-      throw new Error('Account is not active')
-    }
     const person = account.person
     return {
       ...authResult,

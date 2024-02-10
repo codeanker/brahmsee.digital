@@ -1,7 +1,7 @@
 {
   "name": "codeanker-project",
   "author": "CODEANKER GmbH",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "description": "",
   "workspaces": [
     "api",
@@ -15,7 +15,7 @@
   "scripts": {
     "start:services": "docker-compose -f docker-compose-services.yml up --build",
     "start:api": "npm run dev -w ./api",
-    "start:frontend": "npm run dev -w ./frontend",
+    "start:frontend": "VITE_APP_API_HOST=http://localhost:3030 npm run dev -w ./frontend",
     "start:docs": "npm run docs:dev -w ./docs",
     "migrate:api": "npm exec -w ./api prisma migrate deploy",
     "lint": "eslint \"**/*.{vue,ts,js}\"",
@@ -25,7 +25,7 @@
     "typecheck": "vue-tsc -b",
     "test": "vitest",
     "test:all": "concurrently -n api,frontend,test -s command-test --kill-others \"npm run start:api\" \"npm run start:frontend\" \"npm run test -- run\"",
-    "generate": "tsx ./api/src/cli/generate.ts"
+    "generate": "tsx ./api/src/cli/index.ts"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",

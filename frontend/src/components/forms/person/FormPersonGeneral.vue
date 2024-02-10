@@ -19,8 +19,9 @@ import BasicTypeahead from '@/components/BasicInputs/BasicTypeahead.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import Loading from '@/components/UIComponents/Loading.vue'
 import type { RouterOutput } from '@codeanker/api'
-import type { Gliederung } from '@codeanker/api/src/services/gliederung/schema/gliederung.schema'
 import { ValidateForm } from '@codeanker/validation'
+
+type Gliederung = Awaited<RouterOutput['gliederung']['publicList']>[number]
 
 export interface FormPersonGeneralSubmit {
   stammdaten: IStammdaten

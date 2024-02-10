@@ -1,6 +1,6 @@
 import { input, password as passwordInput, select } from '@inquirer/prompts'
 
-import { getEnumOptions, roleMapping, AccountStatus } from '../enumMappings'
+import { getEnumOptions, roleMapping } from '../enumMappings'
 import prisma from '../prisma'
 import { getAccountCreateData } from '../services/account/schema/account.schema'
 import logActivity from '../util/activity'
@@ -46,8 +46,8 @@ async function createUser() {
   const res = await prisma.account.create({
     data: {
       ...accountData,
-      status: AccountStatus.AKTIV,
-      activationToken: '',
+      status: 'AKTIV',
+      activationToken: null,
     },
     select: {
       id: true,
