@@ -11,8 +11,8 @@ const veranstaltungId = Number(route.params.veranstaltungId)
 </script>
 
 <template>
-  <div class="my-10 flex justify-between">
-    <div>
+  <div class="flex justify-between">
+    <div class="my-8">
       <div class="text-lg font-semibold">Teilnehmende "{{ veranstaltung?.name }}"</div>
       <p class="max-w-2xl text-sm">
         Hier findest Du alle Personen die sich zur Veranstaltung "{{ veranstaltung?.name }}" angemeldet haben.
