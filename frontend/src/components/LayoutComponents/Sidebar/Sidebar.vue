@@ -14,7 +14,7 @@ import {
   PuzzlePieceIcon,
   FingerPrintIcon,
   TicketIcon,
-  RssIcon,
+  QueueListIcon,
   HandThumbUpIcon,
 } from '@heroicons/vue/24/outline'
 import { computed } from 'vue'
@@ -167,7 +167,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     type: 'SidebarItem',
     name: 'Aktivität',
     route: { name: 'Verwaltung Aktivitäten' },
-    icon: RssIcon,
+    icon: QueueListIcon,
     visible: hasPermissionToView(['ADMIN']),
   },
   { type: 'DividerItem', name: 'Entwicklung', visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']) },
