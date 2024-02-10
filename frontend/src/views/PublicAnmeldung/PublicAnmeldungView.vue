@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { ChevronLeftIcon, FaceFrownIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
+import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { apiClient } from '@/api'
 import FormPersonGeneral, { type FormPersonGeneralSubmit } from '@/components/forms/person/FormPersonGeneral.vue'
+import Drawer from '@/components/LayoutComponents/Drawer.vue'
 import PublicFooter from '@/components/LayoutComponents/PublicFooter.vue'
 import PublicHeader from '@/components/LayoutComponents/PublicHeader.vue'
 import Button from '@/components/UIComponents/Button.vue'
@@ -17,6 +19,8 @@ const route = useRoute()
 const { state: unterveranstaltung, isLoading } = useAsyncState(async () => {
   return apiClient.unterveranstaltung.publicGet.query({ id: Number(route.params.ausschreibungId) })
 }, undefined)
+
+const showBedingungen = ref(false)
 
 const {
   execute: createAnmeldung,
@@ -65,6 +69,25 @@ const {
 </script>
 
 <template>
+  <Drawer
+    v-if="showBedingungen"
+    @close="showBedingungen = false"
+  >
+    <div class="container mx-auto">
+      <div class="text-lg font-semibold">Teilnahmebedingungen</div>
+      <div
+        class="prose prose-neutra"
+        v-html="unterveranstaltung?.veranstaltung?.teilnahmeBedingungen"
+      />
+
+      <div class="text-lg font-semibold mt-10">Datenschutz</div>
+      <div
+        class="prose prose-neutra"
+        v-html="unterveranstaltung?.veranstaltung?.datenschutz"
+      />
+    </div>
+  </Drawer>
+
   <div class="lg:py-10 lg:px-20 flex flex-col h-full grow">
     <div
       v-if="unterveranstaltung && !isLoading"
@@ -73,12 +96,12 @@ const {
       <!-- Header -->
       <PublicHeader :gliederung="unterveranstaltung.gliederung" />
       <Button
-        class="mb-10"
+        class="mb-10 flex flex-row items-center"
         color="secondary"
         @click="router.back()"
       >
         <ChevronLeftIcon class="h-5 mr-2" />
-        <span>Zurück zur Aussschreibung</span>
+        <span>Zurück zur Ausschreibung</span>
       </Button>
       <div class="text-3xl font-medium">Anmeldung</div>
       <div class="mb-5">{{ unterveranstaltung?.veranstaltung.name }}</div>
@@ -89,6 +112,7 @@ const {
         submit-text="Anmelden"
         is-public-anmeldung
         @submit="(value) => createAnmeldung(undefined, value)"
+        @show-terms="showBedingungen = true"
       />
       <PublicFooter />
     </div>
@@ -105,7 +129,7 @@ const {
       </template>
       <template v-else>
         <FaceFrownIcon class="w-20 h-20 text-primary-500 mb-5" />
-        Es ist ein Fehler aufgetreten
+        <span>Es ist ein Fehler aufgetreten</span>
       </template>
     </div>
   </div>
