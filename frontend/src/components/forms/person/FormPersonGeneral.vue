@@ -174,7 +174,7 @@ const submit = () => {
       </span>
     </Button>
 
-    <template v-if="error">
+    <template v-if="error && error.message">
       <pre><code>
         {{ error.message }}
       </code></pre>
