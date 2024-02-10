@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { CheckCircleIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 
 import { apiClient } from '@/api'
@@ -47,11 +48,14 @@ function onClick({ subjectType, subjectId }: Activity) {
 <template>
   <h5>Aufgezeichnete Aktivitäten</h5>
   <p class="max-w-2xl text-sm text-gray-500">
-    In der Verwaltung werden bestimmte Dinge aufgezeichnet, bspw. wenn Accounts erstellt oder gelöscht werden.
+    In der Verwaltung werden Aktivitäten aufgezeichnet, z.B. wenn Accounts erstellt oder gelöscht werden.
   </p>
 
   <div class="flow-root">
-    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+    <table
+      v-if="activities.length > 0"
+      class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
+    >
       <thead>
         <tr>
           <th
@@ -118,5 +122,21 @@ function onClick({ subjectType, subjectId }: Activity) {
         </tr>
       </tbody>
     </table>
+    <div
+      v-if="activities.length <= 0"
+      class="rounded-md bg-blue-50 dark:bg-blue-950 p-4 text-blue-500"
+    >
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <CheckCircleIcon
+            class="h-5 w-5"
+            aria-hidden="true"
+          />
+        </div>
+        <div class="ml-3 flex-1 md:flex md:justify-between">
+          <p class="text-sm mb-0">Es gibt bisher keine Anmeldungen.</p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
