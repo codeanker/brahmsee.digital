@@ -4,6 +4,8 @@
     "port": "SERVER_PORT"
   },
 
+  "loggingLevel": "LOGGING_LEVEL",
+
   "clientUrl": "CLIENT_URL",
 
   "db": {

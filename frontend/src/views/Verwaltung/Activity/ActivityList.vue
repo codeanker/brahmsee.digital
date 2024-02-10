@@ -46,11 +46,14 @@ function onClick({ subjectType, subjectId }: Activity) {
 </script>
 
 <template>
-  <h5>Aufgezeichnete Aktivitäten</h5>
-  <p class="max-w-2xl text-sm text-gray-500">
-    In der Verwaltung werden Aktivitäten aufgezeichnet, z.B. wenn Accounts erstellt oder gelöscht werden.
-  </p>
-
+  <div class="flex items-center justify-between my-8">
+    <div class="flex flex-col">
+      <h5 class="mb-0">Aufgezeichnete Aktivitäten</h5>
+      <p class="max-w-2xl text-sm text-gray-500">
+        In der Verwaltung werden Aktivitäten aufgezeichnet, z.B. wenn Accounts erstellt oder gelöscht werden.
+      </p>
+    </div>
+  </div>
   <div class="flow-root">
     <table
       v-if="activities.length > 0"

@@ -45,6 +45,7 @@ if (localStorage.getItem('darkMode') === 'true') {
 <template>
   <div>
     <div
+      id="base-layout"
       class="container mx-auto p-0 h-full grid grid-cols-9 lg:grid-cols-12 gap-8 transform transition-all duration-300"
       :class="{ 'translate-x-[80%]': showMobileMenu }"
     >
