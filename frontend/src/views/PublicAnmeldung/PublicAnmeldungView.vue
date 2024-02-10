@@ -22,40 +22,46 @@ const {
   execute: createAnmeldung,
   error: errorCreate,
   isLoading: isLoadingCreate,
-} = useAsyncState(async (anmeldung: FormPersonGeneralSubmit) => {
-  const nahrungsmittelIntoleranzen = Object.entries(anmeldung.essgewohnheiten.intoleranzen)
-    .filter((entry) => {
-      return entry[1]
-    })
-    .map((entry) => entry[0] as NahrungsmittelIntoleranz)
+} = useAsyncState(
+  async (anmeldung: FormPersonGeneralSubmit) => {
+    const nahrungsmittelIntoleranzen = Object.entries(anmeldung.essgewohnheiten.intoleranzen)
+      .filter((entry) => {
+        return entry[1]
+      })
+      .map((entry) => entry[0] as NahrungsmittelIntoleranz)
 
-  await apiClient.anmeldung.publicCreate.mutate({
-    data: {
-      unterveranstaltungId: Number(route.params.ausschreibungId),
-      gliederungId: Number(unterveranstaltung.value?.gliederung.id),
+    await apiClient.anmeldung.publicCreate.mutate({
+      data: {
+        unterveranstaltungId: Number(route.params.ausschreibungId),
+        gliederungId: Number(unterveranstaltung.value?.gliederung.id),
 
-      firstname: anmeldung.stammdaten.firstname,
-      lastname: anmeldung.stammdaten.lastname,
-      gender: anmeldung.stammdaten.gender,
-      birthday: anmeldung.stammdaten.birthday ?? new Date(),
-      email: anmeldung.contact.email,
-      telefon: anmeldung.contact.telefon,
+        firstname: anmeldung.stammdaten.firstname,
+        lastname: anmeldung.stammdaten.lastname,
+        gender: anmeldung.stammdaten.gender,
+        birthday: anmeldung.stammdaten.birthday ?? new Date(),
+        email: anmeldung.contact.email,
+        telefon: anmeldung.contact.telefon,
 
-      address: {
-        ...anmeldung.address,
+        address: {
+          ...anmeldung.address,
+        },
+
+        notfallkontaktPersonen: anmeldung.notfallKontakte.personen,
+        essgewohnheit: anmeldung.essgewohnheiten.essgewohnheit,
+        nahrungsmittelIntoleranzen,
+        weitereIntoleranzen: anmeldung.essgewohnheiten.weitereIntoleranzen,
+
+        tshirtBestellt: anmeldung.tshirt.bestellen,
+        konfektionsgroesse: anmeldung.tshirt.groesse,
       },
-
-      notfallkontaktPersonen: anmeldung.notfallKontakte.personen,
-      essgewohnheit: anmeldung.essgewohnheiten.essgewohnheit,
-      nahrungsmittelIntoleranzen,
-      weitereIntoleranzen: anmeldung.essgewohnheiten.weitereIntoleranzen,
-
-      tshirtBestellt: anmeldung.tshirt.bestellen,
-      konfektionsgroesse: anmeldung.tshirt.groesse,
-    },
-  })
-  router.push('/ausschreibung/' + route.params.ausschreibungId + '/anmeldung/result')
-}, undefined)
+    })
+    router.push('/ausschreibung/' + route.params.ausschreibungId + '/anmeldung/result')
+  },
+  undefined,
+  {
+    immediate: false,
+  }
+)
 </script>
 
 <template>
