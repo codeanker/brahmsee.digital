@@ -3,12 +3,15 @@ import { CheckCircleIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 import { computed, ref } from 'vue'
 
+import BasicGrid from './BasicGrid.vue'
+
 import { apiClient } from '@/api'
 import AnmeldungStatusSelect from '@/components/AnmeldungStatusSelect.vue'
 import Drawer from '@/components/LayoutComponents/Drawer.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
 import { getAnmeldungStatusColor } from '@/helpers/getAnmeldungStatusColors'
-import { AnmeldungStatusMapping, type AnmeldungStatus } from '@codeanker/api'
+import { AnmeldungStatusMapping, type AnmeldungStatus, type RouterOutput } from '@codeanker/api'
+import { useGrid, type TGridColumn } from '@codeanker/core-grid'
 import { dayjs } from '@codeanker/helpers'
 
 const props = withDefaults(
@@ -42,12 +45,23 @@ const { state: anmeldungen } = useAsyncState(async () => {
 
 const { state: countAnmeldungen } = useAsyncState(async () => {
   if (loggedInAccount.value?.role === 'ADMIN') {
-    return apiClient.anmeldung.verwaltungCount.query({
-      filter: {
-        unterveranstaltungId: props.unterveranstaltungId,
-        veranstaltungId: props.veranstaltungId,
-      },
-    })
+    if (!props.unterveranstaltungId && !props.veranstaltungId)
+      return Promise.resolve({ OFFEN: 0, BESTAETIGT: 0, STORNIERT: 0, ABGELEHNT: 0 })
+    if (props.unterveranstaltungId && props.veranstaltungId)
+      throw new Error('You need to provide either unterveranstaltungId or veranstaltungId')
+
+    if (props.unterveranstaltungId)
+      return apiClient.anmeldung.verwaltungCount.query({
+        filter: {
+          unterveranstaltungId: props.unterveranstaltungId,
+        },
+      })
+    else if (props.veranstaltungId)
+      return apiClient.anmeldung.verwaltungCount.query({
+        filter: {
+          veranstaltungId: props.veranstaltungId,
+        },
+      })
   } else {
     return apiClient.anmeldung.gliederungCount.query({
       filter: {
@@ -58,7 +72,7 @@ const { state: countAnmeldungen } = useAsyncState(async () => {
   }
 }, [])
 
-const selectedAnmeldung = ref(null)
+// const selectedAnmeldung = ref(null)
 const showDrawer = ref(false)
 
 // @ToDo count for Gliederungen
@@ -77,10 +91,53 @@ const stats = computed<
   ]
 })
 
-function toggleDrawer(anmeldung) {
-  selectedAnmeldung.value = anmeldung
-  showDrawer.value = true
-}
+// function toggleDrawer(anmeldung) {
+//   selectedAnmeldung.value = anmeldung
+//   showDrawer.value = true
+// }
+
+type Anmeldung = Awaited<RouterOutput['anmeldung']['verwaltungList']>[number]
+
+const columns: TGridColumn<Anmeldung>[] = [
+  {
+    field: 'person',
+    title: 'Name',
+  },
+  {
+    field: 'person.birthday',
+    format: (value) => dayjs().diff(value, 'year') + ' Jahre',
+    title: 'Alter',
+  },
+  {
+    field: 'tshirtBestellt',
+    format: (value, row) => (value ? row.person.konfektionsgroesse : '-'),
+    title: 'T-Shirt',
+  },
+  {
+    field: 'status',
+    title: 'Status',
+    size: '300px',
+  },
+]
+const query = ref({
+  filter: {
+    // unterveranstaltungId: props.unterveranstaltungId,
+    veranstaltungId: props.veranstaltungId,
+    unterveranstaltungId: undefined,
+  },
+  orderBy: [],
+})
+
+const { grid, indexChange, fetchVisiblePages } = useGrid({
+  query,
+  fetchCount: async (q) => {
+    const { total } = await apiClient.anmeldung.verwaltungCount.query(q)
+    return total
+  },
+  fetchPage: (q) => apiClient.anmeldung.verwaltungList.query(q),
+})
+
+fetchVisiblePages()
 </script>
 
 <template>
@@ -109,66 +166,33 @@ function toggleDrawer(anmeldung) {
     </div>
   </div>
 
-  <!-- Stats-->
-  <table
-    v-if="anmeldungen.length"
-    class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
-  >
-    <thead>
-      <tr>
-        <th
-          scope="col"
-          class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold"
+  <div class="relative w-full h-[500px]">
+    <BasicGrid
+      v-model:order-by="query.orderBy"
+      v-model:filter="query.filter"
+      :grid="grid"
+      :columns="columns"
+      @index-change="indexChange"
+    >
+      <template #person="{ fieldValue: person }">
+        <td
+          class="whitespace-nowrap py-5 pl-4 pr-3 text-sm group-[.uneven]:bg-gray-50 dark:group-[.uneven]:bg-gray-900 group-hover:bg-gray-50 dark:hover:bg-gray-800 border-t border-t-gray-200"
         >
-          Name
-        </th>
-        <th
-          scope="col"
-          class="px-3 py-3.5 text-left text-sm font-semibold"
-        >
-          Alter
-        </th>
-
-        <th
-          scope="col"
-          class="px-3 py-3.5 text-left text-sm font-semibold"
-        >
-          T-Shirt
-        </th>
-        <th
-          scope="col"
-          class="px-3 py-3.5 text-left text-sm font-semibold"
-        >
-          Status
-        </th>
-      </tr>
-    </thead>
-    <tbody class="divide-y divide-gray-200 bg-white dark:bg-dark-primary">
-      <tr
-        v-for="anmeldung in anmeldungen"
-        :key="anmeldung.id"
-        class="even:bg-gray-50 dark:even:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer"
-        @click="toggleDrawer(anmeldung)"
-      >
-        <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
           <div class="flex space-x-1 items-center">
-            <span>{{ anmeldung.person.firstname }} {{ anmeldung.person.lastname }}</span>
+            <span>{{ person.firstname }} {{ person.lastname }}</span>
           </div>
           <span
             v-if="loggedInAccount?.role === 'ADMIN'"
             class="text-xs"
-            >{{ anmeldung.person.gliederung?.name }}</span
+            >{{ person.gliederung?.name }}</span
           >
         </td>
-        <td class="whitespace-nowrap px-3 py-5 text-sm">
-          <div v-if="anmeldung.person.birthday">{{ dayjs().diff(anmeldung.person.birthday, 'year') }} Jahre</div>
-        </td>
+      </template>
 
-        <td class="whitespace-nowrap px-3 py-5 text-sm">
-          <span v-if="anmeldung.tshirtBestellt">{{ anmeldung.person.konfektionsgroesse }}</span>
-          <span v-else> - </span>
-        </td>
-        <td class="px-3 py-5 text-sm">
+      <template #status="{ row: anmeldung }">
+        <td
+          class="px-3 py-5 text-sm group-[.uneven]:bg-gray-50 dark:group-[.uneven]:bg-gray-900 group-hover:bg-gray-50 dark:hover:bg-gray-800 border-t border-t-gray-200"
+        >
           <div class="flex items-center">
             <AnmeldungStatusSelect
               v-if="anmeldung.unterveranstaltung.veranstaltung.meldeschluss"
@@ -178,9 +202,12 @@ function toggleDrawer(anmeldung) {
             />
           </div>
         </td>
-      </tr>
-    </tbody>
-  </table>
+      </template>
+    </BasicGrid>
+  </div>
+
+  <!-- Stats-->
+
   <div
     v-if="anmeldungen.length <= 0"
     class="rounded-md bg-blue-50 dark:bg-blue-950 text-blue-500 p-4"
