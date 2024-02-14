@@ -1,7 +1,7 @@
 {
   "name": "codeanker-project",
   "author": "CODEANKER GmbH",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "workspaces": [
     "api",
