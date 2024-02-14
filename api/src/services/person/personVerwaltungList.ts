@@ -26,6 +26,7 @@ export const personVerwaltungListProcedure = defineProcedure({
       include: {
         gliederung: {
           select: {
+            id: true,
             name: true,
           },
         },
