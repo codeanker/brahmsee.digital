@@ -18,5 +18,9 @@
   "mail":{
     "sendMails": "MAIL_SENDMAILS",
     "sendgridApiKey": "MAIL_SENDGRID_APIKEY"
+  },
+  "meilisearch": {
+    "host": "MEILISEARCH_HOST",
+    "apiKey": "MEILISEARCH_KEY"
   }
 }

@@ -13,7 +13,7 @@ import logActivity from '../../src/util/activity'
 
 import { Seeder } from '.'
 
-const ENTRY_COUNT = 10000
+const ENTRY_COUNT = 100000
 
 faker.seed(123)
 
@@ -40,7 +40,7 @@ async function create(prisma: PrismaClient, unterveranstaltung: Unterveranstaltu
   const person = await prisma.person.create({
     data: {
       firstname: faker.person.firstName(),
-      lastname: faker.person.firstName(),
+      lastname: faker.person.lastName(),
       birthday: faker.date.birthdate({ min: 12, max: 30, mode: 'age' }),
       gender: faker.helpers.enumValue(Gender),
       email: faker.internet.email(),
