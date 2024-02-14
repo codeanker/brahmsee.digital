@@ -13,7 +13,7 @@ import logActivity from '../../src/util/activity'
 
 import { Seeder } from '.'
 
-const ENTRY_COUNT = 100000
+const ENTRY_COUNT = 1000
 
 faker.seed(123)
 

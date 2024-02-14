@@ -34,14 +34,14 @@ export const unterveranstaltungGliederungCreateProcedure = defineProcedure({
     // check meldebegin is after parent meldebeginn
     if (new Date(options.input.data.meldebeginn) < veranstaltung.meldebeginn) {
       throw new TRPCError({
-        message: 'meldebeginn',
+        message: 'Der Meldebeginn darf nicht vor dem Meldebeginn der übergeordneten Veranstaltung liegen',
         code: 'BAD_REQUEST',
       })
     }
     // check meldeschluss is before parent meldeschluss
     if (new Date(options.input.data.meldeschluss) > veranstaltung.meldeschluss) {
       throw new TRPCError({
-        message: 'meldeschluss',
+        message: 'Der Meldeschluss darf nicht nach dem Meldeschluss der übergeordneten Veranstaltung liegen',
         code: 'BAD_REQUEST',
       })
     }

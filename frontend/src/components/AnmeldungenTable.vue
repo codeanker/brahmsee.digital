@@ -210,7 +210,7 @@ function toggleDrawer(anmeldung) {
           />
         </div>
         <div class="ml-3 flex-1 md:flex md:justify-between">
-          <p class="text-sm mb-0">Hier sollen in Zukunft die Detail Inforamtionen zu einer Anmeldung sichtbar sein.</p>
+          <p class="text-sm mb-0">Hier sollen in Zukunft die Detail Informationen zu einer Anmeldung sichtbar sein.</p>
         </div>
       </div>
     </div>
