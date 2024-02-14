@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ArrowTopRightOnSquareIcon } from '@heroicons/vue/24/outline'
 import { ref } from 'vue'
 
 import type { IAddress } from '../anmeldung/Address.vue'
@@ -45,6 +46,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (event: 'submit', data: FormPersonGeneralSubmit): void
+  (event: 'showTerms'): void
 }>()
 
 async function queryGliederungen(searchTerm: string) {
@@ -148,16 +150,34 @@ const submit = () => {
 
       <BasicCheckbox
         v-model="acceptTeilnahmebedingungen"
-        label="Ich habe die allgemeinen Teilnahmebedingungen gelesen und akzeptiere diese."
         class="mt-1 font-medium"
         required
-      />
+      >
+        <span>Ich habe die allgemeinen </span>
+        <u
+          class="cursor-pointer"
+          @click="emit('showTerms')"
+        >
+          <span>Teilnahmebedingungen</span>
+          <ArrowTopRightOnSquareIcon class="h-4 inline ml-1" />
+        </u>
+        <span> gelesen und akzeptiere diese.</span>
+      </BasicCheckbox>
       <BasicCheckbox
         v-model="acceptDatenschutz"
-        label="Ich habe die gesonderten Datenschutzerklärung gelesen und akzeptiere diese."
         class="mt-1 font-medium"
         required
-      />
+      >
+        <span>Ich habe die gesonderten </span>
+        <u
+          class="cursor-pointer"
+          @click="emit('showTerms')"
+        >
+          <span>Datenschutzerklärung</span>
+          <ArrowTopRightOnSquareIcon class="h-4 inline ml-1" />
+        </u>
+        <span> gelesen und akzeptiere diese.</span>
+      </BasicCheckbox>
     </template>
 
     <Button
@@ -174,7 +194,7 @@ const submit = () => {
       </span>
     </Button>
 
-    <template v-if="error">
+    <template v-if="error && error.message">
       <pre><code>
         {{ error.message }}
       </code></pre>

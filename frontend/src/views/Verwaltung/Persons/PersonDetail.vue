@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { CodeBracketIcon, TicketIcon, UserIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
+import { watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { apiClient } from '@/api'
@@ -13,13 +14,20 @@ import { type NahrungsmittelIntoleranz } from '@codeanker/api'
 
 const route = useRoute()
 
+watch(route, () => {
+  refetchPerson()
+})
+
 const {
   state: person,
   execute: refetchPerson,
   isLoading: isLoading,
 } = useAsyncState(async () => {
   const personId = route.params.personId as string
-  return await apiClient.person.verwaltungGet.query({ id: parseInt(personId) })
+  if (loggedInAccount.value?.role === 'ADMIN') {
+    return await apiClient.person.verwaltungGet.query({ id: parseInt(personId) })
+  }
+  return await apiClient.person.gliederungGet.query({ id: parseInt(personId) })
 }, null)
 
 const { execute: update } = useAsyncState(

@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { ArrowTopRightOnSquareIcon, CheckCircleIcon } from '@heroicons/vue/24/outline'
+import { CheckCircleIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 import { apiClient } from '@/api'
 import AnmeldungStatusSelect from '@/components/AnmeldungStatusSelect.vue'
+import Drawer from '@/components/LayoutComponents/Drawer.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
 import { getAnmeldungStatusColor } from '@/helpers/getAnmeldungStatusColors'
-import { type AnmeldungStatus, AnmeldungStatusMapping } from '@codeanker/api'
+import { AnmeldungStatusMapping, type AnmeldungStatus } from '@codeanker/api'
 import { dayjs } from '@codeanker/helpers'
 
 const props = withDefaults(
@@ -57,6 +58,9 @@ const { state: countAnmeldungen } = useAsyncState(async () => {
   }
 }, [])
 
+const selectedAnmeldung = ref(null)
+const showDrawer = ref(false)
+
 // @ToDo count for Gliederungen
 
 const stats = computed<
@@ -72,6 +76,11 @@ const stats = computed<
     { name: 'ABGELEHNT', value: countAnmeldungen.value.ABGELEHNT },
   ]
 })
+
+function toggleDrawer(anmeldung) {
+  selectedAnmeldung.value = anmeldung
+  showDrawer.value = true
+}
 </script>
 
 <template>
@@ -138,21 +147,12 @@ const stats = computed<
       <tr
         v-for="anmeldung in anmeldungen"
         :key="anmeldung.id"
-        class="even:bg-gray-50 dark:even:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800"
+        class="even:bg-gray-50 dark:even:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer"
+        @click="toggleDrawer(anmeldung)"
       >
         <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
           <div class="flex space-x-1 items-center">
             <span>{{ anmeldung.person.firstname }} {{ anmeldung.person.lastname }}</span>
-            <RouterLink
-              target="_blank"
-              class="text-primary-600 hover:text-primary-700"
-              :to="{
-                name: 'Verwaltung Persondetails',
-                params: { personId: anmeldung.person.id },
-              }"
-            >
-              <ArrowTopRightOnSquareIcon class="h-4 w-4" />
-            </RouterLink>
           </div>
           <span
             v-if="loggedInAccount?.role === 'ADMIN'"
@@ -197,4 +197,22 @@ const stats = computed<
       </div>
     </div>
   </div>
+  <Drawer
+    v-if="showDrawer"
+    @close="showDrawer = false"
+  >
+    <div class="rounded-md bg-blue-50 dark:bg-blue-950 text-blue-500 p-4 mx-4">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <CheckCircleIcon
+            class="h-5 w-5"
+            aria-hidden="true"
+          />
+        </div>
+        <div class="ml-3 flex-1 md:flex md:justify-between">
+          <p class="text-sm mb-0">Hier sollen in Zukunft die Detail Informationen zu einer Anmeldung sichtbar sein.</p>
+        </div>
+      </div>
+    </div>
+  </Drawer>
 </template>

@@ -2,6 +2,7 @@ import z from 'zod'
 
 import prisma from '../../prisma'
 import { defineProcedure } from '../../types/defineProcedure'
+import logActivity from '../../util/activity'
 
 import { sendMailConfirmEmailRequest } from './helpers/sendMailConfirmEmailRequest'
 
@@ -34,10 +35,20 @@ export const accountEmailConfirmRequestProcedure = defineProcedure({
         error: 'AccountAlreadyActivated',
       }
     }
-    sendMailConfirmEmailRequest({
+
+    await logActivity({
+      type: 'OTHER',
+      subjectType: 'account',
+      subjectId: options.input.accountId,
+      causerId: options.ctx.accountId,
+      description: 'email confirmation requested',
+    })
+
+    await sendMailConfirmEmailRequest({
       email: account.email,
       activationToken: account.activationToken,
     })
+
     return {
       success: true,
     }

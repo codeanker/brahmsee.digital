@@ -2,6 +2,7 @@
 import { mergeRouters } from '../../trpc'
 
 import { personAuthenticatedGetProcedure } from './personAuthenticatedGet'
+import { personGliederungGetProcedure } from './personGliederungGet'
 import { personGliederungListProcedure } from './personGliederungList'
 import { personVerwaltungCreateProcedure } from './personVerwaltungCreate'
 import { personVerwaltungGetProcedure } from './personVerwaltungGet'
@@ -18,5 +19,6 @@ export const personRouter = mergeRouters(
   personVerwaltungListProcedure.router,
   personVerwaltungPatchProcedure.router,
   personVerwaltungRemoveProcedure.router,
+  personGliederungGetProcedure.router,
   // Add Routes here - do not delete this line
 )

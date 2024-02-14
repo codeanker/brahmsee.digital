@@ -3,7 +3,8 @@
   "compilerOptions": {
     "lib": [
       "ES2022"
-    ]
+    ],
+    "types": ["@edge-runtime/types"]
   },
   "include": [
     "src"

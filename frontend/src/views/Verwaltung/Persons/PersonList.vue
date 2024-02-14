@@ -25,17 +25,16 @@ const tabs = [{ name: 'Personen', icon: UsersIcon }]
 </script>
 
 <template>
-  <h5>Personen</h5>
   <div class="flow-root">
     <Tabs
-      class="mt-5 lg:mt-10"
+      class="mt-16 lg:mt-4"
       content-space="4"
       :tabs="tabs"
     >
       <Tab>
-        <div class="my-10 flex justify-between">
+        <div class="my-8 flex justify-between">
           <div>
-            <div class="text-lg font-semibold">Personen</div>
+            <h5 class="mb-0">Personen</h5>
             <p class="max-w-2xl text-sm">Hier findest Du alle Personen die sich zu Veranstaltungen angemeldet haben.</p>
           </div>
 

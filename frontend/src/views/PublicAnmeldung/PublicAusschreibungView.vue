@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { FaceFrownIcon, MegaphoneIcon } from '@heroicons/vue/24/outline'
+import { ClipboardDocumentListIcon, FaceFrownIcon, MegaphoneIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState, formatDate } from '@vueuse/core'
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -47,7 +47,16 @@ const { state: unterveranstaltung, isLoading } = useAsyncState(async () => {
   return apiClient.unterveranstaltung.publicGet.query({ id: Number(route.params.ausschreibungId) })
 }, undefined)
 
-const tabs = [{ name: 'Ausschreibung', icon: MegaphoneIcon }]
+const tabs = [
+  {
+    name: 'Ausschreibung',
+    icon: MegaphoneIcon,
+  },
+  {
+    name: 'Bedingungen',
+    icon: ClipboardDocumentListIcon,
+  },
+]
 </script>
 
 <template>
@@ -81,10 +90,28 @@ const tabs = [{ name: 'Ausschreibung', icon: MegaphoneIcon }]
           </div>
           <Button
             color="primary"
-            class="w-full justify-center mt-5 lg:mt-10"
+            class="w-full justify-center my-5 lg:mt-10"
             @click="() => router.push('/ausschreibung/' + route.params.ausschreibungId + '/anmeldung')"
             >Jetzt anmelden</Button
           >
+        </Tab>
+        <Tab>
+          <div class="my-10">
+            <div class="text-lg font-semibold">Teilnahmebedingungen</div>
+            <p class="max-w-2xl text-sm">Bitte beachte die folgenden Teilnahmebedingungen</p>
+          </div>
+          <div
+            class="prose prose-neutra"
+            v-html="unterveranstaltung?.veranstaltung?.teilnahmeBedingungen"
+          />
+          <div class="my-10">
+            <div class="text-lg font-semibold">Datenschutz</div>
+            <p class="max-w-2xl text-sm">Bitte beachte die Hinweise zum Datenschutz</p>
+          </div>
+          <div
+            class="prose prose-neutra"
+            v-html="unterveranstaltung?.veranstaltung?.datenschutz"
+          />
         </Tab>
       </Tabs>
     </div>
@@ -101,7 +128,7 @@ const tabs = [{ name: 'Ausschreibung', icon: MegaphoneIcon }]
       </template>
       <template v-else>
         <FaceFrownIcon class="w-20 h-20 text-primary-500 mb-5" />
-        Keine Ausschreibung gefunden
+        <span>Keine Ausschreibung gefunden</span>
       </template>
     </div>
     <PublicFooter />

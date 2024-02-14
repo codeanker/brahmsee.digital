@@ -14,7 +14,16 @@ services:
       TZ: Europe/Berlin
     volumes:
       - postgres-data:/var/lib/postgresql/data
-
+  meilisearch:
+    image: getmeili/meilisearch:v1.6
+    ports:
+      - 7700:7700
+    environment:
+      - MEILI_MASTER_KEY=xbAPupQKhkKvF176vE2JxAdPGpmWVu251Hldn6K4Z6Y
+    volumes:
+      - meilisearch-data:/data.ms
+    restart: unless-stopped
 volumes:
   postgres-data:
   admin-data:
+  meilisearch-data:

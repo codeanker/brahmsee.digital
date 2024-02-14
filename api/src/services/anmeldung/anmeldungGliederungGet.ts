@@ -8,12 +8,20 @@ export const anmeldungGliederungGetProcedure = defineProcedure({
   method: 'query',
   protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN', 'GLIEDERUNG_ADMIN'] },
   inputSchema: z.strictObject({
-    personId: z.number().int(),
+    anmeldungId: z.number().optional(),
+    personId: z.number().optional(),
   }),
   async handler(options) {
     const anmeldungen = await prisma.anmeldung.findMany({
       where: {
-        personId: options.input.personId,
+        OR: [
+          {
+            personId: options.input.personId,
+          },
+          {
+            id: options.input.anmeldungId,
+          },
+        ],
       },
       select: {
         id: true,

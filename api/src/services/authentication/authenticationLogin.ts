@@ -25,6 +25,7 @@ export const authenticationLoginProcedure = defineProcedure({
             id: true,
             firstname: true,
             lastname: true,
+            gliederungId: true,
           },
         },
         status: true,

@@ -159,6 +159,25 @@
 
 		},
 		{
+			"type": "npm",
+			"script": "initMeilisearch",
+			"label": "run:initMeilisearch",
+			"problemMatcher": [],
+			"options": {
+        "cwd": "${workspaceFolder}/api",
+				"statusbar": {
+					"hide" : false
+				}
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"group": "start",
+				"close": false
+			},
+
+		},
+		{
 			"type": "shell",
 			"label": "install:playwright",
 			"command": "npx playwright install && npx playwright install-deps",

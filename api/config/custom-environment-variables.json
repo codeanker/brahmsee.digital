@@ -4,6 +4,8 @@
     "port": "SERVER_PORT"
   },
 
+  "loggingLevel": "LOGGING_LEVEL",
+
   "clientUrl": "CLIENT_URL",
 
   "db": {
@@ -16,5 +18,9 @@
   "mail":{
     "sendMails": "MAIL_SENDMAILS",
     "sendgridApiKey": "MAIL_SENDGRID_APIKEY"
+  },
+  "meilisearch": {
+    "host": "MEILISEARCH_HOST",
+    "apiKey": "MEILISEARCH_KEY"
   }
 }
