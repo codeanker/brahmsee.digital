@@ -8,7 +8,7 @@ import { insertJwtToken } from './helpers/insertJwtToken'
 
 import * as testUtils from '@codeanker/api/test'
 
-describe(`View: verwaltung/benutzer`, () => {
+describe(`View: verwaltung/accounts`, () => {
   let browser: Browser
   let context: BrowserContext
   let name = ''
@@ -29,7 +29,7 @@ describe(`View: verwaltung/benutzer`, () => {
     const page = await context.newPage()
     await insertJwtToken(page, data.accessToken, data.veranstaltung.id)
 
-    await page.goto(`https://localhost:8080/verwaltung/benutzer`)
+    await page.goto(`https://localhost:8080/verwaltung/accounts`)
     await page.waitForLoadState('networkidle')
     // await page.screenshot({ path: `${__dirname}/screenshots/${name}_verwaltung-benutzer.png` })
   })
