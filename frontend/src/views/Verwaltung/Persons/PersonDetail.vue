@@ -24,7 +24,10 @@ const {
   isLoading: isLoading,
 } = useAsyncState(async () => {
   const personId = route.params.personId as string
-  return await apiClient.person.verwaltungGet.query({ id: parseInt(personId) })
+  if (loggedInAccount.value?.role === 'ADMIN') {
+    return await apiClient.person.verwaltungGet.query({ id: parseInt(personId) })
+  }
+  return await apiClient.person.gliederungGet.query({ id: parseInt(personId) })
 }, null)
 
 const { execute: update } = useAsyncState(

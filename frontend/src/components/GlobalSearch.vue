@@ -16,6 +16,7 @@ import {
   FingerPrintIcon,
   FolderIcon,
   GlobeEuropeAfricaIcon,
+  MegaphoneIcon,
   UsersIcon,
 } from '@heroicons/vue/24/outline'
 import { useAsyncState, useMagicKeys, whenever } from '@vueuse/core'
@@ -53,12 +54,15 @@ function toggleSearch() {
 }
 
 const quickActions = computed(() => {
-  let actions = [{ name: 'Neue Veranstaltung...', icon: CalendarDaysIcon, url: '#' }]
+  let actions = [
+    { name: 'Neue Ausschreibung...', icon: MegaphoneIcon, url: { name: 'Verwaltung Veranstaltung erstellen' } },
+  ]
   if (loggedInAccount.value?.role === 'ADMIN') {
     actions.push(
-      { name: 'Neue Person...', icon: UsersIcon, url: '#' },
-      { name: 'Neuer Account...', icon: FingerPrintIcon, url: '#' },
-      { name: 'Neuer Ort...', icon: GlobeEuropeAfricaIcon, url: '#' }
+      { name: 'Neue Person...', icon: UsersIcon, url: { name: 'Verwaltung Person erstellen' } },
+      { name: 'Neuer Account...', icon: FingerPrintIcon, url: { name: 'Verwaltung Account erstellen' } },
+      { name: 'Neue Veranstaltung...', icon: CalendarDaysIcon, url: { name: 'Verwaltung Veranstaltung erstellen' } },
+      { name: 'Neuer Ort...', icon: GlobeEuropeAfricaIcon, url: { name: 'Verwaltung Ort erstellen' } }
     )
   }
   return actions
@@ -206,30 +210,32 @@ const { state: searchResults, execute: searchAPI } = useAsyncState(
                   <ul class="text-sm text-gray-700">
                     <ComboboxOption
                       v-for="action in quickActions"
-                      :key="action.url"
+                      :key="action.name"
                       v-slot="{ active }"
                       :value="action"
                       as="template"
                     >
-                      <li
-                        :class="[
-                          'flex cursor-default select-none items-center rounded-md px-3 py-2',
-                          active && 'bg-primary-600 text-white',
-                        ]"
-                      >
-                        <component
-                          :is="action.icon"
-                          :class="['h-6 w-6 flex-none', active ? 'text-white' : 'text-gray-400']"
-                          aria-hidden="true"
-                        />
-                        <span class="ml-3 flex-auto truncate">{{ action.name }}</span>
-                        <span :class="['ml-3 flex-none text-xs font-semibold', active ? 'inline' : 'hidden']">
-                          <ArrowLongRightIcon
-                            class="h-5 w-5"
+                      <AppLink :to="action.url">
+                        <li
+                          :class="[
+                            'flex cursor-default select-none items-center rounded-md px-3 py-2',
+                            active && 'bg-primary-600 text-white cursor-pointer',
+                          ]"
+                        >
+                          <component
+                            :is="action.icon"
+                            :class="['h-6 w-6 flex-none', active ? 'text-white' : 'text-gray-400']"
                             aria-hidden="true"
-                          ></ArrowLongRightIcon>
-                        </span>
-                      </li>
+                          />
+                          <span class="ml-3 flex-auto truncate">{{ action.name }}</span>
+                          <span :class="['ml-3 flex-none text-xs font-semibold', active ? 'inline' : 'hidden']">
+                            <ArrowLongRightIcon
+                              class="h-5 w-5"
+                              aria-hidden="true"
+                            ></ArrowLongRightIcon>
+                          </span>
+                        </li>
+                      </AppLink>
                     </ComboboxOption>
                   </ul>
                 </li>
