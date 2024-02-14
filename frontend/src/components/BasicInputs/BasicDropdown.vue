@@ -53,7 +53,7 @@ withDefaults(
       >
         <MenuItems
           :class="{ 'right-0': right }"
-          class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+          class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-slate-900 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
           @click="(e) => e.stopPropagation()"
         >
           <slot name="dropdownContent" />

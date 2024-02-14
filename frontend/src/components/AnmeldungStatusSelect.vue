@@ -92,7 +92,7 @@ const setStatus = async (status: AnmeldungStatus) => {
           v-for="statusOption in availableOptions"
           :key="statusOption.value"
           type="button"
-          class="hover:bg-primary-light rounded items-center flex p-2 w-full space-x-2 text-left"
+          class="hover:bg-primary-50 dark:hover:bg-slate-950 rounded items-center flex p-2 w-full space-x-2 text-left"
           @click="(currentStatus = statusOption.value) && setStatus(statusOption.value)"
         >
           <div
