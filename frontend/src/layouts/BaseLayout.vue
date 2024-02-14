@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { Switch } from '@headlessui/vue'
+import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
 import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
+import GlobalSearch from '@/components/GlobalSearch.vue'
 import Sidebar from '@/components/LayoutComponents/Sidebar/Sidebar.vue'
 import Breadcrumbs from '@/components/UIComponents/Breadcrumbs.vue'
 import MobileMenuButton from '@/components/UIComponents/MobileMenuButton.vue'
@@ -11,6 +13,7 @@ const route = useRoute()
 const mobileMenuButton = ref()
 const darkMode = ref(false)
 const showMobileMenu = ref(false)
+const globalSearch = ref()
 
 watch(
   route,
@@ -37,6 +40,10 @@ watch(
   { deep: true }
 )
 
+function getSearchCommand() {
+  return navigator.userAgent.includes('Mac') ? '⌘ K' : 'STR K'
+}
+
 if (localStorage.getItem('darkMode') === 'true') {
   darkMode.value = true
 }
@@ -44,6 +51,7 @@ if (localStorage.getItem('darkMode') === 'true') {
 
 <template>
   <div>
+    <GlobalSearch ref="globalSearch"></GlobalSearch>
     <div
       id="base-layout"
       class="container mx-auto p-0 h-full grid grid-cols-9 lg:grid-cols-12 gap-8 transform transition-all duration-300"
@@ -59,8 +67,24 @@ if (localStorage.getItem('darkMode') === 'true') {
           @click="showMobileMenu = !showMobileMenu"
         />
         <div class="relative">
-          <div class="flex justify-between items-center border-b border-gray-200 mb-5 pb-3 text-sm">
-            Suchen
+          <div
+            class="flex justify-between items-center border-b border-gray-200 dark:border-gray-700 mb-5 pb-3 text-sm"
+          >
+            <div
+              class="cursor-pointer flex space-x-2 items-center group text-gray-500"
+              @click="globalSearch.showSearch = !globalSearch.showSearch"
+            >
+              <div>
+                <MagnifyingGlassIcon class="h-4"></MagnifyingGlassIcon>
+              </div>
+              <div>Suche</div>
+
+              <div
+                class="px-1.5 py-0.5 border border-gray-200 text-gray-500 rounded-md text-xs group-hover:border-primary-500 group-hover:text-primary-500 transition-colors duration-200"
+              >
+                <kbd class="font-sans">{{ getSearchCommand() }}</kbd>
+              </div>
+            </div>
             <Switch
               v-model="darkMode"
               :class="[

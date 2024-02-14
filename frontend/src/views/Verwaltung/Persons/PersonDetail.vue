@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { CodeBracketIcon, TicketIcon, UserIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
+import { watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { apiClient } from '@/api'
@@ -12,6 +13,10 @@ import { loggedInAccount } from '@/composables/useAuthentication'
 import { type NahrungsmittelIntoleranz } from '@codeanker/api'
 
 const route = useRoute()
+
+watch(route, () => {
+  refetchPerson()
+})
 
 const {
   state: person,

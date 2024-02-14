@@ -17,6 +17,21 @@
 	"remoteEnv": {
 		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
 	},
+	"forwardPorts": [3030, 8080, 7700],
+	"portsAttributes":{
+		"3030": {
+			"label": "API",
+			"onAutoForward": "silent"
+		},
+		"8080": {
+			"label": "Frontend",
+			"onAutoForward": "silent"
+		},
+		"7700": {
+			"label": "Meilisearch",
+			"onAutoForward": "silent"
+		}
+	},
 	"customizations": {
 		"vscode": {
 			"extensions": [

@@ -26,5 +26,9 @@
   "mail":{
     "sendMails": "true",
     "sendgridApiKey": ""
+  },
+  "meilisearch": {
+    "host": "meilisearch:7700",
+    "apiKey": "xbAPupQKhkKvF176vE2JxAdPGpmWVu251Hldn6K4Z6Y"
   }
 }
