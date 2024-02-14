@@ -1,6 +1,6 @@
 import prisma from '../prisma'
 
-import { meilisearchClient } from './index'
+import { meilisearchClient, updateSettings } from './index'
 
 const searchIndex = 'person'
 
@@ -25,6 +25,9 @@ export async function updateMeiliPerson(person: MeiliPerson) {
 }
 
 export async function syncAllPersonsToMeili() {
+  await meilisearchClient.index(searchIndex).updateSettings(updateSettings)
+  await meilisearchClient.updateIndex(searchIndex, { primaryKey: 'id' })
+
   let cursorValue
   const batchSize = 1000
   do {

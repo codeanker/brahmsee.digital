@@ -17,7 +17,7 @@ const meilisearchClient = new MeiliSearch({
  */
 const updateSettings = {
   rankingRules: ['words', 'exactness', 'proximity', 'updatedAt:desc', 'createdAt:desc'],
-  filterableAttributes: ['userId'],
+  filterableAttributes: ['gliederung'],
 }
 
 export { meilisearchClient, updateSettings }
