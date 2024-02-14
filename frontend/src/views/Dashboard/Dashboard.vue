@@ -22,7 +22,7 @@ const role = computed(() => loggedInAccount.value?.role)
     </div>
 
     <!-- Logo cloud -->
-    <div class="mx-auto mt-24 max-w-7xl px-6 sm:mt-32 lg:px-8">
+    <div class="mx-auto mt-24 max-w-7xl px-6 sm:mt-32 lg:px-8 hidden">
       <div
         class="mx-auto grid max-w-lg grid-cols-4 items-end gap-x-8 gap-y-12 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 sm:gap-y-14 lg:mx-0 lg:max-w-none lg:grid-cols-5"
       >
