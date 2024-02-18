@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: {{ .Chart.Name }}-meilisearch
-          image: "getmeili/meilisearch:v1.3"
+          image: "getmeili/meilisearch:v1.6"
           resources:
 {{ toYaml .Values.meilisearch.resources | indent 12 }}
           imagePullPolicy: IfNotPresent
