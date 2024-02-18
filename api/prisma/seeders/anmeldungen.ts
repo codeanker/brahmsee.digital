@@ -69,6 +69,7 @@ async function create(prisma: PrismaClient, unterveranstaltung: Unterveranstaltu
       status: faker.helpers.enumValue(AnmeldungStatus),
       tshirtBestellt: faker.datatype.boolean(),
       personId: person.id,
+      comment: faker.lorem.sentence(),
     },
     select: {
       id: true,
