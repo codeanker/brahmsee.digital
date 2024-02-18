@@ -17,6 +17,7 @@ export const anmeldungPublicCreateProcedure = defineProcedure({
       uebernachtungsTage: z.array(z.date()).optional(),
       tshirtBestellt: z.boolean().optional(),
       email: z.string().email(),
+      comment: z.string().optional(),
     }),
   }),
   async handler(options) {
@@ -52,6 +53,7 @@ export const anmeldungPublicCreateProcedure = defineProcedure({
               : undefined,
             uebernachtungsTage: options.input.data.uebernachtungsTage,
             tshirtBestellt: options.input.data.tshirtBestellt,
+            comment: options.input.data.comment,
             createdAt: new Date(),
           },
         },

@@ -55,6 +55,16 @@ spec:
                   name: postgres
                   key: uri
 
+
+            # Meilisearch
+            - name: MEILISEARCH_HOST
+              value: {{ .Chart.Name }}-meilisearch-svc:7700
+            - name: MEILISEARCH_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: meilisearch
+                  key: key
+
           # readinessProbe:
           #   httpGet:
           #     path: /ready

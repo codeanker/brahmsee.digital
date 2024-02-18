@@ -16,6 +16,7 @@ import FormTShirtBestellungGeneral from './FormTShirtBestellungGeneral.vue'
 
 import { apiClient } from '@/api'
 import BasicCheckbox from '@/components/BasicInputs/BasicCheckbox.vue'
+import BasicTextArea from '@/components/BasicInputs/BasicTextArea.vue'
 import BasicTypeahead from '@/components/BasicInputs/BasicTypeahead.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import Loading from '@/components/UIComponents/Loading.vue'
@@ -32,6 +33,7 @@ export interface FormPersonGeneralSubmit {
   essgewohnheiten: IEssgewohnheiten
   tshirt: ITShirtBestellung
   gliederung: Gliederung
+  comment: string
 }
 
 type Person = Awaited<RouterOutput['person']['verwaltungGet']>
@@ -90,6 +92,8 @@ const essgewohnheitenForm = ref<IEssgewohnheiten>({
   weitereIntoleranzen: props.person?.weitereIntoleranzen ?? [],
 })
 
+const comment = ref('')
+
 const tshirtForm = ref<ITShirtBestellung>({
   bestellen: false,
   groesse: props.person?.konfektionsgroesse ?? 'JUNIOR_122_128',
@@ -109,6 +113,7 @@ const submit = () => {
     essgewohnheiten: essgewohnheitenForm.value,
     notfallKontakte: notfallKontakteForm.value,
     tshirt: tshirtForm.value,
+    comment: comment.value,
   })
 }
 </script>
@@ -142,6 +147,13 @@ const submit = () => {
     <hr class="my-5" />
 
     <FormEssgewohnheitGeneral v-model="essgewohnheitenForm" />
+    <hr class="my-5" />
+
+    <BasicTextArea
+      v-model="comment"
+      label="Bemerkung"
+      :rows="3"
+    ></BasicTextArea>
     <hr class="my-5" />
 
     <template v-if="isPublicAnmeldung">
