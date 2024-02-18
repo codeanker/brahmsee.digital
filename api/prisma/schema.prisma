@@ -208,6 +208,7 @@ model Anmeldung {
   mahlzeiten           Mahlzeit[]
   uebernachtungsTage   DateTime[]         @db.Date
   tshirtBestellt       Boolean            @default(false)
+  comment              String?
   createdAt            DateTime           @default(now())
 }
 

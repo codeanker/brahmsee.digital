@@ -57,6 +57,7 @@ const {
 
         tshirtBestellt: anmeldung.tshirt.bestellen,
         konfektionsgroesse: anmeldung.tshirt.groesse,
+        comment: anmeldung.comment,
       },
     })
     router.push('/ausschreibung/' + route.params.ausschreibungId + '/anmeldung/result')

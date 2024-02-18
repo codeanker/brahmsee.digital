@@ -8,10 +8,12 @@ const props = withDefaults(
   defineProps<
     BasicInputDefaultProps<string> & {
       cols?: number
+      rows?: number
     }
   >(),
   {
     cols: 3,
+    rows: 3,
   }
 )
 const emit = defineEmits<{
@@ -33,6 +35,7 @@ const { model, errorMessage } = useValidationModel(props, emit)
       v-model="model"
       :name="id || name || label"
       :cols="cols"
+      :rows="rows"
       :placeholder="placeholder || label || name"
       :rules="rules"
     />
