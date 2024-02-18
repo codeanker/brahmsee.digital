@@ -37,8 +37,9 @@ async function loginWithRecirect() {
       return router.push(route.query.redirect as string)
     } else {
       let letzteVeranstaltung = localStorage.getItem('letzteVeranstaltung')
-      if (letzteVeranstaltung) return router.push(`/veranstaltung/${letzteVeranstaltung}/dashboard`)
-      else return router.push({ name: 'Dashboard', params: { veranstaltungId: letzteVeranstaltung } })
+      if (letzteVeranstaltung)
+        return router.push({ name: 'Dashboard', params: { veranstaltungId: letzteVeranstaltung } })
+      else return router.push({ name: 'Auschreibungen' })
     }
   }
 }
