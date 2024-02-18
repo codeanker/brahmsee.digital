@@ -34,14 +34,14 @@ const model = computed({
       v-model="model.email"
       type="email"
       label="E-Mail"
-      placeholder="Vornamen eingeben"
+      placeholder="Email-Adresse"
       required
     />
     <BasicInput
       v-model="model.telefon"
       type="tel"
       label="Telefonnummer"
-      placeholder="Nachname eingeben"
+      placeholder="Telefonnummer"
       required
     />
   </div>
