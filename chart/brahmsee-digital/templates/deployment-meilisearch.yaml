@@ -1,3 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Chart.Name }}-meilisearch-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -34,7 +45,8 @@ spec:
               mountPath: "/data"
       volumes:
         - name: meilisearch-storage
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: {{ .Chart.Name }}-postgres-data
 ---
 apiVersion: v1
 kind: Service
