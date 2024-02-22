@@ -21,6 +21,7 @@ export const veranstaltungVerwaltungCreateProcedure = defineProcedure({
       datenschutz: z.string().optional(),
       teilnahmeBedingungen: z.string().optional(),
       zielgruppe: z.string().optional(),
+      hostnameId: z.number().int().optional(),
     }),
   }),
   async handler(options) {

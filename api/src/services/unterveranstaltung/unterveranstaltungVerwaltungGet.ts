@@ -37,6 +37,7 @@ export const unterveranstaltungVerwaltungGetProcedure = defineProcedure({
             zielgruppe: true,
             teilnahmeBedingungen: true,
             datenschutz: true,
+            hostname: true,
           },
         },
       },

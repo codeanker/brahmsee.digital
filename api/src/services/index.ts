@@ -8,6 +8,7 @@ import { gliederungRouter } from './gliederung/gliederung.router'
 import { ortRouter } from './ort/ort.router'
 import { personRouter } from './person/person.router'
 import { searchRouter } from './search/search.router'
+import { systemRouter } from './system/system.router'
 import { unterveranstaltungRouter } from './unterveranstaltung/unterveranstaltung.router'
 import { veranstaltungRouter } from './veranstaltung/veranstaltung.router'
 // Add Imports here - do not delete this line
@@ -23,5 +24,6 @@ export const serviceRouter = router({
   ort: ortRouter,
   activity: activityRouter,
   search: searchRouter,
+  system: systemRouter,
   // Add Routers here - do not delete this line
 })

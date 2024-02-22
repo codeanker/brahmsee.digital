@@ -61,6 +61,12 @@ export const veranstaltungGliederungListProcedure = defineProcedure({
             id: true,
           },
         },
+        hostname: {
+          select: {
+            id: true,
+            hostname: true,
+          },
+        },
       },
     })
 

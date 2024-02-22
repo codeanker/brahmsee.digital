@@ -34,6 +34,10 @@ const keyInfos = computed<KeyInfo[]>(() => {
   if (veranstaltung.value) {
     return [
       {
+        title: 'Hostname',
+        value: 'https://' + veranstaltung.value.hostname?.hostname + '',
+      },
+      {
         title: 'Beginn',
         value: `${formatDate(veranstaltung.value.beginn)} Uhr`,
       },
