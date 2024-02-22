@@ -22,6 +22,7 @@ export const veranstaltungVerwaltungPatchProcedure = defineProcedure({
       datenschutz: z.string().optional(),
       teilnahmeBedingungen: z.string().optional(),
       zielgruppe: z.string().optional(),
+      hostnameId: z.number().int().optional(),
     }),
   }),
   async handler(options) {
@@ -42,6 +43,7 @@ export const veranstaltungVerwaltungPatchProcedure = defineProcedure({
         teilnahmeBedingungen: options.input.data.teilnahmeBedingungen,
         zielgruppe: options.input.data.zielgruppe,
         ortId: options.input.data.ortId,
+        hostnameId: options.input.data.hostnameId,
       },
       select: {
         id: true,
