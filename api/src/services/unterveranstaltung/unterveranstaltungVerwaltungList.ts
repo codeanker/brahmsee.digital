@@ -41,6 +41,7 @@ export const unterveranstaltungVerwaltungListProcedure = defineProcedure({
           select: {
             id: true,
             name: true,
+            hostname: true,
           },
         },
         meldebeginn: true,

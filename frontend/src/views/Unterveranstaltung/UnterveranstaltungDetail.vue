@@ -84,8 +84,8 @@ const tabs = computed(() => {
 })
 
 const publicLink = computed(() => {
-  if (unterveranstaltung.value) {
-    return `${window.location.origin}/ausschreibung/${unterveranstaltung.value.id}`
+  if (unterveranstaltung?.value && unterveranstaltung.value.veranstaltung?.hostname?.hostname) {
+    return `https://${unterveranstaltung?.value.veranstaltung?.hostname.hostname}/ausschreibung/${unterveranstaltung.value.id}`
   }
   return ''
 })
@@ -192,6 +192,7 @@ function copyLink() {
           <div class="text-lg font-semibold">Entwickler:innen</div>
           <p class="max-w-2xl text-sm">Informationen zur Veranstaltung</p>
         </div>
+
         <pre>{{ unterveranstaltung }}</pre>
       </Tab>
     </Tabs>
