@@ -34,6 +34,7 @@ const fill = (veranstaltung) => {
     datenschutz: veranstaltung?.datenschutz ?? '',
     teilnahmeBedingungen: veranstaltung?.teilnahmeBedingungen ?? '',
     zielgruppe: veranstaltung?.zielgruppe ?? '',
+    hostnameId: veranstaltung?.hostname?.id,
   }
 }
 
@@ -88,6 +89,10 @@ const handle = async () => {
 
 const { state: orte } = useAsyncState(async () => {
   return apiClient.ort.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
+}, [])
+
+const { state: hostnames } = useAsyncState(async () => {
+  return apiClient.system.hostnamesGet.query({})
 }, [])
 </script>
 
@@ -172,8 +177,18 @@ const { state: orte } = useAsyncState(async () => {
           v-model="veranstaltungCopy.ortId"
           required
           label="Ort"
-          placeholder="Veranstaltungsort"
+          placeholder="Bitte wählen..."
           :options="orte.map((ort) => ({ label: ort.name, value: ort.id }))"
+        />
+      </div>
+
+      <div class="lg:col-span-3">
+        <BasicSelect
+          v-model="veranstaltungCopy.hostnameId"
+          required
+          label="Hostname"
+          placeholder="Bitte wählen..."
+          :options="hostnames.map((hostname) => ({ label: 'https://' + hostname.hostname, value: hostname.id }))"
         />
       </div>
 

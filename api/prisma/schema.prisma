@@ -111,6 +111,12 @@ enum Konfektionsgroesse {
   XXXL
 }
 
+model Hostname {
+  id        Int      @id @default(autoincrement())
+  hostname  String
+  veranstaltung Veranstaltung[]
+}
+
 model Notfallkontakt {
   id                      Int      @id @default(autoincrement())
   firstname               String
@@ -247,6 +253,8 @@ model Veranstaltung {
   datenschutz          String?
   teilnahmeBedingungen String?
   zielgruppe           String?
+  hostnameId           Int?
+  hostname             Hostname?           @relation(fields: [hostnameId], references: [id])
 }
 
 enum MahlzeitType {

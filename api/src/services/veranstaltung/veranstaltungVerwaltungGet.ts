@@ -34,6 +34,12 @@ export const veranstaltungVerwaltungGetProcedure = defineProcedure({
         datenschutz: true,
         teilnahmeBedingungen: true,
         zielgruppe: true,
+        hostname: {
+          select: {
+            id: true,
+            hostname: true,
+          },
+        },
       },
     })
     return veranstaltungWithunterveranstaltungen

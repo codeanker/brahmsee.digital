@@ -31,6 +31,11 @@ export const anmeldungPublicCreateProcedure = defineProcedure({
           select: {
             id: true,
             name: true,
+            hostname: {
+              select: {
+                hostname: true,
+              },
+            },
           },
         },
       },
@@ -86,7 +91,7 @@ export const anmeldungPublicCreateProcedure = defineProcedure({
 
     await sendMail({
       to: options.input.data.email,
-      subject: 'brahmsee.digital Anmeldung erfolgreich',
+      subject: `${unterveranstaltung?.veranstaltung?.hostname?.hostname} Anmeldung erfolgreich`,
       categories: ['anmeldung', 'create'],
       html: `Vielen Dank für deine Anmeldung zur Veranstaltung ${unterveranstaltung.veranstaltung.name} .`,
     })
