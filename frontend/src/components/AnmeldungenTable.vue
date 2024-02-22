@@ -10,7 +10,7 @@ import AnmeldungStatusSelect from '@/components/AnmeldungStatusSelect.vue'
 import Drawer from '@/components/LayoutComponents/Drawer.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
 import { getAnmeldungStatusColor } from '@/helpers/getAnmeldungStatusColors'
-import { AnmeldungStatusMapping, type AnmeldungStatus, type RouterOutput } from '@codeanker/api'
+import { AnmeldungStatusMapping, type AnmeldungStatus, type RouterOutput, type RouterInput } from '@codeanker/api'
 import { useGrid, type TGridColumn } from '@codeanker/core-grid'
 import { dayjs } from '@codeanker/helpers'
 
@@ -119,10 +119,13 @@ const columns: TGridColumn<Anmeldung>[] = [
     size: '300px',
   },
 ]
-const query = ref({
+type Query = {
+  filter: RouterInput['anmeldung']['verwaltungList']['filter']
+  orderBy: RouterInput['anmeldung']['verwaltungList']['orderBy']
+}
+const query = ref<Query>({
   filter: {
-    // unterveranstaltungId: props.unterveranstaltungId,
-    veranstaltungId: props.veranstaltungId,
+    veranstaltungId: props.veranstaltungId as number,
     unterveranstaltungId: undefined,
   },
   orderBy: [],
@@ -134,7 +137,13 @@ const { grid, indexChange, fetchVisiblePages } = useGrid({
     const { total } = await apiClient.anmeldung.verwaltungCount.query(q)
     return total
   },
-  fetchPage: (q) => apiClient.anmeldung.verwaltungList.query(q),
+  fetchPage: async (q) => {
+    return await apiClient.anmeldung.verwaltungList.query({
+      pagination: q.pagination,
+      filter: q.filter,
+      orderBy: [],
+    })
+  },
 })
 
 fetchVisiblePages()
