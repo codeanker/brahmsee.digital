@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Chart.Name }}-meilisearch-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}-meilisearch
+  labels:
+  {{- include "codeanker.label" . | indent 4 }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}-meilisearch
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}-meilisearch
+        {{- include "codeanker.label" . | indent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}-meilisearch
+          image: "getmeili/meilisearch:v1.6"
+          resources:
+{{ toYaml .Values.meilisearch.resources | indent 12 }}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 7700
+          env:
+            - name: MEILI_MASTER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: meilisearch
+                  key: key
+          volumeMounts:
+            - name: meilisearch-storage
+              mountPath: "/data"
+      volumes:
+        - name: meilisearch-storage
+          persistentVolumeClaim:
+            claimName: {{ .Chart.Name }}-postgres-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Chart.Name }}-meilisearch-svc
+  labels:
+    app: {{ .Chart.Name }}-meilisearch
+    {{- include "codeanker.label" . | indent 4 }}
+spec:
+  ports:
+    - name: http
+      port: 7700
+      targetPort: 7700
+  selector:
+    app: {{ .Chart.Name }}-meilisearch

@@ -13,7 +13,7 @@ import logActivity from '../../src/util/activity'
 
 import { Seeder } from '.'
 
-const ENTRY_COUNT = 100000
+const ENTRY_COUNT = 1000
 
 faker.seed(123)
 
@@ -69,6 +69,7 @@ async function create(prisma: PrismaClient, unterveranstaltung: Unterveranstaltu
       status: faker.helpers.enumValue(AnmeldungStatus),
       tshirtBestellt: faker.datatype.boolean(),
       personId: person.id,
+      comment: faker.lorem.sentence(),
     },
     select: {
       id: true,

@@ -4,7 +4,6 @@ import { CheckIcon } from '@heroicons/vue/24/solid'
 import { ref } from 'vue'
 
 import { apiClient } from '@/api'
-import BasicCheckbox from '@/components/BasicInputs/BasicCheckbox.vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
 import BasicTypeahead from '@/components/BasicInputs/BasicTypeahead.vue'
@@ -176,24 +175,6 @@ const oauthRegistration = ref()
             />
           </div>
           <hr class="my-5" />
-          <div class="flex items-start mb-5 space-x-3">
-            <BasicCheckbox
-              v-model="registrationForm.dataprivacy"
-              required
-              class="mt-1"
-            />
-            <div class="font-medium">
-              Ich habe die
-              <RouterLink
-                :to="{ name: 'Datenschutz' }"
-                target="_blank"
-                rel="noopener noreferrer"
-                >Datenschutzerklärung</RouterLink
-              >
-              gelesen und akzeptiere diese.
-            </div>
-          </div>
-
           <div
             v-if="errorCreate"
             class="bg-danger-400 mb-5 rounded p-3 text-center text-white"

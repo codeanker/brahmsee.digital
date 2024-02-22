@@ -14,6 +14,8 @@ app:
       cpu: 250m
       memory: 256Mi
   jwt_secret: ""
+  meilisearch:
+    key: 'defaultKey'
 
 postgres:
   enabled: true
@@ -24,3 +26,9 @@ postgres:
     requests:
       cpu: "250m"
       memory: "256Mi"
+
+meilisearch:
+  resources:
+    requests:
+      cpu: "1m"
+      memory: "1Gi"

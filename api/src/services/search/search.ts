@@ -1,8 +1,10 @@
+import { Role } from '@prisma/client'
 import type { MultiSearchQuery } from 'meilisearch'
 import z from 'zod'
 
 import { meilisearchClient } from '../../meilisearch'
 import { defineProcedure } from '../../types/defineProcedure'
+import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin'
 
 export const searchProcedure = defineProcedure({
   key: 'search',
@@ -21,6 +23,15 @@ export const searchProcedure = defineProcedure({
       showRankingScore: true,
       matchingStrategy: 'all',
     }
+
+    if (options.ctx.account.role !== Role.ADMIN) {
+      const gliederung = await getGliederungRequireAdmin(options.ctx.accountId)
+
+      if (gliederung.id !== null) {
+        query.filter = [`gliederung.id=${gliederung.id}`]
+      }
+    }
+
     queries.push(query)
     const result = (
       await meilisearchClient.multiSearch({
