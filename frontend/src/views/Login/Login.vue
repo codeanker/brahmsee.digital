@@ -49,12 +49,14 @@ const formatLoginError = computed(() => {
 })
 
 const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.env.VITE_APP_COMMIT_HASH || 'unknown'}`
+
+const hostname = window.location.hostname
 </script>
 
 <template>
   <div class="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
-      <h2 class="mt-6 text-center text-4xl leading-9 tracking-tight text-primary-700">brahmsee.digital</h2>
+      <h2 class="mt-6 text-center text-4xl leading-9 tracking-tight text-primary-700">{{ hostname }}</h2>
       <p class="text-center">Melde dich zu deinem Konto an</p>
     </div>
 
