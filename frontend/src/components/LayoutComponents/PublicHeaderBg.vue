@@ -2,10 +2,10 @@
   <div>
     <div class="w-full h-full bg-public bg-center bg-cover"></div>
     <div class="absolute top-0 left-0 w-full h-full backdrop-blur-sm"></div>
-    <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black/10">
+    <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-primary-600">
       <img
-        class="h-44 lg:h-80 absolute"
-        src="@/assets/images/logo_white.svg"
+        class="max-h-[146%] lg:max-h-[60%] absolute"
+        src="@/assets/images/login.png"
         alt="logo"
       />
     </div>
