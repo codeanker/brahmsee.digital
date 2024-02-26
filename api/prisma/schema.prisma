@@ -237,24 +237,25 @@ model Ort {
 }
 
 model Veranstaltung {
-  id                   Int                  @id @default(autoincrement())
-  name                 String
-  beginn               DateTime             @db.Date
-  ende                 DateTime             @db.Date
-  meldebeginn          DateTime
-  meldeschluss         DateTime
-  ortId                Int?
-  ort                  Ort?                 @relation(fields: [ortId], references: [id], onDelete: SetNull)
-  maxTeilnehmende      Int
-  teilnahmegebuehr     Int
-  unterveranstaltungen Unterveranstaltung[]
-  mahlzeiten           Mahlzeit[]
-  beschreibung         String?
-  datenschutz          String?
-  teilnahmeBedingungen String?
-  zielgruppe           String?
-  hostnameId           Int?
-  hostname             Hostname?           @relation(fields: [hostnameId], references: [id])
+  id                          Int                  @id @default(autoincrement())
+  name                        String
+  beginn                      DateTime             @db.Date
+  ende                        DateTime             @db.Date
+  meldebeginn                 DateTime
+  meldeschluss                DateTime
+  ortId                       Int?
+  ort                         Ort?                 @relation(fields: [ortId], references: [id], onDelete: SetNull)
+  maxTeilnehmende             Int
+  teilnahmegebuehr            Int
+  unterveranstaltungen        Unterveranstaltung[]
+  mahlzeiten                  Mahlzeit[]
+  beschreibung                String?
+  datenschutz                 String?
+  teilnahmeBedingungen        String?
+  teilnahmeBedingungenPublic  String?
+  zielgruppe                  String?
+  hostnameId                  Int?
+  hostname                    Hostname?           @relation(fields: [hostnameId], references: [id])
 }
 
 enum MahlzeitType {
@@ -289,6 +290,7 @@ model Unterveranstaltung {
   gliederung       Gliederung             @relation(fields: [gliederungId], references: [id], onDelete: Cascade)
   Anmeldung        Anmeldung[]
   beschreibung     String?
+  bedingungen      String?
   type             UnterveranstaltungType @default(GLIEDERUNG)
 }
 

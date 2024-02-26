@@ -18,7 +18,13 @@ const createVeranstaltung: Seeder = async (prisma: PrismaClient) => {
       beschreibung: faker.lorem.text(),
       datenschutz: faker.lorem.text(),
       teilnahmeBedingungen: faker.lorem.text(),
+      teilnahmeBedingungenPublic: faker.lorem.text(),
       zielgruppe: faker.lorem.text(),
+      hostname: {
+        create: {
+          hostname: 'localhost:8080',
+        },
+      },
       ort: {
         create: {
           name: 'Waldheim am Brahmsee',

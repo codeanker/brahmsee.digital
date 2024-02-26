@@ -17,6 +17,7 @@ export const unterveranstaltungGliederungCreateProcedure = defineProcedure({
       meldebeginn: z.date(),
       meldeschluss: z.date(),
       beschreibung: z.string().optional(),
+      bedingungen: z.string().optional(),
     }),
   }),
   async handler(options) {
