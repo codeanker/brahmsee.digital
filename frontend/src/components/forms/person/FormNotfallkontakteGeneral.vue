@@ -4,6 +4,7 @@ import { computed, ref } from 'vue'
 
 import Button from '@/components/UIComponents/Button.vue'
 import KontaktItem from '@/components/UIComponents/KontaktItem.vue'
+import { loggedInAccount } from '@/composables/useAuthentication'
 import type { TKontaktSchema } from '@codeanker/api'
 
 export interface INotfallKontakte {
@@ -23,7 +24,7 @@ const emit = defineEmits<{
 const model = computed({
   get() {
     let model = props.modelValue
-    if (props.modelValue.personen.length === 0) {
+    if (props.modelValue.personen.length === 0 && loggedInAccount.value?.role !== 'ADMIN') {
       model.personen.push(personTemplate.value)
     }
     return model
