@@ -27,11 +27,11 @@ const keyInfos = computed<KeyInfo[]>(() => {
     return [
       {
         title: 'Beginn',
-        value: `${formatDate(unterveranstaltung.value.veranstaltung.beginn, 'DD.MM.YYYY HH:mm')} Uhr`,
+        value: `${formatDate(unterveranstaltung.value.veranstaltung.beginn, 'DD.MM.YYYY')} Uhr`,
       },
       {
         title: 'Ende',
-        value: `${formatDate(unterveranstaltung.value.veranstaltung.ende, 'DD.MM.YYYY HH:mm')} Uhr`,
+        value: `${formatDate(unterveranstaltung.value.veranstaltung.ende, 'DD.MM.YYYY')} Uhr`,
       },
       { title: 'Meldeschluss', value: formatDate(unterveranstaltung.value.meldeschluss, 'DD.MM.YYYY') },
       { title: 'Veranstaltungsort', value: unterveranstaltung.value.veranstaltung.ort?.name ?? '' },
