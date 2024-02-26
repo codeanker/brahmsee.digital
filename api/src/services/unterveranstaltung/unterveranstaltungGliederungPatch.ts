@@ -16,6 +16,7 @@ export const unterveranstaltungGliederungPatchProcedure = defineProcedure({
       meldebeginn: z.date().optional(),
       meldeschluss: z.date().optional(),
       beschreibung: z.string().optional(),
+      bedingungen: z.string().optional(),
     }),
   }),
   async handler(options) {

@@ -33,6 +33,7 @@ export const veranstaltungVerwaltungGetProcedure = defineProcedure({
         beschreibung: true,
         datenschutz: true,
         teilnahmeBedingungen: true,
+        teilnahmeBedingungenPublic: true,
         zielgruppe: true,
         hostname: {
           select: {

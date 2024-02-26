@@ -33,6 +33,7 @@ const fill = (veranstaltung) => {
     beschreibung: veranstaltung?.beschreibung ?? '',
     datenschutz: veranstaltung?.datenschutz ?? '',
     teilnahmeBedingungen: veranstaltung?.teilnahmeBedingungen ?? '',
+    teilnahmeBedingungenPublic: veranstaltung?.teilnahmeBedingungenPublic ?? '',
     zielgruppe: veranstaltung?.zielgruppe ?? '',
     hostnameId: veranstaltung?.hostname?.id,
   }
@@ -203,7 +204,14 @@ const { state: hostnames } = useAsyncState(async () => {
       <div class="lg:col-span-full">
         <BasicEditor
           v-model="veranstaltungCopy.teilnahmeBedingungen"
-          label="Teilnahmebedingungen"
+          label="interne Teilnahmebedingungen"
+        />
+      </div>
+
+      <div class="lg:col-span-full">
+        <BasicEditor
+          v-model="veranstaltungCopy.teilnahmeBedingungenPublic"
+          label="öffentliche Teilnahmebedingungen"
         />
       </div>
 
