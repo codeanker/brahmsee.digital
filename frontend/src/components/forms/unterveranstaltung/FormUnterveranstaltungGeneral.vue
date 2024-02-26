@@ -27,6 +27,7 @@ const props = defineProps<{
 
 const unterveranstaltungCopy = ref({
   beschreibung: props.unterveranstaltung?.beschreibung,
+  bedingungen: props.unterveranstaltung?.bedingungen,
   maxTeilnehmende: props.unterveranstaltung?.maxTeilnehmende,
   meldebeginn: props.unterveranstaltung?.meldebeginn,
   meldeschluss: props.unterveranstaltung?.meldeschluss,
@@ -254,6 +255,12 @@ const disableddates = computed(() => {
           v-model="unterveranstaltungCopy.beschreibung"
           required
           label="Beschreibung"
+        />
+      </div>
+      <div class="lg:col-span-full">
+        <BasicEditor
+          v-model="unterveranstaltungCopy.bedingungen"
+          label="Bedingungen"
         />
       </div>
     </div>

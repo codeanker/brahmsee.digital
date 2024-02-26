@@ -35,6 +35,7 @@ export const unterveranstaltungPublicGetProcedure = defineProcedure({
             },
             datenschutz: true,
             teilnahmeBedingungen: true,
+            teilnahmeBedingungenPublic: true,
             zielgruppe: true,
           },
         },
@@ -45,6 +46,7 @@ export const unterveranstaltungPublicGetProcedure = defineProcedure({
           },
         },
         beschreibung: true,
+        bedingungen: true,
       },
     })
     return unterveranstaltung

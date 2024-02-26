@@ -78,9 +78,13 @@ const {
       <div class="text-lg font-semibold">Teilnahmebedingungen</div>
       <div
         class="prose prose-neutra"
-        v-html="unterveranstaltung?.veranstaltung?.teilnahmeBedingungen"
+        v-html="unterveranstaltung?.bedingungen"
       />
-
+      <div
+        class="prose prose-neutra"
+        v-html="unterveranstaltung?.veranstaltung?.teilnahmeBedingungenPublic"
+      />
+      <hr class="my-10" />
       <div class="text-lg font-semibold mt-10">Datenschutz</div>
       <div
         class="prose prose-neutra"
