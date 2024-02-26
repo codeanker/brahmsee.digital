@@ -22,7 +22,11 @@ const emit = defineEmits<{
 
 const model = computed({
   get() {
-    return props.modelValue
+    let model = props.modelValue
+    if (props.modelValue.personen.length === 0) {
+      model.personen.push(personTemplate.value)
+    }
+    return model
   },
   set(val) {
     emit('update:modelValue', val)
@@ -39,14 +43,13 @@ const personTemplate = ref<TKontaktSchema>({
 
 <template>
   <p class="font-medium mb-5">Notfallkontakte</p>
-
   <div
     v-for="(_notfallkontaktPerson, index) in model.personen"
     :key="index"
   >
     <KontaktItem
       v-model="model.personen[index]"
-      show-remove-option
+      :show-remove-option="model.personen.length > 1"
       @remove="model.personen.splice(index, 1)"
     />
     <hr
