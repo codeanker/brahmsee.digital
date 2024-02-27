@@ -192,7 +192,7 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
         {{ version }}
         <span class="mx-1">-</span>
         <a
-          href="https://github.com/codeanker/brahmsee.digital"
+          href="https://codeanker.de?utm_source=brahmsee.digital"
           target="_blank"
           rel="noopener noreferrer"
           class="font-medium leading-6 hover:text-primary-500"

@@ -15,9 +15,6 @@ export const personVerwaltungRemoveProcedure = defineProcedure({
       where: {
         id: options.input.id,
       },
-      select: {
-        id: true,
-      },
     })
   },
 })

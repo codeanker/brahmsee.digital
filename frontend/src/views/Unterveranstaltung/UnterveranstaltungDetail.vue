@@ -13,6 +13,7 @@ import { useRoute } from 'vue-router'
 
 import { apiClient } from '@/api'
 import AnmeldungenTable from '@/components/AnmeldungenTable.vue'
+import Badge from '@/components/UIComponents/Badge.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import InfoList from '@/components/UIComponents/InfoList.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
@@ -84,8 +85,8 @@ const tabs = computed(() => {
 })
 
 const publicLink = computed(() => {
-  if (unterveranstaltung.value) {
-    return `${window.location.origin}/ausschreibung/${unterveranstaltung.value.id}`
+  if (unterveranstaltung?.value && unterveranstaltung.value.veranstaltung?.hostname?.hostname) {
+    return `https://${unterveranstaltung?.value.veranstaltung?.hostname.hostname}/ausschreibung/${unterveranstaltung.value.id}`
   }
   return ''
 })
@@ -170,15 +171,36 @@ function copyLink() {
       </Tab>
       <Tab>
         <div class="my-10">
-          <div class="text-lg font-semibold">Teilnahmebedingungen</div>
-          <p class="max-w-2xl text-sm">Bitte beachte die folgenden Teilnahmebedingungen</p>
+          <div class="text-lg font-semibold">Bedingungen <Badge color="secondary">Gliederung</Badge></div>
+          <p class="max-w-2xl text-sm">Bitte beachte die folgenden Bedingungen</p>
+        </div>
+        <div
+          class="prose prose-neutra"
+          v-html="unterveranstaltung?.bedingungen"
+        ></div>
+        <hr class="my-10" />
+        <div class="my-10">
+          <div class="text-lg font-semibold">Öffentliche Teilnahmebedingungen <Badge>Veranstaltung</Badge></div>
+          <p class="max-w-2xl text-sm">
+            Bitte beachte die folgenden Teilnahmebedingungen, diese sind bei der Anmeldung öffentlich einsehbar.
+          </p>
+        </div>
+        <div
+          class="prose prose-neutra"
+          v-html="unterveranstaltung?.veranstaltung?.teilnahmeBedingungenPublic"
+        ></div>
+        <hr class="my-10" />
+        <div class="my-10">
+          <div class="text-lg font-semibold">Interne Teilnahmebedingungen <Badge>Veranstaltung</Badge></div>
+          <p class="max-w-2xl text-sm">Bitte beachte die folgenden Teilnahmebedingungen für die Gliederung</p>
         </div>
         <div
           class="prose prose-neutra"
           v-html="unterveranstaltung?.veranstaltung?.teilnahmeBedingungen"
         ></div>
+        <hr class="my-10" />
         <div class="my-10">
-          <div class="text-lg font-semibold">Datenschutz</div>
+          <div class="text-lg font-semibold">Datenschutz <Badge>Veranstaltung</Badge></div>
           <p class="max-w-2xl text-sm">Bitte beachte die Hinweise zum Datenschutz</p>
         </div>
         <div
@@ -192,6 +214,7 @@ function copyLink() {
           <div class="text-lg font-semibold">Entwickler:innen</div>
           <p class="max-w-2xl text-sm">Informationen zur Veranstaltung</p>
         </div>
+
         <pre>{{ unterveranstaltung }}</pre>
       </Tab>
     </Tabs>

@@ -48,7 +48,7 @@ spec:
       volumes:
         - name: meilisearch-storage
           persistentVolumeClaim:
-            claimName: {{ .Chart.Name }}-postgres-data
+            claimName: {{ .Chart.Name }}-meilisearch-data
 ---
 apiVersion: v1
 kind: Service

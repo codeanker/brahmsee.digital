@@ -18,6 +18,7 @@ export const unterveranstaltungVerwaltungGetProcedure = defineProcedure({
       select: {
         id: true,
         beschreibung: true,
+        bedingungen: true,
         maxTeilnehmende: true,
         teilnahmegebuehr: true,
         meldebeginn: true,
@@ -36,7 +37,9 @@ export const unterveranstaltungVerwaltungGetProcedure = defineProcedure({
             beschreibung: true,
             zielgruppe: true,
             teilnahmeBedingungen: true,
+            teilnahmeBedingungenPublic: true,
             datenschutz: true,
+            hostname: true,
           },
         },
       },

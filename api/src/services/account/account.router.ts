@@ -11,6 +11,7 @@ import { accountVerwaltungCreateProcedure } from './accountVerwaltungCreate'
 import { accountVerwaltungGetProcedure } from './accountVerwaltungGet'
 import { accountVerwaltungListProcedure } from './accountVerwaltungList'
 import { accountVerwaltungPatchProcedure } from './accountVerwaltungPatch'
+import {accountVerwaltungRemoveProcedure} from './accountVerwaltungRemove'
 // Import Routes here - do not delete this line
 
 export const accountRouter = mergeRouters(
@@ -23,6 +24,7 @@ export const accountRouter = mergeRouters(
   accountVerwaltungPatchProcedure.router,
   accountEmailConfirmRequestProcedure.router,
   accountEmailConfirmProcedure.router,
-  accountPasswordResetProcedure.router
+  accountPasswordResetProcedure.router,
+  accountVerwaltungRemoveProcedure.router
   // Add Routes here - do not delete this line
 )
