@@ -49,7 +49,8 @@ const gridOptions: GridVirtualListOptions = {
   },
 }
 defineSlots<{
-  [colKey: string]: (_props: { fieldValue: unknown; row: unknown }) => VNode
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [colKey: string]: (_props: { fieldValue: any; row: any }) => VNode
 }>()
 </script>
 

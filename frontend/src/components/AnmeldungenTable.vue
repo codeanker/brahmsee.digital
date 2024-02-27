@@ -25,13 +25,23 @@ const props = withDefaults(
 
 const { state: anmeldungen } = useAsyncState(async () => {
   if (loggedInAccount.value?.role === 'ADMIN') {
-    return apiClient.anmeldung.verwaltungList.query({
-      filter: {
-        unterveranstaltungId: props.unterveranstaltungId,
-        veranstaltungId: props.veranstaltungId,
-      },
-      pagination: { take: 100, skip: 0 },
-    })
+    if (props.unterveranstaltungId) {
+      return apiClient.anmeldung.verwaltungList.query({
+        filter: {
+          unterveranstaltungId: props.unterveranstaltungId,
+          veranstaltungId: undefined,
+        },
+        pagination: { take: 100, skip: 0 },
+      })
+    } else if (props.veranstaltungId) {
+      return apiClient.anmeldung.verwaltungList.query({
+        filter: {
+          unterveranstaltungId: undefined,
+          veranstaltungId: props.veranstaltungId,
+        },
+        pagination: { take: 100, skip: 0 },
+      })
+    }
   } else {
     return apiClient.anmeldung.gliederungList.query({
       filter: {
@@ -218,7 +228,7 @@ fetchVisiblePages()
   <!-- Stats-->
 
   <div
-    v-if="anmeldungen.length <= 0"
+    v-if="!anmeldungen || anmeldungen.length <= 0"
     class="rounded-md bg-blue-50 dark:bg-blue-950 text-blue-500 p-4"
   >
     <div class="flex">
