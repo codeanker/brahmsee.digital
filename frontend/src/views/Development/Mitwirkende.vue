@@ -63,19 +63,19 @@ const people = [
 <template>
   <div class="py-10 px-8 md:px-8 lg:px-0">
     <div class="mx-auto max-w-3xl text-base leading-7">
-      <h1 class="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Ein Open-Source Projekt</h1>
+      <h1 class="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Ein Open-Source-Projekt</h1>
       <p class="mt-6 text-xl leading-8">
-        Diese Software wird als Open-Source Projekt entwickelt. Jede Person kann sich einbringen und an diesem Projekt
+        Diese Software wird als Open-Source-Projekt entwickelt. Jede Person kann sich einbringen und an diesem Projekt
         mitarbeiten. Der Code ist öffentlich zugänglich und kann frei verwendet werden.
       </p>
       <div class="mt-10 max-w-2xl">
         <p>
-          Es gab schon immer die Idee eine Software zur Anmeldung für das Landeskindertreffen zu entwickeln. Mehrere
-          Anläufe sind aus verschiedensten Gründen gescheitert. Im Jahr 2023 gab es einen neuen Anlauf. Viele der
+          Es gab schon immer die Idee eine Software für die Anmeldung zum Landeskindertreffen zu entwickeln. Mehrere
+          Versuche scheiterten aus verschiedenen Gründen. Im Jahr 2023 gab es einen neuen Anlauf. Viele der
           Contributoren sind beruflich in de Softwareentwicklung tätig und haben sich bereit erklärt, dieses Projekt zu
           unterstützen. Mit einem gemeinsamen Kickoff im Gästehaus der DLRG in Eckernförde haben wir gestartet und
-          entwickeltn seit dem gemeinsam an diesem Projekt. Dort haben wir uns auch entschieden das Projekt als
-          Open-Source zu entwickeln.
+          entwickeln seit dem gemeinsam an diesem Projekt. Dort haben wir uns auch entschieden das Projekt als Open
+          Source zu entwickeln.
         </p>
         <figure class="mt-10 border-l border-primary-600 pl-9">
           <blockquote class="font-semibold">
@@ -90,17 +90,17 @@ const people = [
               src="https://avatars.githubusercontent.com/u/9080990?v=4"
               alt=""
             />
-            <div class="text-sm leading-6"><strong class="font-semibold">Daniel Swiatek</strong> – Initator</div>
+            <div class="text-sm leading-6"><strong class="font-semibold">Daniel Swiatek</strong> – Initiator</div>
           </figcaption>
         </figure>
 
         <p class="mt-8">
-          "Wir laden dich herzlich dazu ein, an unserem Open Source Software-Projekt für die Veranstaltungsanmeldung
-          teilzunehmen! Gemeinsam gestalten wir eine offene und kollaborative Umgebung, in der jede Stimme zählt. Deine
+          "Wir laden dich herzlich dazu ein, an unserem Open Source Software Projekt für die Veranstaltungsanmeldung
+          mitzumachen! Gemeinsam schaffen wir eine offene und kollaborative Umgebung, in der jede Stimme zählt. Deine
           Fähigkeiten und Ideen sind von unschätzbarem Wert, um diese Plattform zu verbessern und zu erweitern.
         </p>
         <p>
-          Durch die Mitarbeit an diesem Projekt trägst du nicht nur zur Entwicklung einer benutzerfreundlichen und
+          Indem du an diesem Projekt teilnimmst, trägst du nicht nur zur Entwicklung einer benutzerfreundlichen und
           effizienten Lösung für die Veranstaltungsorganisation bei, sondern erfährst auch den unmittelbaren Einfluss
           deiner Beiträge. Es ist eine Gelegenheit, mit Gleichgesinnten zusammenzuarbeiten, Wissen zu teilen und
           gemeinsam innovative Lösungen zu schaffen.
@@ -183,7 +183,8 @@ const people = [
       <div class="mt-16 max-w-2xl">
         <h2 class="text-2xl font-bold tracking-tight">Veilen Dank an alle Contributor:innen und Sponsoren</h2>
         <p class="mt-6">
-          Ein großes Dankeschön geht an alle Contributor:innen und Sponsoren die an diesem Projekt mitgearbeitet haben.
+          Ein großes Dankeschön geht an alle Contributor:innen und Sponsoren die an diesem Projekt mitgearbeitet haben
+          und es noch immer tun.
         </p>
       </div>
 
