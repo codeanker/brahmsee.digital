@@ -8,10 +8,11 @@ import BasicGrid from './BasicGrid.vue'
 import { apiClient } from '@/api'
 import AnmeldungStatusSelect from '@/components/AnmeldungStatusSelect.vue'
 import Drawer from '@/components/LayoutComponents/Drawer.vue'
+import Button from '@/components/UIComponents/Button.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
 import { getAnmeldungStatusColor } from '@/helpers/getAnmeldungStatusColors'
 import { AnmeldungStatusMapping, type AnmeldungStatus, type RouterOutput, type RouterInput } from '@codeanker/api'
-import { useGrid, type TGridColumn } from '@codeanker/core-grid'
+import { useGridPaginated, type TGridColumn } from '@codeanker/core-grid'
 import { dayjs } from '@codeanker/helpers'
 
 const props = withDefaults(
@@ -141,7 +142,7 @@ const query = ref<Query>({
   orderBy: [],
 })
 
-const { grid, indexChange, fetchVisiblePages } = useGrid({
+const { grid, pageChange, fetchVisiblePages, page } = useGridPaginated({
   query,
   fetchCount: async (q) => {
     const { total } = await apiClient.anmeldung.verwaltungCount.query(q)
@@ -185,13 +186,12 @@ fetchVisiblePages()
     </div>
   </div>
 
-  <div class="relative w-full h-[500px]">
+  <div class="relative w-full">
     <BasicGrid
       v-model:order-by="query.orderBy"
       v-model:filter="query.filter"
       :grid="grid"
       :columns="columns"
-      @index-change="indexChange"
     >
       <template #person="{ fieldValue: person }">
         <td
@@ -223,6 +223,21 @@ fetchVisiblePages()
         </td>
       </template>
     </BasicGrid>
+    <Button
+      color="primary"
+      type="submit"
+      :disabled="page === 0"
+      @click="pageChange(page - 1)"
+    >
+      <span>Zurück</span>
+    </Button>
+    <Button
+      color="primary"
+      type="submit"
+      @click="pageChange(page + 1)"
+    >
+      <span>Vor</span>
+    </Button>
   </div>
 
   <!-- Stats-->
