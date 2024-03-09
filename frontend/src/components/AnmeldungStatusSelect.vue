@@ -18,6 +18,10 @@ const props = withDefaults(
   {}
 )
 
+const emit = defineEmits<{
+  (event: 'changed'): void
+}>()
+
 const currentStatus = ref(props.status)
 const statusOptions = getEnumOptions(AnmeldungStatusMapping)
 const availableOptions = statusOptions.filter(
@@ -40,16 +44,19 @@ const setStatus = async (status: AnmeldungStatus) => {
     await apiClient.anmeldung.verwaltungAnnehmen.mutate({
       anmeldungId: props.id,
     })
+    emit('changed')
   }
   if (status == 'STORNIERT') {
     await apiClient.anmeldung.verwaltungStorno.mutate({
       anmeldungId: props.id,
     })
+    emit('changed')
   }
   if (status == 'ABGELEHNT') {
     await apiClient.anmeldung.verwaltungAblehnen.mutate({
       anmeldungId: props.id,
     })
+    emit('changed')
   }
 }
 </script>

@@ -30,6 +30,7 @@ export const anmeldungVerwaltungGetProcedure = defineProcedure({
         uebernachtungsTage: true,
         tshirtBestellt: true,
         createdAt: true,
+        comment: true,
         person: {
           select: {
             id: true,
@@ -39,24 +40,27 @@ export const anmeldungVerwaltungGetProcedure = defineProcedure({
             gender: true,
             email: true,
             telefon: true,
+            gliederung: {
+              select: {
+                id: true,
+                name: true,
+                edv: true,
+              },
+            },
             essgewohnheit: true,
             nahrungsmittelIntoleranzen: true,
             weitereIntoleranzen: true,
             konfektionsgroesse: true,
             notfallkontakte: true,
             address: true,
-            gliederung: {
-              select: {
-                id: true,
-                name: true,
-              },
-            },
           },
         },
         unterveranstaltung: {
           select: {
             veranstaltung: {
               select: {
+                id: true,
+                name: true,
                 meldeschluss: true,
               },
             },
