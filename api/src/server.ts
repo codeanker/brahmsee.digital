@@ -20,7 +20,7 @@ app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
-        'img-src': ["'self'", 'githubusercontent.com'],
+        'img-src': ["'self'", '*.githubusercontent.com'],
       },
     },
   })
