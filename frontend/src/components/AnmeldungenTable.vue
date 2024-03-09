@@ -9,7 +9,6 @@ import { apiClient } from '@/api'
 import AnmeldungStatusSelect from '@/components/AnmeldungStatusSelect.vue'
 import FormPersonGeneral, { type FormPersonGeneralSubmit } from '@/components/forms/person/FormPersonGeneral.vue'
 import Drawer from '@/components/LayoutComponents/Drawer.vue'
-import Button from '@/components/UIComponents/Button.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
@@ -23,7 +22,7 @@ import {
   type RouterInput,
   type RouterOutput,
 } from '@codeanker/api'
-import { useGridPaginated, type TGridColumn } from '@codeanker/core-grid'
+import { useGrid, type TGridColumn } from '@codeanker/core-grid'
 import { dayjs } from '@codeanker/helpers'
 
 const props = withDefaults(
@@ -220,18 +219,14 @@ const query = ref<Query>({
   orderBy: [],
 })
 
-const { grid, pageChange, fetchVisiblePages, page } = useGridPaginated({
+const { grid, indexChange, fetchVisiblePages } = useGrid({
   query,
   fetchCount: async (q) => {
     const { total } = await apiClient.anmeldung.verwaltungCount.query(q)
     return total
   },
   fetchPage: async (q) => {
-    return await apiClient.anmeldung.verwaltungList.query({
-      pagination: q.pagination,
-      filter: q.filter,
-      orderBy: [],
-    })
+    return await apiClient.anmeldung.verwaltungList.query(q)
   },
 })
 
@@ -278,6 +273,7 @@ if (loggedInAccount.value?.role === 'ADMIN') {
       v-model:filter="query.filter"
       :grid="grid"
       :columns="columns"
+      @index-change="indexChange"
       @row-click="toggleDrawer($event)"
     >
       <template #person="{ fieldValue: person }">
@@ -310,21 +306,6 @@ if (loggedInAccount.value?.role === 'ADMIN') {
         </td>
       </template>
     </BasicGrid>
-    <Button
-      color="primary"
-      type="submit"
-      :disabled="page === 0"
-      @click="pageChange(page - 1)"
-    >
-      <span>Zurück</span>
-    </Button>
-    <Button
-      color="primary"
-      type="submit"
-      @click="pageChange(page + 1)"
-    >
-      <span>Vor</span>
-    </Button>
   </div>
   <div
     v-if="!anmeldungen || anmeldungen.length <= 0"
@@ -433,3 +414,10 @@ if (loggedInAccount.value?.role === 'ADMIN') {
     </template>
   </Drawer>
 </template>
+
+<style lang="scss" scoped>
+.relative.h-full.w-full {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+</style>
