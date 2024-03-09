@@ -4,7 +4,7 @@ import { CheckCircleIcon } from '@heroicons/vue/24/outline'
 const people = [
   {
     name: 'Daniel Swiatek',
-    role: 'Initator',
+    role: 'Initiator',
     imageUrl: 'https://avatars.githubusercontent.com/u/9080990?v=4',
   },
   {
@@ -72,7 +72,7 @@ const people = [
         <p>
           Es gab schon immer die Idee eine Software für die Anmeldung zum Landeskindertreffen zu entwickeln. Mehrere
           Versuche scheiterten aus verschiedenen Gründen. Im Jahr 2023 gab es einen neuen Anlauf. Viele der
-          Contributoren sind beruflich in de Softwareentwicklung tätig und haben sich bereit erklärt, dieses Projekt zu
+          Contributoren sind beruflich in der Softwareentwicklung tätig und haben sich bereit erklärt, dieses Projekt zu
           unterstützen. Mit einem gemeinsamen Kickoff im Gästehaus der DLRG in Eckernförde haben wir gestartet und
           entwickeln seit dem gemeinsam an diesem Projekt. Dort haben wir uns auch entschieden das Projekt als Open
           Source zu entwickeln.
