@@ -108,11 +108,18 @@ const {
   isLoading: isLoading,
 } = useAsyncState(
   async () => {
-    return (
-      await apiClient.anmeldung.verwaltungGet.query({
-        anmeldungId: selectedAnmeldungId.value,
-      })
-    )[0]
+    if (loggedInAccount.value?.role === 'ADMIN')
+      return (
+        await apiClient.anmeldung.verwaltungGet.query({
+          anmeldungId: selectedAnmeldungId.value,
+        })
+      )[0]
+    else
+      return (
+        await apiClient.anmeldung.gliederungGet.query({
+          anmeldungId: selectedAnmeldungId.value,
+        })
+      )[0]
   },
   null,
   { immediate: false }
@@ -127,7 +134,7 @@ const { execute: update } = useAsyncState(
       .map((entry) => entry[0] as NahrungsmittelIntoleranz)
     let personId = currentAnmeldung.value?.person.id
     if (personId) {
-      await apiClient.person.verwaltungPatch.mutate({
+      let data = {
         id: personId,
         data: {
           gliederungId: anmeldung.gliederung.id,
@@ -148,13 +155,25 @@ const { execute: update } = useAsyncState(
           weitereIntoleranzen: anmeldung.essgewohnheiten.weitereIntoleranzen,
           konfektionsgroesse: anmeldung.tshirt.groesse,
         },
-      }),
+      }
+      if (loggedInAccount.value?.role === 'ADMIN') {
+        await apiClient.person.verwaltungPatch.mutate(data)
         await apiClient.anmeldung.verwaltungPatch.mutate({
           id: selectedAnmeldungId.value,
           data: {
             comment: anmeldung.comment,
           },
         })
+      } else {
+        await apiClient.person.gliederungPatch.mutate(data)
+        await apiClient.anmeldung.gliederungPatch.mutate({
+          id: selectedAnmeldungId.value,
+          data: {
+            comment: anmeldung.comment,
+          },
+        })
+      }
+
       await getSingleAnmeldung()
     }
   },
@@ -214,7 +233,7 @@ type Query = {
 const query = ref<Query>({
   filter: {
     veranstaltungId: props.veranstaltungId as number,
-    unterveranstaltungId: undefined,
+    unterveranstaltungId: props.unterveranstaltungId as number,
   },
   orderBy: [],
 })
@@ -222,11 +241,12 @@ const query = ref<Query>({
 const { grid, indexChange, fetchVisiblePages } = useGrid({
   query,
   fetchCount: async (q) => {
-    const { total } = await apiClient.anmeldung.verwaltungCount.query(q)
-    return total
+    if (loggedInAccount.value?.role === 'ADMIN') return (await apiClient.anmeldung.verwaltungCount.query(q)).total
+    else return (await apiClient.anmeldung.gliederungCount.query(q)).total
   },
   fetchPage: async (q) => {
-    return await apiClient.anmeldung.verwaltungList.query(q)
+    if (loggedInAccount.value?.role === 'ADMIN') return await apiClient.anmeldung.verwaltungList.query(q)
+    else return await apiClient.anmeldung.gliederungList.query(q)
   },
 })
 

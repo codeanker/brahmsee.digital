@@ -5,16 +5,10 @@ import prisma from '../../prisma'
 import { defineProcedure } from '../../types/defineProcedure'
 import { ZPaginationSchema } from '../../types/defineQuery'
 
-const filter = z.union([
-  z.strictObject({
-    unterveranstaltungId: z.undefined(),
-    veranstaltungId: z.number(),
-  }),
-  z.strictObject({
-    unterveranstaltungId: z.number(),
-    veranstaltungId: z.undefined(),
-  }),
-])
+const filter = z.strictObject({
+  unterveranstaltungId: z.number().optional(),
+  veranstaltungId: z.number().optional(),
+})
 
 const where = (filter: { unterveranstaltungId?: number; veranstaltungId?: number }) => {
   return {
