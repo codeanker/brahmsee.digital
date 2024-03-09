@@ -256,6 +256,7 @@ model Veranstaltung {
   zielgruppe                  String?
   hostnameId                  Int?
   hostname                    Hostname?           @relation(fields: [hostnameId], references: [id])
+  customFields                CustomField[]
 }
 
 enum MahlzeitType {
@@ -292,6 +293,7 @@ model Unterveranstaltung {
   beschreibung     String?
   bedingungen      String?
   type             UnterveranstaltungType @default(GLIEDERUNG)
+  customFields     CustomField[]
 }
 
 enum ActivityType {
@@ -313,3 +315,29 @@ model Activity {
   causer           Account? @relation(fields: [causerId], references: [id], onDelete: SetNull)
   metadata         Json     @default("{}")
 }
+
+enum CustomFieldType {
+  TEXT
+  INT
+  FLOAT
+  BOOLEAN
+}
+
+model CustomField {
+  id                    Int @id @default(autoincrement())
+  name                  String
+  description           String?
+  type                  CustomFieldType
+  required              Boolean
+  veranstaltungId       Int?
+  veranstaltung         Veranstaltung?      @relation(fields: [veranstaltungId], references: [id], onDelete: Cascade)
+  unterveranstaltungId  Int?
+  unterveranstaltung    Unterveranstaltung? @relation(fields: [unterveranstaltungId], references: [id], onDelete: Cascade)
+
+  @@unique([name, veranstaltungId])
+  @@unique([name, unterveranstaltungId])
+}
+
+// model CustomFieldValues {
+
+// }

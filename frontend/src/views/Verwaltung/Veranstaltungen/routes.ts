@@ -61,6 +61,18 @@ const veranstaltungRoutes: Route[] = [
           ],
         },
       },
+      {
+        name: 'Verwaltung Custom Field erstellen',
+        path: ':veranstaltungId/fields/create',
+        component: () => import('../../CustomFields/CustomFieldCreate.vue'),
+        meta: {
+          breadcrumbs: [
+            {
+              text: 'Benutzerdefiniertes Feld erstellen',
+            },
+          ],
+        },
+      },
     ],
   },
 ]
