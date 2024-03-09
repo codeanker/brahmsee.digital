@@ -95,6 +95,9 @@ const {
       delete unterveranstaltungCopy.value.gliederungId
       delete unterveranstaltungCopy.value.veranstaltungId
       delete unterveranstaltungCopy.value.type
+      if (unterveranstaltungCopy.value.bedingungen === null) {
+        delete unterveranstaltungCopy.value.bedingungen
+      }
       await apiClient.unterveranstaltung.verwaltungPatch.mutate({
         id: unterveranstaltungId,
         data: unterveranstaltungCopy.value as unknown as RouterInput['unterveranstaltung']['verwaltungPatch']['data'],
@@ -103,6 +106,9 @@ const {
       delete unterveranstaltungCopy.value.gliederungId
       delete unterveranstaltungCopy.value.veranstaltungId
       delete unterveranstaltungCopy.value.type
+      if (unterveranstaltungCopy.value.bedingungen === null) {
+        delete unterveranstaltungCopy.value.bedingungen
+      }
       await apiClient.unterveranstaltung.gliederungPatch.mutate({
         id: unterveranstaltungId,
         data: unterveranstaltungCopy.value as unknown as RouterInput['unterveranstaltung']['gliederungPatch']['data'],

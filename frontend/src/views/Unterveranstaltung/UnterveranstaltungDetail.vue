@@ -33,13 +33,18 @@ const { state: unterveranstaltung } = useAsyncState(async () => {
 }, undefined)
 
 const { state: countAnmeldungen } = useAsyncState(async () => {
-  if (loggedInAccount.value?.role === 'ADMIN') {
+  if (loggedInAccount.value?.role === 'ADMIN')
     return apiClient.anmeldung.verwaltungCount.query({
       filter: {
         unterveranstaltungId: parseInt(route.params.unterveranstaltungId as string),
       },
     })
-  }
+  else
+    return apiClient.anmeldung.gliederungCount.query({
+      filter: {
+        unterveranstaltungId: parseInt(route.params.unterveranstaltungId as string),
+      },
+    })
 }, [])
 
 // @ToDo count for Gliederungen
@@ -75,7 +80,7 @@ const keyInfos = computed<KeyInfo[]>(() => {
 const tabs = computed(() => {
   let tabs = [
     { name: 'Ausschreibung', icon: MegaphoneIcon },
-    { name: 'Anmeldungen', icon: UserGroupIcon, count: countAnmeldungen.value.total },
+    { name: 'Anmeldungen', icon: UserGroupIcon, count: countAnmeldungen.value?.total },
     { name: 'Bedingungen', icon: ClipboardDocumentListIcon },
   ]
   if (loggedInAccount.value?.role === 'ADMIN') {
