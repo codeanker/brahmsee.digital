@@ -25,24 +25,36 @@ export const anmeldungGliederungGetProcedure = defineProcedure({
       },
       select: {
         id: true,
+        status: true,
+        mahlzeiten: true,
+        uebernachtungsTage: true,
+        tshirtBestellt: true,
+        createdAt: true,
+        comment: true,
         person: {
           select: {
             id: true,
             firstname: true,
             lastname: true,
             birthday: true,
-            konfektionsgroesse: true,
+            gender: true,
+            email: true,
+            telefon: true,
             gliederung: {
               select: {
                 id: true,
                 name: true,
+                edv: true,
               },
             },
+            essgewohnheit: true,
+            nahrungsmittelIntoleranzen: true,
+            weitereIntoleranzen: true,
+            konfektionsgroesse: true,
+            notfallkontakte: true,
+            address: true,
           },
         },
-        status: true,
-        tshirtBestellt: true,
-        createdAt: true,
         unterveranstaltung: {
           select: {
             id: true,

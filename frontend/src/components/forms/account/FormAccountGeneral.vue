@@ -130,7 +130,7 @@ const { execute: deleteUser, error: errorDelete } = useAsyncState(
       return
     }
 
-    await apiClient.person.verwaltungRemove.mutate({ id: props.account.id })
+    await apiClient.account.verwaltungRemove.mutate({ id: props.account.id })
     router.back()
   },
   null,
