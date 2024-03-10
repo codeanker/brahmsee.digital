@@ -26,6 +26,22 @@ export const customFieldsList = defineProcedure({
       })
 
       fields = veranstaltung.customFields
+    } else if (input.entity === 'ausschreibung') {
+      const ausschreibung = await prisma.unterveranstaltung.findUniqueOrThrow({
+        where: {
+          id: input.entityId,
+        },
+        include: {
+          customFields: true,
+          veranstaltung: {
+            include: {
+              customFields: true,
+            },
+          },
+        },
+      })
+
+      fields = fields.concat(...ausschreibung.veranstaltung.customFields, ...ausschreibung.customFields)
     }
 
     return fields

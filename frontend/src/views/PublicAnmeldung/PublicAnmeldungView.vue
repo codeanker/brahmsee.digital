@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ChevronLeftIcon, FaceFrownIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { apiClient } from '@/api'
@@ -16,8 +16,21 @@ import { type NahrungsmittelIntoleranz } from '@codeanker/api'
 const router = useRouter()
 const route = useRoute()
 
+const unterveranstaltungId = computed(() => parseInt(route.params.ausschreibungId as string))
+
 const { state: unterveranstaltung, isLoading } = useAsyncState(async () => {
-  return apiClient.unterveranstaltung.publicGet.query({ id: Number(route.params.ausschreibungId) })
+  return apiClient.unterveranstaltung.publicGet.query({ id: unterveranstaltungId.value })
+}, undefined)
+
+const { state: customFields } = useAsyncState(async () => {
+  if (!unterveranstaltung) {
+    return undefined
+  }
+
+  return apiClient.customFields.list.query({
+    entity: 'ausschreibung',
+    entityId: unterveranstaltungId.value,
+  })
 }, undefined)
 
 const showBedingungen = ref(false)
@@ -110,6 +123,12 @@ const {
       </Button>
       <div class="text-3xl font-medium">Anmeldung</div>
       <div class="mb-5">{{ unterveranstaltung?.veranstaltung.name }}</div>
+
+      <!-- TODO: Render fields -->
+      <p class="mb-5 italic">
+        <strong>{{ customFields?.length ?? 0 }}</strong> benutzerdefinierte Felder geladen.
+      </p>
+
       <!-- Form -->
       <FormPersonGeneral
         :is-loading="isLoadingCreate"
