@@ -262,13 +262,12 @@ const files = [
               Hier können benutzerdefinierte Felder erstellt werden, welche für alle Unterveranstaltungen gelten.
             </p>
           </div>
-          <!-- TODO: Custom Fields Form -->
-          <!-- <RouterLink
+          <RouterLink
             class="text-primary-600"
-            :to="{ name: 'VerwaltungVeranstaltungEdit' }"
+            :to="{ name: 'Verwaltung Custom Field erstellen' }"
           >
             Neues Feld
-          </RouterLink> -->
+          </RouterLink>
         </div>
         <CustomFieldsTable
           v-if="veranstaltung?.id"

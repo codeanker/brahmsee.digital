@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 
+import BasicCheckbox from '@/components/BasicInputs/BasicCheckbox.vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
 import { CustomFieldTypeMapping, getEnumOptions, type CustomFieldType } from '@codeanker/api'
@@ -54,7 +55,9 @@ const typeOptions = ref(getEnumOptions(CustomFieldTypeMapping))
       label="Beschreibung"
       placeholder="Nachname eingeben"
     />
+    <BasicCheckbox
+      v-model="model.required"
+      label="Erforderlich?"
+    />
   </div>
-
-  <hr />
 </template>

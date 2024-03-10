@@ -1,30 +1,26 @@
 <script setup lang="ts">
-import { CubeTransparentIcon } from '@heroicons/vue/24/outline'
+import { CheckIcon, CubeTransparentIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 import { useRouter } from 'vue-router'
 
 import { apiClient } from '@/api'
+import { CustomFieldTypeMapping } from '@codeanker/api'
 
 const props = defineProps<{
   veranstaltungId: number
   // columns?: string[]
 }>()
 
-function loadFields() {
-  const { state } = useAsyncState(async () => {
-    return apiClient.customFields.list.query({
-      // filter: {
-      //   veranstaltungId: props.veranstaltungId,
-      // },
-      // pagination: { take: 100, skip: 0 },
-      entity: 'veranstaltung',
-      entityId: props.veranstaltungId,
-    })
-  }, [])
-  return state
-}
-
-const unterveranstaltungen = loadFields()
+const { state: fields } = useAsyncState(async () => {
+  return apiClient.customFields.list.query({
+    // filter: {
+    //   veranstaltungId: props.veranstaltungId,
+    // },
+    // pagination: { take: 100, skip: 0 },
+    entity: 'veranstaltung',
+    entityId: props.veranstaltungId,
+  })
+}, [])
 
 const router = useRouter()
 </script>
@@ -32,7 +28,7 @@ const router = useRouter()
 <template>
   <div>
     <table
-      v-if="unterveranstaltungen"
+      v-if="fields"
       class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
     >
       <thead>
@@ -59,31 +55,39 @@ const router = useRouter()
       </thead>
       <tbody class="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-dark-primary">
         <tr
-          v-for="unterveranstaltung in unterveranstaltungen"
-          :key="unterveranstaltung.id"
+          v-for="field in fields"
+          :key="field.id"
           class="cursor-pointer even:bg-gray-50 dark:even:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800"
           title="bearbeiten"
           @click="
             router.push({
-              name: 'UnterveranstaltungDetail',
-              params: { unterveranstaltungId: unterveranstaltung.id },
+              name: 'Verwaltung Custom Field bearbeiten',
+              params: { veranstaltungId: props.veranstaltungId, fieldId: field.id },
             })
           "
         >
           <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-            <div>{{ unterveranstaltung.name }}</div>
+            <p>{{ field.name }}</p>
+            <p class="text-xs text-gray-500">{{ field.description }}</p>
           </td>
           <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-            <div>{{ unterveranstaltung.type }}</div>
+            <div>{{ CustomFieldTypeMapping[field.type].human }}</div>
           </td>
           <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-            <div>{{ unterveranstaltung.required }}</div>
+            <CheckIcon
+              v-if="field.required"
+              class="text-primary-600 size-5"
+            />
+            <XMarkIcon
+              v-else
+              class="text-red-600 size-5"
+            />
           </td>
         </tr>
       </tbody>
     </table>
     <div
-      v-if="unterveranstaltungen.length <= 0"
+      v-if="fields.length <= 0"
       class="rounded-md bg-blue-50 dark:bg-blue-950 p-4 text-blue-500"
     >
       <div class="flex">
