@@ -37,6 +37,7 @@ export const unterveranstaltungPublicGetProcedure = defineProcedure({
             teilnahmeBedingungen: true,
             teilnahmeBedingungenPublic: true,
             zielgruppe: true,
+            hostname: true,
           },
         },
         gliederung: {
