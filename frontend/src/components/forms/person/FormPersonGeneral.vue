@@ -150,12 +150,14 @@ const submit = () => {
     <FormEssgewohnheitGeneral v-model="essgewohnheitenForm" />
     <hr class="my-5" />
 
-    <BasicTextArea
-      v-model="comment"
-      label="Bemerkung"
-      :rows="3"
-    ></BasicTextArea>
-    <hr class="my-5" />
+    <template v-if="isPublicAnmeldung">
+      <BasicTextArea
+        v-model="comment"
+        label="Bemerkung"
+        :rows="3"
+      ></BasicTextArea>
+      <hr class="my-5" />
+    </template>
 
     <template v-if="isPublicAnmeldung">
       <template v-if="showTshirt">

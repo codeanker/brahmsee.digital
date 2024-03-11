@@ -3,7 +3,7 @@ import z from 'zod'
 
 import prisma from '../../prisma'
 import { defineProcedure } from '../../types/defineProcedure'
-import { defineQuery } from '../../types/defineQuery'
+import { ZPaginationSchema } from '../../types/defineQuery'
 import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin'
 
 const filter = z.strictObject({
@@ -33,8 +33,21 @@ export const anmeldungGliederungdListProcedure = defineProcedure({
   key: 'gliederungList',
   method: 'query',
   protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN', 'GLIEDERUNG_ADMIN'] },
-  inputSchema: defineQuery({
+  inputSchema: z.strictObject({
+    pagination: ZPaginationSchema,
     filter: filter,
+    orderBy: z
+      .array(
+        z.union([
+          z.object({
+            status: z.union([z.literal('asc'), z.literal('desc')]),
+          }),
+          z.object({
+            createdAt: z.union([z.literal('asc'), z.literal('desc')]),
+          }),
+        ])
+      )
+      .optional(),
   }),
   async handler(options) {
     const { skip, take } = options.input.pagination
