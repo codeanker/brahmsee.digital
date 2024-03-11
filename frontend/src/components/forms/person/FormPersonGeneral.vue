@@ -44,6 +44,7 @@ const props = defineProps<{
   person?: Person
   submitText?: string
   error?: Error
+  showTshirt?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -159,8 +160,10 @@ const submit = () => {
     </template>
 
     <template v-if="isPublicAnmeldung">
-      <FormTShirtBestellungGeneral v-model="tshirtForm" />
-      <hr class="my-5" />
+      <template v-if="showTshirt">
+        <FormTShirtBestellungGeneral v-model="tshirtForm" />
+        <hr class="my-5" />
+      </template>
 
       <BasicCheckbox
         v-model="acceptTeilnahmebedingungen"
