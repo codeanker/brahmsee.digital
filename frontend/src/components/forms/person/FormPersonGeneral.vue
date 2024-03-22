@@ -44,6 +44,7 @@ const props = defineProps<{
   person?: Person
   submitText?: string
   error?: Error
+  showTshirt?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -149,16 +150,20 @@ const submit = () => {
     <FormEssgewohnheitGeneral v-model="essgewohnheitenForm" />
     <hr class="my-5" />
 
-    <BasicTextArea
-      v-model="comment"
-      label="Bemerkung"
-      :rows="3"
-    ></BasicTextArea>
-    <hr class="my-5" />
+    <template v-if="isPublicAnmeldung">
+      <BasicTextArea
+        v-model="comment"
+        label="Bemerkung"
+        :rows="3"
+      ></BasicTextArea>
+      <hr class="my-5" />
+    </template>
 
     <template v-if="isPublicAnmeldung">
-      <FormTShirtBestellungGeneral v-model="tshirtForm" />
-      <hr class="my-5" />
+      <template v-if="showTshirt">
+        <FormTShirtBestellungGeneral v-model="tshirtForm" />
+        <hr class="my-5" />
+      </template>
 
       <BasicCheckbox
         v-model="acceptTeilnahmebedingungen"

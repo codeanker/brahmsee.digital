@@ -1,6 +1,6 @@
 import z from 'zod'
 
-const ZPaginationSchema = z.strictObject({
+export const ZPaginationSchema = z.strictObject({
   skip: z.number().optional(),
   take: z.number().max(100).optional(),
 })

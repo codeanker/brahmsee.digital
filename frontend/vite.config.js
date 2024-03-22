@@ -2,10 +2,11 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import basicSsl from '@vitejs/plugin-basic-ssl'
 import path from 'path'
+import { pluginHttp2Proxy } from './pluginHttp2Proxy'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(), basicSsl()],
+  plugins: [vue(), basicSsl(), pluginHttp2Proxy()],
   resolve: {
     alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
   },
@@ -15,7 +16,7 @@ export default defineConfig({
     https: true,
     proxy: {
       '/api': {
-        target: 'http://localhost:3030',
+        target: 'http://127.0.0.1:3030',
         rewrite: (path) => path.replace(/^\/api/, ''),
         ws: true,
       },

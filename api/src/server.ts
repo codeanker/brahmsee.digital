@@ -11,7 +11,6 @@ import { createContext } from './context'
 import { logger } from './logger'
 import cacheControl from './middleware/cache-control'
 import router from './routes'
-import { isProduction } from './util/is-production'
 
 import { appRouter } from './index'
 
@@ -19,7 +18,11 @@ export const app = new Koa()
 
 app.use(
   helmet({
-    contentSecurityPolicy: isProduction(),
+    contentSecurityPolicy: {
+      directives: {
+        'img-src': ["'self'", '*.githubusercontent.com'],
+      },
+    },
   })
 )
 app.use(cors({ origin: '*' }))
