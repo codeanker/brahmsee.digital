@@ -172,6 +172,8 @@ const submit = () => {
       <hr class="my-5" />
     </template>
 
+    <slot></slot>
+
     <template v-if="isPublicAnmeldung">
       <template v-if="showTshirt">
         <FormTShirtBestellungGeneral v-model="tshirtForm" />
