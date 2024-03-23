@@ -50,6 +50,16 @@ async function create(prisma: PrismaClient, unterveranstaltung: Unterveranstaltu
       nahrungsmittelIntoleranzen: faker.helpers.arrayElements(Object.values(NahrungsmittelIntoleranz)),
       addressId: address.id,
       gliederungId: unterveranstaltung.gliederungId,
+      notfallkontakte: {
+        create: [
+          {
+            firstname: faker.person.firstName(),
+            lastname: faker.person.lastName(),
+            telefon: faker.string.numeric('+49151########'),
+            istErziehungsberechtigt: faker.datatype.boolean(),
+          },
+        ],
+      },
     },
     select: {
       id: true,
