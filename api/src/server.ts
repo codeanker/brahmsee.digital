@@ -1,6 +1,7 @@
 import cors from '@koa/cors'
 import grant from 'grant'
 import Koa from 'koa'
+import { koaBody } from 'koa-body'
 import helmet from 'koa-helmet'
 import session from 'koa-session'
 import serve from 'koa-static'
@@ -63,7 +64,9 @@ app.use(
   })
 )
 
+app.use(koaBody({ multipart: true }))
 app.use(router.routes())
+app.use(router.allowedMethods())
 
 app.use(async (ctx, next) => {
   // serve index.html as catch all
