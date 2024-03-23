@@ -409,7 +409,7 @@ if (loggedInAccount.value?.role === 'ADMIN') {
                 <div class="sm:flex sm:px-6 sm:py-5">
                   <dt class="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0 lg:w-48">Angemeldet am</dt>
                   <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:ml-6 sm:mt-0 whitespace-pre-line">
-                    {{ dayjs(currentAnmeldung?.createdAt).format('DD.MM.YYYY hh:mm') }}
+                    {{ dayjs(currentAnmeldung?.createdAt).format('DD.MM.YYYY HH:mm') }}
                   </dd>
                 </div>
               </dl>
