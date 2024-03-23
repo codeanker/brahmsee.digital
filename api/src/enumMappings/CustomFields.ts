@@ -14,23 +14,24 @@ export type CustomFieldType = (typeof CustomFieldNames)[number]
 
 export interface CustomField {
   name: CustomFieldType
+  label: string
   hasOptions?: boolean
 }
 
 export const CustomFields: CustomField[] = [
-  { name: 'BasicInput' },
-  { name: 'BasicTextArea' },
-  { name: 'BasicEditor' },
-  { name: 'BasicSwitch' },
-  { name: 'BasicCheckbox' },
-  { name: 'BasicInputNumber' },
-  { name: 'BasicRadio', hasOptions: true },
-  { name: 'BasicSelect', hasOptions: true },
-  { name: 'BasicDropdown', hasOptions: true },
+  { name: 'BasicInput', label: 'Textfeld' },
+  { name: 'BasicTextArea', label: 'Großes Textfeld' },
+  { name: 'BasicEditor', label: 'Editor' },
+  { name: 'BasicSwitch', label: 'Schalter' },
+  { name: 'BasicCheckbox', label: 'Checkbox' },
+  { name: 'BasicInputNumber', label: 'Zahlenfeld' },
+  { name: 'BasicRadio', label: 'Radio Buttons', hasOptions: true },
+  { name: 'BasicSelect', label: 'Select', hasOptions: true },
+  { name: 'BasicDropdown', label: 'Dropdown', hasOptions: true },
 ]
 
 export const CustomFieldsMapping = CustomFields.map((field) => ({
-  label: field.name,
+  label: field.label,
   value: field.name,
   disabled: false,
 }))
