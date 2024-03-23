@@ -34,7 +34,7 @@ export async function createOrUpdateAddress(input: z.infer<typeof addressSchema>
   }
   const existing = await findAddress(data)
 
-  if (existing === null) {
+  if (!existing) {
     const result = await prisma.address.create({
       data,
       select: {
