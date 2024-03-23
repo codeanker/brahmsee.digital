@@ -152,6 +152,7 @@ model Person {
   notfallkontakte              Notfallkontakt[]
   addressId                    Int?
   address                      Address?                     @relation(fields: [addressId], references: [id], onDelete: Cascade)
+  customFields                 CustomField[]
 }
 
 model Account {
@@ -216,6 +217,7 @@ model Anmeldung {
   tshirtBestellt       Boolean            @default(false)
   comment              String?
   createdAt            DateTime           @default(now())
+  values               CustomFieldValue[]
 }
 
 model Address {
@@ -316,28 +318,29 @@ model Activity {
   metadata         Json     @default("{}")
 }
 
-enum CustomFieldType {
-  TEXT
-  INT
-  FLOAT
-  BOOLEAN
-}
-
 model CustomField {
   id                    Int @id @default(autoincrement())
   name                  String
   description           String?
-  type                  CustomFieldType
+  type                  String
   required              Boolean
-  veranstaltungId       Int?
-  veranstaltung         Veranstaltung?      @relation(fields: [veranstaltungId], references: [id], onDelete: Cascade)
-  unterveranstaltungId  Int?
-  unterveranstaltung    Unterveranstaltung? @relation(fields: [unterveranstaltungId], references: [id], onDelete: Cascade)
+  options               String[]
+  role                  Role[]
+  values                CustomFieldValue[]
 
-  @@unique([name, veranstaltungId])
-  @@unique([name, unterveranstaltungId])
+  veranstaltungId       Int?
+  unterveranstaltungId  Int?
+  personId              Int?
+  veranstaltung         Veranstaltung?      @relation(fields: [veranstaltungId], references: [id], onDelete: Cascade)
+  unterveranstaltung    Unterveranstaltung? @relation(fields: [unterveranstaltungId], references: [id], onDelete: Cascade)
+  person                Person?             @relation(fields: [personId], references: [id], onDelete: Cascade)
 }
 
-// model CustomFieldValues {
-
-// }
+model CustomFieldValue {
+  id           Int @id @default(autoincrement())
+  value        String?
+  fieldId      Int
+  field        CustomField @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+  anmeldungId  Int
+  anmeldung    Anmeldung @relation(fields: [anmeldungId], references: [id], onDelete: Cascade)
+}

@@ -4,7 +4,6 @@ import { useAsyncState } from '@vueuse/core'
 import { useRouter } from 'vue-router'
 
 import { apiClient } from '@/api'
-import { CustomFieldTypeMapping } from '@codeanker/api'
 
 const props = defineProps<{
   veranstaltungId: number
@@ -71,7 +70,7 @@ const router = useRouter()
             <p class="text-xs text-gray-500">{{ field.description }}</p>
           </td>
           <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-            <div>{{ CustomFieldTypeMapping[field.type].human }}</div>
+            <div>{{ field.type }}</div>
           </td>
           <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
             <CheckIcon

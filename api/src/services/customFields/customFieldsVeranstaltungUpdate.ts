@@ -1,6 +1,6 @@
-import { CustomFieldType } from '@prisma/client'
 import { z } from 'zod'
 
+import { CustomFieldNames } from '../../enumMappings'
 import prisma from '../../prisma'
 import { defineProcedure } from '../../types/defineProcedure'
 
@@ -13,8 +13,9 @@ export const customFieldsVeranstaltungUpdate = defineProcedure({
     data: z.strictObject({
       name: z.string().min(1),
       description: z.string().nullable(),
-      type: z.nativeEnum(CustomFieldType),
+      type: z.enum(CustomFieldNames),
       required: z.boolean(),
+      options: z.array(z.string()),
     }),
   }),
   async handler({ input }) {

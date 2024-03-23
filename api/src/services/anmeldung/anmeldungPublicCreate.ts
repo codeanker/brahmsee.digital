@@ -19,6 +19,12 @@ export const anmeldungPublicCreateProcedure = defineProcedure({
       email: z.string().email(),
       comment: z.string().optional(),
     }),
+    customFieldValues: z.array(
+      z.strictObject({
+        fieldId: z.number().int(),
+        value: z.string().or(z.undefined()),
+      })
+    ),
   }),
   async handler(options) {
     const unterveranstaltung = await prisma.unterveranstaltung.findUniqueOrThrow({
@@ -60,6 +66,11 @@ export const anmeldungPublicCreateProcedure = defineProcedure({
             tshirtBestellt: options.input.data.tshirtBestellt,
             comment: options.input.data.comment,
             createdAt: new Date(),
+            values: {
+              createMany: {
+                data: options.input.customFieldValues,
+              },
+            },
           },
         },
       },

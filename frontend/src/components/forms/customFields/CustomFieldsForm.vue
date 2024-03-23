@@ -1,16 +1,19 @@
 <script lang="ts" setup>
+import { TrashIcon } from '@heroicons/vue/24/outline'
 import { computed, ref } from 'vue'
 
 import BasicCheckbox from '@/components/BasicInputs/BasicCheckbox.vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
-import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
-import { CustomFieldTypeMapping, getEnumOptions, type CustomFieldType } from '@codeanker/api'
+import BasicSelect, { type Option } from '@/components/BasicInputs/BasicSelect.vue'
+import Button from '@/components/UIComponents/Button.vue'
+import { CustomFields, CustomFieldsMapping, type CustomFieldType } from '@codeanker/api'
 
 export interface ICustomFieldData {
   name: string
   description?: string
   type: CustomFieldType
   required: boolean
+  options: string[]
 }
 
 const props = withDefaults(
@@ -19,20 +22,30 @@ const props = withDefaults(
   }>(),
   {}
 )
+
 const emit = defineEmits<{
   (event: 'update:modelValue', eventArgs: ICustomFieldData): void
 }>()
 
+const fill = (modelValue) => {
+  return Object.assign({}, modelValue)
+}
+
+const modelValueCopy = ref(fill(props.modelValue))
+
 const model = computed({
   get() {
-    return props.modelValue
+    return modelValueCopy.value
   },
   set(val) {
     emit('update:modelValue', val)
   },
 })
 
-const typeOptions = ref(getEnumOptions(CustomFieldTypeMapping))
+const typeOptions = ref<Option[]>(CustomFieldsMapping)
+const field = computed(() => CustomFields.find((f) => f.name === model.value.type))
+
+// const options = ref<string[]>(Array.from(props.modelValue.options))
 </script>
 
 <template>
@@ -40,7 +53,7 @@ const typeOptions = ref(getEnumOptions(CustomFieldTypeMapping))
     <BasicInput
       v-model="model.name"
       label="Name"
-      placeholder="Vornamen eingeben"
+      placeholder="Name für das Feld"
       required
     />
     <BasicSelect
@@ -53,11 +66,49 @@ const typeOptions = ref(getEnumOptions(CustomFieldTypeMapping))
       v-model="model.description"
       class="col-span-full"
       label="Beschreibung"
-      placeholder="Nachname eingeben"
+      placeholder="Eine Beschreibung oder ein Hilfstext"
     />
-    <BasicCheckbox
-      v-model="model.required"
-      label="Erforderlich?"
-    />
+    <div class="col-span-full">
+      <BasicCheckbox
+        v-model="model.required"
+        label="Erforderlich?"
+      />
+    </div>
+
+    <div
+      v-if="field?.hasOptions"
+      class="col-span-full flex flex-col gap-5"
+    >
+      <hr class="mt-5" />
+
+      <div class="flex flex-row items-center justify-between">
+        <p class="font-medium">Optionen</p>
+        <Button
+          color="secondary"
+          @click="model.options.push('')"
+        >
+          Weitere Option hinzufügen
+        </Button>
+      </div>
+
+      <div
+        v-for="(_, index) in model.options"
+        :key="index"
+        class="flex flex-row items-end gap-x-5"
+      >
+        <BasicInput
+          v-model="model.options[index]"
+          :label="`Option #${index + 1}`"
+          placeholder="Lorem Ipsum"
+          class="flex-1"
+        />
+        <Button
+          color="danger"
+          @click="model.options.splice(index, 1)"
+        >
+          <TrashIcon class="h-5" />
+        </Button>
+      </div>
+    </div>
   </div>
 </template>

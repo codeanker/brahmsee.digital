@@ -7,13 +7,14 @@ import { apiClient } from '@/api'
 import CustomFieldsForm, { type ICustomFieldData } from '@/components/forms/customFields/CustomFieldsForm.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import router from '@/router'
+import type { CustomFieldType } from '@codeanker/api'
 import { ValidateForm } from '@codeanker/validation'
 
 const route = useRoute()
 
 const fieldId = computed(() => parseInt(route.params.fieldId as string))
 
-const { state: field } = useAsyncState(async () => {
+const { state: field, isReady } = useAsyncState(async () => {
   return apiClient.customFields.get.query({
     id: fieldId.value,
   })
@@ -23,7 +24,8 @@ const form = computed<ICustomFieldData>(() => ({
   name: field.value?.name ?? '',
   description: field.value?.description ?? '',
   required: field.value?.required ?? false,
-  type: field.value?.type ?? 'TEXT',
+  type: (field.value?.type ?? 'BasicInput') as CustomFieldType,
+  options: field.value?.options ?? [],
 }))
 
 const validationErrors = ref([])
@@ -44,6 +46,7 @@ const {
           description: data.description || null,
           required: data.required,
           type: data.type,
+          options: data.options,
         },
       })
 
@@ -63,7 +66,7 @@ const {
 <template>
   <h5>Benutzerdefiniertes Feld erstellen</h5>
 
-  <ValidateForm>
+  <ValidateForm v-if="isReady">
     <CustomFieldsForm v-model="form" />
   </ValidateForm>
 

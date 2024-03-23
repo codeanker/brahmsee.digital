@@ -17,7 +17,8 @@ const form = ref<ICustomFieldData>({
   name: '',
   description: '',
   required: false,
-  type: 'TEXT',
+  type: 'BasicInput',
+  options: [],
 })
 
 const validationErrors = ref([])
@@ -34,6 +35,7 @@ const { execute, error, isLoading } = useAsyncState(
           description: data.description || null,
           required: data.required,
           type: data.type,
+          options: data.options || [],
         },
       })
 
