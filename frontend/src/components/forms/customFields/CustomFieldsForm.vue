@@ -101,6 +101,8 @@ const field = computed(() => CustomFields.find((f) => f.name === model.value.typ
           <TrashIcon class="h-5" />
         </Button>
       </div>
+
+      <hr class="mt-5" />
     </div>
   </div>
 </template>
