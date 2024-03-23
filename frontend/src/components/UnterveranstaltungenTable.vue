@@ -90,7 +90,7 @@ function formatDate(indate) {
             scope="col"
             class="px-3 py-3.5 text-left text-sm font-semibold"
           >
-            max. TN
+            Anm. / Max
           </th>
         </tr>
       </thead>
@@ -131,7 +131,9 @@ function formatDate(indate) {
             <div class="font-medium">{{ unterveranstaltung.teilnahmegebuehr }}€</div>
           </td>
           <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-            <div class="font-medium">{{ unterveranstaltung.maxTeilnehmende }}</div>
+            <div class="font-medium">
+              {{ unterveranstaltung._count.Anmeldung }} / {{ unterveranstaltung.maxTeilnehmende }}
+            </div>
           </td>
         </tr>
       </tbody>
