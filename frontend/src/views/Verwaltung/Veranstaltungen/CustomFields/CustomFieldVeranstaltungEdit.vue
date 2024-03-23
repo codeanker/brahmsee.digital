@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAsyncState } from '@vueuse/core'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { apiClient } from '@/api'
@@ -20,13 +20,23 @@ const { state: field, isReady } = useAsyncState(async () => {
   })
 }, null)
 
-const form = computed<ICustomFieldData>(() => ({
-  name: field.value?.name ?? '',
-  description: field.value?.description ?? '',
-  required: field.value?.required ?? false,
-  type: (field.value?.type ?? 'BasicInput') as CustomFieldType,
-  options: field.value?.options ?? [],
-}))
+watch(field, () => {
+  form.value = {
+    name: field.value?.name ?? '',
+    description: field.value?.description ?? '',
+    required: field.value?.required ?? false,
+    type: (field.value?.type ?? 'BasicInput') as CustomFieldType,
+    options: field.value?.options ?? [],
+  }
+})
+
+const form = ref<ICustomFieldData>({
+  name: '',
+  description: '',
+  required: false,
+  options: [],
+  type: 'BasicInput',
+})
 
 const validationErrors = ref([])
 
