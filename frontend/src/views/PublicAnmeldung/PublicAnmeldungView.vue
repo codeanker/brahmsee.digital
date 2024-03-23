@@ -6,8 +6,15 @@ import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { apiClient } from '@/api'
+import BasicCheckbox from '@/components/BasicInputs/BasicCheckbox.vue'
 import BasicDropdown from '@/components/BasicInputs/BasicDropdown.vue'
+import BasicEditor from '@/components/BasicInputs/BasicEditor.vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
+import BasicInputNumber from '@/components/BasicInputs/BasicInputNumber.vue'
+import BasicRadio from '@/components/BasicInputs/BasicRadio.vue'
+import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
+import BasicSwitch from '@/components/BasicInputs/BasicSwitch.vue'
+import BasicTextArea from '@/components/BasicInputs/BasicTextArea.vue'
 import FormPersonGeneral, { type FormPersonGeneralSubmit } from '@/components/forms/person/FormPersonGeneral.vue'
 import Drawer from '@/components/LayoutComponents/Drawer.vue'
 import PublicFooter from '@/components/LayoutComponents/PublicFooter.vue'
@@ -153,12 +160,56 @@ const {
             :key="field.id"
           >
             <div class="flex flex-col gap-y-2">
-              <!-- TODO: Render all field types -->
               <BasicInput
                 v-if="field.type === 'BasicInput'"
                 v-model="customFieldValues[field.id]"
                 :label="field.name"
                 :required="field.required"
+              />
+              <BasicTextArea
+                v-if="field.type === 'BasicTextArea'"
+                v-model="customFieldValues[field.id]"
+                :label="field.name"
+                :required="field.required"
+              />
+              <BasicEditor
+                v-if="field.type === 'BasicEditor'"
+                v-model="customFieldValues[field.id]"
+                :label="field.name"
+                :required="field.required"
+              />
+              <BasicSwitch
+                v-if="field.type === 'BasicSwitch'"
+                v-model="customFieldValues[field.id]"
+                :label="field.name"
+                :required="field.required"
+              />
+              <BasicCheckbox
+                v-if="field.type === 'BasicCheckbox'"
+                v-model="customFieldValues[field.id]"
+                :label="field.name"
+                :required="field.required"
+              />
+              <BasicInputNumber
+                v-if="field.type === 'BasicInputNumber'"
+                v-model="customFieldValues[field.id]"
+                :label="field.name"
+                :required="field.required"
+              />
+
+              <BasicRadio
+                v-if="field.type === 'BasicRadio'"
+                v-model="customFieldValues[field.id]"
+                :label="field.name"
+                :required="field.required"
+                :options="field.options.map((o) => ({ label: o, value: o }))"
+              />
+              <BasicSelect
+                v-if="field.type === 'BasicSelect'"
+                v-model="customFieldValues[field.id]"
+                :label="field.name"
+                :required="field.required"
+                :options="field.options.map((o) => ({ label: o, value: o }))"
               />
               <BasicDropdown
                 v-if="field.type === 'BasicDropdown'"
