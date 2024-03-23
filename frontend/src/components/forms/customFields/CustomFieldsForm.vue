@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { TrashIcon } from '@heroicons/vue/24/outline'
+import { ChevronDownIcon, ChevronUpIcon, TrashIcon } from '@heroicons/vue/24/outline'
 import { computed, ref } from 'vue'
 
 import BasicCheckbox from '@/components/BasicInputs/BasicCheckbox.vue'
@@ -38,6 +38,16 @@ const model = computed({
 
 const typeOptions = ref<Option[]>(CustomFieldsMapping)
 const field = computed(() => CustomFields.find((f) => f.name === model.value.type))
+
+function moveOptionUp(index: number) {
+  const rows = [model.value.options[index - 1], model.value.options[index]]
+  model.value.options.splice(index - 1, 2, rows[1], rows[0])
+}
+
+function moveOptionDown(index: number) {
+  const rows = [model.value.options[index], model.value.options[index + 1]]
+  model.value.options.splice(index, 2, rows[1], rows[0])
+}
 </script>
 
 <template>
@@ -84,10 +94,30 @@ const field = computed(() => CustomFields.find((f) => f.name === model.value.typ
       </div>
 
       <div
-        v-for="(_, index) in model.options"
-        :key="index"
+        v-for="(option, index) in model.options"
+        :key="option"
         class="flex flex-row items-end gap-x-5"
       >
+        <div class="flex flex-col gap-y-2">
+          <button
+            type="button"
+            class="disabled:text-gray-400 disabled:cursor-not-allowed"
+            :disabled="index === 0"
+            tabindex="-1"
+            @click="moveOptionUp(index)"
+          >
+            <ChevronUpIcon class="h-4" />
+          </button>
+          <button
+            type="button"
+            class="disabled:text-gray-400 disabled:cursor-not-allowed"
+            :disabled="index === model.options.length - 1"
+            tabindex="-1"
+            @click="moveOptionDown(index)"
+          >
+            <ChevronDownIcon class="h-4" />
+          </button>
+        </div>
         <BasicInput
           v-model="model.options[index]"
           :label="`Option #${index + 1}`"
