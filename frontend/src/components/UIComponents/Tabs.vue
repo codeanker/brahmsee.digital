@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { TabGroup, TabList, Tab, TabPanels } from '@headlessui/vue'
-import { type FunctionalComponent } from 'vue'
+import { computed, type FunctionalComponent } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     tabs: {
       name: string
@@ -15,15 +16,33 @@ withDefaults(
   {
     contentSpace: '1',
     type: 'register-cards',
-    defaultIndex: 0,
+    defaultIndex: undefined,
   }
 )
+
+const route = useRoute()
+const router = useRouter()
+
+const currentindex = computed(() => {
+  if (props.defaultIndex !== undefined) {
+    return props.defaultIndex
+  }
+  if (route.query.tab !== undefined && typeof route.query.tab === 'string') {
+    return parseInt(route.query.tab)
+  }
+  return 0
+})
+
+function changeTab(index) {
+  router.push({ query: { tab: index.toString() } })
+}
 </script>
 
 <template>
   <TabGroup
     as="div"
-    :default-index="defaultIndex"
+    :default-index="currentindex"
+    @change="changeTab"
   >
     <TabList
       class="border-b border-gray-300 dark:border-gray-700 -mb-px flex space-x-5"
