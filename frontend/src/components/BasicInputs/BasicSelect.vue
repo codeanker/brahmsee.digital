@@ -7,9 +7,15 @@ import useValidationModel from '../../composables/useValidationModel'
 import BasicValidationFeedback from './components/BasicValidationFeedback.vue'
 import { type BasicInputDefaultProps } from './defaultProps'
 
+export interface Option {
+  label: string
+  value: string | number
+  disabled?: boolean
+}
+
 const props = defineProps<
   BasicInputDefaultProps<string | number> & {
-    options: { label: string; value: string | number; disabled?: boolean }[]
+    options: Option[]
   }
 >()
 
