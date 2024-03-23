@@ -12,6 +12,7 @@ import { ValidateForm } from '@codeanker/validation'
 
 const route = useRoute()
 
+const veranstaltungId = computed(() => parseInt(route.params.veranstaltungId as string))
 const fieldId = computed(() => parseInt(route.params.fieldId as string))
 
 const { state: field, isReady } = useAsyncState(async () => {
@@ -71,6 +72,23 @@ const {
   null,
   { immediate: false }
 )
+
+const {
+  execute: doDelete,
+  // error: errorDelete,
+  isLoading: isDeleting,
+} = useAsyncState(
+  async () => {
+    await apiClient.customFields.verwaltungDelete.mutate({
+      fieldId: field.value!.id,
+      veranstaltungId: veranstaltungId.value,
+    })
+
+    router.back()
+  },
+  null,
+  { immediate: false }
+)
 </script>
 
 <template>
@@ -84,6 +102,7 @@ const {
     <Button
       type="submit"
       color="primary"
+      :disabled="isUpdating || isDeleting"
       @click="execute"
     >
       <span v-if="!isUpdating">Speichern</span>
@@ -92,9 +111,19 @@ const {
     <Button
       type="button"
       color="warning"
+      :disabled="isUpdating || isDeleting"
       @click="() => router.back()"
     >
       Abbrechen
+    </Button>
+    <div class="flex-1"></div>
+    <Button
+      type="button"
+      color="danger"
+      :disabled="isUpdating || isDeleting"
+      @click="doDelete"
+    >
+      Löschen
     </Button>
   </div>
 
