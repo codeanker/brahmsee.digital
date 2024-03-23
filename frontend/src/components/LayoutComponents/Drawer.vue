@@ -37,7 +37,10 @@ watch(show, (value) => {
         v-if="show"
         class="fixed top-0 right-0 bg-black/50 w-screen h-screen z-50"
       >
-        <div class="w-full h-full relative">
+        <div
+          class="w-full h-full relative"
+          @click.self="show = false"
+        >
           <Transition name="slide-fade">
             <div
               v-if="showDrawer"
