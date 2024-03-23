@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { TrashIcon } from '@heroicons/vue/24/outline'
 import { computed, ref } from 'vue'
 
@@ -27,15 +27,9 @@ const emit = defineEmits<{
   (event: 'update:modelValue', eventArgs: ICustomFieldData): void
 }>()
 
-const fill = (modelValue) => {
-  return Object.assign({}, modelValue)
-}
-
-const modelValueCopy = ref(fill(props.modelValue))
-
 const model = computed({
   get() {
-    return modelValueCopy.value
+    return props.modelValue
   },
   set(val) {
     emit('update:modelValue', val)
@@ -44,8 +38,6 @@ const model = computed({
 
 const typeOptions = ref<Option[]>(CustomFieldsMapping)
 const field = computed(() => CustomFields.find((f) => f.name === model.value.type))
-
-// const options = ref<string[]>(Array.from(props.modelValue.options))
 </script>
 
 <template>
