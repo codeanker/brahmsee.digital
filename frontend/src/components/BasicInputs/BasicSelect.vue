@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/vue'
-import { ChevronDownIcon } from '@heroicons/vue/24/outline'
+import { CheckIcon, ChevronDownIcon } from '@heroicons/vue/24/outline'
 
 import useValidationModel from '../../composables/useValidationModel'
 
@@ -9,13 +9,16 @@ import { type BasicInputDefaultProps } from './defaultProps'
 
 export interface Option {
   label: string
+  description?: string
   value: string | number
   disabled?: boolean
 }
 
 const props = defineProps<
-  BasicInputDefaultProps<string | number> & {
+  BasicInputDefaultProps<string | number | string[] | number[]> & {
     options: Option[]
+    // eslint-disable-next-line vue/no-unused-properties
+    multiple?: boolean
   }
 >()
 
@@ -23,6 +26,23 @@ const emit = defineEmits<{
   (event: 'update:modelValue', eventArgs: string | number | undefined): void
 }>()
 const { model, errorMessage } = useValidationModel(props, emit)
+
+function formatValue(modelValue: unknown) {
+  if (!modelValue) {
+    return props.placeholder || 'Bitte wählen...'
+  }
+  if (Array.isArray(modelValue)) {
+    if (modelValue.length === 0) {
+      return props.placeholder || 'Bitte wählen...'
+    }
+    return props.options
+      .filter((o) => modelValue.includes(o.value))
+      .map((o) => o.label)
+      .join(', ')
+  }
+
+  return modelValue
+}
 </script>
 
 <template>
@@ -31,20 +51,25 @@ const { model, errorMessage } = useValidationModel(props, emit)
       v-if="label"
       class="font-medium"
       :for="id || name || label"
-      >{{ label }}
+    >
+      <span>{{ label }}</span>
       <span
         v-if="required"
         class="text-danger-600"
-        >*</span
-      ></label
-    >
+      >
+        *
+      </span>
+    </label>
     <Listbox
       v-model="model"
       as="div"
       :name="id || name || label"
+      :multiple="props.multiple"
     >
       <ListboxButton class="input-style flex items-center justify-between">
-        {{ options.find((option) => option.value === modelValue)?.label || placeholder || 'Bitte wählen...' }}
+        <span class="text-start">
+          {{ formatValue(modelValue) }}
+        </span>
         <ChevronDownIcon class="h-5 text-gray-500" />
       </ListboxButton>
       <div class="relative mt-1">
@@ -58,7 +83,7 @@ const { model, errorMessage } = useValidationModel(props, emit)
           >
             <ListboxOption
               v-for="option in options"
-              v-slot="{ active }"
+              v-slot="{ active, selected }"
               :key="option.value"
               :value="option.value"
               :disabled="option.disabled"
@@ -66,10 +91,19 @@ const { model, errorMessage } = useValidationModel(props, emit)
               <div
                 :class="[
                   active ? 'bg-primary-600 text-white' : 'text-gray-900',
+                  selected ? 'bg-primary-200' : '',
                   'relative cursor-default select-none px-3 py-2',
+                  'flex flex-row gap-x-4 items-center',
                 ]"
               >
-                {{ option.label }}
+                <CheckIcon
+                  class="h-4"
+                  :class="selected ? 'text-primary-600' : 'invisible'"
+                />
+                <div class="flex flex-col">
+                  <span>{{ option.label }}</span>
+                  <span class="text-xs mb-1">{{ option.description }}</span>
+                </div>
               </div>
             </ListboxOption>
           </ListboxOptions>

@@ -3,14 +3,17 @@ import { CheckIcon, CubeTransparentIcon, XMarkIcon } from '@heroicons/vue/24/out
 import { useAsyncState } from '@vueuse/core'
 import { useRouter } from 'vue-router'
 
+import Loading from './UIComponents/Loading.vue'
+
 import { apiClient } from '@/api'
+import { CustomFieldPositionMapping, CustomFieldsMapping, getEnumOptions } from '@codeanker/api'
 
 const props = defineProps<{
   veranstaltungId: number
   // columns?: string[]
 }>()
 
-const { state: fields } = useAsyncState(async () => {
+const { state: fields, isLoading } = useAsyncState(async () => {
   return apiClient.customFields.list.query({
     // filter: {
     //   veranstaltungId: props.veranstaltungId,
@@ -22,6 +25,19 @@ const { state: fields } = useAsyncState(async () => {
 }, [])
 
 const router = useRouter()
+
+type Field = (typeof fields.value)[number]
+
+function formatType(field: Field) {
+  return CustomFieldsMapping.find((m) => m.value === field.type)?.label
+}
+
+function formatPositions(field: Field) {
+  return getEnumOptions(CustomFieldPositionMapping)
+    .filter((o) => field.positions.includes(o.value))
+    .map((o) => o.label)
+    .join(', ')
+}
 </script>
 
 <template>
@@ -50,6 +66,12 @@ const router = useRouter()
           >
             Erforderlich?
           </th>
+          <th
+            scope="col"
+            class="px-3 py-3.5 text-left text-sm font-semibold"
+          >
+            Positionen
+          </th>
         </tr>
       </thead>
       <tbody class="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-dark-primary">
@@ -70,7 +92,7 @@ const router = useRouter()
             <p class="text-xs text-gray-500">{{ field.description }}</p>
           </td>
           <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-            <div>{{ field.type }}</div>
+            <div>{{ formatType(field) }}</div>
           </td>
           <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
             <CheckIcon
@@ -82,11 +104,17 @@ const router = useRouter()
               class="text-red-600 size-5"
             />
           </td>
+          <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
+            <div>{{ formatPositions(field) }}</div>
+          </td>
         </tr>
       </tbody>
     </table>
+    <div v-if="isLoading">
+      <Loading />
+    </div>
     <div
-      v-if="fields.length <= 0"
+      v-else-if="fields.length <= 0"
       class="rounded-md bg-blue-50 dark:bg-blue-950 p-4 text-blue-500"
     >
       <div class="flex">
