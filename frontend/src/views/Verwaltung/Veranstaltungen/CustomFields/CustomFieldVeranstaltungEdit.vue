@@ -28,6 +28,7 @@ watch(field, () => {
     required: field.value?.required ?? false,
     type: (field.value?.type ?? 'BasicInput') as CustomFieldType,
     options: field.value?.options ?? [],
+    positions: field.value?.positions ?? [],
   }
 })
 
@@ -35,8 +36,9 @@ const form = ref<ICustomFieldData>({
   name: '',
   description: '',
   required: false,
-  options: [],
   type: 'BasicInput',
+  options: [],
+  positions: [],
 })
 
 const validationErrors = ref([])
@@ -58,6 +60,7 @@ const {
           required: data.required,
           type: data.type,
           options: data.options,
+          positions: data.positions,
         },
       })
 

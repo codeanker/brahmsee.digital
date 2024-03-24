@@ -1,3 +1,4 @@
+import { CustomFieldPosition } from '@prisma/client'
 import { z } from 'zod'
 
 import { CustomFieldNames } from '../../enumMappings'
@@ -16,13 +17,14 @@ export const customFieldsVeranstaltungCreate = defineProcedure({
       type: z.enum(CustomFieldNames),
       required: z.boolean(),
       options: z.array(z.string()),
+      positions: z.nativeEnum(CustomFieldPosition).array(),
     }),
   }),
   async handler({ input }) {
     return await prisma.customField.create({
       data: {
-        veranstaltungId: input.veranstaltungId,
         ...input.data,
+        veranstaltungId: input.veranstaltungId,
       },
     })
   },
