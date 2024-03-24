@@ -2,11 +2,18 @@
 import { ChevronDownIcon, ChevronUpIcon, TrashIcon } from '@heroicons/vue/24/outline'
 import { computed, ref } from 'vue'
 
-import BasicCheckbox from '@/components/BasicInputs/BasicCheckbox.vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import BasicSelect, { type Option } from '@/components/BasicInputs/BasicSelect.vue'
+import BasicSwitch from '@/components/BasicInputs/BasicSwitch.vue'
 import Button from '@/components/UIComponents/Button.vue'
-import { CustomFields, CustomFieldsMapping, type CustomFieldType } from '@codeanker/api'
+import {
+  CustomFieldPositionMapping,
+  CustomFields,
+  CustomFieldsMapping,
+  getEnumOptions,
+  CustomFieldPosition,
+  type CustomFieldType,
+} from '@codeanker/api'
 
 export interface ICustomFieldData {
   name: string
@@ -14,6 +21,7 @@ export interface ICustomFieldData {
   type: CustomFieldType
   required: boolean
   options: string[]
+  positions: CustomFieldPosition[]
 }
 
 const props = withDefaults(
@@ -37,6 +45,8 @@ const model = computed({
 })
 
 const typeOptions = ref<Option[]>(CustomFieldsMapping)
+const positionOptions = ref(getEnumOptions(CustomFieldPositionMapping))
+
 const field = computed(() => CustomFields.find((f) => f.name === model.value.type))
 
 function moveOptionUp(index: number) {
@@ -70,12 +80,27 @@ function moveOptionDown(index: number) {
       label="Beschreibung"
       placeholder="Eine Beschreibung oder ein Hilfstext"
     />
-    <div class="col-span-full">
-      <BasicCheckbox
+    <div>
+      <label
+        for="required"
+        class="font-medium"
+      >
+        Erforderlich?
+      </label>
+      <BasicSwitch
         v-model="model.required"
-        label="Erforderlich?"
+        name="required"
+        label="Soll dieses Feld verpflichtend sein?"
+        class="mt-2"
       />
     </div>
+    <BasicSelect
+      v-model="model.positions"
+      label="Positionen"
+      :options="positionOptions"
+      multiple
+      required
+    />
 
     <div
       v-if="field?.hasOptions"
@@ -123,6 +148,7 @@ function moveOptionDown(index: number) {
           :label="`Option #${index + 1}`"
           placeholder="Lorem Ipsum"
           class="flex-1"
+          required
         />
         <Button
           color="danger"

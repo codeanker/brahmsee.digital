@@ -318,6 +318,16 @@ model Activity {
   metadata         Json     @default("{}")
 }
 
+enum CustomFieldPosition {
+  PUBLIC_PERSON
+  PUBLIC_ANMELDUNG
+
+  INTERN_PERSON
+  INTERN_ANMELDUNG
+  INTERN_VERANSTALTUNG
+  INTERN_AUSSCHREIBUNG
+}
+
 model CustomField {
   id                    Int @id @default(autoincrement())
   name                  String
@@ -327,6 +337,7 @@ model CustomField {
   options               String[]
   role                  Role[]
   values                CustomFieldValue[]
+  positions             CustomFieldPosition[]
 
   veranstaltungId       Int?
   unterveranstaltungId  Int?
