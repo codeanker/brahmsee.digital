@@ -199,7 +199,6 @@ const files = [
           <div class="text-lg font-semibold">Anmeldungen</div>
           <p class="max-w-2xl text-sm">Die folgenden Personen haben sich angemeldet</p>
         </div>
-        Expor der Teilnehmenden
         <AnmeldungenTable
           v-if="unterveranstaltung"
           :unterveranstaltung-id="unterveranstaltung?.id"
