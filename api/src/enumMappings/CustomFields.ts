@@ -1,3 +1,7 @@
+import { CustomFieldPosition } from '@prisma/client'
+
+import { defineEnumMapping } from './defineEnumMapping'
+
 export const CustomFieldNames = [
   'BasicInput',
   'BasicTextArea',
@@ -35,3 +39,14 @@ export const CustomFieldsMapping = CustomFields.map((field) => ({
   value: field.name,
   disabled: false,
 }))
+
+export const CustomFieldPositionMapping = defineEnumMapping<CustomFieldPosition>({
+  PUBLIC_ANMELDUNG: { human: 'Öffentliche Anmeldung', description: 'Lorem Ipsum' },
+  PUBLIC_PERSON: { human: 'Öffentliche Person', description: 'Lorem Ipsum' },
+  INTERN_ANMELDUNG: { human: 'Interne Anmeldung', description: 'Lorem Ipsum' },
+  INTERN_PERSON: { human: 'Interne Person', description: 'Lorem Ipsum' },
+  INTERN_VERANSTALTUNG: { human: 'Interne Veranstaltung', description: 'Lorem Ipsum' },
+  INTERN_AUSSCHREIBUNG: { human: 'Interne Ausschreibung', description: 'Lorem Ipsum' },
+})
+
+export { CustomFieldPosition }
