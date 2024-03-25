@@ -66,7 +66,7 @@ export const anmeldungPublicCreateProcedure = defineProcedure({
             tshirtBestellt: options.input.data.tshirtBestellt,
             comment: options.input.data.comment,
             createdAt: new Date(),
-            values: {
+            customFieldValues: {
               createMany: {
                 data: options.input.customFieldValues,
               },
