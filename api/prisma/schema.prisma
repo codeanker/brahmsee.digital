@@ -217,7 +217,7 @@ model Anmeldung {
   tshirtBestellt       Boolean            @default(false)
   comment              String?
   createdAt            DateTime           @default(now())
-  values               CustomFieldValue[]
+  customFieldValues    CustomFieldValue[]
 }
 
 model Address {
