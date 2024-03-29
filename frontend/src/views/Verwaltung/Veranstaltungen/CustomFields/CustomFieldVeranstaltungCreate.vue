@@ -7,6 +7,7 @@ import { apiClient } from '@/api'
 import CustomFieldsForm, { type ICustomFieldData } from '@/components/forms/customFields/CustomFieldsForm.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import router from '@/router'
+import { type CustomFieldType } from '@codeanker/api'
 import { ValidateForm } from '@codeanker/validation'
 
 const route = useRoute()
@@ -17,7 +18,7 @@ const form = ref<ICustomFieldData>({
   name: '',
   description: '',
   required: false,
-  type: 'BasicInput',
+  type: 'BASIC_INPUT' as CustomFieldType,
   options: [],
   positions: [],
 })

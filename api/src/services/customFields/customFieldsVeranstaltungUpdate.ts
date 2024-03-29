@@ -1,7 +1,6 @@
-import { CustomFieldPosition } from '@prisma/client'
+import { CustomFieldPosition, CustomFieldType } from '@prisma/client'
 import { z } from 'zod'
 
-import { CustomFieldNames } from '../../enumMappings'
 import prisma from '../../prisma'
 import { defineProcedure } from '../../types/defineProcedure'
 
@@ -14,7 +13,7 @@ export const customFieldsVeranstaltungUpdate = defineProcedure({
     data: z.strictObject({
       name: z.string().min(1),
       description: z.string().nullable(),
-      type: z.enum(CustomFieldNames),
+      type: z.nativeEnum(CustomFieldType),
       required: z.boolean(),
       options: z.array(z.string()),
       positions: z.nativeEnum(CustomFieldPosition).array(),
