@@ -36,7 +36,7 @@ const currentindex = computed(() => {
   return 0
 })
 
-const selectedTab = ref(0)
+const selectedTab = ref()
 
 function changeTab(index) {
   selectedTab.value = index
@@ -58,11 +58,11 @@ function changeTab(index) {
       >
         <div class="flex space-x-2 items-center">
           <component
-            :is="tabs[selectedTab].icon"
+            :is="tabs[selectedTab || currentindex].icon"
             class="'-ml-0.5 mr-1.5 h-5 w-5'"
             aria-hidden="true"
           />
-          <span>{{ tabs[selectedTab].name }}</span>
+          <span>{{ tabs[selectedTab || currentindex].name }}</span>
         </div>
 
         <ChevronDownIcon class="h-5 text-gray-500" />
