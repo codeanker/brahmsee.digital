@@ -1,44 +1,20 @@
-import { CustomFieldPosition } from '@prisma/client'
+import { CustomFieldPosition, CustomFieldType } from '@prisma/client'
 
 import { defineEnumMapping } from './defineEnumMapping'
 
-export const CustomFieldNames = [
-  'BasicInput',
-  'BasicTextArea',
-  'BasicEditor',
-  'BasicSwitch',
-  'BasicCheckbox',
-  'BasicInputNumber',
-  'BasicRadio',
-  'BasicSelect',
-  'BasicDropdown',
-] as const
+export const CustomFieldTypeMapping = defineEnumMapping<CustomFieldType>({
+  BASIC_INPUT: { human: 'Einzeiliges Textfeld', description: 'z.B. für Vornamen oder Hobby' },
+  BASIC_TEXT_AREA: { human: 'Mehrzeiliges Textfeld', description: 'z.B. für Bemerkungen' },
+  BASIC_EDITOR: { human: 'Editor', description: 'z.B. für längere Texte mit Formatierungen' },
+  BASIC_INPUT_NUMBER: { human: 'Einzeilges Zahlenfeld', description: 'z.B. für Schuhgröße oder Telefonnummer' },
+  BASIC_SWITCH: { human: 'Switch', description: 'z.B. für einfache Ja-Nein-Fragen' },
+  BASIC_CHECKBOX: { human: 'Checkbox', description: 'z.B. für einfache Ja-Nein-Fragen' },
+  BASIC_RADIO: { human: 'Radio', description: 'z.B. für eine Auswahl aus mehreren Optionen' },
+  BASIC_SELECT: { human: 'Select', description: 'z.B. für eine Auswahl aus mehreren Optionen' },
+  BASIC_DROPDOWN: { human: 'Dropdown', description: 'z.B. für eine Auswahl aus mehreren Optionen' },
+})
 
-export type CustomFieldType = (typeof CustomFieldNames)[number]
-
-export interface CustomField {
-  name: CustomFieldType
-  label: string
-  hasOptions?: boolean
-}
-
-export const CustomFields: CustomField[] = [
-  { name: 'BasicInput', label: 'Textfeld' },
-  { name: 'BasicTextArea', label: 'Großes Textfeld' },
-  { name: 'BasicEditor', label: 'Editor' },
-  { name: 'BasicSwitch', label: 'Schalter' },
-  { name: 'BasicCheckbox', label: 'Checkbox' },
-  { name: 'BasicInputNumber', label: 'Zahlenfeld' },
-  { name: 'BasicRadio', label: 'Radio Buttons', hasOptions: true },
-  { name: 'BasicSelect', label: 'Select', hasOptions: true },
-  { name: 'BasicDropdown', label: 'Dropdown', hasOptions: true },
-]
-
-export const CustomFieldsMapping = CustomFields.map((field) => ({
-  label: field.label,
-  value: field.name,
-  disabled: false,
-}))
+export { type CustomFieldType }
 
 export const CustomFieldPositionMapping = defineEnumMapping<CustomFieldPosition>({
   PUBLIC_ANMELDUNG: { human: 'Öffentliche Anmeldung', description: 'Lorem Ipsum' },
@@ -49,4 +25,4 @@ export const CustomFieldPositionMapping = defineEnumMapping<CustomFieldPosition>
   INTERN_AUSSCHREIBUNG: { human: 'Interne Ausschreibung', description: 'Lorem Ipsum' },
 })
 
-export { CustomFieldPosition }
+export { type CustomFieldPosition }

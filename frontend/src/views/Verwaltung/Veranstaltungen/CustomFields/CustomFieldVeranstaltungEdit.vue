@@ -26,7 +26,7 @@ watch(field, () => {
     name: field.value?.name ?? '',
     description: field.value?.description ?? '',
     required: field.value?.required ?? false,
-    type: (field.value?.type ?? 'BasicInput') as CustomFieldType,
+    type: (field.value?.type ?? 'BASIC_INPUT') as CustomFieldType,
     options: field.value?.options ?? [],
     positions: field.value?.positions ?? [],
   }
@@ -36,7 +36,7 @@ const form = ref<ICustomFieldData>({
   name: '',
   description: '',
   required: false,
-  type: 'BasicInput',
+  type: 'BASIC_INPUT' as CustomFieldType,
   options: [],
   positions: [],
 })

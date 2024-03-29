@@ -1,17 +1,19 @@
 <script setup lang="ts">
+import { MenuItem } from '@headlessui/vue'
 import { ChevronDownIcon, ChevronUpIcon, TrashIcon } from '@heroicons/vue/24/outline'
 import { computed, ref } from 'vue'
 
+import BasicDropdown from '@/components/BasicInputs/BasicDropdown.vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
-import BasicSelect, { type Option } from '@/components/BasicInputs/BasicSelect.vue'
+import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
 import BasicSwitch from '@/components/BasicInputs/BasicSwitch.vue'
 import Button from '@/components/UIComponents/Button.vue'
+import { getCustomFieldIcon } from '@/helpers/getCustomFieldIcon'
 import {
   CustomFieldPositionMapping,
-  CustomFields,
-  CustomFieldsMapping,
+  CustomFieldTypeMapping,
   getEnumOptions,
-  CustomFieldPosition,
+  type CustomFieldPosition,
   type CustomFieldType,
 } from '@codeanker/api'
 
@@ -44,10 +46,18 @@ const model = computed({
   },
 })
 
-const typeOptions = ref<Option[]>(CustomFieldsMapping)
+const typeOptions = getEnumOptions(CustomFieldTypeMapping)
 const positionOptions = ref(getEnumOptions(CustomFieldPositionMapping))
 
-const field = computed(() => CustomFields.find((f) => f.name === model.value.type))
+const getFieldTypeHuman = computed(() => (fieldType) => {
+  return typeOptions.find((m) => m.value === fieldType)?.label
+})
+
+const hasOptions = computed(
+  () =>
+    model.value.type === 'BASIC_RADIO' || model.value.type === 'BASIC_SELECT' || model.value.type === 'BASIC_DROPDOWN'
+)
+// const field = computed(() => CustomFieldType.find((f) => f.name === model.value.type))
 
 function moveOptionUp(index: number) {
   const rows = [model.value.options[index - 1], model.value.options[index]]
@@ -68,17 +78,71 @@ function moveOptionDown(index: number) {
       placeholder="Name für das Feld"
       required
     />
-    <BasicSelect
-      v-model="model.type"
-      label="Typ"
-      required
-      :options="typeOptions"
-    />
+    <BasicDropdown
+      :right="false"
+      :append="true"
+      label="Feldtyp"
+      button-style="w-full min-w-52 text-left"
+    >
+      <template #buttonContent>
+        <button
+          type="button"
+          class="input-style w-full block text-left flex justify-between items-center hover:cursor-pointer"
+        >
+          <slot>
+            <div class="flex space-x-2 items-center">
+              <img
+                :src="getCustomFieldIcon(model.type)"
+                class="h-5 w-5 mr-1"
+              />
+              <span v-if="getFieldTypeHuman(model.type)">{{ getFieldTypeHuman(model.type) }}</span>
+              <span
+                v-else
+                class="text-gray-500"
+                >Bitte wählen</span
+              >
+            </div>
+          </slot>
+          <ChevronDownIcon class="h-5 text-gray-500" />
+        </button>
+      </template>
+      <template #dropdownContent>
+        <MenuItem
+          as="div"
+          class=""
+        >
+          <button
+            v-for="typeOption in typeOptions"
+            :key="typeOption.value"
+            type="button"
+            class="hover:bg-primary-50 dark:hover:bg-slate-950 rounded items-center flex py-2 px-4 w-full space-x-2 text-left"
+            @click="model.type = typeOption.value"
+          >
+            <img
+              :src="getCustomFieldIcon(typeOption.value)"
+              class="h-5 w-5 mr-1"
+            />
+            <div>
+              <div>{{ typeOption.label }}</div>
+              <div class="text-xs text-gray-500">{{ typeOption.description }}</div>
+            </div>
+          </button>
+        </MenuItem>
+      </template>
+    </BasicDropdown>
     <BasicInput
       v-model="model.description"
       class="col-span-full"
       label="Beschreibung"
       placeholder="Eine Beschreibung oder ein Hilfstext"
+    />
+    <BasicSelect
+      v-model="model.positions"
+      class="col-span-full"
+      label="Positionen"
+      :options="positionOptions"
+      multiple
+      required
     />
     <div>
       <label
@@ -94,16 +158,9 @@ function moveOptionDown(index: number) {
         class="mt-2"
       />
     </div>
-    <BasicSelect
-      v-model="model.positions"
-      label="Positionen"
-      :options="positionOptions"
-      multiple
-      required
-    />
 
     <div
-      v-if="field?.hasOptions"
+      v-if="hasOptions"
       class="col-span-full flex flex-col gap-5"
     >
       <hr class="mt-5" />
@@ -120,7 +177,7 @@ function moveOptionDown(index: number) {
 
       <div
         v-for="(option, index) in model.options"
-        :key="option"
+        :key="index"
         class="flex flex-row items-end gap-x-5"
       >
         <div class="flex flex-col gap-y-2">
@@ -145,7 +202,7 @@ function moveOptionDown(index: number) {
         </div>
         <BasicInput
           v-model="model.options[index]"
-          :label="`Option #${index + 1}`"
+          :label="`#${index + 1} Option`"
           placeholder="Lorem Ipsum"
           class="flex-1"
           required

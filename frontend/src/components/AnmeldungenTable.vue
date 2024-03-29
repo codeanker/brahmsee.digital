@@ -364,6 +364,7 @@ if (loggedInAccount.value?.role === 'ADMIN') {
       <div class="p-4">
         <Tabs
           content-space="4"
+          :default-index="0"
           :tabs="tabs"
         >
           <Tab>
@@ -413,6 +414,11 @@ if (loggedInAccount.value?.role === 'ADMIN') {
                   </dd>
                 </div>
               </dl>
+              <div class="my-10">
+                <div class="text-lg font-semibold">Weitere Felder</div>
+                <p class="max-w-2xl text-sm">Eigene Feld Einstellungen</p>
+              </div>
+              <pre> {{ currentAnmeldung?.customFieldValues }}</pre>
             </div>
           </Tab>
           <Tab>
