@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { CheckIcon, CubeTransparentIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 
 import Loading from './UIComponents/Loading.vue'
 
 import { apiClient } from '@/api'
-import { CustomFieldPositionMapping, CustomFieldsMapping, getEnumOptions } from '@codeanker/api'
+import { CustomFieldPositionMapping, CustomFieldTypeMapping, getEnumOptions } from '@codeanker/api'
 
 const props = defineProps<{
   veranstaltungId: number
@@ -28,9 +29,9 @@ const router = useRouter()
 
 type Field = (typeof fields.value)[number]
 
-function formatType(field: Field) {
-  return CustomFieldsMapping.find((m) => m.value === field.type)?.label
-}
+const getFieldTypeHuman = computed(() => (field: Field) => {
+  return getEnumOptions(CustomFieldTypeMapping).find((m) => m.value === field.type)?.label
+})
 
 function formatPositions(field: Field) {
   return getEnumOptions(CustomFieldPositionMapping)
@@ -88,11 +89,16 @@ function formatPositions(field: Field) {
           "
         >
           <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-            <p>{{ field.name }}</p>
-            <p class="text-xs text-gray-500">{{ field.description }}</p>
+            <div>{{ field.name }}</div>
+            <div
+              v-if="field.description"
+              class="text-xs text-gray-500"
+            >
+              {{ field.description }}
+            </div>
           </td>
           <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-            <div>{{ formatType(field) }}</div>
+            <div>{{ getFieldTypeHuman(field) }}</div>
           </td>
           <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
             <CheckIcon
@@ -104,7 +110,7 @@ function formatPositions(field: Field) {
               class="text-red-600 size-5"
             />
           </td>
-          <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
+          <td class="py-5 pl-4 pr-3 text-sm">
             <div>{{ formatPositions(field) }}</div>
           </td>
         </tr>
