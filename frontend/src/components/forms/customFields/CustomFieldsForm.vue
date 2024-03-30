@@ -95,12 +95,7 @@ function moveOptionDown(index: number) {
                 :src="getCustomFieldIcon(model.type)"
                 class="h-5 w-5 mr-1"
               />
-              <span v-if="getFieldTypeHuman(model.type)">{{ getFieldTypeHuman(model.type) }}</span>
-              <span
-                v-else
-                class="text-gray-500"
-                >Bitte wählen</span
-              >
+              <span>{{ getFieldTypeHuman(model.type) ?? 'Bitte wählen' }}</span>
             </div>
           </slot>
           <ChevronDownIcon class="h-5 text-gray-500" />
