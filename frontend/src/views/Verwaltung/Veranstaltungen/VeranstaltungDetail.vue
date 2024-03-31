@@ -4,7 +4,7 @@ import {
   DocumentIcon,
   MegaphoneIcon,
   UsersIcon,
-  AdjustmentsHorizontalIcon,
+  SquaresPlusIcon,
   WalletIcon,
 } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
@@ -68,7 +68,7 @@ const tabs = computed(() => {
     { name: 'Dokumente', icon: DocumentIcon },
     { name: 'Bedingungen', icon: ClipboardDocumentListIcon },
     { name: 'Unterveranstaltungen', icon: MegaphoneIcon },
-    { name: 'Felder', icon: AdjustmentsHorizontalIcon },
+    { name: 'Felder', icon: SquaresPlusIcon },
   ]
   return tabs
 })

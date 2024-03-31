@@ -6,6 +6,7 @@ import { customFieldsList } from './customFieldsList'
 import { customFieldsVeranstaltungCreate } from './customFieldsVeranstaltungCreate'
 import { customFieldsVeranstaltungDelete } from './customFieldsVeranstaltungDelete'
 import { customFieldsVeranstaltungUpdate } from './customFieldsVeranstaltungUpdate'
+import { customFieldValuesUpdate } from './customFieldValuesUpdate'
 // Import Routes here - do not delete this line
 
 export const customFieldsRouter = mergeRouters(
@@ -14,5 +15,6 @@ export const customFieldsRouter = mergeRouters(
   customFieldsVeranstaltungCreate.router,
   customFieldsVeranstaltungUpdate.router,
   customFieldsVeranstaltungDelete.router,
+  customFieldValuesUpdate.router,
   // Add Routes here - do not delete this line
 )

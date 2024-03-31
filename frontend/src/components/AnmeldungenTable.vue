@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CheckCircleIcon, CodeBracketIcon, TicketIcon, UserIcon } from '@heroicons/vue/24/outline'
+import { CheckCircleIcon, CodeBracketIcon, SquaresPlusIcon, TicketIcon, UserIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 import { computed, ref } from 'vue'
 
@@ -7,7 +7,7 @@ import BasicGrid from './BasicGrid.vue'
 
 import { apiClient } from '@/api'
 import AnmeldungStatusSelect from '@/components/AnmeldungStatusSelect.vue'
-import CustomFieldsForm from '@/components/customFields/CustomFieldsForm.vue'
+import CustomFieldsForm from '@/components/CustomFields/CustomFieldsForm.vue'
 import FormPersonGeneral, { type FormPersonGeneralSubmit } from '@/components/forms/person/FormPersonGeneral.vue'
 import Drawer from '@/components/LayoutComponents/Drawer.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
@@ -126,9 +126,6 @@ const {
   { immediate: false }
 )
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const customFieldValues = ref<Record<number, any>>({})
-
 const { execute: update } = useAsyncState(
   async (anmeldung: FormPersonGeneralSubmit) => {
     const nahrungsmittelIntoleranzen = Object.entries(anmeldung.essgewohnheiten.intoleranzen)
@@ -159,10 +156,6 @@ const { execute: update } = useAsyncState(
           weitereIntoleranzen: anmeldung.essgewohnheiten.weitereIntoleranzen,
           konfektionsgroesse: anmeldung.tshirt.groesse,
         },
-        customFieldValues: Object.entries(customFieldValues.value).map((entry) => ({
-          fieldId: parseInt(entry[0]),
-          value: entry[1],
-        })),
       }
       if (loggedInAccount.value?.role === 'ADMIN') {
         await apiClient.person.verwaltungPatch.mutate(data)
@@ -263,12 +256,20 @@ fetchVisiblePages()
 const tabs = [
   { name: 'Anmeldung', icon: TicketIcon },
   { name: 'Person', icon: UserIcon },
-  // { name: 'Zusatzfelder', icon: SquaresPlusIcon },
+  { name: 'Zusatzfelder', icon: SquaresPlusIcon },
 ]
 
 if (loggedInAccount.value?.role === 'ADMIN') {
   tabs.push({ name: 'Entwickler:in', icon: CodeBracketIcon })
 }
+
+const entityId = computed(() => {
+  return props.unterveranstaltungId || props.veranstaltungId
+})
+
+const entity = computed(() => {
+  return props.unterveranstaltungId ? 'unterveranstaltung' : 'veranstaltung'
+})
 </script>
 
 <template>
@@ -422,10 +423,6 @@ if (loggedInAccount.value?.role === 'ADMIN') {
                   </dd>
                 </div>
               </dl>
-              <div class="my-10">
-                <div class="text-lg font-semibold">Weitere Felder</div>
-                <p class="max-w-2xl text-sm">Eigene Feld Einstellungen</p>
-              </div>
             </div>
           </Tab>
           <Tab>
@@ -436,14 +433,17 @@ if (loggedInAccount.value?.role === 'ADMIN') {
               :person="currentAnmeldung.person"
               :error="undefined"
               @submit="(data) => update(undefined, data)"
-            >
-              CustomFieldsForm
-              <CustomFieldsForm
-                entity="unterveranstaltung"
-                :entity-id="currentAnmeldung?.unterveranstaltung.id"
-                :custom-field-values="currentAnmeldung?.customFieldValues"
-              />
-            </FormPersonGeneral>
+            />
+          </Tab>
+          <Tab>
+            <CustomFieldsForm
+              v-if="currentAnmeldung?.customFieldValues && entityId"
+              class="mt-8"
+              :entity="entity"
+              :entry-id="currentAnmeldung.id"
+              :entity-id="entityId"
+              :custom-field-values="currentAnmeldung?.customFieldValues"
+            />
           </Tab>
           <Tab v-if="loggedInAccount?.role === 'ADMIN'">
             <div class="my-10">
