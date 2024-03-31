@@ -17,6 +17,10 @@ const props = defineProps<{
   entity: 'veranstaltung' | 'unterveranstaltung'
 }>()
 
+const emit = defineEmits<{
+  (event: 'update:success'): void
+}>()
+
 const bindings = toRef(
   props.customFieldValues
     ? props.customFieldValues.reduce(
@@ -51,6 +55,7 @@ const { execute: submit, isLoading: isLoading } = useAsyncState(async () => {
       })),
       anmeldungId: props.entryId as number,
     })
+    emit('update:success')
   }
 }, undefined)
 </script>
