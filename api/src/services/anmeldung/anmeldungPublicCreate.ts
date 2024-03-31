@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 import prisma from '../../prisma'
+import { customFieldValuesCreateMany, defineCustomFieldValues } from '../../types/defineCustomFieldValues'
 import { defineProcedure } from '../../types/defineProcedure'
 import logActivity from '../../util/activity'
 import { sendMail } from '../../util/mail'
@@ -19,12 +20,7 @@ export const anmeldungPublicCreateProcedure = defineProcedure({
       email: z.string().email(),
       comment: z.string().optional(),
     }),
-    customFieldValues: z.array(
-      z.strictObject({
-        fieldId: z.number().int(),
-        value: z.string().or(z.undefined()),
-      })
-    ),
+    customFieldValues: defineCustomFieldValues(),
   }),
   async handler(options) {
     const unterveranstaltung = await prisma.unterveranstaltung.findUniqueOrThrow({
@@ -67,9 +63,7 @@ export const anmeldungPublicCreateProcedure = defineProcedure({
             comment: options.input.data.comment,
             createdAt: new Date(),
             customFieldValues: {
-              createMany: {
-                data: options.input.customFieldValues,
-              },
+              createMany: customFieldValuesCreateMany(options.input.customFieldValues),
             },
           },
         },

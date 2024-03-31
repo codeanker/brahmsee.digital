@@ -7,7 +7,7 @@ import { defineProcedure } from '../../types/defineProcedure'
 export const customFieldsGet = defineProcedure({
   key: 'get',
   method: 'query',
-  protection: { type: 'public' },
+  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN', 'GLIEDERUNG_ADMIN'] },
   inputSchema: z.strictObject({
     id: z.number(),
   }),

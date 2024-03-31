@@ -4,7 +4,7 @@ import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { apiClient } from '@/api'
-import CustomFieldsForm, { type ICustomFieldData } from '@/components/forms/customFields/CustomFieldsForm.vue'
+import CustomFieldsSettingsForm, { type ICustomFieldData } from '@/components/customFields/CustomFieldsSettingsForm.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import router from '@/router'
 import type { CustomFieldType } from '@codeanker/api'
@@ -98,7 +98,7 @@ const {
   <h5>Benutzerdefiniertes Feld erstellen</h5>
 
   <ValidateForm v-if="isReady">
-    <CustomFieldsForm v-model="form" />
+    <CustomFieldsSettingsForm v-model="form" />
   </ValidateForm>
 
   <div class="mt-4 flex gap-4 items-center">

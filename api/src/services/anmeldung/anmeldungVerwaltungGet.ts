@@ -35,17 +35,7 @@ export const anmeldungVerwaltungGetProcedure = defineProcedure({
           select: {
             id: true,
             value: true,
-            field: {
-              select: {
-                id: true,
-                name: true,
-                description: true,
-                required: true,
-                options: true,
-
-                type: true,
-              },
-            },
+            field: true,
           },
         },
         person: {
