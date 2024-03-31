@@ -1,20 +1,10 @@
 <script setup lang="ts">
-import { MenuItem } from '@headlessui/vue'
-import { ChevronDownIcon, ChevronLeftIcon, FaceFrownIcon } from '@heroicons/vue/24/outline'
+import { ChevronLeftIcon, FaceFrownIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { apiClient } from '@/api'
-import BasicCheckbox from '@/components/BasicInputs/BasicCheckbox.vue'
-import BasicDropdown from '@/components/BasicInputs/BasicDropdown.vue'
-import BasicEditor from '@/components/BasicInputs/BasicEditor.vue'
-import BasicInput from '@/components/BasicInputs/BasicInput.vue'
-import BasicInputNumber from '@/components/BasicInputs/BasicInputNumber.vue'
-import BasicRadio from '@/components/BasicInputs/BasicRadio.vue'
-import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
-import BasicSwitch from '@/components/BasicInputs/BasicSwitch.vue'
-import BasicTextArea from '@/components/BasicInputs/BasicTextArea.vue'
 import CustomField from '@/components/CustomFields/CustomField.vue'
 import FormPersonGeneral, { type FormPersonGeneralSubmit } from '@/components/forms/person/FormPersonGeneral.vue'
 import Drawer from '@/components/LayoutComponents/Drawer.vue'
@@ -39,7 +29,7 @@ const { state: customFields } = useAsyncState(async () => {
   }
 
   return apiClient.customFields.list.query({
-    entity: 'ausschreibung',
+    entity: 'unterveranstaltung',
     entityId: unterveranstaltungId.value,
   })
 }, undefined)
@@ -162,94 +152,10 @@ const {
           >
             <div class="flex flex-col gap-y-2">
               <!-- @ToDo in Komponente auslagern-->
-              <CustomField :type="field.type" />
-              <BasicInput
-                v-if="field.type === 'BASIC_INPUT'"
+              <CustomField
                 v-model="customFieldValues[field.id]"
-                :label="field.name"
-                :required="field.required"
+                :field="field"
               />
-              <BasicTextArea
-                v-if="field.type === 'BASIC_TEXT_AREA'"
-                v-model="customFieldValues[field.id]"
-                :label="field.name"
-                :required="field.required"
-              />
-              <BasicEditor
-                v-if="field.type === 'BASIC_EDITOR'"
-                v-model="customFieldValues[field.id]"
-                :label="field.name"
-                :required="field.required"
-              />
-              <BasicSwitch
-                v-if="field.type === 'BASIC_SWITCH'"
-                v-model="customFieldValues[field.id]"
-                :label="field.name"
-                :required="field.required"
-              />
-              <BasicCheckbox
-                v-if="field.type === 'BASIC_CHECKBOX'"
-                v-model="customFieldValues[field.id]"
-                :label="field.name"
-                :required="field.required"
-              />
-              <BasicInputNumber
-                v-if="field.type === 'BASIC_INPUT_NUMBER'"
-                v-model="customFieldValues[field.id]"
-                :label="field.name"
-                :required="field.required"
-              />
-
-              <BasicRadio
-                v-if="field.type === 'BASIC_RADIO'"
-                v-model="customFieldValues[field.id]"
-                :label="field.name"
-                :required="field.required"
-                :options="field.options.map((o) => ({ label: o, value: o }))"
-              />
-              <BasicSelect
-                v-if="field.type === 'BASIC_SELECT'"
-                v-model="customFieldValues[field.id]"
-                :label="field.name"
-                :required="field.required"
-                :options="field.options.map((o) => ({ label: o, value: o }))"
-              />
-              <BasicDropdown
-                v-if="field.type === 'BASIC_DROPDOWN'"
-                :label="field.name"
-                :required="field.required"
-                :right="false"
-                :append="true"
-                class="w-full"
-                button-style="w-full text-left"
-              >
-                <template #buttonContent>
-                  <button
-                    type="button"
-                    class="input-style w-full text-left flex justify-between items-center"
-                  >
-                    <slot>
-                      <div class="flex space-x-2 items-center">
-                        <span>{{ customFieldValues[field.id] ?? 'Bitte auswählen…' }}</span>
-                      </div>
-                    </slot>
-                    <ChevronDownIcon class="h-5 text-gray-500" />
-                  </button>
-                </template>
-                <template #dropdownContent>
-                  <MenuItem as="div">
-                    <button
-                      v-for="status in field.options"
-                      :key="status"
-                      type="button"
-                      class="hover:bg-primary-light rounded items-center flex p-2 w-full space-x-2 text-left"
-                      @click="customFieldValues[field.id] = status"
-                    >
-                      <span>{{ status }}</span>
-                    </button>
-                  </MenuItem>
-                </template>
-              </BasicDropdown>
 
               <p class="text-sm text-gray-500">{{ field.description }}</p>
             </div>

@@ -35,8 +35,6 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"Vue.volar",
-				"Vue.vscode-typescript-vue-plugin",
 				"eamodio.gitlens",
 				"dbaeumer.vscode-eslint",
 				"GitHub.vscode-pull-request-github",

@@ -9,7 +9,7 @@ export const customFieldsList = defineProcedure({
   method: 'query',
   protection: { type: 'public' },
   inputSchema: z.strictObject({
-    entity: z.enum(['veranstaltung', 'ausschreibung']),
+    entity: z.enum(['veranstaltung', 'unterveranstaltung']),
     entityId: z.number(),
   }),
   async handler({ input }) {
@@ -26,7 +26,7 @@ export const customFieldsList = defineProcedure({
       })
 
       fields = veranstaltung.customFields
-    } else if (input.entity === 'ausschreibung') {
+    } else if (input.entity === 'unterveranstaltung') {
       const ausschreibung = await prisma.unterveranstaltung.findUniqueOrThrow({
         where: {
           id: input.entityId,
