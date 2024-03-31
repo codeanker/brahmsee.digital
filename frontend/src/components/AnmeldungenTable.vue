@@ -7,6 +7,7 @@ import BasicGrid from './BasicGrid.vue'
 
 import { apiClient } from '@/api'
 import AnmeldungStatusSelect from '@/components/AnmeldungStatusSelect.vue'
+import CustomFieldsForm from '@/components/customFields/CustomFieldsForm.vue'
 import FormPersonGeneral, { type FormPersonGeneralSubmit } from '@/components/forms/person/FormPersonGeneral.vue'
 import Drawer from '@/components/LayoutComponents/Drawer.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
@@ -125,6 +126,9 @@ const {
   { immediate: false }
 )
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const customFieldValues = ref<Record<number, any>>({})
+
 const { execute: update } = useAsyncState(
   async (anmeldung: FormPersonGeneralSubmit) => {
     const nahrungsmittelIntoleranzen = Object.entries(anmeldung.essgewohnheiten.intoleranzen)
@@ -155,6 +159,10 @@ const { execute: update } = useAsyncState(
           weitereIntoleranzen: anmeldung.essgewohnheiten.weitereIntoleranzen,
           konfektionsgroesse: anmeldung.tshirt.groesse,
         },
+        customFieldValues: Object.entries(customFieldValues.value).map((entry) => ({
+          fieldId: parseInt(entry[0]),
+          value: entry[1],
+        })),
       }
       if (loggedInAccount.value?.role === 'ADMIN') {
         await apiClient.person.verwaltungPatch.mutate(data)
@@ -418,7 +426,6 @@ if (loggedInAccount.value?.role === 'ADMIN') {
                 <div class="text-lg font-semibold">Weitere Felder</div>
                 <p class="max-w-2xl text-sm">Eigene Feld Einstellungen</p>
               </div>
-              <pre> {{ currentAnmeldung?.customFieldValues }}</pre>
             </div>
           </Tab>
           <Tab>
@@ -429,7 +436,14 @@ if (loggedInAccount.value?.role === 'ADMIN') {
               :person="currentAnmeldung.person"
               :error="undefined"
               @submit="(data) => update(undefined, data)"
-            />
+            >
+              CustomFieldsForm
+              <CustomFieldsForm
+                entity="unterveranstaltung"
+                :entity-id="currentAnmeldung?.unterveranstaltung.id"
+                :custom-field-values="currentAnmeldung?.customFieldValues"
+              />
+            </FormPersonGeneral>
           </Tab>
           <Tab v-if="loggedInAccount?.role === 'ADMIN'">
             <div class="my-10">

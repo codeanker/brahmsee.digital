@@ -1,7 +1,8 @@
-import { CustomFieldPosition, CustomFieldType } from '@prisma/client'
+import { CustomFieldPosition, CustomFieldType, type CustomField } from '@prisma/client'
 
 import { defineEnumMapping } from './defineEnumMapping'
 
+export { type CustomField }
 export const CustomFieldTypeMapping = defineEnumMapping<CustomFieldType>({
   BASIC_INPUT: { human: 'Einzeiliges Textfeld', description: 'z.B. für Vornamen oder Hobby' },
   BASIC_TEXT_AREA: { human: 'Mehrzeiliges Textfeld', description: 'z.B. für Bemerkungen' },

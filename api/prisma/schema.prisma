@@ -352,15 +352,13 @@ model CustomField {
   positions             CustomFieldPosition[]
   veranstaltungId       Int?
   unterveranstaltungId  Int?
-  personId              Int?
   veranstaltung         Veranstaltung?      @relation(fields: [veranstaltungId], references: [id], onDelete: Cascade)
   unterveranstaltung    Unterveranstaltung? @relation(fields: [unterveranstaltungId], references: [id], onDelete: Cascade)
-  person                Person?             @relation(fields: [personId], references: [id], onDelete: Cascade)
 }
 
 model CustomFieldValue {
   id           Int @id @default(autoincrement())
-  value        String?
+  value        Json @default("{}")
   fieldId      Int
   field        CustomField @relation(fields: [fieldId], references: [id], onDelete: Cascade)
   anmeldungId  Int?
