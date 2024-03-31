@@ -81,6 +81,7 @@ function moveOptionDown(index: number) {
     <BasicDropdown
       :right="false"
       :append="true"
+      required
       label="Feldtyp"
       button-style="w-full min-w-52 text-left"
     >

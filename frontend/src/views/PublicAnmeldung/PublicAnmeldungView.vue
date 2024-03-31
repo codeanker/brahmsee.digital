@@ -27,7 +27,7 @@ const { state: customFields } = useAsyncState(async () => {
   if (!unterveranstaltung) {
     return undefined
   }
-
+  //@TODO Nur Felder für die Position anzeigen
   return apiClient.customFields.list.query({
     entity: 'unterveranstaltung',
     entityId: unterveranstaltungId.value,
@@ -144,14 +144,13 @@ const {
       >
         <div
           v-if="(customFields?.length ?? 0) > 0"
-          class="grid grid-cols-2"
+          class="grid grid-flow-row gap-5"
         >
           <template
             v-for="field in customFields"
             :key="field.id"
           >
             <div class="flex flex-col gap-y-2">
-              <!-- @ToDo in Komponente auslagern-->
               <CustomField
                 v-model="customFieldValues[field.id]"
                 :field="field"

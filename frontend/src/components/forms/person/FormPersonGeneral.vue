@@ -62,7 +62,7 @@ async function queryGliederungen(searchTerm: string) {
 const stammdatenForm = ref<IStammdaten>({
   firstname: props.person?.firstname ?? '',
   lastname: props.person?.lastname ?? '',
-  birthday: props.person?.birthday ?? new Date(),
+  birthday: props.person?.birthday ?? null,
   gender: props.person?.gender ?? 'MALE',
 })
 

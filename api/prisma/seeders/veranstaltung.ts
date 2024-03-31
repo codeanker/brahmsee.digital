@@ -63,14 +63,7 @@ const createVeranstaltung: Seeder = async (prisma: PrismaClient) => {
       type: 'BASIC_SELECT',
       required: true,
       options: ['Schwimmer:in', 'Teilnehmer:in'],
-      positions: [
-        'PUBLIC_PERSON',
-        'PUBLIC_ANMELDUNG',
-        'INTERN_PERSON',
-        'INTERN_ANMELDUNG',
-        'INTERN_VERANSTALTUNG',
-        'INTERN_AUSSCHREIBUNG',
-      ],
+      positions: ['PUBLIC_ANMELDUNG', 'INTERN_ANMELDUNG'],
       veranstaltungId: veranstaltung.id,
     },
   })

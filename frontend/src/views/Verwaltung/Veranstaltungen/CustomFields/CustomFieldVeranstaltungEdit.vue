@@ -4,7 +4,7 @@ import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { apiClient } from '@/api'
-import CustomFieldsSettingsForm, { type ICustomFieldData } from '@/components/customFields/CustomFieldsSettingsForm.vue'
+import CustomFieldsSettingsForm, { type ICustomFieldData } from '@/components/CustomFields/CustomFieldsSettingsForm.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import router from '@/router'
 import type { CustomFieldType } from '@codeanker/api'
@@ -15,7 +15,7 @@ const route = useRoute()
 const veranstaltungId = computed(() => parseInt(route.params.veranstaltungId as string))
 const fieldId = computed(() => parseInt(route.params.fieldId as string))
 
-const { state: field, isReady } = useAsyncState(async () => {
+const { state: field } = useAsyncState(async () => {
   return apiClient.customFields.get.query({
     id: fieldId.value,
   })
@@ -97,38 +97,37 @@ const {
 <template>
   <h5>Benutzerdefiniertes Feld erstellen</h5>
 
-  <ValidateForm v-if="isReady">
+  <ValidateForm @submit="execute">
     <CustomFieldsSettingsForm v-model="form" />
-  </ValidateForm>
 
-  <div class="mt-4 flex gap-4 items-center">
-    <Button
-      type="submit"
-      color="primary"
-      :disabled="isUpdating || isDeleting"
-      @click="execute"
-    >
-      <span v-if="!isUpdating">Speichern</span>
-      <span v-else>Loading...</span>
-    </Button>
-    <Button
-      type="button"
-      color="warning"
-      :disabled="isUpdating || isDeleting"
-      @click="() => router.back()"
-    >
-      Abbrechen
-    </Button>
-    <div class="flex-1"></div>
-    <Button
-      type="button"
-      color="danger"
-      :disabled="isUpdating || isDeleting"
-      @click="doDelete"
-    >
-      Löschen
-    </Button>
-  </div>
+    <div class="mt-4 flex gap-4 items-center">
+      <Button
+        type="submit"
+        color="primary"
+        :disabled="isUpdating || isDeleting"
+      >
+        <span v-if="!isUpdating">Speichern</span>
+        <span v-else>Loading...</span>
+      </Button>
+      <Button
+        type="button"
+        color="warning"
+        :disabled="isUpdating || isDeleting"
+        @click="() => router.back()"
+      >
+        Abbrechen
+      </Button>
+      <div class="flex-1"></div>
+      <Button
+        type="button"
+        color="danger"
+        :disabled="isUpdating || isDeleting"
+        @click="doDelete"
+      >
+        Löschen
+      </Button>
+    </div>
+  </ValidateForm>
 
   <div class="mt-8">
     <div v-if="validationErrors.length > 0">

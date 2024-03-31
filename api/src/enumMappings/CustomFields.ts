@@ -18,12 +18,8 @@ export const CustomFieldTypeMapping = defineEnumMapping<CustomFieldType>({
 export { type CustomFieldType }
 
 export const CustomFieldPositionMapping = defineEnumMapping<CustomFieldPosition>({
-  PUBLIC_ANMELDUNG: { human: 'Öffentliche Anmeldung', description: 'Lorem Ipsum' },
-  PUBLIC_PERSON: { human: 'Öffentliche Person', description: 'Lorem Ipsum' },
-  INTERN_ANMELDUNG: { human: 'Interne Anmeldung', description: 'Lorem Ipsum' },
-  INTERN_PERSON: { human: 'Interne Person', description: 'Lorem Ipsum' },
-  INTERN_VERANSTALTUNG: { human: 'Interne Veranstaltung', description: 'Lorem Ipsum' },
-  INTERN_AUSSCHREIBUNG: { human: 'Interne Ausschreibung', description: 'Lorem Ipsum' },
+  PUBLIC_ANMELDUNG: { human: 'Öffentliche Anmeldung', description: 'Wird bei der Anmeldung abgefagt' },
+  INTERN_ANMELDUNG: { human: 'Interne Anmeldung', description: 'Wird für Admins in der Verwaltung angezeigt' },
 })
 
 export { type CustomFieldPosition }
