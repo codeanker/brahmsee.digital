@@ -42,12 +42,6 @@ const model = computed({
     :label="field.name"
     :required="field.required"
   />
-  <BasicInput
-    v-if="field.type === 'BASIC_INPUT'"
-    v-model="model"
-    :label="field.name"
-    :required="field.required"
-  />
   <BasicTextArea
     v-if="field.type === 'BASIC_TEXT_AREA'"
     v-model="model"
