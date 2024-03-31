@@ -10,6 +10,7 @@ import AnmeldungStatusSelect from '@/components/AnmeldungStatusSelect.vue'
 import CustomFieldsForm from '@/components/CustomFields/CustomFieldsForm.vue'
 import FormPersonGeneral, { type FormPersonGeneralSubmit } from '@/components/forms/person/FormPersonGeneral.vue'
 import Drawer from '@/components/LayoutComponents/Drawer.vue'
+import Notification from '@/components/LayoutComponents/Notifications.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
@@ -174,7 +175,7 @@ const { execute: update } = useAsyncState(
           },
         })
       }
-
+      showNotification.value = true
       await getSingleAnmeldung()
     }
   },
@@ -270,6 +271,8 @@ const entityId = computed(() => {
 const entity = computed(() => {
   return props.unterveranstaltungId ? 'unterveranstaltung' : 'veranstaltung'
 })
+
+const showNotification = ref(false)
 </script>
 
 <template>
@@ -443,6 +446,7 @@ const entity = computed(() => {
               :entry-id="currentAnmeldung.id"
               :entity-id="entityId"
               :custom-field-values="currentAnmeldung?.customFieldValues"
+              @update:success="showNotification = true"
             />
           </Tab>
           <Tab v-if="loggedInAccount?.role === 'ADMIN'">
@@ -456,6 +460,16 @@ const entity = computed(() => {
       </div>
     </template>
   </Drawer>
+  <Notification
+    v-if="showNotification"
+    :duration="2000"
+    @close="showNotification = false"
+  >
+    <template #title> Erfolgreich gespeichert </template>
+    <template #content>
+      <p class="mt-1 text-sm text-gray-500">Deine Änderungen wurden erfolgreich gespeichert.</p>
+    </template>
+  </Notification>
 </template>
 
 <style lang="scss" scoped>
