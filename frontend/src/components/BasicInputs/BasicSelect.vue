@@ -26,23 +26,6 @@ const emit = defineEmits<{
   (event: 'update:modelValue', eventArgs: string | number | undefined): void
 }>()
 const { model, errorMessage } = useValidationModel(props, emit)
-
-function formatValue(modelValue: unknown) {
-  if (!modelValue) {
-    return props.placeholder || 'Bitte wählen...'
-  }
-  if (Array.isArray(modelValue)) {
-    if (modelValue.length === 0) {
-      return props.placeholder || 'Bitte wählen...'
-    }
-    return props.options
-      .filter((o) => modelValue.includes(o.value))
-      .map((o) => o.label)
-      .join(', ')
-  }
-
-  return modelValue
-}
 </script>
 
 <template>
@@ -68,7 +51,7 @@ function formatValue(modelValue: unknown) {
     >
       <ListboxButton class="input-style flex items-center justify-between">
         <span class="text-start">
-          {{ formatValue(modelValue) }}
+          {{ options.find((option) => option.value === modelValue)?.label || placeholder || 'Bitte wählen...' }}
         </span>
         <ChevronDownIcon class="h-5 text-gray-500" />
       </ListboxButton>
