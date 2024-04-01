@@ -31,6 +31,13 @@ export const anmeldungGliederungGetProcedure = defineProcedure({
         tshirtBestellt: true,
         createdAt: true,
         comment: true,
+        customFieldValues: {
+          select: {
+            id: true,
+            value: true,
+            field: true,
+          },
+        },
         person: {
           select: {
             id: true,

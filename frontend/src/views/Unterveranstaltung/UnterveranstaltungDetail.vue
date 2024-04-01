@@ -3,9 +3,11 @@ import {
   ClipboardDocumentListIcon,
   CodeBracketIcon,
   DocumentDuplicateIcon,
+  DocumentIcon,
   MegaphoneIcon,
   RocketLaunchIcon,
   UserGroupIcon,
+  UsersIcon,
 } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 import { computed } from 'vue'
@@ -13,6 +15,7 @@ import { useRoute } from 'vue-router'
 
 import { apiClient } from '@/api'
 import AnmeldungenTable from '@/components/AnmeldungenTable.vue'
+import FilesExport from '@/components/FilesExport.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import InfoList from '@/components/UIComponents/InfoList.vue'
@@ -81,6 +84,7 @@ const tabs = computed(() => {
   let tabs = [
     { name: 'Ausschreibung', icon: MegaphoneIcon },
     { name: 'Anmeldungen', icon: UserGroupIcon, count: countAnmeldungen.value?.total },
+    { name: 'Dokumente', icon: DocumentIcon },
     { name: 'Bedingungen', icon: ClipboardDocumentListIcon },
   ]
   if (loggedInAccount.value?.role === 'ADMIN') {
@@ -99,6 +103,32 @@ const publicLink = computed(() => {
 function copyLink() {
   navigator.clipboard.writeText(publicLink.value)
 }
+
+//** Export Documents */
+
+const getJWT = () => {
+  return localStorage.getItem('jwt')
+}
+const exportParams = `jwt=${getJWT()}&unterveranstaltungId=${route.params.unterveranstaltungId}`
+
+const files = [
+  {
+    name: 'Teilnehmendenliste',
+    icon: UsersIcon,
+    href: `/api/export/sheet/teilnehmendenliste?${exportParams}`,
+    description: 'Liste aller Teilnehmenden',
+    bgColor: 'bg-blue-600',
+    hoverColor: 'hover:text-blue-700',
+  },
+  {
+    name: 'Verpflegung',
+    initial: 'VP',
+    href: `/api/export/sheet/verpflegung?${exportParams}`,
+    description: 'Übersicht der Verpflegungswünsche',
+    bgColor: 'bg-primary-600',
+    hoverColor: 'hover:text-primary-700',
+  },
+]
 </script>
 
 <template>
@@ -173,6 +203,13 @@ function copyLink() {
           v-if="unterveranstaltung"
           :unterveranstaltung-id="unterveranstaltung?.id"
         />
+      </Tab>
+      <Tab>
+        <div class="my-10">
+          <div class="text-lg font-semibold">Dokumente</div>
+          <p class="max-w-2xl text-sm text-gray-500">Exports von Daten zu dieser Veranstaltung</p>
+        </div>
+        <FilesExport :files="files" />
       </Tab>
       <Tab>
         <div class="my-10">

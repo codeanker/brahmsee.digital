@@ -56,6 +56,18 @@ const createVeranstaltung: Seeder = async (prisma: PrismaClient) => {
     },
   })
 
+  await prisma.customField.create({
+    data: {
+      name: 'Rolle',
+      description: 'Dieses Feld wurde duch den Seeder erstellt',
+      type: 'BASIC_SELECT',
+      required: true,
+      options: ['Schwimmer:in', 'Teilnehmer:in'],
+      positions: ['PUBLIC_ANMELDUNG', 'INTERN_ANMELDUNG'],
+      veranstaltungId: veranstaltung.id,
+    },
+  })
+
   await logActivity({
     type: 'CREATE',
     subjectType: 'veranstaltung',

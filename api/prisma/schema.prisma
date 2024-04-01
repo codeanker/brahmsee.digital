@@ -216,6 +216,7 @@ model Anmeldung {
   tshirtBestellt       Boolean            @default(false)
   comment              String?
   createdAt            DateTime           @default(now())
+  customFieldValues    CustomFieldValue[]
 }
 
 model Address {
@@ -256,6 +257,7 @@ model Veranstaltung {
   zielgruppe                  String?
   hostnameId                  Int?
   hostname                    Hostname?           @relation(fields: [hostnameId], references: [id])
+  customFields                CustomField[]
 }
 
 enum MahlzeitType {
@@ -292,6 +294,7 @@ model Unterveranstaltung {
   beschreibung     String?
   bedingungen      String?
   type             UnterveranstaltungType @default(GLIEDERUNG)
+  customFields     CustomField[]
 }
 
 enum ActivityType {
@@ -312,4 +315,46 @@ model Activity {
   causerId         Int?
   causer           Account? @relation(fields: [causerId], references: [id], onDelete: SetNull)
   metadata         Json     @default("{}")
+}
+
+enum CustomFieldType {
+  BASIC_INPUT
+  BASIC_TEXT_AREA
+  BASIC_EDITOR
+  BASIC_SWITCH
+  BASIC_CHECKBOX
+  BASIC_INPUT_NUMBER
+  BASIC_RADIO
+  BASIC_SELECT
+  BASIC_DROPDOWN
+}
+
+enum CustomFieldPosition {
+  PUBLIC_ANMELDUNG
+  INTERN_ANMELDUNG
+}
+
+model CustomField {
+  id                    Int @id @default(autoincrement())
+  name                  String
+  description           String?
+  type                  CustomFieldType
+  required              Boolean @default(false)
+  options               String[]
+  role                  Role[]
+  values                CustomFieldValue[]
+  positions             CustomFieldPosition[]
+  veranstaltungId       Int?
+  unterveranstaltungId  Int?
+  veranstaltung         Veranstaltung?      @relation(fields: [veranstaltungId], references: [id], onDelete: Cascade)
+  unterveranstaltung    Unterveranstaltung? @relation(fields: [unterveranstaltungId], references: [id], onDelete: Cascade)
+}
+
+model CustomFieldValue {
+  id           Int @id @default(autoincrement())
+  value        Json @default("{}")
+  fieldId      Int
+  field        CustomField @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+  anmeldungId  Int?
+  anmeldung    Anmeldung? @relation(fields: [anmeldungId], references: [id], onDelete: Cascade)
 }

@@ -62,7 +62,7 @@ async function queryGliederungen(searchTerm: string) {
 const stammdatenForm = ref<IStammdaten>({
   firstname: props.person?.firstname ?? '',
   lastname: props.person?.lastname ?? '',
-  birthday: props.person?.birthday ?? new Date(),
+  birthday: props.person?.birthday ?? null,
   gender: props.person?.gender ?? 'MALE',
 })
 
@@ -81,6 +81,19 @@ const contactForm = ref<IContact>({
 const notfallKontakteForm = ref<INotfallKontakte>({
   personen: props.person?.notfallkontakte ?? [],
 })
+
+/**
+ * Format the notfallKontakte to the correct format
+ */
+const formatNotfallKontakte = (notfallKontakte: INotfallKontakte) => {
+  const personen = notfallKontakte.personen.map((person) => ({
+    firstname: person.firstname,
+    lastname: person.lastname,
+    telefon: person.telefon,
+    istErziehungsberechtigt: person.istErziehungsberechtigt ?? false,
+  }))
+  return { personen }
+}
 
 const essgewohnheitenForm = ref<IEssgewohnheiten>({
   essgewohnheit: props.person?.essgewohnheit ?? 'VEGETARISCH',
@@ -112,7 +125,7 @@ const submit = () => {
     address: addressForm.value,
     contact: contactForm.value,
     essgewohnheiten: essgewohnheitenForm.value,
-    notfallKontakte: notfallKontakteForm.value,
+    notfallKontakte: formatNotfallKontakte(notfallKontakteForm.value),
     tshirt: tshirtForm.value,
     comment: comment.value,
   })
@@ -158,6 +171,8 @@ const submit = () => {
       ></BasicTextArea>
       <hr class="my-5" />
     </template>
+
+    <slot></slot>
 
     <template v-if="isPublicAnmeldung">
       <template v-if="showTshirt">

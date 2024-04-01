@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CheckCircleIcon, CodeBracketIcon, TicketIcon, UserIcon } from '@heroicons/vue/24/outline'
+import { CheckCircleIcon, CodeBracketIcon, SquaresPlusIcon, TicketIcon, UserIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 import { computed, ref } from 'vue'
 
@@ -7,8 +7,10 @@ import BasicGrid from './BasicGrid.vue'
 
 import { apiClient } from '@/api'
 import AnmeldungStatusSelect from '@/components/AnmeldungStatusSelect.vue'
+import CustomFieldsForm from '@/components/CustomFields/CustomFieldsForm.vue'
 import FormPersonGeneral, { type FormPersonGeneralSubmit } from '@/components/forms/person/FormPersonGeneral.vue'
 import Drawer from '@/components/LayoutComponents/Drawer.vue'
+import Notification from '@/components/LayoutComponents/Notifications.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
@@ -173,7 +175,7 @@ const { execute: update } = useAsyncState(
           },
         })
       }
-
+      showNotification.value = true
       await getSingleAnmeldung()
     }
   },
@@ -255,12 +257,22 @@ fetchVisiblePages()
 const tabs = [
   { name: 'Anmeldung', icon: TicketIcon },
   { name: 'Person', icon: UserIcon },
-  // { name: 'Zusatzfelder', icon: SquaresPlusIcon },
+  { name: 'Zusatzfelder', icon: SquaresPlusIcon },
 ]
 
 if (loggedInAccount.value?.role === 'ADMIN') {
   tabs.push({ name: 'Entwickler:in', icon: CodeBracketIcon })
 }
+
+const entityId = computed(() => {
+  return props.unterveranstaltungId || props.veranstaltungId
+})
+
+const entity = computed(() => {
+  return props.unterveranstaltungId ? 'unterveranstaltung' : 'veranstaltung'
+})
+
+const showNotification = ref(false)
 </script>
 
 <template>
@@ -364,6 +376,7 @@ if (loggedInAccount.value?.role === 'ADMIN') {
       <div class="p-4">
         <Tabs
           content-space="4"
+          :default-index="0"
           :tabs="tabs"
         >
           <Tab>
@@ -409,7 +422,7 @@ if (loggedInAccount.value?.role === 'ADMIN') {
                 <div class="sm:flex sm:px-6 sm:py-5">
                   <dt class="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0 lg:w-48">Angemeldet am</dt>
                   <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:ml-6 sm:mt-0 whitespace-pre-line">
-                    {{ dayjs(currentAnmeldung?.createdAt).format('DD.MM.YYYY hh:mm') }}
+                    {{ dayjs(currentAnmeldung?.createdAt).format('DD.MM.YYYY HH:mm') }}
                   </dd>
                 </div>
               </dl>
@@ -425,6 +438,17 @@ if (loggedInAccount.value?.role === 'ADMIN') {
               @submit="(data) => update(undefined, data)"
             />
           </Tab>
+          <Tab>
+            <CustomFieldsForm
+              v-if="currentAnmeldung?.customFieldValues && entityId"
+              class="mt-8"
+              :entity="entity"
+              :entry-id="currentAnmeldung.id"
+              :entity-id="entityId"
+              :custom-field-values="currentAnmeldung?.customFieldValues"
+              @update:success="showNotification = true"
+            />
+          </Tab>
           <Tab v-if="loggedInAccount?.role === 'ADMIN'">
             <div class="my-10">
               <div class="text-lg font-semibold">Entwickler:innen</div>
@@ -436,6 +460,16 @@ if (loggedInAccount.value?.role === 'ADMIN') {
       </div>
     </template>
   </Drawer>
+  <Notification
+    v-if="showNotification"
+    :duration="2000"
+    @close="showNotification = false"
+  >
+    <template #title> Erfolgreich gespeichert </template>
+    <template #content>
+      <p class="mt-1 text-sm text-gray-500">Deine Änderungen wurden erfolgreich gespeichert.</p>
+    </template>
+  </Notification>
 </template>
 
 <style lang="scss" scoped>

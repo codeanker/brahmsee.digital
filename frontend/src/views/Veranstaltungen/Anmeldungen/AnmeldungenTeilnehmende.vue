@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { useVeranstaltung } from '../../../composables/useVeranstaltung'
@@ -7,7 +8,7 @@ import AnmeldungenTable from '@/components/AnmeldungenTable.vue'
 
 const { veranstaltung } = useVeranstaltung()
 const route = useRoute()
-const veranstaltungId = Number(route.params.veranstaltungId)
+const veranstaltungId = computed(() => Number(route.params.veranstaltungId))
 </script>
 
 <template>
@@ -19,7 +20,6 @@ const veranstaltungId = Number(route.params.veranstaltungId)
       </p>
     </div>
   </div>
-
   <AnmeldungenTable
     v-if="veranstaltung"
     :veranstaltung-id="veranstaltungId"

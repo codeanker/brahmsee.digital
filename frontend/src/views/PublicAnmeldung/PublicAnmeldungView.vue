@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ChevronLeftIcon, FaceFrownIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { apiClient } from '@/api'
+import CustomField from '@/components/CustomFields/CustomField.vue'
 import FormPersonGeneral, { type FormPersonGeneralSubmit } from '@/components/forms/person/FormPersonGeneral.vue'
 import Drawer from '@/components/LayoutComponents/Drawer.vue'
 import PublicFooter from '@/components/LayoutComponents/PublicFooter.vue'
@@ -16,9 +17,25 @@ import { type NahrungsmittelIntoleranz } from '@codeanker/api'
 const router = useRouter()
 const route = useRoute()
 
+const unterveranstaltungId = computed(() => parseInt(route.params.ausschreibungId as string))
+
 const { state: unterveranstaltung, isLoading } = useAsyncState(async () => {
-  return apiClient.unterveranstaltung.publicGet.query({ id: Number(route.params.ausschreibungId) })
+  return apiClient.unterveranstaltung.publicGet.query({ id: unterveranstaltungId.value })
 }, undefined)
+
+const { state: customFields } = useAsyncState(async () => {
+  if (!unterveranstaltung) {
+    return undefined
+  }
+  //@TODO Nur Felder für die Position anzeigen
+  return apiClient.customFields.list.query({
+    entity: 'unterveranstaltung',
+    entityId: unterveranstaltungId.value,
+  })
+}, undefined)
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const customFieldValues = ref<Record<number, any>>({})
 
 const showBedingungen = ref(false)
 
@@ -59,6 +76,10 @@ const {
         konfektionsgroesse: anmeldung.tshirt.groesse,
         comment: anmeldung.comment,
       },
+      customFieldValues: Object.entries(customFieldValues.value).map((entry) => ({
+        fieldId: parseInt(entry[0]),
+        value: entry[1],
+      })),
     })
     router.push('/ausschreibung/' + route.params.ausschreibungId + '/anmeldung/result')
   },
@@ -110,6 +131,7 @@ const {
       </Button>
       <div class="text-3xl font-medium">Anmeldung</div>
       <div class="mb-5">{{ unterveranstaltung?.veranstaltung.name }}</div>
+
       <!-- Form -->
       <FormPersonGeneral
         :is-loading="isLoadingCreate"
@@ -119,7 +141,30 @@ const {
         :show-tshirt="unterveranstaltung?.veranstaltung?.hostname?.hostname !== 'landes.digital'"
         @submit="(value) => createAnmeldung(undefined, value)"
         @show-terms="showBedingungen = true"
-      />
+      >
+        <div
+          v-if="(customFields?.length ?? 0) > 0"
+          class="grid grid-flow-row gap-5"
+        >
+          <template
+            v-for="field in customFields"
+            :key="field.id"
+          >
+            <div class="flex flex-col gap-y-2">
+              <CustomField
+                v-model="customFieldValues[field.id]"
+                :field="field"
+              />
+
+              <p class="text-sm text-gray-500">{{ field.description }}</p>
+            </div>
+          </template>
+        </div>
+        <hr
+          v-if="(customFields?.length ?? 0) > 0"
+          class="my-5"
+        />
+      </FormPersonGeneral>
       <PublicFooter />
     </div>
     <div
