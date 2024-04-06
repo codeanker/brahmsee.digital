@@ -80,6 +80,7 @@ export async function veranstaltungTeilnehmendenliste(ctx) {
           email: true,
           telefon: true,
           essgewohnheit: true,
+          konfektionsgroesse: true,
           gliederung: {
             select: {
               id: true,
@@ -118,6 +119,7 @@ export async function veranstaltungTeilnehmendenliste(ctx) {
       ['Email']: anmeldung.person.email,
       ['Telefon']: anmeldung.person.telefon,
       ['T-Shirt']: anmeldung.tshirtBestellt,
+      ['Konfektionsgröße']: anmeldung.person.konfektionsgroesse,
       ['Essgewohnheit']: anmeldung.person.essgewohnheit,
       ['Anmeldedatum']: anmeldung.createdAt,
     }
