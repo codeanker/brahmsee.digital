@@ -3,6 +3,7 @@ import { CheckCircleIcon, CodeBracketIcon, SquaresPlusIcon, TicketIcon, UserIcon
 import { useAsyncState } from '@vueuse/core'
 import { computed, ref } from 'vue'
 
+import AnmeldungTshirtSelect from './AnmeldungTshirtSelect.vue'
 import BasicGrid from './BasicGrid.vue'
 
 import { apiClient } from '@/api'
@@ -403,10 +404,12 @@ const showNotification = ref(false)
                 <div class="sm:flex sm:px-6 sm:py-5">
                   <dt class="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0 lg:w-48">T-Shirt</dt>
                   <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:ml-6 sm:mt-0 whitespace-pre-line">
-                    <template v-if="currentAnmeldung?.tshirtBestellt">
-                      {{ getKonfektionsgroesseHuman(currentAnmeldung.person.konfektionsgroesse) }}
-                    </template>
-                    <template v-if="!currentAnmeldung?.tshirtBestellt"> - </template>
+                    <AnmeldungTshirtSelect
+                      v-if="currentAnmeldung"
+                      :anmeldung="currentAnmeldung"
+                      :person="currentAnmeldung?.person"
+                      @changed="getSingleAnmeldung"
+                    />
                   </dd>
                 </div>
 
