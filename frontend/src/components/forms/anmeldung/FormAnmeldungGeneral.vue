@@ -50,6 +50,7 @@ const { state: anmeldungenPerson } = useAsyncState(
           {{ dayjs(anmeldung.createdAt).format('hh:mm') }}</span
         >
       </div>
+      <div v-if="anmeldung.tshirtBestellt">T-Shirt Größe {{ anmeldung.person.konfektionsgroesse }}</div>
       <div>
         <AnmeldungStatusSelect
           :id="anmeldung.id"
