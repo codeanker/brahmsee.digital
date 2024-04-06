@@ -95,6 +95,22 @@ enum QualificationFunk {
   EINSATZFAEHIGKEIT
 }
 
+enum Konfektionsgroesse {
+  JUNIOR_98_104
+  JUNIOR_110_116
+  JUNIOR_122_128
+  JUNIOR_134_140
+  JUNIOR_146_152
+  JUNIOR_158_164
+  XS
+  S
+  M
+  L
+  XL
+  XXL
+  XXXL
+}
+
 model Hostname {
   id        Int      @id @default(autoincrement())
   hostname  String
@@ -131,6 +147,7 @@ model Person {
   qualifikationenErsteHilfe    QualificationErsteHilfe[]
   qualifikationenSanitaeter    QualificationSanitaeter[]
   qualifikationenFunk          QualificationFunk[]
+  konfektionsgroesse           Konfektionsgroesse?
   notfallkontaktIds            Int[]
   notfallkontakte              Notfallkontakt[]
   addressId                    Int?

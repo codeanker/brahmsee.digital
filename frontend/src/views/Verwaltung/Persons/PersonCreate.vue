@@ -32,6 +32,8 @@ const { execute: create } = useAsyncState(
         essgewohnheit: anmeldung.essgewohnheiten.essgewohnheit,
         nahrungsmittelIntoleranzen,
         weitereIntoleranzen: anmeldung.essgewohnheiten.weitereIntoleranzen,
+
+        konfektionsgroesse: anmeldung.tshirt.groesse,
       },
     })
 
