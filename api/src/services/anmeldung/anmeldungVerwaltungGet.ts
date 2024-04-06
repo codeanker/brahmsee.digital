@@ -57,7 +57,6 @@ export const anmeldungVerwaltungGetProcedure = defineProcedure({
             essgewohnheit: true,
             nahrungsmittelIntoleranzen: true,
             weitereIntoleranzen: true,
-            konfektionsgroesse: true,
             notfallkontakte: true,
             address: true,
           },

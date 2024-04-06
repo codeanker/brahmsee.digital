@@ -17,8 +17,6 @@ import { loggedInAccount } from '@/composables/useAuthentication'
 import { getAnmeldungStatusColor } from '@/helpers/getAnmeldungStatusColors'
 import {
   AnmeldungStatusMapping,
-  getEnumOptions,
-  KonfektionsgroesseMapping,
   type AnmeldungStatus,
   type NahrungsmittelIntoleranz,
   type RouterInput,
@@ -155,7 +153,6 @@ const { execute: update } = useAsyncState(
           essgewohnheit: anmeldung.essgewohnheiten.essgewohnheit,
           nahrungsmittelIntoleranzen,
           weitereIntoleranzen: anmeldung.essgewohnheiten.weitereIntoleranzen,
-          konfektionsgroesse: anmeldung.tshirt.groesse,
         },
       }
       if (loggedInAccount.value?.role === 'ADMIN') {
@@ -185,12 +182,6 @@ const { execute: update } = useAsyncState(
   }
 )
 
-const konfektionsgroesseOptions = getEnumOptions(KonfektionsgroesseMapping)
-
-const getKonfektionsgroesseHuman = computed(() => (konfektionsgroesse) => {
-  return konfektionsgroesseOptions.find((item) => item.value === konfektionsgroesse)?.label
-})
-
 const stats = computed<
   {
     name: AnmeldungStatus
@@ -216,11 +207,6 @@ const columns: TGridColumn<Anmeldung>[] = [
     field: 'person.birthday',
     format: (value) => dayjs().diff(value, 'year') + ' Jahre',
     title: 'Alter',
-  },
-  {
-    field: 'tshirtBestellt',
-    format: (value, row) => (value ? getKonfektionsgroesseHuman.value(row.person.konfektionsgroesse) : '-'),
-    title: 'T-Shirt',
   },
   {
     field: 'status',
@@ -398,15 +384,6 @@ const showNotification = ref(false)
                       :meldeschluss="currentAnmeldung.unterveranstaltung.veranstaltung.meldeschluss"
                       @changed="getSingleAnmeldung"
                     />
-                  </dd>
-                </div>
-                <div class="sm:flex sm:px-6 sm:py-5">
-                  <dt class="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0 lg:w-48">T-Shirt</dt>
-                  <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:ml-6 sm:mt-0 whitespace-pre-line">
-                    <template v-if="currentAnmeldung?.tshirtBestellt">
-                      {{ getKonfektionsgroesseHuman(currentAnmeldung.person.konfektionsgroesse) }}
-                    </template>
-                    <template v-if="!currentAnmeldung?.tshirtBestellt"> - </template>
                   </dd>
                 </div>
 

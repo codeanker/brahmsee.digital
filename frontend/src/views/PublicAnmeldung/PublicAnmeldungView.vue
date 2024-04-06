@@ -72,8 +72,6 @@ const {
         nahrungsmittelIntoleranzen,
         weitereIntoleranzen: anmeldung.essgewohnheiten.weitereIntoleranzen,
 
-        tshirtBestellt: anmeldung.tshirt.bestellen,
-        konfektionsgroesse: anmeldung.tshirt.groesse,
         comment: anmeldung.comment,
       },
       customFieldValues: Object.entries(customFieldValues.value).map((entry) => ({
@@ -138,7 +136,6 @@ const {
         :error="errorCreate as Error"
         submit-text="Anmelden"
         is-public-anmeldung
-        :show-tshirt="unterveranstaltung?.veranstaltung?.hostname?.hostname !== 'landes.digital'"
         @submit="(value) => createAnmeldung(undefined, value)"
         @show-terms="showBedingungen = true"
       >
