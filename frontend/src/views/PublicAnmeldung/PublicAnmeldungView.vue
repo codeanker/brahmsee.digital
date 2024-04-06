@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ChevronLeftIcon, FaceFrownIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { apiClient } from '@/api'
@@ -13,6 +13,7 @@ import PublicHeader from '@/components/LayoutComponents/PublicHeader.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import Loading from '@/components/UIComponents/Loading.vue'
 import { type NahrungsmittelIntoleranz } from '@codeanker/api'
+import { dayjs } from '@codeanker/helpers'
 
 const router = useRouter()
 const route = useRoute()
@@ -22,6 +23,14 @@ const unterveranstaltungId = computed(() => parseInt(route.params.ausschreibungI
 const { state: unterveranstaltung, isLoading } = useAsyncState(async () => {
   return apiClient.unterveranstaltung.publicGet.query({ id: unterveranstaltungId.value })
 }, undefined)
+
+const isClosed = computed(() => dayjs().isAfter(unterveranstaltung.value?.meldeschluss))
+
+watch(isClosed, (value) => {
+  if (value) {
+    router.back()
+  }
+})
 
 const { state: customFields } = useAsyncState(async () => {
   if (!unterveranstaltung) {
