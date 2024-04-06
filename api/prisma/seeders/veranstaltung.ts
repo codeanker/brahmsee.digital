@@ -68,6 +68,32 @@ const createVeranstaltung: Seeder = async (prisma: PrismaClient) => {
     },
   })
 
+  await prisma.customField.create({
+    data: {
+      name: 'Konfektionsgröße',
+      description: 'Möchtest du ein T-Shirt bestellen? Und wenn ja, welche Größe?',
+      type: 'BASIC_SELECT',
+      required: false,
+      options: [
+        'Junior 98/104',
+        'Junior 110/116',
+        'Junior 122/128',
+        'Junior 134/140',
+        'Junior 146/152',
+        'Junior 158/164',
+        'XS',
+        'S',
+        'M',
+        'L',
+        'XL',
+        'XXL',
+        'XXXL',
+      ],
+      positions: ['PUBLIC_ANMELDUNG'],
+      veranstaltungId: veranstaltung.id,
+    },
+  })
+
   await logActivity({
     type: 'CREATE',
     subjectType: 'veranstaltung',

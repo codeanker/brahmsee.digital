@@ -65,7 +65,6 @@ export const anmeldungGliederungdListProcedure = defineProcedure({
             firstname: true,
             lastname: true,
             birthday: true,
-            konfektionsgroesse: true,
             gliederung: {
               select: {
                 id: true,
