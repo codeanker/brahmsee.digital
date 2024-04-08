@@ -12,6 +12,7 @@ import Tab from '@/components/UIComponents/components/Tab.vue'
 import InfoList from '@/components/UIComponents/InfoList.vue'
 import Loading from '@/components/UIComponents/Loading.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
+import { dayjs } from '@codeanker/helpers'
 
 const route = useRoute()
 const router = useRouter()
@@ -27,13 +28,13 @@ const keyInfos = computed<KeyInfo[]>(() => {
     return [
       {
         title: 'Beginn',
-        value: `${formatDate(unterveranstaltung.value.veranstaltung.beginn, 'DD.MM.YYYY')} Uhr`,
+        value: `${formatDate(unterveranstaltung.value.veranstaltung.beginn, 'DD.MM.YYYY, HH:mm')} Uhr`,
       },
       {
         title: 'Ende',
-        value: `${formatDate(unterveranstaltung.value.veranstaltung.ende, 'DD.MM.YYYY')} Uhr`,
+        value: `${formatDate(unterveranstaltung.value.veranstaltung.ende, 'DD.MM.YYYY, HH:mm')} Uhr`,
       },
-      { title: 'Meldeschluss', value: formatDate(unterveranstaltung.value.meldeschluss, 'DD.MM.YYYY') },
+      { title: 'Meldeschluss', value: `${formatDate(unterveranstaltung.value.meldeschluss, 'DD.MM.YYYY')} ` },
       { title: 'Veranstaltungsort', value: unterveranstaltung.value.veranstaltung.ort?.name ?? '' },
       { title: 'Teilnahmebeitrag', value: unterveranstaltung.value.teilnahmegebuehr + '€' },
       { title: 'Zielgruppe', value: unterveranstaltung.value.veranstaltung.zielgruppe ?? '' },
@@ -57,6 +58,8 @@ const tabs = [
     icon: ClipboardDocumentListIcon,
   },
 ]
+
+const isClosed = computed(() => dayjs().isAfter(unterveranstaltung.value?.meldeschluss))
 </script>
 
 <template>
@@ -88,12 +91,6 @@ const tabs = [
               v-html="unterveranstaltung?.beschreibung"
             ></div>
           </div>
-          <Button
-            color="primary"
-            class="w-full justify-center my-5 lg:mt-10"
-            @click="() => router.push('/ausschreibung/' + route.params.ausschreibungId + '/anmeldung')"
-            >Jetzt anmelden</Button
-          >
         </Tab>
         <Tab>
           <div class="my-10">
@@ -119,6 +116,21 @@ const tabs = [
           />
         </Tab>
       </Tabs>
+
+      <p
+        v-if="isClosed"
+        class="text-red-500 my-10 text-center font-bold"
+      >
+        Meldeschluss erreicht. Anmeldung nicht mehr möglich.
+      </p>
+      <Button
+        v-else
+        color="primary"
+        class="w-full justify-center my-10"
+        @click="() => router.push('/ausschreibung/' + route.params.ausschreibungId + '/anmeldung')"
+      >
+        Jetzt anmelden
+      </Button>
     </div>
     <div
       v-else

@@ -13,6 +13,7 @@ export interface ITShirtBestellung {
 const props = withDefaults(
   defineProps<{
     modelValue: ITShirtBestellung
+    hideTitle?: boolean
   }>(),
   {}
 )
@@ -33,12 +34,16 @@ const konfektionsgroesseOptions = getEnumOptions(KonfektionsgroesseMapping)
 </script>
 
 <template>
-  <div class="font-medium mb-5">T-Shirt Bestellung</div>
+  <div
+    v-if="!hideTitle"
+    class="font-medium mb-5"
+  >
+    T-Shirt Bestellung
+  </div>
   <div class="grid grid-flow-row lg:grid-cols-2 gap-5 items-start">
     <BasicCheckbox
       v-model="model.bestellen"
       label="Ich möchte ein T-Shirt bestellen"
-      class="mt-1 font-medium"
     />
     <BasicSelect
       v-if="model.bestellen"

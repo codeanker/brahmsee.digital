@@ -5,6 +5,8 @@ import { personAuthenticatedGetProcedure } from './personAuthenticatedGet'
 import { personGliederungGetProcedure } from './personGliederungGet'
 import { personGliederungListProcedure } from './personGliederungList'
 import { personGliederungPatchProcedure } from './personGliederungPatch'
+import { personTshirtGliederungPatchProcedure } from './personTshirtGliederungPatch'
+import { personTshirtVerwaltungPatchProcedure } from './personTshirtVerwaltungPatch'
 import { personVerwaltungCreateProcedure } from './personVerwaltungCreate'
 import { personVerwaltungGetProcedure } from './personVerwaltungGet'
 import { personVerwaltungListProcedure } from './personVerwaltungList'
@@ -21,6 +23,8 @@ export const personRouter = mergeRouters(
   personVerwaltungPatchProcedure.router,
   personVerwaltungRemoveProcedure.router,
   personGliederungGetProcedure.router,
-  personGliederungPatchProcedure.router
+  personGliederungPatchProcedure.router,
+  personTshirtVerwaltungPatchProcedure.router,
+  personTshirtGliederungPatchProcedure.router,
   // Add Routes here - do not delete this line
 )
