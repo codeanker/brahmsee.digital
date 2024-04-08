@@ -34,7 +34,7 @@ const keyInfos = computed<KeyInfo[]>(() => {
         title: 'Ende',
         value: `${formatDate(unterveranstaltung.value.veranstaltung.ende, 'DD.MM.YYYY, HH:mm')} Uhr`,
       },
-      { title: 'Meldeschluss', value: `${formatDate(unterveranstaltung.value.meldeschluss, 'DD.MM.YYYY, HH:mm')} Uhr` },
+      { title: 'Meldeschluss', value: `${formatDate(unterveranstaltung.value.meldeschluss, 'DD.MM.YYYY')} ` },
       { title: 'Veranstaltungsort', value: unterveranstaltung.value.veranstaltung.ort?.name ?? '' },
       { title: 'Teilnahmebeitrag', value: unterveranstaltung.value.teilnahmegebuehr + '€' },
       { title: 'Zielgruppe', value: unterveranstaltung.value.veranstaltung.zielgruppe ?? '' },
@@ -121,7 +121,7 @@ const isClosed = computed(() => dayjs().isAfter(unterveranstaltung.value?.meldes
         v-if="isClosed"
         class="text-red-500 my-10 text-center font-bold"
       >
-        Meldeschluss erreicht!
+        Meldeschluss erreicht. Anmeldung nicht mehr möglich.
       </p>
       <Button
         v-else
