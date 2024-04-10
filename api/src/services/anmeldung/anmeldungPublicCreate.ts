@@ -1,3 +1,5 @@
+import { TRPCError } from '@trpc/server'
+import dayjs from 'dayjs'
 import { z } from 'zod'
 
 import prisma from '../../prisma'
@@ -31,6 +33,7 @@ export const anmeldungPublicCreateProcedure = defineProcedure({
       },
       select: {
         id: true,
+        meldeschluss: true,
         veranstaltung: {
           select: {
             id: true,
@@ -44,6 +47,13 @@ export const anmeldungPublicCreateProcedure = defineProcedure({
         },
       },
     })
+
+    if (dayjs().isAfter(unterveranstaltung.meldeschluss)) {
+      throw new TRPCError({
+        code: 'FORBIDDEN',
+        message: 'Meldeschluss erreicht',
+      })
+    }
 
     const personData = await getPersonCreateData(options.input.data)
 
