@@ -1,9 +1,11 @@
 import * as fs from 'fs'
 import * as path from 'path'
 
+import { Role } from '@prisma/client'
 import * as csv from 'fast-csv'
 import type { Middleware } from 'koa'
 
+import { getEntityIdFromHeader } from '../authentication'
 import prisma from '../prisma'
 import { inputSchema as anmeldungCreateSchema } from '../services/anmeldung/anmeldungPublicCreate'
 import { getPersonCreateData } from '../services/person/schema/person.schema'
@@ -15,9 +17,45 @@ dayjs.extend(customParseFormat)
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const importAnmeldungen: Middleware = async function (ctx, next) {
-  if (!ctx.request.files || !ctx.request.body.unterveranstaltungId) {
+  let accountId
+  try {
+    accountId = await getEntityIdFromHeader(ctx.request.header.authorization)
+  } catch (e) {
+    ctx.response.status = 401
+    ctx.response.message = 'Token not valid'
+    return
+  }
+
+  if (accountId == null || !ctx.request.files || !ctx.request.body.unterveranstaltungId) {
     ctx.response.status = 400
     ctx.response.message = 'Es wurden keine Dateien oder Unterveranstaltung übergeben'
+    return
+  }
+
+  const account = await prisma.account.findUnique({
+    where: {
+      id: parseInt(accountId),
+    },
+    select: {
+      role: true,
+      person: {
+        select: {
+          firstname: true,
+          lastname: true,
+        },
+      },
+    },
+  })
+
+  if (account == null) {
+    ctx.res.statusCode = 401
+    ctx.res.end()
+    return
+  }
+
+  if (account.role !== Role.ADMIN) {
+    ctx.response.status = 401
+    ctx.response.message = 'Account not authorized'
     return
   }
 
@@ -124,7 +162,7 @@ async function createAnmeldung(row: any, unterveranstaltung) {
       },
     })
   } catch (e) {
-    throw new Error(e)
+    throw new Error('Anmeldung konnte nicht erstellt werden')
   }
 }
 /**
