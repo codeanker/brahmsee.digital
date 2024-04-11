@@ -9,21 +9,23 @@ import logActivity from '../../util/activity'
 import { sendMail } from '../../util/mail'
 import { personSchema, getPersonCreateData } from '../person/schema/person.schema'
 
+export const inputSchema = z.strictObject({
+  data: personSchema.extend({
+    unterveranstaltungId: z.number().int(),
+    mahlzeitenIds: z.array(z.number().int()).optional(),
+    uebernachtungsTage: z.array(z.date()).optional(),
+    tshirtBestellt: z.boolean().optional(),
+    email: z.string().email(),
+    comment: z.string().optional(),
+  }),
+  customFieldValues: defineCustomFieldValues(),
+})
+
 export const anmeldungPublicCreateProcedure = defineProcedure({
   key: 'publicCreate',
   method: 'mutation',
   protection: { type: 'public' },
-  inputSchema: z.strictObject({
-    data: personSchema.extend({
-      unterveranstaltungId: z.number().int(),
-      mahlzeitenIds: z.array(z.number().int()).optional(),
-      uebernachtungsTage: z.array(z.date()).optional(),
-      tshirtBestellt: z.boolean().optional(),
-      email: z.string().email(),
-      comment: z.string().optional(),
-    }),
-    customFieldValues: defineCustomFieldValues(),
-  }),
+  inputSchema: inputSchema,
   async handler(options) {
     const unterveranstaltung = await prisma.unterveranstaltung.findUniqueOrThrow({
       where: {
