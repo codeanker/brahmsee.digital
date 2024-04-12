@@ -42,4 +42,11 @@ spec:
           port: 80
       middlewares:
         - name: stripapiprefix
+    - match:  Host(`{{ . }}`) && PathPrefix(`/api/upload`)
+      kind: Rule
+      services:
+        - name: {{ $.Chart.Name }}-app-svc
+          port: 80
+      middlewares:
+        - name: stripapiprefix
   {{- end }}
