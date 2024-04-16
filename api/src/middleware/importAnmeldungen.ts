@@ -134,18 +134,11 @@ async function createAnmeldung(row: any, unterveranstaltung) {
           },
         ],
       },
-      customFieldValues: [
-        {
-          fieldId: parseInt(row.customField1Id),
-          value: row.customField1Value,
-        },
-      ],
+      customFieldValues: mapCustomFields(row),
     }
 
     const validatedData = anmeldungCreateSchema.parse(mappedRow)
-
     const personData = await getPersonCreateData(validatedData.data)
-
     await prisma.person.create({
       data: {
         ...personData,
@@ -162,7 +155,7 @@ async function createAnmeldung(row: any, unterveranstaltung) {
       },
     })
   } catch (e) {
-    throw new Error('Anmeldung konnte nicht erstellt werden')
+    console.error('Anmeldung konnte nicht erstellt werden', row, e)
   }
 }
 /**
@@ -185,4 +178,23 @@ async function findUnterveranstaltung(unterveranstaltungId: number) {
 function formatNahrungsmittelIntoleranzen(nahrungsmittelIntoleranzen: string) {
   if (!nahrungsmittelIntoleranzen) return []
   return nahrungsmittelIntoleranzen.split(',').map((item) => item.trim())
+}
+
+function mapCustomFields(obj) {
+  const customFields = <any>[]
+  for (const key in obj) {
+    if (key.startsWith('customFieldId_')) {
+      customFields.push({
+        fieldId: parseInt(key.replace('customFieldId_', '')),
+        value: parseValue(obj[key]),
+      })
+    }
+  }
+  return customFields
+}
+
+function parseValue(value) {
+  if (value === 'Ja') return true
+  if (value === 'Nein') return false
+  return value
 }
