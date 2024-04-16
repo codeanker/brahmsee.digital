@@ -101,6 +101,17 @@ export async function veranstaltungTeilnehmendenliste(ctx) {
           },
         },
       },
+      customFieldValues: {
+        select: {
+          field: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+          value: true,
+        },
+      },
     },
     orderBy: {
       createdAt: 'desc',
@@ -108,6 +119,13 @@ export async function veranstaltungTeilnehmendenliste(ctx) {
   })
 
   const rows = anmeldungenList.map((anmeldung) => {
+    const customFields = anmeldung.customFieldValues
+      .map((customField) => {
+        return {
+          [customField.field.name]: customField.value,
+        }
+      })
+      .reduce((acc, cur) => ({ ...acc, ...cur }), {})
     return {
       ['id']: anmeldung.id,
       ['Status']: AnmeldungStatusMapping[anmeldung.status].human,
@@ -122,6 +140,7 @@ export async function veranstaltungTeilnehmendenliste(ctx) {
       ['Konfektionsgröße']: anmeldung.person.konfektionsgroesse,
       ['Essgewohnheit']: anmeldung.person.essgewohnheit,
       ['Anmeldedatum']: anmeldung.createdAt,
+      ...customFields,
     }
   })
   const workbook = XLSX.utils.book_new()
