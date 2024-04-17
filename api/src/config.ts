@@ -44,7 +44,7 @@ export const configSchema = z.strictObject({
     host: z.string(),
     apiKey: z.string(),
   }),
-  fileProvider: z.nativeEnum(FileProvider),
+  defaultFileProvider: z.nativeEnum(FileProvider),
   fileLOCAL: z.strictObject({
     path: z.string(),
   }),

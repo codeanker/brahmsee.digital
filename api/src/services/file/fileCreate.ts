@@ -14,7 +14,7 @@ export const fileCreateProcedure = defineProcedure({
   async handler() {
     return prisma.file.create({
       data: {
-        provider: config.fileProvider,
+        provider: config.defaultFileProvider,
         key: randomUUID(),
       },
       select: {
