@@ -7,6 +7,7 @@ import Loading from '@/components/UIComponents/Loading.vue'
 
 const props = defineProps<{
   fileId: number
+  label?: string
 }>()
 
 const { state: link } = useAsyncState(async () => {
@@ -26,6 +27,6 @@ const { state: link } = useAsyncState(async () => {
     download
     class="text-primary-500 flex"
   >
-    <slot><ArrowDownTrayIcon class="h-5 w-5 mr-1"></ArrowDownTrayIcon>Herunterladen</slot>
+    <slot><ArrowDownTrayIcon class="h-5 w-5 mr-1"></ArrowDownTrayIcon>{{ label ?? 'Herunterladen' }}</slot>
   </a>
 </template>
