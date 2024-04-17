@@ -22,7 +22,6 @@ export const handleUpload = async (file: File) => {
 
     return {
       id: dbFile.id,
-      url: await apiClient.file.fileGetUrl.query({ id: dbFile.id }),
     }
   } else throw new Error(`File provider '${dbFile.provider}' is not supported.`)
 }

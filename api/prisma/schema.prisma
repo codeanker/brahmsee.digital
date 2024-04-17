@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch"]
 }
 
@@ -112,17 +112,17 @@ enum Konfektionsgroesse {
 }
 
 model Hostname {
-  id        Int      @id @default(autoincrement())
-  hostname  String
+  id            Int             @id @default(autoincrement())
+  hostname      String
   veranstaltung Veranstaltung[]
 }
 
 model Notfallkontakt {
-  id                      Int      @id @default(autoincrement())
+  id                      Int     @id @default(autoincrement())
   firstname               String
   lastname                String
   telefon                 String
-  istErziehungsberechtigt Boolean  @default(false)
+  istErziehungsberechtigt Boolean @default(false)
   personId                Int
   person                  Person  @relation(fields: [personId], references: [id], onDelete: Cascade)
 }
@@ -157,7 +157,7 @@ model Person {
 model Account {
   id                  Int                   @id @default(autoincrement())
   email               String                @unique
-  dlrgOauthId         String?                @unique
+  dlrgOauthId         String?               @unique
   password            String?
   role                Role
   personId            Int                   @unique
@@ -238,26 +238,26 @@ model Ort {
 }
 
 model Veranstaltung {
-  id                          Int                  @id @default(autoincrement())
-  name                        String
-  beginn                      DateTime             @db.Date
-  ende                        DateTime             @db.Date
-  meldebeginn                 DateTime
-  meldeschluss                DateTime
-  ortId                       Int?
-  ort                         Ort?                 @relation(fields: [ortId], references: [id], onDelete: SetNull)
-  maxTeilnehmende             Int
-  teilnahmegebuehr            Int
-  unterveranstaltungen        Unterveranstaltung[]
-  mahlzeiten                  Mahlzeit[]
-  beschreibung                String?
-  datenschutz                 String?
-  teilnahmeBedingungen        String?
-  teilnahmeBedingungenPublic  String?
-  zielgruppe                  String?
-  hostnameId                  Int?
-  hostname                    Hostname?           @relation(fields: [hostnameId], references: [id])
-  customFields                CustomField[]
+  id                         Int                  @id @default(autoincrement())
+  name                       String
+  beginn                     DateTime             @db.Date
+  ende                       DateTime             @db.Date
+  meldebeginn                DateTime
+  meldeschluss               DateTime
+  ortId                      Int?
+  ort                        Ort?                 @relation(fields: [ortId], references: [id], onDelete: SetNull)
+  maxTeilnehmende            Int
+  teilnahmegebuehr           Int
+  unterveranstaltungen       Unterveranstaltung[]
+  mahlzeiten                 Mahlzeit[]
+  beschreibung               String?
+  datenschutz                String?
+  teilnahmeBedingungen       String?
+  teilnahmeBedingungenPublic String?
+  zielgruppe                 String?
+  hostnameId                 Int?
+  hostname                   Hostname?            @relation(fields: [hostnameId], references: [id])
+  customFields               CustomField[]
 }
 
 enum MahlzeitType {
@@ -281,20 +281,31 @@ enum UnterveranstaltungType {
 }
 
 model Unterveranstaltung {
-  id               Int                    @id @default(autoincrement())
+  id               Int                          @id @default(autoincrement())
   maxTeilnehmende  Int
   teilnahmegebuehr Int
   meldebeginn      DateTime
   meldeschluss     DateTime
   veranstaltungId  Int
-  veranstaltung    Veranstaltung          @relation(fields: [veranstaltungId], references: [id], onDelete: Cascade)
+  veranstaltung    Veranstaltung                @relation(fields: [veranstaltungId], references: [id], onDelete: Cascade)
   gliederungId     Int
-  gliederung       Gliederung             @relation(fields: [gliederungId], references: [id], onDelete: Cascade)
+  gliederung       Gliederung                   @relation(fields: [gliederungId], references: [id], onDelete: Cascade)
   Anmeldung        Anmeldung[]
   beschreibung     String?
   bedingungen      String?
-  type             UnterveranstaltungType @default(GLIEDERUNG)
+  type             UnterveranstaltungType       @default(GLIEDERUNG)
   customFields     CustomField[]
+  documents        UnterveranstaltungDocument[]
+}
+
+model UnterveranstaltungDocument {
+  id                   Int                 @id @default(autoincrement())
+  name                 String
+  description          String?
+  unterveranstaltungId Int
+  unterveranstaltung   Unterveranstaltung? @relation(fields: [unterveranstaltungId], references: [id], onDelete: Cascade)
+  file                 File                @relation(fields: [fileId], references: [id])
+  fileId               Int                 @unique
 }
 
 enum ActivityType {
@@ -306,15 +317,15 @@ enum ActivityType {
 }
 
 model Activity {
-  id               Int      @id @default(autoincrement())
-  createdAt        DateTime @default(now())
-  type             ActivityType
-  description      String?
-  subjectType      String
-  subjectId        Int?
-  causerId         Int?
-  causer           Account? @relation(fields: [causerId], references: [id], onDelete: SetNull)
-  metadata         Json     @default("{}")
+  id          Int          @id @default(autoincrement())
+  createdAt   DateTime     @default(now())
+  type        ActivityType
+  description String?
+  subjectType String
+  subjectId   Int?
+  causerId    Int?
+  causer      Account?     @relation(fields: [causerId], references: [id], onDelete: SetNull)
+  metadata    Json         @default("{}")
 }
 
 enum CustomFieldType {
@@ -335,28 +346,28 @@ enum CustomFieldPosition {
 }
 
 model CustomField {
-  id                    Int @id @default(autoincrement())
-  name                  String
-  description           String?
-  type                  CustomFieldType
-  required              Boolean @default(false)
-  options               String[]
-  role                  Role[]
-  values                CustomFieldValue[]
-  positions             CustomFieldPosition[]
-  veranstaltungId       Int?
-  unterveranstaltungId  Int?
-  veranstaltung         Veranstaltung?      @relation(fields: [veranstaltungId], references: [id], onDelete: Cascade)
-  unterveranstaltung    Unterveranstaltung? @relation(fields: [unterveranstaltungId], references: [id], onDelete: Cascade)
+  id                   Int                   @id @default(autoincrement())
+  name                 String
+  description          String?
+  type                 CustomFieldType
+  required             Boolean               @default(false)
+  options              String[]
+  role                 Role[]
+  values               CustomFieldValue[]
+  positions            CustomFieldPosition[]
+  veranstaltungId      Int?
+  unterveranstaltungId Int?
+  veranstaltung        Veranstaltung?        @relation(fields: [veranstaltungId], references: [id], onDelete: Cascade)
+  unterveranstaltung   Unterveranstaltung?   @relation(fields: [unterveranstaltungId], references: [id], onDelete: Cascade)
 }
 
 model CustomFieldValue {
-  id           Int @id @default(autoincrement())
-  value        Json @default("{}")
-  fieldId      Int
-  field        CustomField @relation(fields: [fieldId], references: [id], onDelete: Cascade)
-  anmeldungId  Int?
-  anmeldung    Anmeldung? @relation(fields: [anmeldungId], references: [id], onDelete: Cascade)
+  id          Int         @id @default(autoincrement())
+  value       Json        @default("{}")
+  fieldId     Int
+  field       CustomField @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+  anmeldungId Int?
+  anmeldung   Anmeldung?  @relation(fields: [anmeldungId], references: [id], onDelete: Cascade)
 }
 
 enum FileProvider {
@@ -364,11 +375,12 @@ enum FileProvider {
 }
 
 model File {
-  id            Int           @id @default(autoincrement())
-  createdAt     DateTime      @default(now())
-  uploaded      Boolean       @default(false)
-  uploadedAt    DateTime?
-  provider      FileProvider
-  key           String        @unique()
-  mimetype      String?
+  id                         Int                         @id @unique @default(autoincrement())
+  createdAt                  DateTime                    @default(now())
+  uploaded                   Boolean                     @default(false)
+  uploadedAt                 DateTime?
+  provider                   FileProvider
+  key                        String                      @unique()
+  mimetype                   String?
+  UnterveranstaltungDocument UnterveranstaltungDocument?
 }
