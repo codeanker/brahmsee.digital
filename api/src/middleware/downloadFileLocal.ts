@@ -30,7 +30,8 @@ export const downloadFileLocal: Middleware = async function (ctx, next) {
 
   const uploadDir = path.join(process.cwd(), config.fileLOCAL.path)
   const mimetype = file.mimetype ?? 'application/octet-stream'
-  ctx.set('Content-disposition', `attachment; filename=${file.id}.${mime.extension(mimetype)}`)
+  const filename = file.filename ?? `${file.id}.${mime.extension(mimetype)}`
+  ctx.set('Content-disposition', `attachment; filename=${filename}`)
   ctx.set('Content-type', mimetype)
   ctx.response.body = fs.createReadStream(uploadDir + '/' + file.key)
 }

@@ -70,6 +70,7 @@ export const uploadFileLocal: Middleware = async function (ctx, next) {
     where: { id: fileId },
     data: {
       mimetype: fileData.mimetype ?? 'application/octet-stream',
+      filename: fileData.originalFilename ?? undefined,
       uploaded: true,
       uploadedAt: new Date(),
     },

@@ -381,6 +381,7 @@ model File {
   uploadedAt                 DateTime?
   provider                   FileProvider
   key                        String                      @unique()
+  filename                   String?
   mimetype                   String?
   UnterveranstaltungDocument UnterveranstaltungDocument?
 }
