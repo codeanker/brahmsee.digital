@@ -358,3 +358,17 @@ model CustomFieldValue {
   anmeldungId  Int?
   anmeldung    Anmeldung? @relation(fields: [anmeldungId], references: [id], onDelete: Cascade)
 }
+
+enum FileProvider {
+  LOCAL
+}
+
+model File {
+  id            Int           @id @default(autoincrement())
+  createdAt     DateTime      @default(now())
+  uploaded      Boolean       @default(false)
+  uploadedAt    DateTime?
+  provider      FileProvider
+  key           String        @unique()
+  mimetype      String?
+}

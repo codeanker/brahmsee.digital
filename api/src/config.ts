@@ -1,6 +1,7 @@
 import path from 'node:path'
 import { fileURLToPath } from 'url'
 
+import { FileProvider } from '@prisma/client'
 import config from 'config'
 import { z } from 'zod'
 
@@ -42,6 +43,13 @@ export const configSchema = z.strictObject({
   meilisearch: z.strictObject({
     host: z.string(),
     apiKey: z.string(),
+  }),
+  fileProvider: z.nativeEnum(FileProvider),
+  fileLOCAL: z.strictObject({
+    path: z.string(),
+  }),
+  fileAZURE: z.strictObject({
+    foo: z.string(),
   }),
 })
 

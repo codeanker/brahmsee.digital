@@ -41,6 +41,7 @@
     "koa-session": "^6.4.0",
     "koa-static": "^5.0.0",
     "meilisearch": "^0.37.0",
+    "mime-types": "^2.1.35",
     "prom-client": "^15.0.0",
     "superjson": "^2.2.1",
     "trpc-koa-adapter": "^1.1.3",
