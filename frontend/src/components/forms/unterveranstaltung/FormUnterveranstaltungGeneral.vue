@@ -351,13 +351,24 @@ function deleteDocument(document, index) {
             </tr>
           </tbody>
         </table>
-        <input
-          ref="fileInput"
-          type="file"
-          capture
-          @change="onFileChanged($event)"
-        />
-        <pre>{{ documents }}</pre>
+        <div class="flex justify-end">
+          <div>
+            <label
+              for="documentFileInput"
+              class="input-style w-fit mt-3 cursor-pointer flex items-center"
+            >
+              <span>Dokument hinzufügen</span>
+            </label>
+            <input
+              id="documentFileInput"
+              ref="fileInput"
+              type="file"
+              capture
+              class="hidden"
+              @change="onFileChanged($event)"
+            />
+          </div>
+        </div>
       </div>
     </div>
     <div class="mt-8 flex gap-4">
