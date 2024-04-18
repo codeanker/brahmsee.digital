@@ -1,3 +1,5 @@
+import type { UUID } from 'crypto'
+
 import z from 'zod'
 
 import prisma from '../../prisma'
@@ -21,7 +23,7 @@ export const unterveranstaltungGliederungPatchProcedure = defineProcedure({
         .array(
           z.strictObject({
             name: z.string(),
-            fileId: z.number().int(),
+            fileId: z.string().uuid(),
           })
         )
         .optional(),
@@ -34,13 +36,13 @@ export const unterveranstaltungGliederungPatchProcedure = defineProcedure({
 
     // Documents create, update, delete
     const documents: {
-      createMany?: { data: { name: string; fileId: number }[] }
+      createMany?: { data: { name: string; fileId: UUID }[] }
       updateMany?: { where: { id: number }; data: { name: string } }[]
       deleteMany?: { id: number }[]
     } = {}
     if (options.input.data.addDocuments) {
       documents.createMany = {
-        data: options.input.data.addDocuments,
+        data: options.input.data.addDocuments.map((doc) => ({ ...doc, fileId: doc.fileId as UUID })),
       }
     }
     if (options.input.data.updateDocuments) {

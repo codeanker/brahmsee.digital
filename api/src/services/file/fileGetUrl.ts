@@ -12,9 +12,9 @@ const downloadUrlLifespan = 60 * 60 // 1 hour
 export const fileGetUrlActionProcedure = defineProcedure({
   key: 'fileGetUrl',
   method: 'query',
-  protection: { type: 'public' }, // TODO: authentication
+  protection: { type: 'public' },
   inputSchema: z.strictObject({
-    id: z.number().int(),
+    id: z.string().uuid(),
   }),
   async handler(options) {
     const file = await prisma.file.findUniqueOrThrow({

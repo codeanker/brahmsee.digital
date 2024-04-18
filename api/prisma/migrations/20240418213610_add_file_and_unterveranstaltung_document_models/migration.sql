@@ -7,14 +7,14 @@ CREATE TABLE "UnterveranstaltungDocument" (
     "name" TEXT NOT NULL,
     "description" TEXT,
     "unterveranstaltungId" INTEGER NOT NULL,
-    "fileId" INTEGER NOT NULL,
+    "fileId" TEXT NOT NULL,
 
     CONSTRAINT "UnterveranstaltungDocument_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "File" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "uploaded" BOOLEAN NOT NULL DEFAULT false,
     "uploadedAt" TIMESTAMP(3),

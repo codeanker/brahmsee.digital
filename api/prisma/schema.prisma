@@ -305,7 +305,7 @@ model UnterveranstaltungDocument {
   unterveranstaltungId Int
   unterveranstaltung   Unterveranstaltung? @relation(fields: [unterveranstaltungId], references: [id], onDelete: Cascade)
   file                 File                @relation(fields: [fileId], references: [id])
-  fileId               Int                 @unique
+  fileId               String              @unique
 }
 
 enum ActivityType {
@@ -376,7 +376,7 @@ enum FileProvider {
 }
 
 model File {
-  id                         Int                         @id @unique @default(autoincrement())
+  id                         String                      @id @unique @default(uuid())
   createdAt                  DateTime                    @default(now())
   uploaded                   Boolean                     @default(false)
   uploadedAt                 DateTime?

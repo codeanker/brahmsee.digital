@@ -10,7 +10,7 @@ import prisma from '../prisma'
 export const uploadFileLocal: Middleware = async function (ctx, next) {
   // TODO: add authentication
 
-  const fileId = parseInt(ctx.params.id)
+  const fileId = ctx.params.id
   const file = await prisma.file.findFirst({
     where: {
       id: fileId,

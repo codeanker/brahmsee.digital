@@ -6,7 +6,7 @@ import { apiClient } from '@/api'
 import Loading from '@/components/UIComponents/Loading.vue'
 
 const props = defineProps<{
-  fileId: number
+  fileId: string
   label?: string
 }>()
 
