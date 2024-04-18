@@ -12,7 +12,10 @@ import { defineProcedure } from '../../types/defineProcedure'
 export const fileCreateProcedure = defineProcedure({
   key: 'fileCreate',
   method: 'mutation',
-  protection: { type: 'public' }, // TODO: authentication
+  protection: {
+    type: 'restrictToRoleIds',
+    roleIds: ['ADMIN', 'GLIEDERUNG_ADMIN'],
+  },
   inputSchema: z.strictObject({
     mimetype: z.string(),
   }),
