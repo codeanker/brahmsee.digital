@@ -25,6 +25,8 @@ const { state: link } = useAsyncState(async () => {
     v-else
     :href="link"
     download
+    target="_blank"
+    rel="noopener noreferrer"
     class="text-primary-500 flex"
   >
     <slot><ArrowDownTrayIcon class="h-5 w-5 mr-1"></ArrowDownTrayIcon>{{ label ?? 'Herunterladen' }}</slot>

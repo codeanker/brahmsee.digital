@@ -28,12 +28,13 @@ export const fileGetUrlActionProcedure = defineProcedure({
         key: true,
       },
     })
-    if (!file.uploaded) throw new Error('File is not uploaded')
 
-    if (file.provider === 'LOCAL')
+    if (file.provider === 'LOCAL') {
+      if (!file.uploaded) throw new Error('File is not uploaded')
       return new URL(`/api/download/file/${file.provider}/${file.id}`, config.clientUrl).href
+    }
     if (file.provider === 'AZURE' && azureStorage !== null) {
-      const containerClient = azureStorage.getContainerClient(config.fileAZURE.container)
+      const containerClient = azureStorage.getContainerClient(config.fileProviders.AZURE.container)
       const blockBlobClient = containerClient.getBlockBlobClient(file.key)
       return await blockBlobClient.generateSasUrl({
         startsOn: dayjs().subtract(5, 'minute').toDate(),

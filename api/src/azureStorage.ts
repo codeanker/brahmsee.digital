@@ -3,18 +3,20 @@ import { BlobServiceClient, StorageSharedKeyCredential } from '@azure/storage-bl
 import config from './config'
 
 const isAzureConfigured =
-  config.fileAZURE.account !== '' && config.fileAZURE.accountKey !== '' && config.fileAZURE.container !== ''
+  config.fileProviders.AZURE.account !== '' &&
+  config.fileProviders.AZURE.accountKey !== '' &&
+  config.fileProviders.AZURE.container !== ''
 
 async function init() {
   if (!isAzureConfigured) return null
-  const account = config.fileAZURE.account
-  const accountKey = config.fileAZURE.accountKey
+  const account = config.fileProviders.AZURE.account
+  const accountKey = config.fileProviders.AZURE.accountKey
   const sharedKeyCredential = new StorageSharedKeyCredential(account, accountKey)
 
   const blobServiceClient = new BlobServiceClient(`https://${account}.blob.core.windows.net`, sharedKeyCredential)
 
   // Check if container exists, if not create it
-  const containerClient = blobServiceClient.getContainerClient(config.fileAZURE.container)
+  const containerClient = blobServiceClient.getContainerClient(config.fileProviders.AZURE.container)
   if (!(await containerClient.exists())) await containerClient.create()
   return blobServiceClient
 }

@@ -17,8 +17,11 @@ export const fileCreateProcedure = defineProcedure({
     mimetype: z.string(),
   }),
   async handler(options) {
-    const provider = config.defaultFileProvider
-    const key: string = randomUUID()
+    const provider = config.fileDefaultProvider
+    let key: string = randomUUID()
+    if (provider === 'AZURE') {
+      key = `${config.fileProviders.AZURE.folder}/${key}`
+    }
 
     const file = await prisma.file.create({
       data: {
@@ -35,7 +38,7 @@ export const fileCreateProcedure = defineProcedure({
 
     let azureUploadUrl: string | null = null
     if (file.provider === 'AZURE' && azureStorage !== null) {
-      const containerClient = azureStorage.getContainerClient(config.fileAZURE.container)
+      const containerClient = azureStorage.getContainerClient(config.fileProviders.AZURE.container)
       const blockBlobClient = containerClient.getBlockBlobClient(key)
       const permissions = BlobSASPermissions.from({ read: true, write: true, add: true, create: true })
       azureUploadUrl = await blockBlobClient.generateSasUrl({

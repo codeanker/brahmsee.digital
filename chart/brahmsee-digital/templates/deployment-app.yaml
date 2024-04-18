@@ -65,6 +65,33 @@ spec:
                   name: meilisearch
                   key: key
 
+
+            # FILE PROVIDER
+            - name: FILE_DEFAULT_PROVIDER
+              value: "{{ .Values.app.fileDefaultProvider }}"
+            - name: FILE_PROVIDER_LOCAL_PATH
+              value: "{{ .Values.app.fileProviders.LOCAL.path }}"
+            - name: FILE_PROVIDER_AZURE_ACCOUNT
+              valueFrom:
+                secretKeyRef:
+                  name: azure
+                  key: account
+            - name: FILE_PROVIDER_AZURE_ACCOUNT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: azure
+                  key: accountKey
+            - name: FILE_PROVIDER_AZURE_CONTAINER
+              valueFrom:
+                secretKeyRef:
+                  name: azure
+                  key: container
+            - name: FILE_PROVIDER_AZURE_FOLDER
+              valueFrom:
+                secretKeyRef:
+                  name: azure
+                  key: folder
+
           # readinessProbe:
           #   httpGet:
           #     path: /ready

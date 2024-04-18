@@ -44,14 +44,17 @@ export const configSchema = z.strictObject({
     host: z.string(),
     apiKey: z.string(),
   }),
-  defaultFileProvider: z.nativeEnum(FileProvider),
-  fileLOCAL: z.strictObject({
-    path: z.string(),
-  }),
-  fileAZURE: z.strictObject({
-    account: z.string(),
-    accountKey: z.string(),
-    container: z.string(),
+  fileDefaultProvider: z.nativeEnum(FileProvider),
+  fileProviders: z.strictObject({
+    LOCAL: z.strictObject({
+      path: z.string(),
+    }),
+    AZURE: z.strictObject({
+      account: z.string(),
+      accountKey: z.string(),
+      container: z.string(),
+      folder: z.string(),
+    }),
   }),
 })
 

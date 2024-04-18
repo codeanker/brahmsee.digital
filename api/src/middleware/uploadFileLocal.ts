@@ -34,7 +34,7 @@ export const uploadFileLocal: Middleware = async function (ctx, next) {
     return
   }
 
-  const uploadDir = path.join(process.cwd(), config.fileLOCAL.path)
+  const uploadDir = path.join(process.cwd(), config.fileProviders.LOCAL.path)
   try {
     await checkLocalUploadFolder(uploadDir)
   } catch (e) {

@@ -31,13 +31,16 @@
     "host": "meilisearch:7700",
     "apiKey": "xbAPupQKhkKvF176vE2JxAdPGpmWVu251Hldn6K4Z6Y"
   },
-  "defaultFileProvider": "AZURE",
-  "fileLOCAL": {
-    "path":"../uploads"
-  },
-  "fileAZURE": {
-    "account": "",
-    "accountKey": "",
-    "container": ""
+  "fileDefaultProvider": "LOCAL",
+  "fileProviders": {
+    "LOCAL": {
+      "path":"../uploads"
+    },
+    "AZURE": {
+      "account": "",
+      "accountKey": "",
+      "container": "",
+      "folder": ""
+    }
   }
 }

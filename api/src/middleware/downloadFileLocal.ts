@@ -28,7 +28,7 @@ export const downloadFileLocal: Middleware = async function (ctx, next) {
     return
   }
 
-  const uploadDir = path.join(process.cwd(), config.fileLOCAL.path)
+  const uploadDir = path.join(process.cwd(), config.fileProviders.LOCAL.path)
   const mimetype = file.mimetype ?? 'application/octet-stream'
   const filename = file.filename ?? `${file.id}.${mime.extension(mimetype)}`
   ctx.set('Content-disposition', `attachment; filename=${filename}`)
