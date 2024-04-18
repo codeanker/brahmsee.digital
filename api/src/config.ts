@@ -49,7 +49,9 @@ export const configSchema = z.strictObject({
     path: z.string(),
   }),
   fileAZURE: z.strictObject({
-    foo: z.string(),
+    account: z.string(),
+    accountKey: z.string(),
+    container: z.string(),
   }),
 })
 
