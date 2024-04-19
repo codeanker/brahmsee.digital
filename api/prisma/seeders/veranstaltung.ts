@@ -1,24 +1,30 @@
+import { fakerDE as faker } from '@faker-js/faker'
 import { PrismaClient } from '@prisma/client'
 
-import { isProduction } from '../../src/util/is-production'
+import logActivity from '../../src/util/activity'
 
 import { Seeder } from '.'
 
 const createVeranstaltung: Seeder = async (prisma: PrismaClient) => {
-  if (isProduction()) {
-    return
-  }
-
-  await prisma.veranstaltung.create({
+  const veranstaltung = await prisma.veranstaltung.create({
     data: {
       name: 'Brahmsee 2024',
       beginn: new Date(),
       ende: new Date(),
       meldebeginn: new Date(),
       meldeschluss: new Date(),
-      maxTeilnehmende: 500,
-      teilnahmegebuehr: 100,
-      beschreibung: 'Ich bin die Beschreibung',
+      maxTeilnehmende: faker.number.int({ min: 7, max: 50 }),
+      teilnahmegebuehr: faker.number.int({ min: 80, max: 110 }),
+      beschreibung: faker.lorem.text(),
+      datenschutz: faker.lorem.text(),
+      teilnahmeBedingungen: faker.lorem.text(),
+      teilnahmeBedingungenPublic: faker.lorem.text(),
+      zielgruppe: faker.lorem.text(),
+      hostname: {
+        create: {
+          hostname: 'localhost:8080',
+        },
+      },
       ort: {
         create: {
           name: 'Waldheim am Brahmsee',
@@ -38,7 +44,7 @@ const createVeranstaltung: Seeder = async (prisma: PrismaClient) => {
           maxTeilnehmende: 800,
           meldebeginn: new Date(),
           meldeschluss: new Date(),
-          beschreibung: 'Ich bin die Beschreibung',
+          beschreibung: faker.lorem.text(),
           type: 'GLIEDERUNG',
           gliederung: {
             connect: {
@@ -48,6 +54,25 @@ const createVeranstaltung: Seeder = async (prisma: PrismaClient) => {
         },
       },
     },
+  })
+
+  await prisma.customField.create({
+    data: {
+      name: 'Rolle',
+      description: 'Dieses Feld wurde duch den Seeder erstellt',
+      type: 'BASIC_SELECT',
+      required: true,
+      options: ['Schwimmer:in', 'Teilnehmer:in'],
+      positions: ['PUBLIC_ANMELDUNG', 'INTERN_ANMELDUNG'],
+      veranstaltungId: veranstaltung.id,
+    },
+  })
+
+  await logActivity({
+    type: 'CREATE',
+    subjectType: 'veranstaltung',
+    subjectId: veranstaltung.id,
+    description: 'veranstaltung created via db seeder',
   })
 }
 

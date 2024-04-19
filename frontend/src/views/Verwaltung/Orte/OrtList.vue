@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { PlusIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 
 import { apiClient } from '@/api'
@@ -11,55 +12,59 @@ const { state: ortenList } = useAsyncState(async () => {
 
 <template>
   <div>
-    <h5>Orte</h5>
-    <div class="flow-root">
-      <p class="mt-8 text-sm text-gray-500">
-        <b>Tipp</b>: Zum Bearbeiten eines Ortes die entsprechende Zeile anklicken.
-      </p>
+    <div class="flex items-center justify-between my-8">
+      <div class="flex flex-col">
+        <h5 class="mb-0">Orte</h5>
+        <p class="text-sm"><b>Tipp</b>: Zum Bearbeiten eines Ortes die entsprechende Zeile anklicken.</p>
+      </div>
       <RouterLink
-        class="text-primary-600"
+        class="text-primary-500 flex items-center"
         :to="{ name: 'Verwaltung Ort erstellen' }"
-        >Ort erstellen</RouterLink
       >
-      <table class="min-w-full divide-y divide-gray-300">
+        <PlusIcon class="h-5 w-5 mr-1"></PlusIcon>
+        Ort erstellen
+      </RouterLink>
+    </div>
+    <div class="flow-root">
+      <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
         <thead>
           <tr>
             <th
               scope="col"
-              class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+              class="px-3 py-3.5 text-left text-sm font-semibold"
             >
               Id
             </th>
             <th
               scope="col"
-              class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+              class="px-3 py-3.5 text-left text-sm font-semibold"
             >
               Name
             </th>
             <th
               scope="col"
-              class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+              class="px-3 py-3.5 text-left text-sm font-semibold"
             >
               Ort
             </th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-gray-200 bg-white">
+        <tbody class="divide-y divide-gray-200 dark:divide-gray-800 bg-white dark:bg-dark-primary">
           <tr
             v-for="ort in ortenList"
             :key="ort.id"
-            class="cursor-pointer even:bg-gray-50 hover:bg-gray-100"
+            class="cursor-pointer even:bg-gray-50 dark:even:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-800"
             :title="ort.name + ' bearbeiten'"
             @click="router.push({ name: 'Verwaltung Ortdetails', params: { ortId: ort.id } })"
           >
             <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-              <div class="text-gray-900">{{ ort.id }}</div>
+              <div>{{ ort.id }}</div>
             </td>
             <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-              <div class="font-medium text-gray-900">{{ ort.name }}</div>
+              <div class="font-medium">{{ ort.name }}</div>
             </td>
             <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-              <div class="font-medium text-gray-900">{{ ort.address?.city }}</div>
+              <div class="font-medium">{{ ort.address?.city }}</div>
             </td>
           </tr>
         </tbody>

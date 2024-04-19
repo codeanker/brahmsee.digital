@@ -1,0 +1,113 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}-app
+  labels:
+    {{- include "codeanker.label" . | indent 4 }}
+spec:
+  replicas: {{ .Values.app.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}-app
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}-app
+        {{- include "codeanker.label" . | indent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}-app
+          image: ghcr.io/codeanker/brahmsee.digital:{{ .Values.global.commit }}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env:
+            - name: NODE_ENV
+              value: "{{ .Values.global.env }}"
+            - name: CLIENT_URL
+              value: "https://{{ .Values.global.ingress.hosts | first }}"
+
+            # CLIENT_URL
+            - name: CLIENT_URL
+              value: "https://{{ .Values.global.ingress.hosts | first }}"
+
+            # Mail
+            - name: MAIL_SENDMAILS
+              value: "{{ .Values.app.sendgrid.enabled }}"
+            - name: MAIL_SENDGRID_APIKEY
+              valueFrom:
+                secretKeyRef:
+                  name: sendgrid
+                  key: apiKey
+
+            # Auth secrets
+            - name: AUTHENTICATION_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: authentication
+                  key: secret
+
+
+            # Postgres
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: postgres
+                  key: uri
+
+
+            # Meilisearch
+            - name: MEILISEARCH_HOST
+              value: {{ .Chart.Name }}-meilisearch-svc:7700
+            - name: MEILISEARCH_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: meilisearch
+                  key: key
+
+          # readinessProbe:
+          #   httpGet:
+          #     path: /ready
+          #     port: 9000
+          #   failureThreshold: 1
+          #   initialDelaySeconds: 5
+          #   periodSeconds: 5
+          #   successThreshold: 1
+          #   timeoutSeconds: 5
+          # livenessProbe:
+          #   httpGet:
+          #     path: /ready
+          #     port: 9000
+          #   failureThreshold: 3
+          #   initialDelaySeconds: 10
+          #   periodSeconds: 30
+          #   successThreshold: 1
+          #   timeoutSeconds: 5
+          # startupProbe:
+          #   httpGet:
+          #     path: /ready
+          #     port: 9000
+          #   failureThreshold: 3
+          #   initialDelaySeconds: 10
+          #   periodSeconds: 30
+          #   successThreshold: 1
+          #   timeoutSeconds: 5
+          resources:
+{{ toYaml .Values.app.resources | indent 12 }}
+      imagePullSecrets:
+        - name: docker-key
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Chart.Name }}-app-svc
+  labels:
+    app: {{ .Chart.Name }}-app
+    {{- include "codeanker.label" . | indent 4 }}
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+  selector:
+    app: {{ .Chart.Name }}-app

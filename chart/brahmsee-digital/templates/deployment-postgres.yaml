@@ -1,0 +1,74 @@
+{{ if .Values.postgres.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Chart.Name }}-postgres-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}-postgres
+  labels:
+  {{- include "codeanker.label" . | indent 4 }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}-postgres
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}-postgres
+        {{- include "codeanker.label" . | indent 8 }}
+    spec: # max_locks_per_transaction
+      containers:
+        - name: {{ .Chart.Name }}-postgres
+          image: "timescale/timescaledb:2.11.2-pg13"
+          env:
+            - name: POSTGRESQL_EXTRA_FLAGS
+              value: '-c shared_buffers=512MB -c max_connections=200 -c max_locks_per_transaction=1000'
+            - name: POSTGRES_USER
+              value: {{ .Values.postgres.user }}
+            - name: POSTGRES_PASSWORD
+              value: {{ .Values.postgres.password }}
+            - name: POSTGRES_DB
+              value: {{ .Values.postgres.database }}
+            - name: PGDATA
+              value: /data/postgres
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          resources:
+{{ toYaml .Values.postgres.resources | indent 12 }}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5432
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ .Chart.Name }}-postgres-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Chart.Name }}-postgres-svc
+  labels:
+    app: {{ .Chart.Name }}-postgres
+    {{- include "codeanker.label" . | indent 4 }}
+spec:
+  ports:
+    - name: http
+      port: 5432
+      targetPort: 5432
+  selector:
+    app: {{ .Chart.Name }}-postgres
+{{ end }}

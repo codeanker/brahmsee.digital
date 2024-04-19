@@ -38,13 +38,49 @@ const veranstaltungRoutes: Route[] = [
         },
       },
       {
+        name: 'VerwaltungVeranstaltungEdit',
+        path: ':veranstaltungId/edit',
+        component: () => import('./VeranstaltungEdit.vue'),
+        meta: {
+          breadcrumbs: [
+            {
+              text: 'Veranstaltung bearbeiten',
+            },
+          ],
+        },
+      },
+      {
         name: 'Verwaltung Veranstaltungsdetails',
-        path: ':veranstaltungId/detail',
+        path: ':veranstaltungId',
         component: () => import('./VeranstaltungDetail.vue'),
         meta: {
           breadcrumbs: [
             {
               text: 'Detail',
+            },
+          ],
+        },
+      },
+      {
+        name: 'Verwaltung Custom Field erstellen',
+        path: ':veranstaltungId/fields/create',
+        component: () => import('./CustomFields/CustomFieldVeranstaltungCreate.vue'),
+        meta: {
+          breadcrumbs: [
+            {
+              text: 'Benutzerdefiniertes Feld erstellen',
+            },
+          ],
+        },
+      },
+      {
+        name: 'Verwaltung Custom Field bearbeiten',
+        path: ':veranstaltungId/fields/:fieldId',
+        component: () => import('./CustomFields/CustomFieldVeranstaltungEdit.vue'),
+        meta: {
+          breadcrumbs: [
+            {
+              text: 'Benutzerdefiniertes Feld bearbeiten',
             },
           ],
         },

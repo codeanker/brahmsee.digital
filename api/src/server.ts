@@ -1,6 +1,7 @@
 import cors from '@koa/cors'
 import grant from 'grant'
 import Koa from 'koa'
+import { koaBody } from 'koa-body'
 import helmet from 'koa-helmet'
 import session from 'koa-session'
 import serve from 'koa-static'
@@ -11,7 +12,6 @@ import { createContext } from './context'
 import { logger } from './logger'
 import cacheControl from './middleware/cache-control'
 import router from './routes'
-import { isProduction } from './util/is-production'
 
 import { appRouter } from './index'
 
@@ -19,7 +19,11 @@ export const app = new Koa()
 
 app.use(
   helmet({
-    contentSecurityPolicy: isProduction(),
+    contentSecurityPolicy: {
+      directives: {
+        'img-src': ["'self'", '*.githubusercontent.com'],
+      },
+    },
   })
 )
 app.use(cors({ origin: '*' }))
@@ -38,6 +42,7 @@ app.use(
       transport: 'session',
     },
     dlrg: {
+      dynamic: ['mode'],
       transport: 'session',
       oauth: 2,
       response: ['token', 'profile'],
@@ -46,7 +51,6 @@ app.use(
       key: config.authentication.dlrg.client_id,
       scope: ['profile'],
       profile_url: 'https://iam.dlrg.net/auth/realms/master/protocol/openid-connect/userinfo',
-      state: true,
       pkce: true,
     },
   })
@@ -60,13 +64,15 @@ app.use(
   })
 )
 
+app.use(koaBody({ multipart: true }))
 app.use(router.routes())
+app.use(router.allowedMethods())
 
-// app.use(async (ctx, next) => {
-//   // serve index.html as catch all
-//   ctx.url = '/'
-//   await serve('./static')(ctx, next)
-// })
+app.use(async (ctx, next) => {
+  // serve index.html as catch all
+  ctx.url = '/'
+  await serve('./static')(ctx, next)
+})
 
 app.listen(config.server.port, config.server.host)
 logger.info(`app listening on http://0.0.0.0:${config.server.port}`)

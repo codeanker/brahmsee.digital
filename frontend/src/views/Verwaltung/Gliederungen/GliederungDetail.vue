@@ -8,10 +8,10 @@ import FormGliederungGeneral from '@/components/forms/gliederung/FormGliederungG
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
 
-const router = useRoute()
+const route = useRoute()
 
 const { state: gliederung, execute: fetchGliederung } = useAsyncState(async () => {
-  return apiClient.gliederung.verwaltungGet.query({ id: parseInt(router.params.gliederungId as string) })
+  return apiClient.gliederung.verwaltungGet.query({ id: parseInt(route.params.gliederungId as string) })
 }, null)
 
 const tabs = [

@@ -3,6 +3,8 @@ import sgMail from '@sendgrid/mail'
 
 import config from '.././config'
 
+import logActivity from './activity'
+
 sgMail.setApiKey(config.mail.sendgridApiKey)
 
 type EMailTemplateConfig = {
@@ -69,8 +71,16 @@ export async function sendMail(mailParams: EMailParams) {
       html: html,
       attachments: formatAttachments(mailParams.attachments),
     }
+
+    await logActivity({
+      type: 'EMAIL',
+      description: mailParams.subject,
+      subjectType: '',
+      metadata: mailParams,
+    })
+
     // send mail
-    if (config.mail.sendMails && config.mail.sendgridApiKey) {
+    if (config.mail.sendMails === 'true' && config.mail.sendgridApiKey) {
       // eslint-disable-next-line no-console
       console.log(`sending mail (${sendWithTemplate}) to "${mailParams.to}" with subject "${mailParams.subject}"`)
       return await sgMail.sendMultiple(mailToSend)

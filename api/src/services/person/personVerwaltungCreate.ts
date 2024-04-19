@@ -1,5 +1,6 @@
 import z from 'zod'
 
+import { updateMeiliPerson } from '../../meilisearch/person'
 import prisma from '../../prisma'
 import { defineProcedure } from '../../types/defineProcedure'
 
@@ -13,11 +14,32 @@ export const personVerwaltungCreateProcedure = defineProcedure({
     data: personSchema,
   }),
   async handler(options) {
-    return prisma.person.create({
+    const person = await prisma.person.create({
       data: await getPersonCreateData(options.input.data),
       select: {
         id: true,
+        firstname: true,
+        lastname: true,
+        birthday: true,
+        email: true,
+        gliederung: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
       },
     })
+
+    await updateMeiliPerson({
+      id: person.id,
+      firstname: person.firstname,
+      lastname: person.lastname,
+      birthday: person.birthday,
+      email: person.email,
+      gliederung: person.gliederung,
+    })
+
+    return person
   },
 })

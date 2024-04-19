@@ -126,7 +126,7 @@
 			}
 		},
 		{
-			"label": "start:prisma",
+			"label": "start:prisma studio",
 			"type": "shell",
 			"command": "npx prisma studio",
 			"options": {
@@ -178,7 +178,26 @@
 			"options": {
         "cwd": "${workspaceFolder}/api",
 				"statusbar": {
-					"hide" : true
+					"hide" : false
+				}
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"group": "start",
+				"close": false
+			},
+
+		},
+		{
+			"type": "npm",
+			"script": "initMeilisearch",
+			"label": "run:initMeilisearch",
+			"problemMatcher": [],
+			"options": {
+        "cwd": "${workspaceFolder}/api",
+				"statusbar": {
+					"hide" : false
 				}
 			},
 			"presentation": {

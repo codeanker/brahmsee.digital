@@ -6,13 +6,26 @@ import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { apiClient } from '@/api'
+import { loggedInAccount } from '@/composables/useAuthentication'
 
 const route = useRoute()
 const router = useRouter()
 
-const { state: veranstaltungen } = useAsyncState(async () => {
-  return apiClient.veranstaltung.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
-}, [])
+function loadVeranstaltungen() {
+  if (loggedInAccount.value?.role === 'ADMIN') {
+    const { state } = useAsyncState(async () => {
+      return apiClient.veranstaltung.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
+    }, [])
+    return state
+  } else {
+    const { state } = useAsyncState(async () => {
+      return apiClient.veranstaltung.gliederungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
+    }, [])
+    return state
+  }
+}
+
+const veranstaltungen = loadVeranstaltungen()
 
 let selectedVeranstaltung = ref<number>(
   +route.params.veranstaltungId || parseInt(localStorage.getItem('letzteVeranstaltung') as string)
@@ -37,7 +50,7 @@ watch(veranstaltungen, (loadedVeranstaltungen) => {
   <div class="mb-4">
     <Listbox v-model="selectedVeranstaltung">
       <ListboxButton
-        class="p-2 text-white bg-primary-600 hover:bg-primary-500 focus:outline-primary-600 w-full rounded-xl flex items-center space-x-3 text-left"
+        class="p-2 text-white bg-primary-600 dark:bg-primary-800 hover:bg-primary-500 dark:hover:bg-primary-700 focus:outline-primary-600 w-full rounded-xl flex items-center space-x-3 text-left"
       >
         <div class="shrink-0 h-8 w-8 bg-primary-100 rounded-lg flex items-center justify-center">
           <svg
@@ -66,7 +79,7 @@ watch(veranstaltungen, (loadedVeranstaltungen) => {
         leave-to-class="opacity-0"
       >
         <ListboxOptions
-          class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+          class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-dark-primary py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
         >
           <ListboxOption
             v-for="veranstaltung in veranstaltungen"
@@ -77,7 +90,7 @@ watch(veranstaltungen, (loadedVeranstaltungen) => {
           >
             <li
               :class="[
-                active ? 'bg-primary-600 text-white' : 'text-gray-900',
+                active ? 'bg-primary-600 text-white' : 'text-primary-950 dark:text-primary-50',
                 'relative cursor-default select-none py-2 pl-3 pr-9',
               ]"
             >

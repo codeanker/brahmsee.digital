@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { CodeBracketIcon, TicketIcon, UserIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
+import { watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { apiClient } from '@/api'
@@ -9,9 +10,13 @@ import FormPersonGeneral, { type FormPersonGeneralSubmit } from '@/components/fo
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
-import type { NahrungsmittelIntoleranzEnum } from '@codeanker/api/src/enumMappings'
+import { type NahrungsmittelIntoleranz } from '@codeanker/api'
 
 const route = useRoute()
+
+watch(route, () => {
+  refetchPerson()
+})
 
 const {
   state: person,
@@ -19,7 +24,10 @@ const {
   isLoading: isLoading,
 } = useAsyncState(async () => {
   const personId = route.params.personId as string
-  return await apiClient.person.verwaltungGet.query({ id: parseInt(personId) })
+  if (loggedInAccount.value?.role === 'ADMIN') {
+    return await apiClient.person.verwaltungGet.query({ id: parseInt(personId) })
+  }
+  return await apiClient.person.gliederungGet.query({ id: parseInt(personId) })
 }, null)
 
 const { execute: update } = useAsyncState(
@@ -28,7 +36,7 @@ const { execute: update } = useAsyncState(
       .filter((entry) => {
         return entry[1]
       })
-      .map((entry) => entry[0] as NahrungsmittelIntoleranzEnum)
+      .map((entry) => entry[0] as NahrungsmittelIntoleranz)
 
     await apiClient.person.verwaltungPatch.mutate({
       id: person.value!.id,
@@ -74,12 +82,10 @@ if (loggedInAccount.value?.role === 'ADMIN') {
 
 <template>
   <h5 class="mb-10">Person: {{ person?.firstname }} {{ person?.lastname }}</h5>
-  <div class="bg-white pt-2 pb-8">
+  <div class="pt-2 pb-8">
     <div class="mx-auto max-w-xl lg:mx-0">
-      <h2 class="mt-2 text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">
-        {{ person?.firstname }} {{ person?.lastname }}
-      </h2>
-      <p class="mt-2 text-md leading-6 text-gray-600">
+      <h2 class="mt-2 text-xl font-bold tracking-tight sm:text-2xl">{{ person?.firstname }} {{ person?.lastname }}</h2>
+      <p class="mt-2 text-md leading-6">
         Bearbeite die Stammdaten der Person, gleichzeitig kannst Du alle Anmeldungen der Person einsehen.
       </p>
     </div>
@@ -91,7 +97,7 @@ if (loggedInAccount.value?.role === 'ADMIN') {
   >
     <Tab>
       <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
-        <div class="text-lg font-semibold text-gray-900">Stammdaten</div>
+        <div class="text-lg font-semibold">Stammdaten</div>
       </div>
       <FormPersonGeneral
         v-if="person"
@@ -103,8 +109,8 @@ if (loggedInAccount.value?.role === 'ADMIN') {
     </Tab>
     <Tab>
       <div class="my-10">
-        <div class="text-lg font-semibold text-gray-900">Anmeldungen</div>
-        <p class="max-w-2xl text-sm text-gray-500">Informationen zu Anmeldungen</p>
+        <div class="text-lg font-semibold">Anmeldungen</div>
+        <p class="max-w-2xl text-sm">Informationen zu Anmeldungen</p>
       </div>
       <FormAnmeldungGeneral
         v-if="person"
@@ -113,8 +119,8 @@ if (loggedInAccount.value?.role === 'ADMIN') {
     </Tab>
     <Tab v-if="loggedInAccount?.role === 'ADMIN'">
       <div class="my-10">
-        <div class="text-lg font-semibold text-gray-900">Entwickler:innen</div>
-        <p class="max-w-2xl text-sm text-gray-500">Informationen für Entwickler:innen</p>
+        <div class="text-lg font-semibold">Entwickler:innen</div>
+        <p class="max-w-2xl text-sm">Informationen für Entwickler:innen</p>
       </div>
       <pre>{{ person }}</pre>
     </Tab>

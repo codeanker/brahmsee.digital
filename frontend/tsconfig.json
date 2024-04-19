@@ -57,7 +57,8 @@
       ]}
   },
   "include": [
-    "./src/**/*"
+    "./src/**/*",
+    "./tests/**/*"
   ],
   "vueCompilerOptions": {
     "target": 3

@@ -1,4 +1,4 @@
-import { AnmeldungStatus } from '@prisma/client'
+import { type AnmeldungStatus } from '@prisma/client'
 
 import { defineEnumMapping } from './defineEnumMapping'
 
@@ -9,4 +9,4 @@ export const AnmeldungStatusMapping = defineEnumMapping<AnmeldungStatus>({
   ABGELEHNT: { human: 'Abgelehnt', description: 'Anmeldung wurde durch die Verwaltung abgelehnt.' },
 })
 
-export { AnmeldungStatus }
+export { type AnmeldungStatus }

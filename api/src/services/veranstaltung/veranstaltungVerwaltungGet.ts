@@ -6,7 +6,7 @@ import { defineProcedure } from '../../types/defineProcedure'
 export const veranstaltungVerwaltungGetProcedure = defineProcedure({
   key: 'verwaltungGet',
   method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
+  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN', 'GLIEDERUNG_ADMIN'] },
   inputSchema: z.strictObject({
     id: z.number(),
   }),
@@ -33,7 +33,14 @@ export const veranstaltungVerwaltungGetProcedure = defineProcedure({
         beschreibung: true,
         datenschutz: true,
         teilnahmeBedingungen: true,
+        teilnahmeBedingungenPublic: true,
         zielgruppe: true,
+        hostname: {
+          select: {
+            id: true,
+            hostname: true,
+          },
+        },
       },
     })
     return veranstaltungWithunterveranstaltungen

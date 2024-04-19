@@ -1,8 +1,9 @@
 import { input, password as passwordInput, select } from '@inquirer/prompts'
 
-import { getEnumOptions, roleMapping, AccountStatus } from '../enumMappings'
+import { getEnumOptions, roleMapping } from '../enumMappings'
 import prisma from '../prisma'
 import { getAccountCreateData } from '../services/account/schema/account.schema'
+import logActivity from '../util/activity'
 
 createUser()
 async function createUser() {
@@ -42,16 +43,24 @@ async function createUser() {
     gender: 'FEMALE',
   })
 
-  await prisma.account.create({
+  const res = await prisma.account.create({
     data: {
       ...accountData,
-      status: AccountStatus.AKTIV,
-      activationToken: '',
+      status: 'AKTIV',
+      activationToken: null,
     },
     select: {
       id: true,
     },
   })
+
+  await logActivity({
+    type: 'CREATE',
+    description: `account was created via CLI script`,
+    subjectType: 'account',
+    subjectId: res.id,
+  })
+
   // eslint-disable-next-line no-console
   console.log('Nutzer erstellt')
   process.exit()

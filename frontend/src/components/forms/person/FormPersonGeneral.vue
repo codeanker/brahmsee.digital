@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ArrowTopRightOnSquareIcon } from '@heroicons/vue/24/outline'
 import { ref } from 'vue'
 
 import type { IAddress } from '../anmeldung/Address.vue'
@@ -15,12 +16,14 @@ import FormTShirtBestellungGeneral from './FormTShirtBestellungGeneral.vue'
 
 import { apiClient } from '@/api'
 import BasicCheckbox from '@/components/BasicInputs/BasicCheckbox.vue'
+import BasicTextArea from '@/components/BasicInputs/BasicTextArea.vue'
 import BasicTypeahead from '@/components/BasicInputs/BasicTypeahead.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import Loading from '@/components/UIComponents/Loading.vue'
 import type { RouterOutput } from '@codeanker/api'
-import type { Gliederung } from '@codeanker/api/src/services/gliederung/schema/gliederung.schema'
 import { ValidateForm } from '@codeanker/validation'
+
+type Gliederung = Awaited<RouterOutput['gliederung']['publicList']>[number]
 
 export interface FormPersonGeneralSubmit {
   stammdaten: IStammdaten
@@ -30,6 +33,7 @@ export interface FormPersonGeneralSubmit {
   essgewohnheiten: IEssgewohnheiten
   tshirt: ITShirtBestellung
   gliederung: Gliederung
+  comment: string
 }
 
 type Person = Awaited<RouterOutput['person']['verwaltungGet']>
@@ -40,10 +44,12 @@ const props = defineProps<{
   person?: Person
   submitText?: string
   error?: Error
+  showTshirt?: boolean
 }>()
 
 const emit = defineEmits<{
   (event: 'submit', data: FormPersonGeneralSubmit): void
+  (event: 'showTerms'): void
 }>()
 
 async function queryGliederungen(searchTerm: string) {
@@ -56,7 +62,7 @@ async function queryGliederungen(searchTerm: string) {
 const stammdatenForm = ref<IStammdaten>({
   firstname: props.person?.firstname ?? '',
   lastname: props.person?.lastname ?? '',
-  birthday: props.person?.birthday ?? new Date(),
+  birthday: props.person?.birthday ?? null,
   gender: props.person?.gender ?? 'MALE',
 })
 
@@ -76,6 +82,19 @@ const notfallKontakteForm = ref<INotfallKontakte>({
   personen: props.person?.notfallkontakte ?? [],
 })
 
+/**
+ * Format the notfallKontakte to the correct format
+ */
+const formatNotfallKontakte = (notfallKontakte: INotfallKontakte) => {
+  const personen = notfallKontakte.personen.map((person) => ({
+    firstname: person.firstname,
+    lastname: person.lastname,
+    telefon: person.telefon,
+    istErziehungsberechtigt: person.istErziehungsberechtigt ?? false,
+  }))
+  return { personen }
+}
+
 const essgewohnheitenForm = ref<IEssgewohnheiten>({
   essgewohnheit: props.person?.essgewohnheit ?? 'VEGETARISCH',
   intoleranzen: {
@@ -86,6 +105,8 @@ const essgewohnheitenForm = ref<IEssgewohnheiten>({
   },
   weitereIntoleranzen: props.person?.weitereIntoleranzen ?? [],
 })
+
+const comment = ref('')
 
 const tshirtForm = ref<ITShirtBestellung>({
   bestellen: false,
@@ -104,8 +125,9 @@ const submit = () => {
     address: addressForm.value,
     contact: contactForm.value,
     essgewohnheiten: essgewohnheitenForm.value,
-    notfallKontakte: notfallKontakteForm.value,
+    notfallKontakte: formatNotfallKontakte(notfallKontakteForm.value),
     tshirt: tshirtForm.value,
+    comment: comment.value,
   })
 }
 </script>
@@ -142,21 +164,52 @@ const submit = () => {
     <hr class="my-5" />
 
     <template v-if="isPublicAnmeldung">
-      <FormTShirtBestellungGeneral v-model="tshirtForm" />
+      <BasicTextArea
+        v-model="comment"
+        label="Bemerkung"
+        :rows="3"
+      ></BasicTextArea>
       <hr class="my-5" />
+    </template>
+
+    <slot></slot>
+
+    <template v-if="isPublicAnmeldung">
+      <template v-if="showTshirt">
+        <FormTShirtBestellungGeneral v-model="tshirtForm" />
+        <hr class="my-5" />
+      </template>
 
       <BasicCheckbox
         v-model="acceptTeilnahmebedingungen"
-        label="Ich habe die allgemeinen Teilnahmebedingungen gelesen und akzeptiere diese."
         class="mt-1 font-medium"
         required
-      />
+      >
+        <span>Ich habe die allgemeinen </span>
+        <u
+          class="cursor-pointer"
+          @click="emit('showTerms')"
+        >
+          <span>Teilnahmebedingungen</span>
+          <ArrowTopRightOnSquareIcon class="h-4 inline ml-1" />
+        </u>
+        <span> gelesen und akzeptiere diese.</span>
+      </BasicCheckbox>
       <BasicCheckbox
         v-model="acceptDatenschutz"
-        label="Ich habe die gesonderten Datenschutzerklärung gelesen und akzeptiere diese."
         class="mt-1 font-medium"
         required
-      />
+      >
+        <span>Ich habe die gesonderten </span>
+        <u
+          class="cursor-pointer"
+          @click="emit('showTerms')"
+        >
+          <span>Datenschutzerklärung</span>
+          <ArrowTopRightOnSquareIcon class="h-4 inline ml-1" />
+        </u>
+        <span> gelesen und akzeptiere diese.</span>
+      </BasicCheckbox>
     </template>
 
     <Button
@@ -173,7 +226,7 @@ const submit = () => {
       </span>
     </Button>
 
-    <template v-if="error">
+    <template v-if="error && error.message">
       <pre><code>
         {{ error.message }}
       </code></pre>

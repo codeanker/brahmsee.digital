@@ -3,6 +3,8 @@ import { renderTrpcPanel } from 'trpc-panel'
 
 import { appRouter } from '..'
 import config from '../config'
+import addExports from '../exports'
+import addMiddlewares from '../middleware'
 import { isDevelopment } from '../util/is-production'
 
 import connect from './connect'
@@ -20,5 +22,8 @@ if (isDevelopment()) {
     })
   })
 }
+
+addExports(koaRouter)
+addMiddlewares(koaRouter)
 
 export default koaRouter

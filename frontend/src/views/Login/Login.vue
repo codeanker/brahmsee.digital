@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
@@ -24,6 +24,10 @@ if (location.hash) {
     localStorage.setItem('jwt', jwt)
     location.hash = ''
   }
+  const error = hashParams.get('error')
+  if (error) {
+    loginError.value = new Error(error)
+  }
 }
 
 async function loginWithRecirect() {
@@ -33,11 +37,16 @@ async function loginWithRecirect() {
       return router.push(route.query.redirect as string)
     } else {
       let letzteVeranstaltung = localStorage.getItem('letzteVeranstaltung')
-      if (letzteVeranstaltung) return router.push(`/veranstaltung/${letzteVeranstaltung}/dashboard`)
-      else return router.push({ name: 'Dashboard', params: { veranstaltungId: letzteVeranstaltung } })
+      if (letzteVeranstaltung)
+        return router.push({ name: 'Dashboard', params: { veranstaltungId: letzteVeranstaltung } })
+      else return router.push({ name: 'Auschreibungen' })
     }
   }
 }
+
+const formatLoginError = computed(() => {
+  return loginError.value ? loginError.value.message.replace('TRPCClientError: ', '') : ''
+})
 
 const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.env.VITE_APP_COMMIT_HASH || 'unknown'}`
 </script>
@@ -54,9 +63,9 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
         v-if="loginError"
         class="bg-danger-100 text-danger-600 mb-10 rounded p-2 text-center"
       >
-        {{ loginError }}
+        {{ formatLoginError }}
       </div>
-      <div class="bg-white px-6 py-12 sm:rounded-lg sm:px-12">
+      <div class="px-6 py-12 sm:rounded-lg sm:px-12">
         <ValidateForm
           class="space-y-8"
           @submit="loginWithRecirect"
@@ -106,17 +115,17 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
               class="absolute inset-0 flex items-center"
               aria-hidden="true"
             >
-              <div class="w-full border-t border-gray-200"></div>
+              <div class="w-full border-t border-gray-200 dark:border-gray-800"></div>
             </div>
             <div class="relative flex justify-center text-sm font-medium leading-6">
-              <span class="bg-white px-6 text-gray-900">oder anmelden mit</span>
+              <span class="bg-white dark:bg-dark-primary px-6">oder anmelden mit</span>
             </div>
           </div>
 
           <div class="mt-6">
             <a
-              href="/api/connect/dlrg"
-              class="flex w-full items-center justify-center gap-3 rounded-md bg-[#e30613] px-3 py-2 text-sm font-semibold text-gray-900 hover:bg-[#CA0511] focus-visible:ring-transparent"
+              href="/api/connect/dlrg?mode=login"
+              class="flex w-full items-center justify-center gap-3 rounded-md bg-[#e30613] px-3 py-2 text-sm font-semibold hover:bg-[#CA0511] focus-visible:ring-transparent"
             >
               <svg
                 class="h-5"
@@ -171,7 +180,7 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
         </div>
       </div>
 
-      <p class="mt-5 lg:mt-10 text-center text-sm text-gray-500">
+      <p class="mt-5 lg:mt-10 text-center text-sm">
         Noch kein Konto?
         <RouterLink
           :to="{ name: 'Registrierung' }"
@@ -179,14 +188,14 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
           >Registriere dich jetzt</RouterLink
         >
       </p>
-      <p class="flex items-center justify-center mt-20 text-center text-xs text-gray-500">
+      <p class="flex items-center justify-center mt-20 text-center text-xs">
         {{ version }}
         <span class="mx-1">-</span>
         <a
-          href="https://github.com/codeanker/brahmsee.digital"
+          href="https://codeanker.de?utm_source=brahmsee.digital"
           target="_blank"
           rel="noopener noreferrer"
-          class="font-medium leading-6 text-gray-600 hover:text-primary-500"
+          class="font-medium leading-6 hover:text-primary-500"
           >Supported by CODEANKER</a
         >
       </p>

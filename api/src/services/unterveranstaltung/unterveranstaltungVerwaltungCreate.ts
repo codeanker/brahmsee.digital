@@ -17,7 +17,8 @@ export const unterveranstaltungVerwaltungCreateProcedure = defineProcedure({
       meldeschluss: z.date(),
       gliederungId: z.number().int(),
       type: z.nativeEnum(UnterveranstaltungType),
-      beschreibung: z.string(),
+      beschreibung: z.string().optional(),
+      bedingungen: z.string().optional(),
     }),
   }),
   async handler(options) {

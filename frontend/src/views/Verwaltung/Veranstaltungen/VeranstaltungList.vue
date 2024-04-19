@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { PlusIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 
 import { apiClient } from '@/api'
@@ -17,75 +18,79 @@ function formatDate(indate) {
 
 <template>
   <div>
-    <h5>Veranstaltungen</h5>
-    <div class="flow-root">
-      <p class="mt-8 text-sm text-gray-500">
-        <b>Tipp</b>: Zum Bearbeiten einer Veranstaltung die entsprechende Zeile anklicken.
-      </p>
+    <div class="flex items-center justify-between my-8">
+      <div class="flex flex-col">
+        <h5 class="mb-0">Veranstaltungen</h5>
+        <p class="text-sm"><b>Tipp</b>: Zum Bearbeiten einer Veranstaltung die entsprechende Zeile anklicken.</p>
+      </div>
       <RouterLink
-        class="text-primary-600"
-        to="/verwaltung/veranstaltung/erstellen"
-        >Veranstaltung erstellen</RouterLink
+        class="text-primary-500 flex items-center"
+        :to="{ name: 'Verwaltung Veranstaltung erstellen' }"
       >
-      <table class="min-w-full divide-y divide-gray-300">
+        <PlusIcon class="h-5 w-5 mr-1"></PlusIcon>
+        Veranstaltung erstellen
+      </RouterLink>
+    </div>
+    <div class="flow-root">
+      <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
         <thead>
           <tr>
             <th
               scope="col"
-              class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+              class="px-3 py-3.5 text-left text-sm font-semibold"
             >
               Id
             </th>
             <th
               scope="col"
-              class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+              class="px-3 py-3.5 text-left text-sm font-semibold"
             >
               Name
             </th>
             <th
               scope="col"
-              class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+              class="px-3 py-3.5 text-left text-sm font-semibold"
             >
               Zeitraum
             </th>
             <th
               scope="col"
-              class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+              class="px-3 py-3.5 text-left text-sm font-semibold"
             >
               Meldeschluss
             </th>
             <th
               scope="col"
-              class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+              class="px-3 py-3.5 text-left text-sm font-semibold"
             >
               Teilnahmegebühr
             </th>
             <th
               scope="col"
-              class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+              class="px-3 py-3.5 text-left text-sm font-semibold"
             >
               max. TN
             </th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-gray-200 bg-white">
+        <tbody class="divide-y divide-gray-200 dark:divide-gray-800 bg-white dark:bg-dark-primary">
           <tr
             v-for="veranstaltung in veranstaltungenList"
             :key="veranstaltung.id"
-            class="cursor-pointer even:bg-gray-50 hover:bg-gray-100"
+            class="cursor-pointer even:bg-gray-50 dark:even:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800"
             :title="veranstaltung.name + ' bearbeiten'"
             @click="
               router.push({ name: 'Verwaltung Veranstaltungsdetails', params: { veranstaltungId: veranstaltung.id } })
             "
           >
             <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-              <div class="text-gray-900">{{ veranstaltung.id }}</div>
+              <div>{{ veranstaltung.id }}</div>
+            </td>
+            <td class="py-5 pl-4 pr-3 text-sm">
+              <div class="font-medium">{{ veranstaltung.name }}</div>
             </td>
             <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-              <div class="font-medium text-gray-900">{{ veranstaltung.name }}</div>
-            </td>
-            <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-              <div class="font-medium text-gray-900">
+              <div class="font-medium">
                 {{ formatDate(veranstaltung.beginn)
                 }}<span v-if="veranstaltung.beginn.getTime() !== veranstaltung.ende.getTime()"
                   >-{{ formatDate(veranstaltung.ende) }}</span
@@ -93,15 +98,15 @@ function formatDate(indate) {
               </div>
             </td>
             <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-              <div class="font-medium text-gray-900">
+              <div class="font-medium">
                 {{ formatDate(veranstaltung.meldeschluss) }}
               </div>
             </td>
             <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-              <div class="font-medium text-gray-900">{{ veranstaltung.teilnahmegebuehr }}€</div>
+              <div class="font-medium">{{ veranstaltung.teilnahmegebuehr }}€</div>
             </td>
             <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-              <div class="font-medium text-gray-900">{{ veranstaltung.maxTeilnehmende }}</div>
+              <div class="font-medium">{{ veranstaltung.maxTeilnehmende }}</div>
             </td>
           </tr>
         </tbody>

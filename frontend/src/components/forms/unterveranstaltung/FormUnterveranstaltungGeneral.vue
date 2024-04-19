@@ -13,7 +13,7 @@ import Button from '@/components/UIComponents/Button.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
 import router from '@/router'
 import type { RouterInput } from '@codeanker/api'
-import { UnterveranstaltungTypeMapping, getEnumOptions } from '@codeanker/api/src/enumMappings'
+import { UnterveranstaltungTypeMapping, getEnumOptions } from '@codeanker/api'
 import { ValidateForm } from '@codeanker/validation'
 
 const props = defineProps<{
@@ -27,6 +27,7 @@ const props = defineProps<{
 
 const unterveranstaltungCopy = ref({
   beschreibung: props.unterveranstaltung?.beschreibung,
+  bedingungen: props.unterveranstaltung?.bedingungen,
   maxTeilnehmende: props.unterveranstaltung?.maxTeilnehmende,
   meldebeginn: props.unterveranstaltung?.meldebeginn,
   meldeschluss: props.unterveranstaltung?.meldeschluss,
@@ -45,7 +46,6 @@ if (props.mode === 'create') {
 }
 
 function useVeranstaltungList(isAdmin: boolean) {
-  // return computed(() => {
   if (isAdmin) {
     const { state } = useAsyncState(async () => {
       return apiClient.veranstaltung.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
@@ -53,7 +53,7 @@ function useVeranstaltungList(isAdmin: boolean) {
     return state
   } else {
     const { state } = useAsyncState(async () => {
-      return apiClient.veranstaltung.gliederungList.query()
+      return apiClient.veranstaltung.gliederungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
     }, [])
     return state
   }
@@ -95,6 +95,9 @@ const {
       delete unterveranstaltungCopy.value.gliederungId
       delete unterveranstaltungCopy.value.veranstaltungId
       delete unterveranstaltungCopy.value.type
+      if (unterveranstaltungCopy.value.bedingungen === null) {
+        delete unterveranstaltungCopy.value.bedingungen
+      }
       await apiClient.unterveranstaltung.verwaltungPatch.mutate({
         id: unterveranstaltungId,
         data: unterveranstaltungCopy.value as unknown as RouterInput['unterveranstaltung']['verwaltungPatch']['data'],
@@ -103,6 +106,9 @@ const {
       delete unterveranstaltungCopy.value.gliederungId
       delete unterveranstaltungCopy.value.veranstaltungId
       delete unterveranstaltungCopy.value.type
+      if (unterveranstaltungCopy.value.bedingungen === null) {
+        delete unterveranstaltungCopy.value.bedingungen
+      }
       await apiClient.unterveranstaltung.gliederungPatch.mutate({
         id: unterveranstaltungId,
         data: unterveranstaltungCopy.value as unknown as RouterInput['unterveranstaltung']['gliederungPatch']['data'],
@@ -255,6 +261,12 @@ const disableddates = computed(() => {
           v-model="unterveranstaltungCopy.beschreibung"
           required
           label="Beschreibung"
+        />
+      </div>
+      <div class="lg:col-span-full">
+        <BasicEditor
+          v-model="unterveranstaltungCopy.bedingungen"
+          label="Bedingungen"
         />
       </div>
     </div>

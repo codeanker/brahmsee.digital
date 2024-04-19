@@ -1,0 +1,34 @@
+global:
+  commit: "local"
+  env: "staging"
+  ingress:
+    hosts: ["brahmsee-digital.localhost"]
+
+app:
+  replicaCount: 1
+  sendgrid:
+    enabled: true
+    apiKey: ""
+  resources:
+    requests:
+      cpu: 250m
+      memory: 256Mi
+  jwt_secret: ""
+  meilisearch:
+    key: 'defaultKey'
+
+postgres:
+  enabled: true
+  user: postgres
+  password: postgres
+  database: brahmsee-digital
+  resources:
+    requests:
+      cpu: "250m"
+      memory: "256Mi"
+
+meilisearch:
+  resources:
+    requests:
+      cpu: "1m"
+      memory: "1Gi"

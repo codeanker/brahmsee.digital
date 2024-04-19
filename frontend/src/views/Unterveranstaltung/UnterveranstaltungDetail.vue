@@ -2,24 +2,26 @@
 import {
   ClipboardDocumentListIcon,
   CodeBracketIcon,
-  MegaphoneIcon,
-  ShieldCheckIcon,
   DocumentDuplicateIcon,
+  DocumentIcon,
+  MegaphoneIcon,
   RocketLaunchIcon,
   UserGroupIcon,
-  CheckCircleIcon,
+  UsersIcon,
 } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { apiClient } from '@/api'
+import AnmeldungenTable from '@/components/AnmeldungenTable.vue'
+import FilesExport from '@/components/FilesExport.vue'
+import Badge from '@/components/UIComponents/Badge.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import InfoList from '@/components/UIComponents/InfoList.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
-import router from '@/router'
-import { dayjs, formatDate } from '@codeanker/helpers'
+import { formatDate } from '@codeanker/helpers'
 
 const route = useRoute()
 
@@ -33,17 +35,22 @@ const { state: unterveranstaltung } = useAsyncState(async () => {
   })
 }, undefined)
 
-const { state: anmeldungen } = useAsyncState(
-  async () => {
-    if (loggedInAccount.value?.role === 'ADMIN')
-      return apiClient.anmeldung.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
-    return apiClient.anmeldung.gliederungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
-  },
-  [],
-  {
-    immediate: true,
-  }
-)
+const { state: countAnmeldungen } = useAsyncState(async () => {
+  if (loggedInAccount.value?.role === 'ADMIN')
+    return apiClient.anmeldung.verwaltungCount.query({
+      filter: {
+        unterveranstaltungId: parseInt(route.params.unterveranstaltungId as string),
+      },
+    })
+  else
+    return apiClient.anmeldung.gliederungCount.query({
+      filter: {
+        unterveranstaltungId: parseInt(route.params.unterveranstaltungId as string),
+      },
+    })
+}, [])
+
+// @ToDo count for Gliederungen
 
 interface KeyInfo {
   title: string
@@ -65,6 +72,7 @@ const keyInfos = computed<KeyInfo[]>(() => {
       { title: 'Meldeschluss', value: formatDate(unterveranstaltung.value.meldeschluss) },
       { title: 'Veranstaltungsort', value: unterveranstaltung.value.veranstaltung.ort?.name ?? '' },
       { title: 'Teilnahmebeitrag', value: unterveranstaltung.value.teilnahmegebuehr + '€' },
+      { title: 'max. Teilnahmezahl', value: unterveranstaltung.value.maxTeilnehmende + '' },
       { title: 'Zielgruppe', value: unterveranstaltung.value.veranstaltung.zielgruppe ?? '' },
     ]
   } else {
@@ -75,9 +83,9 @@ const keyInfos = computed<KeyInfo[]>(() => {
 const tabs = computed(() => {
   let tabs = [
     { name: 'Ausschreibung', icon: MegaphoneIcon },
-    { name: 'Anmeldungen', icon: UserGroupIcon, count: anmeldungen.value.length },
+    { name: 'Anmeldungen', icon: UserGroupIcon, count: countAnmeldungen.value?.total },
+    { name: 'Dokumente', icon: DocumentIcon },
     { name: 'Bedingungen', icon: ClipboardDocumentListIcon },
-    { name: 'Datenschutz', icon: ShieldCheckIcon },
   ]
   if (loggedInAccount.value?.role === 'ADMIN') {
     tabs.push({ name: 'Entwickler:in', icon: CodeBracketIcon })
@@ -86,8 +94,8 @@ const tabs = computed(() => {
 })
 
 const publicLink = computed(() => {
-  if (unterveranstaltung.value) {
-    return `${window.location.origin}/ausschreibung/${unterveranstaltung.value.id}`
+  if (unterveranstaltung?.value && unterveranstaltung.value.veranstaltung?.hostname?.hostname) {
+    return `https://${unterveranstaltung?.value.veranstaltung?.hostname.hostname}/ausschreibung/${unterveranstaltung.value.id}`
   }
   return ''
 })
@@ -95,17 +103,43 @@ const publicLink = computed(() => {
 function copyLink() {
   navigator.clipboard.writeText(publicLink.value)
 }
+
+//** Export Documents */
+
+const getJWT = () => {
+  return localStorage.getItem('jwt')
+}
+const exportParams = `jwt=${getJWT()}&unterveranstaltungId=${route.params.unterveranstaltungId}`
+
+const files = [
+  {
+    name: 'Teilnehmendenliste',
+    icon: UsersIcon,
+    href: `/api/export/sheet/teilnehmendenliste?${exportParams}`,
+    description: 'Liste aller Teilnehmenden',
+    bgColor: 'bg-blue-600',
+    hoverColor: 'hover:text-blue-700',
+  },
+  {
+    name: 'Verpflegung',
+    initial: 'VP',
+    href: `/api/export/sheet/verpflegung?${exportParams}`,
+    description: 'Übersicht der Verpflegungswünsche',
+    bgColor: 'bg-primary-600',
+    hoverColor: 'hover:text-primary-700',
+  },
+]
 </script>
 
 <template>
   <div>
     <h5 class="mb-10">Ausschreibung für {{ unterveranstaltung?.veranstaltung?.name }}</h5>
-    <div class="bg-white pt-2 pb-8">
+    <div class="pt-2 pb-8">
       <div class="mx-auto max-w-2xl lg:mx-0">
-        <h2 class="mt-2 text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+        <h2 class="mt-2 text-2xl font-bold tracking-tight sm:text-4xl">
           {{ unterveranstaltung?.veranstaltung?.name }}
         </h2>
-        <p class="mt-4 text-md leading-6 text-gray-600">
+        <p class="mt-4 text-md leading-6">
           Erstelle und bearbeite deine Ausschreibung, Teilnehmende können sich direkt über die Ausschreibung anmelden,
           so behältst Du den Überblick.
         </p>
@@ -116,17 +150,17 @@ function copyLink() {
       :tabs="tabs"
     >
       <Tab>
-        <div class="p-6 bg-primary-100 rounded-md my-8 flex items-top space-x-4">
-          <div><RocketLaunchIcon class="h-10 w-10 text-primary-600"></RocketLaunchIcon></div>
+        <div class="p-6 bg-primary-100 dark:bg-primary-900 rounded-md my-8 flex items-top space-x-4">
+          <div><RocketLaunchIcon class="h-10 w-10 text-primary-500"></RocketLaunchIcon></div>
           <div>
-            <div class="font-bold text-lg text-primary-600">Juhuuu deine Ausschreibung ist ready</div>
+            <div class="font-bold text-lg text-primary-500">Juhuuu deine Ausschreibung ist ready</div>
             <div>Teilnehmende können sich unter dem folgenden Link anmelden.</div>
             <div class="flex mt-4">
               <input
                 id="linkInput"
                 v-model="publicLink"
                 type="text"
-                class="form-control rounded-r-none bg-white"
+                class="form-control rounded-r-none bg-white dark:bg-primary-950"
                 placeholder="Link"
                 readonly
               />
@@ -142,9 +176,9 @@ function copyLink() {
         </div>
 
         <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
-          <div class="text-lg font-semibold text-gray-900">Veranstaltungsdaten</div>
+          <div class="text-lg font-semibold">Veranstaltungsdaten</div>
           <RouterLink
-            class="text-primary-600"
+            class="text-primary-500"
             :to="{ name: 'UnterveranstaltungEdit' }"
             >Ausschreibung bearbeiten</RouterLink
           >
@@ -152,7 +186,7 @@ function copyLink() {
 
         <InfoList :infos="keyInfos" />
 
-        <div class="mt-5 lg:mt-10 mb-5 text-lg font-semibold text-gray-900">Beschreibung</div>
+        <div class="mt-5 lg:mt-10 mb-5 text-lg font-semibold">Beschreibung</div>
         <div class="px-3 py-5">
           <div
             class="prose prose-neutra"
@@ -162,123 +196,67 @@ function copyLink() {
       </Tab>
       <Tab>
         <div class="my-10">
-          <div class="text-lg font-semibold text-gray-900">Anmeldungen</div>
-          <p class="max-w-2xl text-sm text-gray-500">Die folgenden Personen haben sich angemeldet</p>
+          <div class="text-lg font-semibold">Anmeldungen</div>
+          <p class="max-w-2xl text-sm">Die folgenden Personen haben sich angemeldet</p>
         </div>
-        <table
-          v-if="anmeldungen.length"
-          class="min-w-full divide-y divide-gray-300"
-        >
-          <thead>
-            <tr>
-              <th
-                scope="col"
-                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"
-              >
-                Name
-              </th>
-              <th
-                scope="col"
-                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-              >
-                Alter
-              </th>
-              <th
-                v-if="loggedInAccount?.role === 'ADMIN'"
-                scope="col"
-                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-              >
-                Gliederung
-              </th>
-              <th
-                scope="col"
-                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-              >
-                Account
-              </th>
-              <th
-                scope="col"
-                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-              >
-                T-Shirt
-              </th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-200 bg-white">
-            <tr
-              v-for="anmeldung in anmeldungen"
-              :key="anmeldung.id"
-              class="cursor-pointer even:bg-gray-50 hover:bg-gray-100"
-              :title="anmeldung.person.firstname + ' ' + anmeldung.person.lastname + ' bearbeiten'"
-              @click="router.push({ name: 'Verwaltung Persondetails', params: { personId: anmeldung.person.id } })"
-            >
-              <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-                <div class="text-gray-900">{{ anmeldung.person.firstname }} {{ anmeldung.person.lastname }}</div>
-              </td>
-              <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                <div v-if="anmeldung.person.birthday">
-                  {{ dayjs().diff(anmeldung.person.birthday, 'year') }} Jahre
-                  <br />
-                  {{ formatDate(anmeldung.person.birthday) }}
-                </div>
-              </td>
-              <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                {{ anmeldung.person.gliederung?.name }}
-              </td>
-              <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                <div class="flex items-center">Todo: {{ anmeldung.status }}</div>
-              </td>
-              <td
-                v-if="loggedInAccount?.role === 'ADMIN'"
-                class="whitespace-nowrap px-3 py-5 text-sm text-gray-500"
-              >
-                Größe <span v-if="anmeldung.tshirtBestellt">{{ anmeldung.person.konfektionsgroesse }}</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div
-          v-if="anmeldungen.length <= 0"
-          class="rounded-md bg-blue-50 p-4"
-        >
-          <div class="flex">
-            <div class="flex-shrink-0">
-              <CheckCircleIcon
-                class="h-5 w-5 text-blue-400"
-                aria-hidden="true"
-              />
-            </div>
-            <div class="ml-3 flex-1 md:flex md:justify-between">
-              <p class="text-sm text-blue-700 mb-0">Es gibt bisher keine Anmeldungen.</p>
-            </div>
-          </div>
-        </div>
+        <AnmeldungenTable
+          v-if="unterveranstaltung"
+          :unterveranstaltung-id="unterveranstaltung?.id"
+        />
       </Tab>
       <Tab>
         <div class="my-10">
-          <div class="text-lg font-semibold text-gray-900">Teilnahmebedingungen</div>
-          <p class="max-w-2xl text-sm text-gray-500">Bitte beachte die folgenden Teilnahmebedingungen</p>
+          <div class="text-lg font-semibold">Dokumente</div>
+          <p class="max-w-2xl text-sm text-gray-500">Exports von Daten zu dieser Veranstaltung</p>
+        </div>
+        <FilesExport :files="files" />
+      </Tab>
+      <Tab>
+        <div class="my-10">
+          <div class="text-lg font-semibold">Bedingungen <Badge color="secondary">Gliederung</Badge></div>
+          <p class="max-w-2xl text-sm">Bitte beachte die folgenden Bedingungen</p>
+        </div>
+        <div
+          class="prose prose-neutra"
+          v-html="unterveranstaltung?.bedingungen"
+        ></div>
+        <hr class="my-10" />
+        <div class="my-10">
+          <div class="text-lg font-semibold">Öffentliche Teilnahmebedingungen <Badge>Veranstaltung</Badge></div>
+          <p class="max-w-2xl text-sm">
+            Bitte beachte die folgenden Teilnahmebedingungen, diese sind bei der Anmeldung öffentlich einsehbar.
+          </p>
+        </div>
+        <div
+          class="prose prose-neutra"
+          v-html="unterveranstaltung?.veranstaltung?.teilnahmeBedingungenPublic"
+        ></div>
+        <hr class="my-10" />
+        <div class="my-10">
+          <div class="text-lg font-semibold">Interne Teilnahmebedingungen <Badge>Veranstaltung</Badge></div>
+          <p class="max-w-2xl text-sm">Bitte beachte die folgenden Teilnahmebedingungen für die Gliederung</p>
         </div>
         <div
           class="prose prose-neutra"
           v-html="unterveranstaltung?.veranstaltung?.teilnahmeBedingungen"
         ></div>
-      </Tab>
-      <Tab>
+        <hr class="my-10" />
         <div class="my-10">
-          <div class="text-lg font-semibold text-gray-900">Datenschutz</div>
-          <p class="max-w-2xl text-sm text-gray-500">Bitte beachte die Hinweise zum Datenschutz</p>
+          <div class="text-lg font-semibold">Datenschutz <Badge>Veranstaltung</Badge></div>
+          <p class="max-w-2xl text-sm">Bitte beachte die Hinweise zum Datenschutz</p>
         </div>
         <div
           class="prose prose-neutra"
           v-html="unterveranstaltung?.veranstaltung?.datenschutz"
         ></div>
       </Tab>
+
       <Tab v-if="loggedInAccount?.role === 'ADMIN'">
         <div class="my-10">
-          <div class="text-lg font-semibold text-gray-900">Entwickler:innen</div>
-          <p class="max-w-2xl text-sm text-gray-500">Informationen zur Veranstaltung</p>
+          <div class="text-lg font-semibold">Entwickler:innen</div>
+          <p class="max-w-2xl text-sm">Informationen zur Veranstaltung</p>
         </div>
+
         <pre>{{ unterveranstaltung }}</pre>
       </Tab>
     </Tabs>

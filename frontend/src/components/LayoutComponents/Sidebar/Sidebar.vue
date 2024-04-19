@@ -14,6 +14,8 @@ import {
   PuzzlePieceIcon,
   FingerPrintIcon,
   TicketIcon,
+  QueueListIcon,
+  HandThumbUpIcon,
 } from '@heroicons/vue/24/outline'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
@@ -53,28 +55,36 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
   {
     type: 'SidebarItem',
     name: 'Anmeldungen',
-    route: { name: 'VeranstaltungAnmeldung', params: { veranstaltungId: veranstaltungId.value } },
+    route: { name: 'VeranstaltungAnmeldungenTeilnehmende', params: { veranstaltungId: veranstaltungId.value } },
+    icon: UserGroupIcon,
+    disabled: veranstaltungId.value === undefined,
+    visible: hasPermissionToView(['GLIEDERUNG_ADMIN']),
+  },
+  {
+    type: 'SidebarItem',
+    name: 'Anmeldungen',
+    route: { name: 'VeranstaltungAnmeldungenTeilnehmende', params: { veranstaltungId: veranstaltungId.value } },
     icon: TicketIcon,
     showChildren: false,
     disabled: veranstaltungId.value === undefined,
-    visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
+    visible: hasPermissionToView(['ADMIN']),
     children: [
-      {
-        type: 'SidebarItem',
-        name: 'CREW',
-        route: { name: 'VeranstaltungAnmeldungenCrew', params: { veranstaltungId: veranstaltungId.value } },
-        icon: UserGroupIcon,
-        disabled: true,
-        visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
-      },
-      {
-        type: 'SidebarItem',
-        name: 'Gliederungen',
-        route: { name: 'VeranstaltungAnmeldungenGliederungen', params: { veranstaltungId: veranstaltungId.value } },
-        icon: UserGroupIcon,
-        disabled: true,
-        visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
-      },
+      // {
+      //   type: 'SidebarItem',
+      //   name: 'CREW',
+      //   route: { name: 'VeranstaltungAnmeldungenCrew', params: { veranstaltungId: veranstaltungId.value } },
+      //   icon: UserGroupIcon,
+      //   disabled: true,
+      //   visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
+      // },
+      // {
+      //   type: 'SidebarItem',
+      //   name: 'Gliederungen',
+      //   route: { name: 'VeranstaltungAnmeldungenGliederungen', params: { veranstaltungId: veranstaltungId.value } },
+      //   icon: UserGroupIcon,
+      //   disabled: true,
+      //   visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
+      // },
       {
         type: 'SidebarItem',
         name: 'Teilnehmende',
@@ -153,7 +163,14 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     icon: GlobeEuropeAfricaIcon,
     visible: hasPermissionToView(['ADMIN']),
   },
-  { type: 'DividerItem', name: 'Entwicklung', visible: hasPermissionToView(['ADMIN']) },
+  {
+    type: 'SidebarItem',
+    name: 'Aktivität',
+    route: { name: 'Verwaltung Aktivitäten' },
+    icon: QueueListIcon,
+    visible: hasPermissionToView(['ADMIN']),
+  },
+  { type: 'DividerItem', name: 'Entwicklung', visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']) },
   {
     type: 'SidebarItem',
     name: 'Komponenten',
@@ -161,11 +178,18 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     icon: CubeIcon,
     visible: hasPermissionToView(['ADMIN']),
   },
+  {
+    type: 'SidebarItem',
+    name: 'Mitwirkende',
+    route: { name: 'Mitwirkende' },
+    icon: HandThumbUpIcon,
+    visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
+  },
 ])
 </script>
 
 <template>
-  <div class="h-full flex flex-col text-primary-900 font-medium p-6 pb-0 lg:px-0 lg:pt-12">
+  <div class="h-full flex flex-col text-primary-900 dark:text-gray-200 font-medium p-6 pb-0 lg:px-0 lg:pt-12">
     <!-- Sidebar Header -->
     <SidebarVeranstaltungSwitcher />
 
@@ -176,7 +200,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     />
 
     <!-- User Management -->
-    <div class="flex items-center space-x-3 py-4 border-t border-gray-300">
+    <div class="flex items-center space-x-3 py-4 border-t border-gray-300 dark:border-gray-600">
       <div class="w-10 h-10">
         <UserLogo :name="loggedInAccount?.person.firstname + ' ' + loggedInAccount?.person.lastname" />
       </div>

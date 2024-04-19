@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { MenuItem } from '@headlessui/vue'
-import { FingerPrintIcon, KeyIcon, TrashIcon, ChevronDownIcon } from '@heroicons/vue/24/outline'
+import { FingerPrintIcon, KeyIcon, TrashIcon, ChevronDownIcon, CheckCircleIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 import { computed, ref } from 'vue'
 
@@ -22,7 +22,7 @@ import { loggedInAccount } from '@/composables/useAuthentication'
 import { getAccountStatusColor } from '@/helpers/getAccountStatusColors'
 import router from '@/router'
 import type { RouterInput, RouterOutput } from '@codeanker/api'
-import { AccountStatusMapping, getEnumOptions, roleMapping } from '@codeanker/api/src/enumMappings'
+import { AccountStatusMapping, getEnumOptions, roleMapping } from '@codeanker/api'
 import { formatDate } from '@codeanker/helpers'
 import { ValidateForm } from '@codeanker/validation'
 
@@ -130,7 +130,7 @@ const { execute: deleteUser, error: errorDelete } = useAsyncState(
       return
     }
 
-    await apiClient.person.verwaltungRemove.mutate({ id: props.account.id })
+    await apiClient.account.verwaltungRemove.mutate({ id: props.account.id })
     router.back()
   },
   null,
@@ -154,15 +154,13 @@ const tabs = computed(() => {
 </script>
 
 <template>
-  <div class="bg-white pt-2 pb-8">
+  <div class="pt-2 pb-8">
     <div class="flex items-center justify-between">
       <div class="mx-auto max-w-xl lg:mx-0">
-        <h2 class="mt-2 text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">
+        <h2 class="mt-2 text-xl font-bold tracking-tight sm:text-2xl">
           <span>{{ stammdatenForm?.firstname }} {{ stammdatenForm?.lastname }}</span>
         </h2>
-        <p class="mt-2 text-md leading-6 text-gray-600">
-          Bearbeite die Accountdaten, Accounts sind Personen zugeordnet.
-        </p>
+        <p class="mt-2 text-md leading-6">Bearbeite die Accountdaten, Accounts sind Personen zugeordnet.</p>
       </div>
       <Badge
         v-if="edit && props?.account?.status"
@@ -290,7 +288,10 @@ const tabs = computed(() => {
           <h2 class="text-base font-semibold leading-7">Passwort</h2>
         </div>
 
-        <div class="md:col-span-2">
+        <div
+          v-if="!account?.dlrgOauthId"
+          class="md:col-span-2"
+        >
           <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
             <div
               v-if="isSelf"
@@ -329,7 +330,7 @@ const tabs = computed(() => {
 
           <div class="mt-8 flex gap-4">
             <Button
-              color="warning"
+              color="primary"
               :disabled="isLoadingPassword"
               @click="updatePassword"
             >
@@ -342,6 +343,25 @@ const tabs = computed(() => {
             class="bg-danger-400 mb-2 mt-5 rounded p-3 text-center"
           >
             {{ errorPassword }}
+          </div>
+        </div>
+
+        <div
+          v-if="account?.dlrgOauthId"
+          class="rounded-md bg-blue-50 p-4"
+        >
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <CheckCircleIcon
+                class="h-5 w-5 text-blue-400"
+                aria-hidden="true"
+              />
+            </div>
+            <div class="ml-3 flex-1 md:flex md:justify-between">
+              <p class="text-sm text-blue-700 mb-0">
+                Die Person hat sich via OAuth über das ISC angemeldet. Daher kann das Passwort nicht geändert werden.
+              </p>
+            </div>
           </div>
         </div>
       </div>

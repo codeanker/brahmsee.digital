@@ -30,7 +30,7 @@ export const configSchema = z.strictObject({
   }),
 
   mail: z.strictObject({
-    sendMails: z.boolean(),
+    sendMails: z.union([z.literal('true'), z.literal('false')]),
     sendgridApiKey: z.string(),
   }),
 
@@ -39,6 +39,10 @@ export const configSchema = z.strictObject({
     max: z.number(),
   }),
   loggingLevel: z.string(),
+  meilisearch: z.strictObject({
+    host: z.string(),
+    apiKey: z.string(),
+  }),
 })
 
 export default configSchema.parse(baseConfig)

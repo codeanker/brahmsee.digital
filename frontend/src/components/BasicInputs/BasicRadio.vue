@@ -21,6 +21,17 @@ const { model, errorMessage } = useValidationModel(props, emit)
 
 <template>
   <div>
+    <label
+      v-if="label"
+      class="font-medium"
+      :for="id || name || label"
+      >{{ label }}
+      <span
+        v-if="required"
+        class="text-danger-600"
+        >*</span
+      ></label
+    >
     <div
       v-for="option in options"
       :key="option.id || option.label"

@@ -13,5 +13,9 @@ html, body, #app {
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
   scrollbar-gutter: stable;
-  @apply bg-slate-50 text-primary-950;
+  @apply bg-gray-50 dark:bg-dark-secondary text-primary-950 dark:text-gray-200;
+}
+
+body {
+  @apply transition-colors duration-200;
 }

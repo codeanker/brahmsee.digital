@@ -7,7 +7,7 @@ import { apiClient } from '@/api'
 import BasicDropdown from '@/components/BasicInputs/BasicDropdown.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
 import { getAnmeldungStatusColor } from '@/helpers/getAnmeldungStatusColors'
-import { AnmeldungStatus, AnmeldungStatusMapping, getEnumOptions, Role } from '@codeanker/api/src/enumMappings'
+import { type AnmeldungStatus, AnmeldungStatusMapping, getEnumOptions } from '@codeanker/api'
 
 const props = withDefaults(
   defineProps<{
@@ -18,13 +18,14 @@ const props = withDefaults(
   {}
 )
 
+const emit = defineEmits<{
+  (event: 'changed'): void
+}>()
+
 const currentStatus = ref(props.status)
 const statusOptions = getEnumOptions(AnmeldungStatusMapping)
 const availableOptions = statusOptions.filter(
-  (status) =>
-    status.value == AnmeldungStatus.ABGELEHNT ||
-    status.value == AnmeldungStatus.STORNIERT ||
-    status.value == AnmeldungStatus.BESTAETIGT
+  (status) => status.value == 'ABGELEHNT' || status.value == 'STORNIERT' || status.value == 'BESTAETIGT'
 )
 
 const getStatusHuman = computed(() => (anmeldungStatus) => {
@@ -32,23 +33,30 @@ const getStatusHuman = computed(() => (anmeldungStatus) => {
 })
 
 const isStatusChangeAvailable = computed(() => {
-  if (loggedInAccount.value?.role === Role.ADMIN || props.meldeschluss > new Date()) {
+  if (loggedInAccount.value?.role === 'ADMIN' || props.meldeschluss > new Date()) {
     return true
   }
   return false
 })
 
-const setStatus = async (status) => {
-  if (status == AnmeldungStatus.BESTAETIGT) {
+const setStatus = async (status: AnmeldungStatus) => {
+  if (status == 'BESTAETIGT') {
     await apiClient.anmeldung.verwaltungAnnehmen.mutate({
       anmeldungId: props.id,
     })
+    emit('changed')
   }
-  if (status == AnmeldungStatus.STORNIERT) {
-    // @ToDo
+  if (status == 'STORNIERT') {
+    await apiClient.anmeldung.verwaltungStorno.mutate({
+      anmeldungId: props.id,
+    })
+    emit('changed')
   }
-  if (status == AnmeldungStatus.ABGELEHNT) {
-    // @ToDo
+  if (status == 'ABGELEHNT') {
+    await apiClient.anmeldung.verwaltungAblehnen.mutate({
+      anmeldungId: props.id,
+    })
+    emit('changed')
   }
 }
 </script>
@@ -91,7 +99,7 @@ const setStatus = async (status) => {
           v-for="statusOption in availableOptions"
           :key="statusOption.value"
           type="button"
-          class="hover:bg-primary-light rounded items-center flex p-2 w-full space-x-2 text-left"
+          class="hover:bg-primary-50 dark:hover:bg-slate-950 rounded items-center flex p-2 w-full space-x-2 text-left"
           @click="(currentStatus = statusOption.value) && setStatus(statusOption.value)"
         >
           <div

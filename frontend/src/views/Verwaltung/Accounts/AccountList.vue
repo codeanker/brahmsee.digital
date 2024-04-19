@@ -9,7 +9,7 @@ import Tab from '@/components/UIComponents/components/Tab.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
 import { getAccountStatusColor } from '@/helpers/getAccountStatusColors'
 import router from '@/router'
-import { roleMapping } from '@codeanker/api/src/enumMappings'
+import { roleMapping } from '@codeanker/api'
 import { formatDate } from '@codeanker/helpers'
 
 const { state: accountList } = useAsyncState(
@@ -34,64 +34,60 @@ const tabs = computed(() => [
 </script>
 
 <template>
-  <h5>Accounts</h5>
-
   <div class="flow-root">
     <Tabs
-      class="mt-5 lg:mt-10"
+      class="mt-16 lg:mt-4"
       content-space="4"
       :tabs="tabs"
     >
       <Tab>
-        <div class="my-10 flex justify-between">
+        <div class="my-8 flex justify-between">
           <div>
-            <div class="text-lg font-semibold text-gray-900">Accounts</div>
-            <p class="max-w-2xl text-sm text-gray-500">
-              Hier findest Du alle Personen die sich zu Veranstaltungen angemeldet haben.
-            </p>
+            <h5 class="mb-0">Accounts</h5>
+            <p class="max-w-2xl text-sm">Hier findest Du alle Personen die sich zu Veranstaltungen angemeldet haben.</p>
           </div>
           <RouterLink
-            class="text-primary-600 flex items-center"
+            class="text-primary-500 flex items-center"
             :to="{ name: 'Verwaltung Account erstellen' }"
           >
             <PlusIcon class="h-5 w-5 mr-1"></PlusIcon>
             Account anlegen
           </RouterLink>
         </div>
-        <table class="min-w-full divide-y divide-gray-300">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
           <thead>
             <tr>
               <th
                 scope="col"
-                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"
+                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold"
               >
                 Name
               </th>
               <th
                 scope="col"
-                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"
+                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold"
               >
                 E-Mail Adresse
               </th>
               <th
                 scope="col"
-                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                class="px-3 py-3.5 text-left text-sm font-semibold"
               >
                 Rolle
               </th>
               <th
                 scope="col"
-                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                class="px-3 py-3.5 text-left text-sm font-semibold"
               >
                 Status
               </th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-200 bg-white">
+          <tbody class="divide-y divide-gray-200 bg-white dark:bg-dark-primary">
             <tr
               v-for="account in accountList"
               :key="account.id"
-              class="cursor-pointer even:bg-gray-50 hover:bg-gray-100"
+              class="cursor-pointer even:bg-gray-50 dark:even:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800"
               :title="account.email + ' bearbeiten'"
               @click="router.push({ name: 'Verwaltung Accountdetails', params: { accountId: account.id } })"
             >
@@ -99,9 +95,9 @@ const tabs = computed(() => [
                 <span>{{ account.person.firstname }} {{ account.person.lastname }}</span>
               </td>
               <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-                <div class="text-gray-900">{{ account.email }}</div>
+                <div>{{ account.email }}</div>
               </td>
-              <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+              <td class="whitespace-nowrap px-3 py-5 text-sm">
                 {{ roleMapping[account.role].human }}<br />
                 <span
                   v-if="
@@ -114,7 +110,7 @@ const tabs = computed(() => [
                   >{{ account.GliederungToAccount[0].gliederung.name }}</span
                 >
               </td>
-              <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+              <td class="whitespace-nowrap px-3 py-5 text-sm">
                 <Badge
                   :color="getAccountStatusColor(account.status)"
                   :title="formatDate(account.activatedAt)"
@@ -126,10 +122,10 @@ const tabs = computed(() => [
         </table>
       </Tab>
       <Tab>
-        <div class="my-10 flex justify-between">
+        <div class="my-8 flex justify-between">
           <div>
-            <div class="text-lg font-semibold text-gray-900">Accounts</div>
-            <p class="max-w-2xl text-sm text-gray-500">
+            <h5 class="mb-0">Account Anfragen</h5>
+            <p class="max-w-2xl text-sm">
               Hier findest Du alle Personen sich registriert haben und noch bestätigt werden müssen.
             </p>
           </div>
@@ -142,25 +138,25 @@ const tabs = computed(() => [
             <tr>
               <th
                 scope="col"
-                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"
+                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold"
               >
                 Name
               </th>
               <th
                 scope="col"
-                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"
+                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold"
               >
                 E-Mail Adresse
               </th>
               <th
                 scope="col"
-                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                class="px-3 py-3.5 text-left text-sm font-semibold"
               >
                 Rolle
               </th>
               <th
                 scope="col"
-                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                class="px-3 py-3.5 text-left text-sm font-semibold"
               >
                 Status
               </th>
@@ -170,7 +166,7 @@ const tabs = computed(() => [
             <tr
               v-for="account in accountRequest"
               :key="account.id"
-              class="cursor-pointer even:bg-gray-50 hover:bg-gray-100"
+              class="cursor-pointer even:bg-gray-50 dark:even:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800"
               :title="account.email + ' bearbeiten'"
               @click="router.push({ name: 'Verwaltung Accountdetails', params: { accountId: account.id } })"
             >
@@ -178,9 +174,9 @@ const tabs = computed(() => [
                 <span>{{ account.person.firstname }} {{ account.person.lastname }}</span>
               </td>
               <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-                <div class="text-gray-900">{{ account.email }}</div>
+                <div>{{ account.email }}</div>
               </td>
-              <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+              <td class="whitespace-nowrap px-3 py-5 text-sm">
                 {{ roleMapping[account.role].human }}<br />
                 <span
                   v-if="
@@ -193,7 +189,7 @@ const tabs = computed(() => [
                   >{{ account.GliederungToAccount[0].gliederung.name }}</span
                 >
               </td>
-              <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+              <td class="whitespace-nowrap px-3 py-5 text-sm">
                 <Badge :color="getAccountStatusColor(account.status)">{{ account.status }}</Badge>
               </td>
             </tr>
@@ -201,17 +197,17 @@ const tabs = computed(() => [
         </table>
         <div
           v-if="accountRequest.length <= 0"
-          class="rounded-md bg-blue-50 p-4"
+          class="rounded-md bg-blue-50 dark:bg-blue-950 text-blue-500 p-4"
         >
           <div class="flex">
             <div class="flex-shrink-0">
               <CheckCircleIcon
-                class="h-5 w-5 text-blue-400"
+                class="h-5 w-5"
                 aria-hidden="true"
               />
             </div>
             <div class="ml-3 flex-1 md:flex md:justify-between">
-              <p class="text-sm text-blue-700 mb-0">Es gibt keine offenen Account anfragen.</p>
+              <p class="text-sm mb-0">Es gibt keine offenen Account anfragen.</p>
             </div>
           </div>
         </div>
