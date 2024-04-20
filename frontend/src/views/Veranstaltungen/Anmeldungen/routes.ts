@@ -61,6 +61,18 @@ const anmeldungenRoutes: Route[] = [
           ],
         },
       },
+      {
+        name: 'VeranstaltungAnmeldungenCreate',
+        path: 'create',
+        component: () => import('./AnmeldungenCreate.vue'),
+        meta: {
+          breadcrumbs: [
+            {
+              text: 'Anmeldung erstellen',
+            },
+          ],
+        },
+      },
     ],
   },
 ]
