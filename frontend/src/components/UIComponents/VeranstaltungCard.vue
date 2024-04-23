@@ -1,22 +1,30 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+
+import CircularProgress from '../UIComponents/CircularProgress.vue'
+
 import Badge from './Badge.vue'
 import Button from './Button.vue'
 
+import type { RouterOutput } from '@codeanker/api'
 import { formatDate } from '@codeanker/helpers'
 
-interface Props {
-  veranstaltung: {
-    id: number
-    name: string
-    beginn: Date
-    ende: Date
+const { veranstaltung } = defineProps<Props>()
 
-    maxTeilnehmende: number
-  }
+type Veranstaltung = Awaited<
+  RouterOutput['veranstaltung']['verwaltungList'] | RouterOutput['veranstaltung']['gliederungList']
+>[number]
+
+interface Props {
+  veranstaltung: Veranstaltung
   hasUnterveranstaltungen?: number
 }
 
-const { veranstaltung } = defineProps<Props>()
+const totalAnmeldungen = computed(() =>
+  veranstaltung.unterveranstaltungen.map((u) => u._count.Anmeldung).reduce((a, b) => a + b, 0)
+)
+
+const percent = computed(() => (totalAnmeldungen.value / veranstaltung.maxTeilnehmende) * 100)
 </script>
 
 <template>
@@ -32,10 +40,18 @@ const { veranstaltung } = defineProps<Props>()
       vom {{ formatDate(veranstaltung.beginn) }} bis
       {{ formatDate(veranstaltung.ende) }}
     </p>
-    <p class="mt-6 flex items-baseline gap-x-1">
-      <span class="text-4xl font-bold tracking-tight hidden">10</span>
-      <span class="text-sm font-semibold leading-6">Insgesamt {{ veranstaltung.maxTeilnehmende }} Plätze</span>
+
+    <p class="text-sm leading-6">
+      <span class="font-semibold">{{ totalAnmeldungen }}</span> /
+      <span class="font-semibold">{{ veranstaltung.maxTeilnehmende }}</span> Plätze belegt
     </p>
+
+    <CircularProgress
+      class="mt-6"
+      :progress="percent"
+      :formatter="(v) => v.toFixed(2)"
+    />
+
     <Badge v-if="hasUnterveranstaltungen"> Ausschreibung erstellt </Badge>
     <Button
       v-else
