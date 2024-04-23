@@ -17,14 +17,12 @@ export const downloadFileLocal: Middleware = async function (ctx, next) {
     },
   })
   if (file === null) {
-    ctx.response.status = 400
-    ctx.response.body = { error: `File with id '${fileId}' not found` }
+    ctx.response.status = 404
     return
   }
 
   if (file.provider !== 'LOCAL') {
-    ctx.response.status = 400
-    ctx.response.body = { error: `File provider is '${file.provider}'. This endpoint is for LOCAL` }
+    ctx.response.status = 404
     return
   }
 
