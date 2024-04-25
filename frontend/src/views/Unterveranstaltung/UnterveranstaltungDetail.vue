@@ -189,7 +189,7 @@ const files = [
         <div class="mt-5 lg:mt-10 mb-5 text-lg font-semibold">Beschreibung</div>
         <div class="px-3 py-5">
           <div
-            class="prose prose-neutra"
+            class="prose dark:prose-invert"
             v-html="unterveranstaltung?.beschreibung"
           ></div>
         </div>
@@ -217,7 +217,7 @@ const files = [
           <p class="max-w-2xl text-sm">Bitte beachte die folgenden Bedingungen</p>
         </div>
         <div
-          class="prose prose-neutra"
+          class="prose dark:prose-invert"
           v-html="unterveranstaltung?.bedingungen"
         ></div>
         <hr class="my-10" />
@@ -228,7 +228,7 @@ const files = [
           </p>
         </div>
         <div
-          class="prose prose-neutra"
+          class="prose dark:prose-invert"
           v-html="unterveranstaltung?.veranstaltung?.teilnahmeBedingungenPublic"
         ></div>
         <hr class="my-10" />
@@ -237,7 +237,7 @@ const files = [
           <p class="max-w-2xl text-sm">Bitte beachte die folgenden Teilnahmebedingungen für die Gliederung</p>
         </div>
         <div
-          class="prose prose-neutra"
+          class="prose dark:prose-invert"
           v-html="unterveranstaltung?.veranstaltung?.teilnahmeBedingungen"
         ></div>
         <hr class="my-10" />
@@ -246,7 +246,7 @@ const files = [
           <p class="max-w-2xl text-sm">Bitte beachte die Hinweise zum Datenschutz</p>
         </div>
         <div
-          class="prose prose-neutra"
+          class="prose dark:prose-invert"
           v-html="unterveranstaltung?.veranstaltung?.datenschutz"
         ></div>
       </Tab>

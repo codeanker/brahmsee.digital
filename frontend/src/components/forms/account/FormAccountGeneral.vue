@@ -226,6 +226,7 @@ const tabs = computed(() => {
               >
                 <slot>
                   <div class="flex space-x-2 items-center">
+                    <ChevronDownIcon class="h-5 text-gray-500" />
                     <div
                       class="w-4 h-4 rounded-full"
                       :class="`bg-${getAccountStatusColor(accountForm.status)}-600`"
@@ -233,7 +234,6 @@ const tabs = computed(() => {
                     <span>{{ getStatusHuman }}</span>
                   </div>
                 </slot>
-                <ChevronDownIcon class="h-5 text-gray-500" />
               </button>
             </template>
             <template #dropdownContent>
