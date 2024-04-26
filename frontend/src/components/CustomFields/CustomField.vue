@@ -101,11 +101,11 @@ const model = computed({
         class="input-style w-full text-left flex justify-between items-center"
       >
         <slot>
+          <ChevronDownIcon class="h-5 text-gray-500" />
           <div class="flex space-x-2 items-center">
             <span>{{ model ?? 'Bitte auswählen…' }}</span>
           </div>
         </slot>
-        <ChevronDownIcon class="h-5 text-gray-500" />
       </button>
     </template>
     <template #dropdownContent>

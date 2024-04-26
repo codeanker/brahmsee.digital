@@ -11,7 +11,7 @@ withDefaults(
 )
 
 const colors: Record<StatusColors, string> = {
-  muted: 'bg-gray-50 text-gray-600 ring-gray-500/10',
+  muted: 'bg-gray-50 text-gray-600 ring-gray-500/10 dark:bg-gray-300',
   primary: 'bg-primary-600 text-white ring-primary-500/10',
   secondary: 'bg-primary-50 text-primary-600 ring-primary-500/10',
   warning: 'bg-yellow-50 text-yellow-600 ring-yellow-500/10',
