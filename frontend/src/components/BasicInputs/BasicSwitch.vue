@@ -14,13 +14,11 @@ const { model, errorMessage } = useValidationModel(props, emit)
 </script>
 
 <template>
-  <div>
+  <div class="grid grid-cols-switch gap-2 max-w-fit">
     <Switch
       :id="id || name || label"
       v-model="model"
       :name="id || name || label"
-      type="checkbox"
-      class="checkbox"
       :disabled="disabled"
       :class="[
         model ? 'bg-primary-600' : 'bg-gray-200',
@@ -38,15 +36,20 @@ const { model, errorMessage } = useValidationModel(props, emit)
     </Switch>
     <label
       v-if="label"
-      class="ml-2"
+      class="ml-2 select-none"
       :for="id || name || label"
-      >{{ label }}
+    >
+      <span>{{ label }}</span>
       <span
         v-if="required"
         class="text-danger-600"
-        >*</span
-      ></label
-    >
-    <BasicValidationFeedback :error-message="errorMessage" />
+      >
+        *
+      </span>
+    </label>
+    <BasicValidationFeedback
+      class="col-span-2"
+      :error-message="errorMessage"
+    />
   </div>
 </template>

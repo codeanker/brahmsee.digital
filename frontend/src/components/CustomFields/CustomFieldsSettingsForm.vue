@@ -88,18 +88,18 @@ function moveOptionDown(index: number) {
       <template #buttonContent>
         <button
           type="button"
-          class="input-style w-full block text-left flex justify-between items-center hover:cursor-pointer"
+          class="input-style w-full text-left flex justify-between items-center hover:cursor-pointer"
         >
           <slot>
             <div class="flex space-x-2 items-center">
+              <ChevronDownIcon class="h-5 text-gray-500" />
               <img
                 :src="getCustomFieldIcon(model.type)"
-                class="h-5 w-5 mr-1"
+                class="h-5 w-5 mr-1 dark:invert"
               />
               <span>{{ getFieldTypeHuman(model.type) ?? 'Bitte wählen' }}</span>
             </div>
           </slot>
-          <ChevronDownIcon class="h-5 text-gray-500" />
         </button>
       </template>
       <template #dropdownContent>
@@ -116,11 +116,11 @@ function moveOptionDown(index: number) {
           >
             <img
               :src="getCustomFieldIcon(typeOption.value)"
-              class="h-5 w-5 mr-1"
+              class="h-5 w-5 mr-1 dark:invert"
             />
             <div>
               <div>{{ typeOption.label }}</div>
-              <div class="text-xs text-gray-500">{{ typeOption.description }}</div>
+              <div class="text-xs text-gray-500 dark:text-gray-400">{{ typeOption.description }}</div>
             </div>
           </button>
         </MenuItem>

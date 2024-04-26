@@ -90,14 +90,14 @@ const addWeitereIntoleranzen = () => {
       >
         <slot>
           <div class="flex space-x-2 items-center">
+            <ChevronDownIcon class="h-5 text-gray-500" />
             <img
               :src="getEssgewohnheitIcon(model.essgewohnheit)"
-              class="h-5 w-5 mr-1"
+              class="h-5 w-5 mr-1 dark:invert"
             />
             <span>{{ getEssgewohnheitHuman }}</span>
           </div>
         </slot>
-        <ChevronDownIcon class="h-5 text-gray-500" />
       </button>
     </template>
     <template #dropdownContent>
@@ -114,7 +114,7 @@ const addWeitereIntoleranzen = () => {
         >
           <img
             :src="getEssgewohnheitIcon(essgewohnheit.value)"
-            class="h-5 w-5 mr-1"
+            class="h-5 w-5 mr-1 dark:invert"
           />
           <span>{{ essgewohnheit.label }}</span>
         </button>
@@ -127,9 +127,10 @@ const addWeitereIntoleranzen = () => {
     <div
       v-for="option in nahrungsmittelIntoleranzOptions"
       :key="option.value"
-      class="bg-gray-100 rounded-lg p-3 flex items-center justify-between cursor-pointer hover:bg-gray-50 transition-all"
+      class="rounded-lg p-3 flex items-center justify-between cursor-pointer transition-all"
       :class="{
-        'bg-secondary-200': model.intoleranzen[option.value],
+        'bg-gray-100 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600': !model.intoleranzen[option.value],
+        'bg-secondary-200 hover:bg-secondary-300 text-secondary-800': model.intoleranzen[option.value],
       }"
       @click="toggleOption(option.value)"
     >
