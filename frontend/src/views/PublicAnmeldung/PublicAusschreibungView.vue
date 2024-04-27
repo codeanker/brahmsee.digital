@@ -5,6 +5,7 @@ import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { apiClient } from '@/api'
+import DownloadLink from '@/components/DownloadLink.vue'
 import PublicFooter from '@/components/LayoutComponents/PublicFooter.vue'
 import PublicHeader from '@/components/LayoutComponents/PublicHeader.vue'
 import Button from '@/components/UIComponents/Button.vue'
@@ -91,6 +92,23 @@ const isClosed = computed(() => dayjs().isAfter(unterveranstaltung.value?.meldes
               v-html="unterveranstaltung?.beschreibung"
             ></div>
           </div>
+
+          <template v-if="unterveranstaltung.documents && unterveranstaltung.documents.length > 0">
+            <div class="mt-5 lg:mt-10 mb-5 text-lg font-semibold">Dokumente</div>
+            <div class="px-3 py-5">
+              <ul class="">
+                <li
+                  v-for="document in unterveranstaltung.documents"
+                  :key="document.name"
+                >
+                  <DownloadLink
+                    :label="document.name"
+                    :file-id="document.fileId"
+                  />
+                </li>
+              </ul>
+            </div>
+          </template>
         </Tab>
         <Tab>
           <div class="my-10">

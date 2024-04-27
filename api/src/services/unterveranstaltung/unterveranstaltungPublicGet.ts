@@ -48,6 +48,12 @@ export const unterveranstaltungPublicGetProcedure = defineProcedure({
         },
         beschreibung: true,
         bedingungen: true,
+        documents: {
+          select: {
+            name: true,
+            fileId: true,
+          },
+        },
       },
     })
     return unterveranstaltung

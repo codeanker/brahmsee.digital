@@ -1,4 +1,5 @@
 import routesAccount from './Accounts/routes'
+import fileRoutes from './FileTest/routes'
 import gliederungRoutes from './Gliederungen/routes'
 import orteRoutes from './Orte/routes'
 import routesPerson from './Persons/routes'
@@ -24,6 +25,7 @@ const routesVerwaltung: Route[] = [
       ...veranstaltungRoutes,
       ...orteRoutes,
       ...routesAccount,
+      ...fileRoutes,
     ],
   },
 ]

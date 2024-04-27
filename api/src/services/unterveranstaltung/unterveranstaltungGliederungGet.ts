@@ -43,6 +43,14 @@ export const unterveranstaltungGliederungGetProcedure = defineProcedure({
           },
         },
         gliederung: true,
+        documents: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+            fileId: true,
+          },
+        },
       },
     })
   },
