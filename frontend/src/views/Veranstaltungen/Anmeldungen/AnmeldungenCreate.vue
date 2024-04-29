@@ -47,5 +47,6 @@ const unterveranstaltungId = ref(-1)
     v-if="unterveranstaltungId >= 0"
     :is-public="false"
     :unterveranstaltung-id="unterveranstaltungId"
+    ignore-closing-date
   />
 </template>

@@ -23,7 +23,7 @@ const props = withDefaults(
     /**
      * Gibt an, ob der Meldeschluss ignoriert werden soll.
      */
-    ignoreClosingDate: boolean
+    ignoreClosingDate?: boolean
   }>(),
   {
     isPublic: true,
@@ -55,7 +55,7 @@ const { state: unterveranstaltung, isLoading } = useAsyncState(async () => {
 
 const isClosed = computed(() => dayjs().isAfter(unterveranstaltung.value?.meldeschluss))
 
-if (!props.ignoreClosingDate) {
+if (!props.ignoreClosingDate && props.isPublic) {
   watch(isClosed, (value) => {
     if (value) {
       router.back()
