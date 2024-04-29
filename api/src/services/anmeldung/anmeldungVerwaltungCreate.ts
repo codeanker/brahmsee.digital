@@ -8,6 +8,6 @@ export const anmeldungVerwaltungCreateProcedure = defineProcedure({
   protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN', 'GLIEDERUNG_ADMIN'] },
   inputSchema: inputSchema,
   async handler(options) {
-    await handle(options.input, true)
+    await handle(options.input, false)
   },
 })

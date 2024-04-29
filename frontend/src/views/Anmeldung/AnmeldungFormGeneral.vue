@@ -19,9 +19,15 @@ const props = withDefaults(
   defineProps<{
     isPublic: boolean
     unterveranstaltungId?: number
+
+    /**
+     * Gibt an, ob der Meldeschluss ignoriert werden soll.
+     */
+    ignoreClosingDate: boolean
   }>(),
   {
     isPublic: true,
+    ignoreClosingDate: false,
   }
 )
 const router = useRouter()
@@ -49,11 +55,13 @@ const { state: unterveranstaltung, isLoading } = useAsyncState(async () => {
 
 const isClosed = computed(() => dayjs().isAfter(unterveranstaltung.value?.meldeschluss))
 
-watch(isClosed, (value) => {
-  if (value) {
-    router.back()
-  }
-})
+if (!props.ignoreClosingDate) {
+  watch(isClosed, (value) => {
+    if (value) {
+      router.back()
+    }
+  })
+}
 
 const { state: customFields } = useAsyncState(async () => {
   if (!unterveranstaltung) {
