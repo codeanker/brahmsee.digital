@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ChevronLeftIcon, FaceFrownIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, withDefaults, defineProps } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { apiClient } from '@/api'
@@ -15,22 +15,53 @@ import Loading from '@/components/UIComponents/Loading.vue'
 import { type NahrungsmittelIntoleranz } from '@codeanker/api'
 import { dayjs } from '@codeanker/helpers'
 
+const props = withDefaults(
+  defineProps<{
+    isPublic: boolean
+    unterveranstaltungId?: number
+
+    /**
+     * Gibt an, ob der Meldeschluss ignoriert werden soll.
+     */
+    ignoreClosingDate?: boolean
+  }>(),
+  {
+    isPublic: true,
+    ignoreClosingDate: false,
+  }
+)
 const router = useRouter()
 const route = useRoute()
 
-const unterveranstaltungId = computed(() => parseInt(route.params.ausschreibungId as string))
+const unterveranstaltungId = computed(() => {
+  if (props.unterveranstaltungId !== undefined) {
+    return props.unterveranstaltungId
+  }
+
+  if (props.isPublic) {
+    return parseInt(route.params.ausschreibungId as string)
+  } else {
+    return parseInt(route.params.ausschreibungId as string)
+  }
+})
 
 const { state: unterveranstaltung, isLoading } = useAsyncState(async () => {
-  return apiClient.unterveranstaltung.publicGet.query({ id: unterveranstaltungId.value })
+  if (props.isPublic) {
+    return apiClient.unterveranstaltung.publicGet.query({ id: unterveranstaltungId.value })
+  }
+
+  return apiClient.unterveranstaltung.verwaltungGet.query({ id: unterveranstaltungId.value })
 }, undefined)
 
 const isClosed = computed(() => dayjs().isAfter(unterveranstaltung.value?.meldeschluss))
 
-watch(isClosed, (value) => {
-  if (value) {
-    router.back()
-  }
-})
+if (!props.ignoreClosingDate && props.isPublic) {
+  watch(isClosed, (value) => {
+    if (value) {
+      router.back()
+    }
+  })
+}
 
 const { state: customFields } = useAsyncState(async () => {
   if (!unterveranstaltung) {
@@ -60,9 +91,11 @@ const {
       })
       .map((entry) => entry[0] as NahrungsmittelIntoleranz)
 
-    await apiClient.anmeldung.publicCreate.mutate({
+    const endpoint = props.isPublic ? apiClient.anmeldung.publicCreate : apiClient.anmeldung.verwaltungCreate
+
+    await endpoint.mutate({
       data: {
-        unterveranstaltungId: Number(route.params.ausschreibungId),
+        unterveranstaltungId: props.unterveranstaltungId ?? Number(route.params.ausschreibungId),
         gliederungId: Number(unterveranstaltung.value?.gliederung.id),
 
         firstname: anmeldung.stammdaten.firstname,
@@ -90,7 +123,12 @@ const {
         value: entry[1],
       })),
     })
-    router.push('/ausschreibung/' + route.params.ausschreibungId + '/anmeldung/result')
+
+    if (props.isPublic) {
+      router.push('/ausschreibung/' + route.params.ausschreibungId + '/anmeldung/result')
+    } else {
+      router.back()
+    }
   },
   undefined,
   {
@@ -107,30 +145,38 @@ const {
     <div class="container mx-auto">
       <div class="text-lg font-semibold">Teilnahmebedingungen</div>
       <div
-        class="prose prose-neutra"
+        class="prose dark:prose-invert"
         v-html="unterveranstaltung?.bedingungen"
       />
       <div
-        class="prose prose-neutra"
+        class="prose dark:prose-invert"
         v-html="unterveranstaltung?.veranstaltung?.teilnahmeBedingungenPublic"
       />
       <hr class="my-10" />
       <div class="text-lg font-semibold mt-10">Datenschutz</div>
       <div
-        class="prose prose-neutra"
+        class="prose dark:prose-invert"
         v-html="unterveranstaltung?.veranstaltung?.datenschutz"
       />
     </div>
   </Drawer>
 
-  <div class="lg:py-10 lg:px-20 flex flex-col h-full grow">
+  <div
+    class="lg:py-10 flex flex-col h-full grow"
+    :class="{ 'lg:px-20': props.isPublic }"
+  >
     <div
       v-if="unterveranstaltung && !isLoading"
       class="grow"
     >
       <!-- Header -->
-      <PublicHeader :gliederung="unterveranstaltung.gliederung" />
+      <PublicHeader
+        v-if="props.isPublic"
+        :gliederung="unterveranstaltung.gliederung"
+      />
+
       <Button
+        v-if="props.isPublic"
         class="mb-10 flex flex-row items-center"
         color="secondary"
         @click="router.back()"
@@ -138,15 +184,18 @@ const {
         <ChevronLeftIcon class="h-5 mr-2" />
         <span>Zurück zur Ausschreibung</span>
       </Button>
-      <div class="text-3xl font-medium">Anmeldung</div>
-      <div class="mb-5">{{ unterveranstaltung?.veranstaltung.name }}</div>
+
+      <template v-if="props.isPublic">
+        <div class="text-3xl font-medium">Anmeldung</div>
+        <div class="mb-5">{{ unterveranstaltung?.veranstaltung.name }}</div>
+      </template>
 
       <!-- Form -->
       <FormPersonGeneral
         :is-loading="isLoadingCreate"
         :error="errorCreate as Error"
         submit-text="Anmelden"
-        is-public-anmeldung
+        :is-public-anmeldung="props.isPublic"
         :show-tshirt="unterveranstaltung?.veranstaltung?.hostname?.hostname !== 'landes.digital'"
         @submit="(value) => createAnmeldung(undefined, value)"
         @show-terms="showBedingungen = true"
@@ -174,7 +223,7 @@ const {
           class="my-5"
         />
       </FormPersonGeneral>
-      <PublicFooter />
+      <PublicFooter v-if="props.isPublic" />
     </div>
     <div
       v-else

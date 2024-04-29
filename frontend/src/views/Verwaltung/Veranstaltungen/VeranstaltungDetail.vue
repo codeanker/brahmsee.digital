@@ -129,7 +129,7 @@ const files = [
         <div class="mt-5 lg:mt-10 mb-5 text-lg font-semibold">Beschreibung</div>
         <div class="px-3 py-5">
           <div
-            class="prose prose-neutra"
+            class="prose dark:prose-invert"
             v-html="veranstaltung?.beschreibung"
           ></div>
         </div>
@@ -150,7 +150,7 @@ const files = [
         </div>
         <div
           v-if="veranstaltung?.teilnahmeBedingungenPublic"
-          class="prose prose-neutra"
+          class="prose dark:prose-invert"
           v-html="veranstaltung?.teilnahmeBedingungenPublic"
         ></div>
         <div v-else>
@@ -163,7 +163,7 @@ const files = [
         </div>
         <div
           v-if="veranstaltung?.teilnahmeBedingungen"
-          class="prose prose-neutra"
+          class="prose dark:prose-invert"
           v-html="veranstaltung?.teilnahmeBedingungen"
         ></div>
         <div v-else>
@@ -176,7 +176,7 @@ const files = [
         </div>
         <div
           v-if="veranstaltung?.datenschutz"
-          class="prose prose-neutra"
+          class="prose dark:prose-invert"
           v-html="veranstaltung?.datenschutz"
         ></div>
         <div v-else>

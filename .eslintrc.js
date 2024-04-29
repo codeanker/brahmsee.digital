@@ -91,6 +91,7 @@ module.exports = {
         'vue/define-emits-declaration': 'error',
         'vue/component-api-style': ['error', ['script-setup']],
         'vue/block-lang': ['error', { script: { lang: 'ts' } }],
+        'vue/no-v-html': 'off',
         ...importSettings,
       },
     },
