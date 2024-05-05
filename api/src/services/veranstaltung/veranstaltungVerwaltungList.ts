@@ -41,6 +41,17 @@ export const veranstaltungVerwaltungListProcedure = defineProcedure({
             meldebeginn: true,
             meldeschluss: true,
             gliederungId: true,
+            _count: {
+              select: {
+                Anmeldung: {
+                  where: {
+                    status: {
+                      equals: 'BESTAETIGT',
+                    },
+                  },
+                },
+              },
+            },
           },
         },
         hostname: {
