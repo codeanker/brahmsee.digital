@@ -87,6 +87,21 @@ export async function veranstaltungTeilnehmendenliste(ctx) {
               name: true,
             },
           },
+          address: {
+            select: {
+              zip: true,
+              city: true,
+              street: true,
+            },
+          },
+          notfallkontakte: {
+            select: {
+              firstname: true,
+              lastname: true,
+              telefon: true,
+              istErziehungsberechtigt: true,
+            },
+          },
         },
       },
       createdAt: true,
@@ -141,6 +156,18 @@ export async function veranstaltungTeilnehmendenliste(ctx) {
       ['Essgewohnheit']: anmeldung.person.essgewohnheit,
       ['Anmeldedatum']: anmeldung.createdAt,
       ...customFields,
+
+      ['PLZ']: anmeldung.person.address?.zip,
+      ['Stadt']: anmeldung.person.address?.city,
+      ['Straße']: anmeldung.person.address?.street,
+      ...anmeldung.person.notfallkontakte
+        .map((kontakt, index) => ({
+          [`NF ${index + 1} Vorname`]: kontakt.firstname,
+          [`NF ${index + 1} Nachname`]: kontakt.lastname,
+          [`NF ${index + 1} Telefon`]: kontakt.telefon,
+          [`NF ${index + 1} Erziehungsberechtigt?`]: kontakt.istErziehungsberechtigt ? 'Ja' : '',
+        }))
+        .reduce<Record<string, string>>((a, b) => ({ ...a, ...b }), {}),
     }
   })
   const workbook = XLSX.utils.book_new()
