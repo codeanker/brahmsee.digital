@@ -1,5 +1,0 @@
--- CreateEnum
-CREATE TYPE "CustomFieldPosition" AS ENUM ('PUBLIC_PERSON', 'PUBLIC_ANMELDUNG', 'INTERN_PERSON', 'INTERN_ANMELDUNG', 'INTERN_VERANSTALTUNG', 'INTERN_AUSSCHREIBUNG');
-
--- AlterTable
-ALTER TABLE "CustomField" ADD COLUMN     "positions" "CustomFieldPosition"[];
