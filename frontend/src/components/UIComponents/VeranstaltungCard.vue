@@ -47,7 +47,7 @@ const percent = computed(() => (totalAnmeldungen.value / veranstaltung.maxTeilne
     </p>
 
     <CircularProgress
-      class="mt-6"
+      class="py-6"
       :progress="percent"
       :formatter="(v) => v.toFixed(2)"
     />

@@ -37,7 +37,7 @@ const pxStroke = computed(() => `${props.strokeWidth}px`)
       <circle class="fg"></circle>
     </svg>
     <div class="absolute inset-0 flex items-center justify-center">
-      <p class="font-semibold text-xl text-center">{{ props.formatter(props.progress) }} %</p>
+      <p class="font-semibold text-xl text-center mb-0">{{ props.formatter(props.progress) }} %</p>
     </div>
   </div>
 </template>
@@ -76,6 +76,6 @@ const pxStroke = computed(() => `${props.strokeWidth}px`)
   transform-origin: var(--half-size) var(--half-size);
   stroke-dasharray: var(--dash) calc(var(--circumference) - var(--dash));
   transition: stroke-dasharray 0.3s linear 0s;
-  stroke: #16a34a;
+  @apply stroke-primary-600;
 }
 </style>
