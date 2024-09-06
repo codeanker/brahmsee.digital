@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
+// import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
 import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
-import DarkModeSwitch from '@/components/DarkModeSwitch.vue'
+// import DarkModeSwitch from '@/components/DarkModeSwitch.vue'
 import GlobalSearch from '@/components/GlobalSearch.vue'
 import Sidebar from '@/components/LayoutComponents/Sidebar/Sidebar.vue'
 import Breadcrumbs from '@/components/UIComponents/Breadcrumbs.vue'
@@ -25,14 +25,43 @@ watch(
   { deep: true }
 )
 
-function getSearchCommand() {
-  return navigator.userAgent.includes('Mac') ? '⌘ K' : 'STR K'
-}
+// function getSearchCommand() {
+//   return navigator.userAgent.includes('Mac') ? '⌘ K' : 'STR K'
+// }
 </script>
 
 <template>
   <div>
     <GlobalSearch ref="globalSearch"></GlobalSearch>
+    <div class="flex h-screen overflow-hidden relative">
+      <Sidebar
+        class="shrink-0 h-full p-6 w-72 absolute bg-gray-50 lg:relative z-50"
+        :class="{ 'hidden lg:flex': !showMobileMenu }"
+      />
+      <div class="grow flex flex-col overflow-y-auto relative z-10">
+        <div
+          v-if="showMobileMenu"
+          class="inset-0 absolute bg-black/40 z-50"
+          @click="showMobileMenu = false"
+        />
+        <div class="relative flex items-center pt-5 pb-5 lg:pb-4 shrink-0 space-y-1 z-10">
+          <MobileMenuButton
+            ref="mobileMenuButton"
+            @click="showMobileMenu = !showMobileMenu"
+          />
+          <div class="flex flex-col justify-center">
+            <Breadcrumbs />
+            <h5 class="mb-0.5">{{ route.meta.title }}</h5>
+          </div>
+        </div>
+        <div class="bg-white grow p-6 lg:rounded-tl-3xl">
+          <router-view />
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div>
+
     <div
       id="base-layout"
       class="container mx-auto p-0 h-full grid grid-cols-9 lg:grid-cols-12 gap-8 transform transition-all duration-300"
@@ -78,5 +107,5 @@ function getSearchCommand() {
         />
       </div>
     </div>
-  </div>
+  </div> -->
 </template>

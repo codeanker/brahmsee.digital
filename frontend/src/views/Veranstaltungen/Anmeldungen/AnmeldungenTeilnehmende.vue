@@ -13,9 +13,8 @@ const veranstaltungId = computed(() => Number(route.params.veranstaltungId))
 </script>
 
 <template>
-  <div class="flex items-center justify-between gap-x-12 my-8">
+  <div class="flex items-center justify-between pb-6">
     <div class="flex flex-col">
-      <h5 class="mb-0">Teilnehmende "{{ veranstaltung?.name }}"</h5>
       <p class="text-sm">
         Hier findest Du alle Personen, die sich zur Veranstaltung "{{ veranstaltung?.name }}" angemeldet haben.
       </p>

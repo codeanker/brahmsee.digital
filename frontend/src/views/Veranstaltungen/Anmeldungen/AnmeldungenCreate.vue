@@ -32,21 +32,28 @@ const unterveranstaltungId = ref(-1)
 </script>
 
 <template>
-  <BasicSelect
-    v-if="loggedInAccount?.role === 'ADMIN' && !isLoading"
-    v-model="unterveranstaltungId"
-    required
-    label="Gliederung"
-    placeholder="Gliederung"
-    :options="
-      unterveranstaltungen.map((veranstaltung) => ({ label: veranstaltung.gliederung.name, value: veranstaltung.id }))
-    "
-  />
+  <div class="grid grid-cols-2">
+    <div>
+      <BasicSelect
+        v-if="loggedInAccount?.role === 'ADMIN' && !isLoading"
+        v-model="unterveranstaltungId"
+        required
+        label="Gliederung"
+        placeholder="Gliederung"
+        :options="
+          unterveranstaltungen.map((veranstaltung) => ({
+            label: veranstaltung.gliederung.name,
+            value: veranstaltung.id,
+          }))
+        "
+      />
 
-  <AnmeldungFormGeneral
-    v-if="unterveranstaltungId >= 0"
-    :is-public="false"
-    :unterveranstaltung-id="unterveranstaltungId"
-    ignore-closing-date
-  />
+      <AnmeldungFormGeneral
+        v-if="unterveranstaltungId >= 0"
+        :is-public="false"
+        :unterveranstaltung-id="unterveranstaltungId"
+        ignore-closing-date
+      />
+    </div>
+  </div>
 </template>

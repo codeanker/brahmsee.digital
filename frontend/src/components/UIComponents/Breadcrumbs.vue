@@ -26,7 +26,7 @@ const breadcrumbs = computed(() => {
 </script>
 
 <template>
-  <div class="hidden lg:flex items-center text-primary-500 mb-2 ml-10 lg:ml-0 text-sm">
+  <div class="hidden lg:flex items-center text-primary-500 text-sm">
     <HomeIcon class="w-4 h-4 mr-1"></HomeIcon>
     <template v-for="(breadcrumb, index) of breadcrumbs">
       <RouterLink
