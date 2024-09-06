@@ -60,6 +60,17 @@ export const veranstaltungGliederungListProcedure = defineProcedure({
           },
           select: {
             id: true,
+            _count: {
+              select: {
+                Anmeldung: {
+                  where: {
+                    status: {
+                      equals: 'BESTAETIGT',
+                    },
+                  },
+                },
+              },
+            },
           },
         },
         hostname: {
