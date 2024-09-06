@@ -1,3 +1,4 @@
+import { Role } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma'
@@ -6,7 +7,7 @@ import { defineProcedure } from '../../types/defineProcedure'
 export const personAuthenticatedGetProcedure = defineProcedure({
   key: 'authenticatedGet',
   method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN', 'GLIEDERUNG_ADMIN'] },
+  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN] },
   inputSchema: z.undefined(),
   async handler(options) {
     return prisma.account.findUniqueOrThrow({

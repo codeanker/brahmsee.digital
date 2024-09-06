@@ -1,3 +1,4 @@
+import { Role } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma'
@@ -7,7 +8,7 @@ import { addressSchema, createOrUpdateAddress } from '../address/schema/address.
 export const ortVerwaltungCreateProcedure = defineProcedure({
   key: 'verwaltungCreate',
   method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
+  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
   inputSchema: z.strictObject({
     data: z.strictObject({
       name: z.string(),

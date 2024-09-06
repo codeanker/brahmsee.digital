@@ -1,4 +1,4 @@
-import type { Prisma } from '@prisma/client'
+import { Role, type Prisma } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma'
@@ -20,7 +20,7 @@ function getFilterWhere(input: z.infer<typeof inputSchema>['filter']): Prisma.Or
 export const ortVerwaltungListProcedure = defineProcedure({
   key: 'verwaltungList',
   method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
+  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
   inputSchema,
   async handler(options) {
     const { skip, take } = options.input.pagination
@@ -41,7 +41,7 @@ export const ortVerwaltungListProcedure = defineProcedure({
 export const ortVerwaltungListCountProcedure = defineProcedure({
   key: 'verwaltungListCount',
   method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
+  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
   inputSchema,
   async handler(options) {
     return await prisma.ort.count({

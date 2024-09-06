@@ -1,3 +1,4 @@
+import { Role } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma'
@@ -7,7 +8,7 @@ import { defineQuery } from '../../types/defineQuery'
 export const personVerwaltungListProcedure = defineProcedure({
   key: 'verwaltungList',
   method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
+  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
   inputSchema: defineQuery({
     filter: z.strictObject({
       firstname: z.string().optional(),

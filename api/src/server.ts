@@ -75,4 +75,4 @@ app.use(async (ctx, next) => {
 })
 
 app.listen(config.server.port, config.server.host)
-logger.info(`app listening on http://0.0.0.0:${config.server.port}`)
+logger.info(`app listening on http://${config.server.host}:${config.server.port}`)

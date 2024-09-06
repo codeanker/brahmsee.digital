@@ -9,7 +9,7 @@ import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin'
 export const searchProcedure = defineProcedure({
   key: 'search',
   method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN', 'GLIEDERUNG_ADMIN'] },
+  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN] },
   inputSchema: z.strictObject({
     term: z.string(),
   }),

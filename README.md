@@ -2,7 +2,6 @@
 # brahmsee.digital
 
 ![ci workflow](https://github.com/codeanker/brahmsee.digital/actions/workflows/ci.yml/badge.svg)
-![deploy workflow](https://github.com/codeanker/brahmsee.digital/actions/workflows/deploy.yml/badge.svg)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 ![GitHub package.json version (branch)](https://img.shields.io/github/package-json/v/codeanker/brahmsee.digital/development)
 
