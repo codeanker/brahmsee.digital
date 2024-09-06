@@ -1,4 +1,4 @@
-import { CustomFieldPosition, CustomFieldType } from '@prisma/client'
+import { CustomFieldPosition, CustomFieldType, Role } from '@prisma/client'
 import { z } from 'zod'
 
 import prisma from '../../prisma'
@@ -7,7 +7,7 @@ import { defineProcedure } from '../../types/defineProcedure'
 export const customFieldsVeranstaltungCreate = defineProcedure({
   key: 'verwaltungCreate',
   method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
+  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
   inputSchema: z.strictObject({
     veranstaltungId: z.number(),
     data: z.strictObject({

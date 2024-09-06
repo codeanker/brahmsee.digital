@@ -1,3 +1,4 @@
+import { Role } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma'
@@ -6,7 +7,7 @@ import { defineProcedure } from '../../types/defineProcedure'
 export const anmeldungGliederungGetProcedure = defineProcedure({
   key: 'gliederungGet',
   method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN', 'GLIEDERUNG_ADMIN'] },
+  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN] },
   inputSchema: z.strictObject({
     anmeldungId: z.number().optional(),
     personId: z.number().optional(),

@@ -1,3 +1,4 @@
+import { Role } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma'
@@ -7,7 +8,7 @@ import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin'
 export const unterveranstaltungGliederungPatchProcedure = defineProcedure({
   key: 'gliederungPatch',
   method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: ['GLIEDERUNG_ADMIN', 'ADMIN'] },
+  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN] },
   inputSchema: z.strictObject({
     id: z.number().int(),
     data: z.strictObject({

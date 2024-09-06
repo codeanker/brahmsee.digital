@@ -1,3 +1,4 @@
+import { Role } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma'
@@ -8,7 +9,7 @@ import { getPersonCreateData, personSchema } from './schema/person.schema'
 export const personGliederungPatchProcedure = defineProcedure({
   key: 'gliederungPatch',
   method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: ['GLIEDERUNG_ADMIN'] },
+  protection: { type: 'restrictToRoleIds', roleIds: [Role.GLIEDERUNG_ADMIN] },
   inputSchema: z.strictObject({
     id: z.number().int(),
     data: personSchema,

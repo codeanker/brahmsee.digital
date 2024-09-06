@@ -1,3 +1,4 @@
+import { Role } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma'
@@ -9,7 +10,7 @@ import { accountSchema, getAccountCreateData } from './schema/account.schema'
 export const accountVerwaltungCreateProcedure = defineProcedure({
   key: 'verwaltungCreate',
   method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
+  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
   inputSchema: z.strictObject({
     data: accountSchema,
   }),

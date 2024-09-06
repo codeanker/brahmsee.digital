@@ -1,3 +1,4 @@
+import { Role } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 
@@ -11,7 +12,7 @@ import { isStrongPassword } from '@codeanker/helpers'
 export const accountChangePasswordProcedure = defineProcedure({
   key: 'changePassword',
   method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN', 'GLIEDERUNG_ADMIN'] },
+  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN] },
   inputSchema: z.strictObject({
     id: z.number().int(),
     password_old: z.string(),
