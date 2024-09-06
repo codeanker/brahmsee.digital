@@ -1,3 +1,4 @@
+import { Role } from '@prisma/client'
 import z from 'zod'
 
 import { updateMeiliPerson } from '../../meilisearch/person'
@@ -9,7 +10,7 @@ import { personSchema, getPersonCreateData } from './schema/person.schema'
 export const personVerwaltungCreateProcedure = defineProcedure({
   key: 'verwaltungCreate',
   method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
+  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
   inputSchema: z.strictObject({
     data: personSchema,
   }),
