@@ -40,6 +40,10 @@ export const addressFindActionProcedure = defineProcedure({
     let results
 
     const token = config.tomtom.apiKey
+    if (!token) {
+      console.error('No TomTom API key found')
+      return []
+    }
     const country = options?.input?.country != null ? options.input.country.toUpperCase() : 'DE'
 
     try {
