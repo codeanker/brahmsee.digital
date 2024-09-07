@@ -3,6 +3,7 @@ import { TrashIcon } from '@heroicons/vue/24/outline'
 import { ref, watch } from 'vue'
 
 import BasicCheckbox from '../BasicInputs/BasicCheckbox.vue'
+import BasicInputPhoneNumber from '../BasicInputs/BasicInputPhoneNumber.vue'
 
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import type { TKontaktSchema } from '@codeanker/api'
@@ -45,7 +46,7 @@ watch(
       placeholder="Nachname eingeben"
       required
     />
-    <BasicInput
+    <BasicInputPhoneNumber
       v-model="kontakt.telefon"
       label="Mobiltelefonnummer"
       placeholder="Mobiltelefonnummer eingeben"
