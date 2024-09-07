@@ -8,8 +8,11 @@ import GlobalSearch from '@/components/GlobalSearch.vue'
 import Sidebar from '@/components/LayoutComponents/Sidebar/Sidebar.vue'
 import Breadcrumbs from '@/components/UIComponents/Breadcrumbs.vue'
 import MobileMenuButton from '@/components/UIComponents/MobileMenuButton.vue'
+import { useRouteTitle } from '@/composables/useRouteTitle'
 
 const route = useRoute()
+const { title } = useRouteTitle()
+
 const mobileMenuButton = ref()
 const showMobileMenu = ref(false)
 const globalSearch = ref()
@@ -35,10 +38,10 @@ watch(
     <GlobalSearch ref="globalSearch"></GlobalSearch>
     <div class="flex h-screen overflow-hidden relative">
       <Sidebar
-        class="shrink-0 h-full p-6 w-72 absolute bg-gray-50 lg:relative z-50"
+        class="shrink-0 h-full p-6 w-72 absolute lg:relative z-40"
         :class="{ 'hidden lg:flex': !showMobileMenu }"
       />
-      <div class="grow flex flex-col overflow-y-auto relative z-10">
+      <div class="grow flex flex-col relative z-50">
         <div
           v-if="showMobileMenu"
           class="inset-0 absolute bg-black/40 z-50"
@@ -51,10 +54,10 @@ watch(
           />
           <div class="flex flex-col justify-center">
             <Breadcrumbs />
-            <h5 class="mb-0.5">{{ route.meta.title }}</h5>
+            <h5 class="mb-0.5">{{ title.name }}</h5>
           </div>
         </div>
-        <div class="bg-white grow p-6 lg:rounded-tl-3xl">
+        <div class="bg-white grow p-6 lg:rounded-tl-3xl overflow-y-auto shadow-hover">
           <router-view />
         </div>
       </div>

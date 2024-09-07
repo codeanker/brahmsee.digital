@@ -3,20 +3,21 @@ import { PlusIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 
 import { apiClient } from '@/api'
+import { useRouteTitle } from '@/composables/useRouteTitle'
 import router from '@/router'
 
 const { state: gliederungenList } = useAsyncState(async () => {
   return apiClient.gliederung.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
 }, [])
+
+const { setTitle } = useRouteTitle()
+setTitle('Gliederungen')
 </script>
 
 <template>
   <div>
-    <div class="flex items-center justify-between my-8">
-      <div class="flex flex-col">
-        <h5 class="mb-0">Gliederungen</h5>
-        <p class="text-sm"><b>Tipp</b>: Zum Bearbeiten einer Gliederung die entsprechende Zeile anklicken.</p>
-      </div>
+    <div class="flex items-center justify-between mb-6">
+      <p class="text-sm"><b>Tipp</b>: Zum Bearbeiten einer Gliederung die entsprechende Zeile anklicken.</p>
       <RouterLink
         class="text-primary-500 flex items-center"
         :to="{ name: 'Verwaltung Gliederung Erstellen' }"

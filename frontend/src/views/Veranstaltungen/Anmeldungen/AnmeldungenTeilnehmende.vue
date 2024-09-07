@@ -6,10 +6,14 @@ import { useRoute } from 'vue-router'
 import { useVeranstaltung } from '../../../composables/useVeranstaltung'
 
 import AnmeldungenTable from '@/components/AnmeldungenTable.vue'
+import { useRouteTitle } from '@/composables/useRouteTitle'
 
 const { veranstaltung } = useVeranstaltung()
 const route = useRoute()
 const veranstaltungId = computed(() => Number(route.params.veranstaltungId))
+const { setTitle } = useRouteTitle()
+
+setTitle('Teilnehmende Personen')
 </script>
 
 <template>

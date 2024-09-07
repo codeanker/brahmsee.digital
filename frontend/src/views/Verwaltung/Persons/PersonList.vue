@@ -7,9 +7,13 @@ import Badge from '@/components/UIComponents/Badge.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
+import { useRouteTitle } from '@/composables/useRouteTitle'
 import { getAccountStatusColor } from '@/helpers/getAccountStatusColors'
 import router from '@/router'
 import { dayjs, formatDate } from '@codeanker/helpers'
+
+const { setTitle } = useRouteTitle()
+setTitle('Personen')
 
 const { state: personList } = useAsyncState(
   async () => {
@@ -27,16 +31,12 @@ const tabs = [{ name: 'Personen', icon: UsersIcon }]
 <template>
   <div class="flow-root">
     <Tabs
-      class="mt-16 lg:mt-4"
       content-space="4"
       :tabs="tabs"
     >
       <Tab>
-        <div class="my-8 flex justify-between">
-          <div>
-            <h5 class="mb-0">Personen</h5>
-            <p class="max-w-2xl text-sm">Hier findest Du alle Personen die sich zu Veranstaltungen angemeldet haben.</p>
-          </div>
+        <div class="my-4 flex justify-between">
+          <p class="max-w-2xl text-sm">Hier findest Du alle Personen die sich zu Veranstaltungen angemeldet haben.</p>
 
           <RouterLink
             class="text-primary-500 flex items-center"

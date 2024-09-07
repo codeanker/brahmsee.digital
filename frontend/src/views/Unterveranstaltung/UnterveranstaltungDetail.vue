@@ -21,18 +21,25 @@ import Tab from '@/components/UIComponents/components/Tab.vue'
 import InfoList from '@/components/UIComponents/InfoList.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
+import { useRouteTitle } from '@/composables/useRouteTitle'
 import { formatDate } from '@codeanker/helpers'
 
 const route = useRoute()
+const { setTitle } = useRouteTitle()
 
 const { state: unterveranstaltung } = useAsyncState(async () => {
-  if (loggedInAccount.value?.role === 'ADMIN')
-    return apiClient.unterveranstaltung.verwaltungGet.query({
+  let result
+  if (loggedInAccount.value?.role === 'ADMIN') {
+    result = await apiClient.unterveranstaltung.verwaltungGet.query({
       id: parseInt(route.params.unterveranstaltungId as string),
     })
-  return apiClient.unterveranstaltung.gliederungGet.query({
-    id: parseInt(route.params.unterveranstaltungId as string),
-  })
+  } else {
+    result = await apiClient.unterveranstaltung.gliederungGet.query({
+      id: parseInt(route.params.unterveranstaltungId as string),
+    })
+  }
+  setTitle(`Ausschreibung für ${result.veranstaltung.name}`)
+  return result
 }, undefined)
 
 const { state: countAnmeldungen } = useAsyncState(async () => {
@@ -133,10 +140,9 @@ const files = [
 
 <template>
   <div>
-    <h5 class="mb-10">Ausschreibung für {{ unterveranstaltung?.veranstaltung?.name }}</h5>
-    <div class="pt-2 pb-8">
+    <div class="pb-8">
       <div class="mx-auto max-w-2xl lg:mx-0">
-        <h2 class="mt-2 text-2xl font-bold tracking-tight sm:text-4xl">
+        <h2 class="text-2xl font-bold tracking-tight sm:text-4xl">
           {{ unterveranstaltung?.veranstaltung?.name }}
         </h2>
         <p class="mt-4 text-md leading-6">

@@ -8,8 +8,13 @@ import AnmeldungFormGeneral from '../../Anmeldung/AnmeldungFormGeneral.vue'
 import { apiClient } from '@/api'
 import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
+import { useRouteTitle } from '@/composables/useRouteTitle'
 
 const route = useRoute()
+
+const { setTitle } = useRouteTitle()
+
+setTitle('Anmeldung erstellen')
 
 const isAdmin = loggedInAccount.value?.role === 'ADMIN'
 

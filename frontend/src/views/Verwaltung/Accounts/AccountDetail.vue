@@ -6,14 +6,18 @@ import { useRoute } from 'vue-router'
 import { apiClient } from '@/api'
 import FormAccountGeneral from '@/components/forms/account/FormAccountGeneral.vue'
 import { loggedInAccount, logout } from '@/composables/useAuthentication'
+import { useRouteTitle } from '@/composables/useRouteTitle'
 
 const isSelf = ref(false)
+
+const { setTitle } = useRouteTitle()
 
 const route = useRoute()
 const { state: account, execute: refetch } = useAsyncState(async () => {
   const accountId = route.params.accountId as string
   const result = await apiClient.account.verwaltungGet.query({ id: parseInt(accountId) })
   isSelf.value = result?.id === loggedInAccount.value?.person.id
+  setTitle(`Account: ${result?.email}`)
   return result
 }, undefined)
 
@@ -27,13 +31,9 @@ const onUpdate = async () => {
 </script>
 
 <template>
-  <h5>Account: {{ account?.email }}</h5>
-
-  <div class="mt-5 lg:mt-10">
-    <FormAccountGeneral
-      v-if="account"
-      :account="account"
-      @update="onUpdate"
-    />
-  </div>
+  <FormAccountGeneral
+    v-if="account"
+    :account="account"
+    @update="onUpdate"
+  />
 </template>
