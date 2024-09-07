@@ -10,9 +10,12 @@ import FormPersonGeneral, { type FormPersonGeneralSubmit } from '@/components/fo
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
+import { useRouteTitle } from '@/composables/useRouteTitle'
 import { type NahrungsmittelIntoleranz } from '@codeanker/api'
 
 const route = useRoute()
+
+const { setTitle } = useRouteTitle()
 
 watch(route, () => {
   refetchPerson()
@@ -24,10 +27,14 @@ const {
   isLoading: isLoading,
 } = useAsyncState(async () => {
   const personId = route.params.personId as string
+  let result
   if (loggedInAccount.value?.role === 'ADMIN') {
-    return await apiClient.person.verwaltungGet.query({ id: parseInt(personId) })
+    result = await apiClient.person.verwaltungGet.query({ id: parseInt(personId) })
+  } else {
+    result = await apiClient.person.gliederungGet.query({ id: parseInt(personId) })
   }
-  return await apiClient.person.gliederungGet.query({ id: parseInt(personId) })
+  setTitle(`Person: ${result.firstname} ${result.lastname}`)
+  return result
 }, null)
 
 const { execute: update } = useAsyncState(
@@ -81,14 +88,15 @@ if (loggedInAccount.value?.role === 'ADMIN') {
 </script>
 
 <template>
-  <h5 class="mb-10">Person: {{ person?.firstname }} {{ person?.lastname }}</h5>
-  <div class="pt-2 pb-8">
-    <div class="mx-auto max-w-xl lg:mx-0">
-      <h2 class="mt-2 text-xl font-bold tracking-tight sm:text-2xl">{{ person?.firstname }} {{ person?.lastname }}</h2>
-      <p class="mt-2 text-md leading-6">
-        Bearbeite die Stammdaten der Person, gleichzeitig kannst Du alle Anmeldungen der Person einsehen.
-      </p>
+  <div class="mx-auto max-w-xl lg:mx-0 mb-6">
+    <div class="flex items-center space-x-3 mb-1">
+      <h2 class="text-xl font-bold tracking-tight sm:text-2xl mb-0">
+        <span>{{ person?.firstname }} {{ person?.lastname }}</span>
+      </h2>
     </div>
+    <p class="text-md">
+      Bearbeite die Stammdaten der Person, gleichzeitig kannst Du alle Anmeldungen der Person einsehen.
+    </p>
   </div>
 
   <Tabs
@@ -96,9 +104,7 @@ if (loggedInAccount.value?.role === 'ADMIN') {
     :tabs="tabs"
   >
     <Tab>
-      <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
-        <div class="text-lg font-semibold">Stammdaten</div>
-      </div>
+      <div class="text-lg font-semibold mb-6">Stammdaten</div>
       <FormPersonGeneral
         v-if="person"
         :is-loading="isLoading"
@@ -108,20 +114,16 @@ if (loggedInAccount.value?.role === 'ADMIN') {
       />
     </Tab>
     <Tab>
-      <div class="my-10">
-        <div class="text-lg font-semibold">Anmeldungen</div>
-        <p class="max-w-2xl text-sm">Informationen zu Anmeldungen</p>
-      </div>
+      <div class="text-lg font-semibold">Anmeldungen</div>
+      <p class="max-w-2xl text-sm mb-6">Informationen zu Anmeldungen</p>
       <FormAnmeldungGeneral
         v-if="person"
         :person-id="person.id"
       ></FormAnmeldungGeneral>
     </Tab>
     <Tab v-if="loggedInAccount?.role === 'ADMIN'">
-      <div class="my-10">
-        <div class="text-lg font-semibold">Entwickler:innen</div>
-        <p class="max-w-2xl text-sm">Informationen für Entwickler:innen</p>
-      </div>
+      <div class="text-lg font-semibold">Entwickler:innen</div>
+      <p class="max-w-2xl text-sm mb-6">Informationen für Entwickler:innen</p>
       <pre>{{ person }}</pre>
     </Tab>
   </Tabs>

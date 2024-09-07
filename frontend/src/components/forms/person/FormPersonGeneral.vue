@@ -133,103 +133,105 @@ const submit = () => {
 </script>
 
 <template>
-  <ValidateForm @submit="submit">
-    <Stammdaten v-model="stammdatenForm" />
-    <hr class="my-5" />
-
-    <Address v-model="addressForm" />
-    <hr class="my-5" />
-
-    <FormContactGeneral v-model="contactForm" />
-    <hr class="my-5" />
-
-    <template v-if="!isPublicAnmeldung">
-      <BasicTypeahead
-        v-model="gliederung"
-        :query="queryGliederungen"
-        :input-formatter="(result) => result?.name"
-        :result-formatter="(result) => result.name"
-        :strict="true"
-        required
-        label="Gliederung"
-        placeholder="Gliederung eingeben"
-      />
+  <div class="grid grid-cols-1 lg:grid-cols-2">
+    <ValidateForm @submit="submit">
+      <Stammdaten v-model="stammdatenForm" />
       <hr class="my-5" />
-    </template>
 
-    <FormNotfallkontakteGeneral v-model="notfallKontakteForm" />
-    <hr class="my-5" />
-
-    <FormEssgewohnheitGeneral v-model="essgewohnheitenForm" />
-    <hr class="my-5" />
-
-    <template v-if="isPublicAnmeldung">
-      <BasicTextArea
-        v-model="comment"
-        label="Bemerkung"
-        :rows="3"
-      ></BasicTextArea>
+      <Address v-model="addressForm" />
       <hr class="my-5" />
-    </template>
 
-    <slot></slot>
+      <FormContactGeneral v-model="contactForm" />
+      <hr class="my-5" />
 
-    <template v-if="isPublicAnmeldung">
-      <template v-if="showTshirt">
-        <FormTShirtBestellungGeneral v-model="tshirtForm" />
+      <template v-if="!isPublicAnmeldung">
+        <BasicTypeahead
+          v-model="gliederung"
+          :query="queryGliederungen"
+          :input-formatter="(result) => result?.name"
+          :result-formatter="(result) => result.name"
+          :strict="true"
+          required
+          label="Gliederung"
+          placeholder="Gliederung eingeben"
+        />
         <hr class="my-5" />
       </template>
 
-      <BasicCheckbox
-        v-model="acceptTeilnahmebedingungen"
-        class="mt-1 font-medium"
-        required
-      >
-        <span>Ich habe die allgemeinen </span>
-        <u
-          class="cursor-pointer"
-          @click="emit('showTerms')"
-        >
-          <span>Teilnahmebedingungen</span>
-          <ArrowTopRightOnSquareIcon class="h-4 inline ml-1" />
-        </u>
-        <span> gelesen und akzeptiere diese.</span>
-      </BasicCheckbox>
-      <BasicCheckbox
-        v-model="acceptDatenschutz"
-        class="mt-1 font-medium"
-        required
-      >
-        <span>Ich habe die gesonderten </span>
-        <u
-          class="cursor-pointer"
-          @click="emit('showTerms')"
-        >
-          <span>Datenschutzerklärung</span>
-          <ArrowTopRightOnSquareIcon class="h-4 inline ml-1" />
-        </u>
-        <span> gelesen und akzeptiere diese.</span>
-      </BasicCheckbox>
-    </template>
+      <FormNotfallkontakteGeneral v-model="notfallKontakteForm" />
+      <hr class="my-5" />
 
-    <Button
-      color="primary"
-      class="w-full justify-center mt-5 mb-20 disabled:bg-gray-300"
-      :disabled="isPublicAnmeldung && (!acceptTeilnahmebedingungen || !acceptDatenschutz)"
-      type="submit"
-    >
-      <template v-if="isLoading">
-        <Loading color="white" />
+      <FormEssgewohnheitGeneral v-model="essgewohnheitenForm" />
+      <hr class="my-5" />
+
+      <template v-if="isPublicAnmeldung">
+        <BasicTextArea
+          v-model="comment"
+          label="Bemerkung"
+          :rows="3"
+        ></BasicTextArea>
+        <hr class="my-5" />
       </template>
-      <span>
-        {{ submitText ?? 'Speichern' }}
-      </span>
-    </Button>
 
-    <template v-if="error && error.message">
-      <pre><code>
+      <slot></slot>
+
+      <template v-if="isPublicAnmeldung">
+        <template v-if="showTshirt">
+          <FormTShirtBestellungGeneral v-model="tshirtForm" />
+          <hr class="my-5" />
+        </template>
+
+        <BasicCheckbox
+          v-model="acceptTeilnahmebedingungen"
+          class="mt-1 font-medium"
+          required
+        >
+          <span>Ich habe die allgemeinen </span>
+          <u
+            class="cursor-pointer"
+            @click="emit('showTerms')"
+          >
+            <span>Teilnahmebedingungen</span>
+            <ArrowTopRightOnSquareIcon class="h-4 inline ml-1" />
+          </u>
+          <span> gelesen und akzeptiere diese.</span>
+        </BasicCheckbox>
+        <BasicCheckbox
+          v-model="acceptDatenschutz"
+          class="mt-1 font-medium"
+          required
+        >
+          <span>Ich habe die gesonderten </span>
+          <u
+            class="cursor-pointer"
+            @click="emit('showTerms')"
+          >
+            <span>Datenschutzerklärung</span>
+            <ArrowTopRightOnSquareIcon class="h-4 inline ml-1" />
+          </u>
+          <span> gelesen und akzeptiere diese.</span>
+        </BasicCheckbox>
+      </template>
+
+      <Button
+        color="primary"
+        class="w-full justify-center mt-5 mb-20 disabled:bg-gray-300"
+        :disabled="isPublicAnmeldung && (!acceptTeilnahmebedingungen || !acceptDatenschutz)"
+        type="submit"
+      >
+        <template v-if="isLoading">
+          <Loading color="white" />
+        </template>
+        <span>
+          {{ submitText ?? 'Speichern' }}
+        </span>
+      </Button>
+
+      <template v-if="error && error.message">
+        <pre><code>
         {{ error.message }}
       </code></pre>
-    </template>
-  </ValidateForm>
+      </template>
+    </ValidateForm>
+  </div>
 </template>

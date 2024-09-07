@@ -47,16 +47,16 @@ watch(veranstaltungen, (loadedVeranstaltungen) => {
 </script>
 
 <template>
-  <div class="mb-4">
+  <div class="mb-4 relative">
     <Listbox v-model="selectedVeranstaltung">
       <ListboxButton
-        class="p-2 text-white bg-primary-600 dark:bg-primary-800 hover:bg-primary-500 dark:hover:bg-primary-700 focus:outline-primary-600 w-full rounded-xl flex items-center space-x-3 text-left"
+        class="p-2 text-white bg-primary-600 dark:bg-primary-800 hover:bg-primary-500 dark:hover:bg-primary-700 focus:outline-primary-600 w-full rounded-lg flex items-center space-x-3 text-left"
       >
-        <div class="shrink-0 h-8 w-8 bg-primary-100 rounded-lg flex items-center justify-center">
+        <div class="shrink-0 h-6 w-6 bg-primary-100 rounded-sm flex items-center justify-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 576 512"
-            class="h-5 aspect-square text-primary-600"
+            class="h-4 aspect-square text-primary-600"
             fill="currentColor"
           >
             <path
@@ -64,12 +64,11 @@ watch(veranstaltungen, (loadedVeranstaltungen) => {
             />
           </svg>
         </div>
-        <div class="grow text-white leading-3">
-          <p class="text-sm font-normal text-primary-200 mb-0">Veranstaltung</p>
-          <h6 class="mb-0">{{ veranstaltungTitle(selectedVeranstaltung) }}</h6>
+        <div class="grow text-white">
+          <span class="mb-0 font-medium">{{ veranstaltungTitle(selectedVeranstaltung) }}</span>
         </div>
         <div class="flex-shrink-0">
-          <ChevronDownIcon class="w-6 h-6"></ChevronDownIcon>
+          <ChevronDownIcon class="w-5 h-5"></ChevronDownIcon>
         </div>
       </ListboxButton>
 

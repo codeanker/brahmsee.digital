@@ -73,7 +73,7 @@ defineExpose({ isValid })
         :is="level >= 4 ? CheckIcon : XMarkIcon"
         class="h-5"
       />
-      <p class="mb-0">Should contain numbers</p>
+      <p class="mb-0">Sollte Nummern enthalten</p>
     </div>
     <div
       class="flex items-center space-x-2"
@@ -83,7 +83,7 @@ defineExpose({ isValid })
         :is="level >= 5 ? CheckIcon : XMarkIcon"
         class="h-5"
       />
-      <p class="mb-0">Should contain special characters</p>
+      <p class="mb-0">Sollte Sonderzeichen enthalten</p>
     </div>
   </div>
 </template>
