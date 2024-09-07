@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch"]
 }
 
@@ -112,17 +112,17 @@ enum Konfektionsgroesse {
 }
 
 model Hostname {
-  id        Int      @id @default(autoincrement())
-  hostname  String
+  id            Int             @id @default(autoincrement())
+  hostname      String
   veranstaltung Veranstaltung[]
 }
 
 model Notfallkontakt {
-  id                      Int      @id @default(autoincrement())
+  id                      Int     @id @default(autoincrement())
   firstname               String
   lastname                String
   telefon                 String
-  istErziehungsberechtigt Boolean  @default(false)
+  istErziehungsberechtigt Boolean @default(false)
   personId                Int
   person                  Person  @relation(fields: [personId], references: [id], onDelete: Cascade)
 }
@@ -157,7 +157,7 @@ model Person {
 model Account {
   id                  Int                   @id @default(autoincrement())
   email               String                @unique
-  dlrgOauthId         String?                @unique
+  dlrgOauthId         String?               @unique
   password            String?
   role                Role
   personId            Int                   @unique
@@ -220,13 +220,17 @@ model Anmeldung {
 }
 
 model Address {
-  id     Int      @id @default(autoincrement())
-  street String
-  number String
-  zip    String
-  city   String
-  Ort    Ort[]
-  Person Person[]
+  id           Int      @id @default(autoincrement())
+  street       String
+  streetNumber String
+  zip          String
+  city         String
+  country      String
+  lat          Float?
+  lon          Float?
+  valid        Boolean  @default(false)
+  Ort          Ort[]
+  Person       Person[]
 }
 
 model Ort {
@@ -238,26 +242,26 @@ model Ort {
 }
 
 model Veranstaltung {
-  id                          Int                  @id @default(autoincrement())
-  name                        String
-  beginn                      DateTime             @db.Date
-  ende                        DateTime             @db.Date
-  meldebeginn                 DateTime
-  meldeschluss                DateTime
-  ortId                       Int?
-  ort                         Ort?                 @relation(fields: [ortId], references: [id], onDelete: SetNull)
-  maxTeilnehmende             Int
-  teilnahmegebuehr            Int
-  unterveranstaltungen        Unterveranstaltung[]
-  mahlzeiten                  Mahlzeit[]
-  beschreibung                String?
-  datenschutz                 String?
-  teilnahmeBedingungen        String?
-  teilnahmeBedingungenPublic  String?
-  zielgruppe                  String?
-  hostnameId                  Int?
-  hostname                    Hostname?           @relation(fields: [hostnameId], references: [id])
-  customFields                CustomField[]
+  id                         Int                  @id @default(autoincrement())
+  name                       String
+  beginn                     DateTime             @db.Date
+  ende                       DateTime             @db.Date
+  meldebeginn                DateTime
+  meldeschluss               DateTime
+  ortId                      Int?
+  ort                        Ort?                 @relation(fields: [ortId], references: [id], onDelete: SetNull)
+  maxTeilnehmende            Int
+  teilnahmegebuehr           Int
+  unterveranstaltungen       Unterveranstaltung[]
+  mahlzeiten                 Mahlzeit[]
+  beschreibung               String?
+  datenschutz                String?
+  teilnahmeBedingungen       String?
+  teilnahmeBedingungenPublic String?
+  zielgruppe                 String?
+  hostnameId                 Int?
+  hostname                   Hostname?            @relation(fields: [hostnameId], references: [id])
+  customFields               CustomField[]
 }
 
 enum MahlzeitType {
@@ -306,15 +310,15 @@ enum ActivityType {
 }
 
 model Activity {
-  id               Int      @id @default(autoincrement())
-  createdAt        DateTime @default(now())
-  type             ActivityType
-  description      String?
-  subjectType      String
-  subjectId        Int?
-  causerId         Int?
-  causer           Account? @relation(fields: [causerId], references: [id], onDelete: SetNull)
-  metadata         Json     @default("{}")
+  id          Int          @id @default(autoincrement())
+  createdAt   DateTime     @default(now())
+  type        ActivityType
+  description String?
+  subjectType String
+  subjectId   Int?
+  causerId    Int?
+  causer      Account?     @relation(fields: [causerId], references: [id], onDelete: SetNull)
+  metadata    Json         @default("{}")
 }
 
 enum CustomFieldType {
@@ -335,26 +339,26 @@ enum CustomFieldPosition {
 }
 
 model CustomField {
-  id                    Int @id @default(autoincrement())
-  name                  String
-  description           String?
-  type                  CustomFieldType
-  required              Boolean @default(false)
-  options               String[]
-  role                  Role[]
-  values                CustomFieldValue[]
-  positions             CustomFieldPosition[]
-  veranstaltungId       Int?
-  unterveranstaltungId  Int?
-  veranstaltung         Veranstaltung?      @relation(fields: [veranstaltungId], references: [id], onDelete: Cascade)
-  unterveranstaltung    Unterveranstaltung? @relation(fields: [unterveranstaltungId], references: [id], onDelete: Cascade)
+  id                   Int                   @id @default(autoincrement())
+  name                 String
+  description          String?
+  type                 CustomFieldType
+  required             Boolean               @default(false)
+  options              String[]
+  role                 Role[]
+  values               CustomFieldValue[]
+  positions            CustomFieldPosition[]
+  veranstaltungId      Int?
+  unterveranstaltungId Int?
+  veranstaltung        Veranstaltung?        @relation(fields: [veranstaltungId], references: [id], onDelete: Cascade)
+  unterveranstaltung   Unterveranstaltung?   @relation(fields: [unterveranstaltungId], references: [id], onDelete: Cascade)
 }
 
 model CustomFieldValue {
-  id           Int @id @default(autoincrement())
-  value        Json @default("{}")
-  fieldId      Int
-  field        CustomField @relation(fields: [fieldId], references: [id], onDelete: Cascade)
-  anmeldungId  Int?
-  anmeldung    Anmeldung? @relation(fields: [anmeldungId], references: [id], onDelete: Cascade)
+  id          Int         @id @default(autoincrement())
+  value       Json        @default("{}")
+  fieldId     Int
+  field       CustomField @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+  anmeldungId Int?
+  anmeldung   Anmeldung?  @relation(fields: [anmeldungId], references: [id], onDelete: Cascade)
 }

@@ -2,8 +2,6 @@
 import { ArrowTopRightOnSquareIcon } from '@heroicons/vue/24/outline'
 import { ref } from 'vue'
 
-import type { IAddress } from '../anmeldung/Address.vue'
-import Address from '../anmeldung/Address.vue'
 import type { IStammdaten } from '../anmeldung/Stammdaten.vue'
 import Stammdaten from '../anmeldung/Stammdaten.vue'
 
@@ -15,6 +13,7 @@ import type { ITShirtBestellung } from './FormTShirtBestellungGeneral.vue'
 import FormTShirtBestellungGeneral from './FormTShirtBestellungGeneral.vue'
 
 import { apiClient } from '@/api'
+import BasicAddressPicker, { type IAddress } from '@/components/BasicInputs/BasicAddressPicker.vue'
 import BasicCheckbox from '@/components/BasicInputs/BasicCheckbox.vue'
 import BasicTextArea from '@/components/BasicInputs/BasicTextArea.vue'
 import BasicTypeahead from '@/components/BasicInputs/BasicTypeahead.vue'
@@ -68,10 +67,26 @@ const stammdatenForm = ref<IStammdaten>({
 
 const addressForm = ref<IAddress>({
   street: props.person?.address?.street ?? '',
-  number: props.person?.address?.number ?? '',
+  streetNumber: props.person?.address?.streetNumber ?? '',
   zip: props.person?.address?.zip ?? '',
   city: props.person?.address?.city ?? '',
+  country: props.person?.address?.country ?? 'DE',
+  position: {
+    lat: props.person?.address?.lat ?? 0,
+    lon: props.person?.address?.lon ?? 0,
+  },
 })
+
+async function addressFind(params: { query: string; country: string; language: string }) {
+  return apiClient.address.findAddress.query({
+    query: params.query,
+    zip: addressForm.value.zip,
+    city: addressForm.value.city,
+    street: addressForm.value.street,
+    streetNumber: addressForm.value.streetNumber,
+    country: addressForm.value.country,
+  })
+}
 
 const contactForm = ref<IContact>({
   email: props.person?.email ?? '',
@@ -138,7 +153,39 @@ const submit = () => {
       <Stammdaten v-model="stammdatenForm" />
       <hr class="my-5" />
 
-      <Address v-model="addressForm" />
+      <BasicAddressPicker
+        label="Adresse"
+        country-label="Land"
+        city-label="Ort"
+        zip-label="Postleitzahl"
+        street-label="Straße"
+        house-number-label="Hausnummer"
+        autocomplete-label="Intelligente Suche"
+        manual-entry-label="Manuell eingeben"
+        :address-find="addressFind"
+        :country-formatter="(country) => country.name"
+        :country="addressForm.country"
+        :ort="addressForm.city"
+        :plz="addressForm.zip"
+        :strasse="addressForm.street"
+        :hausnummer="addressForm.streetNumber"
+        :is-valid-address="addressForm.valid"
+        :validation="true"
+        required
+        :include-non-independent-countries="true"
+        :street="addressForm.street"
+        :street-number="addressForm.streetNumber"
+        :zip="addressForm.zip"
+        :city="addressForm.city"
+        :position="addressForm.position"
+        @update:country="addressForm['country'] = $event ?? ''"
+        @update:city="addressForm['city'] = $event ?? ''"
+        @update:zip="addressForm['zip'] = $event ?? ''"
+        @update:street="addressForm['street'] = $event ?? ''"
+        @update:street-number="addressForm['streetNumber'] = $event ?? ''"
+        @update:position="addressForm['position'] = $event"
+        @update:is-valid-address="addressForm['valid'] = $event"
+      />
       <hr class="my-5" />
 
       <FormContactGeneral v-model="contactForm" />

@@ -24,7 +24,7 @@ export const ortVerwaltungGetProcedure = defineProcedure({
             zip: true,
             city: true,
             street: true,
-            number: true,
+            streetNumber: true,
           },
         },
       },
