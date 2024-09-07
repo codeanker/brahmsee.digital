@@ -4,7 +4,7 @@
     "port": 3030
   },
 
-  "clientUrl": "https://localhost:8080",
+  "clientUrl": "http://localhost:8080",
 
   "authentication": {
     "secret": "secret",
@@ -33,5 +33,11 @@
   },
   "tomtom": {
     "apiKey": ""
+  },
+  "public": {
+    "legal": {
+      "imprint": "",
+      "privacy": ""
+    }
   }
 }

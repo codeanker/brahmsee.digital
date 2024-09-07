@@ -1,0 +1,7 @@
+{{#> layout }}
+
+<mj-text font-size="16px" line-height="1.5">
+  Der Status deines <b>brahmsee.digital</b> Account wurde auf <b>{{ status }}</b> geändert.
+</mj-text>
+
+{{/layout}}

@@ -21,6 +21,20 @@ export const accountActivateProcedure = defineProcedure({
       data: {
         activatedAt: new Date(),
       },
+      select: {
+        email: true,
+        person: {
+          select: {
+            firstname: true,
+            lastname: true,
+            gliederung: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
     })
 
     await logActivity({
@@ -33,9 +47,13 @@ export const accountActivateProcedure = defineProcedure({
 
     await sendMail({
       to: account.email,
-      subject: 'brahmsee.digital Account aktiviert',
+      subject: 'Account aktiviert',
       categories: ['account', 'activate'],
-      html: 'Dein brahmsee.digital Account wurde aktiviert.',
+      template: 'account-activated',
+      variables: {
+        gliederung: account.person.gliederung!.name,
+        name: `${account.person.firstname} ${account.person.lastname}`,
+      },
     })
 
     return 'activated'

@@ -1,12 +1,38 @@
 import config from '../../../config'
+import client from '../../../prisma'
 import { sendMail } from '../../../util/mail'
 
-export async function sendMailConfirmEmailRequest(data: { email: string; activationToken: string }) {
-  const activationUrl = `${config.clientUrl}/registrierung/confirm/${data.activationToken}`
+export async function sendMailConfirmEmailRequest(email: string, activationToken: string) {
+  const activationUrl = `${config.clientUrl}/registrierung/confirm/${activationToken}`
+
+  const account = await client.account.findUniqueOrThrow({
+    where: {
+      email,
+    },
+    select: {
+      person: {
+        select: {
+          firstname: true,
+          lastname: true,
+          gliederung: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
+    },
+  })
+
   await sendMail({
-    to: data.email,
-    subject: 'brahmsee.digital Bestätige deine E-Mail Adresse',
+    to: email,
+    subject: 'Bestätige deine E-Mail Adresse',
     categories: ['account', 'confirm'],
-    html: `Bitte bestätige deine E-Mail Adresse, indem du auf folgenden Link klickst: <a href="${activationUrl}">${activationUrl}</a>`,
+    template: 'account-email-confirm',
+    variables: {
+      name: `${account.person.firstname} ${account.person.lastname}`,
+      gliederung: account.person.gliederung!.name,
+      activationUrl,
+    },
   })
 }

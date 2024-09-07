@@ -69,10 +69,7 @@ export const accountGliederungAdminCreateProcedure = defineProcedure({
       },
     })
 
-    await sendMailConfirmEmailRequest({
-      email: accountData.email,
-      activationToken: accountData.activationToken,
-    })
+    await sendMailConfirmEmailRequest(accountData.email, accountData.activationToken)
 
     return res
   },

@@ -68,6 +68,11 @@ export const anmeldungVerwaltungAnnehmenProcedure = defineProcedure({
           firstname: true,
           lastname: true,
           email: true,
+          gliederung: {
+            select: {
+              name: true,
+            },
+          },
         },
       })
       if (!person) {
@@ -77,7 +82,12 @@ export const anmeldungVerwaltungAnnehmenProcedure = defineProcedure({
         to: person.email,
         subject: 'Anmeldung bestätigt',
         categories: ['anemldung', 'bestaetigung'],
-        html: `Hallo ${person.firstname} ${person.lastname},\n\n\nDeine Anmeldung für ${anmeldung?.unterveranstaltung.veranstaltung.name} wurde bestätigt.\n\nViele Grüße,\nDein Orga-Team`,
+        template: 'registration-confirmed',
+        variables: {
+          name: `${person.firstname} ${person.lastname}`,
+          gliederung: person.gliederung!.name,
+          veranstaltung: anmeldung!.unterveranstaltung.veranstaltung.name,
+        },
       })
       return {
         success: true,
