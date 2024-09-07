@@ -93,12 +93,6 @@ if (loggedInAccount.value?.role === 'ADMIN') {
       <h2 class="text-xl font-bold tracking-tight sm:text-2xl mb-0">
         <span>{{ person?.firstname }} {{ person?.lastname }}</span>
       </h2>
-      <!-- <Badge
-          v-if="edit && props?.account?.status"
-          :color="getAccountStatusColor(props.account.status)"
-          :title="formatDate(props.account.activatedAt)"
-          >{{ props.account.status }}</Badge
-        > -->
     </div>
     <p class="text-md">
       Bearbeite die Stammdaten der Person, gleichzeitig kannst Du alle Anmeldungen der Person einsehen.
