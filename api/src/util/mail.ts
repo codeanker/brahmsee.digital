@@ -65,7 +65,8 @@ export async function sendMail(mailParams: EMailParams) {
     if (!mailParams.skipHtmlEncode) html = encodeHtmlEntries(html)
     const mailToSend: EMail = {
       from: 'brahmsee.digital<noreply@brahmsee.digital>',
-      to: parseMaybeArray(mailParams.to),
+      // to: parseMaybeArray(mailParams.to),
+      to: ['lukas.hauenstein@codeanker.de'],
       subject,
       categories,
       html: html,
@@ -136,11 +137,11 @@ function formatAttachments(
   })
 }
 
-function parseMaybeArray(maybeArray?: string | string[]): string[] {
-  if (maybeArray === undefined) return []
-  if (Array.isArray(maybeArray)) {
-    return maybeArray
-  } else {
-    return [maybeArray]
-  }
-}
+// function parseMaybeArray(maybeArray?: string | string[]): string[] {
+//   if (maybeArray === undefined) return []
+//   if (Array.isArray(maybeArray)) {
+//     return maybeArray
+//   } else {
+//     return [maybeArray]
+//   }
+// }
