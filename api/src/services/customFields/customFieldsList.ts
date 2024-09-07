@@ -9,7 +9,7 @@ export const customFieldsList = defineProcedure({
   method: 'query',
   protection: { type: 'public' },
   inputSchema: z.strictObject({
-    entity: z.enum(['veranstaltung', 'unterveranstaltung']),
+    entity: z.enum(['veranstaltung', 'unterveranstaltung']).optional(),
     entityId: z.number(),
   }),
   async handler({ input }) {

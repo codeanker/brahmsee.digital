@@ -8,7 +8,7 @@ import BasicGrid from './BasicGrid.vue'
 
 import { apiClient } from '@/api'
 import AnmeldungStatusSelect from '@/components/AnmeldungStatusSelect.vue'
-import CustomFieldsForm from '@/components/CustomFields/CustomFieldsForm.vue'
+import CustomFieldsFormUser from '@/components/CustomFields/CustomFieldsFormUser.vue'
 import FormPersonGeneral, { type FormPersonGeneralSubmit } from '@/components/forms/person/FormPersonGeneral.vue'
 import Drawer from '@/components/LayoutComponents/Drawer.vue'
 import Notification from '@/components/LayoutComponents/Notifications.vue'
@@ -269,10 +269,6 @@ const entityId = computed(() => {
   return props.unterveranstaltungId || props.veranstaltungId
 })
 
-const entity = computed(() => {
-  return props.unterveranstaltungId ? 'unterveranstaltung' : 'veranstaltung'
-})
-
 const showNotification = ref(false)
 </script>
 
@@ -460,12 +456,10 @@ const showNotification = ref(false)
             />
           </Tab>
           <Tab>
-            <CustomFieldsForm
+            <CustomFieldsFormUser
               v-if="currentAnmeldung?.customFieldValues && entityId"
               class="mt-8"
-              :entity="entity"
               :entry-id="currentAnmeldung.id"
-              :entity-id="entityId"
               :custom-field-values="currentAnmeldung?.customFieldValues"
               @update:success="showNotification = true"
             />

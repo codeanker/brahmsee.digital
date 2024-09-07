@@ -12,7 +12,7 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { apiClient } from '@/api'
-import CustomFieldsTable from '@/components/CustomFieldsTable.vue'
+import CustomFieldsTable from '@/components/CustomFields/CustomFieldsTable.vue'
 import FilesExport from '@/components/FilesExport.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
@@ -212,7 +212,8 @@ const files = [
         </div>
         <CustomFieldsTable
           v-if="veranstaltung?.id"
-          :veranstaltung-id="veranstaltung?.id"
+          :id="veranstaltung?.id"
+          entity="veranstaltung"
         />
       </Tab>
     </Tabs>

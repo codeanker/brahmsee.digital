@@ -7,14 +7,15 @@ import Loading from '../UIComponents/Loading.vue'
 import { apiClient } from '@/api'
 import CustomField from '@/components/CustomFields/CustomField.vue'
 import Button from '@/components/UIComponents/Button.vue'
+import type { RouterOutput } from '@codeanker/api'
 import { ValidateForm } from '@codeanker/validation'
+
+type Value = Awaited<RouterOutput['anmeldung']['verwaltungGet']>[number]['customFieldValues'][number]
 
 const props = defineProps<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  customFieldValues: Array<any>
+  customFieldValues: Array<Value>
   entryId: number
-  entityId: number
-  entity: 'veranstaltung' | 'unterveranstaltung'
 }>()
 
 const emit = defineEmits<{
@@ -34,17 +35,6 @@ const bindings = toRef(
     : {}
 )
 
-const { state: customFields } = useAsyncState(async () => {
-  if (props.entityId === undefined) {
-    return undefined
-  } else {
-    return await apiClient.customFields.list.query({
-      entity: props.entity,
-      entityId: props.entityId,
-    })
-  }
-}, undefined)
-
 const { execute: submit, isLoading: isLoading } = useAsyncState(async () => {
   if (props.entryId) {
     isLoading.value = true
@@ -61,11 +51,11 @@ const { execute: submit, isLoading: isLoading } = useAsyncState(async () => {
 </script>
 
 <template>
-  <div v-if="customFields && bindings">
+  <div v-if="bindings">
     <ValidateForm @submit="submit">
       <div class="grid grid-flow-row lg:grid-cols-2 gap-5">
         <template
-          v-for="customField in customFields"
+          v-for="customField in props.customFieldValues.map((f) => f.field)"
           :key="customField.id"
         >
           <div class="flex flex-col gap-y-2">

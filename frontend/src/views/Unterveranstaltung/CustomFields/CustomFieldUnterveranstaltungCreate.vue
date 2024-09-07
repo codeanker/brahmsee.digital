@@ -4,12 +4,12 @@ import { computed } from 'vue'
 import CustomFieldsFormCreate from '@/components/CustomFields/CustomFieldsFormCreate.vue'
 import { paramInt } from '@/helpers/params'
 
-const veranstaltungId = computed(() => paramInt('veranstaltungId'))
+const unterveranstaltungId = computed(() => paramInt('unterveranstaltungId'))
 </script>
 
 <template>
   <CustomFieldsFormCreate
-    entity="veranstaltung"
-    :entity-id="veranstaltungId"
+    entity="unterveranstaltung"
+    :entity-id="unterveranstaltungId"
   />
 </template>

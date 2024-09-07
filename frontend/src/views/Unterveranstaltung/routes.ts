@@ -61,6 +61,30 @@ export const routesUnterveranstaltung: Route[] = [
           ],
         },
       },
+      {
+        name: 'Unterveranstaltung Custom Field erstellen',
+        path: ':unterveranstaltungId/fields/create',
+        component: () => import('./CustomFields/CustomFieldUnterveranstaltungCreate.vue'),
+        meta: {
+          breadcrumbs: [
+            {
+              text: 'Benutzerdefiniertes Feld erstellen',
+            },
+          ],
+        },
+      },
+      {
+        name: 'Unterveranstaltung Custom Field bearbeiten',
+        path: ':unterveranstaltungId/fields/:fieldId',
+        component: () => import('./CustomFields/CustomFieldUnterveranstaltungEdit.vue'),
+        meta: {
+          breadcrumbs: [
+            {
+              text: 'Benutzerdefiniertes Feld bearbeiten',
+            },
+          ],
+        },
+      },
     ],
   },
 ]

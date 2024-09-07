@@ -6,22 +6,19 @@ import { defineProcedure } from '../../types/defineProcedure'
 
 import { customFieldSchema } from './schema/customField.schema'
 
-export const customFieldsVeranstaltungUpdate = defineProcedure({
-  key: 'veranstaltungUpdate',
+export const customFieldsUnterveranstaltungCreate = defineProcedure({
+  key: 'unterveranstaltungCreate',
   method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
+  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN] },
   inputSchema: z.strictObject({
-    fieldId: z.number(),
+    unterveranstaltungId: z.number(),
     data: customFieldSchema,
   }),
-  async handler({ input }) {
-    return await prisma.customField.update({
-      where: {
-        id: input.fieldId,
-      },
+  handler: ({ input }) =>
+    prisma.customField.create({
       data: {
         ...input.data,
+        unterveranstaltungId: input.unterveranstaltungId,
       },
-    })
-  },
+    }),
 })
