@@ -133,57 +133,67 @@ const submit = () => {
 </script>
 
 <template>
-  <div class="grid grid-cols-1 lg:grid-cols-2">
-    <ValidateForm @submit="submit">
-      <Stammdaten v-model="stammdatenForm" />
-      <hr class="my-5" />
+  <ValidateForm @submit="submit">
+    <Stammdaten v-model="stammdatenForm" />
+    <hr class="my-5" />
 
-      <Address v-model="addressForm" />
-      <hr class="my-5" />
+    <Address v-model="addressForm" />
+    <hr class="my-5" />
 
-      <FormContactGeneral v-model="contactForm" />
-      <hr class="my-5" />
+    <FormContactGeneral v-model="contactForm" />
+    <hr class="my-5" />
 
-      <template v-if="!isPublicAnmeldung">
-        <BasicTypeahead
-          v-model="gliederung"
-          :query="queryGliederungen"
-          :input-formatter="(result) => result?.name"
-          :result-formatter="(result) => result.name"
-          :strict="true"
-          required
-          label="Gliederung"
-          placeholder="Gliederung eingeben"
-        />
+    <template v-if="!isPublicAnmeldung">
+      <BasicTypeahead
+        v-model="gliederung"
+        :query="queryGliederungen"
+        :input-formatter="(result) => result?.name"
+        :result-formatter="(result) => result.name"
+        :strict="true"
+        required
+        label="Gliederung"
+        placeholder="Gliederung eingeben"
+      />
+      <hr class="my-5" />
+    </template>
+
+    <FormNotfallkontakteGeneral v-model="notfallKontakteForm" />
+    <hr class="my-5" />
+
+    <FormEssgewohnheitGeneral v-model="essgewohnheitenForm" />
+    <hr class="my-5" />
+
+    <template v-if="isPublicAnmeldung">
+      <BasicTextArea
+        v-model="comment"
+        label="Bemerkung"
+        :rows="3"
+      ></BasicTextArea>
+      <hr class="my-5" />
+    </template>
+
+    <slot />
+
+    <template v-if="isPublicAnmeldung">
+      <template v-if="showTshirt">
+        <FormTShirtBestellungGeneral v-model="tshirtForm" />
         <hr class="my-5" />
       </template>
-
-      <FormNotfallkontakteGeneral v-model="notfallKontakteForm" />
+      Mit der Anmeldung wird ein Konto erstellt, damit du deine Daten später bearbeiten kannst und wir dich über den
+      Status deiner Anmeldung informieren können. Du kannst dein Konto jederzeit löschen lassen. Weitere Informationen
+      findest du in der
+      <u
+        class="cursor-pointer"
+        @click="emit('showTerms')"
+      >
+        <span>Datenschutzerklärung</span>
+        <ArrowTopRightOnSquareIcon class="h-4 inline ml-1" /> </u
+      >.
       <hr class="my-5" />
-
-      <FormEssgewohnheitGeneral v-model="essgewohnheitenForm" />
-      <hr class="my-5" />
-
-      <template v-if="isPublicAnmeldung">
-        <BasicTextArea
-          v-model="comment"
-          label="Bemerkung"
-          :rows="3"
-        ></BasicTextArea>
-        <hr class="my-5" />
-      </template>
-
-      <slot></slot>
-
-      <template v-if="isPublicAnmeldung">
-        <template v-if="showTshirt">
-          <FormTShirtBestellungGeneral v-model="tshirtForm" />
-          <hr class="my-5" />
-        </template>
-
+      <div class="flex flex-col space-y-2">
         <BasicCheckbox
           v-model="acceptTeilnahmebedingungen"
-          class="mt-1 font-medium"
+          class="font-medium"
           required
         >
           <span>Ich habe die allgemeinen </span>
@@ -198,7 +208,7 @@ const submit = () => {
         </BasicCheckbox>
         <BasicCheckbox
           v-model="acceptDatenschutz"
-          class="mt-1 font-medium"
+          class="font-medium"
           required
         >
           <span>Ich habe die gesonderten </span>
@@ -211,27 +221,27 @@ const submit = () => {
           </u>
           <span> gelesen und akzeptiere diese.</span>
         </BasicCheckbox>
+      </div>
+    </template>
+
+    <Button
+      color="primary"
+      class="w-full justify-center mt-5 mb-20 disabled:bg-gray-300"
+      :disabled="isPublicAnmeldung && (!acceptTeilnahmebedingungen || !acceptDatenschutz)"
+      type="submit"
+    >
+      <template v-if="isLoading">
+        <Loading color="white" />
       </template>
+      <span>
+        {{ submitText ?? 'Speichern' }}
+      </span>
+    </Button>
 
-      <Button
-        color="primary"
-        class="w-full justify-center mt-5 mb-20 disabled:bg-gray-300"
-        :disabled="isPublicAnmeldung && (!acceptTeilnahmebedingungen || !acceptDatenschutz)"
-        type="submit"
-      >
-        <template v-if="isLoading">
-          <Loading color="white" />
-        </template>
-        <span>
-          {{ submitText ?? 'Speichern' }}
-        </span>
-      </Button>
-
-      <template v-if="error && error.message">
-        <pre><code>
+    <template v-if="error && error.message">
+      <pre><code>
         {{ error.message }}
       </code></pre>
-      </template>
-    </ValidateForm>
-  </div>
+    </template>
+  </ValidateForm>
 </template>

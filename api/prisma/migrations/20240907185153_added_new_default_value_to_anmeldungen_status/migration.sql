@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Anmeldung" ALTER COLUMN "status" SET DEFAULT 'AUSSTEHEND';

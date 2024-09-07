@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */ // Prettier ignored is because this file is generated
 import { mergeRouters } from '../../trpc'
 
+import { anmeldungEmailConfirmProcedure } from './anmeldungEmailConfirm'
 import { anmeldungGliederungGetProcedure } from './anmeldungGliederungGet'
 import { anmeldungGliederungCountProcedure, anmeldungGliederungdListProcedure } from './anmeldungGliederungList'
 import { anmeldungGliederungPatchProcedure } from './anmeldungGliederungPatch'
@@ -29,6 +30,7 @@ export const anmeldungRouter = mergeRouters(
   anmeldungGliederungdListProcedure.router,
   anmeldungGliederungCountProcedure.router,
   anmeldungGliederungGetProcedure.router,
-  anmeldungGliederungPatchProcedure.router
+  anmeldungGliederungPatchProcedure.router,
+  anmeldungEmailConfirmProcedure.router,
   // Add Routes here - do not delete this line
 )

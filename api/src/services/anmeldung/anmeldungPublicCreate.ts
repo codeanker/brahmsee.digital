@@ -1,12 +1,14 @@
+import { Role } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
 import dayjs from 'dayjs'
+import { v4 as uuidv4 } from 'uuid'
 import { z } from 'zod'
 
 import prisma from '../../prisma'
 import { customFieldValuesCreateMany, defineCustomFieldValues } from '../../types/defineCustomFieldValues'
 import { defineProcedure } from '../../types/defineProcedure'
 import logActivity from '../../util/activity'
-import { sendMail } from '../../util/mail'
+import { sendMailConfirmEmailRequest } from '../account/helpers/sendMailConfirmEmailRequest'
 import { personSchema, getPersonCreateData } from '../person/schema/person.schema'
 
 export const inputSchema = z.strictObject({
@@ -52,9 +54,18 @@ export async function handle(input: z.infer<typeof inputSchema>, isPublic: boole
 
   const personData = await getPersonCreateData(input.data)
 
+  const activationTokens = [uuidv4(), uuidv4()]
+
   const person = await prisma.person.create({
     data: {
       ...personData,
+      account: {
+        create: {
+          email: personData.email,
+          role: Role.USER,
+          activationToken: activationTokens[0],
+        },
+      },
       anmeldungen: {
         create: {
           unterveranstaltungId: unterveranstaltung.id,
@@ -72,6 +83,7 @@ export async function handle(input: z.infer<typeof inputSchema>, isPublic: boole
           customFieldValues: {
             createMany: customFieldValuesCreateMany(input.customFieldValues),
           },
+          activationToken: activationTokens[1],
         },
       },
     },
@@ -101,12 +113,20 @@ export async function handle(input: z.infer<typeof inputSchema>, isPublic: boole
     }),
   ])
 
-  await sendMail({
-    to: input.data.email,
-    subject: `${unterveranstaltung?.veranstaltung?.hostname?.hostname} Anmeldung erfolgreich`,
-    categories: ['anmeldung', 'create'],
-    html: `Vielen Dank für deine Anmeldung zur Veranstaltung ${unterveranstaltung.veranstaltung.name} .`,
-  })
+  // await sendMail({
+  //   to: input.data.email,
+  //   subject: `${unterveranstaltung?.veranstaltung?.hostname?.hostname} Anmeldung erfolgreich`,
+  //   categories: ['anmeldung', 'create'],
+  //   html: `Vielen Dank für deine Anmeldung zur Veranstaltung ${unterveranstaltung.veranstaltung.name} .`,
+  // })
+
+  await sendMailConfirmEmailRequest(
+    {
+      email: input.data.email,
+      activationTokens,
+    },
+    true
+  )
 
   return person
 }

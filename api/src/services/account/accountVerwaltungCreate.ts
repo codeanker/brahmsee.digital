@@ -23,10 +23,13 @@ export const accountVerwaltungCreateProcedure = defineProcedure({
       },
     })
 
-    await sendMailConfirmEmailRequest({
-      email: accountData.email,
-      activationToken: accountData.activationToken,
-    })
+    await sendMailConfirmEmailRequest(
+      {
+        email: accountData.email,
+        activationTokens: accountData.activationToken,
+      },
+      false
+    )
 
     return res
   },

@@ -47,8 +47,8 @@ const { execute: create } = useAsyncState(
 </script>
 
 <template>
-  <div>
-    <h2 class="text-base font-semibold">Stammdaten</h2>
+  <h2 class="text-base font-semibold">Stammdaten</h2>
+  <div class="grid grid-cols-1 lg:grid-cols-2">
     <FormPersonGeneral
       :is-loading="false"
       @submit="(data) => create(undefined, data)"

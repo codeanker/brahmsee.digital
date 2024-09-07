@@ -125,7 +125,7 @@ const {
     })
 
     if (props.isPublic) {
-      router.push('/ausschreibung/' + route.params.ausschreibungId + '/anmeldung/result')
+      router.push('/ausschreibung/' + route.params.ausschreibungId + '/anmeldung/verify')
     } else {
       router.back()
     }

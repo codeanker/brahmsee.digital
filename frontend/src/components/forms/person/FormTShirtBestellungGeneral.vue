@@ -36,7 +36,7 @@ const konfektionsgroesseOptions = getEnumOptions(KonfektionsgroesseMapping)
 <template>
   <div
     v-if="!hideTitle"
-    class="font-medium mb-5"
+    class="font-medium mb-2"
   >
     T-Shirt Bestellung
   </div>

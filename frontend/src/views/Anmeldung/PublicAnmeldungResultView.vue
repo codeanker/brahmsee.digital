@@ -23,7 +23,6 @@ fetchUnterveranstaltung()
 </script>
 
 <template>
-  <!-- <CookieAgreement /> -->
   <div class="lg:pb-10 lg:px-20 xl:px-28 2xl:px-40 flex flex-col h-full">
     <div
       v-if="unterveranstaltung && !isLoading"

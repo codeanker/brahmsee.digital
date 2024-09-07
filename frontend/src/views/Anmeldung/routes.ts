@@ -24,6 +24,24 @@ const routesAusschreibungen: Route[] = [
         },
       },
       {
+        name: 'Public Anmeldung E-Mail Bestätigung',
+        path: '/ausschreibung/:ausschreibungId/anmeldung/verify',
+        component: () => import('../Anmeldung/PublicAnmeldungEmailVerification.vue'),
+        meta: {
+          public: true,
+          hidePublicHeaderBgOnMobile: true,
+          useFullheight: true,
+        },
+      },
+      {
+        name: 'Public Anmeldung E-Mail Bestätigung Confirm',
+        path: '/ausschreibung/confirm/:activationTokenAccount/:activationTokenAnmeldung',
+        component: () => import('./PublicAnmeldungMailConfirm.vue'),
+        meta: {
+          public: true,
+        },
+      },
+      {
         name: 'Public Anmeldung Result',
         path: '/ausschreibung/:ausschreibungId/anmeldung/result',
         component: () => import('../Anmeldung/PublicAnmeldungResultView.vue'),
