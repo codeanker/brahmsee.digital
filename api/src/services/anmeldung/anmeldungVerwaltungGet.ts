@@ -65,6 +65,7 @@ export const anmeldungVerwaltungGetProcedure = defineProcedure({
         },
         unterveranstaltung: {
           select: {
+            id: true,
             veranstaltung: {
               select: {
                 id: true,

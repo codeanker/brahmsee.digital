@@ -99,12 +99,6 @@ const { state: countAnmeldungen } = useAsyncState(async () => {
 const selectedAnmeldungId = ref()
 const showDrawer = ref(false)
 
-function toggleDrawer($event) {
-  selectedAnmeldungId.value = $event.id
-  showDrawer.value = true
-  getSingleAnmeldung()
-}
-
 const {
   state: currentAnmeldung,
   execute: getSingleAnmeldung,
@@ -127,6 +121,31 @@ const {
   null,
   { immediate: false }
 )
+
+const { state: customFields, execute: loadCustomFields } = useAsyncState(
+  async () => {
+    if (!currentAnmeldung.value) {
+      return []
+    }
+
+    return await apiClient.customFields.list.query({
+      entity: 'unterveranstaltung',
+      entityId: currentAnmeldung.value.unterveranstaltung.id,
+    })
+  },
+  [],
+  {
+    immediate: false,
+  }
+)
+
+async function toggleDrawer($event) {
+  selectedAnmeldungId.value = $event.id
+  showDrawer.value = true
+
+  await getSingleAnmeldung()
+  await loadCustomFields()
+}
 
 const { execute: update } = useAsyncState(
   async (anmeldung: FormPersonGeneralSubmit) => {
@@ -460,6 +479,7 @@ const showNotification = ref(false)
               v-if="currentAnmeldung?.customFieldValues && entityId"
               class="mt-8"
               :entry-id="currentAnmeldung.id"
+              :custom-fields="customFields"
               :custom-field-values="currentAnmeldung?.customFieldValues"
               @update:success="showNotification = true"
             />

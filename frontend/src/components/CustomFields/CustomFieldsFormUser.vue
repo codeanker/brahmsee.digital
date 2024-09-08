@@ -10,10 +10,11 @@ import Button from '@/components/UIComponents/Button.vue'
 import type { RouterOutput } from '@codeanker/api'
 import { ValidateForm } from '@codeanker/validation'
 
+type Field = Awaited<RouterOutput['customFields']['list']>[number]
 type Value = Awaited<RouterOutput['anmeldung']['verwaltungGet']>[number]['customFieldValues'][number]
 
 const props = defineProps<{
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  customFields: Array<Field>
   customFieldValues: Array<Value>
   entryId: number
 }>()
@@ -55,7 +56,7 @@ const { execute: submit, isLoading: isLoading } = useAsyncState(async () => {
     <ValidateForm @submit="submit">
       <div class="grid grid-flow-row lg:grid-cols-2 gap-5">
         <template
-          v-for="customField in props.customFieldValues.map((f) => f.field)"
+          v-for="customField in customFields"
           :key="customField.id"
         >
           <div class="flex flex-col gap-y-2">
