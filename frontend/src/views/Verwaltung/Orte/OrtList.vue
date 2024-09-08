@@ -1,22 +1,67 @@
 <script setup lang="ts">
 import { PlusIcon } from '@heroicons/vue/24/outline'
-import { useAsyncState } from '@vueuse/core'
 
 import { apiClient } from '@/api'
+import BasicInput from '@/components/BasicInputs/BasicInput.vue'
+import GenericDataGrid from '@/components/GenericDataGrid.vue'
+import { useRouteTitle } from '@/composables/useRouteTitle'
 import router from '@/router'
+import { type RouterInput, type RouterOutput } from '@codeanker/api'
+import { type TGridColumn } from '@codeanker/datagrid'
 
-const { state: ortenList } = useAsyncState(async () => {
-  return apiClient.ort.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
-}, [])
+const { setTitle } = useRouteTitle()
+setTitle('Orte')
+
+/// Typen von den Daten, Filter und Sortierung
+type TData = Awaited<RouterOutput['ort']['list']>[number]
+type TFilter = RouterInput['ort']['list']['filter']
+type TOrderBy = RouterInput['ort']['list']['orderBy']
+
+const columns: TGridColumn<TData, TFilter>[] = [
+  {
+    field: 'id',
+    title: 'Id',
+    sortable: true,
+  },
+  {
+    field: 'name',
+    title: 'Name',
+    filter: { component: BasicInput, key: 'name' },
+    sortable: true,
+  },
+  {
+    field: 'address.city',
+    title: 'Ort',
+    filter: { component: BasicInput, key: 'city' },
+    sortable: true,
+  },
+]
+
+async function fetchPage(
+  pagination: {
+    take: number
+    skip: number
+  },
+  filter: TFilter,
+  orderBy: TOrderBy
+): Promise<TData[]> {
+  return apiClient.ort.list.query({
+    filter: filter,
+    orderBy: orderBy,
+    pagination: pagination,
+  })
+}
+async function fetchCount(filter: TFilter): Promise<number> {
+  return apiClient.ort.count.query({
+    filter: filter,
+  })
+}
 </script>
 
 <template>
   <div>
-    <div class="flex items-center justify-between my-8">
-      <div class="flex flex-col">
-        <h5 class="mb-0">Orte</h5>
-        <p class="text-sm"><b>Tipp</b>: Zum Bearbeiten eines Ortes die entsprechende Zeile anklicken.</p>
-      </div>
+    <div class="flex items-center justify-between mb-6">
+      <p class="text-sm"><b>Tipp</b>: Zum Bearbeiten eines Ortes die entsprechende Zeile anklicken.</p>
       <RouterLink
         class="text-primary-500 flex items-center"
         :to="{ name: 'Verwaltung Ort erstellen' }"
@@ -26,49 +71,21 @@ const { state: ortenList } = useAsyncState(async () => {
       </RouterLink>
     </div>
     <div class="flow-root">
-      <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
-        <thead>
-          <tr>
-            <th
-              scope="col"
-              class="px-3 py-3.5 text-left text-sm font-semibold"
-            >
-              Id
-            </th>
-            <th
-              scope="col"
-              class="px-3 py-3.5 text-left text-sm font-semibold"
-            >
-              Name
-            </th>
-            <th
-              scope="col"
-              class="px-3 py-3.5 text-left text-sm font-semibold"
-            >
-              Ort
-            </th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-200 dark:divide-gray-800 bg-white dark:bg-dark-primary">
-          <tr
-            v-for="ort in ortenList"
-            :key="ort.id"
-            class="cursor-pointer even:bg-gray-50 dark:even:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-800"
-            :title="ort.name + ' bearbeiten'"
-            @click="router.push({ name: 'Verwaltung Ortdetails', params: { ortId: ort.id } })"
-          >
-            <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-              <div>{{ ort.id }}</div>
-            </td>
-            <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-              <div class="font-medium">{{ ort.name }}</div>
-            </td>
-            <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-              <div class="font-medium">{{ ort.address?.city }}</div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="w-full h-[80vh]">
+        <GenericDataGrid
+          :columns="columns"
+          :fetch-page="fetchPage"
+          :fetch-count="fetchCount"
+          :default-filter="{
+            name: '',
+            city: '',
+          }"
+          :default-order-by="[['id', 'asc']]"
+          no-data-message="Es gibt bisher keine Orte."
+          show-clickable
+          @row-click="(ort) => router.push({ name: 'Verwaltung Ortdetails', params: { ortId: ort.id } })"
+        />
+      </div>
     </div>
   </div>
 </template>

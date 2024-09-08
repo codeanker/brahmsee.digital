@@ -9,7 +9,7 @@ import { sendMail } from '../../util/mail'
 export const accountVerwaltungPatchProcedure = defineProcedure({
   key: 'verwaltungPatch',
   method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
+  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
   inputSchema: z.strictObject({
     id: z.number().int(),
     data: z.strictObject({

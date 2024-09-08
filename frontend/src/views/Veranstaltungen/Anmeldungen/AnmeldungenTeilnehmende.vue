@@ -6,16 +6,19 @@ import { useRoute } from 'vue-router'
 import { useVeranstaltung } from '../../../composables/useVeranstaltung'
 
 import AnmeldungenTable from '@/components/AnmeldungenTable.vue'
+import { useRouteTitle } from '@/composables/useRouteTitle'
 
 const { veranstaltung } = useVeranstaltung()
 const route = useRoute()
 const veranstaltungId = computed(() => Number(route.params.veranstaltungId))
+const { setTitle } = useRouteTitle()
+
+setTitle('Teilnehmende Personen')
 </script>
 
 <template>
-  <div class="flex items-center justify-between gap-x-12 my-8">
+  <div class="flex items-center justify-between pb-6">
     <div class="flex flex-col">
-      <h5 class="mb-0">Teilnehmende "{{ veranstaltung?.name }}"</h5>
       <p class="text-sm">
         Hier findest Du alle Personen, die sich zur Veranstaltung "{{ veranstaltung?.name }}" angemeldet haben.
       </p>

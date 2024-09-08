@@ -43,6 +43,9 @@ export const configSchema = z.strictObject({
     host: z.string(),
     apiKey: z.string(),
   }),
+  tomtom: z.strictObject({
+    apiKey: z.string(),
+  }),
 })
 
 export default configSchema.parse(baseConfig)

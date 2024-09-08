@@ -23,6 +23,7 @@ const anmeldungenRoutes: Route[] = [
               text: 'Übersicht',
             },
           ],
+          title: 'Anmeldung',
         },
       },
       {
@@ -35,6 +36,7 @@ const anmeldungenRoutes: Route[] = [
               text: 'Teilnehmende',
             },
           ],
+          title: 'Teilnehmende',
         },
       },
       {
@@ -47,6 +49,7 @@ const anmeldungenRoutes: Route[] = [
               text: 'Crew',
             },
           ],
+          title: 'Anmeldung',
         },
       },
       {
@@ -59,6 +62,7 @@ const anmeldungenRoutes: Route[] = [
               text: 'Gliederungen',
             },
           ],
+          title: 'Anmeldung',
         },
       },
       {
@@ -71,6 +75,7 @@ const anmeldungenRoutes: Route[] = [
               text: 'Anmeldung erstellen',
             },
           ],
+          title: 'Anmeldung erstellen',
         },
       },
     ],

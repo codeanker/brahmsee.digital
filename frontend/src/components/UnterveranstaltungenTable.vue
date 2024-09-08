@@ -1,158 +1,108 @@
 <script setup lang="ts">
-import { CheckCircleIcon } from '@heroicons/vue/24/outline'
-import { useAsyncState } from '@vueuse/core'
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 
+import GenericDataGrid from './GenericDataGrid.vue'
+
 import { apiClient } from '@/api'
-import { loggedInAccount } from '@/composables/useAuthentication'
+// import DataGridVirtualList from '@/components/DataGrid/DataGridVirtualList.vue'
+import BasicInput from '@/components/BasicInputs/BasicInput.vue'
+import { type RouterInput, type RouterOutput } from '@codeanker/api'
+import { type TGridColumn } from '@codeanker/datagrid'
 
 const props = defineProps<{
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  veranstaltungId?: any
-  columns?: string[]
+  veranstaltungId?: number
+  hideColumns?: string[]
 }>()
-
-function loadUnterveranstaltungen() {
-  if (loggedInAccount.value?.role === 'ADMIN') {
-    const { state } = useAsyncState(async () => {
-      return apiClient.unterveranstaltung.verwaltungList.query({
-        filter: {
-          veranstaltungId: props.veranstaltungId,
-        },
-        pagination: { take: 100, skip: 0 },
-      })
-    }, [])
-    return state
-  } else {
-    const { state } = useAsyncState(async () => {
-      return apiClient.unterveranstaltung.gliederungList.query({
-        filter: {
-          veranstaltungId: props.veranstaltungId,
-        },
-        pagination: { take: 100, skip: 0 },
-      })
-    }, [])
-    return state
-  }
-}
-
-const unterveranstaltungen = loadUnterveranstaltungen()
 
 const router = useRouter()
 
-function formatDate(indate) {
-  let date = new Date(indate)
-  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit' }
-  return date.toLocaleDateString('de-DE', options)
+/// Typen von den Daten, Filter und Sortierung
+type TUnterveranstaltungData = Awaited<RouterOutput['unterveranstaltung']['list']>[number]
+type TUnterveranstaltungFilter = RouterInput['unterveranstaltung']['list']['filter']
+type TUnterveranstaltungOrderBy = RouterInput['unterveranstaltung']['list']['orderBy']
+
+const columns = computed<TGridColumn<TUnterveranstaltungData, TUnterveranstaltungFilter>[]>(() => {
+  const columns: TGridColumn<TUnterveranstaltungData, TUnterveranstaltungFilter>[] = [
+    {
+      field: 'id',
+      title: 'Id',
+      sortable: true,
+    },
+    {
+      field: 'veranstaltung.name',
+      title: 'Veranstaltung',
+      sortable: true,
+    },
+    {
+      field: 'gliederung.name',
+      title: 'Gliederung',
+      filter: { component: BasicInput, key: 'gliederungName' },
+    },
+    {
+      field: 'meldeschluss',
+      title: 'Meldeschluss',
+      preset: 'date',
+      sortable: true,
+    },
+    {
+      field: 'teilnahmegebuehr',
+      title: 'Gebühr',
+      sortable: true,
+    },
+    {
+      field: 'maxTeilnehmende',
+      title: 'Anm. / Max',
+      format: (value, row) => `${row._count.Anmeldung} / ${value}`,
+    },
+  ]
+  return columns.filter((column) => !props.hideColumns?.includes(column.field))
+})
+
+/// useGrid und useFeathersGrid composable zum fetchen
+async function fetchPage(
+  pagination: {
+    take: number
+    skip: number
+  },
+  filter: TUnterveranstaltungFilter,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  orderBy: TUnterveranstaltungOrderBy
+): Promise<TUnterveranstaltungData[]> {
+  return apiClient.unterveranstaltung.list.query({
+    filter: filter,
+    orderBy: orderBy,
+    pagination: pagination,
+  })
+}
+async function fetchCount(filter: TUnterveranstaltungFilter): Promise<number> {
+  return apiClient.unterveranstaltung.count.query({
+    filter: filter,
+  })
 }
 </script>
 
 <template>
-  <div>
-    <table
-      v-if="unterveranstaltungen"
-      class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
-    >
-      <thead>
-        <tr>
-          <th
-            scope="col"
-            class="px-3 py-3.5 text-left text-sm font-semibold"
-          >
-            Id
-          </th>
-          <th
-            v-if="columns?.includes('veranstaltung')"
-            scope="col"
-            class="px-3 py-3.5 text-left text-sm font-semibold"
-          >
-            Veranstaltung
-          </th>
-          <th
-            scope="col"
-            class="px-3 py-3.5 text-left text-sm font-semibold"
-          >
-            Gliederung
-          </th>
-          <th
-            scope="col"
-            class="px-3 py-3.5 text-left text-sm font-semibold"
-          >
-            Meldeschluss
-          </th>
-          <th
-            scope="col"
-            class="px-3 py-3.5 text-left text-sm font-semibold"
-          >
-            Gebühr
-          </th>
-          <th
-            scope="col"
-            class="px-3 py-3.5 text-left text-sm font-semibold"
-          >
-            Anm. / Max
-          </th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-dark-primary">
-        <tr
-          v-for="unterveranstaltung in unterveranstaltungen"
-          :key="unterveranstaltung.id"
-          class="cursor-pointer even:bg-gray-50 dark:even:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800"
-          title="bearbeiten"
-          @click="
-            router.push({
-              name: 'UnterveranstaltungDetail',
-              params: { unterveranstaltungId: unterveranstaltung.id },
-            })
-          "
-        >
-          <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-            <div>{{ unterveranstaltung.id }}</div>
-          </td>
-          <td
-            v-if="columns?.includes('veranstaltung')"
-            class="py-5 pl-4 pr-3 text-sm"
-          >
-            <div>{{ unterveranstaltung.veranstaltung.name }}</div>
-          </td>
-          <td
-            v-if="loggedInAccount?.role === 'ADMIN'"
-            class="whitespace-nowrap py-5 pl-4 pr-3 text-sm"
-          >
-            <div>{{ unterveranstaltung.gliederung.name }}</div>
-          </td>
-          <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-            <div class="font-medium">
-              {{ formatDate(unterveranstaltung.meldeschluss) }}
-            </div>
-          </td>
-          <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-            <div class="font-medium">{{ unterveranstaltung.teilnahmegebuehr }}€</div>
-          </td>
-          <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-            <div class="font-medium">
-              {{ unterveranstaltung._count.Anmeldung }} / {{ unterveranstaltung.maxTeilnehmende }}
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div
-      v-if="unterveranstaltungen.length <= 0"
-      class="rounded-md bg-blue-50 dark:bg-blue-950 p-4 text-blue-500"
-    >
-      <div class="flex">
-        <div class="flex-shrink-0">
-          <CheckCircleIcon
-            class="h-5 w-5"
-            aria-hidden="true"
-          />
-        </div>
-        <div class="ml-3 flex-1 md:flex md:justify-between">
-          <p class="text-sm mb-0">Es gibt bisher keine Anmeldungen.</p>
-        </div>
-      </div>
-    </div>
+  <div class="w-full h-[80vh]">
+    <GenericDataGrid
+      :columns="columns"
+      :fetch-page="fetchPage"
+      :fetch-count="fetchCount"
+      :default-filter="{
+        veranstaltungId: veranstaltungId,
+        gliederungName: '',
+      }"
+      :default-order-by="[['id', 'asc']]"
+      no-data-message="Es gibt bisher keine Ausschreibungen."
+      show-clickable
+      @row-click="
+        (row) => {
+          router.push({
+            name: 'UnterveranstaltungDetail',
+            params: { unterveranstaltungId: row.id },
+          })
+        }
+      "
+    />
   </div>
 </template>

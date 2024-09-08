@@ -202,7 +202,7 @@
 			"options": {
         "cwd": "${workspaceFolder}/api",
 				"statusbar": {
-					"hide" : true
+					"hide" : false
 				}
 			},
 			"presentation": {

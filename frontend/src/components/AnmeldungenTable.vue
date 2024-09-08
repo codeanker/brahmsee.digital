@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { CheckCircleIcon, CodeBracketIcon, SquaresPlusIcon, TicketIcon, UserIcon } from '@heroicons/vue/24/outline'
+import { CodeBracketIcon, SquaresPlusIcon, TicketIcon, UserIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 import AnmeldungTshirtSelect from './AnmeldungTshirtSelect.vue'
-import BasicGrid from './BasicGrid.vue'
 
 import { apiClient } from '@/api'
 import AnmeldungStatusSelect from '@/components/AnmeldungStatusSelect.vue'
 import CustomFieldsForm from '@/components/CustomFields/CustomFieldsForm.vue'
+import DataGridVirtualList from '@/components/DataGrid/DataGridVirtualList.vue'
 import FormPersonGeneral, { type FormPersonGeneralSubmit } from '@/components/forms/person/FormPersonGeneral.vue'
 import Drawer from '@/components/LayoutComponents/Drawer.vue'
 import Notification from '@/components/LayoutComponents/Notifications.vue'
@@ -25,7 +26,7 @@ import {
   type RouterInput,
   type RouterOutput,
 } from '@codeanker/api'
-import { useGrid, type TGridColumn } from '@codeanker/core-grid'
+import { type TGridColumn, useDataGridFilter, useDataGridOrderBy, useGrid } from '@codeanker/datagrid'
 import { dayjs } from '@codeanker/helpers'
 
 const props = withDefaults(
@@ -37,35 +38,39 @@ const props = withDefaults(
   {}
 )
 
-const { state: anmeldungen } = useAsyncState(async () => {
-  if (loggedInAccount.value?.role === 'ADMIN') {
-    if (props.unterveranstaltungId) {
-      return apiClient.anmeldung.verwaltungList.query({
-        filter: {
-          unterveranstaltungId: props.unterveranstaltungId,
-          veranstaltungId: undefined,
-        },
-        pagination: { take: 100, skip: 0 },
-      })
-    } else if (props.veranstaltungId) {
-      return apiClient.anmeldung.verwaltungList.query({
-        filter: {
-          unterveranstaltungId: undefined,
-          veranstaltungId: props.veranstaltungId,
-        },
-        pagination: { take: 100, skip: 0 },
-      })
-    }
-  } else {
-    return apiClient.anmeldung.gliederungList.query({
-      filter: {
-        unterveranstaltungId: props.unterveranstaltungId,
-        veranstaltungId: props.veranstaltungId,
-      },
-      pagination: { take: 100, skip: 0 },
-    })
-  }
-}, [])
+const tabs = [
+  { name: 'Anmeldung', icon: TicketIcon },
+  { name: 'Person', icon: UserIcon },
+  { name: 'Zusatzfelder', icon: SquaresPlusIcon },
+]
+
+if (loggedInAccount.value?.role === 'ADMIN') {
+  tabs.push({ name: 'Entwickler:in', icon: CodeBracketIcon })
+}
+
+const entityId = computed(() => {
+  return props.unterveranstaltungId || props.veranstaltungId
+})
+
+const entity = computed(() => {
+  return props.unterveranstaltungId ? 'unterveranstaltung' : 'veranstaltung'
+})
+
+const showNotification = ref(false)
+
+const stats = computed<
+  {
+    name: AnmeldungStatus
+    value: number
+  }[]
+>(() => {
+  return [
+    { name: 'OFFEN', value: countAnmeldungen.value.OFFEN },
+    { name: 'BESTAETIGT', value: countAnmeldungen.value.BESTAETIGT },
+    { name: 'STORNIERT', value: countAnmeldungen.value.STORNIERT },
+    { name: 'ABGELEHNT', value: countAnmeldungen.value.ABGELEHNT },
+  ]
+})
 
 const { state: countAnmeldungen } = useAsyncState(async () => {
   if (loggedInAccount.value?.role === 'ADMIN') {
@@ -100,7 +105,7 @@ const selectedAnmeldungId = ref()
 const showDrawer = ref(false)
 
 function toggleDrawer($event) {
-  selectedAnmeldungId.value = $event.id
+  selectedAnmeldungId.value = $event.content.id
   showDrawer.value = true
   getSingleAnmeldung()
 }
@@ -128,7 +133,7 @@ const {
   { immediate: false }
 )
 
-const { execute: update } = useAsyncState(
+const { execute: updateAnmeldung } = useAsyncState(
   async (anmeldung: FormPersonGeneralSubmit) => {
     const nahrungsmittelIntoleranzen = Object.entries(anmeldung.essgewohnheiten.intoleranzen)
       .filter((entry) => {
@@ -178,6 +183,7 @@ const { execute: update } = useAsyncState(
       }
       showNotification.value = true
       await getSingleAnmeldung()
+      await fetchVisiblePages()
     }
   },
   null,
@@ -192,26 +198,22 @@ const getKonfektionsgroesseHuman = computed(() => (konfektionsgroesse) => {
   return konfektionsgroesseOptions.find((item) => item.value === konfektionsgroesse)?.label
 })
 
-const stats = computed<
-  {
-    name: AnmeldungStatus
-    value: number
-  }[]
->(() => {
-  return [
-    { name: 'OFFEN', value: countAnmeldungen.value.OFFEN },
-    { name: 'BESTAETIGT', value: countAnmeldungen.value.BESTAETIGT },
-    { name: 'STORNIERT', value: countAnmeldungen.value.STORNIERT },
-    { name: 'ABGELEHNT', value: countAnmeldungen.value.ABGELEHNT },
-  ]
-})
+const route = useRoute()
+const router = useRouter()
 
-type Anmeldung = Awaited<RouterOutput['anmeldung']['verwaltungList']>[number]
+/// Typen von den Daten, Filter und Sortierung
+type TAnmeldungData = Awaited<RouterOutput['anmeldung']['verwaltungList']>[number]
+type TAnmeldungFilter = RouterInput['anmeldung']['verwaltungList']['filter']
+type TAnmeldungOrderBy = RouterInput['anmeldung']['verwaltungList']['orderBy']
 
-const columns: TGridColumn<Anmeldung>[] = [
+/// Definieren der columns
+const columns: TGridColumn<TAnmeldungData, TAnmeldungFilter>[] = [
   {
     field: 'person',
     title: 'Name',
+    format: (value) =>
+      `${value.firstname} ${value.lastname}` +
+      (loggedInAccount.value?.role === 'ADMIN' ? ` (${value.gliederung?.name})` : ''),
   },
   {
     field: 'person.birthday',
@@ -227,53 +229,96 @@ const columns: TGridColumn<Anmeldung>[] = [
     field: 'status',
     title: 'Status',
     size: '300px',
+    cell: AnmeldungStatusSelect,
+    cellProps: (formattedValue, row) => {
+      return {
+        id: row.content.id,
+        status: row.content.status,
+        meldeschluss: row.content.unterveranstaltung.veranstaltung.meldeschluss,
+      }
+    },
+    cellEmits: {
+      changed: () => {
+        fetchVisiblePages()
+      },
+    },
   },
 ]
+
+/// Filter via Route laden
+const defaultFilter: TAnmeldungFilter = {
+  // Momentan müssen leere strings initialisiert werden!
+  unterveranstaltungId: props.unterveranstaltungId,
+  veranstaltungId: props.veranstaltungId,
+}
+
+const defaultOrderBy = {
+  createdAt: 'desc',
+} as const
+
+const { filter, setFilter } = useDataGridFilter(defaultFilter, router, route)
+const { orderBy, setOrderBy } = useDataGridOrderBy(columns, defaultOrderBy, router, route)
+
+/// Bauen der Query
 type Query = {
-  filter: RouterInput['anmeldung']['verwaltungList']['filter']
-  orderBy: RouterInput['anmeldung']['verwaltungList']['orderBy']
+  filter: TAnmeldungFilter
+  orderBy: TAnmeldungOrderBy
 }
-const query = ref<Query>({
-  filter: {
-    veranstaltungId: props.veranstaltungId as number,
-    unterveranstaltungId: props.unterveranstaltungId as number,
-  },
-  orderBy: [],
+const query = computed<Query>(() => {
+  return {
+    filter: filter.value,
+    orderBy: orderBy.value as NonNullable<TAnmeldungOrderBy>,
+  }
 })
 
-const { grid, indexChange, fetchVisiblePages } = useGrid({
+/// useGrid und useFeathersGrid composable zum fetchen
+async function fetchPage(
+  pagination: {
+    take: number
+    skip: number
+  },
+  filter: TAnmeldungFilter,
+  orderBy: TAnmeldungOrderBy
+) {
+  if (loggedInAccount.value?.role === 'ADMIN')
+    return await apiClient.anmeldung.verwaltungList.query({
+      filter: filter,
+      orderBy: orderBy,
+      pagination: pagination,
+    })
+  else
+    return await apiClient.anmeldung.gliederungList.query({
+      filter: filter,
+      orderBy: orderBy,
+      pagination: pagination,
+    })
+}
+async function fetchCount(filter: TAnmeldungFilter) {
+  if (loggedInAccount.value?.role === 'ADMIN')
+    return (
+      await apiClient.anmeldung.verwaltungCount.query({
+        filter: filter,
+      })
+    )?.total
+  else
+    return (
+      await apiClient.anmeldung.gliederungCount.query({
+        filter: filter,
+      })
+    )?.total
+}
+
+const { grid, fetchVisiblePages, pageChange, page } = useGrid<Query, TAnmeldungData>({
   query,
-  fetchCount: async (q) => {
-    if (loggedInAccount.value?.role === 'ADMIN') return (await apiClient.anmeldung.verwaltungCount.query(q)).total
-    else return (await apiClient.anmeldung.gliederungCount.query(q)).total
-  },
-  fetchPage: async (q) => {
-    if (loggedInAccount.value?.role === 'ADMIN') return await apiClient.anmeldung.verwaltungList.query(q)
-    else return await apiClient.anmeldung.gliederungList.query(q)
-  },
+  fetchPage: fetchPage,
+  fetchCount: fetchCount,
+  idField: 'id',
+  route,
+  router,
 })
-
-fetchVisiblePages()
-
-const tabs = [
-  { name: 'Anmeldung', icon: TicketIcon },
-  { name: 'Person', icon: UserIcon },
-  { name: 'Zusatzfelder', icon: SquaresPlusIcon },
-]
-
-if (loggedInAccount.value?.role === 'ADMIN') {
-  tabs.push({ name: 'Entwickler:in', icon: CodeBracketIcon })
-}
-
-const entityId = computed(() => {
-  return props.unterveranstaltungId || props.veranstaltungId
+onMounted(() => {
+  fetchVisiblePages()
 })
-
-const entity = computed(() => {
-  return props.unterveranstaltungId ? 'unterveranstaltung' : 'veranstaltung'
-})
-
-const showNotification = ref(false)
 </script>
 
 <template>
@@ -300,61 +345,20 @@ const showNotification = ref(false)
       </div>
     </div>
   </div>
-  <div class="relative w-full">
-    <BasicGrid
-      v-model:order-by="query.orderBy"
-      v-model:filter="query.filter"
+  <div class="relative w-full h-[80vh]">
+    <DataGridVirtualList
       :grid="grid"
       :columns="columns"
-      @index-change="indexChange"
-      @row-click="toggleDrawer($event)"
-    >
-      <template #person="{ fieldValue: person }">
-        <td
-          class="whitespace-nowrap py-5 pl-4 pr-3 text-sm group-[.uneven]:bg-gray-50 dark:group-[.uneven]:bg-gray-900 group-hover:bg-gray-50 border-t border-t-gray-200"
-        >
-          <div class="flex space-x-1 items-center">
-            <span>{{ person.firstname }} {{ person.lastname }}</span>
-          </div>
-          <span
-            v-if="loggedInAccount?.role === 'ADMIN'"
-            class="text-xs"
-            >{{ person.gliederung?.name }}</span
-          >
-        </td>
-      </template>
-
-      <template #status="{ row: anmeldung }">
-        <td
-          class="px-3 py-5 text-sm group-[.uneven]:bg-gray-50 dark:group-[.uneven]:bg-gray-900 group-hover:bg-gray-50 border-t border-t-gray-200"
-        >
-          <div class="flex items-center">
-            <AnmeldungStatusSelect
-              v-if="anmeldung.unterveranstaltung.veranstaltung.meldeschluss"
-              :id="anmeldung.id"
-              :status="anmeldung.status"
-              :meldeschluss="anmeldung.unterveranstaltung.veranstaltung.meldeschluss"
-            />
-          </div>
-        </td>
-      </template>
-    </BasicGrid>
-  </div>
-  <div
-    v-if="!anmeldungen || anmeldungen.length <= 0"
-    class="rounded-md bg-blue-50 dark:bg-blue-950 text-blue-500 p-4"
-  >
-    <div class="flex">
-      <div class="flex-shrink-0">
-        <CheckCircleIcon
-          class="h-5 w-5"
-          aria-hidden="true"
-        />
-      </div>
-      <div class="ml-3 flex-1 md:flex md:justify-between">
-        <p class="text-sm mb-0">Es gibt bisher keine Anmeldungen.</p>
-      </div>
-    </div>
+      :page="page"
+      :filter="filter"
+      :order-by="orderBy"
+      no-data-message="Es gibt bisher keine Anmeldungen."
+      show-clickable
+      @update:page="pageChange"
+      @set-order-by="setOrderBy"
+      @set-filter="setFilter"
+      @row-click="toggleDrawer"
+    />
   </div>
   <Drawer
     v-if="showDrawer"
@@ -456,7 +460,7 @@ const showNotification = ref(false)
               :is-loading="isLoading"
               :person="currentAnmeldung.person"
               :error="undefined"
-              @submit="(data) => update(undefined, data)"
+              @submit="(data) => updateAnmeldung(undefined, data)"
             />
           </Tab>
           <Tab>

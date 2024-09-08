@@ -1,3 +1,4 @@
+import { Role } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
 import z from 'zod'
 
@@ -8,12 +9,18 @@ import { defineQuery } from '../../types/defineQuery'
 export const personGliederungListProcedure = defineProcedure({
   key: 'gliederungList',
   method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: ['GLIEDERUNG_ADMIN'] },
+  protection: { type: 'restrictToRoleIds', roleIds: [Role.GLIEDERUNG_ADMIN] },
   inputSchema: defineQuery({
     filter: z.strictObject({
       firstname: z.string().optional(),
       lastname: z.string().optional(),
     }),
+    orderBy: z.array(
+      z.tuple([
+        z.union([z.literal('id'), z.literal('firstname'), z.literal('lastname')]),
+        z.union([z.literal('asc'), z.literal('desc')]),
+      ])
+    ),
   }),
   async handler(options) {
     if (typeof options.ctx.account.person.gliederungId !== 'number') {

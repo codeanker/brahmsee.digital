@@ -1,0 +1,22 @@
+model Veranstaltung {
+  id                         Int                  @id @default(autoincrement())
+  name                       String
+  beginn                     DateTime             @db.Date
+  ende                       DateTime             @db.Date
+  meldebeginn                DateTime
+  meldeschluss               DateTime
+  ortId                      Int?
+  ort                        Ort?                 @relation(fields: [ortId], references: [id], onDelete: SetNull)
+  maxTeilnehmende            Int
+  teilnahmegebuehr           Int
+  unterveranstaltungen       Unterveranstaltung[]
+  mahlzeiten                 Mahlzeit[]
+  beschreibung               String?
+  datenschutz                String?
+  teilnahmeBedingungen       String?
+  teilnahmeBedingungenPublic String?
+  zielgruppe                 String?
+  hostnameId                 Int?
+  hostname                   Hostname?            @relation(fields: [hostnameId], references: [id])
+  customFields               CustomField[]
+}

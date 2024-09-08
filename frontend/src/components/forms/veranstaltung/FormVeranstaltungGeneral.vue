@@ -89,7 +89,7 @@ const handle = async () => {
 }
 
 const { state: orte } = useAsyncState(async () => {
-  return apiClient.ort.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
+  return apiClient.ort.list.query({ filter: {}, orderBy: [], pagination: { take: 100, skip: 0 } })
 }, [])
 
 const { state: hostnames } = useAsyncState(async () => {
@@ -98,13 +98,7 @@ const { state: hostnames } = useAsyncState(async () => {
 </script>
 
 <template>
-  <h5>
-    Veranstaltung <span v-if="veranstaltung">{{ veranstaltung.name }}</span>
-  </h5>
-  <ValidateForm
-    class="mt-5 lg:mt-10"
-    @submit="handle"
-  >
+  <ValidateForm @submit="handle">
     <div class="grid grid-cols-1 lg:grid-cols-6 gap-6">
       <div class="lg:col-span-full">
         <BasicInput

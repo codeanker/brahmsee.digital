@@ -2,7 +2,7 @@ import z from 'zod'
 
 import prisma from '../../prisma'
 import { defineProcedure } from '../../types/defineProcedure'
-import { defineQuery } from '../../types/defineQuery'
+import { defineQuery, getOrderBy } from '../../types/defineQuery'
 
 export const gliederungPublicListProcedure = defineProcedure({
   key: 'publicList',
@@ -12,6 +12,9 @@ export const gliederungPublicListProcedure = defineProcedure({
     filter: z.strictObject({
       name: z.string().optional(),
     }),
+    orderBy: z.array(
+      z.tuple([z.union([z.literal('id'), z.literal('name')]), z.union([z.literal('asc'), z.literal('desc')])])
+    ),
   }),
   async handler(options) {
     const { skip, take } = options.input.pagination
@@ -24,6 +27,7 @@ export const gliederungPublicListProcedure = defineProcedure({
           mode: 'insensitive',
         },
       },
+      orderBy: getOrderBy(options.input.orderBy),
       select: {
         id: true,
         name: true,

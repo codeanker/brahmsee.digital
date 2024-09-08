@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
+import BasicInputPhoneNumber from '@/components/BasicInputs/BasicInputPhoneNumber.vue'
 
 export interface IContact {
   email: string
@@ -37,9 +38,8 @@ const model = computed({
       placeholder="Email-Adresse"
       required
     />
-    <BasicInput
+    <BasicInputPhoneNumber
       v-model="model.telefon"
-      type="tel"
       label="Telefonnummer"
       placeholder="Telefonnummer"
       required

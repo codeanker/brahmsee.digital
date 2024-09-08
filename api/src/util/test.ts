@@ -1,4 +1,4 @@
-import { AccountStatus } from '@prisma/client'
+import { AccountStatus, Role } from '@prisma/client'
 
 import { authenticationLogin } from '../authentication'
 import prisma from '../prisma'
@@ -13,7 +13,7 @@ export async function createMock(runId: string) {
       email,
       password: await hashPassword(accountPassword),
       activatedAt: new Date(),
-      role: 'ADMIN',
+      role: Role.ADMIN,
       person: {
         create: {
           firstname: 'Test',

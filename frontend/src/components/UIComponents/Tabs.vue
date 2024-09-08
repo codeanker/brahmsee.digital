@@ -23,6 +23,10 @@ const props = withDefaults(
   }
 )
 
+const emit = defineEmits<{
+  changeTabIndex: [number]
+}>()
+
 const route = useRoute()
 const router = useRouter()
 
@@ -41,6 +45,7 @@ const selectedTab = ref()
 function changeTab(index) {
   selectedTab.value = index
   router.push({ query: { tab: index.toString() } })
+  emit('changeTabIndex', index)
 }
 </script>
 

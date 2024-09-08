@@ -22,5 +22,8 @@
   "meilisearch": {
     "host": "MEILISEARCH_HOST",
     "apiKey": "MEILISEARCH_KEY"
+  },
+  "tomtom": {
+    "apiKey": "TOMTOM_APIKEY"
   }
 }

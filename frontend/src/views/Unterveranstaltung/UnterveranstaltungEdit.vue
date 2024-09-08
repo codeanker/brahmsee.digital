@@ -15,10 +15,12 @@ const { state: unterveranstaltung, execute: fetchUnterveranstaltung } = useAsync
 </script>
 
 <template>
-  <FormUnterveranstaltungGeneral
-    v-if="unterveranstaltung !== null"
-    :unterveranstaltung="unterveranstaltung"
-    mode="update"
-    @update="() => fetchUnterveranstaltung()"
-  />
+  <div class="grid grid-cols-1 lg:grid-cols-2">
+    <FormUnterveranstaltungGeneral
+      v-if="unterveranstaltung !== null"
+      :unterveranstaltung="unterveranstaltung"
+      mode="update"
+      @update="() => fetchUnterveranstaltung()"
+    />
+  </div>
 </template>
