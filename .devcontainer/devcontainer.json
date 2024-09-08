@@ -28,7 +28,11 @@
 				"github.copilot",
 				"actboy168.tasks",
 				"Vue.volar"
-			]
+			],
+			"settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.profiles.linux": { "zsh": { "path": "/bin/zsh" } }
+      }
 		}
 	},
 	"onCreateCommand": {
