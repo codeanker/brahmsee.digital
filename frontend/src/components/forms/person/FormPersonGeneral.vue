@@ -2,8 +2,6 @@
 import { ArrowTopRightOnSquareIcon } from '@heroicons/vue/24/outline'
 import { ref } from 'vue'
 
-import type { IAddress } from '../anmeldung/Address.vue'
-import Address from '../anmeldung/Address.vue'
 import type { IStammdaten } from '../anmeldung/Stammdaten.vue'
 import Stammdaten from '../anmeldung/Stammdaten.vue'
 
@@ -15,6 +13,7 @@ import type { ITShirtBestellung } from './FormTShirtBestellungGeneral.vue'
 import FormTShirtBestellungGeneral from './FormTShirtBestellungGeneral.vue'
 
 import { apiClient } from '@/api'
+import BasicAddressPicker, { type IAddress } from '@/components/BasicInputs/BasicAddressPicker.vue'
 import BasicCheckbox from '@/components/BasicInputs/BasicCheckbox.vue'
 import BasicTextArea from '@/components/BasicInputs/BasicTextArea.vue'
 import BasicTypeahead from '@/components/BasicInputs/BasicTypeahead.vue'
@@ -68,10 +67,26 @@ const stammdatenForm = ref<IStammdaten>({
 
 const addressForm = ref<IAddress>({
   street: props.person?.address?.street ?? '',
-  number: props.person?.address?.number ?? '',
+  streetNumber: props.person?.address?.streetNumber ?? '',
   zip: props.person?.address?.zip ?? '',
   city: props.person?.address?.city ?? '',
+  country: props.person?.address?.country ?? 'DE',
+  position: {
+    lat: props.person?.address?.lat ?? 0,
+    lon: props.person?.address?.lon ?? 0,
+  },
 })
+
+async function addressFind(params: { query: string; country: string; language: string }) {
+  return apiClient.address.findAddress.query({
+    query: params.query,
+    zip: addressForm.value.zip,
+    city: addressForm.value.city,
+    street: addressForm.value.street,
+    streetNumber: addressForm.value.streetNumber,
+    country: addressForm.value.country,
+  })
+}
 
 const contactForm = ref<IContact>({
   email: props.person?.email ?? '',
@@ -133,103 +148,137 @@ const submit = () => {
 </script>
 
 <template>
-  <ValidateForm @submit="submit">
-    <Stammdaten v-model="stammdatenForm" />
-    <hr class="my-5" />
+  <div class="grid grid-cols-1 lg:grid-cols-2">
+    <ValidateForm @submit="submit">
+      <Stammdaten v-model="stammdatenForm" />
+      <hr class="my-5" />
 
-    <Address v-model="addressForm" />
-    <hr class="my-5" />
-
-    <FormContactGeneral v-model="contactForm" />
-    <hr class="my-5" />
-
-    <template v-if="!isPublicAnmeldung">
-      <BasicTypeahead
-        v-model="gliederung"
-        :query="queryGliederungen"
-        :input-formatter="(result) => result?.name"
-        :result-formatter="(result) => result.name"
-        :strict="true"
+      <BasicAddressPicker
+        label="Adresse"
+        country-label="Land"
+        city-label="Ort"
+        zip-label="Postleitzahl"
+        street-label="Straße"
+        house-number-label="Hausnummer"
+        autocomplete-label="Intelligente Suche"
+        manual-entry-label="Manuell eingeben"
+        :address-find="addressFind"
+        :country-formatter="(country) => country.name"
+        :country="addressForm.country"
+        :ort="addressForm.city"
+        :plz="addressForm.zip"
+        :strasse="addressForm.street"
+        :hausnummer="addressForm.streetNumber"
+        :is-valid-address="addressForm.valid"
+        :validation="true"
         required
-        label="Gliederung"
-        placeholder="Gliederung eingeben"
+        :include-non-independent-countries="true"
+        :street="addressForm.street"
+        :street-number="addressForm.streetNumber"
+        :zip="addressForm.zip"
+        :city="addressForm.city"
+        :position="addressForm.position"
+        @update:country="addressForm['country'] = $event ?? ''"
+        @update:city="addressForm['city'] = $event ?? ''"
+        @update:zip="addressForm['zip'] = $event ?? ''"
+        @update:street="addressForm['street'] = $event ?? ''"
+        @update:street-number="addressForm['streetNumber'] = $event ?? ''"
+        @update:position="addressForm['position'] = $event"
+        @update:is-valid-address="addressForm['valid'] = $event"
       />
       <hr class="my-5" />
-    </template>
 
-    <FormNotfallkontakteGeneral v-model="notfallKontakteForm" />
-    <hr class="my-5" />
-
-    <FormEssgewohnheitGeneral v-model="essgewohnheitenForm" />
-    <hr class="my-5" />
-
-    <template v-if="isPublicAnmeldung">
-      <BasicTextArea
-        v-model="comment"
-        label="Bemerkung"
-        :rows="3"
-      ></BasicTextArea>
+      <FormContactGeneral v-model="contactForm" />
       <hr class="my-5" />
-    </template>
 
-    <slot></slot>
-
-    <template v-if="isPublicAnmeldung">
-      <template v-if="showTshirt">
-        <FormTShirtBestellungGeneral v-model="tshirtForm" />
+      <template v-if="!isPublicAnmeldung">
+        <BasicTypeahead
+          v-model="gliederung"
+          :query="queryGliederungen"
+          :input-formatter="(result) => result?.name"
+          :result-formatter="(result) => result.name"
+          :strict="true"
+          required
+          label="Gliederung"
+          placeholder="Gliederung eingeben"
+        />
         <hr class="my-5" />
       </template>
 
-      <BasicCheckbox
-        v-model="acceptTeilnahmebedingungen"
-        class="mt-1 font-medium"
-        required
-      >
-        <span>Ich habe die allgemeinen </span>
-        <u
-          class="cursor-pointer"
-          @click="emit('showTerms')"
-        >
-          <span>Teilnahmebedingungen</span>
-          <ArrowTopRightOnSquareIcon class="h-4 inline ml-1" />
-        </u>
-        <span> gelesen und akzeptiere diese.</span>
-      </BasicCheckbox>
-      <BasicCheckbox
-        v-model="acceptDatenschutz"
-        class="mt-1 font-medium"
-        required
-      >
-        <span>Ich habe die gesonderten </span>
-        <u
-          class="cursor-pointer"
-          @click="emit('showTerms')"
-        >
-          <span>Datenschutzerklärung</span>
-          <ArrowTopRightOnSquareIcon class="h-4 inline ml-1" />
-        </u>
-        <span> gelesen und akzeptiere diese.</span>
-      </BasicCheckbox>
-    </template>
+      <FormNotfallkontakteGeneral v-model="notfallKontakteForm" />
+      <hr class="my-5" />
 
-    <Button
-      color="primary"
-      class="w-full justify-center mt-5 mb-20 disabled:bg-gray-300"
-      :disabled="isPublicAnmeldung && (!acceptTeilnahmebedingungen || !acceptDatenschutz)"
-      type="submit"
-    >
-      <template v-if="isLoading">
-        <Loading color="white" />
+      <FormEssgewohnheitGeneral v-model="essgewohnheitenForm" />
+      <hr class="my-5" />
+
+      <template v-if="isPublicAnmeldung">
+        <BasicTextArea
+          v-model="comment"
+          label="Bemerkung"
+          :rows="3"
+        ></BasicTextArea>
+        <hr class="my-5" />
       </template>
-      <span>
-        {{ submitText ?? 'Speichern' }}
-      </span>
-    </Button>
 
-    <template v-if="error && error.message">
-      <pre><code>
+      <slot></slot>
+
+      <template v-if="isPublicAnmeldung">
+        <template v-if="showTshirt">
+          <FormTShirtBestellungGeneral v-model="tshirtForm" />
+          <hr class="my-5" />
+        </template>
+
+        <BasicCheckbox
+          v-model="acceptTeilnahmebedingungen"
+          class="mt-1 font-medium"
+          required
+        >
+          <span>Ich habe die allgemeinen </span>
+          <u
+            class="cursor-pointer"
+            @click="emit('showTerms')"
+          >
+            <span>Teilnahmebedingungen</span>
+            <ArrowTopRightOnSquareIcon class="h-4 inline ml-1" />
+          </u>
+          <span> gelesen und akzeptiere diese.</span>
+        </BasicCheckbox>
+        <BasicCheckbox
+          v-model="acceptDatenschutz"
+          class="mt-1 font-medium"
+          required
+        >
+          <span>Ich habe die gesonderten </span>
+          <u
+            class="cursor-pointer"
+            @click="emit('showTerms')"
+          >
+            <span>Datenschutzerklärung</span>
+            <ArrowTopRightOnSquareIcon class="h-4 inline ml-1" />
+          </u>
+          <span> gelesen und akzeptiere diese.</span>
+        </BasicCheckbox>
+      </template>
+
+      <Button
+        color="primary"
+        class="w-full justify-center mt-5 mb-20 disabled:bg-gray-300"
+        :disabled="isPublicAnmeldung && (!acceptTeilnahmebedingungen || !acceptDatenschutz)"
+        type="submit"
+      >
+        <template v-if="isLoading">
+          <Loading color="white" />
+        </template>
+        <span>
+          {{ submitText ?? 'Speichern' }}
+        </span>
+      </Button>
+
+      <template v-if="error && error.message">
+        <pre><code>
         {{ error.message }}
       </code></pre>
-    </template>
-  </ValidateForm>
+      </template>
+    </ValidateForm>
+  </div>
 </template>

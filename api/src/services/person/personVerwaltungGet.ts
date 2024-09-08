@@ -1,3 +1,4 @@
+import { Role } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma'
@@ -6,7 +7,7 @@ import { defineProcedure } from '../../types/defineProcedure'
 export const personVerwaltungGetProcedure = defineProcedure({
   key: 'verwaltungGet',
   method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
+  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
   inputSchema: z.strictObject({
     id: z.number().int(),
   }),
@@ -28,7 +29,11 @@ export const personVerwaltungGetProcedure = defineProcedure({
             zip: true,
             city: true,
             street: true,
-            number: true,
+            streetNumber: true,
+            country: true,
+            valid: true,
+            lat: true,
+            lon: true,
           },
         },
         nahrungsmittelIntoleranzen: true,

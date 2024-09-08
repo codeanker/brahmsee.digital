@@ -32,8 +32,9 @@ const createVeranstaltung: Seeder = async (prisma: PrismaClient) => {
             create: {
               city: 'Langwedel',
               zip: '24631',
-              number: '1',
+              streetNumber: '1',
               street: 'Am Waldheim',
+              country: 'DE',
             },
           },
         },

@@ -7,6 +7,7 @@
     "dev": "tsx watch --clear-screen=false --env-file .env src/server.ts",
     "createAccount": "tsx src/scripts/createAccount.ts",
     "initMeilisearch": "tsx src/scripts/initMeilisearch.ts",
+    "cli": "tsx src/cli/index.ts",
     "postinstall": "prisma generate"
   },
   "exports": {
@@ -26,10 +27,11 @@
     "@faker-js/faker": "^8.4.1",
     "@koa/cors": "^5.0.0",
     "@koa/router": "^12.0.1",
-    "@prisma/client": "^5.6.0",
-    "@prisma/extension-accelerate": "^0.6.3",
+    "@prisma/client": "^5.19.1",
+    "@prisma/extension-accelerate": "^1.1.0",
     "@sendgrid/mail": "^8.1.0",
     "@trpc/server": "^10.28.1",
+    "axios": "^1.7.7",
     "config": "^3.3.9",
     "dayjs": "^1.11.10",
     "fast-csv": "^5.0.1",
@@ -60,7 +62,7 @@
     "@types/koa-router": "^7.4.8",
     "@types/node": "^20.11.1",
     "edge-runtime": "^2.5.8",
-    "prisma": "^5.6.0",
+    "prisma": "^5.19.1",
     "tsx": "^4.2.0",
     "typescript": "^5.3.2"
   }

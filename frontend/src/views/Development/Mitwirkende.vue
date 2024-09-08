@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { CheckCircleIcon } from '@heroicons/vue/24/outline'
 
+import { useRouteTitle } from '@/composables/useRouteTitle'
+
+const { setTitle } = useRouteTitle()
+setTitle('Mitwirkende')
+
 const people = [
   {
     name: 'Daniel Swiatek',
@@ -181,7 +186,7 @@ const people = [
       </div>
 
       <div class="mt-16 max-w-2xl">
-        <h2 class="text-2xl font-bold tracking-tight">Veilen Dank an alle Contributor:innen und Sponsoren</h2>
+        <h2 class="text-2xl font-bold tracking-tight">Vielen Dank an alle Contributor:innen und Sponsoren</h2>
         <p class="mt-6">
           Ein großes Dankeschön geht an alle Contributor:innen und Sponsoren die an diesem Projekt mitgearbeitet haben
           und es noch immer tun.

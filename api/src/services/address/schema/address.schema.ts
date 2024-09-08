@@ -5,9 +5,17 @@ import { isAllUndefined } from '../../../util/object'
 
 export const addressSchema = z.strictObject({
   street: z.string().optional(),
-  number: z.string().optional(),
+  streetNumber: z.string().optional(),
   zip: z.string().optional(),
   city: z.string().optional(),
+  country: z.string().optional(),
+  valid: z.boolean().optional(),
+  position: z
+    .strictObject({
+      lat: z.number(),
+      lon: z.number(),
+    })
+    .optional(),
 })
 
 export async function findAddress(input: z.infer<typeof addressSchema>) {
@@ -16,7 +24,7 @@ export async function findAddress(input: z.infer<typeof addressSchema>) {
       city: input.city,
       zip: input.zip,
       street: input.street,
-      number: input.number,
+      streetNumber: input.streetNumber,
     },
   })
 }
@@ -30,7 +38,11 @@ export async function createOrUpdateAddress(input: z.infer<typeof addressSchema>
     zip: input.zip!,
     city: input.city!,
     street: input.street!,
-    number: input.number!,
+    streetNumber: input.streetNumber!,
+    country: input.country!,
+    valid: input.valid,
+    lat: input.position?.lat,
+    lon: input.position?.lon,
   }
   const existing = await findAddress(data)
 

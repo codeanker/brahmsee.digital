@@ -1,3 +1,4 @@
+import { Role } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma'
@@ -7,7 +8,7 @@ import logActivity from '../../util/activity'
 export const anmeldungTeilnehmerStornoProcedure = defineProcedure({
   key: 'teilnehmerStorno',
   method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: ['GLIEDERUNG_ADMIN'] },
+  protection: { type: 'restrictToRoleIds', roleIds: [Role.GLIEDERUNG_ADMIN] },
   inputSchema: z.strictObject({
     data: z.strictObject({
       anmeldungId: z.number().int(),

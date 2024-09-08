@@ -1,3 +1,4 @@
+import { Role } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 
@@ -7,7 +8,7 @@ import { defineProcedure } from '../../types/defineProcedure'
 export const customFieldsGet = defineProcedure({
   key: 'get',
   method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN', 'GLIEDERUNG_ADMIN'] },
+  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN] },
   inputSchema: z.strictObject({
     id: z.number(),
   }),

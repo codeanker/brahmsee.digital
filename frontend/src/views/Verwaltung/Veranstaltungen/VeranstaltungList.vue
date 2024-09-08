@@ -3,7 +3,11 @@ import { PlusIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 
 import { apiClient } from '@/api'
+import { useRouteTitle } from '@/composables/useRouteTitle'
 import router from '@/router'
+
+const { setTitle } = useRouteTitle()
+setTitle('Veranstaltungen')
 
 const { state: veranstaltungenList } = useAsyncState(async () => {
   return apiClient.veranstaltung.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
@@ -18,9 +22,8 @@ function formatDate(indate) {
 
 <template>
   <div>
-    <div class="flex items-center justify-between my-8">
+    <div class="flex items-center justify-between mb-6">
       <div class="flex flex-col">
-        <h5 class="mb-0">Veranstaltungen</h5>
         <p class="text-sm"><b>Tipp</b>: Zum Bearbeiten einer Veranstaltung die entsprechende Zeile anklicken.</p>
       </div>
       <RouterLink

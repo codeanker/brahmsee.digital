@@ -7,7 +7,7 @@ import { defineProcedure } from '../../types/defineProcedure'
 export const anmeldungGliederungPatchProcedure = defineProcedure({
   key: 'gliederungPatch',
   method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.GLIEDERUNG_ADMIN, Role.ADMIN] },
+  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN] },
   inputSchema: z.strictObject({
     id: z.number().int(),
     data: z.strictObject({
