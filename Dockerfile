@@ -1,4 +1,7 @@
 FROM node:20-alpine3.17 AS workspace-base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
 
 ENV CI=true
 ENV HUSKY=0
@@ -13,11 +16,13 @@ COPY packages/helpers/package.json ./packages/helpers/
 COPY packages/validation/package.json ./packages/validation/
 COPY vendor/ ./vendor/
 
-COPY package*.json ./
+COPY pnpm-lock.yaml ./
+COPY .npmrc ./
 
+RUN pnpm fetch
 COPY . ./
-RUN npm ci
-RUN npm run postinstall --workspace ./api
+RUN pnpm install --frozen-lockfile
+RUN pnpm run --filter ./api postinstall
 
 ENV TZ=Europe/Berlin
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
@@ -34,12 +39,12 @@ FROM workspace-base AS frontend-build-stage
 
 ENV VITE_APP_COMMIT_HASH=$commitHash
 ENV VITE_APP_VERSION=$version
-RUN npm run build --workspace ./frontend
+RUN pnpm run --filter ./frontend build
 
 FROM workspace-base AS api-build-stage
 
 # todo packing
-# RUN npm run build --workspace ./api
+RUN pnpm run --filter ./frontend build
 
 COPY --from=frontend-build-stage /app/frontend/dist ./api/static/
 ENV NODE_ENV=production

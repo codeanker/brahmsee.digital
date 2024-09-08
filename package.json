@@ -3,29 +3,25 @@
   "author": "CODEANKER GmbH",
   "version": "1.8.0",
   "description": "",
-  "workspaces": [
-    "api",
-    "frontend",
-    "docs",
-    "packages/*"
-  ],
+  "packageManager": "pnpm@9.8.0",
   "engines": {
     "node": ">=20"
   },
   "scripts": {
     "start:services": "docker-compose -f docker-compose-services.yml up --build",
-    "start:api": "npm run dev -w ./api",
-    "start:frontend": "VITE_APP_API_HOST=http://localhost:3030 npm run dev -w ./frontend",
-    "start:docs": "npm run docs:dev -w ./docs",
-    "migrate:api": "npm exec -w ./api prisma migrate deploy",
+    "start:api": "pnpm run --filter ./api dev",
+    "start:frontend": "VITE_APP_API_HOST=http://localhost:3030 pnpm run --filter ./frontend dev",
+    "start:docs": "pnpm run --filter ./docs docs:dev",
+    "migrate:api": "pnpm exec --filter ./api prisma migrate deploy",
     "lint": "eslint \"**/*.{vue,ts,js}\"",
     "lint:fix": "eslint \"**/*.{vue,ts,js}\" --fix",
     "lint-staged": "lint-staged -c .lintstagedrc.js",
     "prepare": "husky install",
     "typecheck": "vue-tsc -b",
     "test": "vitest",
-    "test:all": "concurrently -n api,frontend,test -s command-test --kill-others \"npm run start:api\" \"npm run start:frontend\" \"npm run test -- run\"",
-    "generate": "tsx ./api/src/cli/index.ts"
+    "test:all": "concurrently -n api,frontend,test -s command-test --kill-others \"pnpm run start:api\" \"pnpm run start:frontend\" \"pnpm run test -- run\"",
+    "generate": "tsx ./api/src/cli/index.ts",
+    "preinstall": "only-allow pnpm"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",

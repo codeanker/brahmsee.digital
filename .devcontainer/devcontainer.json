@@ -32,7 +32,7 @@
 		}
 	},
 	"onCreateCommand": {
-		"dependencies": "npm ci",
+		"dependencies": "pnpm i",
 		"environment": "cp -n api/.env.example api/.env"
 	}
 }
