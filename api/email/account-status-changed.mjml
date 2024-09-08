@@ -4,4 +4,16 @@
   Der Status deines <b>brahmsee.digital</b> Account wurde auf <b>{{ status }}</b> geändert.
 </mj-text>
 
+{{#if isActive }}
+<mj-button
+  align="left"
+  background-color="#16a34a"
+  border-radius="8px"
+  font-size="16px"
+  href="{{ config 'clientUrl' }}/login"
+>
+  Zur Anmeldung
+</mj-button>
+{{/if}}
+
 {{/layout}}

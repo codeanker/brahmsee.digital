@@ -70,6 +70,7 @@ export const accountVerwaltungPatchProcedure = defineProcedure({
           name: `${account.person.firstname} ${account.person.lastname}`,
           gliederung: account.person.gliederung!.name,
           status: AccountStatusMapping[account.status].human,
+          isActive: account.status === AccountStatus.AKTIV,
         },
       })
     }

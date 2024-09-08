@@ -19,7 +19,7 @@ const ZAccountGliederungAdminCreateInput = z.strictObject({
     birthday: z.date(),
     email: z.string().email().optional(), // email is required, because oauth login does not have an email
     password: z.string().optional(), // optional, because oauth login does not have a password
-    adminInGliederungId: z.number().int(),
+    gliederungId: z.number().int(),
     jwtOAuthToken: z.string().optional(), // optional, becaus normal registration does not have a jwtOAuthToken
   }),
 })
@@ -57,7 +57,8 @@ export const accountGliederungAdminCreateProcedure = defineProcedure({
       gender: options.input.data.gender,
       roleId: 'GLIEDERUNG_ADMIN',
       isActiv: false,
-      adminInGliederungId: options.input.data.adminInGliederungId,
+      gliederungId: options.input.data.gliederungId,
+      adminInGliederungId: options.input.data.gliederungId,
     })
     const res = await prisma.account.create({
       data: {
@@ -69,7 +70,7 @@ export const accountGliederungAdminCreateProcedure = defineProcedure({
       },
     })
 
-    await sendMailConfirmEmailRequest(accountData.email, accountData.activationToken)
+    await sendMailConfirmEmailRequest(accountData.email, accountData.activationToken!)
 
     return res
   },
