@@ -1,0 +1,21 @@
+model Address {
+  id           Int      @id @default(autoincrement())
+  street       String
+  streetNumber String
+  zip          String
+  city         String
+  country      String
+  lat          Float?
+  lon          Float?
+  valid        Boolean  @default(false)
+  Ort          Ort[]
+  Person       Person[]
+}
+
+model Ort {
+  id            Int             @id @default(autoincrement())
+  name          String
+  addressId     Int?
+  address       Address?        @relation(fields: [addressId], references: [id], onDelete: SetNull)
+  Veranstaltung Veranstaltung[]
+}

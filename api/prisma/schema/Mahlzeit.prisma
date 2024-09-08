@@ -1,0 +1,14 @@
+enum MahlzeitType {
+  FRUEHSTUECK
+  MITTAGESSEN
+  ABENDESSEN
+}
+
+model Mahlzeit {
+  id              Int           @id @default(autoincrement())
+  type            MahlzeitType
+  date            DateTime      @db.Date
+  veranstaltungId Int
+  veranstaltung   Veranstaltung @relation(fields: [veranstaltungId], references: [id], onDelete: Cascade)
+  anmeldung       Anmeldung[]
+}
