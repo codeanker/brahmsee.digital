@@ -7,6 +7,9 @@
         "source.fixAll.eslint": "explicit"
     },
     "editor.tabSize": 2,
+    "files.associations": {
+        "*.mjml": "html"
+    },
     "files.trimTrailingWhitespace": true,
     "files.trimFinalNewlines": true,
     "files.insertFinalNewline": true,
@@ -14,6 +17,6 @@
     "workbench.colorCustomizations": {
         "titleBar.activeBackground": "#4d7c0f",
         "titleBar.inactiveBackground": "#4d7c0f"
-      },
-      "git.enableCommitSigning": false
+    },
+    "git.enableCommitSigning": false,
 }
