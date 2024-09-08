@@ -51,6 +51,28 @@ const routesAusschreibungen: Route[] = [
           useFullheight: true,
         },
       },
+      {
+        name: 'Public Anmeldung Portal',
+        path: '/ausschreibung/:ausschreibungId/anmeldung/portal',
+        component: () => import('../Anmeldung/PublicAnmeldungOverview.vue'),
+        meta: {
+          public: true,
+          hidePublicHeaderBgOnMobile: true,
+          hidePublicHeaderBg: true,
+          useFullheight: true,
+        },
+      },
+      {
+        name: 'Public Anmeldung Portal Detail',
+        path: '/ausschreibung/:ausschreibungId/anmeldung/portal/:anmeldungId',
+        component: () => import('../Anmeldung/PublicAnmeldungDetail.vue'),
+        meta: {
+          public: true,
+          hidePublicHeaderBgOnMobile: true,
+          hidePublicHeaderBg: true,
+          useFullheight: true,
+        },
+      },
     ],
   },
 ]
