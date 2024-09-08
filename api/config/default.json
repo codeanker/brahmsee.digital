@@ -4,7 +4,7 @@
     "port": 3030
   },
 
-  "clientUrl": "http://localhost:8080",
+  "clientUrl": "https://localhost:8080",
 
   "authentication": {
     "secret": "secret",
