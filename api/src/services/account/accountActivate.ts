@@ -53,6 +53,8 @@ export const accountActivateProcedure = defineProcedure({
       variables: {
         gliederung: account.person.gliederung!.name,
         name: `${account.person.firstname} ${account.person.lastname}`,
+        hostname: 'brahmsee.digital',
+        veranstaltung: 'brahmsee.digital',
       },
     })
 

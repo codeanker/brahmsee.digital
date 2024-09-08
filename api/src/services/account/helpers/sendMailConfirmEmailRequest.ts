@@ -32,6 +32,8 @@ export async function sendMailConfirmEmailRequest(email: string, activationToken
     variables: {
       name: `${account.person.firstname} ${account.person.lastname}`,
       gliederung: account.person.gliederung!.name,
+      hostname: 'brahmsee.digital',
+      veranstaltung: 'brahmsee.digital',
       activationUrl,
     },
   })

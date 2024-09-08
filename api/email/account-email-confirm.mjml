@@ -1,13 +1,8 @@
 {{#> layout }}
 
 <mj-text font-size="16px" line-height="1.5">
-  Dein <b>brahmsee.digital</b> Account wurde erstellt. Um den Registrierungsprozess
+  Dein <b>{{ hostname }}</b> Account wurde erstellt. Um den Registrierungsprozess
   abzuschließen, bestätige deine E-Mail Adresse bitte mit dem nachfolgenden Link.
-</mj-text>
-
-<mj-text font-size="16px" line-height="1.5">
-  Solltest du <b>keine</b> solche Anfrage gestellt haben, solltest du den Zugang zu deinem E-Mail Konto
-  überprüfen.
 </mj-text>
 
 <mj-button

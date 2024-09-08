@@ -20,10 +20,10 @@
     <mj-wrapper background-color="#fff" border-radius="32px">
       <mj-section>
         <mj-column vertical-align="middle">
-          <mj-text align="left" font-size="24px">Brahmsee {{ year }}</mj-text>
+          <mj-text align="left" font-size="24px">{{ veranstaltung }}</mj-text>
         </mj-column>
         <mj-column vertical-align="middle">
-          <mj-text align="right" font-size="18px">DLRG {{ gliederung }} e.V.</mj-text>
+          <mj-text align="right" font-size="18px">DLRG {{ gliederung }}</mj-text>
         </mj-column>
       </mj-section>
 
@@ -44,7 +44,7 @@
       <mj-section>
         <mj-column>
           <mj-text>
-            Mit freundlichen Grüßen
+            Viele Grüße
           </mj-text>
           <mj-text>
             Dein Orga-Team

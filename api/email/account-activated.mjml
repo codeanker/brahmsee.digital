@@ -1,7 +1,7 @@
 {{#> layout }}
 
 <mj-text font-size="16px" line-height="1.5">
-  Dein <b>brahmsee.digital</b> Account wurde bestätigt.
+  Dein <b>{{ hostname }}</b> Account wurde bestätigt.
   Bevor du dich anmelden kannst, muss dein Account noch durch einen Administrator
   aktiviert werden.
 </mj-text>

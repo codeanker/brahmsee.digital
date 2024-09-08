@@ -6,7 +6,7 @@
 
 <mj-text font-size="16px" line-height="1.5">
   <b>Wichtig</b>: Deine Anmeldung ist noch nicht bestätigt. Sobald sich der Status
-  ändert, erhältst du eine weiter E-Mail.
+  ändert, erhältst Du eine weitere E-Mail.
 </mj-text>
 
 {{/layout}}

@@ -27,6 +27,11 @@ export const anmeldungVerwaltungStornoProcedure = defineProcedure({
             veranstaltung: {
               select: {
                 name: true,
+                hostname: {
+                  select: {
+                    hostname: true,
+                  },
+                },
               },
             },
           },
@@ -88,6 +93,7 @@ export const anmeldungVerwaltungStornoProcedure = defineProcedure({
           name: `${person.firstname} ${person.lastname}`,
           gliederung: person.gliederung!.name,
           veranstaltung: anmeldung!.unterveranstaltung.veranstaltung.name,
+          hostname: anmeldung!.unterveranstaltung.veranstaltung.hostname!.hostname,
         },
       })
       return {

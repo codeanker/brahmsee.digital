@@ -69,6 +69,8 @@ export const accountVerwaltungPatchProcedure = defineProcedure({
         variables: {
           name: `${account.person.firstname} ${account.person.lastname}`,
           gliederung: account.person.gliederung!.name,
+          hostname: 'brahmsee.digital',
+          veranstaltung: 'brahmsee.digital',
           status: AccountStatusMapping[account.status].human,
           isActive: account.status === AccountStatus.AKTIV,
         },

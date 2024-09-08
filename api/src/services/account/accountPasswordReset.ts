@@ -73,6 +73,8 @@ export const accountPasswordResetProcedure = defineProcedure({
           variables: {
             gliederung: findRes.person.gliederung!.name,
             name: `${findRes.person.firstname} ${findRes.person.lastname}`,
+            hostname: 'brahmsee.digital',
+            veranstaltung: 'brahmsee.digital',
             resetUrl,
           },
         })

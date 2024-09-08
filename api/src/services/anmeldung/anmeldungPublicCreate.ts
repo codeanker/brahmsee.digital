@@ -117,6 +117,7 @@ export async function handle(input: z.infer<typeof inputSchema>, isPublic: boole
       name: `${person.firstname} ${person.lastname}`,
       gliederung: person.gliederung!.name,
       veranstaltung: unterveranstaltung.veranstaltung.name,
+      hostname: unterveranstaltung.veranstaltung.hostname!.hostname,
     },
   })
 

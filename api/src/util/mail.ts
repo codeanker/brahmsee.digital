@@ -17,6 +17,8 @@ sgMail.setApiKey(config.mail.sendgridApiKey)
 type Variables = Record<string, unknown> & {
   name: string
   gliederung: string
+  veranstaltung: string
+  hostname: string
 }
 
 type EMailParams = {
