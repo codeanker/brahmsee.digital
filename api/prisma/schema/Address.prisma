@@ -1,11 +1,15 @@
 model Address {
-  id     Int      @id @default(autoincrement())
-  street String
-  number String
-  zip    String
-  city   String
-  Ort    Ort[]
-  Person Person[]
+  id           Int      @id @default(autoincrement())
+  street       String
+  streetNumber String
+  zip          String
+  city         String
+  country      String
+  lat          Float?
+  lon          Float?
+  valid        Boolean  @default(false)
+  Ort          Ort[]
+  Person       Person[]
 }
 
 model Ort {

@@ -12,10 +12,13 @@ const { state: veranstaltung, execute: fetchVeranstaltung } = useAsyncState(asyn
 </script>
 
 <template>
-  <FormVeranstaltungGeneral
-    v-if="veranstaltung !== null"
-    :veranstaltung="veranstaltung"
-    mode="update"
-    @update="() => fetchVeranstaltung()"
-  />
+  <h5>Veranstaltung bearbeiten</h5>
+  <div class="grid grid-cols-1 lg:grid-cols-2">
+    <FormVeranstaltungGeneral
+      v-if="veranstaltung !== null"
+      :veranstaltung="veranstaltung"
+      mode="update"
+      @update="() => fetchVeranstaltung()"
+    />
+  </div>
 </template>

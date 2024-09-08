@@ -11,6 +11,7 @@
     "@codeanker/cookies": "^1.0.0",
     "@codeanker/core-grid": "file:../vendor/codeanker-core-grid-1.0.0.tgz",
     "@codeanker/helpers": "^1.0.0",
+    "@codeanker/interfaces": "^1.0.0",
     "@codeanker/validation": "^1.0.0",
     "@headlessui/vue": "^1.7.16",
     "@heroicons/vue": "^2.0.18",

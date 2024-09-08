@@ -55,6 +55,9 @@ module.exports = {
       gridTemplateColumns: {
         switch: 'min-content minmax(0, 1fr)',
       },
+      boxShadow: {
+        hover: '0px 0px 12px 0px rgba(0,0,0,0.06);',
+      },
     },
   },
   safelist: [

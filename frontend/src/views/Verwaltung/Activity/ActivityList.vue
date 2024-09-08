@@ -4,10 +4,14 @@ import { useAsyncState } from '@vueuse/core'
 
 import { apiClient } from '@/api'
 import Badge from '@/components/UIComponents/Badge.vue'
+import { useRouteTitle } from '@/composables/useRouteTitle'
 import type { StatusColors } from '@/helpers/getAnmeldungStatusColors'
 import router from '@/router'
 import type { Activity, ActivityType } from '@codeanker/api'
 import { formatTimestamp } from '@codeanker/helpers'
+
+const { setTitle } = useRouteTitle()
+setTitle('Aufgezeichnete Aktivitäten')
 
 const { state: activities } = useAsyncState(async () => {
   return await apiClient.activity.verwaltungList.query({
@@ -46,14 +50,9 @@ function onClick({ subjectType, subjectId }: Activity) {
 </script>
 
 <template>
-  <div class="flex items-center justify-between my-8">
-    <div class="flex flex-col">
-      <h5 class="mb-0">Aufgezeichnete Aktivitäten</h5>
-      <p class="max-w-2xl text-sm text-gray-500">
-        In der Verwaltung werden Aktivitäten aufgezeichnet, z.B. wenn Accounts erstellt oder gelöscht werden.
-      </p>
-    </div>
-  </div>
+  <p class="max-w-2xl text-sm text-gray-500 mb-6">
+    In der Verwaltung werden Aktivitäten aufgezeichnet, z.B. wenn Accounts erstellt oder gelöscht werden.
+  </p>
   <div class="flow-root">
     <table
       v-if="activities.length > 0"

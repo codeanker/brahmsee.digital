@@ -17,21 +17,6 @@
 	"remoteEnv": {
 		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
 	},
-	"forwardPorts": [3030, 8080, 7700],
-	"portsAttributes":{
-		"3030": {
-			"label": "API",
-			"onAutoForward": "silent"
-		},
-		"8080": {
-			"label": "Frontend",
-			"onAutoForward": "silent"
-		},
-		"7700": {
-			"label": "Meilisearch",
-			"onAutoForward": "silent"
-		}
-	},
 	"customizations": {
 		"vscode": {
 			"extensions": [
@@ -41,7 +26,8 @@
 				"bradlc.vscode-tailwindcss",
 				"prisma.prisma",
 				"github.copilot",
-				"actboy168.tasks"
+				"actboy168.tasks",
+				"Vue.volar"
 			]
 		}
 	},

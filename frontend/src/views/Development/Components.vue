@@ -10,6 +10,10 @@ import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import Loading from '@/components/UIComponents/Loading.vue'
+import { useRouteTitle } from '@/composables/useRouteTitle'
+
+const { setTitle } = useRouteTitle()
+setTitle('Komponenten')
 
 let checkboxModel = ref(false)
 let basicInputModel = ref('')
@@ -78,7 +82,6 @@ const basicEditorCode = `<BasicEditor
 
 <template>
   <div>
-    <h3>Komponenten</h3>
     <h4>UI Komponenten</h4>
     <div class="space-y-12 mb-24">
       <ComponentPreview
@@ -116,7 +119,7 @@ const basicEditorCode = `<BasicEditor
         description="Button component"
         :code="buttonCode"
       >
-        <div class="flex items-center flex-wrap">
+        <div class="flex items-center flex-wrap space-x-2">
           <Button>Primary Link</Button>
           <Button color="primary">Primary</Button>
           <Button color="secondary">Success</Button>

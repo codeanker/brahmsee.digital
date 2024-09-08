@@ -29,7 +29,7 @@ export const personGliederungGetProcedure = defineProcedure({
             zip: true,
             city: true,
             street: true,
-            number: true,
+            streetNumber: true,
           },
         },
         nahrungsmittelIntoleranzen: true,
