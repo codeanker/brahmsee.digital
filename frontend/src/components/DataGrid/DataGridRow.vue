@@ -20,7 +20,7 @@ const emit = defineEmits<TDataGridRowEmits>()
       :height="`${props.height}px`"
       :column="column"
       :row="row"
-      :class="cn('border-b', props.class)"
+      :class="cn('border-b dark:border-b-white/40', props.class)"
     />
   </tr>
 </template>

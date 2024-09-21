@@ -45,7 +45,7 @@ const {
   >
     <div
       :style="gridHeaderStyle"
-      class="backdrop-blur-sm"
+      class="backdrop-blur-sm bg-white dark:bg-dark-primary"
     >
       <DataGridHeader
         :columns="columnsWithGroups"
