@@ -45,10 +45,7 @@ export const accountEmailConfirmRequestProcedure = defineProcedure({
       description: 'email confirmation requested',
     })
 
-    await sendMailConfirmEmailRequest({
-      email: account.email,
-      activationToken: account.activationToken,
-    })
+    await sendMailConfirmEmailRequest(account.email, account.activationToken)
 
     return {
       success: true,

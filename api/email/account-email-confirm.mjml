@@ -1,0 +1,18 @@
+{{#> layout }}
+
+<mj-text font-size="16px" line-height="1.5">
+  Dein <b>{{ hostname }}</b> Account wurde erstellt. Um den Registrierungsprozess
+  abzuschließen, bestätige deine E-Mail Adresse bitte mit dem nachfolgenden Link.
+</mj-text>
+
+<mj-button
+  align="left"
+  background-color="#16a34a"
+  border-radius="8px"
+  font-size="16px"
+  href="{{ activationUrl }}"
+>
+  Account bestätigen
+</mj-button>
+
+{{/layout}}

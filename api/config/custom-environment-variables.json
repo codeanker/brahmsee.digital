@@ -25,5 +25,11 @@
   },
   "tomtom": {
     "apiKey": "TOMTOM_APIKEY"
+  },
+  "public": {
+    "legal": {
+      "imprint": "PUBLIC_LEGAL_IMPRINT",
+      "privacy": "PUBLIC_LEGAL_PRIVACY"
+    }
   }
 }

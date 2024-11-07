@@ -1,18 +1,27 @@
 /* eslint-disable no-unused-vars */
+import { readFile } from 'fs/promises'
+import { join } from 'path'
+
 import sgMail from '@sendgrid/mail'
+import { getProperty } from 'dot-prop'
+import Handlebars from 'handlebars'
+import mjml2html from 'mjml'
 
 import config from '.././config'
+import { logger } from '../logger'
 
 import logActivity from './activity'
 
 sgMail.setApiKey(config.mail.sendgridApiKey)
 
-type EMailTemplateConfig = {
-  html: string
-  template?: undefined
+type Variables = Record<string, unknown> & {
+  name: string
+  gliederung: string
+  veranstaltung: string
+  hostname: string
 }
-/** Die EMail wie sie an den Service übergeben wird */
-export type EMailParams = EMailTemplateConfig & {
+
+type EMailParams = {
   to: string | string[]
   bcc?: string | string[]
   subject: string
@@ -23,10 +32,11 @@ export type EMailParams = EMailTemplateConfig & {
     type: string
   }[]
   skipHtmlEncode?: boolean
+  template: string
+  variables: Variables
 }
 
-/** Die EMail wie sie an den Sendgrid Service übergeben wird */
-export type EMail = {
+type EMail = {
   from: string
   to: string[]
   bcc?: string[]
@@ -40,14 +50,53 @@ export type EMail = {
   }[]
 }
 
+async function readTemplate(name: string) {
+  const abs = `${join(templateDirectory, name)}.mjml`
+  const buffer = await readFile(abs)
+  const contents = buffer.toString('utf8')
+
+  return { abs, contents }
+}
+
+Handlebars.registerHelper('year', () => new Date().getFullYear())
+Handlebars.registerHelper('config', (key) => getProperty(config, key))
+Handlebars.registerHelper('url', (path) => `${config.clientUrl}/${path}`)
+
+const templateDirectory = join(process.cwd(), 'email')
+const { contents: layout } = await readTemplate('_layout')
+Handlebars.registerPartial('layout', layout)
+
+/**
+ * Triggers the email template compilation pipeline consisting of the following:
+ *
+ * - Use `ejs` as a templating engine for enabling variable support.
+ * - Use `mjml` to generate the raw html code to embed in the email.
+ */
+async function compile(templateName: string, variables: Variables): Promise<string | null> {
+  const { abs, contents } = await readTemplate(templateName)
+  const template = Handlebars.compile(contents, {
+    strict: true,
+  })
+  const mjml = template(variables)
+  const result = mjml2html(mjml, {
+    filePath: abs,
+  })
+
+  const { errors, html } = result
+
+  if (errors.length > 0) {
+    logger.error('Failed compiling mjml email template!', { errors })
+    return null
+  }
+
+  return html
+}
+
 export async function sendMail(mailParams: EMailParams) {
   try {
-    let html
     let subject = mailParams.subject
     const sendWithTemplate = 'no-template'
-    if (mailParams.html) {
-      html = mailParams.html
-    }
+
     // set mail categories for sendgrid
     const categories = [
       process.env.NODE_ENV ?? '',
@@ -56,20 +105,30 @@ export async function sendMail(mailParams: EMailParams) {
       ...mailParams.categories,
     ]
 
-    if (process.env.NODE_ENV != 'production') {
-      subject += ' [DEV]'
-      html += `<br><br>
-        Testnachricht, versendet aus folgendem System: ${process.env.NODE_ENV}`
+    let html = await compile(mailParams.template, {
+      ...mailParams.variables,
+      subject,
+    })
+    if (html === null) {
+      return
     }
+
     // convert umlaute to html entires
-    if (!mailParams.skipHtmlEncode) html = encodeHtmlEntries(html)
+    if (!mailParams.skipHtmlEncode) {
+      html = encodeHtmlEntries(html)
+    }
+
+    if (process.env.NODE_ENV != 'production') {
+      subject += ` [${process.env.NODE_ENV}]`
+    }
+
     const mailToSend: EMail = {
       from: 'brahmsee.digital<noreply@brahmsee.digital>',
       to: parseMaybeArray(mailParams.to),
+      attachments: formatAttachments(mailParams.attachments),
       subject,
       categories,
-      html: html,
-      attachments: formatAttachments(mailParams.attachments),
+      html,
     }
 
     await logActivity({
@@ -99,7 +158,10 @@ export async function sendMail(mailParams: EMailParams) {
     }
   } catch (error: any) {
     console.error(error)
-    if (error.response?.body) console.error(error.response.body)
+    logger.error('Failed sending email!', {
+      message: error.message,
+      response: error.response?.body,
+    })
   }
 }
 

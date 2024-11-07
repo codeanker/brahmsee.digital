@@ -1,4 +1,4 @@
-import { Gender, Role, AccountStatus } from '@prisma/client'
+import { Gender, Role, AccountStatus, Prisma, GliederungAccountRole } from '@prisma/client'
 import { v4 as uuidv4 } from 'uuid'
 import { z } from 'zod'
 
@@ -14,6 +14,7 @@ export const accountSchema = z.strictObject({
   roleId: z.nativeEnum(Role),
   isActiv: z.boolean().optional(),
   status: z.nativeEnum(AccountStatus).optional(),
+  gliederungId: z.number().int(),
   adminInGliederungId: z.number().int().optional(),
   activationToken: z.string().optional(),
   passwordResetToken: z.string().optional(),
@@ -27,7 +28,7 @@ const ZGetAccountCreateDataSchema = accountSchema.extend({
 
 type TGetAccountCreateDataSchema = z.infer<typeof ZGetAccountCreateDataSchema>
 
-export async function getAccountCreateData(data: TGetAccountCreateDataSchema) {
+export async function getAccountCreateData(data: TGetAccountCreateDataSchema): Promise<Prisma.AccountCreateInput> {
   return {
     email: data.email,
     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
@@ -41,6 +42,11 @@ export async function getAccountCreateData(data: TGetAccountCreateDataSchema) {
         birthday: data.birthday,
         email: data.email,
         telefon: '',
+        gliederung: {
+          connect: {
+            id: data.gliederungId,
+          },
+        },
       },
     },
     activatedAt: data.isActiv ? new Date() : null,
@@ -49,7 +55,7 @@ export async function getAccountCreateData(data: TGetAccountCreateDataSchema) {
         ? {
             create: {
               gliederungId: data.adminInGliederungId,
-              role: 'DELEGATIONSLEITER' as const,
+              role: GliederungAccountRole.DELEGATIONSLEITER,
             },
           }
         : undefined,
