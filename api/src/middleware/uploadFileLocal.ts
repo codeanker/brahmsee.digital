@@ -8,8 +8,6 @@ import prisma from '../prisma'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const uploadFileLocal: Middleware = async function (ctx, next) {
-  // TODO: add authentication
-
   const fileId = ctx.params.id
   const file = await prisma.file.findFirst({
     where: {

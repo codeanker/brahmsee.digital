@@ -15,9 +15,6 @@ export const handleUpload = async (file: File) => {
   if (dbFile.provider === 'LOCAL') {
     const response = await fetch(`/api/upload/file/LOCAL/${dbFile.id}`, {
       method: 'POST',
-      headers: {
-        // Authorization: 'Bearer ' + this.token, // TODO: authentication
-      },
       body: formData,
     })
     if (response.status != 201) throw new Error(`Failed to upload file: ${await response.text()}`)
