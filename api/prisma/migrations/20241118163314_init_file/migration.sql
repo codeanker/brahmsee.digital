@@ -2,17 +2,6 @@
 CREATE TYPE "FileProvider" AS ENUM ('LOCAL', 'AZURE');
 
 -- CreateTable
-CREATE TABLE "UnterveranstaltungDocument" (
-    "id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
-    "description" TEXT,
-    "unterveranstaltungId" INTEGER NOT NULL,
-    "fileId" TEXT NOT NULL,
-
-    CONSTRAINT "UnterveranstaltungDocument_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "File" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -26,14 +15,25 @@ CREATE TABLE "File" (
     CONSTRAINT "File_pkey" PRIMARY KEY ("id")
 );
 
--- CreateIndex
-CREATE UNIQUE INDEX "UnterveranstaltungDocument_fileId_key" ON "UnterveranstaltungDocument"("fileId");
+-- CreateTable
+CREATE TABLE "UnterveranstaltungDocument" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT,
+    "unterveranstaltungId" INTEGER NOT NULL,
+    "fileId" TEXT NOT NULL,
+
+    CONSTRAINT "UnterveranstaltungDocument_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateIndex
 CREATE UNIQUE INDEX "File_id_key" ON "File"("id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "File_key_key" ON "File"("key");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "UnterveranstaltungDocument_fileId_key" ON "UnterveranstaltungDocument"("fileId");
 
 -- AddForeignKey
 ALTER TABLE "UnterveranstaltungDocument" ADD CONSTRAINT "UnterveranstaltungDocument_unterveranstaltungId_fkey" FOREIGN KEY ("unterveranstaltungId") REFERENCES "Unterveranstaltung"("id") ON DELETE CASCADE ON UPDATE CASCADE;
