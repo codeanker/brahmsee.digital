@@ -154,20 +154,20 @@ const tabs = computed(() => {
 </script>
 
 <template>
-  <div class="pt-2 pb-8">
-    <div class="flex items-center justify-between">
-      <div class="mx-auto max-w-xl lg:mx-0">
-        <h2 class="mt-2 text-xl font-bold tracking-tight sm:text-2xl">
+  <div class="flex items-center justify-between mb-6">
+    <div class="mx-auto max-w-xl lg:mx-0">
+      <div class="flex items-center space-x-3 mb-1">
+        <h2 class="text-xl font-bold tracking-tight sm:text-2xl mb-0">
           <span>{{ stammdatenForm?.firstname }} {{ stammdatenForm?.lastname }}</span>
         </h2>
-        <p class="mt-2 text-md leading-6">Bearbeite die Accountdaten, Accounts sind Personen zugeordnet.</p>
+        <Badge
+          v-if="edit && props?.account?.status"
+          :color="getAccountStatusColor(props.account.status)"
+          :title="formatDate(props.account.activatedAt)"
+          >{{ props.account.status }}</Badge
+        >
       </div>
-      <Badge
-        v-if="edit && props?.account?.status"
-        :color="getAccountStatusColor(props.account.status)"
-        :title="formatDate(props.account.activatedAt)"
-        >{{ props.account.status }}</Badge
-      >
+      <p class="text-md">Bearbeite die Accountdaten, Accounts sind Personen zugeordnet.</p>
     </div>
   </div>
   <Tabs
@@ -177,17 +177,14 @@ const tabs = computed(() => {
     <Tab>
       <div
         v-if="!edit"
-        class="my-10"
+        class="mb-6"
       >
         <h2 class="text-base font-semibold leading-7">Stammdaten</h2>
         <Stammdaten v-model="stammdatenForm" />
       </div>
 
-      <h2 class="text-base font-semibold leading-7 mt-5 lg:mt-10">Accountdaten</h2>
-      <ValidateForm
-        class="mt-5"
-        @submit="handle"
-      >
+      <ValidateForm @submit="handle">
+        <h2 class="text-base font-semibold">Accountdaten</h2>
         <div class="grid grid-flow-row lg:grid-cols-2 gap-5">
           <BasicInput
             id="accountEmail"
@@ -222,10 +219,11 @@ const tabs = computed(() => {
             <template #buttonContent>
               <button
                 type="button"
-                class="input-style w-full block text-left flex justify-between items-center"
+                class="input-style w-full text-left flex justify-between items-center"
               >
                 <slot>
                   <div class="flex space-x-2 items-center">
+                    <ChevronDownIcon class="h-5 text-gray-500" />
                     <div
                       class="w-4 h-4 rounded-full"
                       :class="`bg-${getAccountStatusColor(accountForm.status)}-600`"
@@ -233,7 +231,6 @@ const tabs = computed(() => {
                     <span>{{ getStatusHuman }}</span>
                   </div>
                 </slot>
-                <ChevronDownIcon class="h-5 text-gray-500" />
               </button>
             </template>
             <template #dropdownContent>
@@ -282,17 +279,11 @@ const tabs = computed(() => {
     <Tab>
       <div
         v-if="edit"
-        class="my-10"
+        class="grid grid-cols-1 lg:grid-cols-2"
       >
-        <div>
-          <h2 class="text-base font-semibold leading-7">Passwort</h2>
-        </div>
-
-        <div
-          v-if="!account?.dlrgOauthId"
-          class="md:col-span-2"
-        >
-          <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+        <div v-if="!account?.dlrgOauthId">
+          <h2 class="text-base font-semibold">Passwort</h2>
+          <div class="grid grid-cols-1 gap-y-6">
             <div
               v-if="isSelf"
               class="col-span-full"

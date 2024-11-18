@@ -77,6 +77,10 @@ const setStatus = async (status: AnmeldungStatus) => {
       >
         <slot>
           <div class="flex space-x-2 items-center">
+            <ChevronDownIcon
+              v-if="isStatusChangeAvailable"
+              class="h-5 text-gray-500"
+            />
             <div
               class="w-4 h-4 rounded-full shrink-0"
               :class="`bg-${getAnmeldungStatusColor(currentStatus)}-600`"
@@ -84,10 +88,6 @@ const setStatus = async (status: AnmeldungStatus) => {
             <span>{{ getStatusHuman(currentStatus) }}</span>
           </div>
         </slot>
-        <ChevronDownIcon
-          v-if="isStatusChangeAvailable"
-          class="h-5 text-gray-500"
-        />
       </button>
     </template>
     <template #dropdownContent>

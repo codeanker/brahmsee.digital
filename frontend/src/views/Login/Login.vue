@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
+import DarkModeSwitch from '@/components/DarkModeSwitch.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import Loading from '@/components/UIComponents/Loading.vue'
 import { login, loginError, loginPending } from '@/composables/useAuthentication'
@@ -53,9 +54,19 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
 
 <template>
   <div class="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
-    <div class="sm:mx-auto sm:w-full sm:max-w-md">
-      <h2 class="mt-6 text-center text-4xl leading-9 tracking-tight text-primary-700">brahmsee.digital</h2>
-      <p class="text-center">Melde dich zu deinem Konto an</p>
+    <div class="grid grid-cols-3">
+      <div></div>
+
+      <div>
+        <h2 class="text-center text-4xl leading-9 tracking-tight text-primary-700 dark:text-primary-600">
+          brahmsee.digital
+        </h2>
+        <p class="text-center">Melde dich zu deinem Konto an</p>
+      </div>
+
+      <div class="justify-self-end pt-2">
+        <DarkModeSwitch />
+      </div>
     </div>
 
     <div class="mt-5 lg:mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
@@ -87,12 +98,13 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
             label="Passwort"
             required
           ></BasicPassword>
-          <div class="flex items-center justify-end">
+          <div class="flex items-center justify-center">
             <div class="text-sm">
               <RouterLink
                 :to="{ name: 'PasswortReset' }"
                 class="font-semibold text-primary-600 hover:text-primary-500"
-                >Passwort vergessen?
+              >
+                Passwort vergessen?
               </RouterLink>
             </div>
           </div>

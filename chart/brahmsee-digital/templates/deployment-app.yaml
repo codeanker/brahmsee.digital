@@ -91,6 +91,12 @@ spec:
                 secretKeyRef:
                   name: azure
                   key: folder
+            # Postgres
+            - name: TOMTOM_APIKEY
+              valueFrom:
+                secretKeyRef:
+                  name: tomtom
+                  key: apikey
 
           # readinessProbe:
           #   httpGet:

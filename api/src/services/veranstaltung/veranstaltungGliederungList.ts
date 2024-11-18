@@ -1,3 +1,4 @@
+import { Role } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma'
@@ -8,7 +9,7 @@ import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin'
 export const veranstaltungGliederungListProcedure = defineProcedure({
   key: 'gliederungList',
   method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: ['GLIEDERUNG_ADMIN'] },
+  protection: { type: 'restrictToRoleIds', roleIds: [Role.GLIEDERUNG_ADMIN] },
   inputSchema: defineQuery({
     filter: z.strictObject({}),
   }),
@@ -59,6 +60,17 @@ export const veranstaltungGliederungListProcedure = defineProcedure({
           },
           select: {
             id: true,
+            _count: {
+              select: {
+                Anmeldung: {
+                  where: {
+                    status: {
+                      equals: 'BESTAETIGT',
+                    },
+                  },
+                },
+              },
+            },
           },
         },
         hostname: {

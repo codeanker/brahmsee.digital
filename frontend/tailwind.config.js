@@ -1,7 +1,8 @@
 const colors = require('tailwindcss/colors')
+
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: 'class',
-  important: true,
   content: [
     './index.html',
     './public/**/*.html',
@@ -50,6 +51,12 @@ module.exports = {
       },
       backgroundImage: {
         public: "url('/src/assets/images/publicBg.webp')",
+      },
+      gridTemplateColumns: {
+        switch: 'min-content minmax(0, 1fr)',
+      },
+      boxShadow: {
+        hover: '0px 0px 12px 0px rgba(0,0,0,0.06);',
       },
     },
   },

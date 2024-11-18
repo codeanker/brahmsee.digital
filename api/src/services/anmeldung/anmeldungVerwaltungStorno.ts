@@ -27,6 +27,11 @@ export const anmeldungVerwaltungStornoProcedure = defineProcedure({
             veranstaltung: {
               select: {
                 name: true,
+                hostname: {
+                  select: {
+                    hostname: true,
+                  },
+                },
               },
             },
           },
@@ -69,6 +74,11 @@ export const anmeldungVerwaltungStornoProcedure = defineProcedure({
           firstname: true,
           lastname: true,
           email: true,
+          gliederung: {
+            select: {
+              name: true,
+            },
+          },
         },
       })
       if (!person) {
@@ -78,7 +88,13 @@ export const anmeldungVerwaltungStornoProcedure = defineProcedure({
         to: person.email,
         subject: 'Anmeldung storniert',
         categories: ['anemldung', 'storno'],
-        html: `Hallo ${person.firstname} ${person.lastname},\n\n\nDeine Anmeldung für ${anmeldung?.unterveranstaltung.veranstaltung.name} wurde storniert.\n\nViele Grüße,\nDein Orga-Team`,
+        template: 'registration-canceled',
+        variables: {
+          name: `${person.firstname} ${person.lastname}`,
+          gliederung: person.gliederung!.name,
+          veranstaltung: anmeldung!.unterveranstaltung.veranstaltung.name,
+          hostname: anmeldung!.unterveranstaltung.veranstaltung.hostname!.hostname,
+        },
       })
       return {
         success: true,

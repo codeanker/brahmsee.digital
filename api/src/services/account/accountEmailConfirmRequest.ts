@@ -1,3 +1,4 @@
+import { Role } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma'
@@ -9,7 +10,7 @@ import { sendMailConfirmEmailRequest } from './helpers/sendMailConfirmEmailReque
 export const accountEmailConfirmRequestProcedure = defineProcedure({
   key: 'emailConfirmRequest',
   method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
+  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
   inputSchema: z.strictObject({
     accountId: z.number().int(),
   }),
@@ -44,10 +45,7 @@ export const accountEmailConfirmRequestProcedure = defineProcedure({
       description: 'email confirmation requested',
     })
 
-    await sendMailConfirmEmailRequest({
-      email: account.email,
-      activationToken: account.activationToken,
-    })
+    await sendMailConfirmEmailRequest(account.email, account.activationToken)
 
     return {
       success: true,

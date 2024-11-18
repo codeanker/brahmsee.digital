@@ -56,6 +56,16 @@ export const configSchema = z.strictObject({
       folder: z.string(),
     }),
   }),
+
+  tomtom: z.strictObject({
+    apiKey: z.string(),
+  }),
+  public: z.strictObject({
+    legal: z.strictObject({
+      imprint: z.string().url(),
+      privacy: z.string().url(),
+    }),
+  }),
 })
 
 export default configSchema.parse(baseConfig)

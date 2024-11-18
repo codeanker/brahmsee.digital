@@ -2,6 +2,7 @@ import { router } from '../trpc'
 
 import { accountRouter } from './account/account.router'
 import { activityRouter } from './activity/activity.routes'
+import { addressRouter } from './address/address.router'
 import { anmeldungRouter } from './anmeldung/anmeldung.router'
 import { authenticationRouter } from './authentication/authentication.router'
 import { customFieldsRouter } from './customFields/customFields.router'
@@ -29,5 +30,6 @@ export const serviceRouter = router({
   system: systemRouter,
   customFields: customFieldsRouter,
   file: fileRouter,
+  address: addressRouter,
   // Add Routers here - do not delete this line
 })

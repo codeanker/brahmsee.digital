@@ -207,13 +207,7 @@ function deleteDocument(document, index) {
 </script>
 
 <template>
-  <h5>
-    Ausschreibung <span v-if="unterveranstaltung">{{ unterveranstaltung.veranstaltung.name }}</span>
-  </h5>
-  <ValidateForm
-    class="mt-5 lg:mt-10"
-    @submit="handle"
-  >
+  <ValidateForm @submit="handle">
     <div class="grid grid-cols-1 lg:grid-cols-6 gap-6">
       <div
         v-if="mode === 'create'"

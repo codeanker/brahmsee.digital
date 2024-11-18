@@ -4,5 +4,7 @@ import FormVeranstaltungGeneral from '@/components/forms/veranstaltung/FormVeran
 
 <template>
   <h5>Veranstaltung anlegen</h5>
-  <FormVeranstaltungGeneral mode="create" />
+  <div class="grid grid-cols-1 lg:grid-cols-2">
+    <FormVeranstaltungGeneral mode="create" />
+  </div>
 </template>

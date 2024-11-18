@@ -311,7 +311,7 @@ const showNotification = ref(false)
     >
       <template #person="{ fieldValue: person }">
         <td
-          class="whitespace-nowrap py-5 pl-4 pr-3 text-sm group-[.uneven]:bg-gray-50 dark:group-[.uneven]:bg-gray-900 group-hover:bg-gray-50 dark:hover:bg-gray-800 border-t border-t-gray-200"
+          class="whitespace-nowrap py-5 pl-4 pr-3 text-sm group-[.uneven]:bg-gray-50 dark:group-[.uneven]:bg-gray-900 group-hover:bg-gray-50 border-t border-t-gray-200"
         >
           <div class="flex space-x-1 items-center">
             <span>{{ person.firstname }} {{ person.lastname }}</span>
@@ -326,7 +326,7 @@ const showNotification = ref(false)
 
       <template #status="{ row: anmeldung }">
         <td
-          class="px-3 py-5 text-sm group-[.uneven]:bg-gray-50 dark:group-[.uneven]:bg-gray-900 group-hover:bg-gray-50 dark:hover:bg-gray-800 border-t border-t-gray-200"
+          class="px-3 py-5 text-sm group-[.uneven]:bg-gray-50 dark:group-[.uneven]:bg-gray-900 group-hover:bg-gray-50 border-t border-t-gray-200"
         >
           <div class="flex items-center">
             <AnmeldungStatusSelect
@@ -384,14 +384,20 @@ const showNotification = ref(false)
             <div class="px-4 py-5 sm:px-0 sm:py-0">
               <dl class="space-y-8 sm:space-y-0 sm:divide-y sm:divide-gray-200">
                 <div class="sm:flex sm:px-6 sm:py-5">
-                  <dt class="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0 lg:w-48">Veranstaltung</dt>
-                  <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:ml-6 sm:mt-0 whitespace-pre-line">
+                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-300 sm:w-40 sm:flex-shrink-0 lg:w-48">
+                    Veranstaltung
+                  </dt>
+                  <dd
+                    class="mt-1 text-sm text-gray-900 dark:text-gray-100 sm:col-span-2 sm:ml-6 sm:mt-0 whitespace-pre-line"
+                  >
                     {{ currentAnmeldung?.unterveranstaltung.veranstaltung.name }}
                   </dd>
                 </div>
                 <div class="sm:flex sm:px-6 sm:py-5">
-                  <dt class="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0 lg:w-48">Status</dt>
-                  <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:ml-6 sm:mt-0">
+                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-300 sm:w-40 sm:flex-shrink-0 lg:w-48">
+                    Status
+                  </dt>
+                  <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100 sm:col-span-2 sm:ml-6 sm:mt-0">
                     <AnmeldungStatusSelect
                       v-if="currentAnmeldung?.unterveranstaltung.veranstaltung.meldeschluss"
                       :id="currentAnmeldung.id"
@@ -402,8 +408,12 @@ const showNotification = ref(false)
                   </dd>
                 </div>
                 <div class="sm:flex sm:px-6 sm:py-5">
-                  <dt class="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0 lg:w-48">T-Shirt</dt>
-                  <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:ml-6 sm:mt-0 whitespace-pre-line">
+                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-300 sm:w-40 sm:flex-shrink-0 lg:w-48">
+                    T-Shirt
+                  </dt>
+                  <dd
+                    class="mt-1 text-sm text-gray-900 dark:text-gray-100 sm:col-span-2 sm:ml-6 sm:mt-0 whitespace-pre-line"
+                  >
                     <AnmeldungTshirtSelect
                       v-if="currentAnmeldung"
                       :anmeldung="currentAnmeldung"
@@ -414,8 +424,12 @@ const showNotification = ref(false)
                 </div>
 
                 <div class="sm:flex sm:px-6 sm:py-5">
-                  <dt class="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0 lg:w-48">Bemerkung</dt>
-                  <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:ml-6 sm:mt-0 whitespace-pre-line max-w-96">
+                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-300 sm:w-40 sm:flex-shrink-0 lg:w-48">
+                    Bemerkung
+                  </dt>
+                  <dd
+                    class="mt-1 text-sm text-gray-900 dark:text-gray-100 sm:col-span-2 sm:ml-6 sm:mt-0 whitespace-pre-line max-w-96"
+                  >
                     <template v-if="currentAnmeldung?.comment">
                       {{ currentAnmeldung?.comment }}
                     </template>
@@ -423,8 +437,12 @@ const showNotification = ref(false)
                   </dd>
                 </div>
                 <div class="sm:flex sm:px-6 sm:py-5">
-                  <dt class="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0 lg:w-48">Angemeldet am</dt>
-                  <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:ml-6 sm:mt-0 whitespace-pre-line">
+                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-300 sm:w-40 sm:flex-shrink-0 lg:w-48">
+                    Angemeldet am
+                  </dt>
+                  <dd
+                    class="mt-1 text-sm text-gray-900 dark:text-gray-100 sm:col-span-2 sm:ml-6 sm:mt-0 whitespace-pre-line"
+                  >
                     {{ dayjs(currentAnmeldung?.createdAt).format('DD.MM.YYYY HH:mm') }}
                   </dd>
                 </div>

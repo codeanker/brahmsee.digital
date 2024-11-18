@@ -27,14 +27,26 @@ export const accountPasswordResetProcedure = defineProcedure({
         select: {
           email: true,
           passwordResetToken: true,
+          person: {
+            select: {
+              firstname: true,
+              lastname: true,
+              gliederung: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
         },
       })
-      if (findRes == null)
+      if (findRes === null) {
         return {
           status: true,
         }
+      }
 
-      let resetToken
+      let resetToken: string | null = null
       const email = findRes.email
 
       if (findRes.passwordResetToken != null) {
@@ -51,13 +63,20 @@ export const accountPasswordResetProcedure = defineProcedure({
         resetToken = res.passwordResetToken
       }
 
-      if (resetToken) {
+      if (resetToken !== null) {
         const resetUrl = `${config.clientUrl}/password-reset/${resetToken}`
-        sendMail({
+        await sendMail({
           to: email,
-          subject: 'Passwort vergessen',
+          subject: 'Passwort zurücksetzen',
           categories: ['account', 'passwordReset'],
-          html: `Du kannst dein Passwort mit folgendem Link zurück setzen <a href="${resetUrl}">${resetUrl}</a>`,
+          template: 'account-password-reset',
+          variables: {
+            gliederung: findRes.person.gliederung!.name,
+            name: `${findRes.person.firstname} ${findRes.person.lastname}`,
+            hostname: 'brahmsee.digital',
+            veranstaltung: 'brahmsee.digital',
+            resetUrl,
+          },
         })
       }
       return {

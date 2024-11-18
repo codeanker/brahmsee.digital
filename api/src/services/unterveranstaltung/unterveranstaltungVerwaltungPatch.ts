@@ -1,5 +1,6 @@
 import type { UUID } from 'crypto'
 
+import { Role } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma'
@@ -8,7 +9,7 @@ import { defineProcedure } from '../../types/defineProcedure'
 export const unterveranstaltungVerwaltungPatchProcedure = defineProcedure({
   key: 'verwaltungPatch',
   method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: ['ADMIN'] },
+  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
   inputSchema: z.strictObject({
     id: z.number().int(),
     data: z.strictObject({

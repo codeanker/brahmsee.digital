@@ -34,5 +34,14 @@
       "container": "FILE_PROVIDER_AZURE_CONTAINER",
       "folder": "FILE_PROVIDER_AZURE_FOLDER"
     }
+  },
+  "tomtom": {
+    "apiKey": "TOMTOM_APIKEY"
+  },
+  "public": {
+    "legal": {
+      "imprint": "PUBLIC_LEGAL_IMPRINT",
+      "privacy": "PUBLIC_LEGAL_PRIVACY"
+    }
   }
 }

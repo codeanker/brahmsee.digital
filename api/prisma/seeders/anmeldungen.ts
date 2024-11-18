@@ -23,7 +23,8 @@ async function create(prisma: PrismaClient, unterveranstaltung: Unterveranstaltu
       city: faker.location.city(),
       zip: faker.location.zipCode(),
       street: faker.location.street(),
-      number: faker.location.buildingNumber(),
+      streetNumber: faker.location.buildingNumber(),
+      country: 'DE',
     },
     select: {
       id: true,
