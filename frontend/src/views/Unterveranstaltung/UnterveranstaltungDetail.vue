@@ -15,6 +15,7 @@ import { useRoute } from 'vue-router'
 
 import { apiClient } from '@/api'
 import AnmeldungenTable from '@/components/AnmeldungenTable.vue'
+import DownloadLink from '@/components/DownloadLink.vue'
 import FilesExport from '@/components/FilesExport.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
@@ -199,6 +200,24 @@ const files = [
             v-html="unterveranstaltung?.beschreibung"
           ></div>
         </div>
+
+        <div class="mt-5 lg:mt-10 mb-5 text-lg font-semibold">Dokumente</div>
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
+          <tbody class="divide-y divide-gray-200 dark:divide-gray-800 bg-white dark:bg-dark-primary">
+            <tr
+              v-for="(document, index) in unterveranstaltung?.documents ?? []"
+              :key="'document-' + index"
+              class="even:bg-gray-50 dark:even:bg-gray-800"
+            >
+              <td class="whitespace-nowrap w-full py-5 pl-4 pr-3 text-sm">
+                {{ document.name }}
+              </td>
+              <td class="text-sm pl-4 pr-3">
+                <DownloadLink :file-id="document.fileId" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </Tab>
       <Tab>
         <div class="my-10">

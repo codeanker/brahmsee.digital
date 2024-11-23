@@ -6,6 +6,7 @@ import { addressRouter } from './address/address.router'
 import { anmeldungRouter } from './anmeldung/anmeldung.router'
 import { authenticationRouter } from './authentication/authentication.router'
 import { customFieldsRouter } from './customFields/customFields.router'
+import { fileRouter } from './file/file.router'
 import { gliederungRouter } from './gliederung/gliederung.router'
 import { ortRouter } from './ort/ort.router'
 import { personRouter } from './person/person.router'
@@ -28,6 +29,7 @@ export const serviceRouter = router({
   search: searchRouter,
   system: systemRouter,
   customFields: customFieldsRouter,
+  file: fileRouter,
   address: addressRouter,
   // Add Routers here - do not delete this line
 })

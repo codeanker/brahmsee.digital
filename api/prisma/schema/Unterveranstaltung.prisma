@@ -18,4 +18,15 @@ model Unterveranstaltung {
   bedingungen      String?
   type             UnterveranstaltungType @default(GLIEDERUNG)
   customFields     CustomField[]
+  documents        UnterveranstaltungDocument[]
+}
+
+model UnterveranstaltungDocument {
+  id                   Int                 @id @default(autoincrement())
+  name                 String
+  description          String?
+  unterveranstaltungId Int
+  unterveranstaltung   Unterveranstaltung? @relation(fields: [unterveranstaltungId], references: [id], onDelete: Cascade)
+  file                 File                @relation(fields: [fileId], references: [id])
+  fileId               String              @unique
 }
