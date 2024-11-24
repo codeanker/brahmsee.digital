@@ -49,6 +49,14 @@ export const unterveranstaltungVerwaltungGetProcedure = defineProcedure({
             hostname: true,
           },
         },
+        documents: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+            fileId: true,
+          },
+        },
       },
     })
   },

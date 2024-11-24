@@ -1,6 +1,7 @@
 import path from 'node:path'
 import { fileURLToPath } from 'url'
 
+import { FileProvider } from '@prisma/client'
 import config from 'config'
 import { z } from 'zod'
 
@@ -42,6 +43,28 @@ export const configSchema = z.strictObject({
   meilisearch: z.strictObject({
     host: z.string(),
     apiKey: z.string(),
+  }),
+  fileDefaultProvider: z.nativeEnum(FileProvider),
+  fileProviders: z.strictObject({
+    LOCAL: z.strictObject({
+      path: z.string(),
+    }),
+    AZURE: z.strictObject({
+      account: z.string(),
+      accountKey: z.string(),
+      container: z.string(),
+      folder: z.string(),
+    }),
+  }),
+
+  tomtom: z.strictObject({
+    apiKey: z.string(),
+  }),
+  public: z.strictObject({
+    legal: z.strictObject({
+      imprint: z.string().url(),
+      privacy: z.string().url(),
+    }),
   }),
 })
 

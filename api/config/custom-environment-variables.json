@@ -22,5 +22,26 @@
   "meilisearch": {
     "host": "MEILISEARCH_HOST",
     "apiKey": "MEILISEARCH_KEY"
+  },
+  "fileDefaultProvider": "FILE_DEFAULT_PROVIDER",
+  "fileProviders": {
+    "LOCAL": {
+      "path":"FILE_PROVIDER_LOCAL_PATH"
+    },
+    "AZURE": {
+      "account": "FILE_PROVIDER_AZURE_ACCOUNT",
+      "accountKey": "FILE_PROVIDER_AZURE_ACCOUNT_KEY",
+      "container": "FILE_PROVIDER_AZURE_CONTAINER",
+      "folder": "FILE_PROVIDER_AZURE_FOLDER"
+    }
+  },
+  "tomtom": {
+    "apiKey": "TOMTOM_APIKEY"
+  },
+  "public": {
+    "legal": {
+      "imprint": "PUBLIC_LEGAL_IMPRINT",
+      "privacy": "PUBLIC_LEGAL_PRIVACY"
+    }
   }
 }

@@ -16,6 +16,10 @@ export const accountVerwaltungCreateProcedure = defineProcedure({
   }),
   async handler(options) {
     const accountData = await getAccountCreateData(options.input.data)
+    if (typeof accountData.activationToken !== 'string') {
+      throw new Error('no activation token found!')
+    }
+
     const res = prisma.account.create({
       data: accountData,
       select: {
@@ -23,10 +27,7 @@ export const accountVerwaltungCreateProcedure = defineProcedure({
       },
     })
 
-    await sendMailConfirmEmailRequest({
-      email: accountData.email,
-      activationToken: accountData.activationToken,
-    })
+    await sendMailConfirmEmailRequest(accountData.email, accountData.activationToken)
 
     return res
   },

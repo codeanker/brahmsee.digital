@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { CheckCircleIcon } from '@heroicons/vue/24/outline'
 
+import { useRouteTitle } from '@/composables/useRouteTitle'
+
+const { setTitle } = useRouteTitle()
+setTitle('Mitwirkende')
+
 const people = [
   {
     name: 'Daniel Swiatek',

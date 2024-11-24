@@ -89,3 +89,4 @@ typings/
 reports
 **/tsconfig.tsbuildinfo
 tsconfig.tsbuildinfo
+uploads/

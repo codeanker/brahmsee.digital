@@ -3,20 +3,22 @@ import { PlusIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 
 import { apiClient } from '@/api'
+import { useRouteTitle } from '@/composables/useRouteTitle'
 import router from '@/router'
 
+const { setTitle } = useRouteTitle()
+
 const { state: ortenList } = useAsyncState(async () => {
-  return apiClient.ort.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
+  const result = await apiClient.ort.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
+  setTitle('Orte')
+  return result
 }, [])
 </script>
 
 <template>
   <div>
-    <div class="flex items-center justify-between my-8">
-      <div class="flex flex-col">
-        <h5 class="mb-0">Orte</h5>
-        <p class="text-sm"><b>Tipp</b>: Zum Bearbeiten eines Ortes die entsprechende Zeile anklicken.</p>
-      </div>
+    <div class="flex items-center justify-between mb-6">
+      <p class="text-sm"><b>Tipp</b>: Zum Bearbeiten eines Ortes die entsprechende Zeile anklicken.</p>
       <RouterLink
         class="text-primary-500 flex items-center"
         :to="{ name: 'Verwaltung Ort erstellen' }"

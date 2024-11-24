@@ -17,24 +17,32 @@ import { useRoute } from 'vue-router'
 import { apiClient } from '@/api'
 import AnmeldungenTable from '@/components/AnmeldungenTable.vue'
 import CustomFieldsTable from '@/components/CustomFields/CustomFieldsTable.vue'
+import DownloadLink from '@/components/DownloadLink.vue'
 import FilesExport from '@/components/FilesExport.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import InfoList from '@/components/UIComponents/InfoList.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
+import { useRouteTitle } from '@/composables/useRouteTitle'
 import { formatDate } from '@codeanker/helpers'
 
 const route = useRoute()
+const { setTitle } = useRouteTitle()
 
 const { state: unterveranstaltung } = useAsyncState(async () => {
-  if (loggedInAccount.value?.role === 'ADMIN')
-    return apiClient.unterveranstaltung.verwaltungGet.query({
+  let result
+  if (loggedInAccount.value?.role === 'ADMIN') {
+    result = await apiClient.unterveranstaltung.verwaltungGet.query({
       id: parseInt(route.params.unterveranstaltungId as string),
     })
-  return apiClient.unterveranstaltung.gliederungGet.query({
-    id: parseInt(route.params.unterveranstaltungId as string),
-  })
+  } else {
+    result = await apiClient.unterveranstaltung.gliederungGet.query({
+      id: parseInt(route.params.unterveranstaltungId as string),
+    })
+  }
+  setTitle(`Ausschreibung für ${result.veranstaltung.name}`)
+  return result
 }, undefined)
 
 const { state: countAnmeldungen } = useAsyncState(async () => {
@@ -134,10 +142,9 @@ const files = [
 
 <template>
   <div>
-    <h5 class="mb-10">Ausschreibung für {{ unterveranstaltung?.veranstaltung?.name }}</h5>
-    <div class="pt-2 pb-8">
+    <div class="pb-8">
       <div class="mx-auto max-w-2xl lg:mx-0">
-        <h2 class="mt-2 text-2xl font-bold tracking-tight sm:text-4xl">
+        <h2 class="text-2xl font-bold tracking-tight sm:text-4xl">
           {{ unterveranstaltung?.veranstaltung?.name }}
         </h2>
         <p class="mt-4 text-md leading-6">
@@ -194,6 +201,24 @@ const files = [
             v-html="unterveranstaltung?.beschreibung"
           ></div>
         </div>
+
+        <div class="mt-5 lg:mt-10 mb-5 text-lg font-semibold">Dokumente</div>
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
+          <tbody class="divide-y divide-gray-200 dark:divide-gray-800 bg-white dark:bg-dark-primary">
+            <tr
+              v-for="(document, index) in unterveranstaltung?.documents ?? []"
+              :key="'document-' + index"
+              class="even:bg-gray-50 dark:even:bg-gray-800"
+            >
+              <td class="whitespace-nowrap w-full py-5 pl-4 pr-3 text-sm">
+                {{ document.name }}
+              </td>
+              <td class="text-sm pl-4 pr-3">
+                <DownloadLink :file-id="document.fileId" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </Tab>
       <Tab>
         <div class="my-10">

@@ -8,7 +8,7 @@ const gliederungRoutes: Route[] = [
     meta: {
       breadcrumbs: [
         {
-          text: 'Benutzer',
+          text: 'Gliederungen',
         },
       ],
     },

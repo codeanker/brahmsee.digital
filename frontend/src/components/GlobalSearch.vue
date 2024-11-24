@@ -99,7 +99,7 @@ const { state: searchResults, execute: searchAPI } = useAsyncState(
   >
     <Dialog
       as="div"
-      class="relative z-10"
+      class="relative z-50"
       @close="showSearch = false"
     >
       <TransitionChild
