@@ -197,6 +197,18 @@ const files = [
       />
     </Tab>
     <Tab>
+      <div>
+        <div class="text-lg font-semibold">Benutzerdefinierte Felder</div>
+        <p class="max-w-2xl text-sm text-gray-500">
+          Hier können benutzerdefinierte Felder erstellt werden, welche für alle Unterveranstaltungen gelten.
+        </p>
+      </div>
+      <UnterveranstaltungenTable
+        v-if="veranstaltung?.id"
+        :veranstaltung-id="veranstaltung?.id"
+      />
+    </Tab>
+    <Tab>
       <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
         <div>
           <div class="text-lg font-semibold">Benutzerdefinierte Felder</div>
@@ -204,32 +216,18 @@ const files = [
             Hier können benutzerdefinierte Felder erstellt werden, welche für alle Unterveranstaltungen gelten.
           </p>
         </div>
-        <UnterveranstaltungenTable
-          v-if="veranstaltung?.id"
-          :veranstaltung-id="veranstaltung?.id"
-        />
-      </Tab>
-      <Tab>
-        <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
-          <div>
-            <div class="text-lg font-semibold">Benutzerdefinierte Felder</div>
-            <p class="max-w-2xl text-sm text-gray-500">
-              Hier können benutzerdefinierte Felder erstellt werden, welche für alle Unterveranstaltungen gelten.
-            </p>
-          </div>
-          <RouterLink
-            class="text-primary-600"
-            :to="{ name: 'Verwaltung Custom Field erstellen' }"
-          >
-            Neues Feld
-          </RouterLink>
-        </div>
-        <CustomFieldsTable
-          v-if="veranstaltung?.id"
-          :id="veranstaltung?.id"
-          entity="veranstaltung"
-        />
-      </Tab>
-    </Tabs>
-  </div>
+        <RouterLink
+          class="text-primary-600"
+          :to="{ name: 'Verwaltung Custom Field erstellen' }"
+        >
+          Neues Feld
+        </RouterLink>
+      </div>
+      <CustomFieldsTable
+        v-if="veranstaltung?.id"
+        :id="veranstaltung?.id"
+        entity="veranstaltung"
+      />
+    </Tab>
+  </Tabs>
 </template>
