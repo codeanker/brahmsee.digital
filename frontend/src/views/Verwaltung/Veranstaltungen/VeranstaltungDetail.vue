@@ -12,7 +12,7 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { apiClient } from '@/api'
-import CustomFieldsTable from '@/components/CustomFieldsTable.vue'
+import CustomFieldsTable from '@/components/CustomFields/CustomFieldsTable.vue'
 import FilesExport from '@/components/FilesExport.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
@@ -197,6 +197,18 @@ const files = [
       />
     </Tab>
     <Tab>
+      <div>
+        <div class="text-lg font-semibold">Benutzerdefinierte Felder</div>
+        <p class="max-w-2xl text-sm text-gray-500">
+          Hier können benutzerdefinierte Felder erstellt werden, welche für alle Unterveranstaltungen gelten.
+        </p>
+      </div>
+      <UnterveranstaltungenTable
+        v-if="veranstaltung?.id"
+        :veranstaltung-id="veranstaltung?.id"
+      />
+    </Tab>
+    <Tab>
       <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
         <div>
           <div class="text-lg font-semibold">Benutzerdefinierte Felder</div>
@@ -213,7 +225,8 @@ const files = [
       </div>
       <CustomFieldsTable
         v-if="veranstaltung?.id"
-        :veranstaltung-id="veranstaltung?.id"
+        :id="veranstaltung?.id"
+        entity="veranstaltung"
       />
     </Tab>
   </Tabs>

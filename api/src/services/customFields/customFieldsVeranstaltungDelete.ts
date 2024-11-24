@@ -6,7 +6,7 @@ import prisma from '../../prisma'
 import { defineProcedure } from '../../types/defineProcedure'
 
 export const customFieldsVeranstaltungDelete = defineProcedure({
-  key: 'verwaltungDelete',
+  key: 'veranstaltungDelete',
   method: 'mutation',
   protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
   inputSchema: z.strictObject({

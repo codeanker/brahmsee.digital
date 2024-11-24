@@ -1,4 +1,3 @@
-import type { CustomField } from '@prisma/client'
 import { z } from 'zod'
 
 import prisma from '../../prisma'
@@ -9,12 +8,10 @@ export const customFieldsList = defineProcedure({
   method: 'query',
   protection: { type: 'public' },
   inputSchema: z.strictObject({
-    entity: z.enum(['veranstaltung', 'unterveranstaltung']),
+    entity: z.enum(['veranstaltung', 'unterveranstaltung']).optional(),
     entityId: z.number(),
   }),
   async handler({ input }) {
-    let fields: CustomField[] = []
-
     if (input.entity === 'veranstaltung') {
       const veranstaltung = await prisma.veranstaltung.findUniqueOrThrow({
         where: {
@@ -25,7 +22,7 @@ export const customFieldsList = defineProcedure({
         },
       })
 
-      fields = veranstaltung.customFields
+      return veranstaltung.customFields
     } else if (input.entity === 'unterveranstaltung') {
       const ausschreibung = await prisma.unterveranstaltung.findUniqueOrThrow({
         where: {
@@ -41,9 +38,9 @@ export const customFieldsList = defineProcedure({
         },
       })
 
-      fields = fields.concat(...ausschreibung.veranstaltung.customFields, ...ausschreibung.customFields)
+      return [...ausschreibung.veranstaltung.customFields, ...ausschreibung.customFields]
     }
 
-    return fields
+    return []
   },
 })

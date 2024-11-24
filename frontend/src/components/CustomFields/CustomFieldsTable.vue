@@ -4,13 +4,17 @@ import { useAsyncState } from '@vueuse/core'
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 
-import Loading from './UIComponents/Loading.vue'
+import Loading from '../UIComponents/Loading.vue'
 
 import { apiClient } from '@/api'
-import { CustomFieldPositionMapping, CustomFieldTypeMapping, getEnumOptions } from '@codeanker/api'
+import { loggedInAccount } from '@/composables/useAuthentication'
+import { CustomFieldPositionMapping, CustomFieldTypeMapping, getEnumOptions, type RouterInput } from '@codeanker/api'
+
+type Query = RouterInput['customFields']['list']
 
 const props = defineProps<{
-  veranstaltungId: number
+  entity: Query['entity']
+  id: number
   // columns?: string[]
 }>()
 
@@ -20,14 +24,38 @@ const { state: fields, isLoading } = useAsyncState(async () => {
     //   veranstaltungId: props.veranstaltungId,
     // },
     // pagination: { take: 100, skip: 0 },
-    entity: 'veranstaltung',
-    entityId: props.veranstaltungId,
+    entity: props.entity,
+    entityId: props.id,
   })
 }, [])
 
 const router = useRouter()
 
 type Field = (typeof fields.value)[number]
+
+function canEdit(field: Field) {
+  return loggedInAccount.value?.role === 'ADMIN' || field.unterveranstaltungId !== null
+}
+
+function onClickRow(field: Field) {
+  if (!canEdit(field)) {
+    return
+  }
+
+  if (props.entity === 'veranstaltung') {
+    return router.push({
+      name: 'Verwaltung Custom Field bearbeiten',
+      params: { veranstaltungId: props.id, fieldId: field.id },
+    })
+  }
+
+  if (props.entity === 'unterveranstaltung') {
+    router.push({
+      name: 'Unterveranstaltung Custom Field bearbeiten',
+      params: { unterveranstaltungId: props.id, fieldId: field.id },
+    })
+  }
+}
 
 const getFieldTypeHuman = computed(() => (field: Field) => {
   return getEnumOptions(CustomFieldTypeMapping).find((m) => m.value === field.type)?.label
@@ -65,6 +93,12 @@ function formatPositions(field: Field) {
             scope="col"
             class="px-3 py-3.5 text-left text-sm font-semibold"
           >
+            Quelle
+          </th>
+          <th
+            scope="col"
+            class="px-3 py-3.5 text-left text-sm font-semibold"
+          >
             Erforderlich?
           </th>
           <th
@@ -79,14 +113,13 @@ function formatPositions(field: Field) {
         <tr
           v-for="field in fields"
           :key="field.id"
-          class="cursor-pointer even:bg-gray-50 dark:even:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800"
-          title="bearbeiten"
-          @click="
-            router.push({
-              name: 'Verwaltung Custom Field bearbeiten',
-              params: { veranstaltungId: props.veranstaltungId, fieldId: field.id },
-            })
-          "
+          :class="{
+            'even:bg-gray-50 dark:even:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800': true,
+            'cursor-pointer': canEdit(field),
+            'cursor-not-allowed': !canEdit(field),
+          }"
+          :title="canEdit(field) ? 'Bearbeiten' : 'Dieses Feld darfst du nicht bearbeiten'"
+          @click="() => onClickRow(field)"
         >
           <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
             <div>{{ field.name }}</div>
@@ -99,6 +132,10 @@ function formatPositions(field: Field) {
           </td>
           <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
             <div>{{ getFieldTypeHuman(field) }}</div>
+          </td>
+          <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
+            <p v-if="field.veranstaltungId !== null">Veranstaltung</p>
+            <p v-if="field.unterveranstaltungId !== null">Ausschreibung</p>
           </td>
           <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
             <CheckIcon

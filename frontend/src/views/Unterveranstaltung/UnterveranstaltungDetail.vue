@@ -6,6 +6,7 @@ import {
   DocumentIcon,
   MegaphoneIcon,
   RocketLaunchIcon,
+  SquaresPlusIcon,
   UserGroupIcon,
   UsersIcon,
 } from '@heroicons/vue/24/outline'
@@ -15,6 +16,7 @@ import { useRoute } from 'vue-router'
 
 import { apiClient } from '@/api'
 import AnmeldungenTable from '@/components/AnmeldungenTable.vue'
+import CustomFieldsTable from '@/components/CustomFields/CustomFieldsTable.vue'
 import DownloadLink from '@/components/DownloadLink.vue'
 import FilesExport from '@/components/FilesExport.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
@@ -94,6 +96,7 @@ const tabs = computed(() => {
     { name: 'Anmeldungen', icon: UserGroupIcon, count: countAnmeldungen.value?.total },
     { name: 'Dokumente', icon: DocumentIcon },
     { name: 'Bedingungen', icon: ClipboardDocumentListIcon },
+    { name: 'Felder', icon: SquaresPlusIcon },
   ]
   if (loggedInAccount.value?.role === 'ADMIN') {
     tabs.push({ name: 'Entwickler:in', icon: CodeBracketIcon })
@@ -114,9 +117,7 @@ function copyLink() {
 
 //** Export Documents */
 
-const getJWT = () => {
-  return localStorage.getItem('jwt')
-}
+const getJWT = () => localStorage.getItem('jwt')
 const exportParams = `jwt=${getJWT()}&unterveranstaltungId=${route.params.unterveranstaltungId}`
 
 const files = [
@@ -274,6 +275,30 @@ const files = [
           class="prose dark:prose-invert"
           v-html="unterveranstaltung?.veranstaltung?.datenschutz"
         ></div>
+      </Tab>
+      <Tab>
+        <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
+          <div>
+            <div class="text-lg font-semibold">Benutzerdefinierte Felder</div>
+            <p class="max-w-2xl text-sm text-gray-500">
+              Hier können benutzerdefinierte Felder erstellt werden, welche für alle Unterveranstaltungen gelten.
+            </p>
+          </div>
+          <RouterLink
+            class="text-primary-600"
+            :to="{
+              name: 'Unterveranstaltung Custom Field erstellen',
+              params: { veranstaltungId: route.params.veranstaltungId },
+            }"
+          >
+            Neues Feld
+          </RouterLink>
+        </div>
+        <CustomFieldsTable
+          v-if="unterveranstaltung?.id"
+          :id="unterveranstaltung?.id"
+          entity="unterveranstaltung"
+        />
       </Tab>
 
       <Tab v-if="loggedInAccount?.role === 'ADMIN'">
