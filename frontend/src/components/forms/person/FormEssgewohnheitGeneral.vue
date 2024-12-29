@@ -89,13 +89,15 @@ const addWeitereIntoleranzen = () => {
         class="input-style w-full text-left flex justify-between items-center"
       >
         <slot>
-          <div class="flex space-x-2 items-center">
+          <div class="flex space-x-2 items-center justify-between">
+            <div class="flex">
+              <img
+                :src="getEssgewohnheitIcon(model.essgewohnheit)"
+                class="h-5 w-5 mr-1 dark:invert"
+              />
+              <span>{{ getEssgewohnheitHuman }}</span>
+            </div>
             <ChevronDownIcon class="h-5 text-gray-500" />
-            <img
-              :src="getEssgewohnheitIcon(model.essgewohnheit)"
-              class="h-5 w-5 mr-1 dark:invert"
-            />
-            <span>{{ getEssgewohnheitHuman }}</span>
           </div>
         </slot>
       </button>

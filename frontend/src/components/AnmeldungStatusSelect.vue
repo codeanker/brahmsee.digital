@@ -72,21 +72,21 @@ const setStatus = async (status: AnmeldungStatus) => {
     <template #buttonContent>
       <button
         type="button"
-        class="input-style w-full block text-left flex justify-between items-center"
+        class="input-style w-full text-left !flex justify-between items-center"
         :class="[!isStatusChangeAvailable ? 'cursor-not-allowed' : 'hover:cursor-pointer']"
       >
         <slot>
           <div class="flex space-x-2 items-center">
-            <ChevronDownIcon
-              v-if="isStatusChangeAvailable"
-              class="h-5 text-gray-500"
-            />
             <div
               class="w-4 h-4 rounded-full shrink-0"
               :class="`bg-${getAnmeldungStatusColor(currentStatus)}-600`"
             ></div>
             <span>{{ getStatusHuman(currentStatus) }}</span>
           </div>
+          <ChevronDownIcon
+            v-if="isStatusChangeAvailable"
+            class="h-5 text-gray-500"
+          />
         </slot>
       </button>
     </template>
@@ -107,7 +107,7 @@ const setStatus = async (status: AnmeldungStatus) => {
             :class="`bg-${getAnmeldungStatusColor(statusOption.value)}-600`"
           ></div>
           <div>
-            <div>{{ statusOption.label }}</div>
+            <div class="text-sm">{{ statusOption.label }}</div>
             <div class="text-xs text-gray-500">{{ statusOption.description }}</div>
           </div>
         </button>

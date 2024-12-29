@@ -219,17 +219,17 @@ const tabs = computed(() => {
             <template #buttonContent>
               <button
                 type="button"
-                class="input-style w-full text-left flex justify-between items-center"
+                class="input-style w-full text-left !flex justify-between items-center"
               >
                 <slot>
                   <div class="flex space-x-2 items-center">
-                    <ChevronDownIcon class="h-5 text-gray-500" />
                     <div
                       class="w-4 h-4 rounded-full"
                       :class="`bg-${getAccountStatusColor(accountForm.status)}-600`"
                     ></div>
                     <span>{{ getStatusHuman }}</span>
                   </div>
+                  <ChevronDownIcon class="h-5 text-gray-500" />
                 </slot>
               </button>
             </template>
