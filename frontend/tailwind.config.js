@@ -20,6 +20,14 @@ module.exports = {
         xl: '1140px',
       },
     },
+    fontFamily: {
+      sans: [
+        '"Inter var", sans-serif',
+        {
+          fontFeatureSettings: '"calt", "ss01", "ss02", "dlig"',
+        },
+      ],
+    },
     extend: {
       colors: {
         success: colors.lime,
