@@ -48,8 +48,8 @@
   },
   "public": {
     "legal": {
-      "imprint": "",
-      "privacy": ""
+      "imprint": "https://localhost:8080",
+      "privacy": "https://localhost:8080"
     }
   }
 }
