@@ -8,7 +8,7 @@ import AnmeldungTshirtSelect from './AnmeldungTshirtSelect.vue'
 
 import { apiClient } from '@/api'
 import AnmeldungStatusSelect from '@/components/AnmeldungStatusSelect.vue'
-import CustomFieldsForm from '@/components/CustomFields/CustomFieldsForm.vue'
+import CustomFieldsFormUser from '@/components/CustomFields/CustomFieldsFormUser.vue'
 import DataGridVirtualList from '@/components/DataGrid/DataGridVirtualList.vue'
 import FormPersonGeneral, { type FormPersonGeneralSubmit } from '@/components/forms/person/FormPersonGeneral.vue'
 import Drawer from '@/components/LayoutComponents/Drawer.vue'
@@ -50,10 +50,6 @@ if (loggedInAccount.value?.role === 'ADMIN') {
 
 const entityId = computed(() => {
   return props.unterveranstaltungId || props.veranstaltungId
-})
-
-const entity = computed(() => {
-  return props.unterveranstaltungId ? 'unterveranstaltung' : 'veranstaltung'
 })
 
 const showNotification = ref(false)
@@ -104,11 +100,29 @@ const { state: countAnmeldungen } = useAsyncState(async () => {
 const selectedAnmeldungId = ref()
 const showDrawer = ref(false)
 
-function toggleDrawer($event) {
+async function toggleDrawer($event) {
   selectedAnmeldungId.value = $event.content.id
   showDrawer.value = true
-  getSingleAnmeldung()
+  await getSingleAnmeldung()
+  await loadCustomFields()
 }
+
+const { state: customFields, execute: loadCustomFields } = useAsyncState(
+  async () => {
+    if (!currentAnmeldung.value) {
+      return []
+    }
+
+    return await apiClient.customFields.list.query({
+      entity: 'unterveranstaltung',
+      entityId: currentAnmeldung.value.unterveranstaltung.id,
+    })
+  },
+  [],
+  {
+    immediate: false,
+  }
+)
 
 const {
   state: currentAnmeldung,
@@ -464,12 +478,11 @@ onMounted(() => {
             />
           </Tab>
           <Tab>
-            <CustomFieldsForm
+            <CustomFieldsFormUser
               v-if="currentAnmeldung?.customFieldValues && entityId"
               class="mt-8"
-              :entity="entity"
               :entry-id="currentAnmeldung.id"
-              :entity-id="entityId"
+              :custom-fields="customFields"
               :custom-field-values="currentAnmeldung?.customFieldValues"
               @update:success="showNotification = true"
             />
