@@ -415,7 +415,7 @@ onMounted(() => {
                   </dd>
                 </div>
                 <div class="sm:flex sm:px-6 sm:py-5">
-                  <dt class="font-medium text-gray-500 dark:text-gray-300 sm:w-40 sm:flex-shrink-0 lg:w-48">Status</dt>
+                  <dt class="text-gray-500 dark:text-gray-300 sm:w-40 sm:flex-shrink-0 lg:w-48">Status</dt>
                   <dd class="mt-1 text-gray-900 dark:text-gray-100 sm:col-span-2 sm:ml-6 sm:mt-0">
                     <AnmeldungStatusSelect
                       v-if="currentAnmeldung?.unterveranstaltung.veranstaltung.meldeschluss"
@@ -428,7 +428,7 @@ onMounted(() => {
                   </dd>
                 </div>
                 <div class="sm:flex sm:px-6 sm:py-5">
-                  <dt class="font-medium text-gray-500 dark:text-gray-300 sm:w-40 sm:flex-shrink-0 lg:w-48">T-Shirt</dt>
+                  <dt class="text-gray-500 dark:text-gray-300 sm:w-40 sm:flex-shrink-0 lg:w-48">T-Shirt</dt>
                   <dd class="mt-1 text-gray-900 dark:text-gray-100 sm:col-span-2 sm:ml-6 sm:mt-0 whitespace-pre-line">
                     <AnmeldungTshirtSelect
                       v-if="currentAnmeldung"
@@ -440,9 +440,7 @@ onMounted(() => {
                 </div>
 
                 <div class="sm:flex sm:px-6 sm:py-5">
-                  <dt class="font-medium text-gray-500 dark:text-gray-300 sm:w-40 sm:flex-shrink-0 lg:w-48">
-                    Bemerkung
-                  </dt>
+                  <dt class="text-gray-500 dark:text-gray-300 sm:w-40 sm:flex-shrink-0 lg:w-48">Bemerkung</dt>
                   <dd
                     class="mt-1 text-gray-900 dark:text-gray-100 sm:col-span-2 sm:ml-6 sm:mt-0 whitespace-pre-line max-w-96"
                   >
@@ -453,9 +451,7 @@ onMounted(() => {
                   </dd>
                 </div>
                 <div class="sm:flex sm:px-6 sm:py-5">
-                  <dt class="font-medium text-gray-500 dark:text-gray-300 sm:w-40 sm:flex-shrink-0 lg:w-48">
-                    Angemeldet am
-                  </dt>
+                  <dt class="text-gray-500 dark:text-gray-300 sm:w-40 sm:flex-shrink-0 lg:w-48">Angemeldet am</dt>
                   <dd class="mt-1 text-gray-900 dark:text-gray-100 sm:col-span-2 sm:ml-6 sm:mt-0 whitespace-pre-line">
                     {{ dayjs(currentAnmeldung?.createdAt).format('DD.MM.YYYY HH:mm') }}
                   </dd>
