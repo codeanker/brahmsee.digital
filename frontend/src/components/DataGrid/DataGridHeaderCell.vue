@@ -19,7 +19,7 @@ const { $el, resizeHandle, filter, handleClickOrderBy } = useDataGridHeaderCell(
 <template>
   <td
     ref="$el"
-    :class="cn('bg-background relative flex items-center border-b px-4 select-none', props.class)"
+    :class="cn('bg-background text-gray-500 relative flex items-center border-b px-4 select-none', props.class)"
   >
     <span class="py-2 truncate">{{ title }}</span>
     <div class="ml-auto flex gap-1">

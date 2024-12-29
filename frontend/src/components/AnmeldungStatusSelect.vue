@@ -107,8 +107,8 @@ const setStatus = async (status: AnmeldungStatus) => {
             :class="`bg-${getAnmeldungStatusColor(statusOption.value)}-600`"
           ></div>
           <div>
-            <div class="text-sm">{{ statusOption.label }}</div>
-            <div class="text-xs text-gray-500">{{ statusOption.description }}</div>
+            <div class="">{{ statusOption.label }}</div>
+            <div class="text-sm text-gray-500">{{ statusOption.description }}</div>
           </div>
         </button>
       </MenuItem>

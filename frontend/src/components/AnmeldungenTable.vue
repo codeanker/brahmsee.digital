@@ -221,13 +221,16 @@ type TAnmeldungFilter = RouterInput['anmeldung']['verwaltungList']['filter']
 type TAnmeldungOrderBy = RouterInput['anmeldung']['verwaltungList']['orderBy']
 
 /// Definieren der columns
-const columns: TGridColumn<TAnmeldungData, TAnmeldungFilter>[] = [
+let columns: TGridColumn<TAnmeldungData, TAnmeldungFilter>[] = [
   {
     field: 'person',
     title: 'Name',
-    format: (value) =>
-      `${value.firstname} ${value.lastname}` +
-      (loggedInAccount.value?.role === 'ADMIN' ? ` (${value.gliederung?.name})` : ''),
+    format: (value) => `${value.firstname} ${value.lastname}`,
+  },
+  {
+    field: 'person.gliederung',
+    title: 'Gliederung',
+    format: (value) => value.name,
   },
   {
     field: 'person.birthday',
@@ -258,6 +261,10 @@ const columns: TGridColumn<TAnmeldungData, TAnmeldungFilter>[] = [
     },
   },
 ]
+
+if (loggedInAccount.value?.role === 'ADMIN') {
+  columns = columns.filter((column) => column.field !== 'person.gliederung')
+}
 
 /// Filter via Route laden
 const defaultFilter: TAnmeldungFilter = {
@@ -402,23 +409,18 @@ onMounted(() => {
             <div class="px-4 py-5 sm:px-0 sm:py-0">
               <dl class="space-y-8 sm:space-y-0 sm:divide-y sm:divide-gray-200">
                 <div class="sm:flex sm:px-6 sm:py-5">
-                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-300 sm:w-40 sm:flex-shrink-0 lg:w-48">
-                    Veranstaltung
-                  </dt>
-                  <dd
-                    class="mt-1 text-sm text-gray-900 dark:text-gray-100 sm:col-span-2 sm:ml-6 sm:mt-0 whitespace-pre-line"
-                  >
+                  <dt class="text-gray-500 dark:text-gray-300 sm:w-40 sm:flex-shrink-0 lg:w-48">Veranstaltung</dt>
+                  <dd class="mt-1 text-gray-900 dark:text-gray-100 sm:col-span-2 sm:ml-6 sm:mt-0 whitespace-pre-line">
                     {{ currentAnmeldung?.unterveranstaltung.veranstaltung.name }}
                   </dd>
                 </div>
                 <div class="sm:flex sm:px-6 sm:py-5">
-                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-300 sm:w-40 sm:flex-shrink-0 lg:w-48">
-                    Status
-                  </dt>
-                  <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100 sm:col-span-2 sm:ml-6 sm:mt-0">
+                  <dt class="font-medium text-gray-500 dark:text-gray-300 sm:w-40 sm:flex-shrink-0 lg:w-48">Status</dt>
+                  <dd class="mt-1 text-gray-900 dark:text-gray-100 sm:col-span-2 sm:ml-6 sm:mt-0">
                     <AnmeldungStatusSelect
                       v-if="currentAnmeldung?.unterveranstaltung.veranstaltung.meldeschluss"
                       :id="currentAnmeldung.id"
+                      class="w-[300px]"
                       :status="currentAnmeldung.status"
                       :meldeschluss="currentAnmeldung.unterveranstaltung.veranstaltung.meldeschluss"
                       @changed="getSingleAnmeldung"
@@ -426,12 +428,8 @@ onMounted(() => {
                   </dd>
                 </div>
                 <div class="sm:flex sm:px-6 sm:py-5">
-                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-300 sm:w-40 sm:flex-shrink-0 lg:w-48">
-                    T-Shirt
-                  </dt>
-                  <dd
-                    class="mt-1 text-sm text-gray-900 dark:text-gray-100 sm:col-span-2 sm:ml-6 sm:mt-0 whitespace-pre-line"
-                  >
+                  <dt class="font-medium text-gray-500 dark:text-gray-300 sm:w-40 sm:flex-shrink-0 lg:w-48">T-Shirt</dt>
+                  <dd class="mt-1 text-gray-900 dark:text-gray-100 sm:col-span-2 sm:ml-6 sm:mt-0 whitespace-pre-line">
                     <AnmeldungTshirtSelect
                       v-if="currentAnmeldung"
                       :anmeldung="currentAnmeldung"
@@ -442,11 +440,11 @@ onMounted(() => {
                 </div>
 
                 <div class="sm:flex sm:px-6 sm:py-5">
-                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-300 sm:w-40 sm:flex-shrink-0 lg:w-48">
+                  <dt class="font-medium text-gray-500 dark:text-gray-300 sm:w-40 sm:flex-shrink-0 lg:w-48">
                     Bemerkung
                   </dt>
                   <dd
-                    class="mt-1 text-sm text-gray-900 dark:text-gray-100 sm:col-span-2 sm:ml-6 sm:mt-0 whitespace-pre-line max-w-96"
+                    class="mt-1 text-gray-900 dark:text-gray-100 sm:col-span-2 sm:ml-6 sm:mt-0 whitespace-pre-line max-w-96"
                   >
                     <template v-if="currentAnmeldung?.comment">
                       {{ currentAnmeldung?.comment }}
@@ -455,12 +453,10 @@ onMounted(() => {
                   </dd>
                 </div>
                 <div class="sm:flex sm:px-6 sm:py-5">
-                  <dt class="text-sm font-medium text-gray-500 dark:text-gray-300 sm:w-40 sm:flex-shrink-0 lg:w-48">
+                  <dt class="font-medium text-gray-500 dark:text-gray-300 sm:w-40 sm:flex-shrink-0 lg:w-48">
                     Angemeldet am
                   </dt>
-                  <dd
-                    class="mt-1 text-sm text-gray-900 dark:text-gray-100 sm:col-span-2 sm:ml-6 sm:mt-0 whitespace-pre-line"
-                  >
+                  <dd class="mt-1 text-gray-900 dark:text-gray-100 sm:col-span-2 sm:ml-6 sm:mt-0 whitespace-pre-line">
                     {{ dayjs(currentAnmeldung?.createdAt).format('DD.MM.YYYY HH:mm') }}
                   </dd>
                 </div>

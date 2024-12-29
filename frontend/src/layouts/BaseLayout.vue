@@ -77,7 +77,7 @@ function getSearchCommand() {
             <DarkModeSwitch />
           </div>
         </div>
-        <div class="bg-white dark:bg-dark-primary grow p-6 lg:rounded-tl-3xl overflow-y-auto shadow-hover">
+        <div class="bg-white dark:bg-dark-primary grow p-8 lg:rounded-tl-3xl overflow-y-auto shadow-hover">
           <router-view />
         </div>
       </div>

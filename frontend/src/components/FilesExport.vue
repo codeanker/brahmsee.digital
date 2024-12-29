@@ -56,11 +56,11 @@ defineProps<{
           class="flex flex-1 items-center justify-between rounded-r-md border-b border-r border-t border-gray-200 dark:border-gray-700"
         >
           <div
-            class="flex-1 px-4 py-2 text-sm transition-all"
+            class="flex-1 px-4 py-2 transition-all"
             :class="file.hoverColor"
           >
             {{ file.name }}
-            <p class="text-gray-500 mb-0">{{ file.description }}</p>
+            <p class="text-gray-500 text-sm mb-0">{{ file.description }}</p>
           </div>
           <div class="flex-shrink-0 pr-2">
             <button
