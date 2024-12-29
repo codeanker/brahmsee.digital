@@ -25,7 +25,6 @@ defineExpose({
 <template>
   <div
     class="h-6 w-14 flex items-center justify-center bg-slate-50 dark:bg-dark-secondary text-primary-900 dark:text-gray-200 rounded-lg rounded-l-none lg:hidden"
-    @click="animate"
   >
     <svg
       ref="svg"
