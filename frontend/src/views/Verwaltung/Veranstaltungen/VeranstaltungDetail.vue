@@ -194,6 +194,7 @@ const files = [
       <UnterveranstaltungenTable
         v-if="veranstaltung?.id"
         :veranstaltung-id="veranstaltung?.id"
+        :hide-columns="['veranstaltung.name']"
       />
     </Tab>
     <Tab>

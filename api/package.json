@@ -24,6 +24,7 @@
     "seed": "tsx prisma/seeders/index.ts"
   },
   "dependencies": {
+    "@codeanker/datagrid": "file:../vendor/codeanker-datagrid-2.7.1-trimmed.tgz",
     "@azure/storage-blob": "^12.17.0",
     "@faker-js/faker": "^8.4.1",
     "@koa/cors": "^5.0.0",

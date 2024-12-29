@@ -12,6 +12,9 @@ export const veranstaltungGliederungListProcedure = defineProcedure({
   protection: { type: 'restrictToRoleIds', roleIds: [Role.GLIEDERUNG_ADMIN] },
   inputSchema: defineQuery({
     filter: z.strictObject({}),
+    orderBy: z.array(
+      z.tuple([z.union([z.literal('id'), z.literal('name')]), z.union([z.literal('asc'), z.literal('desc')])])
+    ),
   }),
   async handler(options) {
     const { skip, take } = options.input.pagination

@@ -20,6 +20,7 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
+				"Vue.volar",
 				"eamodio.gitlens",
 				"dbaeumer.vscode-eslint",
 				"GitHub.vscode-pull-request-github",
@@ -27,7 +28,7 @@
 				"prisma.prisma",
 				"github.copilot",
 				"actboy168.tasks",
-				"Vue.volar"
+				"esbenp.prettier-vscode"
 			],
 			"settings": {
         "terminal.integrated.defaultProfile.linux": "zsh",

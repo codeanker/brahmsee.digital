@@ -112,6 +112,7 @@ export async function veranstaltungTeilnehmendenliste(ctx) {
           veranstaltung: {
             select: {
               meldeschluss: true,
+              beginn: true,
             },
           },
         },
@@ -148,6 +149,10 @@ export async function veranstaltungTeilnehmendenliste(ctx) {
       ['Vorname']: anmeldung.person.firstname,
       ['Nachname']: anmeldung.person.lastname,
       ['Geburtstag']: anmeldung.person.birthday,
+      ['Alter zu Beginn']: dayjs(anmeldung.unterveranstaltung.veranstaltung.beginn).diff(
+        anmeldung.person.birthday,
+        'years'
+      ),
       ['Gliederung']: anmeldung.person.gliederung?.name,
       ['Email']: anmeldung.person.email,
       ['Telefon']: anmeldung.person.telefon,

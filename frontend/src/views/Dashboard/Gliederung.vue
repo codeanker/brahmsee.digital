@@ -5,7 +5,7 @@ import { apiClient } from '@/api'
 import VeranstaltungCard from '@/components/UIComponents/VeranstaltungCard.vue'
 
 const { state: veranstaltungen } = useAsyncState(async () => {
-  return apiClient.veranstaltung.gliederungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
+  return apiClient.veranstaltung.gliederungList.query({ filter: {}, orderBy: [], pagination: { take: 100, skip: 0 } })
 }, [])
 </script>
 

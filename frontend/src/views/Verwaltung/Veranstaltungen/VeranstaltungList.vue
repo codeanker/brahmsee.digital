@@ -1,22 +1,85 @@
 <script setup lang="ts">
 import { PlusIcon } from '@heroicons/vue/24/outline'
-import { useAsyncState } from '@vueuse/core'
 
 import { apiClient } from '@/api'
+import GenericDataGrid from '@/components/GenericDataGrid.vue'
 import { useRouteTitle } from '@/composables/useRouteTitle'
 import router from '@/router'
+import { type RouterInput, type RouterOutput } from '@codeanker/api'
+import { type TGridColumn } from '@codeanker/datagrid'
 
 const { setTitle } = useRouteTitle()
 setTitle('Veranstaltungen')
-
-const { state: veranstaltungenList } = useAsyncState(async () => {
-  return apiClient.veranstaltung.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
-}, [])
 
 function formatDate(indate) {
   let date = new Date(indate)
   const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit' }
   return date.toLocaleDateString('de-DE', options)
+}
+
+/// Typen von den Daten, Filter und Sortierung
+type TData = Awaited<RouterOutput['veranstaltung']['verwaltungList']>[number]
+type TFilter = RouterInput['veranstaltung']['verwaltungList']['filter']
+type TOrderBy = RouterInput['veranstaltung']['verwaltungList']['orderBy']
+
+const columns: TGridColumn<TData, TFilter>[] = [
+  {
+    field: 'id',
+    title: 'Id',
+    sortable: true,
+  },
+  {
+    field: 'name',
+    title: 'Name',
+    sortable: true,
+  },
+  {
+    field: 'beginn',
+    title: 'Zeitraum',
+    format: (value, row) => {
+      const beginn = formatDate(value)
+      const ende = formatDate(row.ende)
+      return `${beginn} - ${ende}`
+    },
+    sortable: true,
+  },
+  {
+    field: 'meldeschluss',
+    title: 'Meldeschluss',
+    preset: 'date',
+    sortable: true,
+  },
+  {
+    field: 'teilnahmegebuehr',
+    title: 'Teilnahmegebühr',
+    sortable: true,
+  },
+  {
+    field: 'maxTeilnehmende',
+    title: 'TN',
+    sortable: true,
+  },
+]
+
+async function fetchPage(
+  pagination: {
+    take: number
+    skip: number
+  },
+  filter: TFilter,
+  orderBy: TOrderBy
+): Promise<TData[]> {
+  return apiClient.veranstaltung.verwaltungList.query({
+    filter: filter,
+    orderBy: orderBy,
+    pagination: pagination,
+  })
+}
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+async function fetchCount(filter: TFilter): Promise<number> {
+  return apiClient.veranstaltung.verwaltungCount.query({
+    filter: filter,
+  })
 }
 </script>
 
@@ -35,85 +98,21 @@ function formatDate(indate) {
       </RouterLink>
     </div>
     <div class="flow-root">
-      <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
-        <thead>
-          <tr>
-            <th
-              scope="col"
-              class="px-3 py-3.5 text-left text-sm font-semibold"
-            >
-              Id
-            </th>
-            <th
-              scope="col"
-              class="px-3 py-3.5 text-left text-sm font-semibold"
-            >
-              Name
-            </th>
-            <th
-              scope="col"
-              class="px-3 py-3.5 text-left text-sm font-semibold"
-            >
-              Zeitraum
-            </th>
-            <th
-              scope="col"
-              class="px-3 py-3.5 text-left text-sm font-semibold"
-            >
-              Meldeschluss
-            </th>
-            <th
-              scope="col"
-              class="px-3 py-3.5 text-left text-sm font-semibold"
-            >
-              Teilnahmegebühr
-            </th>
-            <th
-              scope="col"
-              class="px-3 py-3.5 text-left text-sm font-semibold"
-            >
-              max. TN
-            </th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-200 dark:divide-gray-800 bg-white dark:bg-dark-primary">
-          <tr
-            v-for="veranstaltung in veranstaltungenList"
-            :key="veranstaltung.id"
-            class="cursor-pointer even:bg-gray-50 dark:even:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800"
-            :title="veranstaltung.name + ' bearbeiten'"
-            @click="
+      <div class="w-full h-[80vh]">
+        <GenericDataGrid
+          :columns="columns"
+          :fetch-page="fetchPage"
+          :fetch-count="fetchCount"
+          :default-filter="{}"
+          :default-order-by="[['id', 'asc']]"
+          no-data-message="Es gibt bisher keine Veranstaltungen."
+          show-clickable
+          @row-click="
+            (veranstaltung) =>
               router.push({ name: 'Verwaltung Veranstaltungsdetails', params: { veranstaltungId: veranstaltung.id } })
-            "
-          >
-            <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-              <div>{{ veranstaltung.id }}</div>
-            </td>
-            <td class="py-5 pl-4 pr-3 text-sm">
-              <div class="font-medium">{{ veranstaltung.name }}</div>
-            </td>
-            <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-              <div class="font-medium">
-                {{ formatDate(veranstaltung.beginn)
-                }}<span v-if="veranstaltung.beginn.getTime() !== veranstaltung.ende.getTime()"
-                  >-{{ formatDate(veranstaltung.ende) }}</span
-                >
-              </div>
-            </td>
-            <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-              <div class="font-medium">
-                {{ formatDate(veranstaltung.meldeschluss) }}
-              </div>
-            </td>
-            <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-              <div class="font-medium">{{ veranstaltung.teilnahmegebuehr }}€</div>
-            </td>
-            <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-              <div class="font-medium">{{ veranstaltung.maxTeilnehmende }}</div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+          "
+        />
+      </div>
     </div>
   </div>
 </template>

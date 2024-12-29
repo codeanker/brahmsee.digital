@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
-import { ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref } from 'vue'
 
 import DarkModeSwitch from '@/components/DarkModeSwitch.vue'
 import GlobalSearch from '@/components/GlobalSearch.vue'
@@ -10,23 +9,31 @@ import Breadcrumbs from '@/components/UIComponents/Breadcrumbs.vue'
 import MobileMenuButton from '@/components/UIComponents/MobileMenuButton.vue'
 import { useRouteTitle } from '@/composables/useRouteTitle'
 
-const route = useRoute()
 const { title } = useRouteTitle()
 
 const mobileMenuButton = ref()
 const showMobileMenu = ref(false)
 const globalSearch = ref()
 
-watch(
-  route,
-  () => {
-    if (showMobileMenu.value) {
-      showMobileMenu.value = false
-      mobileMenuButton.value.animate()
-    }
-  },
-  { deep: true }
-)
+// watch(
+//   route,
+//   () => {
+//     if (showMobileMenu.value) {
+//       showMobileMenu.value = false
+//       mobileMenuButton.value.animate()
+//     }
+//   },
+//   { deep: true }
+// )
+
+function toggleSidebarMenu(show: boolean) {
+  if (show !== undefined) {
+    showMobileMenu.value = show
+  } else {
+    showMobileMenu.value = !showMobileMenu.value
+  }
+  mobileMenuButton.value.animate()
+}
 
 function getSearchCommand() {
   return navigator.userAgent.includes('Mac') ? '⌘ K' : 'STR K'
@@ -38,20 +45,20 @@ function getSearchCommand() {
     <GlobalSearch ref="globalSearch"></GlobalSearch>
     <div class="flex h-screen overflow-hidden relative">
       <Sidebar
-        class="shrink-0 h-full p-6 w-72 absolute lg:relative z-40"
-        :class="{ 'hidden lg:flex': !showMobileMenu }"
+        class="shrink-0 h-full p-6 w-72 absolute lg:relative z-50"
+        :class="{ 'hidden lg:flex': !showMobileMenu, 'bg-white': showMobileMenu }"
       />
       <div class="grow flex flex-col relative z-40">
         <div
           v-if="showMobileMenu"
           class="inset-0 absolute bg-black/40 z-50"
-          @click="showMobileMenu = false"
+          @click="toggleSidebarMenu(false)"
         />
-        <div class="relative flex items-center justify-between pt-5 pb-5 lg:pb-4 shrink-0 space-y-1 z-10">
-          <div>
+        <div class="relative flex items-center justify-between pt-3 pb-3 lg:pt-5 lg:pb-4 shrink-0 space-y-1 z-10">
+          <div class="flex">
             <MobileMenuButton
               ref="mobileMenuButton"
-              @click="showMobileMenu = !showMobileMenu"
+              @click="toggleSidebarMenu"
             />
             <div class="flex flex-col justify-center">
               <Breadcrumbs />
@@ -77,7 +84,7 @@ function getSearchCommand() {
             <DarkModeSwitch />
           </div>
         </div>
-        <div class="bg-white dark:bg-dark-primary grow p-6 lg:rounded-tl-3xl overflow-y-auto shadow-hover">
+        <div class="bg-white dark:bg-dark-primary grow p-8 lg:rounded-tl-3xl overflow-y-auto shadow-hover">
           <router-view />
         </div>
       </div>

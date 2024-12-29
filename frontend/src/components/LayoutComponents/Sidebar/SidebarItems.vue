@@ -59,7 +59,7 @@ function isCurrentRoute(checkRoute: SidebarItemRoute) {
               :is="item.icon"
               class="inline h-5 aspect-square"
             />
-            <div class="grow text-sm">{{ item.name }}</div>
+            <div class="grow">{{ item.name }}</div>
             <!-- Badge -->
             <div
               v-if="item.badge"
@@ -132,7 +132,7 @@ function isCurrentRoute(checkRoute: SidebarItemRoute) {
               :is="item.icon"
               class="inline h-5 aspect-square"
             />
-            <div class="grow text-sm">{{ item.name }}</div>
+            <div class="grow">{{ item.name }}</div>
             <!-- Locked / Disabled -->
             <component
               :is="LockClosedIcon"

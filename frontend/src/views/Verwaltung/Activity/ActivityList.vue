@@ -1,24 +1,15 @@
 <script setup lang="ts">
-import { CheckCircleIcon } from '@heroicons/vue/24/outline'
-import { useAsyncState } from '@vueuse/core'
-
 import { apiClient } from '@/api'
+import GenericDataGrid from '@/components/GenericDataGrid.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
 import { useRouteTitle } from '@/composables/useRouteTitle'
 import type { StatusColors } from '@/helpers/getAnmeldungStatusColors'
 import router from '@/router'
-import type { Activity, ActivityType } from '@codeanker/api'
-import { formatTimestamp } from '@codeanker/helpers'
+import { type Activity, type ActivityType, type RouterInput, type RouterOutput } from '@codeanker/api'
+import { type TGridColumn } from '@codeanker/datagrid'
 
 const { setTitle } = useRouteTitle()
 setTitle('Aufgezeichnete Aktivitäten')
-
-const { state: activities } = useAsyncState(async () => {
-  return await apiClient.activity.verwaltungList.query({
-    filter: {},
-    pagination: { take: 100, skip: 0 },
-  })
-}, [])
 
 function colorFromType(type: ActivityType): StatusColors {
   switch (type) {
@@ -47,6 +38,69 @@ function onClick({ subjectType, subjectId }: Activity) {
       break
   }
 }
+
+/// Typen von den Daten, Filter und Sortierung
+type TData = Awaited<RouterOutput['activity']['list']>[number]
+type TFilter = RouterInput['activity']['list']['filter']
+type TOrderBy = RouterInput['activity']['list']['orderBy']
+
+const columns: TGridColumn<TData, TFilter>[] = [
+  {
+    field: 'createdAt',
+    title: 'Datum',
+    preset: 'datetime',
+  },
+  {
+    field: 'description',
+    title: 'Beschreibung',
+    format: (value) => value ?? '-',
+  },
+  {
+    field: 'type',
+    title: 'Typ',
+    cell: Badge,
+    cellProps: (formattedValue, row) => {
+      return {
+        color: colorFromType(row.content.type),
+        text: row.content.type,
+      }
+    },
+  },
+  {
+    field: 'subjectType',
+    title: 'Betroffen',
+    format: (value, row) => {
+      return `${value} #${row.subjectId}`
+    },
+  },
+  {
+    field: 'causerId',
+    title: 'Akteur',
+    format: (value, row) => `${row.causer?.person.firstname ?? ''} ${row.causer?.person.lastname ?? ''}`,
+  },
+]
+
+/// useGrid und useFeathersGrid composable zum fetchen
+async function fetchPage(
+  pagination: {
+    take: number
+    skip: number
+  },
+  filter: TFilter,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  orderBy: TOrderBy
+): Promise<TData[]> {
+  return apiClient.activity.list.query({
+    filter: filter,
+    orderBy: orderBy,
+    pagination: pagination,
+  })
+}
+async function fetchCount(filter: TFilter): Promise<number> {
+  return apiClient.activity.count.query({
+    filter: filter,
+  })
+}
 </script>
 
 <template>
@@ -54,93 +108,17 @@ function onClick({ subjectType, subjectId }: Activity) {
     In der Verwaltung werden Aktivitäten aufgezeichnet, z.B. wenn Accounts erstellt oder gelöscht werden.
   </p>
   <div class="flow-root">
-    <table
-      v-if="activities.length > 0"
-      class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
-    >
-      <thead>
-        <tr>
-          <th
-            scope="col"
-            class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold"
-          >
-            Datum
-          </th>
-          <th
-            scope="col"
-            class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold"
-          >
-            Beschreibung
-          </th>
-          <th
-            scope="col"
-            class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold"
-          >
-            Typ
-          </th>
-          <th
-            scope="col"
-            class="px-3 py-3.5 text-left text-sm font-semibold"
-          >
-            Betroffen
-          </th>
-          <th
-            scope="col"
-            class="px-3 py-3.5 text-left text-sm font-semibold"
-          >
-            Akteur
-          </th>
-        </tr>
-      </thead>
-      <tbody
-        class="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-dark-primary transition-colors duration-200"
-      >
-        <!-- TODO: Detailseite und Verlinkung von Betroffen und Akteur -->
-        <tr
-          v-for="activity in activities"
-          :key="activity.id"
-          class="cursor-pointer even:bg-gray-50 dark:even:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800"
-          @click="onClick(activity)"
-        >
-          <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-            <span>
-              {{ formatTimestamp(activity.createdAt) }}
-            </span>
-          </td>
-          <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-            <span>
-              {{ activity.description ?? '-' }}
-            </span>
-          </td>
-          <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-            <Badge :color="colorFromType(activity.type)">
-              {{ activity.type }}
-            </Badge>
-          </td>
-          <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-            <span> {{ activity.subjectType }} #{{ activity.subjectId }} </span>
-          </td>
-          <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-            <span> {{ activity.causer?.person.firstname }} {{ activity.causer?.person.lastname }} </span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div
-      v-if="activities.length <= 0"
-      class="rounded-md bg-blue-50 dark:bg-blue-950 p-4 text-blue-500 transition-colors duration-200"
-    >
-      <div class="flex">
-        <div class="flex-shrink-0">
-          <CheckCircleIcon
-            class="h-5 w-5"
-            aria-hidden="true"
-          />
-        </div>
-        <div class="ml-3 flex-1 md:flex md:justify-between">
-          <p class="text-sm mb-0">Es gibt bisher keine Anmeldungen.</p>
-        </div>
-      </div>
+    <div class="w-full h-[80vh]">
+      <GenericDataGrid
+        :columns="columns"
+        :fetch-page="fetchPage"
+        :fetch-count="fetchCount"
+        :default-filter="{}"
+        :default-order-by="[['createdAt', 'desc']]"
+        no-data-message="Es gibt bisher keine Anmeldungen."
+        show-clickable
+        @row-click="onClick"
+      />
     </div>
   </div>
 </template>

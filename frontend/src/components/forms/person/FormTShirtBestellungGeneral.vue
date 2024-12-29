@@ -40,7 +40,7 @@ const konfektionsgroesseOptions = getEnumOptions(KonfektionsgroesseMapping)
   >
     T-Shirt Bestellung
   </div>
-  <div class="grid grid-flow-row lg:grid-cols-2 gap-5 items-start">
+  <div class="flex flex-col gap-5 items-start">
     <BasicCheckbox
       v-model="model.bestellen"
       label="Ich möchte ein T-Shirt bestellen"
@@ -49,6 +49,7 @@ const konfektionsgroesseOptions = getEnumOptions(KonfektionsgroesseMapping)
       v-if="model.bestellen"
       v-model="model.groesse"
       label="Konfektionsgröße"
+      class="w-full"
       :options="konfektionsgroesseOptions"
     />
   </div>

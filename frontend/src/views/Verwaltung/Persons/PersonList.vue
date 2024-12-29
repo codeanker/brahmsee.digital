@@ -1,31 +1,88 @@
 <script setup lang="ts">
 import { PlusIcon, UsersIcon } from '@heroicons/vue/24/outline'
-import { useAsyncState } from '@vueuse/core'
 
 import { apiClient } from '@/api'
+import DataGridDoubleLineCell from '@/components/DataGridDoubleLineCell.vue'
+import GenericDataGrid from '@/components/GenericDataGrid.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
-import { loggedInAccount } from '@/composables/useAuthentication'
 import { useRouteTitle } from '@/composables/useRouteTitle'
 import { getAccountStatusColor } from '@/helpers/getAccountStatusColors'
 import router from '@/router'
-import { dayjs, formatDate } from '@codeanker/helpers'
+import { type RouterInput, type RouterOutput } from '@codeanker/api'
+import { type TGridColumn } from '@codeanker/datagrid'
+import { dayjs } from '@codeanker/helpers'
 
 const { setTitle } = useRouteTitle()
 setTitle('Personen')
 
-const { state: personList } = useAsyncState(
-  async () => {
-    if (loggedInAccount.value?.role === 'ADMIN') {
-      return await apiClient.person.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
-    }
-  },
-  [],
-  { immediate: true }
-)
-
 const tabs = [{ name: 'Personen', icon: UsersIcon }]
+
+/// Typen von den Daten, Filter und Sortierung
+type TData = Awaited<RouterOutput['person']['list']>[number]
+type TFilter = RouterInput['person']['list']['filter']
+type TOrderBy = RouterInput['person']['list']['orderBy']
+
+const columns: TGridColumn<TData, TFilter>[] = [
+  {
+    field: 'firstname',
+    title: 'Name',
+    sortable: true,
+    format: (value, row) => `${row.firstname} ${row.lastname}`,
+  },
+  {
+    field: 'birthday',
+    title: 'Alter',
+    preset: 'date',
+    cell: DataGridDoubleLineCell,
+    cellProps: (formattedValue, row) => {
+      return {
+        title: `${dayjs().diff(row.birthday, 'year')} Jahre`,
+        message: formattedValue.value,
+      }
+    },
+    sortable: true,
+  },
+  {
+    field: 'gliederung.name',
+    title: 'Gliederung',
+    sortable: true,
+  },
+  {
+    field: 'person.account.activatedAt',
+    title: 'Account',
+    cell: Badge,
+    preset: 'date',
+    cellProps: (formattedValue, row) => {
+      return {
+        color: getAccountStatusColor(row.content.account?.status),
+        title: formattedValue.value,
+        text: row.content.account?.status,
+      }
+    },
+  },
+]
+
+async function fetchPage(
+  pagination: {
+    take: number
+    skip: number
+  },
+  filter: TFilter,
+  orderBy: TOrderBy
+): Promise<TData[]> {
+  return apiClient.person.list.query({
+    filter: filter,
+    orderBy: orderBy,
+    pagination: pagination,
+  })
+}
+async function fetchCount(filter: TFilter): Promise<number> {
+  return apiClient.person.count.query({
+    filter: filter,
+  })
+}
 </script>
 
 <template>
@@ -47,69 +104,21 @@ const tabs = [{ name: 'Personen', icon: UsersIcon }]
           </RouterLink>
         </div>
 
-        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-          <thead>
-            <tr>
-              <th
-                scope="col"
-                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold"
-              >
-                Name
-              </th>
-              <th
-                scope="col"
-                class="px-3 py-3.5 text-left text-sm font-semibold"
-              >
-                Alter
-              </th>
-              <th
-                scope="col"
-                class="px-3 py-3.5 text-left text-sm font-semibold"
-              >
-                Gliederung
-              </th>
-              <th
-                scope="col"
-                class="px-3 py-3.5 text-left text-sm font-semibold"
-              >
-                Account
-              </th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-dark-primary">
-            <tr
-              v-for="person in personList"
-              :key="person.id"
-              class="cursor-pointer even:bg-gray-50 dark:even:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800"
-              :title="person.firstname + ' ' + person.lastname + ' bearbeiten'"
-              @click="router.push({ name: 'Verwaltung Persondetails', params: { personId: person.id } })"
-            >
-              <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-                <div>{{ person.firstname }} {{ person.lastname }}</div>
-              </td>
-              <td class="whitespace-nowrap px-3 py-5 text-sm">
-                <div v-if="person.birthday">
-                  {{ dayjs().diff(person.birthday, 'year') }} Jahre
-                  <br />
-                  {{ formatDate(person.birthday) }}
-                </div>
-              </td>
-              <td class="whitespace-nowrap px-3 py-5 text-sm">
-                {{ person.gliederung?.name }}
-              </td>
-              <td class="whitespace-nowrap px-3 py-5 text-sm">
-                <div class="flex items-center">
-                  <Badge
-                    v-if="person.account"
-                    :color="getAccountStatusColor(person.account.status)"
-                    :title="formatDate(person.account.activatedAt)"
-                    >{{ person.account.status }}</Badge
-                  >
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="w-full h-[80vh]">
+          <GenericDataGrid
+            :columns="columns"
+            :fetch-page="fetchPage"
+            :fetch-count="fetchCount"
+            :default-filter="{
+              name: '',
+              gliederungName: '',
+            }"
+            :default-order-by="[]"
+            no-data-message="Es gibt bisher keine Personen."
+            show-clickable
+            @row-click="(person) => router.push({ name: 'Verwaltung Persondetails', params: { personId: person.id } })"
+          />
+        </div>
       </Tab>
     </Tabs>
   </div>

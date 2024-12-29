@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import { FingerPrintIcon, CheckCircleIcon, PlusIcon, UserIcon } from '@heroicons/vue/24/outline'
+import { FingerPrintIcon, PlusIcon, UserIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
 
 import { apiClient } from '@/api'
+import BasicInput from '@/components/BasicInputs/BasicInput.vue'
+import DataGridDoubleLineCell from '@/components/DataGridDoubleLineCell.vue'
+import GenericDataGrid from '@/components/GenericDataGrid.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
@@ -11,30 +15,125 @@ import { useRouteTitle } from '@/composables/useRouteTitle'
 import { getAccountStatusColor } from '@/helpers/getAccountStatusColors'
 import router from '@/router'
 import { roleMapping } from '@codeanker/api'
-import { formatDate } from '@codeanker/helpers'
+import { type RouterInput, type RouterOutput } from '@codeanker/api'
+import { type TGridColumn } from '@codeanker/datagrid'
 
 const { setTitle } = useRouteTitle()
 setTitle('Accounts')
 
-const { state: accountList } = useAsyncState(
+const { state: totalAccountRequest } = useAsyncState(
   async () => {
-    const result = await apiClient.account.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
-    return result
+    return await apiClient.account.verwaltungCount.query({
+      filter: {
+        status: 'OFFEN',
+      },
+    })
   },
-  [],
+  0,
   {
     immediate: true,
   }
 )
 
-const accountRequest = computed(() => {
-  return accountList.value?.filter((account) => account.status === 'OFFEN')
-})
-
 const tabs = computed(() => [
   { name: 'Accounts', icon: FingerPrintIcon },
-  { name: 'Account Anfragen', icon: UserIcon, count: accountRequest.value.length },
+  { name: 'Account Anfragen', icon: UserIcon, count: totalAccountRequest.value },
 ])
+
+/// Typen von den Daten, Filter und Sortierung
+type TData = Awaited<RouterOutput['account']['verwaltungList']>[number]
+type TFilter = RouterInput['account']['verwaltungList']['filter']
+type TOrderBy = RouterInput['account']['verwaltungList']['orderBy']
+
+const columns: TGridColumn<TData, TFilter>[] = [
+  {
+    field: 'person.firstname',
+    title: 'Name',
+    sortable: true,
+    format: (value, row) => `${row.person.firstname} ${row.person.lastname}`,
+    filter: { component: BasicInput, key: 'personName' },
+  },
+  {
+    field: 'email',
+    title: 'E-Mail Adresse',
+    sortable: true,
+  },
+  {
+    field: 'role',
+    title: 'Rolle',
+    sortable: true,
+    format: (value) => {
+      return roleMapping[value].human
+    },
+    cell: DataGridDoubleLineCell,
+    cellProps: (formattedValue, row) => {
+      let message = ''
+      if (
+        row.content.role === 'GLIEDERUNG_ADMIN' &&
+        row.content.GliederungToAccount.length > 0 &&
+        row.content.GliederungToAccount[0].gliederung &&
+        row.content.GliederungToAccount[0].gliederung.name
+      ) {
+        message = row.content.GliederungToAccount[0].gliederung.name
+      }
+      return {
+        title: formattedValue.value,
+        message,
+      }
+    },
+  },
+  {
+    field: 'status',
+    title: 'Status',
+    sortable: true,
+    cell: Badge,
+    cellProps: (formattedValue) => {
+      return {
+        color: getAccountStatusColor(formattedValue.value),
+        title: formattedValue.value,
+        text: formattedValue.value,
+      }
+    },
+  },
+]
+
+async function fetchPage(
+  pagination: {
+    take: number
+    skip: number
+  },
+  filter: TFilter,
+  orderBy: TOrderBy
+): Promise<TData[]> {
+  return apiClient.account.verwaltungList.query({
+    filter: filter,
+    orderBy: orderBy,
+    pagination: pagination,
+  })
+}
+async function fetchCount(filter: TFilter): Promise<number> {
+  return apiClient.account.verwaltungCount.query({
+    filter: filter,
+  })
+}
+
+const route = useRoute()
+const tabIndex = ref(parseInt(route.query.tab as string) ?? 0)
+const defaultFilter = computed(() => {
+  let baseFilter = {
+    personName: '',
+    email: '',
+    status: undefined as TData['status'] | undefined,
+  }
+  if (tabIndex.value === 1) {
+    baseFilter.status = 'OFFEN'
+  }
+  return baseFilter
+})
+
+function changeTab(index: number) {
+  tabIndex.value = index
+}
 </script>
 
 <template>
@@ -42,6 +141,7 @@ const tabs = computed(() => [
     <Tabs
       content-space="4"
       :tabs="tabs"
+      @change-tab-index="changeTab"
     >
       <Tab>
         <div class="my-8 flex justify-between">
@@ -56,72 +156,18 @@ const tabs = computed(() => [
             Account anlegen
           </RouterLink>
         </div>
-        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
-          <thead>
-            <tr>
-              <th
-                scope="col"
-                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold"
-              >
-                Name
-              </th>
-              <th
-                scope="col"
-                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold"
-              >
-                E-Mail Adresse
-              </th>
-              <th
-                scope="col"
-                class="px-3 py-3.5 text-left text-sm font-semibold"
-              >
-                Rolle
-              </th>
-              <th
-                scope="col"
-                class="px-3 py-3.5 text-left text-sm font-semibold"
-              >
-                Status
-              </th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-200 bg-white dark:bg-dark-primary">
-            <tr
-              v-for="account in accountList"
-              :key="account.id"
-              class="cursor-pointer even:bg-gray-50 dark:even:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800"
-              :title="account.email + ' bearbeiten'"
-              @click="router.push({ name: 'Verwaltung Accountdetails', params: { accountId: account.id } })"
-            >
-              <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-                <span>{{ account.person.firstname }} {{ account.person.lastname }}</span>
-              </td>
-              <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-                <div>{{ account.email }}</div>
-              </td>
-              <td class="whitespace-nowrap px-3 py-5 text-sm">
-                {{ roleMapping[account.role].human }}<br />
-                <span
-                  v-if="
-                    account.role === 'GLIEDERUNG_ADMIN' &&
-                    account.GliederungToAccount.length > 0 &&
-                    account.GliederungToAccount[0].gliederung &&
-                    account.GliederungToAccount[0].gliederung.name
-                  "
-                  class="text-xs"
-                  >{{ account.GliederungToAccount[0].gliederung.name }}</span
-                >
-              </td>
-              <td class="whitespace-nowrap px-3 py-5 text-sm">
-                <Badge
-                  :color="getAccountStatusColor(account.status)"
-                  :title="formatDate(account.activatedAt)"
-                  >{{ account.status }}</Badge
-                >
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <GenericDataGrid
+          :columns="columns"
+          :fetch-page="fetchPage"
+          :fetch-count="fetchCount"
+          :default-filter="defaultFilter"
+          :default-order-by="[]"
+          no-data-message="Es gibt bisher keine Accounts."
+          show-clickable
+          @row-click="
+            (account) => router.push({ name: 'Verwaltung Accountdetails', params: { accountId: account.id } })
+          "
+        />
       </Tab>
       <Tab>
         <div class="my-8 flex justify-between">
@@ -132,87 +178,18 @@ const tabs = computed(() => [
             </p>
           </div>
         </div>
-        <table
-          v-if="accountRequest.length"
-          class="min-w-full divide-y divide-gray-300"
-        >
-          <thead>
-            <tr>
-              <th
-                scope="col"
-                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold"
-              >
-                Name
-              </th>
-              <th
-                scope="col"
-                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold"
-              >
-                E-Mail Adresse
-              </th>
-              <th
-                scope="col"
-                class="px-3 py-3.5 text-left text-sm font-semibold"
-              >
-                Rolle
-              </th>
-              <th
-                scope="col"
-                class="px-3 py-3.5 text-left text-sm font-semibold"
-              >
-                Status
-              </th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-200 bg-white">
-            <tr
-              v-for="account in accountRequest"
-              :key="account.id"
-              class="cursor-pointer even:bg-gray-50 dark:even:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800"
-              :title="account.email + ' bearbeiten'"
-              @click="router.push({ name: 'Verwaltung Accountdetails', params: { accountId: account.id } })"
-            >
-              <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-                <span>{{ account.person.firstname }} {{ account.person.lastname }}</span>
-              </td>
-              <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-                <div>{{ account.email }}</div>
-              </td>
-              <td class="whitespace-nowrap px-3 py-5 text-sm">
-                {{ roleMapping[account.role].human }}<br />
-                <span
-                  v-if="
-                    account.role === 'GLIEDERUNG_ADMIN' &&
-                    account.GliederungToAccount.length > 0 &&
-                    account.GliederungToAccount[0].gliederung &&
-                    account.GliederungToAccount[0].gliederung.name
-                  "
-                  class="text-xs"
-                  >{{ account.GliederungToAccount[0].gliederung.name }}</span
-                >
-              </td>
-              <td class="whitespace-nowrap px-3 py-5 text-sm">
-                <Badge :color="getAccountStatusColor(account.status)">{{ account.status }}</Badge>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div
-          v-if="accountRequest.length <= 0"
-          class="rounded-md bg-blue-50 dark:bg-blue-950 text-blue-500 p-4"
-        >
-          <div class="flex">
-            <div class="flex-shrink-0">
-              <CheckCircleIcon
-                class="h-5 w-5"
-                aria-hidden="true"
-              />
-            </div>
-            <div class="ml-3 flex-1 md:flex md:justify-between">
-              <p class="text-sm mb-0">Es gibt keine offenen Account anfragen.</p>
-            </div>
-          </div>
-        </div>
+        <GenericDataGrid
+          :columns="columns"
+          :fetch-page="fetchPage"
+          :fetch-count="fetchCount"
+          :default-filter="defaultFilter"
+          :default-order-by="[]"
+          no-data-message="Es gibt keine offenen Account anfragen."
+          show-clickable
+          @row-click="
+            (account) => router.push({ name: 'Verwaltung Accountdetails', params: { accountId: account.id } })
+          "
+        />
       </Tab>
     </Tabs>
   </div>

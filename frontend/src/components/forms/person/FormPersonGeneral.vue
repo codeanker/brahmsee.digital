@@ -55,6 +55,7 @@ async function queryGliederungen(searchTerm: string) {
   return apiClient.gliederung.publicList.query({
     filter: { name: searchTerm },
     pagination: { take: 100, skip: 0 },
+    orderBy: [],
   })
 }
 
@@ -148,7 +149,7 @@ const submit = () => {
 </script>
 
 <template>
-  <div class="grid grid-cols-1 lg:grid-cols-2">
+  <div class="grid">
     <ValidateForm @submit="submit">
       <Stammdaten v-model="stammdatenForm" />
       <hr class="my-5" />

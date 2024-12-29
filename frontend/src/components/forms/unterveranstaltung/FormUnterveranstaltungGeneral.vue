@@ -53,12 +53,20 @@ if (props.mode === 'create') {
 function useVeranstaltungList(isAdmin: boolean) {
   if (isAdmin) {
     const { state } = useAsyncState(async () => {
-      return apiClient.veranstaltung.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
+      return apiClient.veranstaltung.verwaltungList.query({
+        filter: {},
+        orderBy: [],
+        pagination: { take: 100, skip: 0 },
+      })
     }, [])
     return state
   } else {
     const { state } = useAsyncState(async () => {
-      return apiClient.veranstaltung.gliederungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
+      return apiClient.veranstaltung.gliederungList.query({
+        filter: {},
+        orderBy: [],
+        pagination: { take: 100, skip: 0 },
+      })
     }, [])
     return state
   }
@@ -154,7 +162,11 @@ const handle = async () => {
 }
 
 async function queryObjectGliederungen(searchTerm) {
-  return apiClient.gliederung.publicList.query({ filter: { name: searchTerm }, pagination: { take: 100, skip: 0 } })
+  return apiClient.gliederung.publicList.query({
+    filter: { name: searchTerm },
+    orderBy: [],
+    pagination: { take: 100, skip: 0 },
+  })
 }
 
 const veranstaltung = computed(() => {

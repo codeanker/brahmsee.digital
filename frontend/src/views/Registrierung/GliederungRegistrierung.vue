@@ -27,7 +27,11 @@ const registrationForm = ref<{
 }>({})
 
 async function queryObject(searchTerm) {
-  return apiClient.gliederung.publicList.query({ filter: { name: searchTerm }, pagination: { take: 100, skip: 0 } })
+  return apiClient.gliederung.publicList.query({
+    filter: { name: searchTerm },
+    orderBy: [],
+    pagination: { take: 100, skip: 0 },
+  })
 }
 
 const errorCreate = ref<unknown | null>(null)

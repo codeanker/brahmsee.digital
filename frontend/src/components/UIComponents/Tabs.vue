@@ -23,6 +23,10 @@ const props = withDefaults(
   }
 )
 
+const emit = defineEmits<{
+  changeTabIndex: [number]
+}>()
+
 const route = useRoute()
 const router = useRouter()
 
@@ -41,6 +45,7 @@ const selectedTab = ref()
 function changeTab(index) {
   selectedTab.value = index
   router.push({ query: { tab: index.toString() } })
+  emit('changeTabIndex', index)
 }
 </script>
 
@@ -54,7 +59,7 @@ function changeTab(index) {
     <template #buttonContent>
       <button
         type="button"
-        class="input-style w-full text-left flex justify-between items-center"
+        class="flex input-style w-full text-left justify-between items-center"
       >
         <div class="flex space-x-2 items-center">
           <component
@@ -63,9 +68,8 @@ function changeTab(index) {
             aria-hidden="true"
           />
           <span>{{ tabs[selectedTab || currentindex].name }}</span>
+          <ChevronDownIcon class="h-5 text-gray-500" />
         </div>
-
-        <ChevronDownIcon class="h-5 text-gray-500" />
       </button>
     </template>
     <template #dropdownContent>
@@ -110,7 +114,7 @@ function changeTab(index) {
         class="outline-none"
       >
         <div
-          class="text-sm cursor-pointer outline-none -mb-px rounded-t border-b-2 py-2 px-3 hover:text-primary-500 flex items-center"
+          class="cursor-pointer outline-none -mb-px rounded-t border-b-2 py-2 px-3 hover:text-primary-500 flex items-center"
           :class="[selected ? 'text-primary-500 border-primary-500 ' : 'text-gray-500 border-transparent']"
         >
           <component
