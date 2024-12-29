@@ -55,6 +55,7 @@ async function queryGliederungen(searchTerm: string) {
   return apiClient.gliederung.publicList.query({
     filter: { name: searchTerm },
     pagination: { take: 100, skip: 0 },
+    orderBy: [],
   })
 }
 

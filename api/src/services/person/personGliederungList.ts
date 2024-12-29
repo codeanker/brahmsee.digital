@@ -15,6 +15,12 @@ export const personGliederungListProcedure = defineProcedure({
       firstname: z.string().optional(),
       lastname: z.string().optional(),
     }),
+    orderBy: z.array(
+      z.tuple([
+        z.union([z.literal('id'), z.literal('firstname'), z.literal('lastname')]),
+        z.union([z.literal('asc'), z.literal('desc')]),
+      ])
+    ),
   }),
   async handler(options) {
     if (typeof options.ctx.account.person.gliederungId !== 'number') {

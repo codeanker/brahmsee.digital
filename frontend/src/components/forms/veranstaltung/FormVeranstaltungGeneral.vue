@@ -89,7 +89,7 @@ const handle = async () => {
 }
 
 const { state: orte } = useAsyncState(async () => {
-  return apiClient.ort.verwaltungList.query({ filter: {}, pagination: { take: 100, skip: 0 } })
+  return apiClient.ort.list.query({ filter: {}, orderBy: [], pagination: { take: 100, skip: 0 } })
 }, [])
 
 const { state: hostnames } = useAsyncState(async () => {

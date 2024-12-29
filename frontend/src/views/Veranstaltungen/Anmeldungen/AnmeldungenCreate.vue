@@ -20,10 +20,11 @@ const isAdmin = loggedInAccount.value?.role === 'ADMIN'
 
 const { state: unterveranstaltungen, isLoading } = useAsyncState(
   async () => {
-    return apiClient.unterveranstaltung.verwaltungList.query({
+    return apiClient.unterveranstaltung.list.query({
       filter: {
         veranstaltungId: parseInt(route.params.veranstaltungId as string),
       },
+      orderBy: [],
       pagination: { take: 100, skip: 0 },
     })
   },

@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */ // Prettier ignored is because this file is generated
 import { mergeRouters } from '../../trpc'
 
+import { ortListProcedure, ortCountProcedure } from './ortList'
 import { ortVerwaltungCreateProcedure } from './ortVerwaltungCreate'
 import { ortVerwaltungGetProcedure } from './ortVerwaltungGet'
-import { ortVerwaltungListProcedure } from './ortVerwaltungList'
 import { ortVerwaltungPatchProcedure } from './ortVerwaltungPatch'
 import { ortVerwaltungRemoveProcedure } from './ortVerwaltungRemove'
 // Import Routes here - do not delete this line
@@ -11,7 +11,8 @@ import { ortVerwaltungRemoveProcedure } from './ortVerwaltungRemove'
 export const ortRouter = mergeRouters(
   ortVerwaltungCreateProcedure.router,
   ortVerwaltungGetProcedure.router,
-  ortVerwaltungListProcedure.router,
+  ortListProcedure.router,
+  ortCountProcedure.router,
   ortVerwaltungPatchProcedure.router,
   ortVerwaltungRemoveProcedure.router,
   // Add Routes here - do not delete this line

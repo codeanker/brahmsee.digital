@@ -22,5 +22,5 @@ setTitle('Ausschreibungen')
       Ausschreibung erstellen
     </RouterLink>
   </div>
-  <UnterveranstaltungenTable :columns="['veranstaltung']" />
+  <UnterveranstaltungenTable />
 </template>

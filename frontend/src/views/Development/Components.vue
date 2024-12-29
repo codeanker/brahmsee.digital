@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 
 import ComponentPreview from './components/ComponentPreview.vue'
+import DataGridComponent from './components/DataGridComponent.vue'
 
 import BasicCheckbox from '@/components/BasicInputs/BasicCheckbox.vue'
 import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
@@ -185,6 +186,19 @@ const basicEditorCode = `<BasicEditor
           v-model="basicEditorValue"
           label="Beschreibung"
         />
+      </ComponentPreview>
+      <ComponentPreview
+        name="DataGrid"
+        description="Tabelle vom Feinsten"
+        :code="basicEditorCode"
+      >
+        <div class="h-[600px] w-full">
+          <DataGridComponent />
+        </div>
+        <!-- <BasicEditor
+          v-model="basicEditorValue"
+          label="Beschreibung"
+        /> -->
       </ComponentPreview>
     </div>
   </div>
