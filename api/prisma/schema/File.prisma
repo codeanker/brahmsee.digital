@@ -13,4 +13,5 @@ model File {
   filename                   String?
   mimetype                   String?
   UnterveranstaltungDocument UnterveranstaltungDocument?
+  Persons                    Person[]
 }

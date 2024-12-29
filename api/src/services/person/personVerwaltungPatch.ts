@@ -4,7 +4,7 @@ import z from 'zod'
 import prisma from '../../prisma'
 import { defineProcedure } from '../../types/defineProcedure'
 
-import { getPersonCreateData, personSchema } from './schema/person.schema'
+import { getPersonCreateData, personSchemaOptional } from './schema/person.schema'
 
 export const personVerwaltungPatchProcedure = defineProcedure({
   key: 'verwaltungPatch',
@@ -12,7 +12,7 @@ export const personVerwaltungPatchProcedure = defineProcedure({
   protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
   inputSchema: z.strictObject({
     id: z.number().int(),
-    data: personSchema,
+    data: personSchemaOptional,
   }),
   async handler({ input }) {
     await prisma.notfallkontakt.deleteMany({

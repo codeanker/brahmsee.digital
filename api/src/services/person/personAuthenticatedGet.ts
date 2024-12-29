@@ -23,6 +23,7 @@ export const personAuthenticatedGetProcedure = defineProcedure({
             firstname: true,
             lastname: true,
             gliederungId: true,
+            photoId: true,
           },
         },
       },

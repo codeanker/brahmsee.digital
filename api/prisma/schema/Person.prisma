@@ -116,6 +116,8 @@ model Person {
   notfallkontakte              Notfallkontakt[]
   addressId                    Int?
   address                      Address?                     @relation(fields: [addressId], references: [id], onDelete: Cascade)
+  photoId                      String?
+  photo                        File?                        @relation(fields: [photoId], references: [id], onDelete: Cascade)
 }
 
 model Notfallkontakt {

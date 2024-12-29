@@ -49,6 +49,7 @@ export const personVerwaltungGetProcedure = defineProcedure({
           },
         },
         gliederung: true,
+        photoId: true,
       },
     })
   },

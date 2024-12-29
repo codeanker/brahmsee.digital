@@ -61,6 +61,7 @@ export const anmeldungGliederungGetProcedure = defineProcedure({
             konfektionsgroesse: true,
             notfallkontakte: true,
             address: true,
+            photoId: true,
           },
         },
         unterveranstaltung: {
