@@ -1,0 +1,6 @@
+{
+  "name": "@codeanker/eslint-config",
+  "exports": {
+    "./eslint-node-config": "./eslint.node.config.js"
+  }
+}
