@@ -9,7 +9,7 @@ import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
 import BasicTypeahead from '@/components/BasicInputs/BasicTypeahead.vue'
 import Stammdaten, { type IStammdaten } from '@/components/forms/anmeldung/Stammdaten.vue'
 import Button from '@/components/UIComponents/Button.vue'
-import type { RouterInput, RouterOutput, TAccountSchema } from '@codeanker/api'
+import type { RouterInput, RouterOutput } from '@codeanker/api'
 import { ValidateForm } from '@codeanker/validation'
 
 const stammdatenForm = ref<IStammdaten>({
@@ -50,9 +50,7 @@ async function watiForOAuth(): Promise<string> {
   })
 }
 
-type TAccountData = Partial<TAccountSchema> & {
-  jwtOAuthToken?: string
-}
+type TAccountData = RouterInput['account']['gliederungAdminCreate']['data']
 
 async function registerGliederung() {
   try {
@@ -62,10 +60,10 @@ async function registerGliederung() {
       firstname: stammdatenForm.value.firstname,
       lastname: stammdatenForm.value.lastname,
       gender: stammdatenForm.value.gender,
-      birthday: stammdatenForm.value.birthday ? new Date(stammdatenForm.value.birthday) : undefined,
+      birthday: stammdatenForm.value.birthday ?? new Date(),
       email: registrationForm.value.email,
       password: registrationForm.value.password,
-      adminInGliederungId: registrationForm.value.gliederung?.id,
+      gliederungId: registrationForm.value.gliederung!.id,
     }
 
     if (oauthRegistration.value) {

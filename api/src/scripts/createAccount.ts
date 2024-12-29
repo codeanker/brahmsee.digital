@@ -1,4 +1,5 @@
-import { input, password as passwordInput, select } from '@inquirer/prompts'
+import { input, password as passwordInput, select, search } from '@inquirer/prompts'
+import { Role } from '@prisma/client'
 
 import { getEnumOptions, roleMapping } from '../enumMappings'
 import prisma from '../prisma'
@@ -22,15 +23,27 @@ async function createUser() {
   })) as keyof typeof roleMapping
 
   async function selectGliederung(): Promise<number> {
-    return await select({
+    return await search({
       message: 'Deine Gliederung',
-      choices: (await prisma.gliederung.findMany()).map((v) => ({
-        name: v.name,
-        value: v.id,
-      })),
+      source: async (term) => {
+        const results = await prisma.gliederung.findMany({
+          where: {
+            name: {
+              contains: term,
+              mode: 'insensitive',
+            },
+          },
+        })
+
+        return results.map((v) => ({
+          name: v.name,
+          value: v.id,
+        }))
+      },
     })
   }
 
+  const gliederungId = await selectGliederung()
   const accountData = await getAccountCreateData({
     email: email,
     firstname: firstname,
@@ -38,7 +51,8 @@ async function createUser() {
     password: password,
     roleId: roleId,
     isActiv: true,
-    adminInGliederungId: roleId === 'GLIEDERUNG_ADMIN' ? await selectGliederung() : undefined,
+    gliederungId,
+    adminInGliederungId: roleId === Role.GLIEDERUNG_ADMIN ? gliederungId : undefined,
     birthday: new Date(),
     gender: 'FEMALE',
   })

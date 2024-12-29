@@ -49,11 +49,11 @@ const { model, errorMessage } = useValidationModel(props, emit)
       :name="id || name || label"
       :multiple="props.multiple"
     >
-      <ListboxButton class="input-style !flex flex-row items-center gap-x-2">
-        <ChevronDownIcon class="h-5 text-gray-500" />
+      <ListboxButton class="input-style !flex flex-row items-center gap-x-2 justify-between">
         <span class="text-start">
           {{ options.find((option) => option.value === modelValue)?.label || placeholder || 'Bitte wählen...' }}
         </span>
+        <ChevronDownIcon class="h-5 text-gray-500 self-end" />
       </ListboxButton>
       <div class="relative mt-1">
         <transition

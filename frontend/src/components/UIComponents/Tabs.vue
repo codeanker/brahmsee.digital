@@ -59,7 +59,7 @@ function changeTab(index) {
     <template #buttonContent>
       <button
         type="button"
-        class="input-style w-full text-left flex justify-between items-center"
+        class="flex input-style w-full text-left justify-between items-center"
       >
         <div class="flex space-x-2 items-center">
           <component
@@ -68,9 +68,8 @@ function changeTab(index) {
             aria-hidden="true"
           />
           <span>{{ tabs[selectedTab || currentindex].name }}</span>
+          <ChevronDownIcon class="h-5 text-gray-500" />
         </div>
-
-        <ChevronDownIcon class="h-5 text-gray-500" />
       </button>
     </template>
     <template #dropdownContent>

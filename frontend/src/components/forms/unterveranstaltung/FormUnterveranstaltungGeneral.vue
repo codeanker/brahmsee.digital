@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { XMarkIcon } from '@heroicons/vue/24/solid'
 import { useAsyncState } from '@vueuse/core'
 import { computed, ref } from 'vue'
 
@@ -9,8 +10,10 @@ import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import BasicInputNumber from '@/components/BasicInputs/BasicInputNumber.vue'
 import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
 import BasicTypeahead from '@/components/BasicInputs/BasicTypeahead.vue'
+import DownloadLink from '@/components/DownloadLink.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
+import { handleUpload } from '@/helpers/handleUpload'
 import router from '@/router'
 import type { RouterInput } from '@codeanker/api'
 import { UnterveranstaltungTypeMapping, getEnumOptions } from '@codeanker/api'
@@ -39,6 +42,8 @@ const unterveranstaltungCopy = ref({
 
 const unterveranstaltungId = props.unterveranstaltung?.id
 const gliederung = ref(props.unterveranstaltung?.gliederung)
+const documents = ref(props.unterveranstaltung?.documents || [])
+const deletedDocumentIds = ref<number[]>([])
 
 // Wird benötig damit man direkt von einer Veranstaltung eine Unterveranstaltung anlegen kann ohne diese extra auswählen zu müssen
 if (props.mode === 'create') {
@@ -99,6 +104,11 @@ const {
   isLoading: isLoadingUpdate,
 } = useAsyncState(
   async () => {
+    const addDocuments = documents.value
+      .filter((document) => document.added)
+      .map(({ name, fileId }) => ({ name, fileId }))
+    const updateDocuments = documents.value.filter((document) => !document.added).map(({ id, name }) => ({ id, name }))
+
     if (loggedInAccount.value?.role === 'ADMIN') {
       delete unterveranstaltungCopy.value.gliederungId
       delete unterveranstaltungCopy.value.veranstaltungId
@@ -108,7 +118,12 @@ const {
       }
       await apiClient.unterveranstaltung.verwaltungPatch.mutate({
         id: unterveranstaltungId,
-        data: unterveranstaltungCopy.value as unknown as RouterInput['unterveranstaltung']['verwaltungPatch']['data'],
+        data: {
+          ...unterveranstaltungCopy.value,
+          addDocuments,
+          updateDocuments,
+          deleteDocumentIds: deletedDocumentIds.value,
+        } as RouterInput['unterveranstaltung']['verwaltungPatch']['data'],
       })
     } else {
       delete unterveranstaltungCopy.value.gliederungId
@@ -119,7 +134,12 @@ const {
       }
       await apiClient.unterveranstaltung.gliederungPatch.mutate({
         id: unterveranstaltungId,
-        data: unterveranstaltungCopy.value as unknown as RouterInput['unterveranstaltung']['gliederungPatch']['data'],
+        data: {
+          ...unterveranstaltungCopy.value,
+          addDocuments,
+          updateDocuments,
+          deleteDocumentIds: deletedDocumentIds.value,
+        } as RouterInput['unterveranstaltung']['gliederungPatch']['data'],
       })
     }
 
@@ -173,6 +193,29 @@ const disableddates = computed(() => {
   }
   return obj
 })
+
+const fileInput = ref<HTMLInputElement | null>(null)
+
+async function onFileChanged($event: Event) {
+  const target = $event.target as HTMLInputElement
+  const file = target?.files?.[0]
+  if (!file) return
+
+  const { id } = await handleUpload(file)
+  documents.value.push({
+    name: file.name,
+    fileId: id,
+    added: true,
+  })
+  if (fileInput.value) fileInput.value.value = ''
+}
+
+function deleteDocument(document, index) {
+  documents.value.splice(index, 1)
+  if (!document.added) {
+    deletedDocumentIds.value.push(document.id)
+  }
+}
 </script>
 
 <template>
@@ -274,6 +317,64 @@ const disableddates = computed(() => {
           v-model="unterveranstaltungCopy.bedingungen"
           label="Bedingungen"
         />
+      </div>
+      <div class="lg:col-span-full">
+        <label class="font-medium">Dokumente</label>
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
+          <thead>
+            <tr>
+              <th
+                scope="col"
+                class="px-3 py-3.5 text-left text-sm font-semibold"
+              >
+                Name
+              </th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 dark:divide-gray-800 bg-white dark:bg-dark-primary">
+            <tr
+              v-for="(document, index) in documents"
+              :key="'document-' + index"
+              class="even:bg-gray-50 dark:even:bg-gray-800"
+            >
+              <td class="whitespace-nowrap w-full py-5 pl-4 pr-3 text-sm">
+                <BasicInput
+                  :id="'documentName-' + index"
+                  v-model="document.name"
+                />
+              </td>
+              <td class="text-sm pl-4 pr-3">
+                <DownloadLink :file-id="document.fileId" />
+              </td>
+              <td class="text-sm pl-4 pr-3">
+                <XMarkIcon
+                  class="h-5 w-5 text-danger-600 cursor-pointer"
+                  @click="deleteDocument(document, index)"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="flex justify-end">
+          <div>
+            <label
+              for="documentFileInput"
+              class="input-style w-fit mt-3 cursor-pointer flex items-center"
+            >
+              <span>Dokument hinzufügen</span>
+            </label>
+            <input
+              id="documentFileInput"
+              ref="fileInput"
+              type="file"
+              capture
+              class="hidden"
+              @change="onFileChanged($event)"
+            />
+          </div>
+        </div>
       </div>
     </div>
     <div class="mt-8 flex gap-4">

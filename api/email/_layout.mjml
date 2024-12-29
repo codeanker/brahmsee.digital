@@ -1,0 +1,73 @@
+<mjml>
+  <mj-head>
+    <mj-attributes>
+      <mj-all font-family="sans-serif" />
+    </mj-attributes>
+
+    <mj-style>
+      .footer {
+        padding: 10px 0;
+      }
+
+    	.footer a,
+      .footer p {
+      	color: #696969;
+      }
+    </mj-style>
+  </mj-head>
+
+  <mj-body background-color="#f1f5f9">
+    <mj-wrapper background-color="#fff" border-radius="32px">
+      <mj-section>
+        <mj-column vertical-align="middle">
+          <mj-text align="left" font-size="24px">{{ veranstaltung }}</mj-text>
+        </mj-column>
+        <mj-column vertical-align="middle">
+          <mj-text align="right" font-size="18px">DLRG {{ gliederung }}</mj-text>
+        </mj-column>
+      </mj-section>
+
+      <mj-section>
+        <mj-column>
+          <mj-text font-size="30px" font-weight="500">
+            {{ subject }}
+          </mj-text>
+
+          <mj-text font-size="16px">
+            Moin {{ name }},
+          </mj-text>
+
+          {{> @partial-block }}
+        </mj-column>
+      </mj-section>
+
+      <mj-section>
+        <mj-column>
+          <mj-text>
+            Viele Grüße
+          </mj-text>
+          <mj-text>
+            Dein Orga-Team
+          </mj-text>
+        </mj-column>
+      </mj-section>
+    </mj-wrapper>
+
+    <mj-section css-class="footer" padding="10px 0 0 0">
+      <mj-column>
+        <!-- Logo von LV -->
+        <mj-image width="192px" src="{{ url 'img/gliederung_sh.png' }}"></mj-image>
+      </mj-column>
+    </mj-section>
+
+    <mj-section css-class="footer" padding="0">
+      <mj-column>
+        <mj-text align="center" font-size="12px">
+          <a href="{{ config 'public.legal.imprint' }}">Impressum</a>
+          <span> - </span>
+          <a href="{{ config 'public.legal.privacy' }}">Datenschutz</a>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

@@ -47,8 +47,8 @@ function getSearchCommand() {
           class="inset-0 absolute bg-black/40 z-50"
           @click="showMobileMenu = false"
         />
-        <div class="relative flex items-center justify-between pt-5 pb-5 lg:pb-4 shrink-0 space-y-1 z-10">
-          <div>
+        <div class="relative flex items-center justify-between pt-3 pb-3 lg:pt-5 lg:pb-4 shrink-0 space-y-1 z-10">
+          <div class="flex">
             <MobileMenuButton
               ref="mobileMenuButton"
               @click="showMobileMenu = !showMobileMenu"

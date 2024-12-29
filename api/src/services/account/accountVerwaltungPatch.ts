@@ -1,6 +1,7 @@
-import { Role, AccountStatus } from '@prisma/client'
+import { AccountStatus, Role } from '@prisma/client'
 import z from 'zod'
 
+import { AccountStatusMapping } from '../../enumMappings'
 import prisma from '../../prisma'
 import { defineProcedure } from '../../types/defineProcedure'
 import logActivity from '../../util/activity'
@@ -41,6 +42,11 @@ export const accountVerwaltungPatchProcedure = defineProcedure({
           select: {
             firstname: true,
             lastname: true,
+            gliederung: {
+              select: {
+                name: true,
+              },
+            },
           },
         },
       },
@@ -54,11 +60,20 @@ export const accountVerwaltungPatchProcedure = defineProcedure({
         subjectId: account.id,
         causerId: options.ctx.accountId,
       })
+
       await sendMail({
         to: account.email,
         subject: `Account ${account.status}`,
         categories: ['account', 'status'],
-        html: `Hallo ${account.person.firstname} ${account.person.lastname},\n\n\nDein Accountstatus wurde auf ${account.status} geändert.\n\nViele Grüße,\nDein Orga-Team`,
+        template: 'account-status-changed',
+        variables: {
+          name: `${account.person.firstname} ${account.person.lastname}`,
+          gliederung: account.person.gliederung!.name,
+          hostname: 'brahmsee.digital',
+          veranstaltung: 'brahmsee.digital',
+          status: AccountStatusMapping[account.status].human,
+          isActive: account.status === AccountStatus.AKTIV,
+        },
       })
     }
 

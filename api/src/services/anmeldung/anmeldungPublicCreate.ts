@@ -77,10 +77,17 @@ export async function handle(input: z.infer<typeof inputSchema>, isPublic: boole
     },
     select: {
       id: true,
+      firstname: true,
+      lastname: true,
       anmeldungen: {
         take: 1,
         orderBy: {
           createdAt: 'desc',
+        },
+      },
+      gliederung: {
+        select: {
+          name: true,
         },
       },
     },
@@ -105,7 +112,13 @@ export async function handle(input: z.infer<typeof inputSchema>, isPublic: boole
     to: input.data.email,
     subject: `${unterveranstaltung?.veranstaltung?.hostname?.hostname} Anmeldung erfolgreich`,
     categories: ['anmeldung', 'create'],
-    html: `Vielen Dank für deine Anmeldung zur Veranstaltung ${unterveranstaltung.veranstaltung.name} .`,
+    template: 'registration-successful',
+    variables: {
+      name: `${person.firstname} ${person.lastname}`,
+      gliederung: person.gliederung!.name,
+      veranstaltung: unterveranstaltung.veranstaltung.name,
+      hostname: unterveranstaltung.veranstaltung.hostname!.hostname,
+    },
   })
 
   return person
