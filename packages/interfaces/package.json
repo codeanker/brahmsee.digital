@@ -6,13 +6,16 @@
   "exports": {
     "./enums": "./src/enums/index.ts"
   },
+  "scripts": {
+    "tsc": "tsc --noCheck",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
+  },
   "devDependencies": {
     "@codeanker/typescript-config": "workspace:*",
     "@codeanker/eslint-config": "workspace:*",
     "@types/node": "catalog:",
     "typescript": "catalog:",
-    "eslint": "catalog:",
-    "@eslint/js": "catalog:",
-    "typescript-eslint": "catalog:"
+    "eslint": "catalog:"
   }
 }

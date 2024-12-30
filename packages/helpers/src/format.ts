@@ -1,4 +1,4 @@
-import { dayjs } from './dayjs'
+import { dayjs } from './dayjs.js'
 
 function formatDateWith(date: Date, format: string): string {
   return dayjs(date).format(format)

@@ -23,13 +23,13 @@ const ZAuthenticateJwtSchema = ZAuthenticateJwtPayloadSchema.extend({
 })
 type TAuthenticateJwtSchema = z.infer<typeof ZAuthenticateJwtSchema>
 
-function verify(token: string, jwtSecret): TAuthenticateJwtSchema {
+function verify(token: string, jwtSecret: string): TAuthenticateJwtSchema {
   const jwtAuth = jwt.verify(token, jwtSecret) as TAuthenticateJwtSchema
   ZAuthenticateJwtSchema.parse(jwtAuth)
   return jwtAuth
 }
 
-function sign(payload: TAuthenticateJwtPayloadSchema, jwtSecret, expiresIn) {
+function sign(payload: TAuthenticateJwtPayloadSchema, jwtSecret: string, expiresIn: string) {
   ZAuthenticateJwtPayloadSchema.parse(payload)
   return jwt.sign(payload, jwtSecret, {
     expiresIn,
@@ -81,7 +81,7 @@ export function createAuthentication<EnitiyId>({
     }
   }
 
-  async function getEntityIdFromHeader(authorizationHeader: string | undefined) {
+  function getEntityIdFromHeader(authorizationHeader: string | undefined) {
     if (authorizationHeader?.startsWith('Bearer ')) {
       const token = authorizationHeader.substring(7, authorizationHeader.length)
       const { sub: id } = verify(token, jwtSecret)

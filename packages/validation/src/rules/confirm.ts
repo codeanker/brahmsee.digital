@@ -1,4 +1,4 @@
-import { defineRule } from '../defineRule'
+import { defineRule } from '../defineRule.js'
 
 export function confirm(comparingValue?: string) {
   return defineRule((value, context) => {

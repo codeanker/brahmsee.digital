@@ -1,12 +1,25 @@
 {
   "name": "@codeanker/validation",
   "version": "1.0.0",
+  "type": "module",
   "exports": {
-    ".": "./index.ts",
-    "./rules": "./rules.ts"
+    ".": "./src/index.ts",
+    "./rules": "./src/rules.ts"
+  },
+  "scripts": {
+    "tsc": "tsc --noCheck",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
   },
   "dependencies": {
     "vee-validate": "^4.11.8"
+  },
+  "devDependencies": {
+    "@codeanker/typescript-config": "workspace:*",
+    "@codeanker/eslint-config": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "eslint": "catalog:"
   },
   "peerDependencies": {
     "vue": "^3.2.47"

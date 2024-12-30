@@ -1,6 +1,15 @@
 {
   "name": "@codeanker/eslint-config",
+  "type": "module",
   "exports": {
-    "./eslint-node-config": "./eslint.node.config.js"
+    "./eslint-node-config": "./eslint.node.config.js",
+    "./eslint-vue-config": "./eslint.vue.config.js"
+  },
+  "devDependencies": {
+    "@eslint/js": "catalog:",
+    "typescript-eslint": "catalog:"
+  },
+  "dependencies": {
+    "eslint-plugin-vue": "^9.18.1"
   }
 }

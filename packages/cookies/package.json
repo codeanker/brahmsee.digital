@@ -1,11 +1,24 @@
 {
   "name": "@codeanker/cookies",
   "version": "1.0.0",
+  "type": "module",
   "exports": {
     ".": "./index.ts"
+  },
+  "scripts": {
+    "tsc": "tsc --noCheck",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.16",
     "@heroicons/vue": "^2.1.1"
+  },
+  "devDependencies": {
+    "@codeanker/typescript-config": "workspace:*",
+    "@codeanker/eslint-config": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "eslint": "catalog:"
   }
 }

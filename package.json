@@ -12,6 +12,7 @@
   "engines": {
     "node": ">=20"
   },
+  "packageManager": "pnpm@9.15.2",
   "scripts": {
     "start:services": "docker-compose -f docker-compose-services.yml up --build",
     "start:api": "npm run dev -w ./api",
