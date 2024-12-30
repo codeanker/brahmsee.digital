@@ -393,14 +393,19 @@ importers:
         version: 5.7.2
 
   packages/eslint-config:
-    dependencies:
-      eslint-plugin-vue:
-        specifier: ^9.18.1
-        version: 9.32.0(eslint@9.17.0(jiti@1.21.7))
     devDependencies:
       '@eslint/js':
         specifier: 'catalog:'
         version: 9.17.0
+      eslint:
+        specifier: ^9.17.0
+        version: 9.17.0(jiti@1.21.7)
+      eslint-plugin-vue:
+        specifier: ^9.32.0
+        version: 9.32.0(eslint@9.17.0(jiti@1.21.7))
+      globals:
+        specifier: ^15.14.0
+        version: 15.14.0
       typescript-eslint:
         specifier: 'catalog:'
         version: 8.18.2(eslint@9.17.0(jiti@1.21.7))(typescript@5.7.2)
@@ -2568,6 +2573,10 @@ packages:
 
   globals@14.0.0:
     resolution: {integrity: sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ==}
+    engines: {node: '>=18'}
+
+  globals@15.14.0:
+    resolution: {integrity: sha512-OkToC372DtlQeje9/zHIo5CT8lRP/FUgEOKBEhU4e0abL7J7CD24fD9ohiLN5hagG/kWCYj4K5oaxxtj2Z0Dig==}
     engines: {node: '>=18'}
 
   gopd@1.2.0:
@@ -6704,6 +6713,8 @@ snapshots:
       type-fest: 0.20.2
 
   globals@14.0.0: {}
+
+  globals@15.14.0: {}
 
   gopd@1.2.0: {}
 

@@ -8,7 +8,10 @@
     "createAccount": "tsx src/scripts/createAccount.ts",
     "initMeilisearch": "tsx src/scripts/initMeilisearch.ts",
     "cli": "tsx src/cli/index.ts",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "tsc": "tsc --noCheck",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
   },
   "exports": {
     ".": {

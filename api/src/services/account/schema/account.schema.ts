@@ -31,7 +31,7 @@ type TGetAccountCreateDataSchema = z.infer<typeof ZGetAccountCreateDataSchema>
 export async function getAccountCreateData(data: TGetAccountCreateDataSchema): Promise<Prisma.AccountCreateInput> {
   return {
     email: data.email,
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+     
     password: data.password ? await hashPassword(data.password) : undefined,
     role: data.roleId,
     person: {

@@ -13,7 +13,7 @@ export async function getDirectories(source: string) {
       return (await isDirectory(filePath)) ? file : null
     })
   )
-  return dirs.filter((dir) => dir !== null) as string[]
+  return dirs.filter((dir) => dir !== null)
 }
 export function checkFileExists(file) {
   return access(file, constants.F_OK)

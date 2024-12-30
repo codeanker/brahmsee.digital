@@ -51,7 +51,6 @@ const model = computed<boolean>({
       v-if="label"
       class="ml-2"
       :for="id || name || label"
-      >{{ label }}</label
-    >
+    >{{ label }}</label>
   </div>
 </template>

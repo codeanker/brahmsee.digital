@@ -86,7 +86,7 @@ export const importAnmeldungen: Middleware = async function (ctx, next) {
       .pipe(csv.parse({ headers: true, delimiter: ';', ignoreEmpty: true }))
       .on('error', (error) => console.error(error))
       .on('data', (row) => createAnmeldung(row, unterveranstaltung))
-      // eslint-disable-next-line no-console
+       
       .on('end', (rowCount: number) => console.log(`Parsed ${rowCount} rows`))
 
     ctx.response.status = 200

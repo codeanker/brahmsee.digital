@@ -20,7 +20,7 @@ async function createUser() {
         value: option.value,
       }
     }),
-  })) as keyof typeof roleMapping
+  }))
 
   async function selectGliederung(): Promise<number> {
     return await search({
@@ -75,7 +75,7 @@ async function createUser() {
     subjectId: res.id,
   })
 
-  // eslint-disable-next-line no-console
+   
   console.log('Nutzer erstellt')
   process.exit()
 }

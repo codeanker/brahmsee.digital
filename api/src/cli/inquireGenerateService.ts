@@ -14,7 +14,7 @@ export async function inquireGenerateService(missingServices, context) {
 
   if (prismOrCustomAnswer.serviceType === 'prisma') {
     if (missingServices.length === 0) {
-      // eslint-disable-next-line no-console
+       
       console.log('No services to create')
       process.exit(0)
     }

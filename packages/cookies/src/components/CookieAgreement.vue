@@ -2,8 +2,8 @@
 import { ChevronLeftIcon } from '@heroicons/vue/24/solid'
 import { computed, ref } from 'vue'
 
-import Button from './Button.vue'
-import Switch from './Switch.vue'
+import Button from './CookieAgreementButton.vue'
+import Switch from './CookieAgreementSwitch.vue'
 
 const extended = ref(false)
 const tabs = ref([
@@ -12,7 +12,7 @@ const tabs = ref([
 ])
 const services = ref([{ name: 'Google Analytics', active: false, category: 'Analyse' }])
 
-const isCategory = computed(() => tabs.value[0].active)
+const isCategory = computed(() => tabs.value[0]?.active)
 </script>
 
 <template>
@@ -21,8 +21,12 @@ const isCategory = computed(() => tabs.value[0].active)
       <div class="flex justify-between mb-5">
         <div class="flex flex-col">
           <template v-if="!extended">
-            <div class="text-xl font-medium">Moin Moin,</div>
-            <div class="text-sm font-medium">Diese Website verwendet Cookies</div>
+            <div class="text-xl font-medium">
+              Moin Moin,
+            </div>
+            <div class="text-sm font-medium">
+              Diese Website verwendet Cookies
+            </div>
           </template>
           <template v-else>
             <div class="flex items-center space-x-2">
@@ -31,13 +35,19 @@ const isCategory = computed(() => tabs.value[0].active)
                 @click="extended = !extended"
               />
               <div class="flex flex-col">
-                <div class="text-xl font-medium">Cookie-Einstellungen</div>
-                <div class="text-sm font-medium">Hier können Sie Ihre Einstellungen vornehmen</div>
+                <div class="text-xl font-medium">
+                  Cookie-Einstellungen
+                </div>
+                <div class="text-sm font-medium">
+                  Hier können Sie Ihre Einstellungen vornehmen
+                </div>
               </div>
             </div>
           </template>
         </div>
-        <div class="text-5xl">🍪</div>
+        <div class="text-5xl">
+          🍪
+        </div>
       </div>
       <div class="mb-5">
         <template v-if="!extended">
@@ -77,14 +87,18 @@ const isCategory = computed(() => tabs.value[0].active)
                 class="grow flex flex-col"
               >
                 {{ service.category }}
-                <div class="text-sm font-medium text-gray-500">{{ service.category }}</div>
+                <div class="text-sm font-medium text-gray-500">
+                  {{ service.category }}
+                </div>
               </div>
               <div
                 v-else
                 class="grow flex flex-col"
               >
                 {{ service.name }}
-                <div class="text-sm font-medium text-gray-500">{{ service.category }}</div>
+                <div class="text-sm font-medium text-gray-500">
+                  {{ service.category }}
+                </div>
               </div>
               <Switch v-model="service.active" />
             </div>

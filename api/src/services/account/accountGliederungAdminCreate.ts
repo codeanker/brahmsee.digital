@@ -32,7 +32,7 @@ export const accountGliederungAdminCreateProcedure = defineProcedure({
   async handler(options) {
     let dlrgOauthId: undefined | string = undefined
     // check if jwtOAuthToken set and if so, check if it is valid
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+     
     if (options.input.data.jwtOAuthToken) {
       const jwtOAuthTokenPayload = ZOauthRegisterJwtPayloadSchema.parse(
         jwt.verify(options.input.data.jwtOAuthToken, `${config.authentication.secret}-oauth`)
@@ -41,7 +41,7 @@ export const accountGliederungAdminCreateProcedure = defineProcedure({
       dlrgOauthId = jwtOAuthTokenPayload.sub
     }
 
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+     
     if (!options.input.data.email) {
       throw new TRPCError({
         code: 'BAD_REQUEST',
@@ -70,7 +70,7 @@ export const accountGliederungAdminCreateProcedure = defineProcedure({
       },
     })
 
-    await sendMailConfirmEmailRequest(accountData.email, accountData.activationToken!)
+    await sendMailConfirmEmailRequest(accountData.email, accountData.activationToken)
 
     return res
   },

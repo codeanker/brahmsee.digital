@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+ 
 import { readFile } from 'fs/promises'
 import { join } from 'path'
 
@@ -140,11 +140,11 @@ export async function sendMail(mailParams: EMailParams) {
 
     // send mail
     if (config.mail.sendMails === 'true' && config.mail.sendgridApiKey) {
-      // eslint-disable-next-line no-console
+       
       console.log(`sending mail (${sendWithTemplate}) to "${mailParams.to}" with subject "${mailParams.subject}"`)
       return await sgMail.sendMultiple(mailToSend)
     } else {
-      /* eslint-disable no-console */
+       
       console.log('///////////////////////////////////////')
       console.log('Sending Email')
       console.log(`from: ${mailToSend.from}`)
@@ -153,7 +153,7 @@ export async function sendMail(mailParams: EMailParams) {
       console.log(`subject: ${mailToSend.subject}`)
       console.log(mailToSend.html)
       console.log('////////////////////////////////////////')
-      /* eslint-enable no-console */
+       
       return mailToSend
     }
   } catch (error: any) {

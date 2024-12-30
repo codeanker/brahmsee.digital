@@ -1,1 +1,1 @@
-export { default as CookieAgreement } from './src/components/CookieAgreement.vue'
+export { default as CookieAgreement } from './components/CookieAgreement.vue'
