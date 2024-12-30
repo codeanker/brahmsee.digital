@@ -1,9 +1,9 @@
 import { Role, type Prisma } from '@prisma/client'
 import z from 'zod'
 
-import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
-import { defineQuery } from '../../types/defineQuery'
+import prisma from "../../prisma.js"
+import { defineProcedure } from "../../types/defineProcedure.js"
+import { defineQuery } from "../../types/defineQuery.js"
 
 const inputSchema = defineQuery({
   filter: z.strictObject({

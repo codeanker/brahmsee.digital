@@ -1,6 +1,6 @@
 import { QualificationFunk } from '@prisma/client'
 
-import { defineEnumMapping } from './defineEnumMapping'
+import { defineEnumMapping } from "./defineEnumMapping.js"
 
 export const QualificationFunkMapping = defineEnumMapping<QualificationFunk>({
   AUSBILDER_BOS_SPRECHFUNK: { human: 'Ausbilder BOS Sprechfunk' },

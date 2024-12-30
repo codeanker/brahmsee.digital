@@ -1,11 +1,11 @@
-/* eslint-disable prettier/prettier */ // Prettier ignored is because this file is generated
-import { mergeRouters } from '../../trpc'
+// Prettier ignored is because this file is generated
+import { mergeRouters } from "../../trpc.js"
 
-import { veranstaltungGliederungListProcedure } from './veranstaltungGliederungList'
-import { veranstaltungVerwaltungCreateProcedure } from './veranstaltungVerwaltungCreate'
-import { veranstaltungVerwaltungGetProcedure } from './veranstaltungVerwaltungGet'
-import { veranstaltungVerwaltungListProcedure, veranstaltungVerwaltungCountProcedure } from './veranstaltungVerwaltungList'
-import { veranstaltungVerwaltungPatchProcedure } from './veranstaltungVerwaltungPatch'
+import { veranstaltungGliederungListProcedure } from "./veranstaltungGliederungList.js"
+import { veranstaltungVerwaltungCreateProcedure } from "./veranstaltungVerwaltungCreate.js"
+import { veranstaltungVerwaltungGetProcedure } from "./veranstaltungVerwaltungGet.js"
+import { veranstaltungVerwaltungListProcedure, veranstaltungVerwaltungCountProcedure } from "./veranstaltungVerwaltungList.js"
+import { veranstaltungVerwaltungPatchProcedure } from "./veranstaltungVerwaltungPatch.js"
 // Import Routes here - do not delete this line
 
 export const veranstaltungRouter = mergeRouters(

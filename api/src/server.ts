@@ -7,13 +7,13 @@ import session from 'koa-session'
 import serve from 'koa-static'
 import { createKoaMiddleware } from 'trpc-koa-adapter'
 
-import config from './config'
-import { createContext } from './context'
-import { logger } from './logger'
-import cacheControl from './middleware/cache-control'
-import router from './routes'
+import config from "./config.js"
+import { createContext } from "./context.js"
+import { logger } from "./logger.js"
+import cacheControl from "./middleware/cache-control.js"
+import router from "./routes/index.js"
 
-import { appRouter } from './index'
+import { appRouter } from "./index.js"
 
 export const app = new Koa()
 

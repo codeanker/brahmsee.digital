@@ -2,9 +2,9 @@ import { Role } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
 import z from 'zod'
 
-import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
-import { defineQuery } from '../../types/defineQuery'
+import prisma from "../../prisma.js"
+import { defineProcedure } from "../../types/defineProcedure.js"
+import { defineQuery } from "../../types/defineQuery.js"
 
 export const personGliederungListProcedure = defineProcedure({
   key: 'gliederungList',

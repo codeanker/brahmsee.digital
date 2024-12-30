@@ -1,4 +1,4 @@
-import { syncAllPersonsToMeili } from '../meilisearch/person'
+import { syncAllPersonsToMeili } from "../meilisearch/person.js"
 
 initMeilisearch()
 async function initMeilisearch() {

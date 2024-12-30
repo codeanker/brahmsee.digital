@@ -1,8 +1,8 @@
 import axios from 'axios'
 import z from 'zod'
 
-import config from '../../config'
-import { defineProcedure } from '../../types/defineProcedure'
+import config from "../../config.js"
+import { defineProcedure } from "../../types/defineProcedure.js"
 
 export const addressFindActionProcedure = defineProcedure({
   key: 'findAddress',

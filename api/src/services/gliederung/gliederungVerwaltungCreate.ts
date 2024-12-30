@@ -1,9 +1,9 @@
 import { Role } from '@prisma/client'
 import z from 'zod'
 
-import prisma from '../../prisma'
-import type { AuthenticatedContext } from '../../trpc'
-import { defineProcedure } from '../../types/defineProcedure'
+import prisma from "../../prisma.js"
+import type { AuthenticatedContext } from "../../trpc.js"
+import { defineProcedure } from "../../types/defineProcedure.js"
 
 export const ZGliederungVerwaltungCreateInputSchema = z.strictObject({
   data: z.strictObject({

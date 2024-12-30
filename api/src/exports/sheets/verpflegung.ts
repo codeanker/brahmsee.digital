@@ -2,11 +2,11 @@ import { AnmeldungStatus, Essgewohnheit, NahrungsmittelIntoleranz, Role } from '
 import dayjs from 'dayjs'
 import XLSX from 'xlsx'
 
-import { getEntityIdFromHeader } from '../../authentication'
-import prisma from '../../prisma'
-import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin'
-import { getSecurityWorksheet } from '../helpers/getSecurityWorksheet'
-import { getWorkbookDefaultProps } from '../helpers/getWorkbookDefaultProps'
+import { getEntityIdFromHeader } from "../../authentication.js"
+import prisma from "../../prisma.js"
+import { getGliederungRequireAdmin } from "../../util/getGliederungRequireAdmin.js"
+import { getSecurityWorksheet } from "../helpers/getSecurityWorksheet.js"
+import { getWorkbookDefaultProps } from "../helpers/getWorkbookDefaultProps.js"
 
 export async function veranstaltungVerpflegung(ctx) {
   const jwt = ctx.query.jwt

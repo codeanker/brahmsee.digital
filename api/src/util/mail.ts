@@ -7,10 +7,10 @@ import { getProperty } from 'dot-prop'
 import Handlebars from 'handlebars'
 import mjml2html from 'mjml'
 
-import config from '.././config'
-import { logger } from '../logger'
+import config from ".././config.js"
+import { logger } from "../logger.js"
 
-import logActivity from './activity'
+import logActivity from "./activity.js"
 
 sgMail.setApiKey(config.mail.sendgridApiKey)
 

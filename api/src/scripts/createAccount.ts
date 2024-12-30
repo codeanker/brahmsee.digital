@@ -1,10 +1,10 @@
 import { input, password as passwordInput, select, search } from '@inquirer/prompts'
 import { Role } from '@prisma/client'
 
-import { getEnumOptions, roleMapping } from '../enumMappings'
-import prisma from '../prisma'
-import { getAccountCreateData } from '../services/account/schema/account.schema'
-import logActivity from '../util/activity'
+import { getEnumOptions, roleMapping } from "../enumMappings.js"
+import prisma from "../prisma.js"
+import { getAccountCreateData } from "../services/account/schema/account.schema.js"
+import logActivity from "../util/activity.js"
 
 createUser()
 async function createUser() {

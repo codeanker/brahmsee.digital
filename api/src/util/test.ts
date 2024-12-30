@@ -1,7 +1,7 @@
 import { AccountStatus, Role } from '@prisma/client'
 
-import { authenticationLogin } from '../authentication'
-import prisma from '../prisma'
+import { authenticationLogin } from "../authentication.js"
+import prisma from "../prisma.js"
 
 import { hashPassword } from '@codeanker/authentication'
 

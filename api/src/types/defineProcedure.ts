@@ -2,7 +2,7 @@ import type { Role } from '@prisma/client'
 import type { BuildProcedure, CreateRouterInner, ProcedureBuilder, ProcedureParams } from '@trpc/server'
 import type { z } from 'zod'
 
-import { protectedProcedure, publicProcedure, router } from '../trpc'
+import { protectedProcedure, publicProcedure, router } from "../trpc.js"
 
 type GetProcedureConfig<TProcedure extends ProcedureBuilder<any>> =
   TProcedure extends ProcedureBuilder<infer T> ? T : never

@@ -2,12 +2,12 @@ import { TRPCError } from '@trpc/server'
 import dayjs from 'dayjs'
 import { z } from 'zod'
 
-import prisma from '../../prisma'
-import { customFieldValuesCreateMany, defineCustomFieldValues } from '../../types/defineCustomFieldValues'
-import { defineProcedure } from '../../types/defineProcedure'
-import logActivity from '../../util/activity'
-import { sendMail } from '../../util/mail'
-import { personSchema, getPersonCreateData } from '../person/schema/person.schema'
+import prisma from "../../prisma.js"
+import { customFieldValuesCreateMany, defineCustomFieldValues } from "../../types/defineCustomFieldValues.js"
+import { defineProcedure } from "../../types/defineProcedure.js"
+import logActivity from "../../util/activity.js"
+import { sendMail } from "../../util/mail.js"
+import { personSchema, getPersonCreateData } from "../person/schema/person.schema.js"
 
 export const inputSchema = z.strictObject({
   data: personSchema.extend({

@@ -1,10 +1,10 @@
 import { Role } from '@prisma/client'
 import { z } from 'zod'
 
-import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
+import prisma from "../../prisma.js"
+import { defineProcedure } from "../../types/defineProcedure.js"
 
-import { customFieldSchema } from './schema/customField.schema'
+import { customFieldSchema } from "./schema/customField.schema.js"
 
 export const customFieldsVeranstaltungUpdate = defineProcedure({
   key: 'veranstaltungUpdate',

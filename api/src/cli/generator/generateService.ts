@@ -1,15 +1,15 @@
 import { mkdir, readFile, writeFile } from 'fs/promises'
 import path from 'path'
 
-import { checkFileExists } from '../../util/files'
+import { checkFileExists } from "../../util/files.js"
 
-import { applyInserts, type GeneratorContext } from './utlils'
+import { applyInserts, type GeneratorContext } from "./utlils.js"
 
 export async function generateService(name: string, context: GeneratorContext) {
   const sericeDir = path.join(context.servicesDir, name)
 
   const servicePath = path.join(sericeDir, `${name}.router.ts`)
-  const content = `/* eslint-disable prettier/prettier */ // Prettier ignored is because this file is generated
+  const content = `// Prettier ignored is because this file is generated
 import { mergeRouters } from '../../trpc'
 
 // Import Routes here - do not delete this line
@@ -39,5 +39,5 @@ export const ${name}Router = mergeRouters(
   const indexPath = path.join(context.servicesDir, 'index.ts')
   const currentContent = await readFile(indexPath, 'utf-8')
   const newContent = applyInserts(currentContent.split('\n'), inserts).join('\n')
-  writeFile(indexPath, newContent)
+  await writeFile(indexPath, newContent)
 }

@@ -1,9 +1,9 @@
 import { AnmeldungStatus, Role } from '@prisma/client'
 import z from 'zod'
 
-import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
-import { ZPaginationSchema } from '../../types/defineQuery'
+import prisma from "../../prisma.js"
+import { defineProcedure } from "../../types/defineProcedure.js"
+import { ZPaginationSchema } from "../../types/defineQuery.js"
 
 const filter = z.strictObject({
   unterveranstaltungId: z.number().optional(),

@@ -1,8 +1,8 @@
 import { writeFile } from 'fs/promises'
 import path from 'path'
 
-import { toPascalCase } from '../../util/casing'
-import { checkFileExists } from '../../util/files'
+import { toPascalCase } from "../../util/casing.js"
+import { checkFileExists } from "../../util/files.js"
 
 import {
   type ProcedureOptions,
@@ -10,7 +10,7 @@ import {
   addProcedureToRouter,
   getProtectionContent,
   type GeneratorContext,
-} from './utlils'
+} from "./utlils.js"
 
 export async function generateProcedurePatch(procedure: ProcedureOptions, context: GeneratorContext) {
   const procedureType = 'patch'
@@ -51,7 +51,6 @@ export const ${procedureFileName}Procedure = defineProcedure({
   },
 })
 `
-  writeFile(procedurePath, content)
-
+  await writeFile(procedurePath, content)
   await addProcedureToRouter(procedure, sericeDir, procedureType)
 }

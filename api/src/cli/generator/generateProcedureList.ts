@@ -1,8 +1,8 @@
 import { writeFile } from 'fs/promises'
 import path from 'path'
 
-import { toPascalCase } from '../../util/casing'
-import { checkFileExists } from '../../util/files'
+import { toPascalCase } from "../../util/casing.js"
+import { checkFileExists } from "../../util/files.js"
 
 import {
   type ProcedureOptions,
@@ -10,7 +10,7 @@ import {
   addListProcedureToRouter,
   getProtectionContent,
   type GeneratorContext,
-} from './utlils'
+} from "./utlils.js"
 
 export async function generateProcedureList(procedure: ProcedureOptions, context: GeneratorContext) {
   const sericeDir = path.join(context.servicesDir, procedure.service)
@@ -71,7 +71,6 @@ export const ${procedureFileName}CountProcedure = defineProcedure({
   },
 })
 `
-  writeFile(procedurePath, content)
-
+  await writeFile(procedurePath, content)
   await addListProcedureToRouter(procedure, sericeDir, procedureType)
 }

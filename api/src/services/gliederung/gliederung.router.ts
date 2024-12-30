@@ -1,12 +1,12 @@
-/* eslint-disable prettier/prettier */ // Prettier ignored is because this file is generated
-import { mergeRouters } from '../../trpc'
+// Prettier ignored is because this file is generated
+import { mergeRouters } from "../../trpc.js"
 
-import { gliederungListProcedure, gliederungCountProcedure } from './gliederungList'
-import { gliederungPublicGetProcedure } from './gliederungPublicGet'
-import { gliederungPublicListProcedure } from './gliederungPublicList'
-import { gliederungVerwaltungCreateProcedure } from './gliederungVerwaltungCreate'
-import { gliederungVerwaltungGetProcedure } from './gliederungVerwaltungGet'
-import { gliederungVerwaltungPatchProcedure } from './gliederungVerwaltungPatch'
+import { gliederungListProcedure, gliederungCountProcedure } from "./gliederungList.js"
+import { gliederungPublicGetProcedure } from "./gliederungPublicGet.js"
+import { gliederungPublicListProcedure } from "./gliederungPublicList.js"
+import { gliederungVerwaltungCreateProcedure } from "./gliederungVerwaltungCreate.js"
+import { gliederungVerwaltungGetProcedure } from "./gliederungVerwaltungGet.js"
+import { gliederungVerwaltungPatchProcedure } from "./gliederungVerwaltungPatch.js"
 // Import Routes here - do not delete this line
 
 export const gliederungRouter = mergeRouters(

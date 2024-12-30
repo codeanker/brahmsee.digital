@@ -1,6 +1,6 @@
 import { QualificationSchwimmer } from '@prisma/client'
 
-import { defineEnumMapping } from './defineEnumMapping'
+import { defineEnumMapping } from "./defineEnumMapping.js"
 
 export const QualificationSchwimmerMapping = defineEnumMapping<QualificationSchwimmer>({
   BRONZE: { human: 'Bronze' },

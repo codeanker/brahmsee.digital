@@ -3,8 +3,8 @@ import type { UUID } from 'crypto'
 import { Role } from '@prisma/client'
 import z from 'zod'
 
-import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
+import prisma from "../../prisma.js"
+import { defineProcedure } from "../../types/defineProcedure.js"
 
 export const unterveranstaltungVerwaltungPatchProcedure = defineProcedure({
   key: 'verwaltungPatch',

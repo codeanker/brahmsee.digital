@@ -2,9 +2,9 @@ import jwt from 'jsonwebtoken'
 import type { Context } from 'koa'
 import { z } from 'zod'
 
-import { sign } from '../authentication'
-import config from '../config'
-import prisma from '../prisma'
+import { sign } from "../authentication.js"
+import config from "../config.js"
+import prisma from "../prisma.js"
 
 const ZUserInfoReponse = z.object({
   access_token: z.string(),

@@ -3,13 +3,13 @@ import { TRPCError } from '@trpc/server'
 import jwt from 'jsonwebtoken'
 import z from 'zod'
 
-import config from '../../config'
-import prisma from '../../prisma'
-import { ZOauthRegisterJwtPayloadSchema } from '../../routes/connect'
-import { defineProcedure } from '../../types/defineProcedure'
+import config from "../../config.js"
+import prisma from "../../prisma.js"
+import { ZOauthRegisterJwtPayloadSchema } from "../../routes/connect.js"
+import { defineProcedure } from "../../types/defineProcedure.js"
 
-import { sendMailConfirmEmailRequest } from './helpers/sendMailConfirmEmailRequest'
-import { getAccountCreateData } from './schema/account.schema'
+import { sendMailConfirmEmailRequest } from "./helpers/sendMailConfirmEmailRequest.js"
+import { getAccountCreateData } from "./schema/account.schema.js"
 
 const ZAccountGliederungAdminCreateInput = z.strictObject({
   data: z.strictObject({

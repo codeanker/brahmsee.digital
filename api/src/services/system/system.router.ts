@@ -1,7 +1,7 @@
-/* eslint-disable prettier/prettier */ // Prettier ignored is because this file is generated
-import { mergeRouters } from '../../trpc'
+// Prettier ignored is because this file is generated
+import { mergeRouters } from "../../trpc.js"
 
-import { systemHostnamesGetProcedure } from './systemHostnamesGet'
+import { systemHostnamesGetProcedure } from "./systemHostnamesGet.js"
 
 // Import Routes here - do not delete this line
 

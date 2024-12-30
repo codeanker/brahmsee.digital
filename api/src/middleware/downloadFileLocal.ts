@@ -4,8 +4,8 @@ import * as path from 'path'
 import type { Middleware } from 'koa'
 import mime from 'mime-types'
 
-import config from '../config'
-import prisma from '../prisma'
+import config from "../config.js"
+import prisma from "../prisma.js"
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const downloadFileLocal: Middleware = async function (ctx, next) {

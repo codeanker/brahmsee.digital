@@ -1,10 +1,10 @@
 import { Role } from '@prisma/client'
 import z from 'zod'
 
-import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
+import prisma from "../../prisma.js"
+import { defineProcedure } from "../../types/defineProcedure.js"
 
-import { getPersonCreateData, personSchema } from './schema/person.schema'
+import { getPersonCreateData, personSchema } from "./schema/person.schema.js"
 
 export const personGliederungPatchProcedure = defineProcedure({
   key: 'gliederungPatch',

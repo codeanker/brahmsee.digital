@@ -1,10 +1,10 @@
 import { Role, type Prisma } from '@prisma/client'
 import z from 'zod'
 
-import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
-import { defineQuery, getOrderBy } from '../../types/defineQuery'
-import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin'
+import prisma from "../../prisma.js"
+import { defineProcedure } from "../../types/defineProcedure.js"
+import { defineQuery, getOrderBy } from "../../types/defineQuery.js"
+import { getGliederungRequireAdmin } from "../../util/getGliederungRequireAdmin.js"
 
 const inputSchema = defineQuery({
   filter: z.strictObject({
