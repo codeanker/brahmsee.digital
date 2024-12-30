@@ -1,6 +1,6 @@
 import { Konfektionsgroesse } from '@prisma/client'
 
-import { defineEnumMapping } from "../defineEnumMapping.js"
+import { defineEnumMapping } from '../defineEnumMapping.js'
 
 export const KonfektionsgroesseMapping = defineEnumMapping<Konfektionsgroesse>({
   JUNIOR_98_104: { human: 'Junior 98/104' },

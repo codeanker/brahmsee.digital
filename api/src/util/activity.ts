@@ -1,7 +1,7 @@
 import { ActivityType } from '@prisma/client'
 
-import { logger } from "../logger.js"
-import prisma from "../prisma.js"
+import { logger } from '../logger.js'
+import prisma from '../prisma.js'
 
 interface Opts {
   type: ActivityType

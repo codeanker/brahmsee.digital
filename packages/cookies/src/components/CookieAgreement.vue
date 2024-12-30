@@ -21,12 +21,8 @@ const isCategory = computed(() => tabs.value[0]?.active)
       <div class="flex justify-between mb-5">
         <div class="flex flex-col">
           <template v-if="!extended">
-            <div class="text-xl font-medium">
-              Moin Moin,
-            </div>
-            <div class="text-sm font-medium">
-              Diese Website verwendet Cookies
-            </div>
+            <div class="text-xl font-medium">Moin Moin,</div>
+            <div class="text-sm font-medium">Diese Website verwendet Cookies</div>
           </template>
           <template v-else>
             <div class="flex items-center space-x-2">
@@ -35,19 +31,13 @@ const isCategory = computed(() => tabs.value[0]?.active)
                 @click="extended = !extended"
               />
               <div class="flex flex-col">
-                <div class="text-xl font-medium">
-                  Cookie-Einstellungen
-                </div>
-                <div class="text-sm font-medium">
-                  Hier können Sie Ihre Einstellungen vornehmen
-                </div>
+                <div class="text-xl font-medium">Cookie-Einstellungen</div>
+                <div class="text-sm font-medium">Hier können Sie Ihre Einstellungen vornehmen</div>
               </div>
             </div>
           </template>
         </div>
-        <div class="text-5xl">
-          🍪
-        </div>
+        <div class="text-5xl">🍪</div>
       </div>
       <div class="mb-5">
         <template v-if="!extended">

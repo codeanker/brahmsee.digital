@@ -12,8 +12,8 @@ import {
 } from '@prisma/client'
 import { z } from 'zod'
 
-import { addressSchema, createOrUpdateAddress } from "../../address/schema/address.schema.js"
-import { kontaktSchema, type TKontaktSchema } from "../../kontakt/schema/kontakt.schema.js"
+import { addressSchema, createOrUpdateAddress } from '../../address/schema/address.schema.js'
+import { kontaktSchema, type TKontaktSchema } from '../../kontakt/schema/kontakt.schema.js'
 
 export type TPersonSchema = z.infer<typeof personSchema>
 export const personSchema = z.strictObject({

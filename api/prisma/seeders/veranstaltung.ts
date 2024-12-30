@@ -1,9 +1,9 @@
 import { fakerDE as faker } from '@faker-js/faker'
 import { PrismaClient } from '@prisma/client'
 
-import logActivity from "../../src/util/activity.js"
+import logActivity from '../../src/util/activity.js'
 
-import { Seeder } from "..js"
+import { Seeder } from '..js'
 
 const createVeranstaltung: Seeder = async (prisma: PrismaClient) => {
   const veranstaltung = await prisma.veranstaltung.create({

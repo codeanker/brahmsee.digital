@@ -3,9 +3,9 @@ import type { UUID } from 'crypto'
 import { Role } from '@prisma/client'
 import z from 'zod'
 
-import prisma from "../../prisma.js"
-import { defineProcedure } from "../../types/defineProcedure.js"
-import { getGliederungRequireAdmin } from "../../util/getGliederungRequireAdmin.js"
+import prisma from '../../prisma.js'
+import { defineProcedure } from '../../types/defineProcedure.js'
+import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
 
 export const unterveranstaltungGliederungPatchProcedure = defineProcedure({
   key: 'gliederungPatch',

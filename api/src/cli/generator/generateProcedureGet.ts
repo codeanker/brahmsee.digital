@@ -1,8 +1,8 @@
 import { writeFile } from 'fs/promises'
 import path from 'path'
 
-import { toPascalCase } from "../../util/casing.js"
-import { checkFileExists } from "../../util/files.js"
+import { toPascalCase } from '../../util/casing.js'
+import { checkFileExists } from '../../util/files.js'
 
 import {
   type ProcedureOptions,
@@ -10,7 +10,7 @@ import {
   addProcedureToRouter,
   getProtectionContent,
   type GeneratorContext,
-} from "./utlils.js"
+} from './utlils.js'
 
 export async function generateProcedureGet(procedure: ProcedureOptions, context: GeneratorContext) {
   const sericeDir = path.join(context.servicesDir, procedure.service)

@@ -1,6 +1,6 @@
 import inquirer from 'inquirer'
 
-import { generateService } from "./generator/generateService.js"
+import { generateService } from './generator/generateService.js'
 
 export async function inquireGenerateService(missingServices, context) {
   const prismOrCustomAnswer = (await inquirer.prompt([
@@ -14,7 +14,6 @@ export async function inquireGenerateService(missingServices, context) {
 
   if (prismOrCustomAnswer.serviceType === 'prisma') {
     if (missingServices.length === 0) {
-       
       console.log('No services to create')
       process.exit(0)
     }

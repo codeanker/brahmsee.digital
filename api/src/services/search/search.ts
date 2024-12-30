@@ -2,9 +2,9 @@ import { Role } from '@prisma/client'
 import type { MultiSearchQuery } from 'meilisearch'
 import z from 'zod'
 
-import { meilisearchClient } from "../../meilisearch/index.js"
-import { defineProcedure } from "../../types/defineProcedure.js"
-import { getGliederungRequireAdmin } from "../../util/getGliederungRequireAdmin.js"
+import { meilisearchClient } from '../../meilisearch/index.js'
+import { defineProcedure } from '../../types/defineProcedure.js'
+import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
 
 export const searchProcedure = defineProcedure({
   key: 'search',

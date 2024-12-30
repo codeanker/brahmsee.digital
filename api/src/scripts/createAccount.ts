@@ -1,10 +1,10 @@
 import { input, password as passwordInput, select, search } from '@inquirer/prompts'
 import { Role } from '@prisma/client'
 
-import { getEnumOptions, roleMapping } from "../enumMappings.js"
-import prisma from "../prisma.js"
-import { getAccountCreateData } from "../services/account/schema/account.schema.js"
-import logActivity from "../util/activity.js"
+import { getEnumOptions, roleMapping } from '../enumMappings.js'
+import prisma from '../prisma.js'
+import { getAccountCreateData } from '../services/account/schema/account.schema.js'
+import logActivity from '../util/activity.js'
 
 createUser()
 async function createUser() {
@@ -12,7 +12,7 @@ async function createUser() {
   const firstname = await input({ message: 'Vorname' })
   const lastname = await input({ message: 'Nachname' })
   const password = await passwordInput({ message: 'Passwort' })
-  const roleId = (await select({
+  const roleId = await select({
     message: 'Rolle',
     choices: getEnumOptions(roleMapping).map((option) => {
       return {
@@ -20,7 +20,7 @@ async function createUser() {
         value: option.value,
       }
     }),
-  }))
+  })
 
   async function selectGliederung(): Promise<number> {
     return await search({
@@ -75,7 +75,6 @@ async function createUser() {
     subjectId: res.id,
   })
 
-   
   console.log('Nutzer erstellt')
   process.exit()
 }

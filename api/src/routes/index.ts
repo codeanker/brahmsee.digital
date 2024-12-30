@@ -1,13 +1,13 @@
 import Router from 'koa-router'
 import { renderTrpcPanel } from 'trpc-panel'
 
-import { appRouter } from "...js"
-import config from "../config.js"
-import addExports from "../exports.js"
-import addMiddlewares from "../middleware.js"
-import { isDevelopment } from "../util/is-production.js"
+import { appRouter } from '...js'
+import config from '../config.js'
+import addExports from '../exports.js'
+import addMiddlewares from '../middleware.js'
+import { isDevelopment } from '../util/is-production.js'
 
-import connect from "./connect.js"
+import connect from './connect.js'
 
 const koaRouter = new Router()
 

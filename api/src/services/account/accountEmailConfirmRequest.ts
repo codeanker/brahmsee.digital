@@ -1,11 +1,11 @@
 import { Role } from '@prisma/client'
 import z from 'zod'
 
-import prisma from "../../prisma.js"
-import { defineProcedure } from "../../types/defineProcedure.js"
-import logActivity from "../../util/activity.js"
+import prisma from '../../prisma.js'
+import { defineProcedure } from '../../types/defineProcedure.js'
+import logActivity from '../../util/activity.js'
 
-import { sendMailConfirmEmailRequest } from "./helpers/sendMailConfirmEmailRequest.js"
+import { sendMailConfirmEmailRequest } from './helpers/sendMailConfirmEmailRequest.js'
 
 export const accountEmailConfirmRequestProcedure = defineProcedure({
   key: 'emailConfirmRequest',

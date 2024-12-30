@@ -1,7 +1,7 @@
 import z from 'zod'
 
-import prisma from "../../prisma.js"
-import { defineProcedure } from "../../types/defineProcedure.js"
+import prisma from '../../prisma.js'
+import { defineProcedure } from '../../types/defineProcedure.js'
 
 export const unterveranstaltungPublicGetProcedure = defineProcedure({
   key: 'publicGet',

@@ -1,6 +1,6 @@
 import { createLogger, format, transports } from 'winston'
 
-import config from "./config.js"
+import config from './config.js'
 
 const myFormat = format.printf(({ level, message, label, timestamp, metadata }) => {
   const base = `${timestamp} [${label}] ${level} >> ${message}`

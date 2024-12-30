@@ -1,8 +1,8 @@
 import { PrismaClient } from '@prisma/client'
 
-import logActivity from "../../src/util/activity.js"
+import logActivity from '../../src/util/activity.js'
 
-import { Seeder } from "..js"
+import { Seeder } from '..js'
 
 export const gliederungen: { edv: string; name: string }[] = [
   { edv: '1600000', name: 'DLRG Bundesverband' },

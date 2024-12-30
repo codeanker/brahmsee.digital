@@ -9,9 +9,9 @@ import {
   Unterveranstaltung,
 } from '@prisma/client'
 
-import logActivity from "../../src/util/activity.js"
+import logActivity from '../../src/util/activity.js'
 
-import { Seeder } from "..js"
+import { Seeder } from '..js'
 
 const ENTRY_COUNT = 1000
 

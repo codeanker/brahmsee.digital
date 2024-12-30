@@ -1,8 +1,8 @@
 import z from 'zod'
 
-import prisma from "../../prisma.js"
-import { defineProcedure } from "../../types/defineProcedure.js"
-import { defineQuery, getOrderBy } from "../../types/defineQuery.js"
+import prisma from '../../prisma.js'
+import { defineProcedure } from '../../types/defineProcedure.js'
+import { defineQuery, getOrderBy } from '../../types/defineQuery.js'
 
 export const gliederungPublicListProcedure = defineProcedure({
   key: 'publicList',

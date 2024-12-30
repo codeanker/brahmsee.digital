@@ -1,8 +1,8 @@
 import axios from 'axios'
 import z from 'zod'
 
-import config from "../../config.js"
-import { defineProcedure } from "../../types/defineProcedure.js"
+import config from '../../config.js'
+import { defineProcedure } from '../../types/defineProcedure.js'
 
 export const addressFindActionProcedure = defineProcedure({
   key: 'findAddress',
@@ -64,7 +64,6 @@ export const addressFindActionProcedure = defineProcedure({
         }
       })
     } catch (e) {
-       
       console.error(e)
       return []
     }

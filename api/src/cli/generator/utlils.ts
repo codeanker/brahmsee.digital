@@ -1,7 +1,7 @@
 import { readFile, writeFile } from 'fs/promises'
 import path from 'path'
 
-import { toPascalCase } from "../../util/casing.js"
+import { toPascalCase } from '../../util/casing.js'
 
 export type GeneratorContext = {
   servicesDir: string

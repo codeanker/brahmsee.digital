@@ -1,11 +1,11 @@
 import { Role } from '@prisma/client'
 import z from 'zod'
 
-import { updateMeiliPerson } from "../../meilisearch/person.js"
-import prisma from "../../prisma.js"
-import { defineProcedure } from "../../types/defineProcedure.js"
+import { updateMeiliPerson } from '../../meilisearch/person.js'
+import prisma from '../../prisma.js'
+import { defineProcedure } from '../../types/defineProcedure.js'
 
-import { personSchema, getPersonCreateData } from "./schema/person.schema.js"
+import { personSchema, getPersonCreateData } from './schema/person.schema.js'
 
 export const personVerwaltungCreateProcedure = defineProcedure({
   key: 'verwaltungCreate',

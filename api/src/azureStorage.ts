@@ -1,6 +1,6 @@
 import { BlobServiceClient, StorageSharedKeyCredential } from '@azure/storage-blob'
 
-import config from "./config.js"
+import config from './config.js'
 
 const isAzureConfigured =
   config.fileProviders.AZURE.account !== '' &&

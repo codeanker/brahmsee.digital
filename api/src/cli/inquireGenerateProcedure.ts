@@ -1,13 +1,13 @@
 import inquirer from 'inquirer'
 
-import { generateProcedureAction } from "./generator/generateProcedureAction.js"
-import { generateProcedureCreate } from "./generator/generateProcedureCreate.js"
-import { generateProcedureDelete } from "./generator/generateProcedureDelete.js"
-import { generateProcedureGet } from "./generator/generateProcedureGet.js"
-import { generateProcedureList } from "./generator/generateProcedureList.js"
-import { generateProcedurePatch } from "./generator/generateProcedurePatch.js"
-import type { GenerateProcedureType, GeneratorContext } from "./generator/utlils.js"
-import { inquireProtection } from "./inquireProtection.js"
+import { generateProcedureAction } from './generator/generateProcedureAction.js'
+import { generateProcedureCreate } from './generator/generateProcedureCreate.js'
+import { generateProcedureDelete } from './generator/generateProcedureDelete.js'
+import { generateProcedureGet } from './generator/generateProcedureGet.js'
+import { generateProcedureList } from './generator/generateProcedureList.js'
+import { generateProcedurePatch } from './generator/generateProcedurePatch.js'
+import type { GenerateProcedureType, GeneratorContext } from './generator/utlils.js'
+import { inquireProtection } from './inquireProtection.js'
 
 export type ProcedureArgs = { service?: string; usecase?: string; action?: GenerateProcedureType; protection?: string }
 export async function inquireGenerateProcedure(args: ProcedureArgs, context: GeneratorContext, services: string[]) {

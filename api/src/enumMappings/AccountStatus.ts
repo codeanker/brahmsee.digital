@@ -1,6 +1,6 @@
 import { AccountStatus } from '@prisma/client'
 
-import { defineEnumMapping } from "./defineEnumMapping.js"
+import { defineEnumMapping } from './defineEnumMapping.js'
 
 export const AccountStatusMapping = defineEnumMapping<AccountStatus>({
   OFFEN: { human: 'Offen' },

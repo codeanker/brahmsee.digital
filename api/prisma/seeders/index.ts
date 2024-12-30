@@ -2,13 +2,13 @@
 import { PrismaClient } from '@prisma/client'
 import dayjs from 'dayjs'
 
-import { logger } from "../../src/logger.js"
-import { isProduction } from "../../src/util/is-production.js"
+import { logger } from '../../src/logger.js'
+import { isProduction } from '../../src/util/is-production.js'
 
-import createAccount from "./account.js"
-import createAnmeldung from "./anmeldungen.js"
-import importGliederungen from "./gliederungen.js"
-import createVeranstaltung from "./veranstaltung.js"
+import createAccount from './account.js'
+import createAnmeldung from './anmeldungen.js'
+import importGliederungen from './gliederungen.js'
+import createVeranstaltung from './veranstaltung.js'
 
 export type Seeder = (prisma: PrismaClient) => Promise<void>
 

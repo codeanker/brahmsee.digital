@@ -1,7 +1,7 @@
-import eslint from '@eslint/js';
-import eslintPluginVue from 'eslint-plugin-vue';
-import globals from 'globals';
-import typescriptEslint from 'typescript-eslint';
+import eslint from '@eslint/js'
+import eslintPluginVue from 'eslint-plugin-vue'
+import globals from 'globals'
+import typescriptEslint from 'typescript-eslint'
 
 export default typescriptEslint.config(
   { ignores: ['*.d.ts', '**/coverage', '**/dist'] },
@@ -24,4 +24,4 @@ export default typescriptEslint.config(
       // your rules
     },
   }
-);
+)

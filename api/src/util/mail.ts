@@ -1,4 +1,3 @@
- 
 import { readFile } from 'fs/promises'
 import { join } from 'path'
 
@@ -7,10 +6,10 @@ import { getProperty } from 'dot-prop'
 import Handlebars from 'handlebars'
 import mjml2html from 'mjml'
 
-import config from ".././config.js"
-import { logger } from "../logger.js"
+import config from '.././config.js'
+import { logger } from '../logger.js'
 
-import logActivity from "./activity.js"
+import logActivity from './activity.js'
 
 sgMail.setApiKey(config.mail.sendgridApiKey)
 
@@ -140,11 +139,9 @@ export async function sendMail(mailParams: EMailParams) {
 
     // send mail
     if (config.mail.sendMails === 'true' && config.mail.sendgridApiKey) {
-       
       console.log(`sending mail (${sendWithTemplate}) to "${mailParams.to}" with subject "${mailParams.subject}"`)
       return await sgMail.sendMultiple(mailToSend)
     } else {
-       
       console.log('///////////////////////////////////////')
       console.log('Sending Email')
       console.log(`from: ${mailToSend.from}`)
@@ -153,7 +150,7 @@ export async function sendMail(mailParams: EMailParams) {
       console.log(`subject: ${mailToSend.subject}`)
       console.log(mailToSend.html)
       console.log('////////////////////////////////////////')
-       
+
       return mailToSend
     }
   } catch (error: any) {

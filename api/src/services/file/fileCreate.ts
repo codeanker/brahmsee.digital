@@ -4,10 +4,10 @@ import { BlobSASPermissions } from '@azure/storage-blob'
 import dayjs from 'dayjs'
 import z from 'zod'
 
-import { azureStorage } from "../../azureStorage.js"
-import config from "../../config.js"
-import prisma from "../../prisma.js"
-import { defineProcedure } from "../../types/defineProcedure.js"
+import { azureStorage } from '../../azureStorage.js'
+import config from '../../config.js'
+import prisma from '../../prisma.js'
+import { defineProcedure } from '../../types/defineProcedure.js'
 
 export const fileCreateProcedure = defineProcedure({
   key: 'fileCreate',

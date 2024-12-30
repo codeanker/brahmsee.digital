@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
-import { authenticationLogin } from "../../authentication.js"
-import prisma from "../../prisma.js"
-import { defineProcedure } from "../../types/defineProcedure.js"
+import { authenticationLogin } from '../../authentication.js'
+import prisma from '../../prisma.js'
+import { defineProcedure } from '../../types/defineProcedure.js'
 
 export const authenticationLoginProcedure = defineProcedure({
   key: 'login',

@@ -4,15 +4,15 @@ import { fileURLToPath } from 'url'
 import { Prisma } from '@prisma/client'
 import { Command } from 'commander'
 
-import pkg from "../../../package.json" assert { type: "json" }
-import { pascalToCamelCase } from "../util/casing.js"
-import { getDirectories } from "../util/files.js"
+import pkg from '../../../package.json' assert { type: 'json' }
+import { pascalToCamelCase } from '../util/casing.js'
+import { getDirectories } from '../util/files.js'
 
-import { generateService } from "./generator/generateService.js"
-import type { GeneratorContext } from "./generator/utlils.js"
-import { ignoreList } from "./ignoreList.js"
-import { inquireGenerateProcedure, type ProcedureArgs } from "./inquireGenerateProcedure.js"
-import { inquireGenerateService } from "./inquireGenerateService.js"
+import { generateService } from './generator/generateService.js'
+import type { GeneratorContext } from './generator/utlils.js'
+import { ignoreList } from './ignoreList.js'
+import { inquireGenerateProcedure, type ProcedureArgs } from './inquireGenerateProcedure.js'
+import { inquireGenerateService } from './inquireGenerateService.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)

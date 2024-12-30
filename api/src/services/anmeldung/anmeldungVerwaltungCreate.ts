@@ -1,8 +1,8 @@
 import { Role } from '@prisma/client'
 
-import { defineProcedure } from "../../types/defineProcedure.js"
+import { defineProcedure } from '../../types/defineProcedure.js'
 
-import { handle, inputSchema } from "./anmeldungPublicCreate.js"
+import { handle, inputSchema } from './anmeldungPublicCreate.js'
 
 export const anmeldungVerwaltungCreateProcedure = defineProcedure({
   key: 'verwaltungCreate',

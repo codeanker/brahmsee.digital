@@ -2,8 +2,8 @@ import { type inferAsyncReturnType } from '@trpc/server'
 import type { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch'
 import type { CreateTrpcKoaContextOptions } from 'trpc-koa-adapter'
 
-import { getEntityIdFromHeader } from "./authentication.js"
-import { logger } from "./logger.js"
+import { getEntityIdFromHeader } from './authentication.js'
+import { logger } from './logger.js'
 
 function getAuthorizationHeader(
   headers: CreateTrpcKoaContextOptions['req']['headers'] | FetchCreateContextFnOptions['req']['headers']

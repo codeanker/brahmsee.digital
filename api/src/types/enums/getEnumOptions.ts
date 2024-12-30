@@ -1,4 +1,4 @@
-import { type EnumMapping } from "./defineEnumMapping.js"
+import { type EnumMapping } from './defineEnumMapping.js'
 
 export function getEnumOptions<T extends EnumMapping>(enumMapping: T) {
   return Object.entries(enumMapping).map(([apiKey, mapping]) => {

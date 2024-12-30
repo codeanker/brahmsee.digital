@@ -1,6 +1,6 @@
 import type { Activity, ActivityType } from '@prisma/client'
 
-import { defineEnumMapping } from "./defineEnumMapping.js"
+import { defineEnumMapping } from './defineEnumMapping.js'
 
 export const ActivityTypeMapping = defineEnumMapping<ActivityType>({
   CREATE: { human: 'Erstellt' },

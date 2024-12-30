@@ -1,10 +1,10 @@
 import { Role } from '@prisma/client'
 import z from 'zod'
 
-import prisma from "../../prisma.js"
-import { defineProcedure } from "../../types/defineProcedure.js"
-import logActivity from "../../util/activity.js"
-import { getGliederungRequireAdmin } from "../../util/getGliederungRequireAdmin.js"
+import prisma from '../../prisma.js'
+import { defineProcedure } from '../../types/defineProcedure.js'
+import logActivity from '../../util/activity.js'
+import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
 
 export const customFieldValuesUpdate = defineProcedure({
   key: 'valuesUpdate',

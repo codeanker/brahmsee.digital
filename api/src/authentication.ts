@@ -1,5 +1,5 @@
-import config from "./config.js"
-import prisma from "./prisma.js"
+import config from './config.js'
+import prisma from './prisma.js'
 
 import { createAuthentication } from '@codeanker/authentication'
 

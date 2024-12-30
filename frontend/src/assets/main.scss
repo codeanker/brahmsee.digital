@@ -1,16 +1,17 @@
-@import "./animations.scss";
-@import "./tailwind.scss";
+@import './animations.scss';
+@import './tailwind.scss';
 // @import "@vuepic/vue-datepicker/dist/main.css";
-@import "./baseFormStyle.scss";
-@import "./datepicker.scss";
-@import "./fonts.scss";
+@import './baseFormStyle.scss';
+@import './datepicker.scss';
+@import './fonts.scss';
 
 html {
   font-size: 14px;
 }
 
-
-html, body, #app {
+html,
+body,
+#app {
   height: 100vh;
   width: 100vw;
   overflow: hidden;

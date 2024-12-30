@@ -1,6 +1,6 @@
-import prisma from "../prisma.js"
+import prisma from '../prisma.js'
 
-import { meilisearchClient, updateSettings } from "./index.js"
+import { meilisearchClient, updateSettings } from './index.js'
 
 const searchIndex = 'person'
 

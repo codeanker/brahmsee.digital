@@ -1,7 +1,7 @@
 {
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
-     // As long as you are using a build tool, we recommend you to author and ship in ES modules.
+    // As long as you are using a build tool, we recommend you to author and ship in ES modules.
     // Even if you are targeting Node.js, because
     //  - `CommonJS` is too outdated
     //  - the ecosystem hasn't fully caught up with `Node16`/`NodeNext`
@@ -52,14 +52,10 @@
     // See <https://github.com/vuejs/vue-cli/pull/5688>
     "skipLibCheck": true,
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]}
+      "@/*": ["./src/*"]
+    }
   },
-  "include": [
-    "./src/**/*",
-    "./tests/**/*"
-  ],
+  "include": ["./src/**/*", "./tests/**/*"],
   "vueCompilerOptions": {
     "target": 3
   }

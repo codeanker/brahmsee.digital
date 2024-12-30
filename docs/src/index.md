@@ -3,8 +3,8 @@
 layout: home
 
 hero:
-  name: "brahmsee.digital"
-  text: "documentation"
+  name: 'brahmsee.digital'
+  text: 'documentation'
   tagline: Structure and Hints
   actions:
     - theme: brand

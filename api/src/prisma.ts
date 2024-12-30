@@ -5,8 +5,8 @@
 // import config from 'config'
 import { PrismaClient } from '@prisma/client'
 
-import config from "./config.js"
-import { logger } from "./logger.js"
+import config from './config.js'
+import { logger } from './logger.js'
 
 const log = logger.child({ label: 'db' })
 

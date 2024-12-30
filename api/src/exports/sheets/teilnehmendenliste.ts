@@ -2,11 +2,11 @@ import { Role } from '@prisma/client'
 import dayjs from 'dayjs'
 import XLSX from 'xlsx'
 
-import { getEntityIdFromHeader } from "../../authentication.js"
-import { AnmeldungStatusMapping, GenderMapping } from "../../enumMappings.js"
-import prisma from "../../prisma.js"
-import { getGliederungRequireAdmin } from "../../util/getGliederungRequireAdmin.js"
-import { getSecurityWorksheet } from "../helpers/getSecurityWorksheet.js"
+import { getEntityIdFromHeader } from '../../authentication.js'
+import { AnmeldungStatusMapping, GenderMapping } from '../../enumMappings.js'
+import prisma from '../../prisma.js'
+import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
+import { getSecurityWorksheet } from '../helpers/getSecurityWorksheet.js'
 
 export async function veranstaltungTeilnehmendenliste(ctx) {
   const jwt = ctx.query.jwt

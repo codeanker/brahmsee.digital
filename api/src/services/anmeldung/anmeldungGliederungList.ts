@@ -1,10 +1,10 @@
 import { AnmeldungStatus, Role } from '@prisma/client'
 import z from 'zod'
 
-import prisma from "../../prisma.js"
-import { defineProcedure } from "../../types/defineProcedure.js"
-import { ZPaginationSchema } from "../../types/defineQuery.js"
-import { getGliederungRequireAdmin } from "../../util/getGliederungRequireAdmin.js"
+import prisma from '../../prisma.js'
+import { defineProcedure } from '../../types/defineProcedure.js'
+import { ZPaginationSchema } from '../../types/defineQuery.js'
+import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
 
 const filter = z.strictObject({
   unterveranstaltungId: z.number().optional(),

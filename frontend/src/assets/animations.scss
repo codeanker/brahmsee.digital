@@ -3,11 +3,13 @@
 }
 
 @keyframes shake {
-  8%, 41% {
+  8%,
+  41% {
     -webkit-transform: translateX(-10px);
   }
 
-  25%, 58% {
+  25%,
+  58% {
     -webkit-transform: translateX(10px);
   }
 
@@ -19,12 +21,14 @@
     -webkit-transform: translateX(5px);
   }
 
-  0%, 100% {
+  0%,
+  100% {
     -webkit-transform: translateX(0);
   }
 }
 
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: all 0.3s ease-in-out;
 }
 
@@ -33,7 +37,8 @@
   opacity: 0;
 }
 
-.slide-fade-enter-active, .slide-fade-leave-active {
+.slide-fade-enter-active,
+.slide-fade-leave-active {
   transition: all 0.3s ease-in-out;
 }
 

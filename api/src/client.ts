@@ -1,6 +1,6 @@
 import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
 
-import type { appRouter } from "./index.js"
+import type { appRouter } from './index.js'
 
 export * from '@prisma/client'
 

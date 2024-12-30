@@ -1,6 +1,6 @@
 import { type AnmeldungStatus } from '@prisma/client'
 
-import { defineEnumMapping } from "./defineEnumMapping.js"
+import { defineEnumMapping } from './defineEnumMapping.js'
 
 export const AnmeldungStatusMapping = defineEnumMapping<AnmeldungStatus>({
   OFFEN: { human: 'Offen', description: 'Anmeldung ist noch nicht bearbeitet.' },
