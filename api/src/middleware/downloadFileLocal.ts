@@ -9,7 +9,8 @@ import prisma from '../prisma.js'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const downloadFileLocal: Middleware = async function (ctx, next) {
-  const fileId = ctx.params.id
+  const params = ctx.params as { id: string }
+  const fileId = params.id
   const file = await prisma.file.findFirst({
     where: {
       id: fileId,
@@ -27,6 +28,7 @@ export const downloadFileLocal: Middleware = async function (ctx, next) {
 
   const uploadDir = path.join(process.cwd(), config.fileProviders.LOCAL.path)
   const mimetype = file.mimetype ?? 'application/octet-stream'
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
   const filename = file.filename ?? `${file.id}.${mime.extension(mimetype)}`
   ctx.set('Content-disposition', `attachment; filename=${filename}`)
   ctx.set('Content-type', mimetype)

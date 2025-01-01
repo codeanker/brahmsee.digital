@@ -1,3 +1,3 @@
-export * from './src/dayjs'
-export * from './src/format'
-export * from './src/password-strength'
+export * from './dayjs.js'
+export * from './format.js'
+export * from './password-strength.js'

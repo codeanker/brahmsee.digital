@@ -74,7 +74,7 @@ export const customFieldValuesUpdate = defineProcedure({
               value: element.value,
             },
           })
-          logActivity({
+          await logActivity({
             type: 'UPDATE',
             description: 'Benutzerdefinierten Wert aktualisiert',
             subjectType: 'customFieldValues',
@@ -95,7 +95,7 @@ export const customFieldValuesUpdate = defineProcedure({
               anmeldungId: options.input.anmeldungId,
             },
           })
-          logActivity({
+          await logActivity({
             type: 'CREATE',
             description: 'Benutzerdefinierten Wert hinzugefügt',
             subjectType: 'customFieldValues',

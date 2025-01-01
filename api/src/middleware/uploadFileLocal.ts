@@ -8,7 +8,8 @@ import prisma from '../prisma.js'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const uploadFileLocal: Middleware = async function (ctx, next) {
-  const fileId = ctx.params.id
+  const params = ctx.params as { id: string }
+  const fileId = params.id
   const file = await prisma.file.findFirst({
     where: {
       id: fileId,
@@ -81,7 +82,9 @@ export const uploadFileLocal: Middleware = async function (ctx, next) {
 async function checkLocalUploadFolder(uploadDir: string) {
   try {
     await fs.stat(uploadDir)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (e: any) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if (e.code === 'ENOENT') await fs.mkdir(uploadDir, { recursive: true })
     else throw e
   }

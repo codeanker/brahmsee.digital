@@ -19,8 +19,8 @@ export const accountVerwaltungRemoveProcedure = defineProcedure({
           id: options.input.id,
         },
       })
-      .then((account) => {
-        logActivity({
+      .then(async (account) => {
+        await logActivity({
           type: 'DELETE',
           subjectType: 'account',
           subjectId: account.id,

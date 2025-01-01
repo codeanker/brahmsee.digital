@@ -5,11 +5,11 @@ import { Role } from '@prisma/client'
 import * as csv from 'fast-csv'
 import type { Middleware } from 'koa'
 
-import { getEntityIdFromHeader } from '../authentication'
-import prisma from '../prisma'
-import { inputSchema as anmeldungCreateSchema } from '../services/anmeldung/anmeldungPublicCreate'
-import { getPersonCreateData } from '../services/person/schema/person.schema'
-import { customFieldValuesCreateMany } from '../types/defineCustomFieldValues'
+import { getEntityIdFromHeader } from '../authentication.js'
+import prisma from '../prisma.js'
+import { inputSchema as anmeldungCreateSchema } from '../services/anmeldung/anmeldungPublicCreate.js'
+import { getPersonCreateData } from '../services/person/schema/person.schema.js'
+import { customFieldValuesCreateMany } from '../types/defineCustomFieldValues.js'
 
 import { customParseFormat, dayjs } from '@codeanker/helpers'
 
@@ -17,16 +17,17 @@ dayjs.extend(customParseFormat)
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const importAnmeldungen: Middleware = async function (ctx, next) {
-  let accountId
+  let accountId: string | undefined
   try {
-    accountId = await getEntityIdFromHeader(ctx.request.header.authorization)
-  } catch (e) {
+    accountId = getEntityIdFromHeader(ctx.request.header.authorization)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
     ctx.response.status = 401
     ctx.response.message = 'Token not valid'
     return
   }
-
-  if (accountId == null || !ctx.request.files || !ctx.request.body.unterveranstaltungId) {
+  const ctxRequestBody = ctx.request.body as { unterveranstaltungId: string }
+  if (accountId == null || !ctx.request.files || !ctxRequestBody.unterveranstaltungId) {
     ctx.response.status = 400
     ctx.response.message = 'Es wurden keine Dateien oder Unterveranstaltung übergeben'
     return
@@ -59,14 +60,17 @@ export const importAnmeldungen: Middleware = async function (ctx, next) {
     return
   }
 
-  let files: any = []
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let files: any[] = []
   if (Array.isArray(ctx.request.files.files)) {
     files = ctx.request.files.files
   } else {
     files.push(ctx.request.files.files)
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   files.filter((file: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if (file.mimetype !== 'text/csv') {
       ctx.response.status = 406
       ctx.response.message = 'Datei muss vom Typ CSV sein'
@@ -74,7 +78,7 @@ export const importAnmeldungen: Middleware = async function (ctx, next) {
     }
   })
 
-  const unterveranstaltung = await findUnterveranstaltung(parseInt(ctx.request.body.unterveranstaltungId))
+  const unterveranstaltung = await findUnterveranstaltung(parseInt(ctxRequestBody.unterveranstaltungId))
   if (!unterveranstaltung) {
     ctx.response.status = 400
     ctx.response.message = 'Unterveranstaltung nicht gefunden'
@@ -82,9 +86,11 @@ export const importAnmeldungen: Middleware = async function (ctx, next) {
   }
 
   files.forEach((file) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
     fs.createReadStream(path.resolve(file.filepath))
       .pipe(csv.parse({ headers: true, delimiter: ';', ignoreEmpty: true }))
       .on('error', (error) => console.error(error))
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises, @typescript-eslint/no-unsafe-argument
       .on('data', (row) => createAnmeldung(row, unterveranstaltung))
 
       .on('end', (rowCount: number) => console.log(`Parsed ${rowCount} rows`))
@@ -101,9 +107,29 @@ export const importAnmeldungen: Middleware = async function (ctx, next) {
  * @param row
  * @param unterveranstaltungId
  */
-async function createAnmeldung(row: any, unterveranstaltung) {
-  // console.log(unterveranstaltungId, row)
-
+async function createAnmeldung(
+  row: {
+    vorname: string
+    nachname: string
+    geschlecht: string
+    email: string
+    telefon: string
+    strasse: string
+    geburtstag: string
+    hausnummer: string
+    plz: string
+    ort: string
+    essgewohnheit: string
+    nahrungsmittelIntoleranzen: string
+    weitereIntoleranzen: string
+    notfallkontaktVorname: string
+    notfallkontaktNachname: string
+    notfallkontaktTelefon: string
+    istErziehungsberechtigt: string
+    comment: string
+  },
+  unterveranstaltung: { id: number; gliederungId: number }
+) {
   try {
     const mappedRow = {
       data: {
@@ -180,10 +206,11 @@ function formatNahrungsmittelIntoleranzen(nahrungsmittelIntoleranzen: string) {
   return nahrungsmittelIntoleranzen.split(',').map((item) => item.trim())
 }
 
-function mapCustomFields(obj) {
-  const customFields = <any>[]
+function mapCustomFields(obj: Record<string, string>) {
+  const customFields: { fieldId: number; value: string | boolean }[] = []
   for (const key in obj) {
     if (key.startsWith('customFieldId_')) {
+      if (!obj[key]) continue
       customFields.push({
         fieldId: parseInt(key.replace('customFieldId_', '')),
         value: parseValue(obj[key]),
@@ -193,7 +220,7 @@ function mapCustomFields(obj) {
   return customFields
 }
 
-function parseValue(value) {
+function parseValue(value: string) {
   if (value === 'Ja') return true
   if (value === 'Nein') return false
   return value

@@ -137,28 +137,37 @@ export async function sendMail(mailParams: EMailParams) {
       metadata: mailParams,
     })
 
+    const to = Array.isArray(mailToSend.to) ? mailToSend.to.join(', ') : mailToSend.to
+    const bcc = mailToSend.bcc ? Array.isArray(mailToSend.bcc) ? mailToSend.bcc.join(', ') : mailToSend.bcc : ''
     // send mail
     if (config.mail.sendMails === 'true' && config.mail.sendgridApiKey) {
-      console.log(`sending mail (${sendWithTemplate}) to "${mailParams.to}" with subject "${mailParams.subject}"`)
+      console.log(`sending mail (${sendWithTemplate}) to "${to}" with subject "${mailParams.subject}"`)
       return await sgMail.sendMultiple(mailToSend)
     } else {
       console.log('///////////////////////////////////////')
       console.log('Sending Email')
       console.log(`from: ${mailToSend.from}`)
-      console.log(`to: ${mailToSend.to}`)
-      if (mailToSend.bcc) console.log(`bcc: ${mailToSend.bcc}`)
+      console.log(`to: ${to}`)
+      if (mailToSend.bcc) console.log(`bcc: ${bcc}`)
       console.log(`subject: ${mailToSend.subject}`)
       console.log(mailToSend.html)
       console.log('////////////////////////////////////////')
 
       return mailToSend
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(error)
-    logger.error('Failed sending email!', {
-      message: error.message,
-      response: error.response?.body,
-    })
+    if (error instanceof Error) {
+      logger.error('Failed sending email!', {
+        message: error.message,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
+        response: (error as any)?.response?.body,
+      })
+    } else {
+      logger.error('Failed sending email!', {
+        message: 'Unknown error',
+      })
+    }
   }
 }
 

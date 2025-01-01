@@ -28,17 +28,15 @@ export async function syncAllPersonsToMeili() {
   await meilisearchClient.index(searchIndex).updateSettings(updateSettings)
   await meilisearchClient.updateIndex(searchIndex, { primaryKey: 'id' })
 
-  let cursorValue
+  let cursorValue: number | undefined
   const batchSize = 1000
   do {
+    const skip: number = cursorValue ? 1 : 0
+    const cursor: { id: number } | undefined = cursorValue ? { id: cursorValue } : undefined
     const persons = await prisma.person.findMany({
       take: batchSize,
-      skip: cursorValue ? 1 : 0,
-      cursor: cursorValue
-        ? {
-            id: cursorValue,
-          }
-        : undefined,
+      skip,
+      cursor,
       select: {
         id: true,
         firstname: true,
@@ -54,7 +52,7 @@ export async function syncAllPersonsToMeili() {
       },
     })
     await meilisearchClient.index(searchIndex).addDocuments(persons)
-    if (persons.length < batchSize) cursorValue = null
-    else cursorValue = persons[persons.length - 1].id
+    if (persons.length < batchSize) cursorValue = undefined
+    else cursorValue = persons[persons.length - 1]?.id
   } while (cursorValue)
 }

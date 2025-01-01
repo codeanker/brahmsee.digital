@@ -11,7 +11,7 @@ import {
 
 import logActivity from '../../src/util/activity.js'
 
-import { Seeder } from '..js'
+import { Seeder } from './index.js'
 
 const ENTRY_COUNT = 1000
 

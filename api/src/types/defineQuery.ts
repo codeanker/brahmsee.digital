@@ -32,9 +32,11 @@ export interface TQuery {
   filter: Record<string, unknown>
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getOrderBy<T extends string>(orderBy: Array<[T, 'asc' | 'desc']>): Record<string, any> {
   return orderBy.map(([field, order]) => {
     const result = {} as { [key in T]: 'asc' | 'desc' }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     _.set(result, field, order)
     return result
   })

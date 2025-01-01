@@ -74,6 +74,7 @@ export const accountVerwaltungCountProcedure = defineProcedure({
   },
 })
 
+// eslint-disable-next-line @typescript-eslint/require-await, @typescript-eslint/no-unused-vars
 async function getWhere(filter: z.infer<typeof inputSchema>['filter'], _account: { id: number; role: Role }) {
   const where: Prisma.AccountWhereInput = {}
 

@@ -37,8 +37,6 @@ export const addressFindActionProcedure = defineProcedure({
     }
     const language = 'NGT'
 
-    let results
-
     const token = config.tomtom.apiKey
     if (!token) {
       console.error('No TomTom API key found')
@@ -52,8 +50,32 @@ export const addressFindActionProcedure = defineProcedure({
           searchText
         )}.json?typeahead=true&limit=5&countrySet=${country}&language=${language}&idxSet=PAD&minFuzzyLevel=1&maxFuzzyLevel=2&view=Unified&key=${token}`
       )
-      if (query.data.summary.numResults < 1) return []
-      results = query.data.results.map((result) => {
+
+      const ZTomTomSearchResponse = z.object({
+        summary: z.object({
+          numResults: z.number(),
+        }),
+        results: z.array(
+          z.object({
+            address: z.object({
+              streetName: z.string(),
+              streetNumber: z.string(),
+              postalCode: z.string(),
+              municipality: z.string(),
+              countryCode: z.string(),
+            }),
+            position: z.object({
+              lat: z.number(),
+              lon: z.number(),
+            }),
+          })
+        ),
+      })
+
+      const parsedSearchResponse = ZTomTomSearchResponse.parse(query.data)
+
+      if (parsedSearchResponse.summary.numResults < 1) return []
+      return parsedSearchResponse.results.map((result) => {
         return {
           street: result.address.streetName,
           streetNumber: result.address.streetNumber,
@@ -67,6 +89,5 @@ export const addressFindActionProcedure = defineProcedure({
       console.error(e)
       return []
     }
-    return results
   },
 })

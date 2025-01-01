@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import cors from '@koa/cors'
 import grant from 'grant'
 import Koa from 'koa'
@@ -36,7 +38,8 @@ app.use(session({}, app))
 
 // grant is used for oauth
 app.use(
-  grant.koa()({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
+  (grant as any).koa()({
     defaults: {
       origin: `${config.clientUrl}/api`,
       transport: 'session',

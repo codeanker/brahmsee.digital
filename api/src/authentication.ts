@@ -3,6 +3,7 @@ import prisma from './prisma.js'
 
 import { createAuthentication } from '@codeanker/authentication'
 
+// eslint-disable-next-line @typescript-eslint/unbound-method
 export const { getEntityIdFromHeader, authenticationLogin, sign } = createAuthentication({
   jwtSecret: config.authentication.secret,
   expiresIn: config.authentication.expiresIn,

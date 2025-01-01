@@ -19,8 +19,10 @@ const inputSchema = defineQuery({
 })
 type TInput = z.infer<typeof inputSchema>
 
+// eslint-disable-next-line @typescript-eslint/require-await
 async function getWhere(
   filter: TInput['filter'],
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _account: {
     id: number
     role: Role

@@ -1,11 +1,10 @@
-/* eslint-disable no-console */
 import { PrismaClient, AccountStatus, Role } from '@prisma/client'
 
 import { logger } from '../../src/logger.js'
 import logActivity from '../../src/util/activity.js'
 import { isProduction } from '../../src/util/is-production.js'
 
-import { Seeder } from '..js'
+import { Seeder } from './index.js'
 
 import { hashPassword } from '@codeanker/authentication'
 

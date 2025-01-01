@@ -32,10 +32,11 @@ export const ZOauthRegisterJwtPayloadSchema = z.object({
 type TOauthRegisterJwtPayloadSchema = z.infer<typeof ZOauthRegisterJwtPayloadSchema>
 
 export default async function (ctx: Context) {
-  const userInfoResponse = ZUserInfoReponse.parse(ctx.session.grant.response)
+  const session = ctx.session as { grant: { response: unknown; dynamic: { mode: unknown } } }
+  const userInfoResponse = ZUserInfoReponse.parse(session.grant.response)
   const profile = userInfoResponse.profile
 
-  const mode = ZOauthMode.parse(ctx.session.grant.dynamic.mode)
+  const mode = ZOauthMode.parse(session.grant.dynamic.mode)
 
   if (mode === 'register') {
     const payload: TOauthRegisterJwtPayloadSchema = {

@@ -53,9 +53,11 @@ export const gliederungCountProcedure = defineProcedure({
   },
 })
 
+// eslint-disable-next-line @typescript-eslint/require-await
 async function getWhere(
   filter: TInput['filter'],
-  _account: {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  account: {
     id: number
     role: Role
   }

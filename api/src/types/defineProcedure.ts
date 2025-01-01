@@ -4,6 +4,7 @@ import type { z } from 'zod'
 
 import { protectedProcedure, publicProcedure, router } from '../trpc.js'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type GetProcedureConfig<TProcedure extends ProcedureBuilder<any>> =
   TProcedure extends ProcedureBuilder<infer T> ? T : never
 
@@ -29,6 +30,7 @@ type ProcedureResult<
   TResult
 >
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type RootRouterConfig = ReturnType<typeof router> extends CreateRouterInner<infer T, any> ? T : never
 
 export function defineProcedure<
@@ -74,6 +76,7 @@ export function defineProcedure<
     router: router({
       [config.key]: procedure
         .input(config.inputSchema)
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any, no-unexpected-multiline
         [config.method](config.handler as any) as unknown as TProcedureResult,
     }) as TProcedureRouter,
   }

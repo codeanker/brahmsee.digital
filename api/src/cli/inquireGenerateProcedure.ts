@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import inquirer from 'inquirer'
 
 import { generateProcedureAction } from './generator/generateProcedureAction.js'
@@ -68,7 +71,9 @@ export async function inquireGenerateProcedure(args: ProcedureArgs, context: Gen
         type: 'public',
       }
     } else if (args.protection.startsWith('restrictToRoleIds')) {
-      const roleIds = args.protection.split('=')[1].split(',')
+      const roles = args.protection.split('=')
+      const commaSeperatedRoles = roles[1] as string
+      const roleIds = commaSeperatedRoles.split(',')
       protection = {
         type: 'restrictToRoleIds',
         roleIds,

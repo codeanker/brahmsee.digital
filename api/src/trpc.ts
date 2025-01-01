@@ -43,7 +43,9 @@ const logActivityMiddleware = middleware(async (opts) => {
     let type: ActivityType | undefined = undefined
     const [subject, operation] = opts.path.split('.')
 
-    if (operation.endsWith('Create')) {
+    if (operation == undefined) {
+      type = 'OTHER'
+    } else if (operation.endsWith('Create')) {
       type = 'CREATE'
     } else if (operation.endsWith('Patch')) {
       type = 'UPDATE'
@@ -52,11 +54,14 @@ const logActivityMiddleware = middleware(async (opts) => {
     }
 
     if (type !== undefined) {
+      const rawInput = opts.rawInput as { id: number }
+      const resultData = result.data as { id?: number }
       logger.verbose(`Recording activity ${opts.path} of type ${type}`)
+      const subjectId = type === 'CREATE' ? resultData?.id : rawInput.id
+      if (!subjectId) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'No subjectId found' })
       await logActivity({
-        // @ts-expect-error ist unknowmn
-        subjectId: type === 'CREATE' ? result.data?.id : opts.rawInput?.id,
-        subjectType: subject,
+        subjectId,
+        subjectType: subject || 'NO_SUBJECT',
         causerId: opts.ctx.accountId,
         metadata: opts.rawInput,
         type,
@@ -87,7 +92,7 @@ async function getAuthContext(accountId: number | undefined, roles: Role[]) {
     // if roles is empty, the resource is public
     throw new TRPCError({
       code: 'FORBIDDEN',
-      message: `You are not allowed to access this resource "${roles}" with "${account.role}"`,
+      message: `You are not allowed to access this resource "${roles.join(', ')}" with "${account.role}"`,
     })
   }
   return {

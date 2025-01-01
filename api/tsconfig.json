@@ -4,5 +4,5 @@
     "lib": ["ES2022"],
     "outDir": "./dist"
   },
-  "include": ["src", "eslint.config.js"]
+  "include": ["src", "prisma", "eslint.config.js"]
 }

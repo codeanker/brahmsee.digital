@@ -1,16 +1,20 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Role } from '@prisma/client'
 import dayjs from 'dayjs'
 import XLSX from 'xlsx'
 
 import { getEntityIdFromHeader } from '../../authentication.js'
-import { AnmeldungStatusMapping, GenderMapping } from '../../enumMappings.js'
+import { AnmeldungStatusMapping, GenderMapping } from '../../enumMappings/index.js'
 import prisma from '../../prisma.js'
 import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
 import { getSecurityWorksheet } from '../helpers/getSecurityWorksheet.js'
 
 export async function veranstaltungTeilnehmendenliste(ctx) {
   const jwt = ctx.query.jwt
-  const accountId = await getEntityIdFromHeader('Bearer ' + jwt)
+  const accountId = getEntityIdFromHeader('Bearer ' + jwt)
   const unterveranstaltungId = ctx.query.unterveranstaltungId
   const veranstaltungId = ctx.query.veranstaltungId
 
@@ -45,6 +49,7 @@ export async function veranstaltungTeilnehmendenliste(ctx) {
   if (account.role == Role.GLIEDERUNG_ADMIN) {
     try {
       gliederung = await getGliederungRequireAdmin(parseInt(accountId))
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       ctx.res.statusCode = 401
       ctx.res.end()

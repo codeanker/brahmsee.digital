@@ -10,12 +10,14 @@ export function defineCustomFieldValues() {
   )
 }
 
-export function customFieldValuesCreateMany(data) {
+export function customFieldValuesCreateMany(
+  data: { fieldId: number; value?: string | number | boolean | undefined }[]
+) {
   const customField: Prisma.CustomFieldValueCreateManyArgs = {
     data: data.map((field) => {
       return {
         fieldId: field.fieldId,
-        value: field.value.toString(),
+        value: field.value?.toString(),
       }
     }),
   }

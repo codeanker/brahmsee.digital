@@ -27,8 +27,8 @@
     "seed": "tsx prisma/seeders/index.ts"
   },
   "dependencies": {
-    "@codeanker/datagrid": "file:../vendor/codeanker-datagrid-2.7.1-trimmed.tgz",
     "@azure/storage-blob": "^12.17.0",
+    "@codeanker/datagrid": "file:../vendor/codeanker-datagrid-2.7.1-trimmed.tgz",
     "@faker-js/faker": "^8.4.1",
     "@koa/cors": "^5.0.0",
     "@koa/router": "^12.0.1",
@@ -62,11 +62,8 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@codeanker/typescript-config": "workspace:*",
     "@codeanker/eslint-config": "workspace:*",
-    "@types/node": "catalog:",
-    "typescript": "catalog:",
-    "eslint": "catalog:",
+    "@codeanker/typescript-config": "workspace:*",
     "@inquirer/prompts": "^7.1.0",
     "@types/config": "^3.3.3",
     "@types/http-status-codes": "^1.2.0",
@@ -74,7 +71,12 @@
     "@types/koa-bodyparser": "^4.3.12",
     "@types/koa-router": "^7.4.8",
     "@types/mjml": "^4.7.4",
+    "@types/node": "catalog:",
+    "commander": "^13.0.0",
+    "eslint": "catalog:",
+    "inquirer": "^12.3.0",
     "prisma": "^5.19.1",
-    "tsx": "^4.2.0"
+    "tsx": "^4.2.0",
+    "typescript": "catalog:"
   }
 }

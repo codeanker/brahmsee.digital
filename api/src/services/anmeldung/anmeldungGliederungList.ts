@@ -118,6 +118,6 @@ export const anmeldungGliederungCountProcedure = defineProcedure({
       })
     )
     const total = countEntries.reduce((acc, [, count]) => acc + Number(count), 0)
-    return { total, ...Object.fromEntries(countEntries) }
+    return { total, ...Object.fromEntries(countEntries) } as Record<AnmeldungStatus, number> & { total: number }
   },
 })

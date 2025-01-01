@@ -1,12 +1,11 @@
 import { input, password as passwordInput, select, search } from '@inquirer/prompts'
 import { Role } from '@prisma/client'
 
-import { getEnumOptions, roleMapping } from '../enumMappings.js'
+import { getEnumOptions, roleMapping } from '../enumMappings/index.js'
 import prisma from '../prisma.js'
 import { getAccountCreateData } from '../services/account/schema/account.schema.js'
 import logActivity from '../util/activity.js'
 
-createUser()
 async function createUser() {
   const email = await input({ message: 'E-Mail' })
   const firstname = await input({ message: 'Vorname' })
@@ -78,3 +77,5 @@ async function createUser() {
   console.log('Nutzer erstellt')
   process.exit()
 }
+
+await createUser()

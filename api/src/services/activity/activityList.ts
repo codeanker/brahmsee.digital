@@ -61,9 +61,12 @@ export const activityCountProcedure = defineProcedure({
   },
 })
 
+// eslint-disable-next-line @typescript-eslint/require-await
 async function getWhere(
-  _filter: Input['filter'],
-  _account: {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  filter: Input['filter'],
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  account: {
     id: number
     role: Role
   }

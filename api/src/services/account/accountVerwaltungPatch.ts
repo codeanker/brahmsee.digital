@@ -1,7 +1,7 @@
 import { AccountStatus, Role } from '@prisma/client'
 import z from 'zod'
 
-import { AccountStatusMapping } from '../../enumMappings.js'
+import { AccountStatusMapping } from '../../enumMappings/index.js'
 import prisma from '../../prisma.js'
 import { defineProcedure } from '../../types/defineProcedure.js'
 import logActivity from '../../util/activity.js'

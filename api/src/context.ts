@@ -15,12 +15,13 @@ function getAuthorizationHeader(
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/require-await
 export async function createContext({ req }: CreateTrpcKoaContextOptions | FetchCreateContextFnOptions) {
   try {
     const authorization = getAuthorizationHeader(req.headers)
     if (authorization === null) throw new Error('No authorization header found.')
 
-    const accountId = await getEntityIdFromHeader(authorization)
+    const accountId = getEntityIdFromHeader(authorization)
     return {
       accountId: typeof accountId === 'string' ? parseInt(accountId) : accountId,
     }
