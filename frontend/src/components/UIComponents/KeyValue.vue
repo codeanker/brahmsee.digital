@@ -19,7 +19,7 @@ withDefaults(
     <component
       :is="icon"
       class="w-5 h-5"
-    ></component>
+    />
     <p class="m-0">{{ keyText }}: {{ valueText }}</p>
   </div>
 </template>

@@ -11,7 +11,7 @@ const props = withDefaults(
     id?: string
     label?: string
     name?: string
-    // eslint-disable-next-line vue/no-unused-properties
+
     modelValue: typeof VueDatePicker.modelValue
     range?: boolean
     autoRange?: typeof VueDatePicker.autoRange

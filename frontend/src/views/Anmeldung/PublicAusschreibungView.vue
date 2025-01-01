@@ -90,7 +90,7 @@ const isClosed = computed(() => dayjs().isAfter(unterveranstaltung.value?.meldes
             <div
               class="prose dark:prose-invert"
               v-html="unterveranstaltung?.beschreibung"
-            ></div>
+            />
           </div>
 
           <template v-if="unterveranstaltung.documents && unterveranstaltung.documents.length > 0">

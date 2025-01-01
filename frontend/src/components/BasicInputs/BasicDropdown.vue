@@ -41,7 +41,7 @@ withDefaults(
         :disabled="disabled"
         @click="(e) => e.stopPropagation()"
       >
-        <slot name="buttonContent"></slot>
+        <slot name="buttonContent" />
       </MenuButton>
       <transition
         enter-active-class="transition duration-100 ease-out"

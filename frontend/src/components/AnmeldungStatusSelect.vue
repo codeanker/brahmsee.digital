@@ -80,7 +80,7 @@ const setStatus = async (status: AnmeldungStatus) => {
             <div
               class="w-4 h-4 rounded-full shrink-0"
               :class="`bg-${getAnmeldungStatusColor(currentStatus)}-600`"
-            ></div>
+            />
             <span>{{ getStatusHuman(currentStatus) }}</span>
           </div>
           <ChevronDownIcon
@@ -105,10 +105,14 @@ const setStatus = async (status: AnmeldungStatus) => {
           <div
             class="w-4 h-4 rounded-full shrink-0"
             :class="`bg-${getAnmeldungStatusColor(statusOption.value)}-600`"
-          ></div>
+          />
           <div>
-            <div class="">{{ statusOption.label }}</div>
-            <div class="text-sm text-gray-500">{{ statusOption.description }}</div>
+            <div class="">
+              {{ statusOption.label }}
+            </div>
+            <div class="text-sm text-gray-500">
+              {{ statusOption.description }}
+            </div>
           </div>
         </button>
       </MenuItem>

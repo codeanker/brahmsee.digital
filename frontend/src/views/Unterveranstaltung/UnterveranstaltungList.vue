@@ -18,7 +18,7 @@ setTitle('Ausschreibungen')
       class="text-primary-500 flex items-center"
       :to="{ name: 'UnterveranstaltungCreate' }"
     >
-      <PlusIcon class="h-5 w-5 mr-1"></PlusIcon>
+      <PlusIcon class="h-5 w-5 mr-1" />
       Ausschreibung erstellen
     </RouterLink>
   </div>

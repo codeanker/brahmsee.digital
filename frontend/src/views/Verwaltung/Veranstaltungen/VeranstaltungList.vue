@@ -12,7 +12,7 @@ const { setTitle } = useRouteTitle()
 setTitle('Veranstaltungen')
 
 function formatDate(indate) {
-  let date = new Date(indate)
+  const date = new Date(indate)
   const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit' }
   return date.toLocaleDateString('de-DE', options)
 }
@@ -75,7 +75,7 @@ async function fetchPage(
     pagination: pagination,
   })
 }
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 async function fetchCount(filter: TFilter): Promise<number> {
   return apiClient.veranstaltung.verwaltungCount.query({
     filter: filter,
@@ -93,7 +93,7 @@ async function fetchCount(filter: TFilter): Promise<number> {
         class="text-primary-500 flex items-center"
         :to="{ name: 'Verwaltung Veranstaltung erstellen' }"
       >
-        <PlusIcon class="h-5 w-5 mr-1"></PlusIcon>
+        <PlusIcon class="h-5 w-5 mr-1" />
         Veranstaltung erstellen
       </RouterLink>
     </div>

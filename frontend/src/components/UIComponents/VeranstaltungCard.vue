@@ -60,7 +60,8 @@ const percent = computed(() => (totalAnmeldungen.value / veranstaltung.maxTeilne
         params: { veranstaltungId: veranstaltung.id.toString() },
       }"
       class="mt-6 w-full"
-      >Ausschreibung erstellen</Button
     >
+      Ausschreibung erstellen
+    </Button>
   </div>
 </template>

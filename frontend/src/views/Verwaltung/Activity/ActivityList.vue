@@ -87,7 +87,7 @@ async function fetchPage(
     skip: number
   },
   filter: TFilter,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   orderBy: TOrderBy
 ): Promise<TData[]> {
   return apiClient.activity.list.query({

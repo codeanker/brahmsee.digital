@@ -33,6 +33,6 @@ const colors: Record<Color, string> = {
     class="space-x-2 rounded-lg transition text-center leading-5 text-base cursor-pointer focus:outline-none focus:ring-0 py-2 px-4"
     :to="to"
   >
-    <slot></slot>
+    <slot />
   </component>
 </template>

@@ -29,7 +29,9 @@ const showCode = ref(false)
     <div class="grid lg:grid-cols-3 gap-6 grid-cols-1">
       <div class="mt-8 lg:mt-8 space-y-2">
         <div class="flex justify-between items-center">
-          <h5 class="mb-0">{{ name }}</h5>
+          <h5 class="mb-0">
+            {{ name }}
+          </h5>
         </div>
         <p>
           {{ description }}
@@ -89,15 +91,17 @@ const showCode = ref(false)
             language="html-vue"
             dark
             class="rounded-2xl mt-0 p-4 text-sm select-text"
-            >{{ code }}</SshPre
           >
+            {{ code }}
+          </SshPre>
           <SshPre
             v-if="jsCode"
             language="js"
             dark
             class="rounded-2xl p-4 text-sm select-text"
-            >{{ jsCode }}</SshPre
           >
+            {{ jsCode }}
+          </SshPre>
         </div>
         <div
           v-if="date"

@@ -69,7 +69,7 @@ async function fetchPage(
     skip: number
   },
   filter: TUnterveranstaltungFilter,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   orderBy: TUnterveranstaltungOrderBy
 ): Promise<TUnterveranstaltungData[]> {
   return apiClient.unterveranstaltung.list.query({

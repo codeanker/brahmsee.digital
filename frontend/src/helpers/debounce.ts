@@ -48,7 +48,7 @@ export function debounce<Args extends any[], F extends (...args: Args) => any>(
         lastInvokeTime = Date.now()
         if (!isImmediate) {
           const result = func.apply(context, args)
-          // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+
           callback && callback(result)
           promises.forEach(({ resolve }) => resolve(result))
           promises = []
@@ -65,7 +65,7 @@ export function debounce<Args extends any[], F extends (...args: Args) => any>(
 
       if (shouldCallNow) {
         const result = func.apply(context, args)
-        // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+
         callback && callback(result)
         return resolve(result)
       }

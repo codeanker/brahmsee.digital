@@ -138,7 +138,7 @@ export async function sendMail(mailParams: EMailParams) {
     })
 
     const to = Array.isArray(mailToSend.to) ? mailToSend.to.join(', ') : mailToSend.to
-    const bcc = mailToSend.bcc ? Array.isArray(mailToSend.bcc) ? mailToSend.bcc.join(', ') : mailToSend.bcc : ''
+    const bcc = mailToSend.bcc ? (Array.isArray(mailToSend.bcc) ? mailToSend.bcc.join(', ') : mailToSend.bcc) : ''
     // send mail
     if (config.mail.sendMails === 'true' && config.mail.sendgridApiKey) {
       console.log(`sending mail (${sendWithTemplate}) to "${to}" with subject "${mailParams.subject}"`)

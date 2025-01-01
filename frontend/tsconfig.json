@@ -1,7 +1,10 @@
 {
-  "extends": "@codeanker/typescript-config/tsconfig-vue-tsc",
+  "extends": "@codeanker/typescript-config/tsconfig-vue",
   "compilerOptions": {
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src", "eslint.config.js"]
 }

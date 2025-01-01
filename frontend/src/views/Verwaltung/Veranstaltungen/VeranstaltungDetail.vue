@@ -70,7 +70,7 @@ const keyInfos = computed<KeyInfo[]>(() => {
 })
 
 const tabs = computed(() => {
-  let tabs = [
+  const tabs = [
     { name: 'Allgemein', icon: WalletIcon },
     { name: 'Dokumente', icon: DocumentIcon },
     { name: 'Bedingungen', icon: ClipboardDocumentListIcon },
@@ -108,7 +108,9 @@ const files = [
 
 <template>
   <div class="mx-auto max-w-2xl lg:mx-0 mb-6">
-    <h2 class="text-2xl font-bold tracking-tight sm:text-4xl">{{ veranstaltung?.name }}</h2>
+    <h2 class="text-2xl font-bold tracking-tight sm:text-4xl">
+      {{ veranstaltung?.name }}
+    </h2>
     <p class="text-md">Hier bearbeiten wir die Veranstaltung damit Gliederungen sich anmelden können.</p>
   </div>
   <Tabs
@@ -121,8 +123,9 @@ const files = [
         <RouterLink
           class="text-primary-600"
           :to="{ name: 'VerwaltungVeranstaltungEdit' }"
-          >Veranstaltung bearbeiten</RouterLink
         >
+          Veranstaltung bearbeiten
+        </RouterLink>
       </div>
 
       <InfoList :infos="keyInfos" />
@@ -132,7 +135,7 @@ const files = [
         <div
           class="prose dark:prose-invert"
           v-html="veranstaltung?.beschreibung"
-        ></div>
+        />
       </div>
     </Tab>
     <Tab>
@@ -153,7 +156,7 @@ const files = [
         v-if="veranstaltung?.teilnahmeBedingungenPublic"
         class="prose dark:prose-invert"
         v-html="veranstaltung?.teilnahmeBedingungenPublic"
-      ></div>
+      />
       <div v-else>
         <p class="text-gray-500">Keine öffentlichen Teilnahmebedingungen hinterlegt</p>
       </div>
@@ -166,7 +169,7 @@ const files = [
         v-if="veranstaltung?.teilnahmeBedingungen"
         class="prose dark:prose-invert"
         v-html="veranstaltung?.teilnahmeBedingungen"
-      ></div>
+      />
       <div v-else>
         <p class="text-gray-500">Keine internen Teilnahmebedingungen hinterlegt</p>
       </div>
@@ -179,7 +182,7 @@ const files = [
         v-if="veranstaltung?.datenschutz"
         class="prose dark:prose-invert"
         v-html="veranstaltung?.datenschutz"
-      ></div>
+      />
       <div v-else>
         <p class="text-gray-500">Keine Datenschutzhinweise hinterlegt</p>
       </div>

@@ -217,11 +217,11 @@ const submit = () => {
           v-model="comment"
           label="Bemerkung"
           :rows="3"
-        ></BasicTextArea>
+        />
         <hr class="my-5" />
       </template>
 
-      <slot></slot>
+      <slot />
 
       <template v-if="isPublicAnmeldung">
         <template v-if="showTshirt">

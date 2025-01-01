@@ -17,7 +17,7 @@ export interface Option {
 const props = defineProps<
   BasicInputDefaultProps<string | number | string[] | number[]> & {
     options: Option[]
-    // eslint-disable-next-line vue/no-unused-properties
+
     multiple?: boolean
   }
 >()

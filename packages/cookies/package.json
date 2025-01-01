@@ -7,7 +7,7 @@
   },
   "scripts": {
     "tsc": "tsc --noCheck",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "vue-tsc --noEmit",
     "lint": "eslint ."
   },
   "dependencies": {
@@ -15,10 +15,11 @@
     "@heroicons/vue": "^2.1.1"
   },
   "devDependencies": {
-    "@codeanker/typescript-config": "workspace:*",
     "@codeanker/eslint-config": "workspace:*",
+    "@codeanker/typescript-config": "workspace:*",
     "@types/node": "catalog:",
+    "eslint": "catalog:",
     "typescript": "catalog:",
-    "eslint": "catalog:"
+    "vue-tsc": "catalog:"
   }
 }

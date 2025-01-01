@@ -59,7 +59,9 @@ function isCurrentRoute(checkRoute: SidebarItemRoute) {
               :is="item.icon"
               class="inline h-5 aspect-square"
             />
-            <div class="grow">{{ item.name }}</div>
+            <div class="grow">
+              {{ item.name }}
+            </div>
             <!-- Badge -->
             <div
               v-if="item.badge"
@@ -86,7 +88,7 @@ function isCurrentRoute(checkRoute: SidebarItemRoute) {
                 <div
                   v-if="isCurrentRoute(child.route)"
                   class="rounded-full h-1.5 aspect-square bg-primary-600 dark:bg-primary-400 absolute z-50"
-                ></div>
+                />
               </div>
               <AppLink
                 v-if="!child.disabled && child.visible"
@@ -122,7 +124,7 @@ function isCurrentRoute(checkRoute: SidebarItemRoute) {
             </div>
             <!-- side line -->
             <div class="absolute w-5 h-full flex items-center justify-center left-2">
-              <div class="rounded-full w-0.5 h-full bg-primary-200 dark:bg-gray-300"></div>
+              <div class="rounded-full w-0.5 h-full bg-primary-200 dark:bg-gray-300" />
             </div>
           </div>
         </template>
@@ -132,7 +134,9 @@ function isCurrentRoute(checkRoute: SidebarItemRoute) {
               :is="item.icon"
               class="inline h-5 aspect-square"
             />
-            <div class="grow">{{ item.name }}</div>
+            <div class="grow">
+              {{ item.name }}
+            </div>
             <!-- Locked / Disabled -->
             <component
               :is="LockClosedIcon"
@@ -147,7 +151,9 @@ function isCurrentRoute(checkRoute: SidebarItemRoute) {
         :key="item.name + item.type"
         class="pt-8 pb-1"
       >
-        <div class="text-xs font-bold">{{ item.name }}</div>
+        <div class="text-xs font-bold">
+          {{ item.name }}
+        </div>
       </div>
     </template>
   </div>

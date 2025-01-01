@@ -154,9 +154,9 @@ const { execute: updateAnmeldung } = useAsyncState(
         return entry[1]
       })
       .map((entry) => entry[0] as NahrungsmittelIntoleranz)
-    let personId = currentAnmeldung.value?.person.id
+    const personId = currentAnmeldung.value?.person.id
     if (personId) {
-      let data = {
+      const data = {
         id: personId,
         data: {
           gliederungId: anmeldung.gliederung.id,
@@ -356,9 +356,11 @@ onMounted(() => {
         <div
           class="w-4 h-4 mt-1 rounded-full shrink-0"
           :class="`bg-${getAnmeldungStatusColor(stat.name)}-600`"
-        ></div>
+        />
         <div>
-          <div class="text-sm font-medium">{{ AnmeldungStatusMapping[stat.name].human }}</div>
+          <div class="text-sm font-medium">
+            {{ AnmeldungStatusMapping[stat.name].human }}
+          </div>
           <p class="flex items-baseline gap-x-2">
             <span class="text-2xl font-semibold tracking-tight">{{ stat.value }}</span>
           </p>
@@ -394,7 +396,7 @@ onMounted(() => {
           <div
             class="w-4 h-4 rounded-full shrink-0 ml-2"
             :class="`bg-${getAnmeldungStatusColor(currentAnmeldung?.status)}-600`"
-          ></div>
+          />
         </div>
       </div>
     </template>

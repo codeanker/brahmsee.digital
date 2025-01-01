@@ -26,7 +26,9 @@ if (location.hash) {
       <!-- <h2 class="text-center text-4xl leading-9 tracking-tight text-primary-700 flex items-center justify-center">
         Registrierung erfolgreich
       </h2> -->
-      <div v-if="error">{{ error }}</div>
+      <div v-if="error">
+        {{ error }}
+      </div>
       <div v-else>Du kannst das Fenster schließen.</div>
     </div>
   </div>

@@ -115,7 +115,7 @@ const {
       >
         Abbrechen
       </Button>
-      <div class="flex-1"></div>
+      <div class="flex-1" />
       <Button
         type="button"
         color="danger"
