@@ -12,6 +12,7 @@ export default function useValidationModel<T = unknown>(
     required?: Parameters<typeof required>[0]
     modelValue: T
   },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   emit: (name: 'update:modelValue', ...args: any[]) => void
 ) {
   const fieldName = getFieldName(props)

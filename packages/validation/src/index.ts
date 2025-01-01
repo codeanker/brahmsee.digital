@@ -1,3 +1,3 @@
-export * from './src/watchAndValidateValue'
-export * from './src/defineRule'
+export * from './watchAndValidateValue.js'
+export * from './defineRule.js'
 export { default as ValidateForm } from './src/ValidateForm.vue'

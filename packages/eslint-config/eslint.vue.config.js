@@ -5,6 +5,10 @@ import typescriptEslint from 'typescript-eslint'
 
 const recommended = eslintPluginVue.configs['flat/recommended'].map((item) => {
   if (item.rules) delete item.rules['vue/multi-word-component-names']
+  if (item.rules) delete item.rules['vue/singleline-html-element-content-newline']
+  if (item.rules) delete item.rules['vue/html-self-closing']
+  if (item.rules) delete item.rules['vue/html-indent']
+  if (item.rules) delete item.rules['vue/html-closing-bracket-newline']
   return item
 })
 

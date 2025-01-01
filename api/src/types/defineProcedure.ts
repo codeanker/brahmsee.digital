@@ -75,8 +75,8 @@ export function defineProcedure<
     ...config,
     router: router({
       [config.key]: procedure.input(config.inputSchema)[
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any, no-unexpected-multiline
         config.method
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
       ](config.handler as any) as unknown as TProcedureResult,
     }) as TProcedureRouter,
   }
