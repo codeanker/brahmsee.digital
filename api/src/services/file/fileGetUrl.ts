@@ -5,14 +5,13 @@ import z from 'zod'
 import { azureStorage } from '../../azureStorage'
 import config from '../../config'
 import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
+import { definePublicProcedure } from '../../types/defineProcedure'
 
 const downloadUrlLifespan = 60 * 60 // 1 hour
 
-export const fileGetUrlActionProcedure = defineProcedure({
+export const fileGetUrlActionProcedure = definePublicProcedure({
   key: 'fileGetUrl',
   method: 'query',
-  protection: { type: 'public' },
   inputSchema: z.strictObject({
     id: z.string().uuid(),
   }),

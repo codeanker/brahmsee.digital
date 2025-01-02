@@ -3,15 +3,14 @@ import z from 'zod'
 
 import config from '../../config'
 import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
+import { definePublicProcedure } from '../../types/defineProcedure'
 import { sendMail } from '../../util/mail'
 
 import { hashPassword } from '@codeanker/authentication'
 
-export const accountPasswordResetProcedure = defineProcedure({
+export const accountPasswordResetProcedure = definePublicProcedure({
   key: 'resetPassword',
   method: 'mutation',
-  protection: { type: 'public' },
   inputSchema: z.strictObject({
     email: z.string().optional(),
     passwordResetToken: z.string().optional(),

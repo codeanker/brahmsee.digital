@@ -3,16 +3,16 @@ import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 
 import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
+import { defineProtectedProcedure } from '../../types/defineProcedure'
 import logActivity from '../../util/activity'
 
 import { hashPassword, passwordMatches } from '@codeanker/authentication'
 import { isStrongPassword } from '@codeanker/helpers'
 
-export const accountChangePasswordProcedure = defineProcedure({
+export const accountChangePasswordProcedure = defineProtectedProcedure({
   key: 'changePassword',
   method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN] },
+  roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
   inputSchema: z.strictObject({
     id: z.number().int(),
     password_old: z.string(),

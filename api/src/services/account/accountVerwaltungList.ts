@@ -2,7 +2,7 @@ import { Prisma, Role } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
+import { defineProtectedProcedure } from '../../types/defineProcedure'
 import { defineQuery, getOrderBy } from '../../types/defineQuery'
 
 const inputSchema = defineQuery({
@@ -20,10 +20,10 @@ const inputSchema = defineQuery({
   ),
 })
 
-export const accountVerwaltungListProcedure = defineProcedure({
+export const accountVerwaltungListProcedure = defineProtectedProcedure({
   key: 'verwaltungList',
   method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
+  roleIds: [Role.ADMIN],
   inputSchema,
   async handler(options) {
     const { skip, take } = options.input.pagination
@@ -61,10 +61,10 @@ export const accountVerwaltungListProcedure = defineProcedure({
   },
 })
 
-export const accountVerwaltungCountProcedure = defineProcedure({
+export const accountVerwaltungCountProcedure = defineProtectedProcedure({
   key: 'verwaltungCount',
   method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
+  roleIds: [Role.ADMIN],
   inputSchema: inputSchema.pick({ filter: true }),
   async handler(options) {
     const list = await prisma.account.count({

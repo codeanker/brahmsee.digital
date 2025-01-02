@@ -7,15 +7,12 @@ import z from 'zod'
 import { azureStorage } from '../../azureStorage'
 import config from '../../config'
 import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
+import { defineProtectedProcedure } from '../../types/defineProcedure'
 
-export const fileCreateProcedure = defineProcedure({
+export const fileCreateProcedure = defineProtectedProcedure({
   key: 'fileCreate',
   method: 'mutation',
-  protection: {
-    type: 'restrictToRoleIds',
-    roleIds: ['ADMIN', 'GLIEDERUNG_ADMIN'],
-  },
+  roleIds: ['ADMIN', 'GLIEDERUNG_ADMIN'],
   inputSchema: z.strictObject({
     mimetype: z.string(),
   }),

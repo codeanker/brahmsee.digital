@@ -4,7 +4,7 @@ import { z } from 'zod'
 
 import prisma from '../../prisma'
 import { customFieldValuesCreateMany, defineCustomFieldValues } from '../../types/defineCustomFieldValues'
-import { defineProcedure } from '../../types/defineProcedure'
+import { definePublicProcedure } from '../../types/defineProcedure'
 import logActivity from '../../util/activity'
 import { sendMail } from '../../util/mail'
 import { personSchema, getPersonCreateData } from '../person/schema/person.schema'
@@ -124,10 +124,9 @@ export async function handle(input: z.infer<typeof inputSchema>, isPublic: boole
   return person
 }
 
-export const anmeldungPublicCreateProcedure = defineProcedure({
+export const anmeldungPublicCreateProcedure = definePublicProcedure({
   key: 'publicCreate',
   method: 'mutation',
-  protection: { type: 'public' },
   inputSchema: inputSchema,
   async handler(options) {
     await handle(options.input, true)

@@ -2,12 +2,11 @@ import { z } from 'zod'
 
 import { authenticationLogin } from '../../authentication'
 import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
+import { definePublicProcedure } from '../../types/defineProcedure'
 
-export const authenticationLoginProcedure = defineProcedure({
+export const authenticationLoginProcedure = definePublicProcedure({
   key: 'login',
   method: 'mutation',
-  protection: { type: 'public' },
   inputSchema: z.strictObject({
     email: z.string(),
     password: z.string(),

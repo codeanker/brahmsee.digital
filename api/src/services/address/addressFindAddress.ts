@@ -2,12 +2,11 @@ import axios from 'axios'
 import z from 'zod'
 
 import config from '../../config'
-import { defineProcedure } from '../../types/defineProcedure'
+import { definePublicProcedure } from '../../types/defineProcedure'
 
-export const addressFindActionProcedure = defineProcedure({
+export const addressFindActionProcedure = definePublicProcedure({
   key: 'findAddress',
   method: 'query',
-  protection: { type: 'public' },
   inputSchema: z.object({
     query: z.string().optional(),
     zip: z.string().optional(),

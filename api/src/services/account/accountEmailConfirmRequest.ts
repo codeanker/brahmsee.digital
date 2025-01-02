@@ -2,15 +2,15 @@ import { Role } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
+import { defineProtectedProcedure } from '../../types/defineProcedure'
 import logActivity from '../../util/activity'
 
 import { sendMailConfirmEmailRequest } from './helpers/sendMailConfirmEmailRequest'
 
-export const accountEmailConfirmRequestProcedure = defineProcedure({
+export const accountEmailConfirmRequestProcedure = defineProtectedProcedure({
   key: 'emailConfirmRequest',
   method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
+  roleIds: [Role.ADMIN],
   inputSchema: z.strictObject({
     accountId: z.number().int(),
   }),
