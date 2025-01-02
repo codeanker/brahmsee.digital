@@ -2,13 +2,13 @@ import { Role } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma.js'
-import { defineProcedure } from '../../types/defineProcedure.js'
+import { defineProtectedProcedure } from '../../types/defineProcedure.js'
 import logActivity from '../../util/activity.js'
 
-export const anmeldungTeilnehmerStornoProcedure = defineProcedure({
+export const anmeldungTeilnehmerStornoProcedure = defineProtectedProcedure({
   key: 'teilnehmerStorno',
   method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.GLIEDERUNG_ADMIN] },
+  roleIds: [Role.GLIEDERUNG_ADMIN],
   inputSchema: z.strictObject({
     data: z.strictObject({
       anmeldungId: z.number().int(),

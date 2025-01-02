@@ -1,12 +1,11 @@
 import z from 'zod'
 
 import prisma from '../../prisma.js'
-import { defineProcedure } from '../../types/defineProcedure.js'
+import { definePublicProcedure } from '../../types/defineProcedure.js'
 
-export const gliederungPublicGetProcedure = defineProcedure({
+export const gliederungPublicGetProcedure = definePublicProcedure({
   key: 'publicGet',
   method: 'query',
-  protection: { type: 'public' },
   inputSchema: z.strictObject({
     gliederungId: z.number().int(),
   }),
