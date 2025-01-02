@@ -1,82 +1,60 @@
 import type { Role } from '@prisma/client'
-import type { BuildProcedure, CreateRouterInner, ProcedureBuilder, ProcedureParams } from '@trpc/server'
 import type { z } from 'zod'
 
-import { protectedProcedure, publicProcedure, router } from '../trpc.js'
+import { protectedProcedure, publicProcedure, router, type AuthenticatedContext } from '../trpc.js'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type GetProcedureConfig<TProcedure extends ProcedureBuilder<any>> =
-  TProcedure extends ProcedureBuilder<infer T> ? T : never
+export type MaybePromise<TType> = Promise<TType> | TType
 
-type ProtectedProcedureConfig = GetProcedureConfig<ReturnType<typeof protectedProcedure>>
-type PublicProcedureConfig = GetProcedureConfig<typeof publicProcedure>
-
-type ProcedureResult<
-  TProcedureConfig extends ProcedureParams,
-  TMethod extends 'query' | 'mutation',
-  TTnput,
-  TResult,
-> = BuildProcedure<
-  TMethod,
-  {
-    _config: TProcedureConfig['_config']
-    _ctx_out: TProcedureConfig['_ctx_out']
-    _input_in: TTnput
-    _input_out: TTnput
-    _output_in: TProcedureConfig['_output_in']
-    _output_out: TResult
-    _meta: TProcedureConfig['_meta']
-  },
-  TResult
->
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type RootRouterConfig = ReturnType<typeof router> extends CreateRouterInner<infer T, any> ? T : never
-
-export function defineProcedure<
+export function defineProtectedProcedure<
   const TProcedureKey extends string,
-  TMethod extends 'query' | 'mutation',
   TInputSchema extends z.ZodSchema,
-  TProtection extends { type: 'public' } | { type: 'restrictToRoleIds'; roleIds: Role[] },
-  THandler extends (options: {
-    input: z.infer<TInputSchema>
-    ctx: TProtection extends { type: 'public' }
-      ? PublicProcedureConfig['_ctx_out']
-      : ProtectedProcedureConfig['_ctx_out']
-  }) => Promise<unknown>,
-  TProcedureResult extends ProcedureResult<
-    TProtection extends { type: 'public' } ? PublicProcedureConfig : ProtectedProcedureConfig,
-    TMethod,
-    z.infer<TInputSchema>,
-    ReturnType<THandler>
-  >,
-  TProcedureRouter extends CreateRouterInner<
-    RootRouterConfig,
-    {
-      [TKey in TProcedureKey]: TProcedureResult
-    }
-  >,
+  TProcedureResult,
 >(config: {
   /** Der Key unter dem der Endpunkt aufgerufen werden kann */
   key: TProcedureKey
   /** Die trpc Methode. 'query' um Daten zu lesen und 'mutation' wenn Daten geändert werden */
-  method: TMethod
-  /** Die Protection Art des Endpunktes */
-  protection: TProtection
+  method: 'query' | 'mutation'
   /** Das Schema der Eingabedaten */
   inputSchema: TInputSchema
   /** Der Handler der die Daten verarbeitet */
-  handler: THandler
+  handler: (options: {
+    ctx: AuthenticatedContext['ctx']
+    input: z.infer<TInputSchema>
+  }) => MaybePromise<TProcedureResult>
+  /** roles */
+  roleIds: Role[]
 }) {
-  const procedure =
-    config.protection.type === 'public' ? publicProcedure : protectedProcedure(config.protection.roleIds)
+  const procedure = protectedProcedure(config.roleIds)
+    .input(config.inputSchema)
+    [config.method]((opts) => config.handler(opts))
   return {
-    ...config,
     router: router({
-      [config.key]: procedure.input(config.inputSchema)[
-        config.method
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
-      ](config.handler as any) as unknown as TProcedureResult,
-    }) as TProcedureRouter,
+      [config.key]: procedure,
+    } as { [k in TProcedureKey]: typeof procedure }),
+  }
+}
+
+export function definePublicProcedure<
+  const TProcedureKey extends string,
+  TInputSchema extends z.ZodSchema,
+  TProcedureResult,
+>(config: {
+  /** Der Key unter dem der Endpunkt aufgerufen werden kann */
+  key: TProcedureKey
+  /** Die trpc Methode. 'query' um Daten zu lesen und 'mutation' wenn Daten geändert werden */
+  method: 'query' | 'mutation'
+  /** Das Schema der Eingabedaten */
+  inputSchema: TInputSchema
+  /** Der Handler der die Daten verarbeitet */
+  handler: (options: {
+    ctx: { accountId: number | undefined }
+    input: z.infer<TInputSchema>
+  }) => MaybePromise<TProcedureResult>
+}) {
+  const procedure = publicProcedure.input(config.inputSchema)[config.method]((opts) => config.handler(opts))
+  return {
+    router: router({
+      [config.key]: procedure,
+    } as { [k in TProcedureKey]: typeof procedure }),
   }
 }

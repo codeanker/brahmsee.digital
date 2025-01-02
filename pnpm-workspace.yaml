@@ -9,3 +9,5 @@ catalog:
   typescript-eslint: ^8.18.2
   '@eslint/js': ^9.17.0
   vue-tsc: ^2.2.0
+  '@trpc/server': 11.0.0-rc.682
+  '@trpc/client': 11.0.0-rc.682
