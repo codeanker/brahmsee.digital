@@ -26,7 +26,7 @@
     "@tiptap/pm": "^2.1.12",
     "@tiptap/starter-kit": "^2.1.12",
     "@tiptap/vue-3": "^2.1.12",
-    "@trpc/client": "^10.43.7",
+    "@trpc/client": "catalog:",
     "@vitejs/plugin-basic-ssl": "^1.0.2",
     "@vuepic/vue-datepicker": "^4.5.1",
     "@vueuse/core": "^10.6.1",
