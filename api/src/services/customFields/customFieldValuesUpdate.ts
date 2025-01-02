@@ -2,14 +2,14 @@ import { Role } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma.js'
-import { defineProcedure } from '../../types/defineProcedure.js'
+import { defineProtectedProcedure } from '../../types/defineProcedure.js'
 import logActivity from '../../util/activity.js'
 import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
 
-export const customFieldValuesUpdate = defineProcedure({
+export const customFieldValuesUpdate = defineProtectedProcedure({
   key: 'valuesUpdate',
   method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN] },
+  roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
   inputSchema: z.strictObject({
     data: z.array(
       z.strictObject({

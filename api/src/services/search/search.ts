@@ -3,13 +3,13 @@ import type { MultiSearchQuery } from 'meilisearch'
 import z from 'zod'
 
 import { meilisearchClient } from '../../meilisearch/index.js'
-import { defineProcedure } from '../../types/defineProcedure.js'
+import { defineProtectedProcedure } from '../../types/defineProcedure.js'
 import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
 
-export const searchProcedure = defineProcedure({
+export const searchProcedure = defineProtectedProcedure({
   key: 'search',
   method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN] },
+  roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
   inputSchema: z.strictObject({
     term: z.string(),
   }),

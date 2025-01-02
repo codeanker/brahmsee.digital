@@ -3,14 +3,14 @@ import z from 'zod'
 
 import { AccountStatusMapping } from '../../enumMappings/index.js'
 import prisma from '../../prisma.js'
-import { defineProcedure } from '../../types/defineProcedure.js'
+import { defineProtectedProcedure } from '../../types/defineProcedure.js'
 import logActivity from '../../util/activity.js'
 import { sendMail } from '../../util/mail.js'
 
-export const accountVerwaltungPatchProcedure = defineProcedure({
+export const accountVerwaltungPatchProcedure = defineProtectedProcedure({
   key: 'verwaltungPatch',
   method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
+  roleIds: [Role.ADMIN],
   inputSchema: z.strictObject({
     id: z.number().int(),
     data: z.strictObject({
