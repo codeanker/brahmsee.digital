@@ -2,13 +2,13 @@ import { Role } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma.js'
-import { defineProcedure } from '../../types/defineProcedure.js'
+import { defineProtectedProcedure } from '../../types/defineProcedure.js'
 import logActivity from '../../util/activity.js'
 
-export const accountVerwaltungRemoveProcedure = defineProcedure({
+export const accountVerwaltungRemoveProcedure = defineProtectedProcedure({
   key: 'verwaltungRemove',
   method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
+  roleIds: [Role.ADMIN],
   inputSchema: z.strictObject({
     id: z.number().int(),
   }),

@@ -3,12 +3,12 @@ import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 
 import prisma from '../../prisma.js'
-import { defineProcedure } from '../../types/defineProcedure.js'
+import { defineProtectedProcedure } from '../../types/defineProcedure.js'
 
-export const customFieldsVeranstaltungDelete = defineProcedure({
+export const customFieldsVeranstaltungDelete = defineProtectedProcedure({
   key: 'veranstaltungDelete',
   method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
+  roleIds: [Role.ADMIN],
   inputSchema: z.strictObject({
     veranstaltungId: z.number(),
     fieldId: z.number(),
