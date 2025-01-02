@@ -27,7 +27,7 @@ export async function generateProcedureList(procedure: ProcedureOptions, context
 import z from 'zod'
 
 import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
+import { ${procedure.protection.type === 'restrictToRoleIds' ? 'defineProtectedProcedure' : 'definePublicProcedure'} } from '../../types/defineProcedure'
 import { defineQuery } from '../../types/defineQuery'
 
 const inputSchema = defineQuery({
@@ -40,10 +40,11 @@ function getFilterWhere(filter: z.infer<typeof inputSchema>['filter']): Prisma.$
   return filter
 }
 
-export const ${procedureFileName}Procedure = defineProcedure({
+export const ${procedureFileName}Procedure = ${procedure.protection.type === 'restrictToRoleIds' ? 'defineProtectedProcedure' : 'definePublicProcedure'}({
   key: '${procedureAction}',
   method: 'query',
-  protection: ${getProtectionContent(procedure.protection)},
+  ${procedure.protection.type === 'restrictToRoleIds' ? `roleIds: ${JSON.stringify(procedure.protection.roleIds)},` : ''}
+  protection: ${procedure.protection.type === 'restrictToRoleIds' ? '' : getProtectionContent(procedure.protection)},
   inputSchema,
   async handler(options) {
     const { skip, take } = options.input.pagination
@@ -59,10 +60,11 @@ export const ${procedureFileName}Procedure = defineProcedure({
   },
 })
 
-export const ${procedureFileName}CountProcedure = defineProcedure({
+export const ${procedureFileName}CountProcedure = ${procedure.protection.type === 'restrictToRoleIds' ? 'defineProtectedProcedure' : 'definePublicProcedure'}({
   key: '${procedureAction}Count',
   method: 'query',
-  protection: ${getProtectionContent(procedure.protection)},
+  ${procedure.protection.type === 'restrictToRoleIds' ? `roleIds: ${JSON.stringify(procedure.protection.roleIds)},` : ''}
+  protection: ${procedure.protection.type === 'restrictToRoleIds' ? '' : getProtectionContent(procedure.protection)},
   inputSchema,
   async handler(options) {
     return await prisma.${procedure.service}.count({

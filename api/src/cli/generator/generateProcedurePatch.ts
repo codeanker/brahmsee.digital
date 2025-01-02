@@ -25,15 +25,30 @@ export async function generateProcedurePatch(procedure: ProcedureOptions, contex
   if (alreadyExists) {
     throw new Error(`Procedure ${procedureFileName} already exists`)
   }
+
+  let procedureFunction = 'defineProcedure'
+  let protectionContent = getProtectionContent(procedure.protection)
+  let roleIds = ''
+
+  if (procedure.protection.type === 'restrictToRoleIds') {
+    procedureFunction = 'defineProtectedProcedure'
+    roleIds = `roleIds: ${JSON.stringify(procedure.protection.roleIds)},`
+    protectionContent = ''
+  } else if (procedure.protection.type === 'public') {
+    procedureFunction = 'definePublicProcedure'
+    protectionContent = ''
+  }
+
   const content = `import z from 'zod'
 
 import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
+import { ${procedureFunction} } from '../../types/defineProcedure'
 
-export const ${procedureFileName}Procedure = defineProcedure({
+export const ${procedureFileName}Procedure = ${procedureFunction}({
   key: '${procedureAction}',
   method: '${procedureMethod}',
-  protection: ${getProtectionContent(procedure.protection)},
+  ${roleIds}
+  protection: ${protectionContent},
   inputSchema: z.strictObject({
     id: z.number().int(),
     data: z.strictObject({}),
