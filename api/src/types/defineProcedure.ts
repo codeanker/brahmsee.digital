@@ -37,14 +37,13 @@ export function defineProcedure<
   const TProcedureKey extends string,
   TMethod extends 'query' | 'mutation',
   TInputSchema extends z.ZodSchema,
-  TResult,
   TProtection extends { type: 'public' } | { type: 'restrictToRoleIds'; roleIds: Role[] },
   THandler extends (options: {
     input: z.infer<TInputSchema>
     ctx: TProtection extends { type: 'public' }
       ? PublicProcedureConfig['_ctx_out']
       : ProtectedProcedureConfig['_ctx_out']
-  }) => Promise<TResult>,
+  }) => Promise<unknown>,
   TProcedureResult extends ProcedureResult<
     TProtection extends { type: 'public' } ? PublicProcedureConfig : ProtectedProcedureConfig,
     TMethod,

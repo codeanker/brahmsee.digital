@@ -4,7 +4,7 @@ import { logger } from '../../src/logger.js'
 import logActivity from '../../src/util/activity.js'
 import { isProduction } from '../../src/util/is-production.js'
 
-import { Seeder } from './index.js'
+import type { Seeder } from './index.js'
 
 import { hashPassword } from '@codeanker/authentication'
 

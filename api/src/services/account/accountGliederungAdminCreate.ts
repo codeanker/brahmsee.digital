@@ -69,6 +69,7 @@ export const accountGliederungAdminCreateProcedure = defineProcedure({
       },
     })
 
+    if (!accountData.activationToken) throw new Error('No activation token generated')
     await sendMailConfirmEmailRequest(accountData.email, accountData.activationToken)
 
     return res

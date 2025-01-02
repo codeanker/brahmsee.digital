@@ -92,7 +92,7 @@ export async function handle(input: z.infer<typeof inputSchema>, isPublic: boole
       },
     },
   })
-
+  const anmeldung = person.anmeldungen[0]
   await Promise.all([
     logActivity({
       type: 'CREATE',
@@ -104,7 +104,7 @@ export async function handle(input: z.infer<typeof inputSchema>, isPublic: boole
       type: 'CREATE',
       description: 'new public registration',
       subjectType: 'anmeldung',
-      subjectId: person.anmeldungen[0].id,
+      subjectId: anmeldung?.id,
     }),
   ])
 
