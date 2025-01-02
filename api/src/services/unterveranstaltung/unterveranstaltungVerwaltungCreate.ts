@@ -2,12 +2,12 @@ import { Role, UnterveranstaltungType } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma.js'
-import { defineProcedure } from '../../types/defineProcedure.js'
+import { defineProtectedProcedure } from '../../types/defineProcedure.js'
 
-export const unterveranstaltungVerwaltungCreateProcedure = defineProcedure({
+export const unterveranstaltungVerwaltungCreateProcedure = defineProtectedProcedure({
   key: 'verwaltungCreate',
   method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
+  roleIds: [Role.ADMIN],
   inputSchema: z.strictObject({
     data: z.strictObject({
       veranstaltungId: z.number().int(),

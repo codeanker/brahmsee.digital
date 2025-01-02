@@ -3,13 +3,13 @@ import { TRPCError } from '@trpc/server'
 import z from 'zod'
 
 import prisma from '../../prisma.js'
-import { defineProcedure } from '../../types/defineProcedure.js'
+import { defineProtectedProcedure } from '../../types/defineProcedure.js'
 import { defineQuery } from '../../types/defineQuery.js'
 
-export const personGliederungListProcedure = defineProcedure({
+export const personGliederungListProcedure = defineProtectedProcedure({
   key: 'gliederungList',
   method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.GLIEDERUNG_ADMIN] },
+  roleIds: [Role.GLIEDERUNG_ADMIN],
   inputSchema: defineQuery({
     filter: z.strictObject({
       firstname: z.string().optional(),
