@@ -1,12 +1,11 @@
 import { z } from 'zod'
 
 import prisma from '../../prisma.js'
-import { defineProcedure } from '../../types/defineProcedure.js'
+import { definePublicProcedure } from '../../types/defineProcedure.js'
 
-export const customFieldsList = defineProcedure({
+export const customFieldsList = definePublicProcedure({
   key: 'list',
   method: 'query',
-  protection: { type: 'public' },
   inputSchema: z.strictObject({
     entity: z.enum(['veranstaltung', 'unterveranstaltung']).optional(),
     entityId: z.number(),

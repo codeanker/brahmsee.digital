@@ -2,7 +2,7 @@ import { Role, type Prisma } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma.js'
-import { defineProcedure } from '../../types/defineProcedure.js'
+import { defineProtectedProcedure } from '../../types/defineProcedure.js'
 import { defineQuery } from '../../types/defineQuery.js'
 
 const inputSchema = defineQuery({
@@ -50,10 +50,10 @@ async function getWhere(
   return where
 }
 
-export const ortListProcedure = defineProcedure({
+export const ortListProcedure = defineProtectedProcedure({
   key: 'list',
   method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
+  roleIds: [Role.ADMIN],
   inputSchema,
   async handler(options) {
     const { skip, take } = options.input.pagination
@@ -71,10 +71,10 @@ export const ortListProcedure = defineProcedure({
   },
 })
 
-export const ortCountProcedure = defineProcedure({
+export const ortCountProcedure = defineProtectedProcedure({
   key: 'count',
   method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
+  roleIds: [Role.ADMIN],
   inputSchema: inputSchema.pick({ filter: true }),
   async handler(options) {
     return await prisma.ort.count({
