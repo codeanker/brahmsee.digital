@@ -14,7 +14,7 @@
   },
   "packageManager": "pnpm@9.15.2",
   "scripts": {
-    "turbo-checks": "turbo typecheck lint --force --concurrency 100%",
+    "turbo-checks": "turbo typecheck lint --concurrency 100%",
     "start:services": "docker-compose -f docker-compose-services.yml up --build",
     "start:api": "npm run dev -w ./api",
     "start:frontend": "VITE_APP_API_HOST=http://localhost:3030 npm run dev -w ./frontend",
