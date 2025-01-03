@@ -81,6 +81,6 @@
     ],
 
     // Set to empty to avoid accidental inclusion of unwanted types
-    "types": ["vite/client"]
+    // "types": ["vite/client"]
   }
 }
