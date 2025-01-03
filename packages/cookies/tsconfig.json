@@ -1,5 +1,5 @@
 {
-  "extends": "@codeanker/typescript-config/tsconfig-node-tsc",
+  "extends": "@codeanker/typescript-config/tsconfig-vue",
   "compilerOptions": {
     "lib": ["ES2022"],
     "outDir": "./dist"
