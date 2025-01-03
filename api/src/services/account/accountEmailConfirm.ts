@@ -1,11 +1,10 @@
 import z from 'zod'
 
 import prisma from '../../prisma.js'
-import { definePublicProcedure } from '../../types/defineProcedure.js'
+import { definePublicMutateProcedure } from '../../types/defineProcedure.js'
 
-export const accountEmailConfirmProcedure = definePublicProcedure({
+export const accountEmailConfirmProcedure = definePublicMutateProcedure({
   key: 'emailConfirm',
-  method: 'mutation',
   inputSchema: z.strictObject({
     activationToken: z.string(),
   }),

@@ -3,7 +3,7 @@ import z from 'zod'
 
 import prisma from '../../prisma.js'
 import type { AuthenticatedContext } from '../../trpc.js'
-import { defineProtectedProcedure } from '../../types/defineProcedure.js'
+import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
 
 export const ZGliederungVerwaltungCreateInputSchema = z.strictObject({
   data: z.strictObject({
@@ -27,9 +27,8 @@ export async function gliederungVerwaltungCreate(options: GliederungVerwaltungCr
   })
 }
 
-export const gliederungVerwaltungCreateProcedure = defineProtectedProcedure({
+export const gliederungVerwaltungCreateProcedure = defineProtectedMutateProcedure({
   key: 'verwaltungCreate',
-  method: 'mutation',
   roleIds: [Role.ADMIN],
   inputSchema: z.strictObject({
     data: z.strictObject({

@@ -2,11 +2,10 @@ import { Role } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma.js'
-import { defineProtectedProcedure } from '../../types/defineProcedure.js'
+import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
 
-export const veranstaltungVerwaltungCreateProcedure = defineProtectedProcedure({
+export const veranstaltungVerwaltungCreateProcedure = defineProtectedMutateProcedure({
   key: 'verwaltungCreate',
-  method: 'mutation',
   roleIds: [Role.ADMIN],
   inputSchema: z.strictObject({
     data: z.strictObject({

@@ -58,7 +58,7 @@ const { state: countAnmeldungen } = useAsyncState(async () => {
         unterveranstaltungId: parseInt(route.params.unterveranstaltungId as string),
       },
     })
-}, [])
+}, undefined)
 
 // @ToDo count for Gliederungen
 

@@ -2,7 +2,7 @@ import { type Prisma, Role } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma.js'
-import { defineProtectedProcedure } from '../../types/defineProcedure.js'
+import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
 import { defineQuery, getOrderBy } from '../../types/defineQuery.js'
 
 const inputSchema = defineQuery({
@@ -16,9 +16,8 @@ const inputSchema = defineQuery({
 
 type Input = z.infer<typeof inputSchema>
 
-export const activityListProcedure = defineProtectedProcedure({
+export const activityListProcedure = defineProtectedQueryProcedure({
   key: 'list',
-  method: 'query',
   roleIds: [Role.ADMIN],
   inputSchema,
   async handler({ input, ctx }) {
@@ -47,9 +46,8 @@ export const activityListProcedure = defineProtectedProcedure({
   },
 })
 
-export const activityCountProcedure = defineProtectedProcedure({
+export const activityCountProcedure = defineProtectedQueryProcedure({
   key: 'count',
-  method: 'query',
   roleIds: [Role.ADMIN],
   inputSchema: inputSchema.pick({ filter: true }),
   async handler({ input, ctx }) {

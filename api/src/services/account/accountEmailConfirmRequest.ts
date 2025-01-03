@@ -2,14 +2,13 @@ import { Role } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma.js'
-import { defineProtectedProcedure } from '../../types/defineProcedure.js'
+import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
 import logActivity from '../../util/activity.js'
 
 import { sendMailConfirmEmailRequest } from './helpers/sendMailConfirmEmailRequest.js'
 
-export const accountEmailConfirmRequestProcedure = defineProtectedProcedure({
+export const accountEmailConfirmRequestProcedure = defineProtectedQueryProcedure({
   key: 'emailConfirmRequest',
-  method: 'mutation',
   roleIds: [Role.ADMIN],
   inputSchema: z.strictObject({
     accountId: z.number().int(),

@@ -2,13 +2,12 @@ import { Role } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma.js'
-import { defineProtectedProcedure } from '../../types/defineProcedure.js'
+import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
 
 import { getPersonCreateData, personSchema } from './schema/person.schema.js'
 
-export const personGliederungPatchProcedure = defineProtectedProcedure({
+export const personGliederungPatchProcedure = defineProtectedMutateProcedure({
   key: 'gliederungPatch',
-  method: 'mutation',
   roleIds: [Role.GLIEDERUNG_ADMIN],
   inputSchema: z.strictObject({
     id: z.number().int(),

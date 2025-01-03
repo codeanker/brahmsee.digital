@@ -27,7 +27,7 @@ export async function generateProcedureList(procedure: ProcedureOptions, context
 import z from 'zod'
 
 import prisma from '../../prisma'
-import { ${procedure.protection.type === 'restrictToRoleIds' ? 'defineProtectedProcedure' : 'definePublicProcedure'} } from '../../types/defineProcedure'
+import { ${procedure.protection.type === 'restrictToRoleIds' ? 'defineProtectedQueryProcedure' : 'definePublicQueryProcedure'} } from '../../types/defineProcedure'
 import { defineQuery } from '../../types/defineQuery'
 
 const inputSchema = defineQuery({
@@ -40,9 +40,8 @@ function getFilterWhere(filter: z.infer<typeof inputSchema>['filter']): Prisma.$
   return filter
 }
 
-export const ${procedureFileName}Procedure = ${procedure.protection.type === 'restrictToRoleIds' ? 'defineProtectedProcedure' : 'definePublicProcedure'}({
+export const ${procedureFileName}Procedure = ${procedure.protection.type === 'restrictToRoleIds' ? 'defineProtectedQueryProcedure' : 'definePublicQueryProcedure'}({
   key: '${procedureAction}',
-  method: 'query',
   ${procedure.protection.type === 'restrictToRoleIds' ? `roleIds: ${JSON.stringify(procedure.protection.roleIds)},` : ''}
   protection: ${procedure.protection.type === 'restrictToRoleIds' ? '' : getProtectionContent(procedure.protection)},
   inputSchema,
@@ -60,9 +59,8 @@ export const ${procedureFileName}Procedure = ${procedure.protection.type === 're
   },
 })
 
-export const ${procedureFileName}CountProcedure = ${procedure.protection.type === 'restrictToRoleIds' ? 'defineProtectedProcedure' : 'definePublicProcedure'}({
+export const ${procedureFileName}CountProcedure = ${procedure.protection.type === 'restrictToRoleIds' ? 'defineProtectedQueryProcedure' : 'definePublicQueryProcedure'}({
   key: '${procedureAction}Count',
-  method: 'query',
   ${procedure.protection.type === 'restrictToRoleIds' ? `roleIds: ${JSON.stringify(procedure.protection.roleIds)},` : ''}
   protection: ${procedure.protection.type === 'restrictToRoleIds' ? '' : getProtectionContent(procedure.protection)},
   inputSchema,

@@ -54,20 +54,6 @@ const entityId = computed(() => {
 
 const showNotification = ref(false)
 
-const stats = computed<
-  {
-    name: AnmeldungStatus
-    value: number
-  }[]
->(() => {
-  return [
-    { name: 'OFFEN', value: countAnmeldungen.value.OFFEN },
-    { name: 'BESTAETIGT', value: countAnmeldungen.value.BESTAETIGT },
-    { name: 'STORNIERT', value: countAnmeldungen.value.STORNIERT },
-    { name: 'ABGELEHNT', value: countAnmeldungen.value.ABGELEHNT },
-  ]
-})
-
 const { state: countAnmeldungen } = useAsyncState(async () => {
   if (loggedInAccount.value?.role === 'ADMIN') {
     if (!props.unterveranstaltungId && !props.veranstaltungId)
@@ -95,7 +81,22 @@ const { state: countAnmeldungen } = useAsyncState(async () => {
       },
     })
   }
-}, [])
+}, undefined)
+
+const stats = computed<
+  {
+    name: AnmeldungStatus
+    value: number
+  }[]
+>(() => {
+  if (!countAnmeldungen.value) return []
+  return [
+    { name: 'OFFEN', value: countAnmeldungen.value.OFFEN },
+    { name: 'BESTAETIGT', value: countAnmeldungen.value.BESTAETIGT },
+    { name: 'STORNIERT', value: countAnmeldungen.value.STORNIERT },
+    { name: 'ABGELEHNT', value: countAnmeldungen.value.ABGELEHNT },
+  ]
+})
 
 const selectedAnmeldungId = ref()
 const showDrawer = ref(false)

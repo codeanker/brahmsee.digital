@@ -1,6 +1,7 @@
 {
   "extends": "@codeanker/typescript-config/tsconfig-vue",
   "compilerOptions": {
+    "types": ["vite/client"],
     "outDir": "./dist",
     "paths": {
       "@/*": ["./src/*"]

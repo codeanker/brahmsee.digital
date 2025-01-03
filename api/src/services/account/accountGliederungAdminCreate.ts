@@ -6,7 +6,7 @@ import z from 'zod'
 import config from '../../config.js'
 import prisma from '../../prisma.js'
 import { ZOauthRegisterJwtPayloadSchema } from '../../routes/connect.js'
-import { definePublicProcedure } from '../../types/defineProcedure.js'
+import { definePublicMutateProcedure } from '../../types/defineProcedure.js'
 
 import { sendMailConfirmEmailRequest } from './helpers/sendMailConfirmEmailRequest.js'
 import { getAccountCreateData } from './schema/account.schema.js'
@@ -24,9 +24,8 @@ const ZAccountGliederungAdminCreateInput = z.strictObject({
   }),
 })
 
-export const accountGliederungAdminCreateProcedure = definePublicProcedure({
+export const accountGliederungAdminCreateProcedure = definePublicMutateProcedure({
   key: 'gliederungAdminCreate',
-  method: 'mutation',
   inputSchema: ZAccountGliederungAdminCreateInput,
   async handler(options) {
     let dlrgOauthId: undefined | string = undefined

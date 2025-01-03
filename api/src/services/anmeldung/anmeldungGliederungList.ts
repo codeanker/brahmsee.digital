@@ -2,7 +2,7 @@ import { AnmeldungStatus, Role } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma.js'
-import { defineProtectedProcedure } from '../../types/defineProcedure.js'
+import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
 import { ZPaginationSchema } from '../../types/defineQuery.js'
 import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
 
@@ -29,9 +29,8 @@ const where = (filter: { gliederungId: number; unterveranstaltungId?: number; ve
   }
 }
 
-export const anmeldungGliederungdListProcedure = defineProtectedProcedure({
+export const anmeldungGliederungdListProcedure = defineProtectedQueryProcedure({
   key: 'gliederungList',
-  method: 'query',
   roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
   inputSchema: z.strictObject({
     pagination: ZPaginationSchema,
@@ -95,9 +94,8 @@ export const anmeldungGliederungdListProcedure = defineProtectedProcedure({
   },
 })
 
-export const anmeldungGliederungCountProcedure = defineProtectedProcedure({
+export const anmeldungGliederungCountProcedure = defineProtectedQueryProcedure({
   key: 'gliederungCount',
-  method: 'query',
   roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
   inputSchema: z.strictObject({
     filter: filter,

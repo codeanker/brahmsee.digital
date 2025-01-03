@@ -4,7 +4,7 @@ import type { Component } from 'vue'
 withDefaults(
   defineProps<{
     keyText: string
-    valueText: string | number
+    valueText: string | number | undefined
     icon?: Component
   }>(),
   {

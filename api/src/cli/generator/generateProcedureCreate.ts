@@ -31,11 +31,11 @@ export async function generateProcedureCreate(procedure: ProcedureOptions, conte
   let roleIds = ''
 
   if (procedure.protection.type === 'restrictToRoleIds') {
-    procedureFunction = 'defineProtectedProcedure'
+    procedureFunction = 'defineProtectedQueryProcedure'
     roleIds = `roleIds: ${JSON.stringify(procedure.protection.roleIds)},`
     protectionContent = ''
   } else if (procedure.protection.type === 'public') {
-    procedureFunction = 'definePublicProcedure'
+    procedureFunction = 'definePublicQueryProcedure'
     protectionContent = ''
   }
 

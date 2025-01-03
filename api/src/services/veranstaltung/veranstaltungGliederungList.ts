@@ -2,13 +2,12 @@ import { Role } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma.js'
-import { defineProtectedProcedure } from '../../types/defineProcedure.js'
+import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
 import { defineQuery } from '../../types/defineQuery.js'
 import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
 
-export const veranstaltungGliederungListProcedure = defineProtectedProcedure({
+export const veranstaltungGliederungListProcedure = defineProtectedQueryProcedure({
   key: 'gliederungList',
-  method: 'query',
   roleIds: [Role.GLIEDERUNG_ADMIN],
   inputSchema: defineQuery({
     filter: z.strictObject({}),

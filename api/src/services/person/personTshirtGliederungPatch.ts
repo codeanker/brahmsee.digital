@@ -2,11 +2,10 @@ import { Konfektionsgroesse, Role } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma.js'
-import { defineProtectedProcedure } from '../../types/defineProcedure.js'
+import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
 
-export const personTshirtGliederungPatchProcedure = defineProtectedProcedure({
+export const personTshirtGliederungPatchProcedure = defineProtectedMutateProcedure({
   key: 'tshirtGliederungPatch',
-  method: 'mutation',
   roleIds: [Role.GLIEDERUNG_ADMIN],
   inputSchema: z.strictObject({
     anmeldungId: z.number().int(),

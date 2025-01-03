@@ -1,11 +1,10 @@
 import { Role } from '@prisma/client'
 
-import { defineProtectedProcedure } from '../../types/defineProcedure.js'
+import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
 import { handle, inputSchema } from './anmeldungPublicCreate.js'
 
-export const anmeldungVerwaltungCreateProcedure = defineProtectedProcedure({
+export const anmeldungVerwaltungCreateProcedure = defineProtectedMutateProcedure({
   key: 'verwaltungCreate',
-  method: 'mutation',
   inputSchema: inputSchema,
   async handler(options) {
     await handle(options.input, false)

@@ -83,7 +83,6 @@ const { model, errorMessage } = useValidationModel(props, emit)
         v-model="model"
         :name="id || name || label"
         :placeholder="placeholder || label || name"
-        :class="{ 'rounded-r-none': $slots.append }"
         input-class-name="input-style"
         :range="range"
         :auto-range="autoRange"

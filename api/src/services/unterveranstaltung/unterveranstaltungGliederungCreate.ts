@@ -3,12 +3,11 @@ import { TRPCError } from '@trpc/server'
 import z from 'zod'
 
 import prisma from '../../prisma.js'
-import { defineProtectedProcedure } from '../../types/defineProcedure.js'
+import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
 import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
 
-export const unterveranstaltungGliederungCreateProcedure = defineProtectedProcedure({
+export const unterveranstaltungGliederungCreateProcedure = defineProtectedMutateProcedure({
   key: 'gliederungCreate',
-  method: 'mutation',
   roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
   inputSchema: z.strictObject({
     data: z.strictObject({

@@ -3,13 +3,12 @@ import z from 'zod'
 
 import { updateMeiliPerson } from '../../meilisearch/person.js'
 import prisma from '../../prisma.js'
-import { defineProtectedProcedure } from '../../types/defineProcedure.js'
+import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
 
 import { personSchema, getPersonCreateData } from './schema/person.schema.js'
 
-export const personVerwaltungCreateProcedure = defineProtectedProcedure({
+export const personVerwaltungCreateProcedure = defineProtectedMutateProcedure({
   key: 'verwaltungCreate',
-  method: 'mutation',
   roleIds: [Role.ADMIN],
   inputSchema: z.strictObject({
     data: personSchema,
