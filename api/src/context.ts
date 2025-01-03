@@ -22,11 +22,16 @@ export async function createContext({ req }: CreateTrpcKoaContextOptions | Fetch
     if (authorization === null) throw new Error('No authorization header found.')
 
     const accountId = getEntityIdFromHeader(authorization)
+
     return {
       accountId: typeof accountId === 'string' ? parseInt(accountId) : accountId,
     }
   } catch (error) {
-    logger.error(error)
+    if (error instanceof Error) {
+      logger.error(error.message)
+    } else {
+      logger.error('An unknown error occurred')
+    }
     throw error
   }
 }

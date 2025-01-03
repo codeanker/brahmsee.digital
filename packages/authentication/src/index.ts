@@ -92,7 +92,7 @@ export function createAuthentication<EnitiyId>({
   return {
     authenticationLogin,
     getEntityIdFromHeader,
-    sign(payload: TAuthenticateJwtPayloadSchema) {
+    sign(this: void, payload: TAuthenticateJwtPayloadSchema) {
       return sign(payload, jwtSecret, expiresIn)
     },
   }

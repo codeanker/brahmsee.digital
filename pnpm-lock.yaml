@@ -45,12 +45,18 @@ catalogs:
     eslint:
       specifier: ^9.17.0
       version: 9.17.0
+    superjson:
+      specifier: ^2.2.2
+      version: 2.2.2
     typescript:
       specifier: ^5.7.2
       version: 5.7.2
     typescript-eslint:
       specifier: ^8.18.2
       version: 8.18.2
+    vue:
+      specifier: ^3.5.13
+      version: 3.5.13
     vue-tsc:
       specifier: ^2.2.0
       version: 2.2.0
@@ -77,9 +83,15 @@ importers:
       '@azure/storage-blob':
         specifier: ^12.17.0
         version: 12.26.0
+      '@codeanker/authentication':
+        specifier: workspace:*
+        version: link:../packages/authentication
       '@codeanker/datagrid':
         specifier: file:../vendor/codeanker-datagrid-2.7.1-trimmed.tgz
         version: file:vendor/codeanker-datagrid-2.7.1-trimmed.tgz(vue-router@4.5.0(vue@3.5.13(typescript@5.7.2)))(vue@3.5.13(typescript@5.7.2))
+      '@codeanker/helpers':
+        specifier: workspace:*
+        version: link:../packages/helpers
       '@faker-js/faker':
         specifier: ^8.4.1
         version: 8.4.1
@@ -122,6 +134,9 @@ importers:
       handlebars:
         specifier: ^4.7.8
         version: 4.7.8
+      jsonwebtoken:
+        specifier: ^9.0.2
+        version: 9.0.2
       koa:
         specifier: ^2.14.2
         version: 2.15.3
@@ -140,6 +155,9 @@ importers:
       koa-static:
         specifier: ^5.0.0
         version: 5.0.0
+      lodash-es:
+        specifier: ^4.17.21
+        version: 4.17.21
       meilisearch:
         specifier: ^0.37.0
         version: 0.37.0
@@ -153,7 +171,7 @@ importers:
         specifier: ^15.0.0
         version: 15.1.3
       superjson:
-        specifier: ^2.2.1
+        specifier: 'catalog:'
         version: 2.2.2
       trpc-koa-adapter:
         specifier: ^1.1.3
@@ -186,6 +204,9 @@ importers:
       '@types/http-status-codes':
         specifier: ^1.2.0
         version: 1.2.0
+      '@types/jsonwebtoken':
+        specifier: ^9.0.5
+        version: 9.0.7
       '@types/koa':
         specifier: ^2.14.0
         version: 2.15.0
@@ -243,6 +264,9 @@ importers:
       '@codeanker/validation':
         specifier: workspace:*
         version: link:../packages/validation
+      '@faker-js/faker':
+        specifier: ^8.4.1
+        version: 8.4.1
       '@headlessui/vue':
         specifier: ^1.7.16
         version: 1.7.23(vue@3.5.13(typescript@5.7.2))
@@ -291,6 +315,9 @@ importers:
       '@vueuse/core':
         specifier: ^10.6.1
         version: 10.11.1(vue@3.5.13(typescript@5.7.2))
+      '@vueuse/router':
+        specifier: ^12.3.0
+        version: 12.3.0(typescript@5.7.2)(vue-router@4.5.0(vue@3.5.13(typescript@5.7.2)))
       http2-proxy:
         specifier: ^5.0.53
         version: 5.0.53
@@ -306,8 +333,11 @@ importers:
       simple-syntax-highlighter:
         specifier: ^3.1.1
         version: 3.1.1(vue@3.5.13(typescript@5.7.2))
+      superjson:
+        specifier: 'catalog:'
+        version: 2.2.2
       vue:
-        specifier: ^3.4.18
+        specifier: 'catalog:'
         version: 3.5.13(typescript@5.7.2)
       vue-router:
         specifier: ^4.2.5
@@ -395,6 +425,9 @@ importers:
       '@heroicons/vue':
         specifier: ^2.1.1
         version: 2.2.0(vue@3.5.13(typescript@5.7.2))
+      vue:
+        specifier: 'catalog:'
+        version: 3.5.13(typescript@5.7.2)
     devDependencies:
       '@codeanker/eslint-config':
         specifier: workspace:*
@@ -1689,8 +1722,16 @@ packages:
     peerDependencies:
       vue-router: '>=4.0.0-rc.1'
 
+  '@vueuse/router@12.3.0':
+    resolution: {integrity: sha512-1DaH4SAkoNaEHHO2QedOksGZ+96e12wFxxT2hSJ1uWaghZJAjjS2xNKvl0hQdsFDZQ2iakLoAuIcuR5FHuoCCA==}
+    peerDependencies:
+      vue-router: '>=4.0.0-rc.1'
+
   '@vueuse/shared@10.11.1':
     resolution: {integrity: sha512-LHpC8711VFZlDaYUXEBbFBCQ7GS3dVU9mjOhhMhXP6txTV4EhYQg/KGnQuvt/sPAtoUKq7VVUnL6mVtFoL42sA==}
+
+  '@vueuse/shared@12.3.0':
+    resolution: {integrity: sha512-X3YD35GUeW0d5Gajcwv9jdLAJTV2Jdb/Ll6Ii2JIYcKLYZqv5wxyLeKtiQkqWmHg3v0J0ZWjDUMVOw2E7RCXfA==}
 
   abbrev@2.0.0:
     resolution: {integrity: sha512-6/mh1E2u2YgEsCHdY0Yx5oW+61gZU+1vXaoiHHrpKeuRNNgFvS+/jrwHiQhB5apAf5oB7UB7E19ol2R2LKH8hQ==}
@@ -5305,12 +5346,26 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
+  '@vueuse/router@12.3.0(typescript@5.7.2)(vue-router@4.5.0(vue@3.5.13(typescript@5.7.2)))':
+    dependencies:
+      '@vueuse/shared': 12.3.0(typescript@5.7.2)
+      vue: 3.5.13(typescript@5.7.2)
+      vue-router: 4.5.0(vue@3.5.13(typescript@5.7.2))
+    transitivePeerDependencies:
+      - typescript
+
   '@vueuse/shared@10.11.1(vue@3.5.13(typescript@5.7.2))':
     dependencies:
       vue-demi: 0.14.10(vue@3.5.13(typescript@5.7.2))
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
+
+  '@vueuse/shared@12.3.0(typescript@5.7.2)':
+    dependencies:
+      vue: 3.5.13(typescript@5.7.2)
+    transitivePeerDependencies:
+      - typescript
 
   abbrev@2.0.0: {}
 
