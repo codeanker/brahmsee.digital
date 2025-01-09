@@ -33,7 +33,7 @@ withDefaults(
         >*</span
       >
     </label>
-    <slot></slot>
+    <slot />
     <BasicValidationFeedback :error-message="errorMessage" />
   </div>
 </template>

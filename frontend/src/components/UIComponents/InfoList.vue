@@ -21,6 +21,6 @@ defineProps<{
       class="flex items-center"
       :class="{ 'text-xs': info.small }"
       v-html="info.value"
-    ></div>
+    />
   </div>
 </template>

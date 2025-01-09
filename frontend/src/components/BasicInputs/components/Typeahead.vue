@@ -10,7 +10,7 @@ type QueryResult = any[] | { data: any[] }
 const props = withDefaults(
   defineProps<{
     query: (term: string, controller: AbortController) => Promise<QueryResult> | QueryResult
-    // eslint-disable-next-line vue/no-unused-properties
+
     modelValue: object | string | null | undefined
     /** Formatiert das ausgewählte Query-Ergebnis zu einem String, der in das Input geschrieben wird */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -224,8 +224,7 @@ const highlight = computed(() => {
                   <span
                     :class="['block truncate', selected && 'font-semibold']"
                     v-html="highlight(resultFormatter(item))"
-                  >
-                  </span>
+                  />
                   <!-- eslint-enable vue/no-v-html -->
                   <span
                     v-if="selected"

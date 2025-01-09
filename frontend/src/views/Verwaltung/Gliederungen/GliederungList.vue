@@ -39,7 +39,7 @@ async function fetchPage(
     skip: number
   },
   filter: TFilter,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   orderBy: TOrderBy
 ): Promise<TData[]> {
   return apiClient.gliederung.list.query({
@@ -63,7 +63,7 @@ async function fetchCount(filter: TFilter): Promise<number> {
         class="text-primary-500 flex items-center"
         :to="{ name: 'Verwaltung Gliederung Erstellen' }"
       >
-        <PlusIcon class="h-5 w-5 mr-1"></PlusIcon>
+        <PlusIcon class="h-5 w-5 mr-1" />
         Gliederung erstellen
       </RouterLink>
     </div>

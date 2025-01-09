@@ -1,6 +1,6 @@
 import { CustomFieldPosition, CustomFieldType, type CustomField } from '@prisma/client'
 
-import { defineEnumMapping } from './defineEnumMapping'
+import { defineEnumMapping } from './defineEnumMapping.js'
 
 export { type CustomField }
 export const CustomFieldTypeMapping = defineEnumMapping<CustomFieldType>({

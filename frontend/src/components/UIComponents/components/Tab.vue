@@ -3,5 +3,5 @@ import { TabPanel } from '@headlessui/vue'
 </script>
 
 <template>
-  <TabPanel><slot></slot></TabPanel>
+  <TabPanel><slot /></TabPanel>
 </template>

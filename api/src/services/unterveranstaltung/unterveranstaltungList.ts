@@ -1,10 +1,10 @@
 import { Role, type Prisma } from '@prisma/client'
 import z from 'zod'
 
-import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
-import { defineQuery, getOrderBy } from '../../types/defineQuery'
-import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin'
+import prisma from '../../prisma.js'
+import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
+import { defineQuery, getOrderBy } from '../../types/defineQuery.js'
+import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
 
 const inputSchema = defineQuery({
   filter: z.strictObject({
@@ -28,10 +28,9 @@ const inputSchema = defineQuery({
 
 type Input = z.infer<typeof inputSchema>
 
-export const unterveranstaltungListProcedure = defineProcedure({
+export const unterveranstaltungListProcedure = defineProtectedQueryProcedure({
   key: 'list',
-  method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN] },
+  roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
   inputSchema: inputSchema,
   async handler(options) {
     const { skip, take } = options.input.pagination
@@ -69,10 +68,9 @@ export const unterveranstaltungListProcedure = defineProcedure({
   },
 })
 
-export const unterveranstaltungCountProcedure = defineProcedure({
+export const unterveranstaltungCountProcedure = defineProtectedQueryProcedure({
   key: 'count',
-  method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN] },
+  roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
   inputSchema: inputSchema.pick({ filter: true }),
   async handler(options) {
     const unterveranstaltungenCount = await prisma.unterveranstaltung.count({

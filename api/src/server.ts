@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import cors from '@koa/cors'
 import grant from 'grant'
 import Koa from 'koa'
@@ -7,13 +9,13 @@ import session from 'koa-session'
 import serve from 'koa-static'
 import { createKoaMiddleware } from 'trpc-koa-adapter'
 
-import config from './config'
-import { createContext } from './context'
-import { logger } from './logger'
-import cacheControl from './middleware/cache-control'
-import router from './routes'
+import config from './config.js'
+import { createContext } from './context.js'
+import { logger } from './logger.js'
+import cacheControl from './middleware/cache-control.js'
+import router from './routes/index.js'
 
-import { appRouter } from './index'
+import { appRouter } from './index.js'
 
 export const app = new Koa()
 
@@ -36,7 +38,8 @@ app.use(session({}, app))
 
 // grant is used for oauth
 app.use(
-  grant.koa()({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
+  (grant as any).koa()({
     defaults: {
       origin: `${config.clientUrl}/api`,
       transport: 'session',

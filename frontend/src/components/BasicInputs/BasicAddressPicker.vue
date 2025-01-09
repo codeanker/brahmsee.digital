@@ -115,7 +115,7 @@ watch(
     () => props.zusatz,
   ],
   () => {
-    let address = {
+    const address = {
       street: props.street,
       streetNumber: props.streetNumber,
       zip: props.zip,

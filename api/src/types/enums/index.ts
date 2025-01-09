@@ -1,2 +1,2 @@
-export * from './defineEnumMapping'
-export * from './getEnumOptions'
+export * from './defineEnumMapping.js'
+export * from './getEnumOptions.js'

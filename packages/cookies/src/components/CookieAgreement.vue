@@ -2,8 +2,8 @@
 import { ChevronLeftIcon } from '@heroicons/vue/24/solid'
 import { computed, ref } from 'vue'
 
-import Button from './Button.vue'
-import Switch from './Switch.vue'
+import Button from './CookieAgreementButton.vue'
+import Switch from './CookieAgreementSwitch.vue'
 
 const extended = ref(false)
 const tabs = ref([
@@ -12,7 +12,7 @@ const tabs = ref([
 ])
 const services = ref([{ name: 'Google Analytics', active: false, category: 'Analyse' }])
 
-const isCategory = computed(() => tabs.value[0].active)
+const isCategory = computed(() => tabs.value[0]?.active)
 </script>
 
 <template>
@@ -77,14 +77,18 @@ const isCategory = computed(() => tabs.value[0].active)
                 class="grow flex flex-col"
               >
                 {{ service.category }}
-                <div class="text-sm font-medium text-gray-500">{{ service.category }}</div>
+                <div class="text-sm font-medium text-gray-500">
+                  {{ service.category }}
+                </div>
               </div>
               <div
                 v-else
                 class="grow flex flex-col"
               >
                 {{ service.name }}
-                <div class="text-sm font-medium text-gray-500">{{ service.category }}</div>
+                <div class="text-sm font-medium text-gray-500">
+                  {{ service.category }}
+                </div>
               </div>
               <Switch v-model="service.active" />
             </div>

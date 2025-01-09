@@ -22,7 +22,7 @@ const emit = defineEmits<{
 
 const model = computed({
   get() {
-    let model = props.modelValue
+    const model = props.modelValue
     if (props.modelValue.personen.length === 0) {
       model.personen.push(personTemplate.value)
     }

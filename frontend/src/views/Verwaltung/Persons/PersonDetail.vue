@@ -119,7 +119,7 @@ if (loggedInAccount.value?.role === 'ADMIN') {
       <FormAnmeldungGeneral
         v-if="person"
         :person-id="person.id"
-      ></FormAnmeldungGeneral>
+      />
     </Tab>
     <Tab v-if="loggedInAccount?.role === 'ADMIN'">
       <div class="text-lg font-semibold">Entwickler:innen</div>

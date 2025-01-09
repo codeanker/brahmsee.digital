@@ -1,6 +1,6 @@
-import config from '../../../config'
-import client from '../../../prisma'
-import { sendMail } from '../../../util/mail'
+import config from '../../../config.js'
+import client from '../../../prisma.js'
+import { sendMail } from '../../../util/mail.js'
 
 export async function sendMailConfirmEmailRequest(email: string, activationToken: string) {
   const activationUrl = `${config.clientUrl}/registrierung/confirm/${activationToken}`

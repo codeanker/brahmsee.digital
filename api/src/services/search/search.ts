@@ -2,14 +2,13 @@ import { Role } from '@prisma/client'
 import type { MultiSearchQuery } from 'meilisearch'
 import z from 'zod'
 
-import { meilisearchClient } from '../../meilisearch'
-import { defineProcedure } from '../../types/defineProcedure'
-import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin'
+import { meilisearchClient } from '../../meilisearch/index.js'
+import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
+import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
 
-export const searchProcedure = defineProcedure({
+export const searchProcedure = defineProtectedQueryProcedure({
   key: 'search',
-  method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN] },
+  roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
   inputSchema: z.strictObject({
     term: z.string(),
   }),

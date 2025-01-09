@@ -48,6 +48,8 @@ const percent = computed(() => (totalAnmeldungen.value / veranstaltung.maxTeilne
 
     <CircularProgress
       class="py-6"
+      :size="150"
+      :stroke-width="15"
       :progress="percent"
       :formatter="(v) => v.toFixed(2)"
     />
@@ -60,7 +62,8 @@ const percent = computed(() => (totalAnmeldungen.value / veranstaltung.maxTeilne
         params: { veranstaltungId: veranstaltung.id.toString() },
       }"
       class="mt-6 w-full"
-      >Ausschreibung erstellen</Button
     >
+      Ausschreibung erstellen
+    </Button>
   </div>
 </template>

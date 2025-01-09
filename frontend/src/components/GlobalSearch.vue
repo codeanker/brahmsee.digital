@@ -54,7 +54,7 @@ function toggleSearch() {
 }
 
 const quickActions = computed(() => {
-  let actions = [
+  const actions = [
     { name: 'Neue Ausschreibung...', icon: MegaphoneIcon, url: { name: 'Verwaltung Veranstaltung erstellen' } },
   ]
   if (loggedInAccount.value?.role === 'ADMIN') {
@@ -178,8 +178,8 @@ const { state: searchResults, execute: searchAPI } = useAsyncState(
                             <span
                               class="mr-1"
                               v-html="person?._formatted?.firstname"
-                            ></span>
-                            <span v-html="person?._formatted?.lastname"></span>
+                            />
+                            <span v-html="person?._formatted?.lastname" />
                             <br />
                             <span class="text-xs">{{ formatDate(person?.birthday) }}</span>
                             <span
@@ -190,7 +190,7 @@ const { state: searchResults, execute: searchAPI } = useAsyncState(
                             <span
                               class="text-xs"
                               v-html="person?._formatted?.email"
-                            ></span>
+                            />
                           </div>
                           <span
                             v-if="active"
@@ -232,7 +232,7 @@ const { state: searchResults, execute: searchAPI } = useAsyncState(
                             <ArrowLongRightIcon
                               class="h-5 w-5"
                               aria-hidden="true"
-                            ></ArrowLongRightIcon>
+                            />
                           </span>
                         </li>
                       </AppLink>

@@ -1,13 +1,12 @@
 import { Role } from '@prisma/client'
 import z from 'zod'
 
-import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
+import prisma from '../../prisma.js'
+import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
 
-export const systemHostnamesGetProcedure = defineProcedure({
+export const systemHostnamesGetProcedure = defineProtectedQueryProcedure({
   key: 'hostnamesGet',
-  method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
+  roleIds: [Role.ADMIN],
   inputSchema: z.strictObject({}),
   async handler() {
     return await prisma.hostname.findMany({

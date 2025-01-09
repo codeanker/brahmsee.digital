@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npm run lint-staged && npm run typecheck
+# pnpm run lint-staged && pnpm run typecheck

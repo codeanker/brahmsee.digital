@@ -120,7 +120,9 @@ function moveOptionDown(index: number) {
             />
             <div>
               <div>{{ typeOption.label }}</div>
-              <div class="text-xs text-gray-500 dark:text-gray-400">{{ typeOption.description }}</div>
+              <div class="text-xs text-gray-500 dark:text-gray-400">
+                {{ typeOption.description }}
+              </div>
             </div>
           </button>
         </MenuItem>

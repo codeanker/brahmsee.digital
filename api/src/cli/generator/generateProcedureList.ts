@@ -1,8 +1,8 @@
 import { writeFile } from 'fs/promises'
 import path from 'path'
 
-import { toPascalCase } from '../../util/casing'
-import { checkFileExists } from '../../util/files'
+import { toPascalCase } from '../../util/casing.js'
+import { checkFileExists } from '../../util/files.js'
 
 import {
   type ProcedureOptions,
@@ -10,7 +10,7 @@ import {
   addListProcedureToRouter,
   getProtectionContent,
   type GeneratorContext,
-} from './utlils'
+} from './utlils.js'
 
 export async function generateProcedureList(procedure: ProcedureOptions, context: GeneratorContext) {
   const sericeDir = path.join(context.servicesDir, procedure.service)
@@ -27,7 +27,7 @@ export async function generateProcedureList(procedure: ProcedureOptions, context
 import z from 'zod'
 
 import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
+import { ${procedure.protection.type === 'restrictToRoleIds' ? 'defineProtectedQueryProcedure' : 'definePublicQueryProcedure'} } from '../../types/defineProcedure'
 import { defineQuery } from '../../types/defineQuery'
 
 const inputSchema = defineQuery({
@@ -40,10 +40,10 @@ function getFilterWhere(filter: z.infer<typeof inputSchema>['filter']): Prisma.$
   return filter
 }
 
-export const ${procedureFileName}Procedure = defineProcedure({
+export const ${procedureFileName}Procedure = ${procedure.protection.type === 'restrictToRoleIds' ? 'defineProtectedQueryProcedure' : 'definePublicQueryProcedure'}({
   key: '${procedureAction}',
-  method: 'query',
-  protection: ${getProtectionContent(procedure.protection)},
+  ${procedure.protection.type === 'restrictToRoleIds' ? `roleIds: ${JSON.stringify(procedure.protection.roleIds)},` : ''}
+  protection: ${procedure.protection.type === 'restrictToRoleIds' ? '' : getProtectionContent(procedure.protection)},
   inputSchema,
   async handler(options) {
     const { skip, take } = options.input.pagination
@@ -59,10 +59,10 @@ export const ${procedureFileName}Procedure = defineProcedure({
   },
 })
 
-export const ${procedureFileName}CountProcedure = defineProcedure({
+export const ${procedureFileName}CountProcedure = ${procedure.protection.type === 'restrictToRoleIds' ? 'defineProtectedQueryProcedure' : 'definePublicQueryProcedure'}({
   key: '${procedureAction}Count',
-  method: 'query',
-  protection: ${getProtectionContent(procedure.protection)},
+  ${procedure.protection.type === 'restrictToRoleIds' ? `roleIds: ${JSON.stringify(procedure.protection.roleIds)},` : ''}
+  protection: ${procedure.protection.type === 'restrictToRoleIds' ? '' : getProtectionContent(procedure.protection)},
   inputSchema,
   async handler(options) {
     return await prisma.${procedure.service}.count({
@@ -71,7 +71,6 @@ export const ${procedureFileName}CountProcedure = defineProcedure({
   },
 })
 `
-  writeFile(procedurePath, content)
-
+  await writeFile(procedurePath, content)
   await addListProcedureToRouter(procedure, sericeDir, procedureType)
 }

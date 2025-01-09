@@ -1,14 +1,13 @@
 import { Role } from '@prisma/client'
 import z from 'zod'
 
-import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
-import logActivity from '../../util/activity'
+import prisma from '../../prisma.js'
+import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
+import logActivity from '../../util/activity.js'
 
-export const accountVerwaltungRemoveProcedure = defineProcedure({
+export const accountVerwaltungRemoveProcedure = defineProtectedMutateProcedure({
   key: 'verwaltungRemove',
-  method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
+  roleIds: [Role.ADMIN],
   inputSchema: z.strictObject({
     id: z.number().int(),
   }),
@@ -19,8 +18,8 @@ export const accountVerwaltungRemoveProcedure = defineProcedure({
           id: options.input.id,
         },
       })
-      .then((account) => {
-        logActivity({
+      .then(async (account) => {
+        await logActivity({
           type: 'DELETE',
           subjectType: 'account',
           subjectId: account.id,

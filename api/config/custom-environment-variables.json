@@ -15,7 +15,7 @@
   "authentication": {
     "secret": "AUTHENTICATION_SECRET"
   },
-  "mail":{
+  "mail": {
     "sendMails": "MAIL_SENDMAILS",
     "sendgridApiKey": "MAIL_SENDGRID_APIKEY"
   },
@@ -26,7 +26,7 @@
   "fileDefaultProvider": "FILE_DEFAULT_PROVIDER",
   "fileProviders": {
     "LOCAL": {
-      "path":"FILE_PROVIDER_LOCAL_PATH"
+      "path": "FILE_PROVIDER_LOCAL_PATH"
     },
     "AZURE": {
       "account": "FILE_PROVIDER_AZURE_ACCOUNT",

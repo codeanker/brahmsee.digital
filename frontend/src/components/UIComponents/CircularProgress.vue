@@ -33,8 +33,8 @@ const pxStroke = computed(() => `${props.strokeWidth}px`)
       class="mx-auto circular-progress"
       :style="{ '--progress': props.progress }"
     >
-      <circle class="bg"></circle>
-      <circle class="fg"></circle>
+      <circle class="bg" />
+      <circle class="fg" />
     </svg>
     <div class="absolute inset-0 flex items-center justify-center">
       <p class="font-semibold text-xl text-center mb-0">{{ props.formatter(props.progress) }} %</p>

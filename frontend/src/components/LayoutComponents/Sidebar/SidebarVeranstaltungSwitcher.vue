@@ -35,7 +35,7 @@ function loadVeranstaltungen() {
 
 const veranstaltungen = loadVeranstaltungen()
 
-let selectedVeranstaltung = ref<number>(
+const selectedVeranstaltung = ref<number>(
   +route.params.veranstaltungId || parseInt(localStorage.getItem('letzteVeranstaltung') as string)
 )
 const veranstaltungTitle = (id: number) => {
@@ -76,7 +76,7 @@ watch(veranstaltungen, (loadedVeranstaltungen) => {
           <span class="mb-0 font-medium">{{ veranstaltungTitle(selectedVeranstaltung) }}</span>
         </div>
         <div class="flex-shrink-0">
-          <ChevronDownIcon class="w-5 h-5"></ChevronDownIcon>
+          <ChevronDownIcon class="w-5 h-5" />
         </div>
       </ListboxButton>
 

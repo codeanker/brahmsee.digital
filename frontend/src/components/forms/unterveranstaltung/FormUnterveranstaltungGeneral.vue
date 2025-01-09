@@ -183,7 +183,7 @@ const veranstaltung = computed(() => {
 })
 
 const disableddates = computed(() => {
-  let obj = {
+  const obj = {
     to: undefined,
     from: undefined,
   }
@@ -329,8 +329,8 @@ function deleteDocument(document, index) {
               >
                 Name
               </th>
-              <th scope="col"></th>
-              <th scope="col"></th>
+              <th scope="col" />
+              <th scope="col" />
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-200 dark:divide-gray-800 bg-white dark:bg-dark-primary">

@@ -1,15 +1,14 @@
 import { Role } from '@prisma/client'
 import z from 'zod'
 
-import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
-import logActivity from '../../util/activity'
-import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin'
+import prisma from '../../prisma.js'
+import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
+import logActivity from '../../util/activity.js'
+import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
 
-export const customFieldValuesUpdate = defineProcedure({
+export const customFieldValuesUpdate = defineProtectedMutateProcedure({
   key: 'valuesUpdate',
-  method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN] },
+  roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
   inputSchema: z.strictObject({
     data: z.array(
       z.strictObject({
@@ -74,7 +73,7 @@ export const customFieldValuesUpdate = defineProcedure({
               value: element.value,
             },
           })
-          logActivity({
+          await logActivity({
             type: 'UPDATE',
             description: 'Benutzerdefinierten Wert aktualisiert',
             subjectType: 'customFieldValues',
@@ -95,7 +94,7 @@ export const customFieldValuesUpdate = defineProcedure({
               anmeldungId: options.input.anmeldungId,
             },
           })
-          logActivity({
+          await logActivity({
             type: 'CREATE',
             description: 'Benutzerdefinierten Wert hinzugefügt',
             subjectType: 'customFieldValues',

@@ -1,10 +1,10 @@
 import { createLogger, format, transports } from 'winston'
 
-import config from './config'
+import config from './config.js'
 
 const myFormat = format.printf(({ level, message, label, timestamp, metadata }) => {
-  const base = `${timestamp} [${label}] ${level} >> ${message}`
-  if (Object.keys(metadata).length === 0) {
+  const base = `${timestamp as string} [${label as string}] ${level} >> ${message as string}`
+  if (Object.keys(metadata as Record<string, string>).length === 0) {
     return base
   }
 

@@ -8,6 +8,7 @@ import { z } from 'zod'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const baseConfig = config.util.loadFileConfigs(path.join(__dirname, '..', 'config'))
 
 export const configSchema = z.strictObject({

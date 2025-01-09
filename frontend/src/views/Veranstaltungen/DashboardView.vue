@@ -24,28 +24,27 @@ const { veranstaltung } = useVeranstaltung()
             key-text="Veranstaltungsort"
             :value-text="veranstaltung.ort?.name"
             :icon="MapPinIcon"
-          ></KeyValue>
+          />
           <KeyValue
             key-text="Meldebeginn"
             :value-text="formatDate(veranstaltung.meldebeginn, 'DD.MM.YYYY')"
             :icon="ClockIcon"
-          ></KeyValue>
+          />
           <KeyValue
             key-text="Meldeschluss"
             :value-text="formatDate(veranstaltung.meldeschluss, 'DD.MM.YYYY')"
             :icon="ClockIcon"
-          ></KeyValue>
+          />
           <KeyValue
             key-text="Maximale Teilnehmeranzahl"
             :value-text="veranstaltung.maxTeilnehmende"
             :icon="UserGroupIcon"
-          ></KeyValue>
+          />
           <KeyValue
             key-text="Teilnahmegebühr"
             :value-text="veranstaltung.teilnahmegebuehr + '€'"
             :icon="BanknotesIcon"
-          >
-          </KeyValue>
+          />
           <h3>Aussschreibung</h3>
           <pre>{{ veranstaltung }}</pre>
         </div>

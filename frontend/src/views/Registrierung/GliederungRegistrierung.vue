@@ -56,7 +56,7 @@ async function registerGliederung() {
   try {
     account.value = null
     errorCreate.value = null
-    let accountData: TAccountData = {
+    const accountData: TAccountData = {
       firstname: stammdatenForm.value.firstname,
       lastname: stammdatenForm.value.lastname,
       gender: stammdatenForm.value.gender,
@@ -103,7 +103,7 @@ const oauthRegistration = ref()
           <CheckIcon
             class="shrink-0 h-6 w-6 bg-primary-500 rounded-full p-1 text-white mr-2 opacity-0"
             :class="{ 'opacity-100': oauthRegistration }"
-          ></CheckIcon>
+          />
           <div class="">
             <div
               class="font-medium text-lg transition-all ease-in-out group-hover:text-primary-500"
@@ -122,7 +122,7 @@ const oauthRegistration = ref()
           <CheckIcon
             class="shrink-0 h-6 w-6 bg-primary-500 rounded-full p-1 text-white mr-2 opacity-0"
             :class="{ 'opacity-100': oauthRegistration == false }"
-          ></CheckIcon>
+          />
           <div class="">
             <div
               class="font-medium text-lg transition-all ease-in-out group-hover:text-primary-500"
@@ -144,7 +144,7 @@ const oauthRegistration = ref()
           class="grow"
           @submit="registerGliederung"
         >
-          <Stammdaten v-model="stammdatenForm"></Stammdaten>
+          <Stammdaten v-model="stammdatenForm" />
           <hr class="my-5" />
           <div class="grid grid-flow-row lg:grid-cols-2 gap-5">
             <BasicTypeahead
@@ -187,7 +187,8 @@ const oauthRegistration = ref()
             type="submit"
             color="primary"
             full
-            >Anmelden
+          >
+            Anmelden
           </Button>
         </ValidateForm>
         <RouterLink

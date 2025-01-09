@@ -2,13 +2,12 @@ import { Role } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 
-import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
+import prisma from '../../prisma.js'
+import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
 
-export const customFieldsVeranstaltungDelete = defineProcedure({
+export const customFieldsVeranstaltungDelete = defineProtectedMutateProcedure({
   key: 'veranstaltungDelete',
-  method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
+  roleIds: [Role.ADMIN],
   inputSchema: z.strictObject({
     veranstaltungId: z.number(),
     fieldId: z.number(),

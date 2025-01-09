@@ -46,7 +46,7 @@ defineExpose({
             begin="indefinite"
             dur="0.4s"
             values="M5 5L19 5;M5 5L19 19"
-          ></animate>
+          />
           <animate
             class="end"
             fill="freeze"
@@ -54,7 +54,7 @@ defineExpose({
             begin="indefinite"
             dur="0.4s"
             values="M5 5L19 19;M5 5L19 5"
-          ></animate>
+          />
         </path>
         <path
           d="M5 12H19"
@@ -67,7 +67,7 @@ defineExpose({
             begin="indefinite"
             dur="0.4s"
             values="M5 12H19;M12 12H12"
-          ></animate>
+          />
           <animate
             class="end"
             fill="freeze"
@@ -75,11 +75,11 @@ defineExpose({
             begin="indefinite"
             dur="0.4s"
             values="M12 12H12;M5 12H19"
-          ></animate>
+          />
           <set
             attributeName="opacity"
             to="1"
-          ></set>
+          />
         </path>
         <path d="M5 19L19 19">
           <animate
@@ -89,7 +89,7 @@ defineExpose({
             begin="indefinite"
             dur="0.4s"
             values="M5 19L19 19;M5 19L19 5"
-          ></animate>
+          />
           <animate
             class="end"
             fill="freeze"
@@ -97,7 +97,7 @@ defineExpose({
             begin="indefinite"
             dur="0.4s"
             values="M5 19L19 5;M5 19L19 19"
-          ></animate>
+          />
         </path>
       </g>
     </svg>

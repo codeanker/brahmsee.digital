@@ -71,7 +71,7 @@ const showSet = computed(() => {
               placeholder="E-Mail"
               label="E-Mail"
               required
-            ></BasicInput>
+            />
             <Button
               color="primary"
               type="submit"
@@ -79,7 +79,7 @@ const showSet = computed(() => {
               full
             >
               <template v-if="isLoading">
-                <Loading color="white"></Loading>
+                <Loading color="white" />
               </template>
               <template v-else> zurücksetzen </template>
             </Button>
@@ -106,7 +106,7 @@ const showSet = computed(() => {
               placeholder="Passwort"
               label="Passwort"
               required
-            ></BasicPassword>
+            />
             <Button
               color="primary"
               type="submit"
@@ -114,7 +114,7 @@ const showSet = computed(() => {
               full
             >
               <template v-if="isLoading">
-                <Loading color="white"></Loading>
+                <Loading color="white" />
               </template>
               <template v-else> zurücksetzen </template>
             </Button>
@@ -130,7 +130,7 @@ const showSet = computed(() => {
 
       <div v-if="!showReset && !showSet">
         <div class="flex flex-col text-center items-center justify-center">
-          <CheckCircleIcon class="h-10 mb-2 text-primary-600"></CheckCircleIcon>
+          <CheckCircleIcon class="h-10 mb-2 text-primary-600" />
           <div>
             <span v-if="lastAction == 'request'">
               Wir haben Dir einen Link zum zurücksetzen an deine E-Mail gesendet.</span

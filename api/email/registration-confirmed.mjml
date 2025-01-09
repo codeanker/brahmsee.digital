@@ -1,10 +1,16 @@
 {{#> layout }}
 
-<mj-text font-size="16px" line-height="1.5">
+<mj-text
+  font-size="16px"
+  line-height="1.5"
+>
   Deine Anmeldung zur Veranstaltung {{ veranstaltung }} <b>wurde bestätigt</b>.
 </mj-text>
 
-<mj-text font-size="16px" line-height="1.5">
+<mj-text
+  font-size="16px"
+  line-height="1.5"
+>
   Für Fragen wende dich bitte an deine Gliederung.
 </mj-text>
 

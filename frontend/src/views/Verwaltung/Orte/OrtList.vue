@@ -66,7 +66,7 @@ async function fetchCount(filter: TFilter): Promise<number> {
         class="text-primary-500 flex items-center"
         :to="{ name: 'Verwaltung Ort erstellen' }"
       >
-        <PlusIcon class="h-5 w-5 mr-1"></PlusIcon>
+        <PlusIcon class="h-5 w-5 mr-1" />
         Ort erstellen
       </RouterLink>
     </div>

@@ -1,8 +1,8 @@
 import { Role } from '@prisma/client'
 import z from 'zod'
 
-import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
+import prisma from '../../prisma.js'
+import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
 
 const inputSchema = z.strictObject({
   anmeldungId: z.number().optional(),
@@ -11,10 +11,9 @@ const inputSchema = z.strictObject({
 
 export type AnmeldungProtectedGetSchema = z.infer<typeof inputSchema>
 
-export const anmeldungProtectedGetProcedure = defineProcedure({
+export const anmeldungProtectedGetProcedure = defineProtectedQueryProcedure({
   key: 'gliederungGet',
-  method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN] },
+  roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
   inputSchema,
   handler: ({ input }) =>
     prisma.anmeldung.findMany({

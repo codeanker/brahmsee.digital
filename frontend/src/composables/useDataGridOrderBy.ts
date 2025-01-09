@@ -25,7 +25,7 @@ export function useDataGridOrderBy<
           router,
           route,
         }),
-      ] as [keyof TDefaultOrderBy | string, Ref<'asc' | 'desc' | '' | undefined>]
+      ] as unknown as [keyof TDefaultOrderBy | string, Ref<'asc' | 'desc' | '' | undefined>]
     })
   })
 

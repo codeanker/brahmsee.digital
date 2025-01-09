@@ -1,6 +1,6 @@
 import { MeiliSearch } from 'meilisearch'
 
-import config from '.././config'
+import config from '.././config.js'
 
 /**
  * Initalisiert Meilisearch
