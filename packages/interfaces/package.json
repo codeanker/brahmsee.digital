@@ -2,8 +2,20 @@
   "name": "@codeanker/interfaces",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "type": "module",
   "exports": {
-    "./enums": "./enums.ts"
+    "./enums": "./src/enums/index.ts"
+  },
+  "scripts": {
+    "tsc": "tsc --noCheck",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@codeanker/typescript-config": "workspace:*",
+    "@codeanker/eslint-config": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "eslint": "catalog:"
   }
 }

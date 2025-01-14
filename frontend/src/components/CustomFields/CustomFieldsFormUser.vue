@@ -65,7 +65,9 @@ const { execute: submit, isLoading: isLoading } = useAsyncState(async () => {
               :field="customField"
             />
 
-            <p class="text-sm text-gray-500">{{ customField.description }}</p>
+            <p class="text-sm text-gray-500">
+              {{ customField.description }}
+            </p>
           </div>
         </template>
       </div>

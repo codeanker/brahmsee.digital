@@ -1,16 +1,20 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { AnmeldungStatus, Essgewohnheit, NahrungsmittelIntoleranz, Role } from '@prisma/client'
 import dayjs from 'dayjs'
 import XLSX from 'xlsx'
 
-import { getEntityIdFromHeader } from '../../authentication'
-import prisma from '../../prisma'
-import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin'
-import { getSecurityWorksheet } from '../helpers/getSecurityWorksheet'
-import { getWorkbookDefaultProps } from '../helpers/getWorkbookDefaultProps'
+import { getEntityIdFromHeader } from '../../authentication.js'
+import prisma from '../../prisma.js'
+import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
+import { getSecurityWorksheet } from '../helpers/getSecurityWorksheet.js'
+import { getWorkbookDefaultProps } from '../helpers/getWorkbookDefaultProps.js'
 
 export async function veranstaltungVerpflegung(ctx) {
   const jwt = ctx.query.jwt
-  const accountId = await getEntityIdFromHeader('Bearer ' + jwt)
+  const accountId = getEntityIdFromHeader('Bearer ' + jwt)
   const unterveranstaltungId = ctx.query.unterveranstaltungId
   const veranstaltungId = ctx.query.veranstaltungId
 
@@ -45,6 +49,7 @@ export async function veranstaltungVerpflegung(ctx) {
   if (account.role == Role.GLIEDERUNG_ADMIN) {
     try {
       gliederung = await getGliederungRequireAdmin(parseInt(accountId))
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       ctx.res.statusCode = 401
       ctx.res.end()
@@ -114,9 +119,13 @@ export async function veranstaltungVerpflegung(ctx) {
   ]
 
   const rows = gliederungen
-    .filter((gliederung) => gliederung.unterveranstaltungen[0]?.Anmeldung.length > 0) // Filtere Gliederungen ohne Anmeldungen
+    .filter((gliederung) => {
+      return gliederung.unterveranstaltungen.every((unterveranstaltung) => {
+        return unterveranstaltung.Anmeldung.length > 0
+      })
+    }) // Filtere Gliederungen ohne Anmeldungen
     .map((gliederung) => {
-      const anmeldungen = gliederung.unterveranstaltungen[0].Anmeldung
+      const anmeldungen = gliederung.unterveranstaltungen.flatMap((unterveranstaltung) => unterveranstaltung.Anmeldung)
       const aggregatedEssgewohnheiten = Object.fromEntries(
         Object.values(Essgewohnheit).map((essgewohnheit) => [
           essgewohnheit,

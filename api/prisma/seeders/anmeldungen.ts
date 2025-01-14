@@ -6,12 +6,12 @@ import {
   Konfektionsgroesse,
   NahrungsmittelIntoleranz,
   PrismaClient,
-  Unterveranstaltung,
+  type Unterveranstaltung,
 } from '@prisma/client'
 
-import logActivity from '../../src/util/activity'
+import logActivity from '../../src/util/activity.js'
 
-import { Seeder } from '.'
+import type { Seeder } from './index.js'
 
 const ENTRY_COUNT = 1000
 

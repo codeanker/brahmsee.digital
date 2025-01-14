@@ -2,14 +2,13 @@ import { Role } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
 import z from 'zod'
 
-import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
-import { defineQuery } from '../../types/defineQuery'
+import prisma from '../../prisma.js'
+import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
+import { defineQuery } from '../../types/defineQuery.js'
 
-export const personGliederungListProcedure = defineProcedure({
+export const personGliederungListProcedure = defineProtectedQueryProcedure({
   key: 'gliederungList',
-  method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.GLIEDERUNG_ADMIN] },
+  roleIds: [Role.GLIEDERUNG_ADMIN],
   inputSchema: defineQuery({
     filter: z.strictObject({
       firstname: z.string().optional(),

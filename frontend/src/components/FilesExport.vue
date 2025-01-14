@@ -44,7 +44,7 @@ defineProps<{
             v-if="file.icon"
             class="h-7 w-7"
             aria-hidden="true"
-          ></component>
+          />
 
           <span
             v-if="file.initial"

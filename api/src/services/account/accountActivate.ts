@@ -1,15 +1,14 @@
 import { Role } from '@prisma/client'
 import z from 'zod'
 
-import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
-import logActivity from '../../util/activity'
-import { sendMail } from '../../util/mail'
+import prisma from '../../prisma.js'
+import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
+import logActivity from '../../util/activity.js'
+import { sendMail } from '../../util/mail.js'
 
-export const accountActivateProcedure = defineProcedure({
+export const accountActivateProcedure = defineProtectedMutateProcedure({
   key: 'activate',
-  method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
+  roleIds: [Role.ADMIN],
   inputSchema: z.strictObject({
     accountId: z.number().int(),
   }),

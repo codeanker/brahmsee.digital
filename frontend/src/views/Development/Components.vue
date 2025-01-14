@@ -16,10 +16,10 @@ import { useRouteTitle } from '@/composables/useRouteTitle'
 const { setTitle } = useRouteTitle()
 setTitle('Komponenten')
 
-let checkboxModel = ref(false)
-let basicInputModel = ref('')
-let basicDatepickerModel = ref('')
-let basicEditorValue = ref(
+const checkboxModel = ref(false)
+const basicInputModel = ref('')
+const basicDatepickerModel = ref('')
+const basicEditorValue = ref(
   '<p>Ich bin ein <strong>Editor</strong> der als <em><s>solcher</s></em> verwendet werden kann. ich biete verschiedene <mark class="highlight">Möglichkeiten</mark>. </p>'
 )
 
@@ -110,9 +110,9 @@ const basicEditorCode = `<BasicEditor
       >
         <div class="flex items-center space-x-2">
           <Badge>Badge</Badge>
-          <Badge color="primary">Badge</Badge>
-          <Badge color="warning">Badge</Badge>
-          <Badge color="danger">Badge</Badge>
+          <Badge color="primary"> Badge </Badge>
+          <Badge color="warning"> Badge </Badge>
+          <Badge color="danger"> Badge </Badge>
         </div>
       </ComponentPreview>
       <ComponentPreview
@@ -122,10 +122,10 @@ const basicEditorCode = `<BasicEditor
       >
         <div class="flex items-center flex-wrap space-x-2">
           <Button>Primary Link</Button>
-          <Button color="primary">Primary</Button>
-          <Button color="secondary">Success</Button>
-          <Button color="warning">Warning</Button>
-          <Button color="danger">Danger</Button>
+          <Button color="primary"> Primary </Button>
+          <Button color="secondary"> Success </Button>
+          <Button color="warning"> Warning </Button>
+          <Button color="danger"> Danger </Button>
         </div>
       </ComponentPreview>
     </div>
@@ -143,14 +143,14 @@ const basicEditorCode = `<BasicEditor
             label="BasicInput"
             name="BasicInput"
             required
-          ></BasicInput>
+          />
           <BasicInput
             id="BasicInput"
             v-model="basicInputModel"
             label="BasicInput"
             name="BasicInput"
             disabled
-          ></BasicInput>
+          />
         </div>
       </ComponentPreview>
       <ComponentPreview
@@ -162,7 +162,7 @@ const basicEditorCode = `<BasicEditor
           <BasicCheckbox
             v-model="checkboxModel"
             label="Checkbox"
-          ></BasicCheckbox>
+          />
         </div>
       </ComponentPreview>
       <ComponentPreview
@@ -174,7 +174,7 @@ const basicEditorCode = `<BasicEditor
           <BasicDatepicker
             v-model="basicDatepickerModel"
             label="Datepicker"
-          ></BasicDatepicker>
+          />
         </div>
       </ComponentPreview>
       <ComponentPreview

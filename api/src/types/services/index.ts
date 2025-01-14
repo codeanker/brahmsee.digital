@@ -1,1 +1,1 @@
-export * from './Anmeldung'
+export * from './Anmeldung.js'

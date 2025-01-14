@@ -121,7 +121,7 @@ if (loggedInAccount.value?.role === 'ADMIN') {
       <FormAnmeldungGeneral
         v-if="person"
         :person-id="person.id"
-      ></FormAnmeldungGeneral>
+      />
     </Tab>
     <Tab>
       <PersonPhotoUpload

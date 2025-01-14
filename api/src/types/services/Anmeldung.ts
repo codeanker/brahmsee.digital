@@ -1,1 +1,1 @@
-export type { AnmeldungProtectedGetSchema } from '../../services/anmeldung/anmeldungProtectedGet'
+export type { AnmeldungProtectedGetSchema } from '../../services/anmeldung/anmeldungProtectedGet.js'

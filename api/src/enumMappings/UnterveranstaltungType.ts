@@ -1,6 +1,6 @@
 import { UnterveranstaltungType } from '@prisma/client'
 
-import { defineEnumMapping } from './defineEnumMapping'
+import { defineEnumMapping } from './defineEnumMapping.js'
 
 export const UnterveranstaltungTypeMapping = defineEnumMapping<UnterveranstaltungType>({
   CREW: { human: 'CREW' },

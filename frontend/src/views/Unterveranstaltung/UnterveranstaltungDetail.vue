@@ -58,7 +58,7 @@ const { state: countAnmeldungen } = useAsyncState(async () => {
         unterveranstaltungId: parseInt(route.params.unterveranstaltungId as string),
       },
     })
-}, [])
+}, undefined)
 
 // @ToDo count for Gliederungen
 
@@ -91,7 +91,7 @@ const keyInfos = computed<KeyInfo[]>(() => {
 })
 
 const tabs = computed(() => {
-  let tabs = [
+  const tabs = [
     { name: 'Ausschreibung', icon: MegaphoneIcon },
     { name: 'Anmeldungen', icon: UserGroupIcon, count: countAnmeldungen.value?.total },
     { name: 'Dokumente', icon: DocumentIcon },
@@ -159,7 +159,7 @@ const files = [
     >
       <Tab>
         <div class="p-6 bg-primary-100 dark:bg-primary-900 rounded-md my-8 flex items-top space-x-4">
-          <div><RocketLaunchIcon class="h-10 w-10 text-primary-500"></RocketLaunchIcon></div>
+          <div><RocketLaunchIcon class="h-10 w-10 text-primary-500" /></div>
           <div>
             <div class="font-bold text-lg text-primary-500">Juhuuu deine Ausschreibung ist ready</div>
             <div>Teilnehmende können sich unter dem folgenden Link anmelden.</div>
@@ -177,7 +177,7 @@ const files = [
                 type="button"
                 @click="copyLink"
               >
-                <DocumentDuplicateIcon class="h-5 w-5"></DocumentDuplicateIcon>
+                <DocumentDuplicateIcon class="h-5 w-5" />
               </button>
             </div>
           </div>
@@ -188,8 +188,9 @@ const files = [
           <RouterLink
             class="text-primary-500"
             :to="{ name: 'UnterveranstaltungEdit' }"
-            >Ausschreibung bearbeiten</RouterLink
           >
+            Ausschreibung bearbeiten
+          </RouterLink>
         </div>
 
         <InfoList :infos="keyInfos" />
@@ -199,7 +200,7 @@ const files = [
           <div
             class="prose dark:prose-invert"
             v-html="unterveranstaltung?.beschreibung"
-          ></div>
+          />
         </div>
 
         <div class="mt-5 lg:mt-10 mb-5 text-lg font-semibold">Dokumente</div>
@@ -239,13 +240,13 @@ const files = [
       </Tab>
       <Tab>
         <div class="my-10">
-          <div class="text-lg font-semibold">Bedingungen <Badge color="secondary">Gliederung</Badge></div>
+          <div class="text-lg font-semibold">Bedingungen <Badge color="secondary"> Gliederung </Badge></div>
           <p class="max-w-2xl text-sm">Bitte beachte die folgenden Bedingungen</p>
         </div>
         <div
           class="prose dark:prose-invert"
           v-html="unterveranstaltung?.bedingungen"
-        ></div>
+        />
         <hr class="my-10" />
         <div class="my-10">
           <div class="text-lg font-semibold">Öffentliche Teilnahmebedingungen <Badge>Veranstaltung</Badge></div>
@@ -256,7 +257,7 @@ const files = [
         <div
           class="prose dark:prose-invert"
           v-html="unterveranstaltung?.veranstaltung?.teilnahmeBedingungenPublic"
-        ></div>
+        />
         <hr class="my-10" />
         <div class="my-10">
           <div class="text-lg font-semibold">Interne Teilnahmebedingungen <Badge>Veranstaltung</Badge></div>
@@ -265,7 +266,7 @@ const files = [
         <div
           class="prose dark:prose-invert"
           v-html="unterveranstaltung?.veranstaltung?.teilnahmeBedingungen"
-        ></div>
+        />
         <hr class="my-10" />
         <div class="my-10">
           <div class="text-lg font-semibold">Datenschutz <Badge>Veranstaltung</Badge></div>
@@ -274,7 +275,7 @@ const files = [
         <div
           class="prose dark:prose-invert"
           v-html="unterveranstaltung?.veranstaltung?.datenschutz"
-        ></div>
+        />
       </Tab>
       <Tab>
         <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">

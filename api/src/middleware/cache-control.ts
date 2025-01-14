@@ -15,7 +15,7 @@ const cacheControl: Middleware = async (ctx, next) => {
     ctx.set('cache-control', 'max-age: 31536000, immutable') // 1 week
   }
 
-  return await next()
+  await next()
 }
 
 export default cacheControl

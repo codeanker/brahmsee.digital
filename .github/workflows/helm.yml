@@ -14,16 +14,16 @@ jobs:
       version: ${{ steps.version.outputs.prop }}
       commit: ${{ steps.set-commit.outputs.commit }}
     steps:
-    - uses: actions/checkout@v4
-    - name: get version
-      id: version
-      uses: notiz-dev/github-action-json-property@v0.2.0
-      with:
+      - uses: actions/checkout@v4
+      - name: get version
+        id: version
+        uses: notiz-dev/github-action-json-property@v0.2.0
+        with:
           path: 'package.json'
           prop_path: 'version'
-    - name: set commit
-      id: set-commit
-      run: echo "commit=${GITHUB_SHA:0:7}" >> $GITHUB_OUTPUT
+      - name: set commit
+        id: set-commit
+        run: echo "commit=${GITHUB_SHA:0:7}" >> $GITHUB_OUTPUT
   release:
     needs: prepare
     permissions:

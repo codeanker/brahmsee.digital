@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { readFile } from 'fs/promises'
 import { join } from 'path'
 
@@ -7,10 +6,10 @@ import { getProperty } from 'dot-prop'
 import Handlebars from 'handlebars'
 import mjml2html from 'mjml'
 
-import config from '.././config'
-import { logger } from '../logger'
+import config from '.././config.js'
+import { logger } from '../logger.js'
 
-import logActivity from './activity'
+import logActivity from './activity.js'
 
 sgMail.setApiKey(config.mail.sendgridApiKey)
 
@@ -138,30 +137,37 @@ export async function sendMail(mailParams: EMailParams) {
       metadata: mailParams,
     })
 
+    const to = Array.isArray(mailToSend.to) ? mailToSend.to.join(', ') : mailToSend.to
+    const bcc = mailToSend.bcc ? (Array.isArray(mailToSend.bcc) ? mailToSend.bcc.join(', ') : mailToSend.bcc) : ''
     // send mail
     if (config.mail.sendMails === 'true' && config.mail.sendgridApiKey) {
-      // eslint-disable-next-line no-console
-      console.log(`sending mail (${sendWithTemplate}) to "${mailParams.to}" with subject "${mailParams.subject}"`)
+      console.log(`sending mail (${sendWithTemplate}) to "${to}" with subject "${mailParams.subject}"`)
       return await sgMail.sendMultiple(mailToSend)
     } else {
-      /* eslint-disable no-console */
       console.log('///////////////////////////////////////')
       console.log('Sending Email')
       console.log(`from: ${mailToSend.from}`)
-      console.log(`to: ${mailToSend.to}`)
-      if (mailToSend.bcc) console.log(`bcc: ${mailToSend.bcc}`)
+      console.log(`to: ${to}`)
+      if (mailToSend.bcc) console.log(`bcc: ${bcc}`)
       console.log(`subject: ${mailToSend.subject}`)
       console.log(mailToSend.html)
       console.log('////////////////////////////////////////')
-      /* eslint-enable no-console */
+
       return mailToSend
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(error)
-    logger.error('Failed sending email!', {
-      message: error.message,
-      response: error.response?.body,
-    })
+    if (error instanceof Error) {
+      logger.error('Failed sending email!', {
+        message: error.message,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
+        response: (error as any)?.response?.body,
+      })
+    } else {
+      logger.error('Failed sending email!', {
+        message: 'Unknown error',
+      })
+    }
   }
 }
 

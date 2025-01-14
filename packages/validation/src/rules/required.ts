@@ -1,4 +1,4 @@
-import { defineRule } from '../defineRule'
+import { defineRule } from '../defineRule.js'
 
 export type RequiredRulesParams = boolean | { allowFalse: boolean }
 export function required(params: RequiredRulesParams) {

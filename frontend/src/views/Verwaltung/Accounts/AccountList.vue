@@ -120,7 +120,7 @@ async function fetchCount(filter: TFilter): Promise<number> {
 const route = useRoute()
 const tabIndex = ref(parseInt(route.query.tab as string) ?? 0)
 const defaultFilter = computed(() => {
-  let baseFilter = {
+  const baseFilter = {
     personName: '',
     email: '',
     status: undefined as TData['status'] | undefined,
@@ -152,7 +152,7 @@ function changeTab(index: number) {
             class="text-primary-500 flex items-center"
             :to="{ name: 'Verwaltung Account erstellen' }"
           >
-            <PlusIcon class="h-5 w-5 mr-1"></PlusIcon>
+            <PlusIcon class="h-5 w-5 mr-1" />
             Account anlegen
           </RouterLink>
         </div>

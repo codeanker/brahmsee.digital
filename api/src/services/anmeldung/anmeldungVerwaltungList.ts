@@ -1,9 +1,9 @@
 import { AnmeldungStatus, Role } from '@prisma/client'
 import z from 'zod'
 
-import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
-import { ZPaginationSchema } from '../../types/defineQuery'
+import prisma from '../../prisma.js'
+import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
+import { ZPaginationSchema } from '../../types/defineQuery.js'
 
 const filter = z.strictObject({
   unterveranstaltungId: z.number().optional(),
@@ -25,10 +25,9 @@ const where = (filter: { unterveranstaltungId?: number; veranstaltungId?: number
   }
 }
 
-export const anmeldungVerwaltungListProcedure = defineProcedure({
+export const anmeldungVerwaltungListProcedure = defineProtectedQueryProcedure({
   key: 'verwaltungList',
-  method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
+  roleIds: [Role.ADMIN],
   inputSchema: z.strictObject({
     pagination: ZPaginationSchema,
     filter: filter,
@@ -89,10 +88,9 @@ export const anmeldungVerwaltungListProcedure = defineProcedure({
   },
 })
 
-export const anmeldungVerwaltungCountProcedure = defineProcedure({
+export const anmeldungVerwaltungCountProcedure = defineProtectedQueryProcedure({
   key: 'verwaltungCount',
-  method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
+  roleIds: [Role.ADMIN],
   inputSchema: z.strictObject({
     filter: filter,
   }),
@@ -111,6 +109,6 @@ export const anmeldungVerwaltungCountProcedure = defineProcedure({
       })
     )
     const total = countEntries.reduce((acc, [, count]) => acc + Number(count), 0)
-    return { total, ...Object.fromEntries(countEntries) }
+    return { total, ...Object.fromEntries(countEntries) } as Record<AnmeldungStatus, number> & { total: number }
   },
 })

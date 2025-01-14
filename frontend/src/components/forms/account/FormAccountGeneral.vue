@@ -146,7 +146,7 @@ const handle = async () => {
 }
 
 const tabs = computed(() => {
-  let tabs = [{ name: 'Allgemein', icon: FingerPrintIcon }]
+  const tabs = [{ name: 'Allgemein', icon: FingerPrintIcon }]
   if (edit.value) tabs.push({ name: 'Sicherheit', icon: KeyIcon })
   if (!isSelf.value && edit.value) tabs.push({ name: 'Account löschen', icon: TrashIcon })
   return tabs
@@ -164,8 +164,9 @@ const tabs = computed(() => {
           v-if="edit && props?.account?.status"
           :color="getAccountStatusColor(props.account.status)"
           :title="formatDate(props.account.activatedAt)"
-          >{{ props.account.status }}</Badge
         >
+          {{ props.account.status }}
+        </Badge>
       </div>
       <p class="text-md">Bearbeite die Accountdaten, Accounts sind Personen zugeordnet.</p>
     </div>
@@ -226,7 +227,7 @@ const tabs = computed(() => {
                     <div
                       class="w-4 h-4 rounded-full"
                       :class="`bg-${getAccountStatusColor(accountForm.status)}-600`"
-                    ></div>
+                    />
                     <span>{{ getStatusHuman }}</span>
                   </div>
                   <ChevronDownIcon class="h-5 text-gray-500" />
@@ -248,7 +249,7 @@ const tabs = computed(() => {
                   <div
                     class="w-4 h-4 rounded-full"
                     :class="`bg-${getAccountStatusColor(status.value)}-600`"
-                  ></div>
+                  />
                   <span>{{ status.label }}</span>
                 </button>
               </MenuItem>
@@ -362,7 +363,7 @@ const tabs = computed(() => {
         v-if="!isSelf && edit"
         class="p-6 border-2 border-danger-600 rounded-md my-8 flex items-top space-x-4"
       >
-        <div><TrashIcon class="h-10 w-10 text-danger-600"></TrashIcon></div>
+        <div><TrashIcon class="h-10 w-10 text-danger-600" /></div>
         <div>
           <div class="font-bold text-lg text-danger-600">Account löschen</div>
           <div>

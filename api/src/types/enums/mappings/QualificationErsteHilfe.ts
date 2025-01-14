@@ -1,6 +1,6 @@
 import { QualificationErsteHilfe } from '@prisma/client'
 
-import { defineEnumMapping } from '../defineEnumMapping'
+import { defineEnumMapping } from '../defineEnumMapping.js'
 
 export const QualificationErsteHilfeMapping = defineEnumMapping<QualificationErsteHilfe>({
   EINWEISER_EHSH: { human: 'Einweiser EHSH' },

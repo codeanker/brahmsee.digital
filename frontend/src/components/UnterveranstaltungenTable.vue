@@ -27,7 +27,7 @@ const columns = computed<TGridColumn<TUnterveranstaltungData, TUnterveranstaltun
     {
       field: 'id',
       title: 'Id',
-      sortable: true,
+      size: '50px',
     },
     {
       field: 'veranstaltung.name',
@@ -43,16 +43,19 @@ const columns = computed<TGridColumn<TUnterveranstaltungData, TUnterveranstaltun
       field: 'meldeschluss',
       title: 'Meldeschluss',
       preset: 'date',
+      size: '160px',
       sortable: true,
     },
     {
       field: 'teilnahmegebuehr',
       title: 'Gebühr',
+      size: '120px',
       sortable: true,
     },
     {
       field: 'maxTeilnehmende',
       title: 'Anm. / Max',
+      size: '150px',
       format: (value, row) => `${row._count.Anmeldung} / ${value}`,
     },
   ]
@@ -66,7 +69,7 @@ async function fetchPage(
     skip: number
   },
   filter: TUnterveranstaltungFilter,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   orderBy: TUnterveranstaltungOrderBy
 ): Promise<TUnterveranstaltungData[]> {
   return apiClient.unterveranstaltung.list.query({

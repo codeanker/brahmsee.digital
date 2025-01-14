@@ -59,11 +59,11 @@ const { model, errorMessage } = props.disableValidation
           <EyeSlashIcon
             v-if="passwordVisible"
             class="w-6 h-6 stroke-primary-700"
-          ></EyeSlashIcon>
+          />
           <EyeIcon
             v-else
             class="w-6 h-6 stroke-primary-700"
-          ></EyeIcon>
+          />
         </button>
       </div>
     </div>

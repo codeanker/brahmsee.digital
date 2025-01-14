@@ -2,12 +2,12 @@ import { TRPCError } from '@trpc/server'
 import dayjs from 'dayjs'
 import { z } from 'zod'
 
-import prisma from '../../prisma'
-import { customFieldValuesCreateMany, defineCustomFieldValues } from '../../types/defineCustomFieldValues'
-import { defineProcedure } from '../../types/defineProcedure'
-import logActivity from '../../util/activity'
-import { sendMail } from '../../util/mail'
-import { personSchema, getPersonCreateData } from '../person/schema/person.schema'
+import prisma from '../../prisma.js'
+import { customFieldValuesCreateMany, defineCustomFieldValues } from '../../types/defineCustomFieldValues.js'
+import { definePublicMutateProcedure } from '../../types/defineProcedure.js'
+import logActivity from '../../util/activity.js'
+import { sendMail } from '../../util/mail.js'
+import { personSchema, getPersonCreateData } from '../person/schema/person.schema.js'
 
 export const inputSchema = z.strictObject({
   data: personSchema.extend({
@@ -92,7 +92,7 @@ export async function handle(input: z.infer<typeof inputSchema>, isPublic: boole
       },
     },
   })
-
+  const anmeldung = person.anmeldungen[0]
   await Promise.all([
     logActivity({
       type: 'CREATE',
@@ -104,7 +104,7 @@ export async function handle(input: z.infer<typeof inputSchema>, isPublic: boole
       type: 'CREATE',
       description: 'new public registration',
       subjectType: 'anmeldung',
-      subjectId: person.anmeldungen[0].id,
+      subjectId: anmeldung?.id,
     }),
   ])
 
@@ -124,10 +124,8 @@ export async function handle(input: z.infer<typeof inputSchema>, isPublic: boole
   return person
 }
 
-export const anmeldungPublicCreateProcedure = defineProcedure({
+export const anmeldungPublicCreateProcedure = definePublicMutateProcedure({
   key: 'publicCreate',
-  method: 'mutation',
-  protection: { type: 'public' },
   inputSchema: inputSchema,
   async handler(options) {
     await handle(options.input, true)

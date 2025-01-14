@@ -37,7 +37,7 @@ async function loginWithRecirect() {
     if (route.query.redirect) {
       return router.push(route.query.redirect as string)
     } else {
-      let letzteVeranstaltung = localStorage.getItem('letzteVeranstaltung')
+      const letzteVeranstaltung = localStorage.getItem('letzteVeranstaltung')
       if (letzteVeranstaltung)
         return router.push({ name: 'Dashboard', params: { veranstaltungId: letzteVeranstaltung } })
       else return router.push({ name: 'Auschreibungen' })
@@ -55,7 +55,7 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
 <template>
   <div class="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
     <div class="grid grid-cols-3">
-      <div></div>
+      <div />
 
       <div>
         <h2 class="text-center text-4xl leading-9 tracking-tight text-primary-700 dark:text-primary-600">
@@ -89,7 +89,7 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
             placeholder="E-Mail"
             label="E-Mail"
             required
-          ></BasicInput>
+          />
           <BasicPassword
             id="password"
             v-model="password"
@@ -97,7 +97,7 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
             placeholder="Passwort"
             label="Passwort"
             required
-          ></BasicPassword>
+          />
           <div class="flex items-center justify-center">
             <div class="text-sm">
               <RouterLink
@@ -115,7 +115,7 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
             full
           >
             <template v-if="loginPending">
-              <Loading color="white"></Loading>
+              <Loading color="white" />
             </template>
             <template v-else> Anmelden </template>
           </Button>
@@ -127,7 +127,7 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
               class="absolute inset-0 flex items-center"
               aria-hidden="true"
             >
-              <div class="w-full border-t border-gray-200 dark:border-gray-800"></div>
+              <div class="w-full border-t border-gray-200 dark:border-gray-800" />
             </div>
             <div class="relative flex justify-center text-sm font-medium leading-6">
               <span class="bg-white dark:bg-dark-primary px-6">oder anmelden mit</span>
@@ -197,8 +197,9 @@ const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.
         <RouterLink
           :to="{ name: 'Registrierung' }"
           class="font-semibold leading-6 text-primary-600 hover:text-primary-500"
-          >Registriere dich jetzt</RouterLink
         >
+          Registriere dich jetzt
+        </RouterLink>
       </p>
       <p class="flex items-center justify-center mt-20 text-center text-xs">
         {{ version }}

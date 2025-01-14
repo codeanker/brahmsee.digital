@@ -206,8 +206,12 @@ const people = [
             :src="person.imageUrl"
             alt=""
           />
-          <h3 class="mt-6 text-base font-semibold leading-7 tracking-tight mb-0">{{ person.name }}</h3>
-          <p class="text-sm mb-0 leading-6">{{ person.role }}</p>
+          <h3 class="mt-6 text-base font-semibold leading-7 tracking-tight mb-0">
+            {{ person.name }}
+          </h3>
+          <p class="text-sm mb-0 leading-6">
+            {{ person.role }}
+          </p>
         </li>
       </ul>
     </div>
