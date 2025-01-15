@@ -3,7 +3,6 @@ import {
   AnmeldungStatus,
   Essgewohnheit,
   Gender,
-  Konfektionsgroesse,
   NahrungsmittelIntoleranz,
   PrismaClient,
   type Unterveranstaltung,
@@ -13,7 +12,7 @@ import logActivity from '../../src/util/activity.js'
 
 import type { Seeder } from './index.js'
 
-const ENTRY_COUNT = 1000
+const ENTRY_COUNT = 100
 
 faker.seed(123)
 
@@ -38,39 +37,47 @@ async function create(prisma: PrismaClient, unterveranstaltung: Unterveranstaltu
     description: 'address created via db seeder',
   })
 
-  const person = await prisma.person.create({
+  const account = await prisma.account.create({
     data: {
-      firstname: faker.person.firstName(),
-      lastname: faker.person.lastName(),
-      birthday: faker.date.birthdate({ min: 12, max: 30, mode: 'age' }),
-      gender: faker.helpers.enumValue(Gender),
       email: faker.internet.email(),
-      telefon: faker.string.numeric('+49151########'),
-      essgewohnheit: faker.helpers.enumValue(Essgewohnheit),
-      konfektionsgroesse: faker.helpers.enumValue(Konfektionsgroesse),
-      nahrungsmittelIntoleranzen: faker.helpers.arrayElements(Object.values(NahrungsmittelIntoleranz)),
-      addressId: address.id,
-      gliederungId: unterveranstaltung.gliederungId,
-      notfallkontakte: {
-        create: [
-          {
-            firstname: faker.person.firstName(),
-            lastname: faker.person.lastName(),
-            telefon: faker.string.numeric('+49151########'),
-            istErziehungsberechtigt: faker.datatype.boolean(),
+      role: 'USER',
+      activatedAt: new Date(),
+      status: 'AKTIV',
+      person: {
+        create: {
+          firstname: faker.person.firstName(),
+          lastname: faker.person.lastName(),
+          birthday: faker.date.birthdate({ min: 12, max: 30, mode: 'age' }),
+          gender: faker.helpers.enumValue(Gender),
+          email: faker.internet.email(),
+          telefon: faker.string.numeric('+49151########'),
+          essgewohnheit: faker.helpers.enumValue(Essgewohnheit),
+          nahrungsmittelIntoleranzen: faker.helpers.arrayElements(Object.values(NahrungsmittelIntoleranz)),
+          addressId: address.id,
+          gliederungId: unterveranstaltung.gliederungId,
+          notfallkontakte: {
+            create: [
+              {
+                firstname: faker.person.firstName(),
+                lastname: faker.person.lastName(),
+                telefon: faker.string.numeric('+49151########'),
+                istErziehungsberechtigt: faker.datatype.boolean(),
+              },
+            ],
           },
-        ],
+        },
       },
     },
     select: {
       id: true,
+      personId: true,
     },
   })
 
   await logActivity({
     type: 'CREATE',
     subjectType: 'person',
-    subjectId: person.id,
+    subjectId: account.id,
     description: 'person created via db seeder',
   })
 
@@ -79,7 +86,8 @@ async function create(prisma: PrismaClient, unterveranstaltung: Unterveranstaltu
       unterveranstaltungId: unterveranstaltung.id,
       status: faker.helpers.enumValue(AnmeldungStatus),
       tshirtBestellt: faker.datatype.boolean(),
-      personId: person.id,
+      personId: account.personId,
+      accountId: account.id,
       comment: faker.lorem.sentence(),
     },
     select: {

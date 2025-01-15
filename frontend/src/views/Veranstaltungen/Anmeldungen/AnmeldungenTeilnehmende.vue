@@ -5,7 +5,7 @@ import { useRoute } from 'vue-router'
 
 import { useVeranstaltung } from '../../../composables/useVeranstaltung'
 
-import AnmeldungenTable from '@/components/AnmeldungenTable.vue'
+import AnmeldungenTable from '@/components/data/AnmeldungenTable.vue'
 import { useRouteTitle } from '@/composables/useRouteTitle'
 
 const { veranstaltung } = useVeranstaltung()

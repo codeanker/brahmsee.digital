@@ -2,10 +2,11 @@ import { AnmeldungStatus, Role } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma.js'
+import { defineOrderBy } from '../../types/defineOrderBy.js'
 import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
 import { ZPaginationSchema } from '../../types/defineQuery.js'
 
-const filter = z.strictObject({
+const filterSchema = z.strictObject({
   unterveranstaltungId: z.number().optional(),
   veranstaltungId: z.number().optional(),
 })
@@ -27,22 +28,11 @@ const where = (filter: { unterveranstaltungId?: number; veranstaltungId?: number
 
 export const anmeldungVerwaltungListProcedure = defineProtectedQueryProcedure({
   key: 'verwaltungList',
-  roleIds: [Role.ADMIN],
+  roleIds: [Role.ADMIN, Role.USER],
   inputSchema: z.strictObject({
     pagination: ZPaginationSchema,
-    filter: filter,
-    orderBy: z
-      .array(
-        z.union([
-          z.object({
-            status: z.union([z.literal('asc'), z.literal('desc')]),
-          }),
-          z.object({
-            createdAt: z.union([z.literal('asc'), z.literal('desc')]),
-          }),
-        ])
-      )
-      .optional(),
+    filter: filterSchema,
+    orderBy: defineOrderBy(['status', 'createdBy']),
   }),
   async handler(options) {
     const { skip, take } = options.input.pagination
@@ -58,7 +48,6 @@ export const anmeldungVerwaltungListProcedure = defineProtectedQueryProcedure({
             firstname: true,
             lastname: true,
             birthday: true,
-            konfektionsgroesse: true,
             gliederung: {
               select: {
                 id: true,
@@ -68,7 +57,6 @@ export const anmeldungVerwaltungListProcedure = defineProtectedQueryProcedure({
           },
         },
         status: true,
-        tshirtBestellt: true,
         unterveranstaltung: {
           select: {
             veranstaltung: {
@@ -90,9 +78,9 @@ export const anmeldungVerwaltungListProcedure = defineProtectedQueryProcedure({
 
 export const anmeldungVerwaltungCountProcedure = defineProtectedQueryProcedure({
   key: 'verwaltungCount',
-  roleIds: [Role.ADMIN],
+  roleIds: [Role.ADMIN, Role.USER],
   inputSchema: z.strictObject({
-    filter: filter,
+    filter: filterSchema,
   }),
   async handler(options) {
     const countEntries = await Promise.all(

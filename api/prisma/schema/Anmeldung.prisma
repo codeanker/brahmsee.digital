@@ -6,17 +6,22 @@ enum AnmeldungStatus {
 }
 
 model Anmeldung {
-  id                   Int                @id @default(autoincrement())
+  id        Int             @id @default(autoincrement())
+  createdAt DateTime        @default(now())
+  status    AnmeldungStatus @default(OFFEN)
+  comment   String?
+
   unterveranstaltungId Int
   unterveranstaltung   Unterveranstaltung @relation(fields: [unterveranstaltungId], references: [id], onDelete: Cascade)
-  personId             Int
-  person               Person             @relation(fields: [personId], references: [id], onDelete: Cascade)
-  status               AnmeldungStatus    @default(OFFEN)
-  mahlzeitenIds        Int[]
-  mahlzeiten           Mahlzeit[]
-  uebernachtungsTage   DateTime[]         @db.Date
-  tshirtBestellt       Boolean            @default(false)
-  comment              String?
-  createdAt            DateTime           @default(now())
-  customFieldValues    CustomFieldValue[]
+
+  personId Int
+  person   Person @relation(fields: [personId], references: [id], onDelete: Cascade)
+
+  accountId Int
+  account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  mahlzeitenIds      Int[]
+  mahlzeiten         Mahlzeit[]
+  uebernachtungsTage DateTime[]         @db.Date
+  customFieldValues  CustomFieldValue[]
 }

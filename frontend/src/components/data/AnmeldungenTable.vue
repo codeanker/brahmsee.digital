@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { CodeBracketIcon, SquaresPlusIcon, TicketIcon, UserIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
-import { computed, ref, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-
-import AnmeldungTshirtSelect from './AnmeldungTshirtSelect.vue'
 
 import { apiClient } from '@/api'
 import AnmeldungStatusSelect from '@/components/AnmeldungStatusSelect.vue'
@@ -19,14 +17,12 @@ import { loggedInAccount } from '@/composables/useAuthentication'
 import { getAnmeldungStatusColor } from '@/helpers/getAnmeldungStatusColors'
 import {
   AnmeldungStatusMapping,
-  getEnumOptions,
-  KonfektionsgroesseMapping,
   type AnmeldungStatus,
   type NahrungsmittelIntoleranz,
   type RouterInput,
-  type RouterOutput,
+  type RouterOutput
 } from '@codeanker/api'
-import { type TGridColumn, useDataGridFilter, useDataGridOrderBy, useGrid } from '@codeanker/datagrid'
+import { useDataGridFilter, useDataGridOrderBy, useGrid, type TGridColumn } from '@codeanker/datagrid'
 import { dayjs } from '@codeanker/helpers'
 
 const props = withDefaults(
@@ -176,7 +172,6 @@ const { execute: updateAnmeldung } = useAsyncState(
           essgewohnheit: anmeldung.essgewohnheiten.essgewohnheit,
           nahrungsmittelIntoleranzen,
           weitereIntoleranzen: anmeldung.essgewohnheiten.weitereIntoleranzen,
-          konfektionsgroesse: anmeldung.tshirt.groesse,
         },
       }
       if (loggedInAccount.value?.role === 'ADMIN') {
@@ -207,12 +202,6 @@ const { execute: updateAnmeldung } = useAsyncState(
   }
 )
 
-const konfektionsgroesseOptions = getEnumOptions(KonfektionsgroesseMapping)
-
-const getKonfektionsgroesseHuman = computed(() => (konfektionsgroesse) => {
-  return konfektionsgroesseOptions.find((item) => item.value === konfektionsgroesse)?.label
-})
-
 const route = useRoute()
 const router = useRouter()
 
@@ -237,11 +226,6 @@ let columns: TGridColumn<TAnmeldungData, TAnmeldungFilter>[] = [
     field: 'person.birthday',
     format: (value) => dayjs().diff(value, 'year') + ' Jahre',
     title: 'Alter',
-  },
-  {
-    field: 'tshirtBestellt',
-    format: (value, row) => (value ? getKonfektionsgroesseHuman.value(row.person.konfektionsgroesse) : '-'),
-    title: 'T-Shirt',
   },
   {
     field: 'status',

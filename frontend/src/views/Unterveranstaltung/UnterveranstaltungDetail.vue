@@ -15,7 +15,7 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { apiClient } from '@/api'
-import AnmeldungenTable from '@/components/AnmeldungenTable.vue'
+import AnmeldungenTable from '@/components/data/AnmeldungenTable.vue'
 import CustomFieldsTable from '@/components/CustomFields/CustomFieldsTable.vue'
 import DownloadLink from '@/components/DownloadLink.vue'
 import FilesExport from '@/components/FilesExport.vue'

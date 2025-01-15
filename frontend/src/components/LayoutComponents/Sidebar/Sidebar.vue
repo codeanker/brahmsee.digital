@@ -10,6 +10,7 @@ import {
   FingerPrintIcon,
   QueueListIcon,
   HandThumbUpIcon,
+  RocketLaunchIcon,
 } from '@heroicons/vue/24/outline'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
@@ -38,14 +39,14 @@ const hasPermissionToView = (permission) => {
 }
 
 const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
-  // {
-  //   type: 'SidebarItem',
-  //   name: 'Dashboard',
-  //   route: { name: 'Dashboard' },
-  //   icon: RocketLaunchIcon,
-  //   disabled: veranstaltungId.value === undefined,
-  //   visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
-  // },
+  {
+    type: 'SidebarItem',
+    name: 'Dashboard',
+    route: { name: 'Dashboard' },
+    icon: RocketLaunchIcon,
+    disabled: veranstaltungId.value === undefined,
+    visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
+  },
   // {
   //   type: 'SidebarItem',
   //   name: 'Anmeldungen',
@@ -114,6 +115,23 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
   //   visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
   // },
   // { type: 'DividerItem', name: 'Ausschreibung', visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']) },
+  { type: 'DividerItem', name: 'Meine Daten', visible: hasPermissionToView(['USER']) },
+  {
+    type: 'SidebarItem',
+    name: 'Personen',
+    route: { name: 'Meine Personen' },
+    icon: UsersIcon,
+    visible: hasPermissionToView(['USER']),
+  },
+  {
+    type: 'SidebarItem',
+    name: 'Anmeldungen',
+    route: { name: 'Meine Anmeldungen' },
+    icon: UsersIcon,
+    visible: hasPermissionToView(['USER']),
+  },
+
+  { type: 'DividerItem', name: 'Gliederung', visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']) },
   {
     type: 'SidebarItem',
     name: 'Ausschreibungen',
@@ -121,6 +139,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     icon: MegaphoneIcon,
     visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
   },
+
   { type: 'DividerItem', name: 'Verwaltung', visible: hasPermissionToView(['ADMIN']) },
   {
     type: 'SidebarItem',
@@ -164,6 +183,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     icon: QueueListIcon,
     visible: hasPermissionToView(['ADMIN']),
   },
+
   { type: 'DividerItem', name: 'Entwicklung', visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']) },
   {
     type: 'SidebarItem',

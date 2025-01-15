@@ -27,11 +27,6 @@ export const accountChangePasswordProcedure = defineProtectedMutateProcedure({
         password: true,
       },
     })
-    if (password === null)
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: 'Account has no password',
-      })
 
     if (options.ctx.accountId === options.input.id && !(await passwordMatches(password, options.input.password_old))) {
       throw new TRPCError({

@@ -20,16 +20,16 @@ const inputSchema = defineQuery({
 
 type TInput = z.infer<typeof inputSchema>
 
-export const personListProcedure = defineProtectedQueryProcedure({
+export const personVerwaltungListProcedure = defineProtectedQueryProcedure({
   key: 'list',
-  roleIds: [Role.ADMIN],
+  roleIds: [Role.ADMIN, Role.USER],
   inputSchema,
-  async handler(options) {
+  handler: (options) => {
     const { skip, take } = options.input.pagination
-    const list = await prisma.person.findMany({
+    return prisma.person.findMany({
       skip,
       take,
-      where: await getWhere(options.input.filter, options.ctx.account),
+      where: getWhere(options.input.filter, options.ctx.account),
       orderBy: getOrderBy(options.input.orderBy),
       include: {
         gliederung: {
@@ -58,31 +58,28 @@ export const personListProcedure = defineProtectedQueryProcedure({
         },
       },
     })
-    return list
   },
 })
 
-export const personCountProcedure = defineProtectedQueryProcedure({
+export const personVerwaltungCountProcedure = defineProtectedQueryProcedure({
   key: 'count',
-  roleIds: [Role.ADMIN],
+  roleIds: [Role.ADMIN, Role.USER],
   inputSchema: inputSchema.pick({ filter: true }),
   async handler(options) {
     const total = await prisma.person.count({
-      where: await getWhere(options.input.filter, options.ctx.account),
+      where: getWhere(options.input.filter, options.ctx.account),
     })
     return total
   },
 })
 
-// eslint-disable-next-line @typescript-eslint/require-await
-async function getWhere(
+function getWhere(
   filter: TInput['filter'],
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _account: {
+  account: {
     id: number
     role: Role
   }
-): Promise<Prisma.PersonWhereInput> {
+): Prisma.PersonWhereInput {
   const where: Prisma.PersonWhereInput = {}
 
   if (filter.name != null && filter.name != '') {
@@ -95,5 +92,14 @@ async function getWhere(
       },
     }
   }
+
+  if (account.role === Role.USER) {
+    where.anmeldungen = {
+      some: {
+        accountId: account.id,
+      },
+    }
+  }
+
   return where
 }

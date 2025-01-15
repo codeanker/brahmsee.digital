@@ -26,7 +26,7 @@ import { AccountStatusMapping, getEnumOptions, roleMapping } from '@codeanker/ap
 import { formatDate } from '@codeanker/helpers'
 import { ValidateForm } from '@codeanker/validation'
 
-type Account = Awaited<RouterOutput['account']['verwaltungGet']>
+type Account = RouterOutput['account']['verwaltungGet']
 
 const props = defineProps<{
   account?: Account

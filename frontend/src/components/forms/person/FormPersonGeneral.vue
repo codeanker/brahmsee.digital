@@ -9,8 +9,6 @@ import type { IContact } from './FormContactGeneral.vue'
 import FormContactGeneral from './FormContactGeneral.vue'
 import FormEssgewohnheitGeneral, { type IEssgewohnheiten } from './FormEssgewohnheitGeneral.vue'
 import FormNotfallkontakteGeneral, { type INotfallKontakte } from './FormNotfallkontakteGeneral.vue'
-import type { ITShirtBestellung } from './FormTShirtBestellungGeneral.vue'
-import FormTShirtBestellungGeneral from './FormTShirtBestellungGeneral.vue'
 
 import { apiClient } from '@/api'
 import BasicAddressPicker, { type IAddress } from '@/components/BasicInputs/BasicAddressPicker.vue'
@@ -30,7 +28,6 @@ export interface FormPersonGeneralSubmit {
   contact: IContact
   notfallKontakte: INotfallKontakte
   essgewohnheiten: IEssgewohnheiten
-  tshirt: ITShirtBestellung
   gliederung: Gliederung
   comment: string
 }
@@ -124,11 +121,6 @@ const essgewohnheitenForm = ref<IEssgewohnheiten>({
 
 const comment = ref('')
 
-const tshirtForm = ref<ITShirtBestellung>({
-  bestellen: false,
-  groesse: props.person?.konfektionsgroesse ?? 'JUNIOR_122_128',
-})
-
 const gliederung = ref<Gliederung | null>(props.person?.gliederung ?? null)
 
 const acceptTeilnahmebedingungen = ref(false)
@@ -142,7 +134,6 @@ const submit = () => {
     contact: contactForm.value,
     essgewohnheiten: essgewohnheitenForm.value,
     notfallKontakte: formatNotfallKontakte(notfallKontakteForm.value),
-    tshirt: tshirtForm.value,
     comment: comment.value,
   })
 }
@@ -224,11 +215,6 @@ const submit = () => {
       <slot />
 
       <template v-if="isPublicAnmeldung">
-        <template v-if="showTshirt">
-          <FormTShirtBestellungGeneral v-model="tshirtForm" />
-          <hr class="my-5" />
-        </template>
-
         <BasicCheckbox
           v-model="acceptTeilnahmebedingungen"
           class="mt-1 font-medium"

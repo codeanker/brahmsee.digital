@@ -7,10 +7,11 @@ import dayjs from 'dayjs'
 import XLSX from 'xlsx'
 
 import { getEntityIdFromHeader } from '../../authentication.js'
-import { AnmeldungStatusMapping, GenderMapping } from '../../enumMappings/index.js'
 import prisma from '../../prisma.js'
 import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
 import { getSecurityWorksheet } from '../helpers/getSecurityWorksheet.js'
+import { AnmeldungStatusMapping } from '../../types/enums/mappings/AnmeldungStatus.js'
+import { GenderMapping } from '../../types/enums/mappings/Gender.js'
 
 export async function veranstaltungTeilnehmendenliste(ctx) {
   const jwt = ctx.query.jwt
@@ -85,7 +86,6 @@ export async function veranstaltungTeilnehmendenliste(ctx) {
           email: true,
           telefon: true,
           essgewohnheit: true,
-          konfektionsgroesse: true,
           gliederung: {
             select: {
               id: true,
