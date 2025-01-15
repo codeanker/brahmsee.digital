@@ -16,8 +16,8 @@ export function handleUpload(file: File[]): Promise<{ id: string }[]>
  */
 export async function handleUpload(file: File | File[]): Promise<uploadedFiles | uploadedFile> {
   if (Array.isArray(file)) {
-    let files: uploadedFiles = []
-    for await (let element of file) {
+    const files: uploadedFiles = []
+    for await (const element of file) {
       const res = await uploadFile(element)
       if (res) files.push(res)
     }

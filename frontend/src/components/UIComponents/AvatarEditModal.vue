@@ -29,7 +29,7 @@ const close = () => {
 }
 
 const uploadPending = ref(false)
-async function upload(toUploadFile) {
+async function upload(toUploadFile: File) {
   console.log('upload')
   uploadPending.value = true
   try {
