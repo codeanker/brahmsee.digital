@@ -74,7 +74,7 @@ onUnmounted(() => {
       />
     </div>
     <template #label>
-      <slot name="label"></slot>
+      <slot name="label" />
     </template>
   </BasicFormGroup>
 </template>

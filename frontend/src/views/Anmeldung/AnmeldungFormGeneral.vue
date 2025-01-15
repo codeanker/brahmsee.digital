@@ -187,7 +187,9 @@ const {
 
       <template v-if="props.isPublic">
         <div class="text-3xl font-medium">Anmeldung</div>
-        <div class="mb-5">{{ unterveranstaltung?.veranstaltung.name }}</div>
+        <div class="mb-5">
+          {{ unterveranstaltung?.veranstaltung.name }}
+        </div>
       </template>
 
       <!-- Form -->
@@ -214,7 +216,9 @@ const {
                 :field="field"
               />
 
-              <p class="text-sm text-gray-500">{{ field.description }}</p>
+              <p class="text-sm text-gray-500">
+                {{ field.description }}
+              </p>
             </div>
           </template>
         </div>

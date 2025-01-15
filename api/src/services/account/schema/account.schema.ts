@@ -22,7 +22,7 @@ export const accountSchema = z.strictObject({
 
 export type TAccountSchema = z.infer<typeof accountSchema>
 
-const ZGetAccountCreateDataSchema = accountSchema.extend({
+export const ZGetAccountCreateDataSchema = accountSchema.extend({
   password: z.string().optional(), // optional, because oauth login does not have a password
 })
 
@@ -31,7 +31,7 @@ type TGetAccountCreateDataSchema = z.infer<typeof ZGetAccountCreateDataSchema>
 export async function getAccountCreateData(data: TGetAccountCreateDataSchema): Promise<Prisma.AccountCreateInput> {
   return {
     email: data.email,
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+
     password: data.password ? await hashPassword(data.password) : undefined,
     role: data.roleId,
     person: {
@@ -59,6 +59,7 @@ export async function getAccountCreateData(data: TGetAccountCreateDataSchema): P
             },
           }
         : undefined,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
     activationToken: uuidv4(),
   }
 }

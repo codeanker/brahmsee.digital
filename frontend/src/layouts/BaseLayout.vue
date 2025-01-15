@@ -42,7 +42,7 @@ function getSearchCommand() {
 
 <template>
   <div>
-    <GlobalSearch ref="globalSearch"></GlobalSearch>
+    <GlobalSearch ref="globalSearch" />
     <div class="flex h-screen overflow-hidden relative">
       <Sidebar
         class="shrink-0 h-full p-6 w-72 absolute lg:relative z-50"
@@ -62,7 +62,9 @@ function getSearchCommand() {
             />
             <div class="flex flex-col justify-center">
               <Breadcrumbs />
-              <h5 class="mb-0.5">{{ title.name }}</h5>
+              <h5 class="mb-0.5">
+                {{ title.name }}
+              </h5>
             </div>
           </div>
           <div class="flex items-center space-x-6 pr-6 pb-2">
@@ -71,7 +73,7 @@ function getSearchCommand() {
               @click="globalSearch.showSearch = !globalSearch.showSearch"
             >
               <div>
-                <MagnifyingGlassIcon class="h-4"></MagnifyingGlassIcon>
+                <MagnifyingGlassIcon class="h-4" />
               </div>
               <div>Suche</div>
 

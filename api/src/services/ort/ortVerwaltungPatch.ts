@@ -1,14 +1,13 @@
 import { Role } from '@prisma/client'
 import z from 'zod'
 
-import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
-import { addressSchema, createOrUpdateAddress } from '../address/schema/address.schema'
+import prisma from '../../prisma.js'
+import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
+import { addressSchema, createOrUpdateAddress } from '../address/schema/address.schema.js'
 
-export const ortVerwaltungPatchProcedure = defineProcedure({
+export const ortVerwaltungPatchProcedure = defineProtectedMutateProcedure({
   key: 'verwaltungPatch',
-  method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
+  roleIds: [Role.ADMIN],
   inputSchema: z.strictObject({
     id: z.number().int(),
     data: z.strictObject({

@@ -3,13 +3,13 @@ import { TRPCError } from '@trpc/server'
 import jwt from 'jsonwebtoken'
 import z from 'zod'
 
-import config from '../../config'
-import prisma from '../../prisma'
-import { ZOauthRegisterJwtPayloadSchema } from '../../routes/connect'
-import { defineProcedure } from '../../types/defineProcedure'
+import config from '../../config.js'
+import prisma from '../../prisma.js'
+import { ZOauthRegisterJwtPayloadSchema } from '../../routes/connect.js'
+import { definePublicMutateProcedure } from '../../types/defineProcedure.js'
 
-import { sendMailConfirmEmailRequest } from './helpers/sendMailConfirmEmailRequest'
-import { getAccountCreateData } from './schema/account.schema'
+import { sendMailConfirmEmailRequest } from './helpers/sendMailConfirmEmailRequest.js'
+import { getAccountCreateData } from './schema/account.schema.js'
 
 const ZAccountGliederungAdminCreateInput = z.strictObject({
   data: z.strictObject({
@@ -24,15 +24,13 @@ const ZAccountGliederungAdminCreateInput = z.strictObject({
   }),
 })
 
-export const accountGliederungAdminCreateProcedure = defineProcedure({
+export const accountGliederungAdminCreateProcedure = definePublicMutateProcedure({
   key: 'gliederungAdminCreate',
-  method: 'mutation',
-  protection: { type: 'public' },
   inputSchema: ZAccountGliederungAdminCreateInput,
   async handler(options) {
     let dlrgOauthId: undefined | string = undefined
     // check if jwtOAuthToken set and if so, check if it is valid
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+
     if (options.input.data.jwtOAuthToken) {
       const jwtOAuthTokenPayload = ZOauthRegisterJwtPayloadSchema.parse(
         jwt.verify(options.input.data.jwtOAuthToken, `${config.authentication.secret}-oauth`)
@@ -41,7 +39,6 @@ export const accountGliederungAdminCreateProcedure = defineProcedure({
       dlrgOauthId = jwtOAuthTokenPayload.sub
     }
 
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (!options.input.data.email) {
       throw new TRPCError({
         code: 'BAD_REQUEST',
@@ -70,7 +67,8 @@ export const accountGliederungAdminCreateProcedure = defineProcedure({
       },
     })
 
-    await sendMailConfirmEmailRequest(accountData.email, accountData.activationToken!)
+    if (!accountData.activationToken) throw new Error('No activation token generated')
+    await sendMailConfirmEmailRequest(accountData.email, accountData.activationToken)
 
     return res
   },

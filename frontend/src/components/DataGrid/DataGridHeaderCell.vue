@@ -85,6 +85,6 @@ const { $el, resizeHandle, filter, handleClickOrderBy } = useDataGridHeaderCell(
     <div
       ref="resizeHandle"
       class="resize-handle absolute bottom-0 right-0 top-0 z-10 w-3 cursor-col-resize"
-    ></div>
+    />
   </td>
 </template>

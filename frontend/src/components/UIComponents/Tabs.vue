@@ -122,7 +122,7 @@ function changeTab(index) {
             class="'-ml-0.5 mr-1.5 h-5 w-5'"
             aria-hidden="true"
           />
-          <span></span>
+          <span />
           {{ tab.name }}
           <span
             v-if="tab.count"
@@ -138,7 +138,7 @@ function changeTab(index) {
       </Tab>
     </TabList>
     <TabPanels>
-      <slot></slot>
+      <slot />
     </TabPanels>
   </TabGroup>
 </template>

@@ -1,15 +1,14 @@
 import { Role } from '@prisma/client'
 import { z } from 'zod'
 
-import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
+import prisma from '../../prisma.js'
+import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
 
-import { customFieldSchema } from './schema/customField.schema'
+import { customFieldSchema } from './schema/customField.schema.js'
 
-export const customFieldsVeranstaltungCreate = defineProcedure({
+export const customFieldsVeranstaltungCreate = defineProtectedMutateProcedure({
   key: 'veranstaltungCreate',
-  method: 'mutation',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
+  roleIds: [Role.ADMIN],
   inputSchema: z.strictObject({
     veranstaltungId: z.number(),
     data: customFieldSchema,

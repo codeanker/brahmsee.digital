@@ -1,6 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import inquirer from 'inquirer'
 
-import { generateService } from './generator/generateService'
+import { generateService } from './generator/generateService.js'
 
 export async function inquireGenerateService(missingServices, context) {
   const prismOrCustomAnswer = (await inquirer.prompt([
@@ -14,7 +18,6 @@ export async function inquireGenerateService(missingServices, context) {
 
   if (prismOrCustomAnswer.serviceType === 'prisma') {
     if (missingServices.length === 0) {
-      // eslint-disable-next-line no-console
       console.log('No services to create')
       process.exit(0)
     }

@@ -90,3 +90,5 @@ reports
 **/tsconfig.tsbuildinfo
 tsconfig.tsbuildinfo
 uploads/
+.turbo
+dist/

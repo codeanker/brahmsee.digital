@@ -66,10 +66,10 @@ watch(show, (value) => {
                 </div>
                 <div class="ml-3 w-0 flex-1 pt-0.5">
                   <div class="text-sm font-medium text-gray-900">
-                    <slot name="title"></slot>
+                    <slot name="title" />
                   </div>
                   <div class="mt-1 text-sm text-gray-500">
-                    <slot name="content"></slot>
+                    <slot name="content" />
                   </div>
                 </div>
                 <div class="ml-4 flex flex-shrink-0">

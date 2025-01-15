@@ -1,9 +1,9 @@
 import { Prisma, Role } from '@prisma/client'
 import z from 'zod'
 
-import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
-import { defineQuery, getOrderBy } from '../../types/defineQuery'
+import prisma from '../../prisma.js'
+import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
+import { defineQuery, getOrderBy } from '../../types/defineQuery.js'
 
 const inputSchema = defineQuery({
   filter: z.strictObject({
@@ -20,10 +20,9 @@ const inputSchema = defineQuery({
 
 type TInput = z.infer<typeof inputSchema>
 
-export const personListProcedure = defineProcedure({
+export const personListProcedure = defineProtectedQueryProcedure({
   key: 'list',
-  method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
+  roleIds: [Role.ADMIN],
   inputSchema,
   async handler(options) {
     const { skip, take } = options.input.pagination
@@ -63,10 +62,9 @@ export const personListProcedure = defineProcedure({
   },
 })
 
-export const personCountProcedure = defineProcedure({
+export const personCountProcedure = defineProtectedQueryProcedure({
   key: 'count',
-  method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN] },
+  roleIds: [Role.ADMIN],
   inputSchema: inputSchema.pick({ filter: true }),
   async handler(options) {
     const total = await prisma.person.count({
@@ -76,8 +74,10 @@ export const personCountProcedure = defineProcedure({
   },
 })
 
+// eslint-disable-next-line @typescript-eslint/require-await
 async function getWhere(
   filter: TInput['filter'],
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _account: {
     id: number
     role: Role

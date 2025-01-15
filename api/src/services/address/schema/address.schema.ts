@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
-import prisma from '../../../prisma'
-import { isAllUndefined } from '../../../util/object'
+import prisma from '../../../prisma.js'
+import { isAllUndefined } from '../../../util/object.js'
 
 export const addressSchema = z.strictObject({
   street: z.string().optional(),

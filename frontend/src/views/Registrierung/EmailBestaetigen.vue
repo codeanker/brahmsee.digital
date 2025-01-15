@@ -67,7 +67,9 @@ const feedback = computed(() => {
         class="w-14 h-14 text-primary-700"
       />
 
-      <div class="text-3xl font-medium">{{ feedback?.title }}</div>
+      <div class="text-3xl font-medium">
+        {{ feedback?.title }}
+      </div>
       <div>{{ feedback?.message }}</div>
       <button
         v-if="feedback?.showLoginButton"

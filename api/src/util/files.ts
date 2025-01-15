@@ -1,3 +1,4 @@
+import type { PathLike } from 'fs'
 import { access, constants, lstat, readdir } from 'fs/promises'
 import path from 'path'
 
@@ -13,9 +14,9 @@ export async function getDirectories(source: string) {
       return (await isDirectory(filePath)) ? file : null
     })
   )
-  return dirs.filter((dir) => dir !== null) as string[]
+  return dirs.filter((dir) => dir !== null)
 }
-export function checkFileExists(file) {
+export function checkFileExists(file: PathLike) {
   return access(file, constants.F_OK)
     .then(() => true)
     .catch(() => false)

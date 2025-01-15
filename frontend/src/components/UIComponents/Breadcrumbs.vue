@@ -27,7 +27,7 @@ const breadcrumbs = computed(() => {
 
 <template>
   <div class="hidden lg:flex items-center text-primary-500 text-sm">
-    <HomeIcon class="w-4 h-4 mr-1"></HomeIcon>
+    <HomeIcon class="w-4 h-4 mr-1" />
     <template v-for="(breadcrumb, index) of breadcrumbs">
       <RouterLink
         v-if="breadcrumb.to"
@@ -36,7 +36,9 @@ const breadcrumbs = computed(() => {
       >
         {{ breadcrumb.text }}
       </RouterLink>
-      <template v-else>{{ breadcrumb.text }}</template>
+      <template v-else>
+        {{ breadcrumb.text }}
+      </template>
       <template v-if="index !== breadcrumbs.length - 1">
         <ChevronRightIcon
           :key="breadcrumb.text"

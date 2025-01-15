@@ -26,9 +26,9 @@ const getName = computed(() => {
   } else if (props.firstname && props.lastname) {
     name = props.firstname + ' ' + props.lastname
   }
-  let nameParts = name.split(' ').filter((namePart) => namePart !== '')
+  const nameParts = name.split(' ').filter((namePart) => namePart !== '')
   if (nameParts.length > 1) {
-    let lastElement = nameParts.length - 1
+    const lastElement = nameParts.length - 1
     return `${nameParts[0][0].toUpperCase()}${nameParts[lastElement][0].toUpperCase()}`
   } else {
     return `${nameParts[0][0].toUpperCase()}${nameParts[0][1].toUpperCase()}`
@@ -62,7 +62,7 @@ const getName = computed(() => {
         class="z-10 flex items-center justify-center rounded-full bg-primary-200 p-3 font-bold text-primary-600"
         :class="[{ 'text-4xl': size === 'xl' }, { 'text-sm': size === 'sm' }]"
       >
-        <i class="fad fa-2x fa-spinner fa-pulse text-primary"></i>
+        <i class="fad fa-2x fa-spinner fa-pulse text-primary" />
       </div>
       <div
         v-if="statusLed"

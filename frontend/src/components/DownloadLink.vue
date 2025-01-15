@@ -29,6 +29,6 @@ const { state: link } = useAsyncState(async () => {
     rel="noopener noreferrer"
     class="text-primary-500 flex"
   >
-    <slot><ArrowDownTrayIcon class="h-5 w-5 mr-1"></ArrowDownTrayIcon>{{ label ?? 'Herunterladen' }}</slot>
+    <slot><ArrowDownTrayIcon class="h-5 w-5 mr-1" />{{ label ?? 'Herunterladen' }}</slot>
   </a>
 </template>

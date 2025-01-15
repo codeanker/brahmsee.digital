@@ -10,7 +10,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
     <div>
       <MenuButton class="btn-primary">
         Options
-        <i class="faAngleDown"></i>
+        <i class="faAngleDown" />
       </MenuButton>
     </div>
 

@@ -1,6 +1,9 @@
 {{#> layout }}
 
-<mj-text font-size="16px" line-height="1.5">
+<mj-text
+  font-size="16px"
+  line-height="1.5"
+>
   Der Status deines <b>{{ hostname }}</b> Account wurde auf <b>{{ status }}</b> geändert.
 </mj-text>
 
@@ -14,6 +17,4 @@
 >
   Zur Anmeldung
 </mj-button>
-{{/if}}
-
-{{/layout}}
+{{/if}} {{/layout}}

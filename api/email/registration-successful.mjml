@@ -1,12 +1,18 @@
 {{#> layout }}
 
-<mj-text font-size="16px" line-height="1.5">
+<mj-text
+  font-size="16px"
+  line-height="1.5"
+>
   Vielen Dank für deine Anmeldung zur Veranstaltung {{ veranstaltung }}.
 </mj-text>
 
-<mj-text font-size="16px" line-height="1.5">
-  <b>Wichtig</b>: Deine Anmeldung ist noch nicht bestätigt. Sobald sich der Status
-  ändert, erhältst Du eine weitere E-Mail.
+<mj-text
+  font-size="16px"
+  line-height="1.5"
+>
+  <b>Wichtig</b>: Deine Anmeldung ist noch nicht bestätigt. Sobald sich der Status ändert, erhältst Du eine weitere
+  E-Mail.
 </mj-text>
 
 {{/layout}}

@@ -1,10 +1,10 @@
 import { AnmeldungStatus, Role } from '@prisma/client'
 import z from 'zod'
 
-import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
-import { ZPaginationSchema } from '../../types/defineQuery'
-import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin'
+import prisma from '../../prisma.js'
+import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
+import { ZPaginationSchema } from '../../types/defineQuery.js'
+import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
 
 const filter = z.strictObject({
   unterveranstaltungId: z.number().optional(),
@@ -29,10 +29,9 @@ const where = (filter: { gliederungId: number; unterveranstaltungId?: number; ve
   }
 }
 
-export const anmeldungGliederungdListProcedure = defineProcedure({
+export const anmeldungGliederungdListProcedure = defineProtectedQueryProcedure({
   key: 'gliederungList',
-  method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN] },
+  roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
   inputSchema: z.strictObject({
     pagination: ZPaginationSchema,
     filter: filter,
@@ -95,10 +94,9 @@ export const anmeldungGliederungdListProcedure = defineProcedure({
   },
 })
 
-export const anmeldungGliederungCountProcedure = defineProcedure({
+export const anmeldungGliederungCountProcedure = defineProtectedQueryProcedure({
   key: 'gliederungCount',
-  method: 'query',
-  protection: { type: 'restrictToRoleIds', roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN] },
+  roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
   inputSchema: z.strictObject({
     filter: filter,
   }),
@@ -118,6 +116,6 @@ export const anmeldungGliederungCountProcedure = defineProcedure({
       })
     )
     const total = countEntries.reduce((acc, [, count]) => acc + Number(count), 0)
-    return { total, ...Object.fromEntries(countEntries) }
+    return { total, ...Object.fromEntries(countEntries) } as Record<AnmeldungStatus, number> & { total: number }
   },
 })

@@ -15,7 +15,7 @@ import { HandRaisedIcon, UserGroupIcon } from '@heroicons/vue/24/outline'
           class="w-full p-5 rounded-lg flex cursor-pointer transition-all ease-in-out border border-gray-200 hover:border-primary-600 group"
         >
           <div class="mr-4">
-            <HandRaisedIcon class="h-8 w-8 transition-all ease-in-out group-hover:text-primary-600"></HandRaisedIcon>
+            <HandRaisedIcon class="h-8 w-8 transition-all ease-in-out group-hover:text-primary-600" />
           </div>
           <div class="">
             <div class="font-medium text-lg transition-all ease-in-out group-hover:text-primary-600">CREW-Mitglied</div>
@@ -27,7 +27,7 @@ import { HandRaisedIcon, UserGroupIcon } from '@heroicons/vue/24/outline'
           class="w-full p-5 rounded-lg flex cursor-pointer transition-all ease-in-out border border-gray-200 hover:border-primary-600 group"
         >
           <div class="mr-4">
-            <UserGroupIcon class="h-8 w-8 transition-all ease-in-out group-hover:text-primary-600"></UserGroupIcon>
+            <UserGroupIcon class="h-8 w-8 transition-all ease-in-out group-hover:text-primary-600" />
           </div>
           <div class="">
             <div class="font-medium text-lg transition-all ease-in-out group-hover:text-primary-600">Gliederung</div>

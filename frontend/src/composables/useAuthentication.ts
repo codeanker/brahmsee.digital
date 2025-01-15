@@ -41,6 +41,7 @@ export async function reAuthenticate() {
   try {
     loggedInAccount.value = await apiClient.person.authenticatedGet.query()
     return loggedInAccount.value
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     return false
   }

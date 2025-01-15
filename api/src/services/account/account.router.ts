@@ -1,17 +1,17 @@
-/* eslint-disable prettier/prettier */ // Prettier ignored is because this file is generated
-import { mergeRouters } from '../../trpc'
+// Prettier ignored is because this file is generated
+import { mergeRouters } from '../../trpc.js'
 
-import { accountActivateProcedure } from './accountActivate'
-import { accountChangePasswordProcedure } from './accountChangePassword'
-import { accountEmailConfirmProcedure } from './accountEmailConfirm'
-import { accountEmailConfirmRequestProcedure } from './accountEmailConfirmRequest'
-import { accountGliederungAdminCreateProcedure } from './accountGliederungAdminCreate'
-import { accountPasswordResetProcedure } from './accountPasswordReset'
-import { accountVerwaltungCreateProcedure } from './accountVerwaltungCreate'
-import { accountVerwaltungGetProcedure } from './accountVerwaltungGet'
-import { accountVerwaltungCountProcedure, accountVerwaltungListProcedure } from './accountVerwaltungList'
-import { accountVerwaltungPatchProcedure } from './accountVerwaltungPatch'
-import {accountVerwaltungRemoveProcedure} from './accountVerwaltungRemove'
+import { accountActivateProcedure } from './accountActivate.js'
+import { accountChangePasswordProcedure } from './accountChangePassword.js'
+import { accountEmailConfirmProcedure } from './accountEmailConfirm.js'
+import { accountEmailConfirmRequestProcedure } from './accountEmailConfirmRequest.js'
+import { accountGliederungAdminCreateProcedure } from './accountGliederungAdminCreate.js'
+import { accountPasswordResetProcedure } from './accountPasswordReset.js'
+import { accountVerwaltungCreateProcedure } from './accountVerwaltungCreate.js'
+import { accountVerwaltungGetProcedure } from './accountVerwaltungGet.js'
+import { accountVerwaltungCountProcedure, accountVerwaltungListProcedure } from './accountVerwaltungList.js'
+import { accountVerwaltungPatchProcedure } from './accountVerwaltungPatch.js'
+import { accountVerwaltungRemoveProcedure } from './accountVerwaltungRemove.js'
 // Import Routes here - do not delete this line
 
 export const accountRouter = mergeRouters(

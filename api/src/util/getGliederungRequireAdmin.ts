@@ -1,6 +1,6 @@
 import { GliederungAccountRole } from '@prisma/client'
 
-import prisma from '../prisma'
+import prisma from '../prisma.js'
 /**
  * get gliederung where `accountId` is admin
  *

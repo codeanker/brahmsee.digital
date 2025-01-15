@@ -8,7 +8,7 @@ import Button from '@/components/UIComponents/Button.vue'
   <div class="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
       <h2 class="text-center text-4xl leading-9 tracking-tight text-primary-700 flex items-center justify-center">
-        <FaceFrownIcon class="h-14"></FaceFrownIcon> Oh nein
+        <FaceFrownIcon class="h-14" /> Oh nein
       </h2>
       <p class="text-center">Die Funktion steht leider noch nicht zur Verfügung.</p>
       <Button
@@ -16,8 +16,9 @@ import Button from '@/components/UIComponents/Button.vue'
         color="primary"
         full
         class="mt-5"
-        >zurück</Button
       >
+        zurück
+      </Button>
     </div>
   </div>
 </template>

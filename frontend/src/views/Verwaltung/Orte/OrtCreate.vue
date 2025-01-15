@@ -8,6 +8,6 @@ setTitle('Ort erstellen')
 
 <template>
   <div class="grid grid-cols-1 lg:grid-cols-2">
-    <FormOrtGeneral mode="create"></FormOrtGeneral>
+    <FormOrtGeneral mode="create" />
   </div>
 </template>

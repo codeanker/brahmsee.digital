@@ -1,8 +1,8 @@
 import { writeFile } from 'fs/promises'
 import path from 'path'
 
-import { toPascalCase } from '../../util/casing'
-import { checkFileExists } from '../../util/files'
+import { toPascalCase } from '../../util/casing.js'
+import { checkFileExists } from '../../util/files.js'
 
 import {
   type ProcedureOptions,
@@ -10,7 +10,7 @@ import {
   addProcedureToRouter,
   getProtectionContent,
   type GeneratorContext,
-} from './utlils'
+} from './utlils.js'
 
 export async function generateProcedurePatch(procedure: ProcedureOptions, context: GeneratorContext) {
   const procedureType = 'patch'
@@ -25,15 +25,30 @@ export async function generateProcedurePatch(procedure: ProcedureOptions, contex
   if (alreadyExists) {
     throw new Error(`Procedure ${procedureFileName} already exists`)
   }
+
+  let procedureFunction = 'defineProcedure'
+  let protectionContent = getProtectionContent(procedure.protection)
+  let roleIds = ''
+
+  if (procedure.protection.type === 'restrictToRoleIds') {
+    procedureFunction = 'defineProtectedQueryProcedure'
+    roleIds = `roleIds: ${JSON.stringify(procedure.protection.roleIds)},`
+    protectionContent = ''
+  } else if (procedure.protection.type === 'public') {
+    procedureFunction = 'definePublicQueryProcedure'
+    protectionContent = ''
+  }
+
   const content = `import z from 'zod'
 
 import prisma from '../../prisma'
-import { defineProcedure } from '../../types/defineProcedure'
+import { ${procedureFunction} } from '../../types/defineProcedure'
 
-export const ${procedureFileName}Procedure = defineProcedure({
+export const ${procedureFileName}Procedure = ${procedureFunction}({
   key: '${procedureAction}',
   method: '${procedureMethod}',
-  protection: ${getProtectionContent(procedure.protection)},
+  ${roleIds}
+  protection: ${protectionContent},
   inputSchema: z.strictObject({
     id: z.number().int(),
     data: z.strictObject({}),
@@ -51,7 +66,6 @@ export const ${procedureFileName}Procedure = defineProcedure({
   },
 })
 `
-  writeFile(procedurePath, content)
-
+  await writeFile(procedurePath, content)
   await addProcedureToRouter(procedure, sericeDir, procedureType)
 }

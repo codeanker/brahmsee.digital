@@ -1,0 +1,11 @@
+{
+  "name": "@codeanker/typescript-config",
+  "exports": {
+    "./tsconfig-vue": "./tsconfig.vue.json",
+    "./tsconfig-node": "./tsconfig.node.json",
+    "./tsconfig-node-tsc": "./tsconfig.node-tsc.json"
+  },
+  "devDependencies": {
+    "typescript": "catalog:"
+  }
+}

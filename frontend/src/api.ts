@@ -1,4 +1,4 @@
-import { createTRPCProxyClient, httpBatchLink } from '@trpc/client'
+import { createTRPCClient, httpBatchLink } from '@trpc/client'
 import superjson from 'superjson'
 
 import type { AppRouter } from '@codeanker/api'
@@ -15,10 +15,10 @@ BigInt.prototype.toJSON = function (): string {
   return this.toString()
 }
 
-export const apiClient = createTRPCProxyClient<AppRouter>({
-  transformer: superjson,
+export const apiClient = createTRPCClient<AppRouter>({
   links: [
     httpBatchLink({
+      transformer: superjson,
       url: (host !== '/' ? host : '') + '/api/trpc',
       async headers() {
         const jwt = localStorage.getItem('jwt')

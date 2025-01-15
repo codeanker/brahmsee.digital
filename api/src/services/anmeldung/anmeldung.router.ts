@@ -1,18 +1,18 @@
-/* eslint-disable prettier/prettier */ // Prettier ignored is because this file is generated
-import { mergeRouters } from '../../trpc'
+// Prettier ignored is because this file is generated
+import { mergeRouters } from '../../trpc.js'
 
-import { anmeldungGliederungGetProcedure } from './anmeldungGliederungGet'
-import { anmeldungGliederungCountProcedure, anmeldungGliederungdListProcedure } from './anmeldungGliederungList'
-import { anmeldungGliederungPatchProcedure } from './anmeldungGliederungPatch'
-import { anmeldungPublicCreateProcedure } from './anmeldungPublicCreate'
-import { anmeldungTeilnehmerStornoProcedure } from './anmeldungTeilnehmerStorno'
-import { anmeldungVerwaltungAblehnenProcedure } from './anmeldungVerwaltungAblehnen'
-import { anmeldungVerwaltungAnnehmenProcedure } from './anmeldungVerwaltungAnnehmen'
-import { anmeldungVerwaltungCreateProcedure } from './anmeldungVerwaltungCreate'
-import { anmeldungVerwaltungGetProcedure } from './anmeldungVerwaltungGet'
-import { anmeldungVerwaltungCountProcedure, anmeldungVerwaltungListProcedure } from './anmeldungVerwaltungList'
-import { anmeldungVerwaltungPatchProcedure } from './anmeldungVerwaltungPatch'
-import { anmeldungVerwaltungStornoProcedure } from './anmeldungVerwaltungStorno'
+import { anmeldungGliederungGetProcedure } from './anmeldungGliederungGet.js'
+import { anmeldungGliederungCountProcedure, anmeldungGliederungdListProcedure } from './anmeldungGliederungList.js'
+import { anmeldungGliederungPatchProcedure } from './anmeldungGliederungPatch.js'
+import { anmeldungPublicCreateProcedure } from './anmeldungPublicCreate.js'
+import { anmeldungTeilnehmerStornoProcedure } from './anmeldungTeilnehmerStorno.js'
+import { anmeldungVerwaltungAblehnenProcedure } from './anmeldungVerwaltungAblehnen.js'
+import { anmeldungVerwaltungAnnehmenProcedure } from './anmeldungVerwaltungAnnehmen.js'
+import { anmeldungVerwaltungCreateProcedure } from './anmeldungVerwaltungCreate.js'
+import { anmeldungVerwaltungGetProcedure } from './anmeldungVerwaltungGet.js'
+import { anmeldungVerwaltungCountProcedure, anmeldungVerwaltungListProcedure } from './anmeldungVerwaltungList.js'
+import { anmeldungVerwaltungPatchProcedure } from './anmeldungVerwaltungPatch.js'
+import { anmeldungVerwaltungStornoProcedure } from './anmeldungVerwaltungStorno.js'
 // Import Routes here - do not delete this line
 
 export const anmeldungRouter = mergeRouters(

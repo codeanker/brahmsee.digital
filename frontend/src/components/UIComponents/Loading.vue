@@ -39,7 +39,7 @@ const getColor = computed(() => {
   <SunIcon
     class="spinner inline-block"
     :class="`w-${getSize} h-${getSize} text-${getColor}`"
-  ></SunIcon>
+  />
 </template>
 
 <style scoped>
