@@ -35,9 +35,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install Helm
-        uses: azure/setup-helm@v3
-
       - name: set chart version
         run: |
           sed -i "s/version: .*/version: ${{ needs.prepare.outputs.version }}-${{ needs.prepare.outputs.commit }}/g" chart/brahmsee-digital/Chart.yaml
@@ -45,10 +42,13 @@ jobs:
         run: |
           sed -i "s/commit: .*/commit: ${{ needs.prepare.outputs.commit }}/g" chart/brahmsee-digital/values.yaml
 
-      - name: pack chart
-        run: helm package chart/brahmsee-digital
-
-      - name: upload chart artifact
-        uses: actions/upload-artifact@v4
+      - name: Chart | Push brahmsee-digital
+        uses: appany/helm-oci-chart-releaser@v0.3.0
         with:
-          path: brahmsee-digital-*.tgz
+          name: brahmsee-digital
+          repository: codeanker/brahmsee.digital
+          tag: ${{needs.prepare.outputs.version}}-${{needs.prepare.outputs.commit}}
+          path: chart/brahmsee-digital
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
