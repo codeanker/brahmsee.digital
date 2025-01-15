@@ -31,13 +31,13 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="Multiple extends boolean">
 import { computed, inject, onMounted, ref, shallowRef } from 'vue'
 
 import { formatBytes } from '@codeanker/helpers'
 
 const props = defineProps<{
-  multiple?: boolean
+  multiple?: Multiple
   accept?: string
   disabled?: boolean
   maxFileSize?: number
@@ -46,7 +46,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  uploaded: [File | File[]]
+  uploaded: [Multiple extends true ? File[] : File]
 }>()
 
 const InputFileUploadAreaConf = {
