@@ -9,7 +9,7 @@ interface Opts {
   causerId?: number
   metadata?: unknown
   subjectType: string
-  subjectId?: number
+  subjectId?: number | string
 }
 
 export default async function logActivity(opts: Opts) {
@@ -17,6 +17,7 @@ export default async function logActivity(opts: Opts) {
     await prisma.activity.create({
       data: {
         ...opts,
+        subjectId: opts.subjectId?.toString(),
         metadata: opts.metadata ?? {},
       },
     })
