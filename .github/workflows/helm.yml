@@ -51,5 +51,5 @@ jobs:
           tag: ${{needs.prepare.outputs.version}}-${{needs.prepare.outputs.commit}}
           path: chart/brahmsee-digital
           registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          registry_username: ${{ github.actor }}
+          registry_password: ${{ secrets.GITHUB_TOKEN }}
