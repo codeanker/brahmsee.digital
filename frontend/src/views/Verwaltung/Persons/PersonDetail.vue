@@ -100,13 +100,14 @@ if (loggedInAccount.value?.role === 'ADMIN') {
         :edit="true"
         :personId="person.id"
         :photoId="person.photoId"
+        size="xl"
       />
     </div>
     <div class="mb-1">
       <h2 class="text-xl font-bold tracking-tight sm:text-2xl mb-0">
         <span>{{ person?.firstname }} {{ person?.lastname }}</span>
       </h2>
-      <p class="mb-0">{{ person?.gliederung.name }}</p>
+      <p class="mb-0">{{ person?.gliederung?.name }}</p>
     </div>
   </div>
 
