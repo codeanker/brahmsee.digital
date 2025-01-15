@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { computed, withDefaults } from 'vue'
+import AvatarEditModal from './AvatarEditModal.vue'
+import { ref } from 'vue'
 
 const props = withDefaults(
   defineProps<{
+    personId?: number
     name?: string
     firstname?: string
     lastname?: string
@@ -10,6 +13,8 @@ const props = withDefaults(
     border?: boolean
     size?: 'sm' | 'xl'
     loading?: boolean
+    edit?: boolean
+    avatarUrl?: string
   }>(),
   {
     statusLed: false,
@@ -34,6 +39,13 @@ const getName = computed(() => {
     return `${nameParts[0][0].toUpperCase()}${nameParts[0][1].toUpperCase()}`
   }
 })
+
+const refAvatarEditModal = ref<InstanceType<typeof AvatarEditModal>>()
+
+const openAvatarEditModal = () => {
+  console.log('modal', refAvatarEditModal)
+  refAvatarEditModal.value?.open()
+}
 </script>
 
 <template>
@@ -46,7 +58,20 @@ const getName = computed(() => {
       class="z-10 flex h-full w-full items-center justify-center rounded-full bg-primary-200 font-bold text-primary-600"
       :class="[{ 'text-4xl': size === 'xl' }, { 'text-sm': size === 'sm' }]"
     >
-      {{ getName }}
+      <img
+        v-if="avatarUrl"
+        :src="avatarUrl"
+        class="object-cover"
+      />
+      <div v-else>{{ getName }}</div>
+      <button
+        v-if="edit"
+        class="absolute bottom-0 right-0 h-full w-full rounded-full bg-white bg-opacity-0 text-white opacity-0 transition-all duration-200 ease-in-out hover:bg-opacity-60 hover:opacity-100"
+        type="button"
+        @click="openAvatarEditModal"
+      >
+        <i class="fad fa-pen text-primary" />
+      </button>
     </div>
     <div
       v-if="statusLed"
@@ -70,4 +95,9 @@ const getName = computed(() => {
       />
     </div>
   </div>
+  <AvatarEditModal
+    v-if="props.personId"
+    ref="refAvatarEditModal"
+    :person-id="props.personId"
+  />
 </template>

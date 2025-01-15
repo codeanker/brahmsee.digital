@@ -10,6 +10,7 @@ import FormPersonGeneral, { type FormPersonGeneralSubmit } from '@/components/fo
 import PersonPhotoUpload from '@/components/forms/person/PersonPhotoUpload.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
+import UserLogo from '@/components/UIComponents/UserLogo.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
 import { useRouteTitle } from '@/composables/useRouteTitle'
 import { type NahrungsmittelIntoleranz } from '@codeanker/api'
@@ -90,15 +91,26 @@ if (loggedInAccount.value?.role === 'ADMIN') {
 </script>
 
 <template>
-  <div class="mx-auto max-w-xl lg:mx-0 mb-6">
-    <div class="flex items-center space-x-3 mb-1">
-      <h2 class="text-xl font-bold tracking-tight sm:text-2xl mb-0">
-        <span>{{ person?.firstname }} {{ person?.lastname }}</span>
-      </h2>
+  <div class="mx-auto lg:mx-0 mb-6 flex">
+    <div class="w-24">
+      <UserLogo
+        v-if="person?.firstname && person?.lastname"
+        :firstname="person?.firstname"
+        :lastname="person?.lastname"
+        :edit="true"
+        :personId="person.id"
+      />
     </div>
-    <p class="text-md">
-      Bearbeite die Stammdaten der Person, gleichzeitig kannst Du alle Anmeldungen der Person einsehen.
-    </p>
+    <div>
+      <div class="flex items-center space-x-3 mb-1">
+        <h2 class="text-xl font-bold tracking-tight sm:text-2xl mb-0">
+          <span>{{ person?.firstname }} {{ person?.lastname }}</span>
+        </h2>
+      </div>
+      <p class="text-md">
+        Bearbeite die Stammdaten der Person, gleichzeitig kannst Du alle Anmeldungen der Person einsehen.
+      </p>
+    </div>
   </div>
 
   <Tabs
