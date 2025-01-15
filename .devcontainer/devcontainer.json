@@ -4,12 +4,16 @@
   "name": "brahmsee-digital",
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
   // "image": "mcr.microsoft.com/devcontainers/base:bullseye",
-
-  "dockerComposeFile": ["../docker-compose-services.yml", "./docker-compose.yml"],
+  "dockerComposeFile": [
+    "../docker-compose-services.yml",
+    "./docker-compose.yml"
+  ],
   "service": "app",
   "features": {
     "ghcr.io/devcontainers/features/github-cli:1": {},
-    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+      "dockerDashComposeVersion": "v2.32.3"
+    }
   },
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   // "workspaceMount": "source=${localWorkspaceFolder},target=${localWorkspaceFolder},type=bind",
@@ -32,12 +36,16 @@
       ],
       "settings": {
         "terminal.integrated.defaultProfile.linux": "zsh",
-        "terminal.integrated.profiles.linux": { "zsh": { "path": "/bin/zsh" } }
+        "terminal.integrated.profiles.linux": {
+          "zsh": {
+            "path": "/bin/zsh"
+          }
+        }
       }
     }
   },
   "onCreateCommand": {
-    "dependencies": "npm ci",
+    "dependencies": "pnpm i",
     "environment": "cp -n api/.env.example api/.env"
   }
 }
