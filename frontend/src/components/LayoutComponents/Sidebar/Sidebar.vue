@@ -199,7 +199,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     <!-- User Management -->
     <div class="flex items-center space-x-3 pt-4 border-t border-gray-300 dark:border-gray-600">
       <div class="w-10 h-10">
-        <UserLogo :name="loggedInAccount?.person.firstname + ' ' + loggedInAccount?.person.lastname" />
+        <UserLogo :name="loggedInAccount?.person.firstname + ' ' + loggedInAccount?.person.lastname" :photoId="loggedInAccount?.person.photoId" />
       </div>
       <div class="grow text-sm">Moin, {{ loggedInAccount?.person.firstname }}</div>
       <button

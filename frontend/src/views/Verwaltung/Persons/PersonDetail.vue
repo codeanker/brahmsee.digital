@@ -91,25 +91,22 @@ if (loggedInAccount.value?.role === 'ADMIN') {
 </script>
 
 <template>
-  <div class="mx-auto lg:mx-0 mb-6 flex">
-    <div class="w-24">
+  <div class="mx-auto lg:mx-0 mb-6 flex items-center space-x-4">
+    <div class="w-20 h-20 shrink-0">
       <UserLogo
         v-if="person?.firstname && person?.lastname"
         :firstname="person?.firstname"
         :lastname="person?.lastname"
         :edit="true"
         :personId="person.id"
+        :photoId="person.photoId"
       />
     </div>
-    <div>
-      <div class="flex items-center space-x-3 mb-1">
-        <h2 class="text-xl font-bold tracking-tight sm:text-2xl mb-0">
-          <span>{{ person?.firstname }} {{ person?.lastname }}</span>
-        </h2>
-      </div>
-      <p class="text-md">
-        Bearbeite die Stammdaten der Person, gleichzeitig kannst Du alle Anmeldungen der Person einsehen.
-      </p>
+    <div class="mb-1">
+      <h2 class="text-xl font-bold tracking-tight sm:text-2xl mb-0">
+        <span>{{ person?.firstname }} {{ person?.lastname }}</span>
+      </h2>
+      <p class="mb-0">{{ person?.gliederung.name }}</p>
     </div>
   </div>
 

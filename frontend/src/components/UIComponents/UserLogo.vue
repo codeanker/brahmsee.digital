@@ -2,10 +2,13 @@
 import { computed, withDefaults } from 'vue'
 import AvatarEditModal from './AvatarEditModal.vue'
 import { ref } from 'vue'
+import { useAsyncState } from '@vueuse/core'
+import { apiClient } from '@/api'
 
 const props = withDefaults(
   defineProps<{
     personId?: number
+    photoId?: string | null
     name?: string
     firstname?: string
     lastname?: string
@@ -14,7 +17,6 @@ const props = withDefaults(
     size?: 'sm' | 'xl'
     loading?: boolean
     edit?: boolean
-    avatarUrl?: string
   }>(),
   {
     statusLed: false,
@@ -40,6 +42,20 @@ const getName = computed(() => {
   }
 })
 
+const { state: photoUrl } = useAsyncState(
+  async () => {
+    if (props.photoId) {
+      return apiClient.file.fileGetUrl.query({
+        id: props.photoId,
+      })
+    }
+  },
+  null,
+  {
+    immediate: !!props.photoId,
+  }
+)
+
 const refAvatarEditModal = ref<InstanceType<typeof AvatarEditModal>>()
 
 const openAvatarEditModal = () => {
@@ -55,13 +71,13 @@ const openAvatarEditModal = () => {
     class="relative h-full w-full"
   >
     <div
-      class="z-10 flex h-full w-full items-center justify-center rounded-full bg-primary-200 font-bold text-primary-600"
+      class="z-10 flex h-full w-full items-center justify-center rounded-full bg-primary-200 font-bold text-primary-600 overflow-hidden"
       :class="[{ 'text-4xl': size === 'xl' }, { 'text-sm': size === 'sm' }]"
     >
       <img
-        v-if="avatarUrl"
-        :src="avatarUrl"
-        class="object-cover"
+        v-if="photoUrl"
+        :src="photoUrl"
+        class="object-cover w-full h-full"
       />
       <div v-else>{{ getName }}</div>
       <button
