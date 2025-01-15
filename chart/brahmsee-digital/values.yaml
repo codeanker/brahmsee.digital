@@ -21,8 +21,8 @@ app:
     LOCAL:
       path: /tmp
     AZURE:
-      account: "",
-      accountKey: "",
+      account: ""
+      accountKey: ""
       container: ""
       folder: ""
 
