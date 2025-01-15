@@ -47,7 +47,7 @@ jobs:
         uses: appany/helm-oci-chart-releaser@v0.3.0
         with:
           name: brahmsee-digital
-          repository: codeanker/brahmsee.digital
+          repository: brahmsee.digital
           tag: ${{needs.prepare.outputs.version}}-${{needs.prepare.outputs.commit}}
           path: chart/brahmsee-digital
           registry: ghcr.io
