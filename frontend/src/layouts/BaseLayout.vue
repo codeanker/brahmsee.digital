@@ -76,7 +76,7 @@ function getSearchCommand() {
               <div>Suche</div>
 
               <div
-                class="px-1.5 py-0.5 border border-gray-200 text-gray-500 rounded-md text-xs group-hover:border-primary-500 group-hover:text-primary-500 transition-colors duration-200"
+                class="hidden sm:block px-1.5 py-0.5 border border-gray-200 text-gray-500 rounded-md text-xs group-hover:border-primary-500 group-hover:text-primary-500 transition-colors duration-200"
               >
                 <kbd class="font-sans">{{ getSearchCommand() }}</kbd>
               </div>

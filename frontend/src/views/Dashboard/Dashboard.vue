@@ -17,10 +17,22 @@ setTitle('Aktuelle Veranstaltungen')
   <div class="dashboard">
     <div class="mx-auto">
       <div
-        class="isolate mx-auto grid max-w-md grid-cols-1 gap-8 md:max-w-2xl lg:grid-cols-2 lg:max-w-4xl xl:mx-0 xl:max-w-none"
+        class="isolate grid grid-cols-1 md:grid-cols-12 gap-8"
       >
-        <Verwaltung v-if="role === 'ADMIN'" />
-        <Gliederung v-if="role === 'GLIEDERUNG_ADMIN'" />
+        <div class="col-span-8">
+          <Verwaltung v-if="role === 'ADMIN'" />
+          <Gliederung v-if="role === 'GLIEDERUNG_ADMIN'" />
+        </div>
+
+        <div class="col-span-4">
+          <ul class="list-disc">
+            <li>Letzte Anmeldungen</li>
+            <li>Meldeschlüsse eigener Veranstaltungen</li>
+            <li>Nachrichten / News</li>
+            <li>Admins: Account anfragen</li>
+          </ul>
+        </div>
+
       </div>
     </div>
 

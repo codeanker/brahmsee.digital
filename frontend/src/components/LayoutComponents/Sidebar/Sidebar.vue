@@ -1,24 +1,24 @@
 <script setup lang="ts">
 import {
   ArrowRightOnRectangleIcon,
-  MegaphoneIcon,
-  UsersIcon,
-  MapPinIcon,
-  GlobeEuropeAfricaIcon,
-  CubeIcon,
   CalendarDaysIcon,
+  CubeIcon,
   FingerPrintIcon,
-  QueueListIcon,
+  GlobeEuropeAfricaIcon,
   HandThumbUpIcon,
+  MapPinIcon,
+  MegaphoneIcon,
+  QueueListIcon,
+  RocketLaunchIcon,
+  UsersIcon,
 } from '@heroicons/vue/24/outline'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 import SidebarItems, { type DividerItem, type SidebarItem } from './SidebarItems.vue'
-import SidebarVeranstaltungSwitcher from './SidebarVeranstaltungSwitcher.vue'
 
 import UserLogo from '@/components/UIComponents/UserLogo.vue'
-import { logout, loggedInAccount } from '@/composables/useAuthentication'
+import { loggedInAccount, logout } from '@/composables/useAuthentication'
 
 const route = useRoute()
 
@@ -38,14 +38,14 @@ const hasPermissionToView = (permission) => {
 }
 
 const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
-  // {
-  //   type: 'SidebarItem',
-  //   name: 'Dashboard',
-  //   route: { name: 'Dashboard' },
-  //   icon: RocketLaunchIcon,
-  //   disabled: veranstaltungId.value === undefined,
-  //   visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
-  // },
+  {
+    type: 'SidebarItem',
+    name: 'Dashboard',
+    route: { name: 'Dashboard' },
+    icon: RocketLaunchIcon,
+    disabled: veranstaltungId.value === undefined,
+    visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
+  },
   // {
   //   type: 'SidebarItem',
   //   name: 'Anmeldungen',
@@ -116,7 +116,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
   // { type: 'DividerItem', name: 'Ausschreibung', visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']) },
   {
     type: 'SidebarItem',
-    name: 'Ausschreibungen',
+    name: 'Meine Veranstaltungen',
     route: { name: 'UnterveranstaltungList', params: { veranstaltungId: veranstaltungId.value } },
     icon: MegaphoneIcon,
     visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
@@ -185,7 +185,10 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
 <template>
   <div class="h-full flex flex-col text-primary-900 dark:text-gray-200 font-medium">
     <!-- Sidebar Header -->
-    <SidebarVeranstaltungSwitcher />
+     <div class="mb-4 p-2 text-white bg-primary-600 dark:bg-primary-800  focus:outline-primary-600 w-full rounded-lg text-center">
+        brahmsee.digital
+     </div>
+     <!-- <SidebarVeranstaltungSwitcher/> -->
 
     <!-- Sidebar Item List -->
     <SidebarItems

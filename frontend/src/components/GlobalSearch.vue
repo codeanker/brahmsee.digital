@@ -125,16 +125,16 @@ const { state: searchResults, execute: searchAPI } = useAsyncState(
           leave-to="opacity-0 scale-95"
         >
           <DialogPanel
-            class="mx-auto max-w-2xl transform divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black ring-opacity-5 transition-all"
+            class="mx-auto max-w-2xl transform divide-y divide-gray-100 dark:divide-gray-800 overflow-hidden rounded-xl bg-white dark:bg-dark-primary shadow-2xl ring-1 ring-black ring-opacity-5 transition-all"
           >
             <Combobox>
-              <div class="relative">
+              <div class="relative flex">
                 <MagnifyingGlassIcon
-                  class="pointer-events-none absolute left-4 top-3.5 h-5 w-5 text-gray-400"
+                  class="pointer-events-none absolute left-4 top-3.5 h-5 w-5 text-gray-400 block"
                   aria-hidden="true"
                 />
                 <ComboboxInput
-                  class="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm"
+                  class="h-12 w-full border-0 bg-transparent !pl-11 pr-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 focus:border-0 sm:text-sm"
                   placeholder="Suchen..."
                   @change="search($event.target.value)"
                 />
@@ -145,7 +145,7 @@ const { state: searchResults, execute: searchAPI } = useAsyncState(
               <ComboboxOptions
                 v-if="searchResults?.results.length !== 0"
                 static
-                class="max-h-80 scroll-py-2 divide-y divide-gray-100 overflow-y-auto"
+                class="max-h-80 scroll-py-2 divide-y divide-gray-100 dark:divide-gray-800 overflow-y-auto"
               >
                 <li
                   v-for="(searchIndex, index) in searchResults?.results"
@@ -167,14 +167,14 @@ const { state: searchResults, execute: searchAPI } = useAsyncState(
                         <li
                           :class="[
                             'flex cursor-default select-none items-center rounded-md px-3 py-2',
-                            active && 'bg-primary-600 text-white cursor-pointer group',
+                            active && 'bg-primary-600 cursor-pointer group',
                           ]"
                         >
                           <UsersIcon
-                            :class="['h-6 w-6 flex-none', active ? 'text-white' : 'text-gray-400']"
+                            :class="['h-6 w-6 flex-none text-gray-400 group-hover:text-white dark:text-white']"
                             aria-hidden="true"
                           />
-                          <div class="ml-3 flex-auto truncate highlight">
+                          <div class="ml-3 flex-auto truncate highlight dark:text-white group-hover:text-white">
                             <span
                               class="mr-1"
                               v-html="person?._formatted?.firstname"
@@ -224,10 +224,10 @@ const { state: searchResults, execute: searchAPI } = useAsyncState(
                         >
                           <component
                             :is="action.icon"
-                            :class="['h-6 w-6 flex-none', active ? 'text-white' : 'text-gray-400']"
+                            :class="['h-6 w-6 flex-none', active ? 'text-white' : 'text-gray-400 ']"
                             aria-hidden="true"
                           />
-                          <span class="ml-3 flex-auto truncate">{{ action.name }}</span>
+                          <span class="ml-3 flex-auto truncate dark:text-white">{{ action.name }}</span>
                           <span :class="['ml-3 flex-none text-xs font-semibold', active ? 'inline' : 'hidden']">
                             <ArrowLongRightIcon
                               class="h-5 w-5"
@@ -264,7 +264,7 @@ const { state: searchResults, execute: searchAPI } = useAsyncState(
 <style scoped lang="scss">
 :deep(.highlight) {
   em {
-    @apply text-primary-600 not-italic border-b-2 border-primary-600 group-hover:border-white group-hover:text-white;
+    @apply text-primary-600 group-hover:text-white not-italic border-b-2 border-primary-600 group-hover:border-white;
   }
 }
 </style>
