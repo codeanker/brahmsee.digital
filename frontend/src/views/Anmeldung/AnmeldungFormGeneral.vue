@@ -74,7 +74,7 @@ const { state: customFields } = useAsyncState(async () => {
   })
 }, undefined)
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 const customFieldValues = ref<Record<number, any>>({})
 
 const showBedingungen = ref(false)
@@ -144,6 +144,7 @@ const {
   >
     <div class="container mx-auto">
       <div class="text-lg font-semibold">Teilnahmebedingungen</div>
+      <!-- eslint-disable vue/no-v-html -->
       <div
         class="prose dark:prose-invert"
         v-html="unterveranstaltung?.bedingungen"
@@ -154,6 +155,7 @@ const {
       />
       <hr class="my-10" />
       <div class="text-lg font-semibold mt-10">Datenschutz</div>
+
       <div
         class="prose dark:prose-invert"
         v-html="unterveranstaltung?.veranstaltung?.datenschutz"

@@ -6,9 +6,7 @@ import { type TGridColumn } from '@codeanker/datagrid'
 
 export function useDataGridOrderBy<
   TDefaultOrderBy extends [string, 'asc' | 'desc' | undefined][],
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   TColumns extends TGridColumn<any, any>[],
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 >(columns: MaybeRef<TColumns>, defaultOrderBy: TDefaultOrderBy, router?: any, route?: any) {
   const sortableKeys = computed(() =>
     unref(columns)
@@ -40,7 +38,6 @@ export function useDataGridOrderBy<
             if (value.value === '') return false
             return true
           })
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           .map(([key, value]) => [key, value.value]) as any as [
           keyof TDefaultOrderBy | string,
           'asc' | 'desc' | undefined,

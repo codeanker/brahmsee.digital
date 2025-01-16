@@ -185,10 +185,12 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
 <template>
   <div class="h-full flex flex-col text-primary-900 dark:text-gray-200 font-medium">
     <!-- Sidebar Header -->
-     <div class="mb-4 p-2 text-white bg-primary-600 dark:bg-primary-800  focus:outline-primary-600 w-full rounded-lg text-center">
-        brahmsee.digital
-     </div>
-     <!-- <SidebarVeranstaltungSwitcher/> -->
+    <div
+      class="mb-4 p-2 text-white bg-primary-600 dark:bg-primary-800 focus:outline-primary-600 w-full rounded-lg text-center"
+    >
+      brahmsee.digital
+    </div>
+    <!-- <SidebarVeranstaltungSwitcher/> -->
 
     <!-- Sidebar Item List -->
     <SidebarItems
@@ -199,7 +201,10 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     <!-- User Management -->
     <div class="flex items-center space-x-3 pt-4 border-t border-gray-300 dark:border-gray-600">
       <div class="w-10 h-10">
-        <UserLogo :name="loggedInAccount?.person.firstname + ' ' + loggedInAccount?.person.lastname" />
+        <UserLogo
+          :name="loggedInAccount?.person.firstname + ' ' + loggedInAccount?.person.lastname"
+          :photo-id="loggedInAccount?.person.photoId"
+        />
       </div>
       <div class="grow text-sm">Moin, {{ loggedInAccount?.person.firstname }}</div>
       <button

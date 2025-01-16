@@ -9,7 +9,7 @@ import router from '@/router'
 import type { RouterInput } from '@codeanker/api'
 
 const props = defineProps<{
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   gliederung?: any
   mode: 'create' | 'update'
   onUpdate?: () => void

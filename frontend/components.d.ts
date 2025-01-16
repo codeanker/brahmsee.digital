@@ -81,6 +81,7 @@ declare module 'vue' {
     MobileMenuButton: typeof import('./src/components/UIComponents/MobileMenuButton.vue')['default']
     Notifications: typeof import('./src/components/LayoutComponents/Notifications.vue')['default']
     PasswordStrength: typeof import('./src/components/PasswordStrength.vue')['default']
+    PersonPhotoUpload: typeof import('./src/components/forms/person/PersonPhotoUpload.vue')['default']
     PublicFooter: typeof import('./src/components/LayoutComponents/PublicFooter.vue')['default']
     PublicHeader: typeof import('./src/components/LayoutComponents/PublicHeader.vue')['default']
     PublicHeaderBg: typeof import('./src/components/LayoutComponents/PublicHeaderBg.vue')['default']

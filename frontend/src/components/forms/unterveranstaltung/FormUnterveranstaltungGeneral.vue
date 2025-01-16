@@ -20,9 +20,7 @@ import { UnterveranstaltungTypeMapping, getEnumOptions } from '@codeanker/api'
 import { ValidateForm } from '@codeanker/validation'
 
 const props = defineProps<{
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   unterveranstaltung?: any
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   veranstaltungId?: any
   mode: 'create' | 'update'
   onUpdate?: () => void

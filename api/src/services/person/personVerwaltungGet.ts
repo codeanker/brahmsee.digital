@@ -48,6 +48,7 @@ export const personVerwaltungGetProcedure = defineProtectedQueryProcedure({
           },
         },
         gliederung: true,
+        photoId: true,
       },
     })
   },

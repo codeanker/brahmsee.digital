@@ -34,7 +34,7 @@ const props = withDefaults(
 )
 
 const emit = defineEmits<{
-  (event: 'update:modelValue', eventArgs: ICustomFieldData): void
+  'update:modelValue': [ICustomFieldData]
 }>()
 
 const model = computed({

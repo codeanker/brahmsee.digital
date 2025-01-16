@@ -22,6 +22,7 @@ export const personAuthenticatedGetProcedure = defineProtectedQueryProcedure({
             firstname: true,
             lastname: true,
             gliederungId: true,
+            photoId: true,
           },
         },
       },

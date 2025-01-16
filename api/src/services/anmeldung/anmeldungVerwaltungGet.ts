@@ -60,6 +60,7 @@ export const anmeldungVerwaltungGetProcedure = defineProtectedQueryProcedure({
             konfektionsgroesse: true,
             notfallkontakte: true,
             address: true,
+            photoId: true,
           },
         },
         unterveranstaltung: {

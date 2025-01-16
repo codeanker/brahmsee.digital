@@ -24,6 +24,7 @@ export const authenticationLoginProcedure = definePublicMutateProcedure({
             firstname: true,
             lastname: true,
             gliederungId: true,
+            photoId: true,
           },
         },
         status: true,

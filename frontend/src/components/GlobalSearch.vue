@@ -175,10 +175,12 @@ const { state: searchResults, execute: searchAPI } = useAsyncState(
                             aria-hidden="true"
                           />
                           <div class="ml-3 flex-auto truncate highlight dark:text-white group-hover:text-white">
+                            <!-- eslint-disable vue/no-v-html -->
                             <span
                               class="mr-1"
                               v-html="person?._formatted?.firstname"
                             />
+                            <!-- eslint-disable vue/no-v-html -->
                             <span v-html="person?._formatted?.lastname" />
                             <br />
                             <span class="text-xs">{{ formatDate(person?.birthday) }}</span>
@@ -187,6 +189,7 @@ const { state: searchResults, execute: searchAPI } = useAsyncState(
                               class="mx-1"
                               >-</span
                             >
+                            <!-- eslint-disable vue/no-v-html -->
                             <span
                               class="text-xs"
                               v-html="person?._formatted?.email"

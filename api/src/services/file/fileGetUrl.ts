@@ -12,12 +12,16 @@ const downloadUrlLifespan = 60 * 60 // 1 hour
 export const fileGetUrlActionProcedure = definePublicQueryProcedure({
   key: 'fileGetUrl',
   inputSchema: z.strictObject({
-    id: z.string().uuid(),
+    id: z.string().uuid().nullable(),
   }),
-  async handler(options) {
-    const file = await prisma.file.findUniqueOrThrow({
+  async handler({ input }) {
+    if (typeof input.id !== 'string') {
+      return null
+    }
+
+    const file = await prisma.file.findUnique({
       where: {
-        id: options.input.id,
+        id: input.id,
       },
       select: {
         id: true,
@@ -26,6 +30,10 @@ export const fileGetUrlActionProcedure = definePublicQueryProcedure({
         key: true,
       },
     })
+
+    if (file === null) {
+      return null
+    }
 
     if (file.provider === 'LOCAL') {
       if (!file.uploaded) throw new Error('File is not uploaded')
@@ -40,6 +48,7 @@ export const fileGetUrlActionProcedure = definePublicQueryProcedure({
         permissions: BlobSASPermissions.from({ read: true }),
       })
     }
+
     return null
   },
 })
