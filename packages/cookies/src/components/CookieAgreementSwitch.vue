@@ -11,14 +11,14 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  'update:modelValue': (value: boolean) => void
+  'update:modelValue': [boolean]
 }>()
 
 const model = computed<boolean>({
   get() {
     return props.modelValue ?? false
   },
-  set(value: boolean) {
+  set(value) {
     emit('update:modelValue', value)
   },
 })
