@@ -18,7 +18,7 @@ const model = computed<boolean>({
   get() {
     return props.modelValue ?? false
   },
-  set(value) {
+  set(value: boolean) {
     emit('update:modelValue', value)
   },
 })
