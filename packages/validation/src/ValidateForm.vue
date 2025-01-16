@@ -3,7 +3,7 @@ import { Form } from 'vee-validate'
 import { ref } from 'vue'
 
 const emit = defineEmits<{
-  (event: 'submit'): void
+  submit: () => void
 }>()
 
 const form = ref<InstanceType<typeof Form>>()

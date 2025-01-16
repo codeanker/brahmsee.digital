@@ -11,8 +11,6 @@ const props = withDefaults(
     id?: string
     label?: string
     name?: string
-
-    modelValue: typeof VueDatePicker.modelValue
     range?: boolean
     autoRange?: typeof VueDatePicker.autoRange
     multiCalendars?: typeof VueDatePicker.multiCalendars
@@ -63,7 +61,7 @@ const props = withDefaults(
   }
 )
 const emit = defineEmits<{
-  (event: 'update:modelValue', eventArgs: boolean | undefined): void
+  'update:modelValue': (eventArgs: boolean | undefined) => void
 }>()
 
 const { model, errorMessage } = useValidationModel(props, emit)

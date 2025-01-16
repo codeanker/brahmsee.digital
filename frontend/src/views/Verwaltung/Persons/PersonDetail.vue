@@ -98,10 +98,10 @@ if (loggedInAccount.value?.role === 'ADMIN') {
         :firstname="person?.firstname"
         :lastname="person?.lastname"
         :edit="true"
-        :personId="person.id"
-        :photoId="person.photoId"
+        :person-id="person.id"
+        :photo-id="person.photoId"
         size="xl"
-        @triggerRefresh="refetchPerson"
+        @trigger-refresh="refetchPerson"
       />
     </div>
     <div class="mb-1">

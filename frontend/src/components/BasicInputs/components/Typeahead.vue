@@ -4,7 +4,6 @@ import { computed, ref, watch } from 'vue'
 
 import { debounce } from '@/helpers/debounce'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type QueryResult = any[] | { data: any[] }
 
 const props = withDefaults(
@@ -13,10 +12,8 @@ const props = withDefaults(
 
     modelValue: object | string | null | undefined
     /** Formatiert das ausgewählte Query-Ergebnis zu einem String, der in das Input geschrieben wird */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     inputFormatter?: (value: any) => string
     /** Formatiert die Query-Ergebnisse zu Strings, die in der Auswahl angezeigt werden */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     resultFormatter?: (value: any) => string
     debounceTime?: number
     /** Flag, die dafür sorgt, dass sofort bei Seitenaufruf schonmal gesucht wird */
@@ -38,7 +35,7 @@ const props = withDefaults(
   }
 )
 const emit = defineEmits<{
-  (event: 'update:modelValue', eventArgs: string | object | null | undefined): void
+  'update:modelValue': (eventArgs: string | object | null | undefined) => void
 }>()
 
 // Bei Seitenaufrufs

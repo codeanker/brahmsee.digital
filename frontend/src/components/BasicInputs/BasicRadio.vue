@@ -14,7 +14,7 @@ const props = defineProps<
   }
 >()
 const emit = defineEmits<{
-  (event: 'update:modelValue', eventArgs: string | number | boolean | undefined): void
+  'update:modelValue': (eventArgs: string | number | boolean | undefined) => void
 }>()
 const { model, errorMessage } = useValidationModel(props, emit)
 </script>

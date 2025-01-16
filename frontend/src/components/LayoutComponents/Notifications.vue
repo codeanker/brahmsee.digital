@@ -7,9 +7,7 @@ const props = defineProps<{
   duration: number
 }>()
 
-const emit = defineEmits<{
-  (event: 'close'): void
-}>()
+const emit = defineEmits<{ close: () => void }>()
 
 const show = ref(false)
 

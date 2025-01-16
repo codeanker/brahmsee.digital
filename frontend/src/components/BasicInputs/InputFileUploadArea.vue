@@ -1,38 +1,5 @@
-<template>
-  <div ref="dropZone">
-    <div
-      class="border-primary text-primary flex cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed p-6 transition-colors"
-      :class="{
-        [InputFileUploadAreaConf.notDraggedOver]: !isDraggedOver,
-        [InputFileUploadAreaConf.draggedOver]: isDraggedOver,
-      }"
-      @click="fileInput?.click()"
-    >
-      <div>
-        <slot>
-          <div class="flex items-center space-x-4">
-            <i class="fad fa-upload fa-2x flex-shrink-0" />
-            <h5 class="mb-0">{{ uploadText ?? 'Datei hier hin ziehen oder klicken.' }}</h5>
-          </div>
-        </slot>
-      </div>
-      <input
-        id="hidden-input"
-        ref="fileInput"
-        type="file"
-        :multiple="multiple"
-        :accept="accept"
-        :disabled="uploadPending || disabled"
-        class="hidden"
-        @change="uploadFileInput"
-        @click.stop
-      />
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts" generic="Multiple extends boolean">
-import { computed, inject, onMounted, ref, shallowRef } from 'vue'
+import { computed, onMounted, ref, shallowRef } from 'vue'
 
 import { formatBytes } from '@codeanker/helpers'
 
@@ -153,3 +120,36 @@ async function handleUpload(uploadFiles, multiple = false, maxFileSize) {
   }
 }
 </script>
+
+<template>
+  <div ref="dropZone">
+    <div
+      class="border-primary text-primary flex cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed p-6 transition-colors"
+      :class="{
+        [InputFileUploadAreaConf.notDraggedOver]: !isDraggedOver,
+        [InputFileUploadAreaConf.draggedOver]: isDraggedOver,
+      }"
+      @click="fileInput?.click()"
+    >
+      <div>
+        <slot>
+          <div class="flex items-center space-x-4">
+            <i class="fad fa-upload fa-2x flex-shrink-0" />
+            <h5 class="mb-0">{{ uploadText ?? 'Datei hier hin ziehen oder klicken.' }}</h5>
+          </div>
+        </slot>
+      </div>
+      <input
+        id="hidden-input"
+        ref="fileInput"
+        type="file"
+        :multiple="multiple"
+        :accept="accept"
+        :disabled="uploadPending || disabled"
+        class="hidden"
+        @change="uploadFileInput"
+        @click.stop
+      />
+    </div>
+  </div>
+</template>

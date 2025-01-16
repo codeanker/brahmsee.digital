@@ -6,7 +6,7 @@ import useValidationModel from '@/composables/useValidationModel'
 
 const props = defineProps<BasicInputDefaultProps<boolean>>()
 const emit = defineEmits<{
-  (event: 'update:modelValue', eventArgs: boolean | undefined): void
+  'update:modelValue': (eventArgs: boolean | undefined) => void
 }>()
 const { model, errorMessage } = useValidationModel(props, emit)
 </script>

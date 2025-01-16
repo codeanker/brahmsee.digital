@@ -17,6 +17,7 @@ defineProps<{
     <div class="font-medium flex items-center">
       {{ info.title }}
     </div>
+    <!-- eslint-disable vue/no-v-html -->
     <div
       class="flex items-center"
       :class="{ 'text-xs': info.small }"

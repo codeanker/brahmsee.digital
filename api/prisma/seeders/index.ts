@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { PrismaClient } from '@prisma/client'
 import dayjs from 'dayjs'
 

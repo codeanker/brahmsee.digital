@@ -63,7 +63,6 @@ const {
       })
 
       router.back()
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error.shape) {
         validationErrors.value = JSON.parse(error.shape?.message)

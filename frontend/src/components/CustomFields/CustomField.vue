@@ -16,13 +16,11 @@ import { type CustomField } from '@codeanker/api'
 
 const props = defineProps<{
   field: CustomField
-  /* eslint-disable @typescript-eslint/no-explicit-any */
   modelValue: any
 }>()
 
 const emit = defineEmits<{
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  (event: 'update:modelValue', eventArgs: any): void
+  'update:modelValue': (value: any) => void
 }>()
 
 const model = computed({

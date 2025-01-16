@@ -24,9 +24,9 @@ const props = withDefaults(
 )
 
 const emit = defineEmits<{
-  (event: 'update:modelValue', eventArgs: string | undefined): void
-  (event: 'focus'): void
-  (event: 'blur'): void
+  'update:modelValue': (eventArgs: string | undefined) => void
+  focus: () => void
+  blur: () => void
 }>()
 const { model, errorMessage } = props.disableValidation
   ? {
@@ -35,7 +35,6 @@ const { model, errorMessage } = props.disableValidation
     }
   : useValidationModel(props, emit)
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let intl: any = null
 const phone = ref()
 onMounted(async () => {

@@ -17,7 +17,7 @@ const props = withDefaults(
   {}
 )
 const emit = defineEmits<{
-  (event: 'update:modelValue', eventArgs: INotfallKontakte): void
+  'update:modelValue': (eventArgs: INotfallKontakte) => void
 }>()
 
 const model = computed({

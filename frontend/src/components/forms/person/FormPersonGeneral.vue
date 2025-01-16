@@ -47,8 +47,8 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (event: 'submit', data: FormPersonGeneralSubmit): void
-  (event: 'showTerms'): void
+  submit: (data: FormPersonGeneralSubmit) => void
+  showTerms: () => void
 }>()
 
 async function queryGliederungen(searchTerm: string) {

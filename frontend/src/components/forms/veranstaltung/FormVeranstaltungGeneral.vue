@@ -14,7 +14,6 @@ import type { RouterInput } from '@codeanker/api'
 import { ValidateForm } from '@codeanker/validation'
 
 const props = defineProps<{
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   veranstaltung?: any
   mode: 'create' | 'update'
   onUpdate?: () => void

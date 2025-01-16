@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { inject, ref } from 'vue'
+import { ref } from 'vue'
 
 import InputFileUploadArea from '../BasicInputs/InputFileUploadArea.vue'
 import Button from './Button.vue'
@@ -12,6 +12,10 @@ import { handleUpload } from '@/helpers/handleUpload'
 const props = defineProps<{
   personId: number
   showRemove?: boolean
+}>()
+
+const emit = defineEmits<{
+  triggerRefresh: boolean
 }>()
 
 const modal = ref<InstanceType<typeof Modal>>()
@@ -63,10 +67,6 @@ async function remove() {
   uploadPending.value = false
 }
 
-const emit = defineEmits<{
-  triggerRefresh: boolean
-}>()
-
 defineExpose({ open, close })
 </script>
 
@@ -103,10 +103,10 @@ defineExpose({ open, close })
         </div>
         <div class="mt-6 grid gap-4">
           <Button
+            v-if="showRemove"
             type="button"
             color="danger"
             class="w-full"
-            v-if="showRemove"
             @click="remove"
           >
             Bild entfernen

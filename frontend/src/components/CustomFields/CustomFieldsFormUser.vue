@@ -20,7 +20,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (event: 'update:success'): void
+  'update:success': () => void
 }>()
 
 const bindings = toRef(
@@ -30,7 +30,6 @@ const bindings = toRef(
           acc[element.field.id] = element.value
           return acc
         },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         {} as Record<number, any>
       )
     : {}

@@ -16,16 +16,15 @@ const props = withDefaults(
   }
 )
 
+const emit = defineEmits<{
+  close: () => void
+}>()
 const visible = ref(false)
 const context = ref()
 
 onUnmounted(() => {
   toggleHideOverflow(false)
 })
-
-const emit = defineEmits<{
-  (event: 'close'): void
-}>()
 
 const toggleHideOverflow = (hideOverflow) => {
   document.body.style.overflow = hideOverflow ? 'hidden' : ''

@@ -28,6 +28,10 @@ const props = withDefaults(
   }
 )
 
+const emit = defineEmits<{
+  triggerRefresh: void
+}>()
+
 const getName = computed(() => {
   let name
   if (props.name) {
@@ -64,10 +68,6 @@ watch(
     loadPhotoUrl()
   }
 )
-
-const emit = defineEmits<{
-  triggerRefresh: void
-}>()
 
 const refAvatarEditModal = ref<InstanceType<typeof AvatarEditModal>>()
 
