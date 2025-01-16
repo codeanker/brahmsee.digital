@@ -12,6 +12,8 @@ const props = withDefaults(
     label?: string
     name?: string
     range?: boolean
+    //eslint-disable-next-line
+    modelValue: typeof VueDatePicker.modelValue
     autoRange?: typeof VueDatePicker.autoRange
     multiCalendars?: typeof VueDatePicker.multiCalendars
     monthPicker?: boolean
@@ -61,7 +63,7 @@ const props = withDefaults(
   }
 )
 const emit = defineEmits<{
-  'update:modelValue': (eventArgs: boolean | undefined) => void
+  'update:modelValue': [boolean | undefined]
 }>()
 
 const { model, errorMessage } = useValidationModel(props, emit)

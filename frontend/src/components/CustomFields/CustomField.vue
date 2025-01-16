@@ -20,7 +20,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  'update:modelValue': (value: any) => void
+  'update:modelValue': [any]
 }>()
 
 const model = computed({

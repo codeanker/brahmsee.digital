@@ -22,7 +22,7 @@ const props = withDefaults(
 )
 
 const emit = defineEmits<{
-  changed: () => void
+  changed: []
 }>()
 
 const data = ref<ITShirtBestellung>({

@@ -14,8 +14,8 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  'update:modelValue': (value: Partial<TKontaktSchema>) => void
-  remove: () => void
+  'update:modelValue': [Partial<TKontaktSchema>]
+  remove: []
 }>()
 
 const kontakt = ref(props.modelValue)

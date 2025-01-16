@@ -35,7 +35,7 @@ const props = withDefaults(
   }
 )
 const emit = defineEmits<{
-  'update:modelValue': (eventArgs: string | object | null | undefined) => void
+  'update:modelValue': [string | object | null | undefined]
 }>()
 
 // Bei Seitenaufrufs

@@ -20,7 +20,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  'update:success': () => void
+  'update:success': []
 }>()
 
 const bindings = toRef(

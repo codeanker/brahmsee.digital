@@ -29,7 +29,7 @@ const props = withDefaults(
 )
 
 const emit = defineEmits<{
-  triggerRefresh: void
+  triggerRefresh: []
 }>()
 
 const getName = computed(() => {

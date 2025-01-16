@@ -19,7 +19,7 @@ const props = withDefaults(
 )
 
 const emit = defineEmits<{
-  changed: () => void
+  changed: []
 }>()
 
 const currentStatus = ref(props.status)

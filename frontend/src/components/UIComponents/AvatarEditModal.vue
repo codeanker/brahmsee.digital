@@ -15,7 +15,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  triggerRefresh: boolean
+  triggerRefresh: []
 }>()
 
 const modal = ref<InstanceType<typeof Modal>>()

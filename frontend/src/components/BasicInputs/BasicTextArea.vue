@@ -17,7 +17,7 @@ const props = withDefaults(
   }
 )
 const emit = defineEmits<{
-  'update:modelValue': (eventArgs: string) => void
+  'update:modelValue': [string]
 }>()
 const { model, errorMessage } = useValidationModel(props, emit)
 </script>

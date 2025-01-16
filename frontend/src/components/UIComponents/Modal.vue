@@ -17,7 +17,7 @@ const props = withDefaults(
 )
 
 const emit = defineEmits<{
-  close: () => void
+  close: []
 }>()
 const visible = ref(false)
 const context = ref()

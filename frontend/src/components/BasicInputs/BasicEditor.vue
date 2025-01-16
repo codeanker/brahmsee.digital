@@ -28,9 +28,9 @@ const props = withDefaults(
   }
 )
 const emit = defineEmits<{
-  'update:modelValue': (eventArgs: string | undefined) => void
-  focus: () => void
-  blur: () => void
+  'update:modelValue': [string | undefined]
+  focus: []
+  blur: []
 }>()
 const { model, errorMessage } = props.disableValidation
   ? {

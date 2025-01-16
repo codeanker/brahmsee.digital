@@ -18,7 +18,7 @@ const props = withDefaults(
   {}
 )
 const emit = defineEmits<{
-  'update:modelValue': (eventArgs: ITShirtBestellung) => void
+  'update:modelValue': [ITShirtBestellung]
 }>()
 
 const model = computed({

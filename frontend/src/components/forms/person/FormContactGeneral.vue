@@ -16,7 +16,7 @@ const props = withDefaults(
   {}
 )
 const emit = defineEmits<{
-  'update:modelValue': (eventArgs: IContact) => void
+  'update:modelValue': [IContact]
 }>()
 
 const model = computed({

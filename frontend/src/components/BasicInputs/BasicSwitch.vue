@@ -8,7 +8,7 @@ import { type BasicInputDefaultProps } from './defaultProps'
 
 const props = defineProps<BasicInputDefaultProps<boolean>>()
 const emit = defineEmits<{
-  'update:ModelValue': (eventArgs: boolean) => void
+  'update:modelValue': [boolean]
 }>()
 const { model, errorMessage } = useValidationModel(props, emit)
 </script>
