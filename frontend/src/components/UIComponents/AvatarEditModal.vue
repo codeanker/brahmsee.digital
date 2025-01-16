@@ -3,6 +3,7 @@ import { inject, ref } from 'vue'
 
 import InputFileUploadArea from '../BasicInputs/InputFileUploadArea.vue'
 import Button from './Button.vue'
+import Loading from '../UIComponents/Loading.vue'
 
 import Modal from './Modal.vue'
 import { apiClient } from '@/api'
@@ -10,27 +11,26 @@ import { handleUpload } from '@/helpers/handleUpload'
 
 const props = defineProps<{
   personId: number
+  showRemove?: boolean
 }>()
 
 const modal = ref<InstanceType<typeof Modal>>()
 
 const open = () => {
-  console.log('open')
   if (modal.value) {
     modal.value.show()
   }
 }
 
 const close = () => {
-  console.log('close')
   if (modal.value) {
     modal.value.hide()
+    emit('triggerRefresh')
   }
 }
 
 const uploadPending = ref(false)
 async function upload(toUploadFile: File) {
-  console.log('upload')
   uploadPending.value = true
   try {
     const res = await handleUpload(toUploadFile)
@@ -48,7 +48,6 @@ async function upload(toUploadFile: File) {
 }
 
 async function remove() {
-  console.log('remove')
   uploadPending.value = true
   try {
     await apiClient.person.verwaltungPatch.mutate({
@@ -64,47 +63,56 @@ async function remove() {
   uploadPending.value = false
 }
 
+const emit = defineEmits<{
+  triggerRefresh: boolean
+}>()
+
 defineExpose({ open, close })
 </script>
 
 <template>
-  <Modal ref="modal">
-    <template #content>
-      <div class="mb-6 flex justify-between">
-        <h4 class="mb-0">Bild auswählen</h4>
-        <button
-          type="button"
-          class="btn btn-link -mr-3 -mt-1 px-3 py-1"
-          @click="close"
-        >
-          <i class="fas fa-times" />
-        </button>
-      </div>
-      <div class="flex w-full justify-center">
-        <!-- <FontAwesomeIcon
-          v-if="uploadPending"
-          :icon="faSpinner"
-          size="2x"
-          spin
-        /> -->
-        <InputFileUploadArea
-          accept="image/*"
-          :multiple="false"
-          upload-text="Bild hier hin ziehen oder klicken."
-          class="w-full"
-          @uploaded="upload"
-        />
-      </div>
-      <div class="mt-6 grid gap-4">
-        <Button
-          type="button"
-          color="danger"
-          class="w-full"
-          @click="remove"
-        >
-          Bild entfernen
-        </Button>
-      </div>
-    </template>
-  </Modal>
+  <Teleport to="body">
+    <Modal ref="modal">
+      <template #content>
+        <div class="mb-6 flex justify-between">
+          <h4 class="mb-0">Bild auswählen</h4>
+          <button
+            type="button"
+            class="btn btn-link -mr-3 -mt-1 px-3 py-1"
+            @click="close"
+          >
+            <i class="fas fa-times" />
+          </button>
+        </div>
+        <div class="flex w-full justify-center">
+          <div
+            v-if="uploadPending"
+            class="flex flex-col text-justify-center items-center"
+          >
+            <Loading size="md" />
+            dein Bild wird hochgeladen
+          </div>
+          <InputFileUploadArea
+            v-else
+            accept="image/*"
+            :multiple="false"
+            upload-text="Bild hier hin ziehen oder klicken."
+            class="w-full"
+            @uploaded="upload"
+          />
+        </div>
+        <div class="mt-6 grid gap-4">
+          <Button
+            type="button"
+            color="danger"
+            class="w-full"
+            v-if="showRemove"
+            @click="remove"
+          >
+            Bild entfernen
+          </Button>
+        </div>
+      </template>
+    </Modal>
+  </Teleport>
 </template>

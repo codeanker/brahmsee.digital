@@ -4,6 +4,8 @@ import AvatarEditModal from './AvatarEditModal.vue'
 import { ref } from 'vue'
 import { useAsyncState } from '@vueuse/core'
 import { apiClient } from '@/api'
+import { PencilSquareIcon } from '@heroicons/vue/24/outline'
+import { watch } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -42,7 +44,7 @@ const getName = computed(() => {
   }
 })
 
-const { state: photoUrl } = useAsyncState(
+const { state: photoUrl, execute: loadPhotoUrl } = useAsyncState(
   async () => {
     if (props.photoId) {
       return apiClient.file.fileGetUrl.query({
@@ -52,14 +54,24 @@ const { state: photoUrl } = useAsyncState(
   },
   null,
   {
-    immediate: !!props.photoId,
+    immediate: !!props.personId,
   }
 )
+
+watch(
+  () => props.photoId,
+  () => {
+    loadPhotoUrl()
+  }
+)
+
+const emit = defineEmits<{
+  triggerRefresh: void
+}>()
 
 const refAvatarEditModal = ref<InstanceType<typeof AvatarEditModal>>()
 
 const openAvatarEditModal = () => {
-  console.log('modal', refAvatarEditModal)
   refAvatarEditModal.value?.open()
 }
 </script>
@@ -82,11 +94,11 @@ const openAvatarEditModal = () => {
       <div v-else>{{ getName }}</div>
       <button
         v-if="edit"
-        class="absolute bottom-0 right-0 h-full w-full rounded-full bg-white bg-opacity-0 text-white opacity-0 transition-all duration-200 ease-in-out hover:bg-opacity-60 hover:opacity-100"
+        class="absolute bottom-0 right-0 h-full w-full rounded-full bg-primary-200 text-white opacity-0 transition-all duration-200 ease-in-out hover:opacity-100"
         type="button"
         @click="openAvatarEditModal"
       >
-        <i class="fad fa-pen text-primary" />
+        <PencilSquareIcon class="mx-auto h-10 text-primary-600" />
       </button>
     </div>
     <div
@@ -115,5 +127,7 @@ const openAvatarEditModal = () => {
     v-if="props.personId"
     ref="refAvatarEditModal"
     :person-id="props.personId"
+    :show-remove="!!photoUrl"
+    @trigger-refresh="emit('triggerRefresh')"
   />
 </template>

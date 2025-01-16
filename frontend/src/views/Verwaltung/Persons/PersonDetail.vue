@@ -101,6 +101,7 @@ if (loggedInAccount.value?.role === 'ADMIN') {
         :personId="person.id"
         :photoId="person.photoId"
         size="xl"
+        @triggerRefresh="refetchPerson"
       />
     </div>
     <div class="mb-1">
