@@ -24,9 +24,6 @@ spec:
           env:
             - name: NODE_ENV
               value: "{{ .Values.global.env }}"
-            - name: CLIENT_URL
-              value: "https://{{ .Values.global.ingress.hosts | first }}"
-
             # CLIENT_URL
             - name: CLIENT_URL
               value: "https://{{ .Values.global.ingress.hosts | first }}"
