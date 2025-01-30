@@ -68,6 +68,7 @@ spec:
               value: "{{ .Values.app.fileDefaultProvider }}"
             - name: FILE_PROVIDER_LOCAL_PATH
               value: "{{ .Values.app.fileProviders.LOCAL.path }}"
+{{- if eq .Values.app.fileDefaultProvider "AZURE" }}
             - name: FILE_PROVIDER_AZURE_ACCOUNT
               valueFrom:
                 secretKeyRef:
@@ -88,6 +89,7 @@ spec:
                 secretKeyRef:
                   name: azure
                   key: folder
+{{- end }}
             # Postgres
             - name: TOMTOM_APIKEY
               valueFrom:
@@ -138,6 +140,6 @@ spec:
   ports:
     - name: http
       port: 80
-      targetPort: 80
+      targetPort: 3030
   selector:
     app: {{ .Chart.Name }}-app
