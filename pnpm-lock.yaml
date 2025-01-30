@@ -102,11 +102,11 @@ importers:
         specifier: ^12.0.1
         version: 12.0.2
       '@prisma/client':
-        specifier: ^5.19.1
-        version: 5.22.0(prisma@5.22.0)
+        specifier: ^6.3.0
+        version: 6.3.0(prisma@5.22.0)(typescript@5.7.2)
       '@prisma/extension-accelerate':
         specifier: ^1.1.0
-        version: 1.2.1(@prisma/client@5.22.0(prisma@5.22.0))
+        version: 1.2.1(@prisma/client@6.3.0(prisma@5.22.0)(typescript@5.7.2))
       '@sendgrid/mail':
         specifier: ^8.1.0
         version: 8.1.4
@@ -1242,13 +1242,16 @@ packages:
   '@popperjs/core@2.11.8':
     resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
 
-  '@prisma/client@5.22.0':
-    resolution: {integrity: sha512-M0SVXfyHnQREBKxCgyo7sffrKttwE6R8PMq330MIUF0pTwjUhLbW84pFDlf06B27XyCR++VtjugEnIHdr07SVA==}
-    engines: {node: '>=16.13'}
+  '@prisma/client@6.3.0':
+    resolution: {integrity: sha512-BY3Fi28PUSk447Bpv22LhZp4HgNPo7NsEN+EteM1CLDnLjig5863jpW+3c3HHLFmml+nB/eJv1CjSriFZ8z7Cg==}
+    engines: {node: '>=18.18'}
     peerDependencies:
       prisma: '*'
+      typescript: '>=5.1.0'
     peerDependenciesMeta:
       prisma:
+        optional: true
+      typescript:
         optional: true
 
   '@prisma/debug@5.22.0':
@@ -2883,6 +2886,7 @@ packages:
 
   lodash.isequal@4.5.0:
     resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==}
+    deprecated: This package is deprecated. Use require('node:util').isDeepStrictEqual instead.
 
   lodash.isfunction@3.0.9:
     resolution: {integrity: sha512-AirXNj15uRIMMPihnkInB4i3NHeb4iBtNg9WRWuK2o31S+ePwwNmDPaTL3o7dTJ+VXNZim7rFs4rxN4YU1oUJw==}
@@ -4762,9 +4766,10 @@ snapshots:
 
   '@popperjs/core@2.11.8': {}
 
-  '@prisma/client@5.22.0(prisma@5.22.0)':
+  '@prisma/client@6.3.0(prisma@5.22.0)(typescript@5.7.2)':
     optionalDependencies:
       prisma: 5.22.0
+      typescript: 5.7.2
 
   '@prisma/debug@5.22.0': {}
 
@@ -4777,9 +4782,9 @@ snapshots:
       '@prisma/fetch-engine': 5.22.0
       '@prisma/get-platform': 5.22.0
 
-  '@prisma/extension-accelerate@1.2.1(@prisma/client@5.22.0(prisma@5.22.0))':
+  '@prisma/extension-accelerate@1.2.1(@prisma/client@6.3.0(prisma@5.22.0)(typescript@5.7.2))':
     dependencies:
-      '@prisma/client': 5.22.0(prisma@5.22.0)
+      '@prisma/client': 6.3.0(prisma@5.22.0)(typescript@5.7.2)
 
   '@prisma/fetch-engine@5.22.0':
     dependencies:
