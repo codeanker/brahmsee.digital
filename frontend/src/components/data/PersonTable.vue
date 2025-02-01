@@ -12,6 +12,7 @@ import GenericDataGrid, {
 } from '../GenericDataGrid.vue'
 import Badge from '../UIComponents/Badge.vue'
 import { apiClient } from '@/api'
+import { defineAsyncComponent } from 'vue'
 
 export type TData = RouterOutput['person']['list'][number]
 export type TFilter = RouterInput['person']['list']['filter']
@@ -24,6 +25,20 @@ export type FetchPersonPageFunction = FetchPageFunction<TData, TFilter, TOrderBy
 const router = useRouter()
 
 const columns: TGridColumn<TData, TFilter>[] = [
+  {
+    field: 'photoId',
+    title: ' ',
+    size: '78px',
+    cell: defineAsyncComponent(() => import('@/components/UIComponents/UserLogo.vue')),
+    cellProps: (formattedValue, row) => {
+      return {
+        firstname: row.content.firstname,
+        lastname: row.content.lastname,
+        photoId: row.content.photoId,
+        cssClasses: 'h-10 w-10',
+      }
+    },
+  },
   {
     field: 'firstname',
     title: 'Name',
@@ -49,7 +64,7 @@ const columns: TGridColumn<TData, TFilter>[] = [
     sortable: true,
   },
   {
-    field: 'person.account.activatedAt',
+    field: 'account.activatedAt',
     title: 'Account',
     cell: Badge,
     preset: 'date',
