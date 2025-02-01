@@ -21,6 +21,7 @@ import Tabs from '@/components/UIComponents/Tabs.vue'
 import UnterveranstaltungenTable from '@/components/UnterveranstaltungenTable.vue'
 import { useRouteTitle } from '@/composables/useRouteTitle'
 import { formatDate } from '@codeanker/helpers'
+import { PlusIcon } from '@heroicons/vue/24/solid'
 
 const { setTitle } = useRouteTitle()
 
@@ -189,12 +190,22 @@ const files = [
       </div>
     </Tab>
     <Tab>
-      <div class="my-10">
-        <div class="text-lg font-semibold">Unterveranstaltungen</div>
-        <p class="max-w-2xl text-sm text-gray-500">
-          Zu dieser Veranstaltung wurden die folgenden Unterveranstaltungen erstellt.
-        </p>
+      <div class="my-10 flex items-center justify-between">
+        <div>
+          <div class="text-lg font-semibold">Unterveranstaltungen</div>
+          <p class="max-w-2xl text-sm text-gray-500">
+            Zu dieser Veranstaltung wurden die folgenden Unterveranstaltungen erstellt.
+          </p>
+        </div>
+        <RouterLink
+          class="text-primary-500 flex items-center"
+          :to="{ name: 'UnterveranstaltungCreate' }"
+        >
+          <PlusIcon class="h-5 w-5 mr-1" />
+          <span>Ausschreibung erstellen</span>
+        </RouterLink>
       </div>
+
       <UnterveranstaltungenTable
         v-if="veranstaltung?.id"
         :veranstaltung-id="veranstaltung?.id"
