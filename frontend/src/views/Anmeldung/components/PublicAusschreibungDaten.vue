@@ -33,13 +33,13 @@ const keyInfos = computed<KeyInfo[]>(() => {
   ]
 })
 
-const anmeldungen = unterveranstaltung?.value?._count.Anmeldung ?? 0
-const freiePlaetze = (unterveranstaltung?.value?.maxTeilnehmende ?? 0) - anmeldungen
-
 const stats = computed(() => {
+  const anmeldungen = unterveranstaltung?.value?._count.Anmeldung ?? 0
+  const freiePlaetze = (unterveranstaltung?.value?.maxTeilnehmende ?? 0) - anmeldungen
+
   const stats: { label: string; value: number }[] = []
   if (freiePlaetze > 0) stats.push({ label: 'Freie Plätze', value: freiePlaetze })
-  if (anmeldungen) stats.push({ label: 'Anmeldungen', value: anmeldungen })
+  if (anmeldungen > 0) stats.push({ label: 'Anmeldungen', value: anmeldungen })
   return stats
 })
 </script>
