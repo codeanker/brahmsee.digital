@@ -13,6 +13,7 @@ import router from '@/router'
 import { type RouterInput, type RouterOutput } from '@codeanker/api'
 import { type TGridColumn } from '@codeanker/datagrid'
 import { dayjs } from '@codeanker/helpers'
+import { defineAsyncComponent } from 'vue'
 
 const { setTitle } = useRouteTitle()
 setTitle('Personen')
@@ -25,6 +26,21 @@ type TFilter = RouterInput['person']['list']['filter']
 type TOrderBy = RouterInput['person']['list']['orderBy']
 
 const columns: TGridColumn<TData, TFilter>[] = [
+  {
+    field: 'photoId',
+    title: ' ',
+    size: '78px',
+    cell: defineAsyncComponent(() => import('@/components/UIComponents/UserLogo.vue')),
+    cellProps: (formattedValue, row) => {
+      return {
+        firstname: row.content.firstname,
+        lastname: row.content.lastname,
+        photoId: row.content.photoId,
+        personId: row.content.id,
+        cssClasses: 'h-10 w-10',
+      }
+    },
+  },
   {
     field: 'firstname',
     title: 'Name',
@@ -50,7 +66,7 @@ const columns: TGridColumn<TData, TFilter>[] = [
     sortable: true,
   },
   {
-    field: 'person.account.activatedAt',
+    field: 'account.activatedAt',
     title: 'Account',
     cell: Badge,
     preset: 'date',

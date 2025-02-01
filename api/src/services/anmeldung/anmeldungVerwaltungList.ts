@@ -57,6 +57,7 @@ export const anmeldungVerwaltungListProcedure = defineProtectedQueryProcedure({
             id: true,
             firstname: true,
             lastname: true,
+            photoId: true,
             birthday: true,
             konfektionsgroesse: true,
             gliederung: {

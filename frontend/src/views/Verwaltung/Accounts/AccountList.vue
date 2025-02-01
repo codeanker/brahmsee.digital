@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { FingerPrintIcon, PlusIcon, UserIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
-import { computed, ref } from 'vue'
+import { computed, defineAsyncComponent, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { apiClient } from '@/api'
@@ -46,6 +46,21 @@ type TFilter = RouterInput['account']['verwaltungList']['filter']
 type TOrderBy = RouterInput['account']['verwaltungList']['orderBy']
 
 const columns: TGridColumn<TData, TFilter>[] = [
+  {
+    field: 'person.photoId',
+    title: ' ',
+    size: '78px',
+    cell: defineAsyncComponent(() => import('@/components/UIComponents/UserLogo.vue')),
+    cellProps: (formattedValue, row) => {
+      return {
+        firstname: row.content.person.firstname,
+        lastname: row.content.person.lastname,
+        photoId: row.content.person.photoId,
+        personId: row.content.personId,
+        cssClasses: 'h-10 w-10',
+      }
+    },
+  },
   {
     field: 'person.firstname',
     title: 'Name',
