@@ -187,7 +187,6 @@ function changeTab(index: number) {
       <Tab>
         <div class="my-8 flex justify-between">
           <div>
-            <h5 class="mb-0">Account Anfragen</h5>
             <p class="max-w-2xl text-sm">
               Hier findest Du alle Personen sich registriert haben und noch bestätigt werden müssen.
             </p>
