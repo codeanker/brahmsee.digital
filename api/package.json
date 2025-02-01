@@ -31,7 +31,7 @@
     "@codeanker/authentication": "workspace:*",
     "@codeanker/datagrid": "file:../vendor/codeanker-datagrid-2.7.1-trimmed.tgz",
     "@codeanker/helpers": "workspace:*",
-    "@faker-js/faker": "^8.4.1",
+    "@faker-js/faker": "^9.4.0",
     "@koa/cors": "^5.0.0",
     "@koa/router": "^12.0.1",
     "@prisma/client": "^6.3.0",
@@ -59,7 +59,7 @@
     "mjml": "^4.15.3",
     "prom-client": "^15.0.0",
     "trpc-koa-adapter": "^1.1.3",
-    "uuid": "^9.0.1",
+    "uuid": "^11.0.5",
     "winston": "^3.11.0",
     "xlsx": "^0.18.5",
     "zod": "^3.22.4"
