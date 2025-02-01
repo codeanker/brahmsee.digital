@@ -1,20 +1,26 @@
-import { Role } from '@prisma/client'
+import { Prisma, Role } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma.js'
 import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
+import { getPersonProtectionFilter } from './personList.js'
 
-export const personVerwaltungGetProcedure = defineProtectedQueryProcedure({
-  key: 'verwaltungGet',
-  roleIds: [Role.ADMIN],
+export const personGetProcedure = defineProtectedQueryProcedure({
+  key: 'get',
+  roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN, Role.USER],
   inputSchema: z.strictObject({
     id: z.number().int(),
   }),
-  async handler(options) {
-    return await prisma.person.findUniqueOrThrow({
-      where: {
-        id: options.input.id,
-      },
+  handler: ({ ctx, input }) => {
+    const where: Prisma.PersonWhereUniqueInput = {
+      ...getPersonProtectionFilter(ctx),
+      id: input.id,
+    }
+
+    console.log(where)
+
+    return prisma.person.findUniqueOrThrow({
+      where,
       select: {
         id: true,
         firstname: true,

@@ -28,12 +28,7 @@ const {
   isLoading: isLoading,
 } = useAsyncState(async () => {
   const personId = route.params.personId as string
-  let result
-  if (loggedInAccount.value?.role === 'ADMIN') {
-    result = await apiClient.person.verwaltungGet.query({ id: parseInt(personId) })
-  } else {
-    result = await apiClient.person.gliederungGet.query({ id: parseInt(personId) })
-  }
+  const result = await apiClient.person.get.query({ id: parseInt(personId) })
   setTitle(`Person: ${result.firstname} ${result.lastname}`)
   return result
 }, null)

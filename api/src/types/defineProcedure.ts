@@ -2,6 +2,7 @@ import type { Role } from '@prisma/client'
 import type { z } from 'zod'
 
 import { protectedProcedure, publicProcedure, router, type AuthenticatedContext } from '../trpc.js'
+import type { Context } from '../context.js'
 
 export type MaybePromise<TType> = Promise<TType> | TType
 
@@ -15,10 +16,7 @@ export function defineProtectedQueryProcedure<
   /** Das Schema der Eingabedaten */
   inputSchema: TInputSchema
   /** Der Handler der die Daten verarbeitet */
-  handler: (options: {
-    ctx: AuthenticatedContext['ctx']
-    input: z.infer<TInputSchema>
-  }) => MaybePromise<TProcedureResult>
+  handler: (options: { ctx: AuthenticatedContext; input: z.infer<TInputSchema> }) => MaybePromise<TProcedureResult>
   /** roles */
   roleIds: Role[]
 }) {
@@ -42,10 +40,7 @@ export function defineProtectedMutateProcedure<
   /** Das Schema der Eingabedaten */
   inputSchema: TInputSchema
   /** Der Handler der die Daten verarbeitet */
-  handler: (options: {
-    ctx: AuthenticatedContext['ctx']
-    input: z.infer<TInputSchema>
-  }) => MaybePromise<TProcedureResult>
+  handler: (options: { ctx: AuthenticatedContext; input: z.infer<TInputSchema> }) => MaybePromise<TProcedureResult>
   /** roles */
   roleIds: Role[]
 }) {
@@ -69,10 +64,7 @@ export function definePublicQueryProcedure<
   /** Das Schema der Eingabedaten */
   inputSchema: TInputSchema
   /** Der Handler der die Daten verarbeitet */
-  handler: (options: {
-    ctx: { accountId: number | undefined }
-    input: z.infer<TInputSchema>
-  }) => MaybePromise<TProcedureResult>
+  handler: (options: { ctx: Context; input: z.infer<TInputSchema> }) => MaybePromise<TProcedureResult>
 }) {
   const procedure = publicProcedure.input(config.inputSchema).query((opts) => config.handler(opts))
   return {
@@ -92,10 +84,7 @@ export function definePublicMutateProcedure<
   /** Das Schema der Eingabedaten */
   inputSchema: TInputSchema
   /** Der Handler der die Daten verarbeitet */
-  handler: (options: {
-    ctx: { accountId: number | undefined }
-    input: z.infer<TInputSchema>
-  }) => MaybePromise<TProcedureResult>
+  handler: (options: { ctx: Context; input: z.infer<TInputSchema> }) => MaybePromise<TProcedureResult>
 }) {
   const procedure = publicProcedure.input(config.inputSchema).mutation((opts) => config.handler(opts))
   return {

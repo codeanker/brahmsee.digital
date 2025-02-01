@@ -71,7 +71,7 @@ export async function handle({ ctx, input, isPublic }: HandleProps) {
     },
   })
 
-  const assignmentCode = ctx.accountId === undefined ? randomUUID() : null
+  const assignmentCode = ctx.authenticated ? null : randomUUID()
   const anmeldung = await prisma.anmeldung.create({
     data: {
       unterveranstaltungId: unterveranstaltung.id,
