@@ -115,20 +115,20 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
   // },
   // { type: 'DividerItem', name: 'Ausschreibung', visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']) },
 
-  { type: 'DividerItem', name: 'Meine Daten', visible: hasPermissionToView(['USER']) },
+  { type: 'DividerItem', name: 'Meine Daten', visible: true },
   {
     type: 'SidebarItem',
     name: 'Personen',
     route: { name: 'Meine Personen' },
     icon: UsersIcon,
-    visible: hasPermissionToView(['USER']),
+    visible: true,
   },
   {
     type: 'SidebarItem',
     name: 'Anmeldungen',
     route: { name: 'Meine Anmeldungen' },
     icon: UsersIcon,
-    visible: hasPermissionToView(['USER']),
+    visible: true,
   },
 
   { type: 'DividerItem', name: 'Gliederung', visible: hasPermissionToView(['GLIEDERUNG_ADMIN']) },
