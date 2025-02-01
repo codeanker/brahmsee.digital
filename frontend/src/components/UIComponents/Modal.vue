@@ -53,7 +53,12 @@ const handleKeypress = (e) => {
   }
 }
 
-defineExpose({ show, hide })
+export type ModalApi = {
+  show: typeof show
+  hide: typeof hide
+}
+
+defineExpose<ModalApi>({ show, hide })
 
 if (props.immediate) {
   show()
@@ -65,7 +70,7 @@ if (props.immediate) {
     <transition name="fade">
       <div
         v-if="visible"
-        class="backdrop z-modal-backdrop fixed inset-0 flex items-center justify-center overflow-hidden"
+        class="backdrop z-modal-backdrop fixed inset-0 flex items-center justify-center"
         @mousedown.self="hide('self')"
       >
         <div
