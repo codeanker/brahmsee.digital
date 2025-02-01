@@ -16,9 +16,9 @@ const props = defineProps<
   }
 >()
 const emit = defineEmits<{
-  (event: 'update:modelValue', eventArgs: string | undefined): void
-  (event: 'focus'): void
-  (event: 'blur'): void
+  'update:modelValue': [string | undefined]
+  focus: []
+  blur: []
 }>()
 
 const passwordVisible = ref(false)

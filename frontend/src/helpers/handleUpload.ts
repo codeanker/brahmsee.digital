@@ -2,6 +2,11 @@ import { BlockBlobClient } from '@azure/storage-blob'
 
 import { apiClient } from '@/api'
 
+type uploadedFile = {
+  id: string
+}
+type uploadedFiles = uploadedFile[]
+
 export function handleUpload(file: File): Promise<{ id: string }>
 export function handleUpload(file: File[]): Promise<{ id: string }[]>
 
@@ -9,15 +14,20 @@ export function handleUpload(file: File[]): Promise<{ id: string }[]>
  * Upload file
  * @param file
  */
-export async function handleUpload(file: File | File[]) {
+export async function handleUpload(file: File | File[]): Promise<uploadedFiles | uploadedFile> {
   if (Array.isArray(file)) {
-    const results: { id: string }[] = []
-    for await (const el of file) {
-      results.push(await handleUpload(el))
+    const files: uploadedFiles = []
+    for await (const element of file) {
+      const res = await uploadFile(element)
+      if (res) files.push(res)
     }
-    return results
+    return files
+  } else {
+    return await uploadFile(file)
   }
+}
 
+async function uploadFile(file: File): Promise<uploadedFile> {
   const dbFile = await apiClient.file.fileCreate.mutate({ mimetype: file.type })
 
   const formData = new FormData()

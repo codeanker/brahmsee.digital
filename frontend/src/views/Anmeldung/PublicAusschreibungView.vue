@@ -97,6 +97,11 @@ const isClosed = computed(() => dayjs().isAfter(unterveranstaltung?.value?.melde
                 />
               </li>
             </ul>
+            <!-- eslint-disable vue/no-v-html -->
+            <div
+              class="prose dark:prose-invert"
+              v-html="unterveranstaltung?.beschreibung"
+            />
           </div>
         </template>
       </Tab>

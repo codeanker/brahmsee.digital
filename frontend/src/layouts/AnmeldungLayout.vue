@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router'
 
-import { apiClient } from '@/api';
-import PublicFooter from '@/components/LayoutComponents/PublicFooter.vue';
-import PublicHeader from '@/components/LayoutComponents/PublicHeader.vue';
-import type { RouterOutput } from '@codeanker/api';
-import { useAsyncState } from '@vueuse/core';
-import { computed, inject, provide, type Ref } from 'vue';
-import PublicLayout from './PublicLayout.vue';
+import { apiClient } from '@/api'
+import PublicFooter from '@/components/LayoutComponents/PublicFooter.vue'
+import PublicHeader from '@/components/LayoutComponents/PublicHeader.vue'
+import type { RouterOutput } from '@codeanker/api'
+import { useAsyncState } from '@vueuse/core'
+import { computed, inject, provide, type Ref } from 'vue'
+import PublicLayout from './PublicLayout.vue'
 
 const route = useRoute()
 
@@ -17,10 +17,7 @@ const unterveranstaltungId = computed(() => {
 
 const { state: unterveranstaltung } = useAsyncState(
   () => apiClient.unterveranstaltung.publicGet.query({ id: unterveranstaltungId.value }),
-  undefined,
-  {
-    immediate: !!unterveranstaltungId.value,
-  }
+  undefined
 )
 
 provide('unterveranstaltung', unterveranstaltung)

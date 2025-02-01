@@ -19,20 +19,26 @@ export const personSchema = z.strictObject({
   weitereIntoleranzen: z.array(z.string()).optional(),
   erziehungsberechtigtePersonen: z.array(kontaktSchema).optional(),
   notfallkontaktPersonen: z.array(kontaktSchema),
+  photoId: z.string().nullish(),
 })
 
+export const personSchemaOptional = personSchema.partial()
+
 export async function getPersonCreateData(
-  input: z.infer<typeof personSchema>
+  input: z.infer<typeof personSchemaOptional>
 ): Promise<Prisma.PersonCreateArgs['data']> {
-  const addressId = await createOrUpdateAddress(input.address)
+  let addressId: number | undefined = undefined
+  if (input.address) {
+    addressId = await createOrUpdateAddress(input.address)
+  }
 
   return {
-    firstname: input.firstname,
-    lastname: input.lastname,
+    firstname: input.firstname!,
+    lastname: input.lastname!,
     birthday: input.birthday,
     gender: input.gender,
-    email: input.email,
-    telefon: input.telefon,
+    email: input.email!,
+    telefon: input.telefon!,
     gliederungId: input.gliederungId,
     essgewohnheit: input.essgewohnheit,
     nahrungsmittelIntoleranzen: input.nahrungsmittelIntoleranzen,
@@ -41,6 +47,7 @@ export async function getPersonCreateData(
     notfallkontakte: {
       create: input.notfallkontaktPersonen,
     },
+    photoId: input.photoId,
   }
 }
 

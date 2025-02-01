@@ -1,19 +1,3 @@
-<template>
-  <GenericDataGrid
-    :columns="columns"
-    :fetch-page="fetchPage"
-    :fetch-count="fetchCount"
-    :default-filter="{
-      name: '',
-      gliederungName: '',
-    }"
-    :default-order-by="[]"
-    no-data-message="Es gibt bisher keine Personen."
-    show-clickable
-    @row-click="(person) => router.push({ name: 'Verwaltung Persondetails', params: { personId: person.id } })"
-  />
-</template>
-
 <script setup lang="ts">
 import { getAccountStatusColor } from '@/helpers/getAccountStatusColors'
 import type { RouterInput, RouterOutput } from '@codeanker/api'
@@ -91,3 +75,19 @@ const fetchCount: FetchPersonCountFunction = (filter) =>
     filter: filter,
   })
 </script>
+
+<template>
+  <GenericDataGrid
+    :columns="columns"
+    :fetch-page="fetchPage"
+    :fetch-count="fetchCount"
+    :default-filter="{
+      name: '',
+      gliederungName: '',
+    }"
+    :default-order-by="[]"
+    no-data-message="Es gibt bisher keine Personen."
+    show-clickable
+    @row-click="(person) => router.push({ name: 'Verwaltung Persondetails', params: { personId: person.id } })"
+  />
+</template>

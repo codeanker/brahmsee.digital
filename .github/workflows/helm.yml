@@ -29,6 +29,7 @@ jobs:
     needs: prepare
     permissions:
       contents: write
+      packages: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -47,7 +48,7 @@ jobs:
         uses: appany/helm-oci-chart-releaser@v0.3.0
         with:
           name: brahmsee-digital
-          repository: codeanker/brahmsee.digital-chart
+          repository: codeanker/brahmsee.digital
           tag: ${{needs.prepare.outputs.version}}-${{needs.prepare.outputs.commit}}
           path: chart/brahmsee-digital
           registry: ghcr.io

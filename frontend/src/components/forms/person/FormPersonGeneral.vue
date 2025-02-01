@@ -40,12 +40,11 @@ const props = defineProps<{
   person?: Person
   submitText?: string
   error?: Error
-  showTshirt?: boolean
 }>()
 
 const emit = defineEmits<{
-  (event: 'submit', data: FormPersonGeneralSubmit): void
-  (event: 'showTerms'): void
+  submit: [data: FormPersonGeneralSubmit]
+  showTerms: []
 }>()
 
 async function queryGliederungen(searchTerm: string) {

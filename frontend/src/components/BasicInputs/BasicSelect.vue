@@ -23,7 +23,7 @@ const props = defineProps<
 >()
 
 const emit = defineEmits<{
-  (event: 'update:modelValue', eventArgs: string | number | undefined): void
+  'update:modelValue': [string | number | undefined]
 }>()
 const { model, errorMessage } = useValidationModel(props, emit)
 </script>
@@ -32,7 +32,6 @@ const { model, errorMessage } = useValidationModel(props, emit)
   <div :id="id || name || label">
     <label
       v-if="label"
-      class="font-medium"
       :for="id || name || label"
     >
       <span>{{ label }}</span>

@@ -12,7 +12,7 @@ model Activity {
   type        ActivityType
   description String?
   subjectType String
-  subjectId   Int?
+  subjectId   String?
   causerId    Int?
   causer      Account?     @relation(fields: [causerId], references: [id], onDelete: SetNull)
   metadata    Json         @default("{}")

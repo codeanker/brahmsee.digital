@@ -7,7 +7,8 @@
     "build": "vite build",
     "serve": "vite preview",
     "typecheck": "vue-tsc --noEmit",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@azure/storage-blob": "^12.17.0",
@@ -21,7 +22,7 @@
     "@headlessui/vue": "^1.7.16",
     "@heroicons/vue": "^2.0.18",
     "@tailwindcss/forms": "^0.5.7",
-    "@tailwindcss/typography": "^0.5.10",
+    "@tailwindcss/typography": "^0.5.16",
     "@tiptap/extension-document": "catalog:",
     "@tiptap/extension-highlight": "catalog:",
     "@tiptap/extension-link": "catalog:",
@@ -33,7 +34,7 @@
     "@trpc/client": "catalog:",
     "@vitejs/plugin-basic-ssl": "^1.0.2",
     "@vuepic/vue-datepicker": "^4.5.1",
-    "@vueuse/core": "^10.6.1",
+    "@vueuse/core": "^12.5.0",
     "@vueuse/router": "^12.3.0",
     "clsx": "^2.1.1",
     "http2-proxy": "^5.0.53",

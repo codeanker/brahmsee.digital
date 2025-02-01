@@ -58,6 +58,7 @@ export const anmeldungGetProcedure = defineProtectedQueryProcedure({
             weitereIntoleranzen: true,
             notfallkontakte: true,
             address: true,
+            photoId: true,
           },
         },
         unterveranstaltung: {

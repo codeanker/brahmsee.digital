@@ -357,17 +357,6 @@ onMounted(() => {
                     />
                   </dd>
                 </div>
-                <div class="sm:flex sm:px-6 sm:py-5">
-                  <dt class="text-gray-500 dark:text-gray-300 sm:w-40 sm:flex-shrink-0 lg:w-48">T-Shirt</dt>
-                  <dd class="mt-1 text-gray-900 dark:text-gray-100 sm:col-span-2 sm:ml-6 sm:mt-0 whitespace-pre-line">
-                    <AnmeldungTshirtSelect
-                      v-if="currentAnmeldung"
-                      :anmeldung="currentAnmeldung"
-                      :person="currentAnmeldung?.person"
-                      @changed="getSingleAnmeldung"
-                    />
-                  </dd>
-                </div>
 
                 <div class="sm:flex sm:px-6 sm:py-5">
                   <dt class="text-gray-500 dark:text-gray-300 sm:w-40 sm:flex-shrink-0 lg:w-48">Bemerkung</dt>

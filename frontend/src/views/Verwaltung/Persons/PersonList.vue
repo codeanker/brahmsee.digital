@@ -1,3 +1,8 @@
+<script setup lang="ts">
+import PersonTable from '@/components/data/PersonTable.vue'
+import { PlusIcon } from '@heroicons/vue/24/outline'
+</script>
+
 <template>
   <div class="my-4 flex justify-between">
     <p class="max-w-2xl text-sm">Hier findest Du alle Personen die sich zu Veranstaltungen angemeldet haben.</p>
@@ -15,8 +20,3 @@
     <PersonTable />
   </div>
 </template>
-
-<script setup lang="ts">
-import PersonTable from '@/components/data/PersonTable.vue'
-import { PlusIcon } from '@heroicons/vue/24/outline'
-</script>

@@ -31,7 +31,7 @@ const props = withDefaults(
   {}
 )
 const emit = defineEmits<{
-  (event: 'update:modelValue', eventArgs: IEssgewohnheiten): void
+  'update:modelValue': [IEssgewohnheiten]
 }>()
 
 const model = computed({
@@ -124,7 +124,7 @@ const addWeitereIntoleranzen = () => {
     </template>
   </BasicDropdown>
 
-  <p class="font-medium mt-5">Nahrungsmittelintoleranzen</p>
+  <p class="mt-5">Nahrungsmittelintoleranzen</p>
   <div class="flex flex-col gap-2">
     <div
       v-for="option in nahrungsmittelIntoleranzOptions"

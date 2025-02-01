@@ -11,7 +11,6 @@ const props = defineProps<
 const emit = defineEmits<{
   resizeDrag: [{ column: TDataGridHeaderProps['columns'][0]; width: number }]
   setOrderBy: [{ field: string; value: 'asc' | 'desc' | undefined }]
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setFilter: [{ key: any; value: any }]
 }>()
 

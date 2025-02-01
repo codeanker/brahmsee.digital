@@ -2,9 +2,7 @@
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 import { nextTick, onMounted, ref, watch } from 'vue'
 
-const emit = defineEmits<{
-  (event: 'close'): void
-}>()
+const emit = defineEmits<{ close: [] }>()
 
 const show = ref(false)
 const showDrawer = ref(false)

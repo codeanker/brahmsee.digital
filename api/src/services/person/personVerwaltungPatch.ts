@@ -4,14 +4,14 @@ import z from 'zod'
 import prisma from '../../prisma.js'
 import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
 
-import { getPersonCreateData, personSchema } from './schema/person.schema.js'
+import { getPersonCreateData, personSchemaOptional } from './schema/person.schema.js'
 
 export const personVerwaltungPatchProcedure = defineProtectedMutateProcedure({
   key: 'verwaltungPatch',
   roleIds: [Role.ADMIN],
   inputSchema: z.strictObject({
     id: z.number().int(),
-    data: personSchema,
+    data: personSchemaOptional,
   }),
   async handler({ input }) {
     await prisma.notfallkontakt.deleteMany({
