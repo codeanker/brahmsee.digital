@@ -88,17 +88,17 @@ function moveOptionDown(index: number) {
       <template #buttonContent>
         <button
           type="button"
-          class="input-style w-full text-left flex justify-between items-center hover:cursor-pointer"
+          class="input-style w-full text-left !flex justify-between items-center hover:cursor-pointer"
         >
           <slot>
             <div class="flex space-x-2 items-center">
-              <ChevronDownIcon class="h-5 text-gray-500" />
               <img
                 :src="getCustomFieldIcon(model.type)"
                 class="h-5 w-5 mr-1 dark:invert"
               />
               <span>{{ getFieldTypeHuman(model.type) ?? 'Bitte wählen' }}</span>
             </div>
+            <ChevronDownIcon class="h-5 text-gray-500" />
           </slot>
         </button>
       </template>
