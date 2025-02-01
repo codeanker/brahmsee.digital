@@ -37,7 +37,6 @@ export const personVerwaltungGetProcedure = defineProtectedQueryProcedure({
         },
         nahrungsmittelIntoleranzen: true,
         weitereIntoleranzen: true,
-        konfektionsgroesse: true,
         essgewohnheit: true,
         notfallkontakte: {
           select: {

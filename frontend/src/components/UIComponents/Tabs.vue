@@ -53,7 +53,7 @@ function changeTab(index) {
   <BasicDropdown
     :right="false"
     :append="true"
-    class="w-full z-[11]"
+    class="w-full"
     button-style="w-full min-w-52 text-left md:hidden"
   >
     <template #buttonContent>

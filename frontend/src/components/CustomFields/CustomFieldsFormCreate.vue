@@ -35,6 +35,7 @@ const { execute, error, isLoading } = useAsyncState(
     try {
       if (props.entity === 'veranstaltung') {
         await apiClient.customFields.veranstaltungCreate.mutate({
+          type: 'new',
           veranstaltungId: props.entityId,
           data: {
             name: data.name,
@@ -91,6 +92,12 @@ const { execute, error, isLoading } = useAsyncState(
         @click="() => router.back()"
       >
         Abbrechen
+      </Button>
+      <Button
+        type="button"
+        color="info"
+      >
+        Vorlage auswählen
       </Button>
     </div>
   </ValidateForm>

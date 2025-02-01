@@ -15,12 +15,13 @@ withDefaults(
     disabled: false,
   }
 )
-type Color = 'primary' | 'secondary' | 'warning' | 'danger'
+type Color = 'primary' | 'secondary' | 'warning' | 'danger' | 'info'
 const colors: Record<Color, string> = {
   primary: 'text-white bg-primary-600 hover:bg-primary-500',
   secondary: 'bg-primary-200 hover:bg-primary-300 text-primary-800',
   warning: 'text-white bg-yellow-600 hover:bg-yellow-500 focus:outline-yellow-600',
   danger: 'text-white bg-red-600 hover:bg-red-500 disabled:bg-red-500 focus:outline-red-600',
+  info: 'text-white bg-sky-600 hover:bg-sky-500 disabled:bg-gray-500 focus:outline-sky-600',
 }
 </script>
 

@@ -89,7 +89,7 @@ watch(
   >
     <div
       v-if="editor"
-      class="rounded-md border border-gray-300 dark:border-gray-700"
+      class="rounded-md border border-gray-300 dark:border-gray-700 dark:bg-dark-secondary"
     >
       <BasicEditorMenu :editor="editor" />
       <div class="p-2 min-h-">

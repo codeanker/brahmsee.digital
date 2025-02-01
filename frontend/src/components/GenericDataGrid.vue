@@ -14,15 +14,29 @@ import DataGridVirtualList from '@/components/DataGrid/DataGridVirtualList.vue'
 import { useDataGridOrderBy } from '@/composables/useDataGridOrderBy'
 import { type TGridColumn, useDataGridFilter, useGrid } from '@codeanker/datagrid'
 
-const props = defineProps<{
+export type Pagination = {
+  take: number
+  skip: number
+}
+
+export type FetchPageFunction<TData, TFilter, TOrderBy> = (
+  pagination: Pagination,
+  filter: TFilter,
+  orderBy: TOrderBy
+) => Promise<TData[]>
+export type FetchCountFunction<TFilter> = (filter: TFilter) => Promise<number>
+
+export type GenericGridProps<TData, TFilter, TOrderBy> = {
   columns: TGridColumn<TData, TFilter>[]
-  fetchPage: (pagination: { take: number; skip: number }, filter: TFilter, orderBy: TOrderBy) => Promise<TData[]>
-  fetchCount: (filter: TFilter) => Promise<number>
+  fetchPage: FetchPageFunction<TData, TFilter, TOrderBy>
+  fetchCount: FetchCountFunction<TFilter>
   defaultFilter: TFilter
   defaultOrderBy: TOrderBy
   noDataMessage?: string
   showClickable?: boolean
-}>()
+}
+
+const props = defineProps<GenericGridProps<TData, TFilter, TOrderBy>>()
 
 const emit = defineEmits<{
   'row-click': [TData]
