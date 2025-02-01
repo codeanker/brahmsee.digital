@@ -31,7 +31,7 @@
     "@codeanker/authentication": "workspace:*",
     "@codeanker/datagrid": "file:../vendor/codeanker-datagrid-2.7.1-trimmed.tgz",
     "@codeanker/helpers": "workspace:*",
-    "@faker-js/faker": "^8.4.1",
+    "@faker-js/faker": "^9.4.0",
     "@koa/cors": "^5.0.0",
     "@koa/router": "^12.0.1",
     "@prisma/client": "^5.19.1",
