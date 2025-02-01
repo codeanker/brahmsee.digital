@@ -111,7 +111,6 @@ export async function veranstaltungTeilnehmendenliste(ctx) {
       },
       createdAt: true,
       status: true,
-      tshirtBestellt: true,
       unterveranstaltung: {
         select: {
           veranstaltung: {
@@ -161,8 +160,6 @@ export async function veranstaltungTeilnehmendenliste(ctx) {
       ['Gliederung']: anmeldung.person.gliederung?.name,
       ['Email']: anmeldung.person.email,
       ['Telefon']: anmeldung.person.telefon,
-      ['T-Shirt']: anmeldung.tshirtBestellt,
-      ['Konfektionsgröße']: anmeldung.person.konfektionsgroesse,
       ['Essgewohnheit']: anmeldung.person.essgewohnheit,
       ['Anmeldedatum']: anmeldung.createdAt,
       ...customFields,
