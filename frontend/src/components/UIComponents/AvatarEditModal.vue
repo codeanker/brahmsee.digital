@@ -16,6 +16,8 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   triggerRefresh: []
+  deleted: []
+  uploaded: [photoId: string]
 }>()
 
 const modal = ref<InstanceType<typeof Modal>>()
@@ -44,6 +46,8 @@ async function upload(toUploadFile: File) {
         photoId: res.id,
       },
     })
+    console.log('ressss', res.id)
+    emit('uploaded', res.id)
     close()
   } catch (error) {
     console.error(error)

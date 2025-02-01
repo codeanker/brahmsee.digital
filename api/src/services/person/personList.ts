@@ -31,7 +31,12 @@ export const personListProcedure = defineProtectedQueryProcedure({
       take,
       where: getWhere(options.input.filter, options.ctx.account),
       orderBy: getOrderBy(options.input.orderBy),
-      include: {
+      select: {
+        id: true,
+        firstname: true,
+        lastname: true,
+        birthday: true,
+        photoId: true,
         gliederung: {
           select: {
             id: true,

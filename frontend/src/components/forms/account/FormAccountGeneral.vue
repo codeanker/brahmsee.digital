@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { MenuItem } from '@headlessui/vue'
-import { FingerPrintIcon, KeyIcon, TrashIcon, ChevronDownIcon, CheckCircleIcon } from '@heroicons/vue/24/outline'
+import {
+  FingerPrintIcon,
+  KeyIcon,
+  TrashIcon,
+  ChevronDownIcon,
+  CheckCircleIcon,
+  CodeBracketIcon,
+} from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 import { computed, ref } from 'vue'
 
@@ -149,6 +156,7 @@ const tabs = computed(() => {
   const tabs = [{ name: 'Allgemein', icon: FingerPrintIcon }]
   if (edit.value) tabs.push({ name: 'Sicherheit', icon: KeyIcon })
   if (!isSelf.value && edit.value) tabs.push({ name: 'Account löschen', icon: TrashIcon })
+  if (loggedInAccount.value?.role === 'ADMIN') tabs.push({ name: 'Entwickler:in', icon: CodeBracketIcon })
   return tabs
 })
 </script>
@@ -391,6 +399,11 @@ const tabs = computed(() => {
           {{ errorDelete }}
         </template>
       </div>
+    </Tab>
+    <Tab v-if="loggedInAccount?.role === 'ADMIN'">
+      <div class="text-lg font-semibold">Entwickler:innen</div>
+      <p class="max-w-2xl text-sm mb-6">Informationen für Entwickler:innen</p>
+      <pre>{{ stammdatenForm }}</pre>
     </Tab>
   </Tabs>
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ArrowTopRightOnSquareIcon } from '@heroicons/vue/24/outline'
+import { ArrowTopRightOnSquareIcon, CheckCircleIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 
 import { apiClient } from '@/api'
@@ -59,7 +59,20 @@ const { state: anmeldungenPerson } = useAsyncState(
       </div>
     </div>
   </div>
-  <div v-if="!anmeldungenPerson || anmeldungenPerson.length <= 0">
-    Die Person hat sich zu keiner Veranstaltung angemeldet
+  <div
+    v-if="!anmeldungenPerson || anmeldungenPerson.length <= 0"
+    class="rounded-md bg-blue-50 dark:bg-blue-950 text-blue-500 p-4"
+  >
+    <div class="flex">
+      <div class="flex-shrink-0">
+        <CheckCircleIcon
+          class="h-5 w-5"
+          aria-hidden="true"
+        />
+      </div>
+      <div class="ml-3 flex-1 md:flex md:justify-between">
+        <p class="mb-0">Die Person hat sich zu keiner Veranstaltung angemeldet.</p>
+      </div>
+    </div>
   </div>
 </template>

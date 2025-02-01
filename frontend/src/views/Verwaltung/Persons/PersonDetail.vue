@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CodeBracketIcon, TicketIcon, UserIcon, PhotoIcon } from '@heroicons/vue/24/outline'
+import { CodeBracketIcon, TicketIcon, UserIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 import { watch } from 'vue'
 import { useRoute } from 'vue-router'
@@ -7,7 +7,6 @@ import { useRoute } from 'vue-router'
 import { apiClient } from '@/api'
 import FormAnmeldungGeneral from '@/components/forms/anmeldung/FormAnmeldungGeneral.vue'
 import FormPersonGeneral, { type FormPersonGeneralSubmit } from '@/components/forms/person/FormPersonGeneral.vue'
-import PersonPhotoUpload from '@/components/forms/person/PersonPhotoUpload.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
 import UserLogo from '@/components/UIComponents/UserLogo.vue'
@@ -80,7 +79,6 @@ const { execute: update } = useAsyncState(
 const tabs = [
   { name: 'Stammdaten', icon: UserIcon },
   { name: 'Anmeldungen', icon: TicketIcon },
-  { name: 'Foto', icon: PhotoIcon },
 ]
 
 if (loggedInAccount.value?.role === 'ADMIN') {
@@ -132,14 +130,6 @@ if (loggedInAccount.value?.role === 'ADMIN') {
         :person-id="person.id"
       />
     </Tab>
-    <Tab>
-      <PersonPhotoUpload
-        v-if="person"
-        :person="person"
-        @success="refetchPerson"
-      />
-    </Tab>
-
     <Tab v-if="loggedInAccount?.role === 'ADMIN'">
       <div class="text-lg font-semibold">Entwickler:innen</div>
       <p class="max-w-2xl text-sm mb-6">Informationen für Entwickler:innen</p>

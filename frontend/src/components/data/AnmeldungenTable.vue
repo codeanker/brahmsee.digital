@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { CodeBracketIcon, SquaresPlusIcon, TicketIcon, UserIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref, onMounted, defineAsyncComponent } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { apiClient } from '@/api'
@@ -24,6 +24,7 @@ import {
 } from '@codeanker/api'
 import { useDataGridFilter, useDataGridOrderBy, useGrid, type TGridColumn } from '@codeanker/datagrid'
 import { dayjs } from '@codeanker/helpers'
+import UserLogo from '../UIComponents/UserLogo.vue'
 
 type Props = {
   filter: RouterInput['anmeldung']['list']['filter']
@@ -179,6 +180,20 @@ type TAnmeldungOrderBy = RouterInput['anmeldung']['list']['orderBy']
 /// Definieren der columns
 let columns: TGridColumn<TAnmeldungData, TAnmeldungFilter>[] = [
   {
+    field: 'person.photoId',
+    title: ' ',
+    size: '78px',
+    cell: defineAsyncComponent(() => import('@/components/UIComponents/UserLogo.vue')),
+    cellProps: (formattedValue, row) => {
+      return {
+        firstname: row.content.person.firstname,
+        lastname: row.content.person.lastname,
+        photoId: row.content.person.photoId,
+        cssClasses: 'h-10 w-10',
+      }
+    },
+  },
+  {
     field: 'person',
     title: 'Name',
     format: (value) => `${value.firstname} ${value.lastname}`,
@@ -317,14 +332,27 @@ onMounted(() => {
   >
     <template #title>
       <div class="mb-4 md:w-[700px] xl:w-[900px]">
-        <div class="flex items-center">
-          <h2 class="my-2 text-xl font-bold tracking-tight sm:text-2xl">
-            {{ currentAnmeldung?.person?.firstname }} {{ currentAnmeldung?.person?.lastname }}
-          </h2>
-          <div
-            class="w-4 h-4 rounded-full shrink-0 ml-2"
-            :class="`bg-${getAnmeldungStatusColor(currentAnmeldung?.status)}-600`"
-          />
+        <div class="mx-auto lg:mx-0 flex items-center space-x-4">
+          <div class="w-20 h-20 shrink-0">
+            <UserLogo
+              v-if="currentAnmeldung?.person?.firstname && currentAnmeldung?.person?.lastname"
+              :firstname="currentAnmeldung?.person?.firstname"
+              :lastname="currentAnmeldung?.person?.lastname"
+              :edit="true"
+              :person-id="currentAnmeldung?.person.id"
+              :photo-id="currentAnmeldung?.person.photoId"
+              size="xl"
+            />
+          </div>
+          <div class="flex items-center">
+            <h2 class="my-2 text-xl font-bold tracking-tight sm:text-2xl">
+              {{ currentAnmeldung?.person?.firstname }} {{ currentAnmeldung?.person?.lastname }}
+            </h2>
+            <div
+              class="w-4 h-4 rounded-full shrink-0 ml-2"
+              :class="`bg-${getAnmeldungStatusColor(currentAnmeldung?.status)}-600`"
+            />
+          </div>
         </div>
       </div>
     </template>

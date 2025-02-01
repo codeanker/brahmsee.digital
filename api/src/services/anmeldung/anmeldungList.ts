@@ -63,6 +63,7 @@ export const anmeldungListProcedure = defineProtectedQueryProcedure({
             id: true,
             firstname: true,
             lastname: true,
+            photoId: true,
             birthday: true,
             gliederung: {
               select: {
