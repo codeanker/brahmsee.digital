@@ -79,31 +79,31 @@ function formatPositions(field: Field) {
         <tr>
           <th
             scope="col"
-            class="px-3 py-3.5 text-left text-sm font-semibold"
+            class="px-3 py-3.5 text-left bg-background text-gray-500 border-b px-4 select-none font-normal"
           >
             Name
           </th>
           <th
             scope="col"
-            class="px-3 py-3.5 text-left text-sm font-semibold"
+            class="px-3 py-3.5 text-left bg-background text-gray-500 border-b px-4 select-none font-normal"
           >
             Typ
           </th>
           <th
             scope="col"
-            class="px-3 py-3.5 text-left text-sm font-semibold"
+            class="px-3 py-3.5 text-left bg-background text-gray-500 border-b px-4 select-none font-normal"
           >
             Quelle
           </th>
           <th
             scope="col"
-            class="px-3 py-3.5 text-left text-sm font-semibold"
+            class="px-3 py-3.5 text-left bg-background text-gray-500 border-b px-4 select-none font-normal"
           >
             Erforderlich?
           </th>
           <th
             scope="col"
-            class="px-3 py-3.5 text-left text-sm font-semibold"
+            class="px-3 py-3.5 text-left bg-background text-gray-500 border-b px-4 select-none font-normal"
           >
             Positionen
           </th>
@@ -121,23 +121,23 @@ function formatPositions(field: Field) {
           :title="canEdit(field) ? 'Bearbeiten' : 'Dieses Feld darfst du nicht bearbeiten'"
           @click="() => onClickRow(field)"
         >
-          <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
+          <td class="whitespace-nowrap py-5 pl-4 pr-3">
             <div>{{ field.name }}</div>
             <div
               v-if="field.description"
-              class="text-xs text-gray-500"
+              class="text-sm text-gray-500"
             >
               {{ field.description }}
             </div>
           </td>
-          <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
+          <td class="whitespace-nowrap py-5 pl-4 pr-3">
             <div>{{ getFieldTypeHuman(field) }}</div>
           </td>
-          <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
-            <p v-if="field.veranstaltungId !== null">Veranstaltung</p>
-            <p v-if="field.unterveranstaltungId !== null">Ausschreibung</p>
+          <td class="whitespace-nowrap py-5 pl-4 pr-3">
+            <span v-if="field.veranstaltungId !== null">Veranstaltung</span>
+            <span v-if="field.unterveranstaltungId !== null">Ausschreibung</span>
           </td>
-          <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm">
+          <td class="whitespace-nowrap py-5 pl-4 pr-3">
             <CheckIcon
               v-if="field.required"
               class="text-primary-600 size-5"
@@ -147,7 +147,7 @@ function formatPositions(field: Field) {
               class="text-red-600 size-5"
             />
           </td>
-          <td class="py-5 pl-4 pr-3 text-sm">
+          <td class="py-5 pl-4 pr-3">
             <div>{{ formatPositions(field) }}</div>
           </td>
         </tr>

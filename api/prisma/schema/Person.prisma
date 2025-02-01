@@ -19,105 +19,29 @@ enum NahrungsmittelIntoleranz {
   FRUCTOSE
 }
 
-enum QualificationFahrerlaubnis {
-  B
-  BE
-  C
-  CE
-  D1
-  D
-  D1E
-  DE
-  T
-  L
-}
-
-enum QualificationSchwimmer {
-  BRONZE
-  SILBER
-  GOLD
-  JUNIORRETTER
-  RETTUNGSSCHWIMMER_BRONZE
-  RETTUNGSSCHWIMMER_SILBER
-  RETTUNGSSCHWIMMER_GOLD
-}
-
-enum QualificationErsteHilfe {
-  EINWEISER_EHSH
-  AUSBILDER_EHSH_MODUL_1_2
-  AUSBILDER_EHSH_MODUL_3
-  MODULE_1
-  MODULE_2
-  MODULE_3
-  AUSBILDUNG
-  KINDERNOTFAELLE
-  BILDUNGS_UND_BETREUUNGSEINRICHTUNGEN_KINDER
-  AUSBILDER
-}
-
-enum QualificationSanitaeter {
-  SAN_A
-  SAN_B
-  FORTBILDUNG
-  AUSBILDER
-}
-
-enum QualificationFunk {
-  DLRG_SPRECHFUNKER
-  BOS_SPRECHFUNKER_ANALOG
-  BOS_SPRECHFUNKER_DIGITAL
-  AUSBILDER_SPRECHFUNK
-  AUSBILDER_BOS_SPRECHFUNK
-  MULTIPLIKATOR_SPRECHFUNK
-  MULTIPLIKATOR_BOS_SPRECHFUNK
-  EINSATZFAEHIGKEIT
-}
-
-enum Konfektionsgroesse {
-  JUNIOR_98_104
-  JUNIOR_110_116
-  JUNIOR_122_128
-  JUNIOR_134_140
-  JUNIOR_146_152
-  JUNIOR_158_164
-  XS
-  S
-  M
-  L
-  XL
-  XXL
-  XXXL
-}
-
 //endregion
 
 model Person {
-  id                           Int                          @id @default(autoincrement())
-  firstname                    String
-  lastname                     String
-  birthday                     DateTime?                    @db.Date
-  gender                       Gender?
-  email                        String
-  telefon                      String
-  anmeldungen                  Anmeldung[]
-  gliederungId                 Int?
-  gliederung                   Gliederung?                  @relation(fields: [gliederungId], references: [id], onDelete: SetNull)
-  account                      Account?
-  essgewohnheit                Essgewohnheit?
-  nahrungsmittelIntoleranzen   NahrungsmittelIntoleranz[]
-  weitereIntoleranzen          String[]
-  qualifikationenFahrerlaubnis QualificationFahrerlaubnis[]
-  qualifikationenSchwimmer     QualificationSchwimmer[]
-  qualifikationenErsteHilfe    QualificationErsteHilfe[]
-  qualifikationenSanitaeter    QualificationSanitaeter[]
-  qualifikationenFunk          QualificationFunk[]
-  konfektionsgroesse           Konfektionsgroesse?
-  notfallkontaktIds            Int[]
-  notfallkontakte              Notfallkontakt[]
-  addressId                    Int?
-  address                      Address?                     @relation(fields: [addressId], references: [id], onDelete: Cascade)
-  photoId                      String?
-  photo                        File?                        @relation(fields: [photoId], references: [id], onDelete: Cascade)
+  id                         Int                        @id @default(autoincrement())
+  firstname                  String
+  lastname                   String
+  birthday                   DateTime?                  @db.Date
+  gender                     Gender?
+  email                      String
+  telefon                    String
+  anmeldungen                Anmeldung[]
+  gliederungId               Int?
+  gliederung                 Gliederung?                @relation(fields: [gliederungId], references: [id], onDelete: SetNull)
+  account                    Account?
+  essgewohnheit              Essgewohnheit?
+  nahrungsmittelIntoleranzen NahrungsmittelIntoleranz[]
+  weitereIntoleranzen        String[]
+  notfallkontaktIds          Int[]
+  notfallkontakte            Notfallkontakt[]
+  addressId                  Int?
+  address                    Address?                   @relation(fields: [addressId], references: [id], onDelete: Cascade)
+  photoId                    String?
+  photo                      File?                      @relation(fields: [photoId], references: [id])
 }
 
 model Notfallkontakt {

@@ -47,9 +47,11 @@ export async function reAuthenticate() {
   }
 }
 
-export async function logout() {
-  router.push({ name: 'Login' })
+export async function logout(redirect: boolean = true) {
   localStorage.removeItem('jwt')
+  if (redirect) {
+    router.push({ name: 'Login' })
+  }
   loggedInAccount.value = undefined
 }
 

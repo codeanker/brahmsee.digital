@@ -1,4 +1,5 @@
 enum Role {
+  USER
   GLIEDERUNG_ADMIN
   ADMIN
 }
@@ -23,4 +24,5 @@ model Account {
   status              AccountStatus         @default(OFFEN)
   passwordResetToken  String?               @unique
   activities          Activity[]
+  Anmeldung           Anmeldung[]
 }

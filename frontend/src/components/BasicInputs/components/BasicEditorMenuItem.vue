@@ -25,15 +25,15 @@ defineProps<{
 
 <style lang="scss">
 .menu-item {
-  background: transparent;
   border: none;
   border-radius: 0.4rem;
-  color: #000;
   cursor: pointer;
   height: 1.75rem;
   padding: 0.25rem;
   margin-right: 0.25rem;
   width: 1.75rem;
+
+  @apply text-black dark:text-gray-100;
 
   svg {
     fill: currentColor;

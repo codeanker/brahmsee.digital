@@ -42,6 +42,7 @@ export const accountVerwaltungListProcedure = defineProtectedQueryProcedure({
           select: {
             firstname: true,
             lastname: true,
+            photoId: true,
           },
         },
         GliederungToAccount: {

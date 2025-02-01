@@ -1,39 +1,39 @@
 <script setup lang="ts">
-import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/vue/24/outline'
-
-import Button from '../UIComponents/Button.vue'
-
 import GliederungLogo from '@/components/UIComponents/GliederungLogo.vue'
+import { loggedInAccount, logout } from '@/composables/useAuthentication'
+import { injectUnterveranstaltung } from '@/layouts/AnmeldungLayout.vue'
+import { RouterLink } from 'vue-router'
 
-interface Gliederung {
-  name?: string
-}
-
-withDefaults(
-  defineProps<{
-    gliederung?: Gliederung
-    showContactButton?: boolean
-  }>(),
-  {
-    showContactButton: false,
-    gliederung: () => {
-      return {
-        name: 'Schleswig-Holstein',
-      }
-    },
-  }
-)
+const unterveranstaltung = injectUnterveranstaltung()
 </script>
 
 <template>
-  <div class="flex items-center top-0 sticky bg-white dark:bg-dark-primary z-10 justify-between mb-4 py-6">
-    <GliederungLogo :name="gliederung?.name ? gliederung?.name : ''" />
-    <Button
-      v-if="showContactButton"
-      color="secondary"
-      title="Kontaktiere uns"
-    >
-      <ChatBubbleOvalLeftEllipsisIcon class="h-5" />
-    </Button>
+  <div class="flex items-center justify-between mb-4 py-6">
+    <GliederungLogo :name="unterveranstaltung?.gliederung?.name ?? ''" />
+
+    <div class="text-sm text-right">
+      <template v-if="loggedInAccount">
+        <p>
+          Du bist angemeldet als: <u>{{ loggedInAccount.person.firstname }} {{ loggedInAccount.person.lastname }}</u>
+        </p>
+        <p>
+          <u>Account wechseln?</u> oder
+          <u
+            class="cursor-pointer"
+            @click="() => logout(false)"
+          >
+            Abmelden?
+          </u>
+        </p>
+      </template>
+      <template v-else>
+        <RouterLink
+          class="cursor-pointer underline"
+          :to="{ name: 'Login', query: { redirect: '/ausschreibung/' + unterveranstaltung?.id } }"
+        >
+          Anmelden?
+        </RouterLink>
+      </template>
+    </div>
   </div>
 </template>

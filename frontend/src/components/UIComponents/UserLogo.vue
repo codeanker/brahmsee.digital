@@ -1,17 +1,16 @@
 <script setup lang="ts">
-import { computed, withDefaults } from 'vue'
-import AvatarEditModal from './AvatarEditModal.vue'
-import { ref } from 'vue'
-import { useAsyncState } from '@vueuse/core'
 import { apiClient } from '@/api'
 import { PencilSquareIcon } from '@heroicons/vue/24/outline'
-import { watch } from 'vue'
+import { useAsyncState } from '@vueuse/core'
+import { computed, ref, watch, withDefaults } from 'vue'
+import AvatarEditModal from './AvatarEditModal.vue'
+import Loading from './Loading.vue'
 
 const props = withDefaults(
   defineProps<{
     personId?: number
     photoId?: string | null
-    name?: string
+    name?: any
     firstname?: string
     lastname?: string
     statusLed?: boolean
@@ -19,18 +18,22 @@ const props = withDefaults(
     size?: 'sm' | 'xl'
     loading?: boolean
     edit?: boolean
+    cssClasses?: string
   }>(),
   {
     statusLed: false,
     border: false,
     size: 'sm',
     loading: false,
+    cssClasses: 'h-full w-full',
   }
 )
 
 const emit = defineEmits<{
   triggerRefresh: []
 }>()
+
+const photoId = ref(props.photoId)
 
 const getName = computed(() => {
   let name
@@ -48,19 +51,30 @@ const getName = computed(() => {
   }
 })
 
-const { state: photoUrl, execute: loadPhotoUrl } = useAsyncState(
+const {
+  isLoading: loading,
+  state: photoUrl,
+  execute: loadPhotoUrl,
+} = useAsyncState(
   async () => {
-    if (props.photoId) {
+    if (photoId.value) {
       return apiClient.file.fileGetUrl.query({
-        id: props.photoId,
+        id: photoId.value,
+        personId: props.personId,
       })
     }
   },
   null,
   {
-    immediate: !!props.personId,
+    immediate: true,
   }
 )
+
+const updated = (id?: string) => {
+  if (id) photoId.value = id
+  loadPhotoUrl()
+  emit('triggerRefresh')
+}
 
 watch(
   () => props.photoId,
@@ -79,8 +93,8 @@ const openAvatarEditModal = () => {
 <template>
   <div
     v-if="!loading"
-    :class="[{ border: border }, { 'border-primary-600': border }]"
-    class="relative h-full w-full"
+    :class="[{ border: border }, { 'border-primary-600': border }, cssClasses]"
+    class="relative"
   >
     <div
       class="z-10 flex h-full w-full items-center justify-center rounded-full bg-primary-200 font-bold text-primary-600 overflow-hidden"
@@ -115,7 +129,7 @@ const openAvatarEditModal = () => {
         class="z-10 flex items-center justify-center rounded-full bg-primary-200 p-3 font-bold text-primary-600"
         :class="[{ 'text-4xl': size === 'xl' }, { 'text-sm': size === 'sm' }]"
       >
-        <i class="fad fa-2x fa-spinner fa-pulse text-primary" />
+        <Loading size="sm" />
       </div>
       <div
         v-if="statusLed"
@@ -128,6 +142,7 @@ const openAvatarEditModal = () => {
     ref="refAvatarEditModal"
     :person-id="props.personId"
     :show-remove="!!photoUrl"
-    @trigger-refresh="emit('triggerRefresh')"
+    @trigger-refresh="updated"
+    @uploaded="(id) => updated(id)"
   />
 </template>
