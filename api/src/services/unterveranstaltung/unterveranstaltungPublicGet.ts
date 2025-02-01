@@ -2,16 +2,17 @@ import z from 'zod'
 
 import prisma from '../../prisma.js'
 import { definePublicQueryProcedure } from '../../types/defineProcedure.js'
+import { listFaqs } from '../faqs/faqListProcedure.js'
 
 export const unterveranstaltungPublicGetProcedure = definePublicQueryProcedure({
   key: 'publicGet',
   inputSchema: z.strictObject({
     id: z.number(),
   }),
-  async handler(options) {
+  async handler({ input }) {
     const unterveranstaltung = await prisma.unterveranstaltung.findUniqueOrThrow({
       where: {
-        id: options.input.id,
+        id: input.id,
       },
       select: {
         id: true,
@@ -64,6 +65,11 @@ export const unterveranstaltungPublicGetProcedure = definePublicQueryProcedure({
       },
     })
 
-    return unterveranstaltung
+    const faqs = await listFaqs(input.id)
+
+    return {
+      ...unterveranstaltung,
+      faqs,
+    }
   },
 })
