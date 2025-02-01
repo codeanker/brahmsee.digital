@@ -15,7 +15,7 @@ const props = withDefaults(
 
 const { state: anmeldungenPerson } = useAsyncState(
   async () => {
-    return await apiClient.anmeldung.gliederungGet.query({ personId: props.personId })
+    return await apiClient.anmeldung.get.query({ personId: props.personId })
   },
   null,
   {
@@ -50,7 +50,6 @@ const { state: anmeldungenPerson } = useAsyncState(
           {{ dayjs(anmeldung.createdAt).format('hh:mm') }}</span
         >
       </div>
-      <div v-if="anmeldung.tshirtBestellt">T-Shirt Größe {{ anmeldung.person.konfektionsgroesse }}</div>
       <div>
         <AnmeldungStatusSelect
           :id="anmeldung.id"

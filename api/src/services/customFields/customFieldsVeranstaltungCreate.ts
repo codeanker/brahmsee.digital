@@ -44,7 +44,11 @@ export const customFieldsVeranstaltungCreate = defineProtectedMutateProcedure({
     return prisma.customField.create({
       data: {
         ...template,
-        veranstaltungId: input.veranstaltungId,
+        veranstaltung: {
+          connect: {
+            id: input.veranstaltungId,
+          },
+        },
       },
     })
   },

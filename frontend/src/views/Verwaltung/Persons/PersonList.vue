@@ -17,5 +17,6 @@
 </template>
 
 <script setup lang="ts">
+import PersonTable from '@/components/data/PersonTable.vue'
 import { PlusIcon } from '@heroicons/vue/24/outline'
 </script>
