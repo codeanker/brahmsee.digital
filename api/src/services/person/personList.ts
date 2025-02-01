@@ -4,6 +4,7 @@ import z from 'zod'
 import prisma from '../../prisma.js'
 import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
 import { defineQuery, getOrderBy } from '../../types/defineQuery.js'
+import type { AuthenticatedContext } from '../../trpc.js'
 
 const inputSchema = defineQuery({
   filter: z.strictObject({
@@ -24,13 +25,14 @@ export const personListProcedure = defineProtectedQueryProcedure({
   key: 'list',
   roleIds: [Role.ADMIN, Role.USER],
   inputSchema,
-  handler: (options) => {
-    const { skip, take } = options.input.pagination
+  handler: ({ ctx, input }) => {
+    const { skip, take } = input.pagination
+
     return prisma.person.findMany({
       skip,
       take,
-      where: getWhere(options.input.filter, options.ctx.account),
-      orderBy: getOrderBy(options.input.orderBy),
+      where: getWhere(input.filter, ctx),
+      orderBy: getOrderBy(input.orderBy),
       select: {
         id: true,
         firstname: true,
@@ -72,19 +74,29 @@ export const personCountProcedure = defineProtectedQueryProcedure({
   inputSchema: inputSchema.pick({ filter: true }),
   async handler(options) {
     const total = await prisma.person.count({
-      where: getWhere(options.input.filter, options.ctx.account),
+      where: getWhere(options.input.filter, options.ctx),
     })
     return total
   },
 })
 
-function getWhere(
-  filter: TInput['filter'],
-  account: {
-    id: number
-    role: Role
+export function getPersonProtectionFilter({
+  account,
+}: AuthenticatedContext): Prisma.PersonWhereInput | Prisma.PersonWhereUniqueInput {
+  const where: Prisma.PersonWhereInput = {}
+
+  if (account.role === Role.USER) {
+    where.anmeldungen = {
+      every: {
+        accountId: account.id,
+      },
+    }
   }
-): Prisma.PersonWhereInput {
+
+  return where
+}
+
+function getWhere(filter: TInput['filter'], ctx: AuthenticatedContext): Prisma.PersonWhereInput {
   const where: Prisma.PersonWhereInput = {}
 
   if (filter.name != null && filter.name != '') {
@@ -98,13 +110,8 @@ function getWhere(
     }
   }
 
-  if (account.role === Role.USER) {
-    where.anmeldungen = {
-      some: {
-        accountId: account.id,
-      },
-    }
+  return {
+    ...where,
+    ...getPersonProtectionFilter(ctx),
   }
-
-  return where
 }

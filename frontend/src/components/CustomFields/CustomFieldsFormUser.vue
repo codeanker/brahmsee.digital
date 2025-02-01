@@ -30,7 +30,7 @@ const bindings = toRef(
           acc[element.field.id] = element.value
           return acc
         },
-        {} as Record<number, any>
+        {} as Record<number, unknown>
       )
     : {}
 )

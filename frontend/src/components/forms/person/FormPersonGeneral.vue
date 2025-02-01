@@ -32,7 +32,7 @@ export interface FormPersonGeneralSubmit {
   comment: string
 }
 
-type Person = Awaited<RouterOutput['person']['verwaltungGet']>
+type Person = Awaited<RouterOutput['person']['get']>
 
 const props = defineProps<{
   isLoading: boolean

@@ -5,7 +5,7 @@ import { apiClient } from '../api'
 import router from '@/router'
 import type { RouterOutput } from '@codeanker/api'
 
-type LoggedInAccount = Awaited<RouterOutput['authentication']['login']>['user']
+type LoggedInAccount = RouterOutput['authentication']['login']['account']
 
 export const loggedInAccount = ref<LoggedInAccount>()
 export const isAuthenticated = computed(() => loggedInAccount.value !== undefined)
@@ -17,11 +17,13 @@ export async function login({ email, password }: { email: string; password: stri
   loginPending.value = true
   loginError.value = null
   try {
-    const authResult = await apiClient.authentication.login.mutate({ email, password })
-    loggedInAccount.value = authResult.user
-    localStorage.setItem('jwt', authResult.accessToken)
+    const { accessToken, account } = await apiClient.authentication.login.mutate({ email, password })
+
+    loggedInAccount.value = account
+    localStorage.setItem('jwt', accessToken)
     loginPending.value = false
-    return authResult
+
+    return { accessToken, account }
   } catch (error) {
     loginPending.value = false
     loginError.value = error as Error

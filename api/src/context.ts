@@ -3,6 +3,8 @@ import type { CreateTrpcKoaContextOptions } from 'trpc-koa-adapter'
 
 import { getEntityIdFromHeader } from './authentication.js'
 import { logger } from './logger.js'
+import client from './prisma.js'
+import type { Account } from '@prisma/client'
 
 function getAuthorizationHeader(
   headers: CreateTrpcKoaContextOptions['req']['headers'] | FetchCreateContextFnOptions['req']['headers']
@@ -14,16 +16,33 @@ function getAuthorizationHeader(
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/require-await
-export async function createContext({ req }: CreateTrpcKoaContextOptions | FetchCreateContextFnOptions) {
+export async function createContext({
+  req,
+}: CreateTrpcKoaContextOptions | FetchCreateContextFnOptions): Promise<Context> {
   try {
     const authorization = getAuthorizationHeader(req.headers)
     if (authorization === null) throw new Error('No authorization header found.')
 
-    const accountId = getEntityIdFromHeader(authorization)
+    const accountIdFromHeader = getEntityIdFromHeader(authorization)
+    if (accountIdFromHeader === undefined) {
+      return {
+        authenticated: false,
+        account: undefined,
+        accountId: undefined,
+      }
+    }
+
+    const accountId = parseInt(accountIdFromHeader)
+    const account = await client.account.findFirstOrThrow({
+      where: {
+        id: accountId,
+      },
+    })
 
     return {
-      accountId: typeof accountId === 'string' ? parseInt(accountId) : accountId,
+      authenticated: true,
+      accountId,
+      account,
     }
   } catch (error) {
     if (error instanceof Error) {
@@ -35,4 +54,16 @@ export async function createContext({ req }: CreateTrpcKoaContextOptions | Fetch
   }
 }
 
-export type Context = Awaited<ReturnType<typeof createContext>>
+type AuthContext =
+  | {
+      authenticated: false
+      accountId: undefined
+      account: undefined
+    }
+  | {
+      authenticated: true
+      accountId: number
+      account: Account
+    }
+
+export type Context = AuthContext
