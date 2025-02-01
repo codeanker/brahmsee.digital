@@ -7,10 +7,11 @@ import dayjs from 'dayjs'
 import XLSX from 'xlsx'
 
 import { getEntityIdFromHeader } from '../../authentication.js'
-import { AnmeldungStatusMapping, GenderMapping } from '../../enumMappings/index.js'
 import prisma from '../../prisma.js'
 import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
 import { getSecurityWorksheet } from '../helpers/getSecurityWorksheet.js'
+import { AnmeldungStatusMapping } from '../../types/enums/mappings/AnmeldungStatus.js'
+import { GenderMapping } from '../../types/enums/mappings/Gender.js'
 
 export async function veranstaltungTeilnehmendenliste(ctx) {
   const jwt = ctx.query.jwt
@@ -85,7 +86,6 @@ export async function veranstaltungTeilnehmendenliste(ctx) {
           email: true,
           telefon: true,
           essgewohnheit: true,
-          konfektionsgroesse: true,
           gliederung: {
             select: {
               id: true,
@@ -111,7 +111,6 @@ export async function veranstaltungTeilnehmendenliste(ctx) {
       },
       createdAt: true,
       status: true,
-      tshirtBestellt: true,
       unterveranstaltung: {
         select: {
           veranstaltung: {
@@ -161,8 +160,6 @@ export async function veranstaltungTeilnehmendenliste(ctx) {
       ['Gliederung']: anmeldung.person.gliederung?.name,
       ['Email']: anmeldung.person.email,
       ['Telefon']: anmeldung.person.telefon,
-      ['T-Shirt']: anmeldung.tshirtBestellt,
-      ['Konfektionsgröße']: anmeldung.person.konfektionsgroesse,
       ['Essgewohnheit']: anmeldung.person.essgewohnheit,
       ['Anmeldedatum']: anmeldung.createdAt,
       ...customFields,

@@ -24,7 +24,6 @@ withDefaults(
   <div>
     <label
       v-if="label"
-      class="font-medium"
       :for="id || name || label"
       >{{ label }}
       <span

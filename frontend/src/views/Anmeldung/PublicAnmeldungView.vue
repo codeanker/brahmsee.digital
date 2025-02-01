@@ -1,7 +1,21 @@
 <script setup lang="ts">
+import Button from '@/components/UIComponents/Button.vue'
+import { ChevronLeftIcon } from '@heroicons/vue/24/solid'
+import { useRouter } from 'vue-router'
 import AnmeldungFormGeneral from './AnmeldungFormGeneral.vue'
+
+const router = useRouter()
 </script>
 
 <template>
+  <Button
+    class="mb-10 flex flex-row items-center"
+    color="warning"
+    @click="router.back()"
+  >
+    <ChevronLeftIcon class="h-5 mr-2" />
+    <span>Abbrechen & Zurück zur Ausschreibung</span>
+  </Button>
+
   <AnmeldungFormGeneral :is-public="true" />
 </template>

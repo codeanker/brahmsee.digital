@@ -18,7 +18,9 @@ const route = useRoute()
       class="p-6 lg:order-1 lg:col-span-2 2xl:col-span-1 flex flex-col grow"
       :class="{ 'h-screen': route.meta?.useFullheight }"
     >
-      <router-view />
+      <slot>
+        <router-view />
+      </slot>
     </div>
   </div>
 </template>
