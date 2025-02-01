@@ -1,4 +1,4 @@
-import { type AnmeldungStatus } from '@prisma/client'
+import type { AnmeldungStatus } from '@prisma/client'
 
 import { defineEnumMapping } from '../defineEnumMapping.js'
 

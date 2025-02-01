@@ -4,15 +4,15 @@ import z from 'zod'
 import prisma from '../../prisma.js'
 import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
 
-export const anmeldungVerwaltungGetProcedure = defineProtectedQueryProcedure({
-  key: 'verwaltungGet',
-  roleIds: [Role.ADMIN],
+export const anmeldungGetProcedure = defineProtectedQueryProcedure({
+  key: 'get',
+  roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
   inputSchema: z.strictObject({
     anmeldungId: z.number().optional(),
     personId: z.number().optional(),
   }),
-  async handler(options) {
-    const anmeldungen = await prisma.anmeldung.findMany({
+  handler: (options) => {
+    return prisma.anmeldung.findMany({
       where: {
         OR: [
           {
@@ -28,7 +28,6 @@ export const anmeldungVerwaltungGetProcedure = defineProtectedQueryProcedure({
         status: true,
         mahlzeiten: true,
         uebernachtungsTage: true,
-        tshirtBestellt: true,
         createdAt: true,
         comment: true,
         customFieldValues: {
@@ -57,7 +56,6 @@ export const anmeldungVerwaltungGetProcedure = defineProtectedQueryProcedure({
             essgewohnheit: true,
             nahrungsmittelIntoleranzen: true,
             weitereIntoleranzen: true,
-            konfektionsgroesse: true,
             notfallkontakte: true,
             address: true,
             photoId: true,
@@ -77,7 +75,5 @@ export const anmeldungVerwaltungGetProcedure = defineProtectedQueryProcedure({
         },
       },
     })
-
-    return anmeldungen
   },
 })

@@ -39,7 +39,12 @@ export const personGliederungListProcedure = defineProtectedQueryProcedure({
         lastname: options.input.filter.lastname,
         gliederungId: options.ctx.account.person.gliederungId,
       },
-      include: {
+      select: {
+        id: true,
+        firstname: true,
+        lastname: true,
+        birthday: true,
+        photoId: true,
         gliederung: {
           select: {
             name: true,

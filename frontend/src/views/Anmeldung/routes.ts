@@ -3,12 +3,12 @@ import type { Route } from '@/router'
 const routesAusschreibungen: Route[] = [
   {
     name: 'Ausschreibung',
-    path: '/ausschreibung',
-    component: () => import('@/layouts/PublicLayout.vue'),
+    path: '/ausschreibung/:unterveranstaltungId',
+    component: () => import('@/layouts/AnmeldungLayout.vue'),
     children: [
       {
         name: 'Public Ausschreibung',
-        path: '/ausschreibung/:ausschreibungId',
+        path: '',
         component: () => import('./PublicAusschreibungView.vue'),
         meta: {
           public: true,
@@ -16,7 +16,7 @@ const routesAusschreibungen: Route[] = [
       },
       {
         name: 'Public Anmeldung',
-        path: '/ausschreibung/:ausschreibungId/anmeldung',
+        path: 'anmeldung',
         component: () => import('./PublicAnmeldungView.vue'),
         meta: {
           public: true,
@@ -25,7 +25,7 @@ const routesAusschreibungen: Route[] = [
       },
       {
         name: 'Public Anmeldung Result',
-        path: '/ausschreibung/:ausschreibungId/anmeldung/result',
+        path: 'anmeldung/result',
         component: () => import('../Anmeldung/PublicAnmeldungResultView.vue'),
         meta: {
           public: true,

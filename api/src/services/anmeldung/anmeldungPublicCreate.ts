@@ -7,7 +7,9 @@ import { customFieldValuesCreateMany, defineCustomFieldValues } from '../../type
 import { definePublicMutateProcedure } from '../../types/defineProcedure.js'
 import logActivity from '../../util/activity.js'
 import { sendMail } from '../../util/mail.js'
-import { personSchema, getPersonCreateData } from '../person/schema/person.schema.js'
+import { getPersonCreateData, personSchema } from '../person/schema/person.schema.js'
+import type { Context } from '../../context.js'
+import { randomUUID } from 'node:crypto'
 
 export const inputSchema = z.strictObject({
   data: personSchema.extend({
@@ -21,7 +23,13 @@ export const inputSchema = z.strictObject({
   customFieldValues: defineCustomFieldValues(),
 })
 
-export async function handle(input: z.infer<typeof inputSchema>, isPublic: boolean) {
+type HandleProps = {
+  ctx: Context
+  input: z.infer<typeof inputSchema>
+  isPublic: boolean
+}
+
+export async function handle({ ctx, input, isPublic }: HandleProps) {
   const unterveranstaltung = await prisma.unterveranstaltung.findUniqueOrThrow({
     where: {
       id: input.data.unterveranstaltungId,
@@ -40,6 +48,11 @@ export async function handle(input: z.infer<typeof inputSchema>, isPublic: boole
           },
         },
       },
+      gliederung: {
+        select: {
+          name: true,
+        },
+      },
     },
   })
 
@@ -51,48 +64,36 @@ export async function handle(input: z.infer<typeof inputSchema>, isPublic: boole
   }
 
   const personData = await getPersonCreateData(input.data)
-
   const person = await prisma.person.create({
-    data: {
-      ...personData,
-      anmeldungen: {
-        create: {
-          unterveranstaltungId: unterveranstaltung.id,
-          mahlzeiten: input.data.mahlzeitenIds
-            ? {
-                connect: input.data.mahlzeitenIds.map((id) => ({
-                  id,
-                })),
-              }
-            : undefined,
-          uebernachtungsTage: input.data.uebernachtungsTage,
-          tshirtBestellt: input.data.tshirtBestellt,
-          comment: input.data.comment,
-          createdAt: new Date(),
-          customFieldValues: {
-            createMany: customFieldValuesCreateMany(input.customFieldValues),
-          },
-        },
-      },
-    },
+    data: personData,
     select: {
       id: true,
-      firstname: true,
-      lastname: true,
-      anmeldungen: {
-        take: 1,
-        orderBy: {
-          createdAt: 'desc',
-        },
-      },
-      gliederung: {
-        select: {
-          name: true,
-        },
-      },
     },
   })
-  const anmeldung = person.anmeldungen[0]
+
+  const assignmentCode = ctx.accountId === undefined ? randomUUID() : null
+  const anmeldung = await prisma.anmeldung.create({
+    data: {
+      unterveranstaltungId: unterveranstaltung.id,
+      accountId: ctx.accountId,
+      personId: person.id,
+      mahlzeiten: input.data.mahlzeitenIds
+        ? {
+            connect: input.data.mahlzeitenIds.map((id) => ({
+              id,
+            })),
+          }
+        : undefined,
+      uebernachtungsTage: input.data.uebernachtungsTage,
+      comment: input.data.comment,
+      createdAt: new Date(),
+      customFieldValues: {
+        createMany: customFieldValuesCreateMany(input.customFieldValues),
+      },
+      assignmentCode,
+    },
+  })
+
   await Promise.all([
     logActivity({
       type: 'CREATE',
@@ -104,7 +105,7 @@ export async function handle(input: z.infer<typeof inputSchema>, isPublic: boole
       type: 'CREATE',
       description: 'new public registration',
       subjectType: 'anmeldung',
-      subjectId: anmeldung?.id,
+      subjectId: anmeldung.id,
     }),
   ])
 
@@ -114,20 +115,19 @@ export async function handle(input: z.infer<typeof inputSchema>, isPublic: boole
     categories: ['anmeldung', 'create'],
     template: 'registration-successful',
     variables: {
-      name: `${person.firstname} ${person.lastname}`,
-      gliederung: person.gliederung!.name,
+      name: `${personData.firstname} ${personData.lastname}`,
+      gliederung: unterveranstaltung.gliederung.name,
       veranstaltung: unterveranstaltung.veranstaltung.name,
       hostname: unterveranstaltung.veranstaltung.hostname!.hostname,
+      assignmentCode,
     },
   })
-
-  return person
 }
 
 export const anmeldungPublicCreateProcedure = definePublicMutateProcedure({
   key: 'publicCreate',
   inputSchema: inputSchema,
-  async handler(options) {
-    await handle(options.input, true)
+  async handler({ ctx, input }) {
+    await handle({ ctx, input, isPublic: true })
   },
 })

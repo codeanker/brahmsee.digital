@@ -13,16 +13,26 @@ export const fileGetUrlActionProcedure = definePublicQueryProcedure({
   key: 'fileGetUrl',
   inputSchema: z.strictObject({
     id: z.string().uuid().nullable(),
+    personId: z.number().int().optional(),
   }),
   async handler({ input }) {
     if (typeof input.id !== 'string') {
       return null
     }
 
+    type FileWhereUniqueInput = Parameters<typeof prisma.file.findUnique>[0]['where']
+    const where: FileWhereUniqueInput = { id: input.id }
+
+    if (input.personId !== null) {
+      where.Persons = {
+        some: {
+          id: input.personId,
+        },
+      }
+    }
+
     const file = await prisma.file.findUnique({
-      where: {
-        id: input.id,
-      },
+      where,
       select: {
         id: true,
         provider: true,

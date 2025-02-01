@@ -24,18 +24,30 @@ const emit = defineEmits<{
 
 const currentStatus = ref(props.status)
 const statusOptions = getEnumOptions(AnmeldungStatusMapping)
-const availableOptions = statusOptions.filter(
-  (status) => status.value == 'ABGELEHNT' || status.value == 'STORNIERT' || status.value == 'BESTAETIGT'
-)
+const statusOptionsVisibility: Record<AnmeldungStatus, () => boolean> = {
+  OFFEN: () => false,
+  BESTAETIGT: () => loggedInAccount.value?.role === 'ADMIN' || loggedInAccount.value?.role === 'GLIEDERUNG_ADMIN',
+  ABGELEHNT: () => loggedInAccount.value?.role === 'ADMIN' || loggedInAccount.value?.role === 'GLIEDERUNG_ADMIN',
+  STORNIERT: () => loggedInAccount.value?.role === 'USER',
+}
+
+const availableOptions = computed(() => statusOptions.filter((o) => statusOptionsVisibility[o.value]()))
 
 const getStatusHuman = computed(() => (anmeldungStatus) => {
   return statusOptions.find((status) => status.value === anmeldungStatus)?.label
 })
 
 const isStatusChangeAvailable = computed(() => {
-  if (loggedInAccount.value?.role === 'ADMIN' || props.meldeschluss > new Date()) {
+  if (loggedInAccount.value?.role === 'ADMIN') {
     return true
   }
+  if (props.status === 'ABGELEHNT') {
+    return false
+  }
+  if (props.meldeschluss > new Date()) {
+    return true
+  }
+
   return false
 })
 

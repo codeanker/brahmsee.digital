@@ -1,10 +1,10 @@
 import { input, password as passwordInput, select, search } from '@inquirer/prompts'
 import { Role } from '@prisma/client'
 
-import { getEnumOptions, roleMapping } from '../enumMappings/index.js'
 import prisma from '../prisma.js'
 import { getAccountCreateData } from '../services/account/schema/account.schema.js'
 import logActivity from '../util/activity.js'
+import { getEnumOptions, roleMapping } from '../client.js'
 
 async function createUser() {
   const email = await input({ message: 'E-Mail' })

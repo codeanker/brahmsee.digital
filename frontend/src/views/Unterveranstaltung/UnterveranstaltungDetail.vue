@@ -15,7 +15,7 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { apiClient } from '@/api'
-import AnmeldungenTable from '@/components/AnmeldungenTable.vue'
+import AnmeldungenTable from '@/components/data/AnmeldungenTable.vue'
 import CustomFieldsTable from '@/components/CustomFields/CustomFieldsTable.vue'
 import DownloadLink from '@/components/DownloadLink.vue'
 import FilesExport from '@/components/FilesExport.vue'
@@ -46,21 +46,13 @@ const { state: unterveranstaltung } = useAsyncState(async () => {
 }, undefined)
 
 const { state: countAnmeldungen } = useAsyncState(async () => {
-  if (loggedInAccount.value?.role === 'ADMIN')
-    return apiClient.anmeldung.verwaltungCount.query({
-      filter: {
-        unterveranstaltungId: parseInt(route.params.unterveranstaltungId as string),
-      },
-    })
-  else
-    return apiClient.anmeldung.gliederungCount.query({
-      filter: {
-        unterveranstaltungId: parseInt(route.params.unterveranstaltungId as string),
-      },
-    })
+  return apiClient.anmeldung.count.query({
+    filter: {
+      type: 'unterveranstaltung',
+      unterveranstaltungId: parseInt(route.params.unterveranstaltungId as string),
+    },
+  })
 }, undefined)
-
-// @ToDo count for Gliederungen
 
 interface KeyInfo {
   title: string
@@ -229,7 +221,7 @@ const files = [
         </div>
         <AnmeldungenTable
           v-if="unterveranstaltung"
-          :unterveranstaltung-id="unterveranstaltung?.id"
+          :filter="{ type: 'unterveranstaltung', unterveranstaltungId: unterveranstaltung.id }"
         />
       </Tab>
       <Tab>
