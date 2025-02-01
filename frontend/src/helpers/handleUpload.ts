@@ -2,11 +2,22 @@ import { BlockBlobClient } from '@azure/storage-blob'
 
 import { apiClient } from '@/api'
 
+export function handleUpload(file: File): Promise<{ id: string }>
+export function handleUpload(file: File[]): Promise<{ id: string }[]>
+
 /**
  * Upload file
  * @param file
  */
-export const handleUpload = async (file: File) => {
+export async function handleUpload(file: File | File[]) {
+  if (Array.isArray(file)) {
+    const results: { id: string }[] = []
+    for await (const el of file) {
+      results.push(await handleUpload(el))
+    }
+    return results
+  }
+
   const dbFile = await apiClient.file.fileCreate.mutate({ mimetype: file.type })
 
   const formData = new FormData()

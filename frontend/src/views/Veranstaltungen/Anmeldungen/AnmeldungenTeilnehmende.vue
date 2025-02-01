@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { PlusIcon } from '@heroicons/vue/24/outline'
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
 
 import { useVeranstaltung } from '../../../composables/useVeranstaltung'
 
@@ -9,8 +7,6 @@ import AnmeldungenTable from '@/components/data/AnmeldungenTable.vue'
 import { useRouteTitle } from '@/composables/useRouteTitle'
 
 const { veranstaltung } = useVeranstaltung()
-const route = useRoute()
-const veranstaltungId = computed(() => Number(route.params.veranstaltungId))
 const { setTitle } = useRouteTitle()
 
 setTitle('Teilnehmende Personen')
@@ -33,7 +29,7 @@ setTitle('Teilnehmende Personen')
   </div>
   <AnmeldungenTable
     v-if="veranstaltung"
-    :veranstaltung-id="veranstaltungId"
+    :filter="{ type: 'veranstaltung', veranstaltungId: veranstaltung.id }"
     :show-stats="true"
   />
 </template>

@@ -7,9 +7,8 @@ import { customFieldValuesCreateMany, defineCustomFieldValues } from '../../type
 import { definePublicMutateProcedure } from '../../types/defineProcedure.js'
 import logActivity from '../../util/activity.js'
 import { sendMail } from '../../util/mail.js'
-import { personSchema, getPersonCreateData } from '../person/schema/person.schema.js'
-import { randomUUID } from 'node:crypto'
-import { sendMailConfirmEmailRequest } from '../account/helpers/sendMailConfirmEmailRequest.js'
+import { getPersonCreateData, personSchema } from '../person/schema/person.schema.js'
+import type { Context } from '../../context.js'
 
 export const inputSchema = z.strictObject({
   data: personSchema.extend({
@@ -23,7 +22,13 @@ export const inputSchema = z.strictObject({
   customFieldValues: defineCustomFieldValues(),
 })
 
-export async function handle(input: z.infer<typeof inputSchema>, isPublic: boolean) {
+type HandleProps = {
+  ctx: Context
+  input: z.infer<typeof inputSchema>
+  isPublic: boolean
+}
+
+export async function handle({ ctx, input, isPublic }: HandleProps) {
   const unterveranstaltung = await prisma.unterveranstaltung.findUniqueOrThrow({
     where: {
       id: input.data.unterveranstaltungId,
@@ -42,6 +47,11 @@ export async function handle(input: z.infer<typeof inputSchema>, isPublic: boole
           },
         },
       },
+      gliederung: {
+        select: {
+          name: true,
+        },
+      },
     },
   })
 
@@ -53,53 +63,18 @@ export async function handle(input: z.infer<typeof inputSchema>, isPublic: boole
   }
 
   const personData = await getPersonCreateData(input.data)
-  const account = await prisma.account.upsert({
-    where: {
-      email: input.data.email,
-    },
-    create: {
-      email: input.data.email,
-      role: 'USER',
-      person: {
-        create: personData,
-      },
-    },
-    update: {},
+  const person = await prisma.person.create({
+    data: personData,
     select: {
       id: true,
-      personId: true,
-      activatedAt: true,
-      person: {
-        select: {
-          gliederung: {
-            select: {
-              name: true,
-            },
-          },
-        },
-      },
     },
   })
-
-  // send confirmation email if new account has been created
-  if (account.activatedAt === null) {
-    const activationToken = randomUUID()
-    await prisma.account.update({
-      where: {
-        id: account.id,
-      },
-      data: {
-        activationToken,
-      },
-    })
-    await sendMailConfirmEmailRequest(input.data.email, activationToken)
-  }
 
   const anmeldung = await prisma.anmeldung.create({
     data: {
       unterveranstaltungId: unterveranstaltung.id,
-      accountId: account.id,
-      personId: account.personId,
+      accountId: ctx.accountId,
+      personId: person.id,
       mahlzeiten: input.data.mahlzeitenIds
         ? {
             connect: input.data.mahlzeitenIds.map((id) => ({
@@ -108,7 +83,6 @@ export async function handle(input: z.infer<typeof inputSchema>, isPublic: boole
           }
         : undefined,
       uebernachtungsTage: input.data.uebernachtungsTage,
-      tshirtBestellt: input.data.tshirtBestellt,
       comment: input.data.comment,
       createdAt: new Date(),
       customFieldValues: {
@@ -122,7 +96,7 @@ export async function handle(input: z.infer<typeof inputSchema>, isPublic: boole
       type: 'CREATE',
       description: 'person created via public registration',
       subjectType: 'person',
-      subjectId: account.personId,
+      subjectId: person.id,
     }),
     logActivity({
       type: 'CREATE',
@@ -139,19 +113,17 @@ export async function handle(input: z.infer<typeof inputSchema>, isPublic: boole
     template: 'registration-successful',
     variables: {
       name: `${personData.firstname} ${personData.lastname}`,
-      gliederung: account.person.gliederung!.name,
+      gliederung: unterveranstaltung.gliederung.name,
       veranstaltung: unterveranstaltung.veranstaltung.name,
       hostname: unterveranstaltung.veranstaltung.hostname!.hostname,
     },
   })
-
-  return account
 }
 
 export const anmeldungPublicCreateProcedure = definePublicMutateProcedure({
   key: 'publicCreate',
   inputSchema: inputSchema,
-  async handler(options) {
-    await handle(options.input, true)
+  async handler({ ctx, input }) {
+    await handle({ ctx, input, isPublic: true })
   },
 })

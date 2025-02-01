@@ -5,7 +5,7 @@ import { personAuthenticatedGetProcedure } from './personAuthenticatedGet.js'
 import { personGliederungGetProcedure } from './personGliederungGet.js'
 import { personGliederungListProcedure } from './personGliederungList.js'
 import { personGliederungPatchProcedure } from './personGliederungPatch.js'
-import { personVerwaltungCountProcedure, personVerwaltungListProcedure } from './personList.js'
+import { personCountProcedure, personListProcedure } from './personList.js'
 import { personVerwaltungCreateProcedure } from './personVerwaltungCreate.js'
 import { personVerwaltungGetProcedure } from './personVerwaltungGet.js'
 import { personVerwaltungPatchProcedure } from './personVerwaltungPatch.js'
@@ -17,8 +17,8 @@ export const personRouter = mergeRouters(
   personGliederungListProcedure.router,
   personVerwaltungGetProcedure.router,
   personVerwaltungCreateProcedure.router,
-  personVerwaltungListProcedure.router,
-  personVerwaltungCountProcedure.router,
+  personListProcedure.router,
+  personCountProcedure.router,
   personVerwaltungPatchProcedure.router,
   personVerwaltungRemoveProcedure.router,
   personGliederungGetProcedure.router,

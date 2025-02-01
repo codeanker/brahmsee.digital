@@ -74,7 +74,7 @@ const tabs = computed(() => {
     { name: 'Allgemein', icon: WalletIcon },
     { name: 'Dokumente', icon: DocumentIcon },
     { name: 'Bedingungen', icon: ClipboardDocumentListIcon },
-    { name: 'Unterveranstaltungen', icon: MegaphoneIcon },
+    { name: 'Ausschreibungen', icon: MegaphoneIcon },
     { name: 'Felder', icon: SquaresPlusIcon },
   ]
   return tabs

@@ -1,17 +1,14 @@
 <script setup lang="ts">
-import { ChevronLeftIcon, FaceFrownIcon } from '@heroicons/vue/24/outline'
+import { FaceFrownIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
-import { computed, ref, watch, withDefaults, defineProps } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { computed, defineProps, ref, watch, withDefaults } from 'vue'
+import { useRouter } from 'vue-router'
 
 import { apiClient } from '@/api'
 import CustomField from '@/components/CustomFields/CustomField.vue'
 import FormPersonGeneral, { type FormPersonGeneralSubmit } from '@/components/forms/person/FormPersonGeneral.vue'
 import Drawer from '@/components/LayoutComponents/Drawer.vue'
-import PublicFooter from '@/components/LayoutComponents/PublicFooter.vue'
-import PublicHeader from '@/components/LayoutComponents/PublicHeader.vue'
-import Button from '@/components/UIComponents/Button.vue'
-import Loading from '@/components/UIComponents/Loading.vue'
+import { injectUnterveranstaltung } from '@/layouts/AnmeldungLayout.vue'
 import { type NahrungsmittelIntoleranz } from '@codeanker/api'
 import { dayjs } from '@codeanker/helpers'
 
@@ -31,29 +28,10 @@ const props = withDefaults(
   }
 )
 const router = useRouter()
-const route = useRoute()
 
-const unterveranstaltungId = computed(() => {
-  if (props.unterveranstaltungId !== undefined) {
-    return props.unterveranstaltungId
-  }
+const unterveranstaltung = injectUnterveranstaltung()
 
-  if (props.isPublic) {
-    return parseInt(route.params.ausschreibungId as string)
-  } else {
-    return parseInt(route.params.ausschreibungId as string)
-  }
-})
-
-const { state: unterveranstaltung, isLoading } = useAsyncState(async () => {
-  if (props.isPublic) {
-    return apiClient.unterveranstaltung.publicGet.query({ id: unterveranstaltungId.value })
-  }
-
-  return apiClient.unterveranstaltung.verwaltungGet.query({ id: unterveranstaltungId.value })
-}, undefined)
-
-const isClosed = computed(() => dayjs().isAfter(unterveranstaltung.value?.meldeschluss))
+const isClosed = computed(() => dayjs().isAfter(unterveranstaltung?.value?.meldeschluss))
 
 if (!props.ignoreClosingDate && props.isPublic) {
   watch(isClosed, (value) => {
@@ -70,7 +48,8 @@ const { state: customFields } = useAsyncState(async () => {
   //@TODO Nur Felder für die Position anzeigen
   return apiClient.customFields.list.query({
     entity: 'unterveranstaltung',
-    entityId: unterveranstaltungId.value,
+    entityId: unterveranstaltung.value.id,
+    position: 'PUBLIC_ANMELDUNG',
   })
 }, undefined)
 
@@ -85,6 +64,10 @@ const {
   isLoading: isLoadingCreate,
 } = useAsyncState(
   async (anmeldung: FormPersonGeneralSubmit) => {
+    if (!unterveranstaltung?.value) {
+      return
+    }
+
     const nahrungsmittelIntoleranzen = Object.entries(anmeldung.essgewohnheiten.intoleranzen)
       .filter((entry) => {
         return entry[1]
@@ -95,8 +78,8 @@ const {
 
     await endpoint.mutate({
       data: {
-        unterveranstaltungId: props.unterveranstaltungId ?? Number(route.params.ausschreibungId),
-        gliederungId: Number(unterveranstaltung.value?.gliederung.id),
+        unterveranstaltungId: unterveranstaltung.value.id,
+        gliederungId: unterveranstaltung.value.gliederung.id ?? -1,
 
         firstname: anmeldung.stammdaten.firstname,
         lastname: anmeldung.stammdaten.lastname,
@@ -114,8 +97,6 @@ const {
         nahrungsmittelIntoleranzen,
         weitereIntoleranzen: anmeldung.essgewohnheiten.weitereIntoleranzen,
 
-        tshirtBestellt: anmeldung.tshirt.bestellen,
-        konfektionsgroesse: anmeldung.tshirt.groesse,
         comment: anmeldung.comment,
       },
       customFieldValues: Object.entries(customFieldValues.value).map((entry) => ({
@@ -125,7 +106,7 @@ const {
     })
 
     if (props.isPublic) {
-      router.push('/ausschreibung/' + route.params.ausschreibungId + '/anmeldung/result')
+      router.push('/ausschreibung/' + unterveranstaltung?.value.id + '/anmeldung/result')
     } else {
       router.back()
     }
@@ -166,37 +147,13 @@ const {
     :class="{ 'lg:px-20': props.isPublic }"
   >
     <div
-      v-if="unterveranstaltung && !isLoading"
+      v-if="unterveranstaltung"
       class="grow"
     >
-      <!-- Header -->
-      <PublicHeader
-        v-if="props.isPublic"
-        :gliederung="unterveranstaltung.gliederung"
-      />
-
-      <Button
-        v-if="props.isPublic"
-        class="mb-10 flex flex-row items-center"
-        color="secondary"
-        @click="router.back()"
-      >
-        <ChevronLeftIcon class="h-5 mr-2" />
-        <span>Zurück zur Ausschreibung</span>
-      </Button>
-
-      <template v-if="props.isPublic">
-        <div class="text-3xl font-medium">Anmeldung</div>
-        <div class="mb-5">
-          {{ unterveranstaltung?.veranstaltung.name }}
-        </div>
-      </template>
-
-      <!-- Form -->
       <FormPersonGeneral
         :is-loading="isLoadingCreate"
         :error="errorCreate as Error"
-        submit-text="Anmelden"
+        submit-text="Anmeldung abschicken"
         :is-public-anmeldung="props.isPublic"
         :show-tshirt="unterveranstaltung?.veranstaltung?.hostname?.hostname !== 'landes.digital'"
         @submit="(value) => createAnmeldung(undefined, value)"
@@ -227,23 +184,13 @@ const {
           class="my-5"
         />
       </FormPersonGeneral>
-      <PublicFooter v-if="props.isPublic" />
     </div>
     <div
       v-else
       class="grow flex flex-col items-center justify-center font-semibold"
     >
-      <template v-if="isLoading">
-        <Loading
-          size="md"
-          class="mb-2"
-        />
-        Lade Daten...
-      </template>
-      <template v-else>
-        <FaceFrownIcon class="w-20 h-20 text-primary-500 mb-5" />
-        <span>Es ist ein Fehler aufgetreten</span>
-      </template>
+      <FaceFrownIcon class="w-20 h-20 text-primary-500 mb-5" />
+      <span>Es ist ein Fehler aufgetreten</span>
     </div>
   </div>
 </template>

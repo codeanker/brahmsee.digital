@@ -10,8 +10,12 @@
   - You are about to drop the column `qualifikationenSchwimmer` on the `Person` table. All the data in the column will be lost.
 
 */
+-- AlterEnum
+ALTER TYPE "Role" ADD VALUE 'USER';
+
 -- AlterTable
-ALTER TABLE "Anmeldung" DROP COLUMN "tshirtBestellt";
+ALTER TABLE "Anmeldung" DROP COLUMN "tshirtBestellt",
+ADD COLUMN     "accountId" INTEGER;
 
 -- AlterTable
 ALTER TABLE "Person" DROP COLUMN "konfektionsgroesse",
@@ -20,6 +24,12 @@ DROP COLUMN "qualifikationenFahrerlaubnis",
 DROP COLUMN "qualifikationenFunk",
 DROP COLUMN "qualifikationenSanitaeter",
 DROP COLUMN "qualifikationenSchwimmer";
+
+-- AlterTable
+ALTER TABLE "_AnmeldungToMahlzeit" ADD CONSTRAINT "_AnmeldungToMahlzeit_AB_pkey" PRIMARY KEY ("A", "B");
+
+-- DropIndex
+DROP INDEX "_AnmeldungToMahlzeit_AB_unique";
 
 -- DropEnum
 DROP TYPE "Konfektionsgroesse";
@@ -38,3 +48,6 @@ DROP TYPE "QualificationSanitaeter";
 
 -- DropEnum
 DROP TYPE "QualificationSchwimmer";
+
+-- AddForeignKey
+ALTER TABLE "Anmeldung" ADD CONSTRAINT "Anmeldung_accountId_fkey" FOREIGN KEY ("accountId") REFERENCES "Account"("id") ON DELETE CASCADE ON UPDATE CASCADE;

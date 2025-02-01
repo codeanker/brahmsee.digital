@@ -20,19 +20,17 @@ import {
   type AnmeldungStatus,
   type NahrungsmittelIntoleranz,
   type RouterInput,
-  type RouterOutput
+  type RouterOutput,
 } from '@codeanker/api'
 import { useDataGridFilter, useDataGridOrderBy, useGrid, type TGridColumn } from '@codeanker/datagrid'
 import { dayjs } from '@codeanker/helpers'
 
-const props = withDefaults(
-  defineProps<{
-    unterveranstaltungId?: number
-    veranstaltungId?: number
-    showStats?: boolean
-  }>(),
-  {}
-)
+type Props = {
+  filter: RouterInput['anmeldung']['list']['filter']
+  showStats?: boolean
+}
+
+const props = defineProps<Props>()
 
 const tabs = [
   { name: 'Anmeldung', icon: TicketIcon },
@@ -44,40 +42,15 @@ if (loggedInAccount.value?.role === 'ADMIN') {
   tabs.push({ name: 'Entwickler:in', icon: CodeBracketIcon })
 }
 
-const entityId = computed(() => {
-  return props.unterveranstaltungId || props.veranstaltungId
-})
-
 const showNotification = ref(false)
 
-const { state: countAnmeldungen } = useAsyncState(async () => {
-  if (loggedInAccount.value?.role === 'ADMIN') {
-    if (!props.unterveranstaltungId && !props.veranstaltungId)
-      return Promise.resolve({ OFFEN: 0, BESTAETIGT: 0, STORNIERT: 0, ABGELEHNT: 0 })
-    if (props.unterveranstaltungId && props.veranstaltungId)
-      throw new Error('You need to provide either unterveranstaltungId or veranstaltungId')
-
-    if (props.unterveranstaltungId)
-      return apiClient.anmeldung.verwaltungCount.query({
-        filter: {
-          unterveranstaltungId: props.unterveranstaltungId,
-        },
-      })
-    else if (props.veranstaltungId)
-      return apiClient.anmeldung.verwaltungCount.query({
-        filter: {
-          veranstaltungId: props.veranstaltungId,
-        },
-      })
-  } else {
-    return apiClient.anmeldung.gliederungCount.query({
-      filter: {
-        unterveranstaltungId: props.unterveranstaltungId,
-        veranstaltungId: props.veranstaltungId,
-      },
-    })
-  }
-}, undefined)
+const { state: countAnmeldungen } = useAsyncState(
+  () =>
+    apiClient.anmeldung.count.query({
+      filter: props.filter,
+    }),
+  { OFFEN: 0, BESTAETIGT: 0, STORNIERT: 0, ABGELEHNT: 0, total: 0 }
+)
 
 const stats = computed<
   {
@@ -127,18 +100,11 @@ const {
   isLoading: isLoading,
 } = useAsyncState(
   async () => {
-    if (loggedInAccount.value?.role === 'ADMIN')
-      return (
-        await apiClient.anmeldung.verwaltungGet.query({
-          anmeldungId: selectedAnmeldungId.value,
-        })
-      )[0]
-    else
-      return (
-        await apiClient.anmeldung.gliederungGet.query({
-          anmeldungId: selectedAnmeldungId.value,
-        })
-      )[0]
+    const result = await apiClient.anmeldung.get.query({
+      anmeldungId: selectedAnmeldungId.value,
+    })
+
+    return result[0]
   },
   null,
   { immediate: false }
@@ -206,9 +172,9 @@ const route = useRoute()
 const router = useRouter()
 
 /// Typen von den Daten, Filter und Sortierung
-type TAnmeldungData = Awaited<RouterOutput['anmeldung']['verwaltungList']>[number]
-type TAnmeldungFilter = RouterInput['anmeldung']['verwaltungList']['filter']
-type TAnmeldungOrderBy = RouterInput['anmeldung']['verwaltungList']['orderBy']
+type TAnmeldungData = Awaited<RouterOutput['anmeldung']['list']>[number]
+type TAnmeldungFilter = RouterInput['anmeldung']['list']['filter']
+type TAnmeldungOrderBy = RouterInput['anmeldung']['list']['orderBy']
 
 /// Definieren der columns
 let columns: TGridColumn<TAnmeldungData, TAnmeldungFilter>[] = [
@@ -252,17 +218,12 @@ if (loggedInAccount.value?.role === 'ADMIN') {
 }
 
 /// Filter via Route laden
-const defaultFilter: TAnmeldungFilter = {
-  // Momentan müssen leere strings initialisiert werden!
-  unterveranstaltungId: props.unterveranstaltungId,
-  veranstaltungId: props.veranstaltungId,
-}
 
 const defaultOrderBy = {
   createdAt: 'desc',
 } as const
 
-const { filter, setFilter } = useDataGridFilter(defaultFilter, router, route)
+const { filter, setFilter } = useDataGridFilter(props.filter, router, route)
 const { orderBy, setOrderBy } = useDataGridOrderBy(columns, defaultOrderBy, router, route)
 
 /// Bauen der Query
@@ -278,7 +239,7 @@ const query = computed<Query>(() => {
 })
 
 /// useGrid und useFeathersGrid composable zum fetchen
-async function fetchPage(
+function fetchPage(
   pagination: {
     take: number
     skip: number
@@ -286,32 +247,14 @@ async function fetchPage(
   filter: TAnmeldungFilter,
   orderBy: TAnmeldungOrderBy
 ) {
-  if (loggedInAccount.value?.role === 'ADMIN')
-    return await apiClient.anmeldung.verwaltungList.query({
-      filter: filter,
-      orderBy: orderBy,
-      pagination: pagination,
-    })
-  else
-    return await apiClient.anmeldung.gliederungList.query({
-      filter: filter,
-      orderBy: orderBy,
-      pagination: pagination,
-    })
+  return apiClient.anmeldung.list.query({ filter, orderBy, pagination })
 }
 async function fetchCount(filter: TAnmeldungFilter) {
-  if (loggedInAccount.value?.role === 'ADMIN')
-    return (
-      await apiClient.anmeldung.verwaltungCount.query({
-        filter: filter,
-      })
-    )?.total
-  else
-    return (
-      await apiClient.anmeldung.gliederungCount.query({
-        filter: filter,
-      })
-    )?.total
+  const { total } = await apiClient.anmeldung.count.query({
+    filter: filter,
+  })
+
+  return total
 }
 
 const { grid, fetchVisiblePages, pageChange, page } = useGrid<Query, TAnmeldungData>({
@@ -458,7 +401,7 @@ onMounted(() => {
           </Tab>
           <Tab>
             <CustomFieldsFormUser
-              v-if="currentAnmeldung?.customFieldValues && entityId"
+              v-if="currentAnmeldung?.customFieldValues"
               class="mt-8"
               :entry-id="currentAnmeldung.id"
               :custom-fields="customFields"

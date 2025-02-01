@@ -20,7 +20,7 @@ const inputSchema = defineQuery({
 
 type TInput = z.infer<typeof inputSchema>
 
-export const personVerwaltungListProcedure = defineProtectedQueryProcedure({
+export const personListProcedure = defineProtectedQueryProcedure({
   key: 'list',
   roleIds: [Role.ADMIN, Role.USER],
   inputSchema,
@@ -61,7 +61,7 @@ export const personVerwaltungListProcedure = defineProtectedQueryProcedure({
   },
 })
 
-export const personVerwaltungCountProcedure = defineProtectedQueryProcedure({
+export const personCountProcedure = defineProtectedQueryProcedure({
   key: 'count',
   roleIds: [Role.ADMIN, Role.USER],
   inputSchema: inputSchema.pick({ filter: true }),
