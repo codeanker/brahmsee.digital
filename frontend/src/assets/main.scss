@@ -12,14 +12,12 @@ html {
 html,
 body,
 #app {
-  height: 100vh;
   width: 100vw;
   overflow: hidden;
   overflow-y: overlay;
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
   scrollbar-gutter: stable;
-  @apply bg-gray-50 dark:bg-dark-secondary text-primary-950 dark:text-gray-200;
 }
 
 body {

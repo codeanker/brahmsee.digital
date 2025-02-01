@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import GliederungLogo from '@/components/UIComponents/GliederungLogo.vue'
-import { loggedInAccount, logout } from '@/composables/useAuthentication'
 import { injectUnterveranstaltung } from '@/layouts/AnmeldungLayout.vue'
 import { RouterLink } from 'vue-router'
 
@@ -8,32 +7,27 @@ const unterveranstaltung = injectUnterveranstaltung()
 </script>
 
 <template>
-  <div class="flex items-center justify-between mb-4 py-6">
-    <GliederungLogo :name="unterveranstaltung?.gliederung?.name ?? ''" />
-
-    <div class="text-sm text-right">
-      <template v-if="loggedInAccount">
-        <p>
-          Du bist angemeldet als: <u>{{ loggedInAccount.person.firstname }} {{ loggedInAccount.person.lastname }}</u>
-        </p>
-        <p>
-          <u>Account wechseln?</u> oder
-          <u
-            class="cursor-pointer"
-            @click="() => logout(false)"
-          >
-            Abmelden?
-          </u>
-        </p>
-      </template>
-      <template v-else>
+  <header class="relative z-50">
+    <nav
+      class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
+      aria-label="Global"
+    >
+      <div class="flex lg:flex-1">
+        <a
+          href="#"
+          class="-m-1.5 p-1.5"
+        >
+          <GliederungLogo :name="unterveranstaltung?.gliederung?.name ?? ''" />
+        </a>
+      </div>
+      <div class="lg:flex lg:flex-1 lg:justify-end">
         <RouterLink
-          class="cursor-pointer underline"
+          class="cursor-pointer text-gray-900 hover:underline"
           :to="{ name: 'Login', query: { redirect: '/ausschreibung/' + unterveranstaltung?.id } }"
         >
-          Anmelden?
+          Anmelden <span aria-hidden="true">&rarr;</span>
         </RouterLink>
-      </template>
-    </div>
-  </div>
+      </div>
+    </nav>
+  </header>
 </template>

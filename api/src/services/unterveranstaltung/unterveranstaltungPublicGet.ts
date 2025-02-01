@@ -44,6 +44,15 @@ export const unterveranstaltungPublicGetProcedure = definePublicQueryProcedure({
             name: true,
           },
         },
+        _count: {
+          select: {
+            Anmeldung: {
+              where: {
+                status: 'BESTAETIGT',
+              },
+            },
+          },
+        },
         beschreibung: true,
         bedingungen: true,
         documents: {
@@ -54,6 +63,7 @@ export const unterveranstaltungPublicGetProcedure = definePublicQueryProcedure({
         },
       },
     })
+
     return unterveranstaltung
   },
 })
