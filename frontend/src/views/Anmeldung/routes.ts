@@ -7,9 +7,9 @@ const routesAusschreibungen: Route[] = [
     component: () => import('@/layouts/AnmeldungLayout.vue'),
     children: [
       {
-        name: 'Public Ausschreibung',
+        name: 'Public Landing',
         path: '',
-        component: () => import('./PublicAusschreibungView.vue'),
+        component: () => import('./PublicLanding.vue'),
         meta: {
           public: true,
         },

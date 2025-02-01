@@ -1,6 +1,16 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
+const props = withDefaults(
+  defineProps<{
+    wrapperClass?: string
+    iconClass?: string
+  }>(),
+  {
+    wrapperClass: 'h-6 w-14',
+    iconClass: 'h-5',
+  }
+)
 const svg = ref()
 const active = ref(false)
 
@@ -24,12 +34,13 @@ defineExpose({
 
 <template>
   <div
-    class="h-6 w-14 flex items-center justify-center bg-slate-50 dark:bg-dark-secondary text-primary-900 dark:text-gray-200 rounded-lg rounded-l-none lg:hidden"
+    class="flex items-center justify-center bg-slate-50 dark:bg-dark-secondary text-primary-900 dark:text-gray-200 rounded-lg rounded-l-none lg:hidden"
+    :class="props.wrapperClass"
   >
     <svg
       ref="svg"
       xmlns="http://www.w3.org/2000/svg"
-      class="h-5"
+      :class="props.iconClass"
       viewBox="0 0 24 24"
     >
       <g
