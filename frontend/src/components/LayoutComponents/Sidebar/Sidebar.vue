@@ -114,6 +114,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
   //   visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
   // },
   // { type: 'DividerItem', name: 'Ausschreibung', visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']) },
+
   { type: 'DividerItem', name: 'Meine Daten', visible: hasPermissionToView(['USER']) },
   {
     type: 'SidebarItem',
@@ -160,6 +161,13 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     route: { name: 'Verwaltung Alle Veranstaltungen' },
     icon: CalendarDaysIcon,
     visible: hasPermissionToView(['ADMIN']),
+  },
+  {
+    type: 'SidebarItem',
+    name: 'Ausschreibungen',
+    route: { name: 'UnterveranstaltungList', params: { veranstaltungId: veranstaltungId.value } },
+    icon: MegaphoneIcon,
+    visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
   },
   {
     type: 'SidebarItem',

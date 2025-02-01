@@ -30,7 +30,7 @@ const hasSlot = (name) => {
 <template>
   <span
     v-if="text || hasSlot('default')"
-    class="whitespace-nowrap inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset"
+    class="whitespace-nowrap inline-flex items-center rounded-md px-2 py-1 text-sm font-medium ring-1 ring-inset"
     :class="[colors[color]]"
   >
     <slot>{{ text }}</slot>
