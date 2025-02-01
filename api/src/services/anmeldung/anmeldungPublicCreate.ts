@@ -9,6 +9,7 @@ import logActivity from '../../util/activity.js'
 import { sendMail } from '../../util/mail.js'
 import { getPersonCreateData, personSchema } from '../person/schema/person.schema.js'
 import type { Context } from '../../context.js'
+import { randomUUID } from 'node:crypto'
 
 export const inputSchema = z.strictObject({
   data: personSchema.extend({
@@ -70,6 +71,7 @@ export async function handle({ ctx, input, isPublic }: HandleProps) {
     },
   })
 
+  const assignmentCode = ctx.accountId === undefined ? randomUUID() : null
   const anmeldung = await prisma.anmeldung.create({
     data: {
       unterveranstaltungId: unterveranstaltung.id,
@@ -88,6 +90,7 @@ export async function handle({ ctx, input, isPublic }: HandleProps) {
       customFieldValues: {
         createMany: customFieldValuesCreateMany(input.customFieldValues),
       },
+      assignmentCode,
     },
   })
 
@@ -116,6 +119,7 @@ export async function handle({ ctx, input, isPublic }: HandleProps) {
       gliederung: unterveranstaltung.gliederung.name,
       veranstaltung: unterveranstaltung.veranstaltung.name,
       hostname: unterveranstaltung.veranstaltung.hostname!.hostname,
+      assignmentCode,
     },
   })
 }

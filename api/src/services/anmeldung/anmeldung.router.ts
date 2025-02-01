@@ -11,6 +11,7 @@ import { anmeldungVerwaltungAnnehmenProcedure } from './anmeldungVerwaltungAnneh
 import { anmeldungVerwaltungCreateProcedure } from './anmeldungVerwaltungCreate.js'
 import { anmeldungVerwaltungPatchProcedure } from './anmeldungVerwaltungPatch.js'
 import { anmeldungVerwaltungStornoProcedure } from './anmeldungVerwaltungStorno.js'
+import { anmeldungZuordnenProcedure } from './anmeldungZuordnen.js'
 // Import Routes here - do not delete this line
 
 export const anmeldungRouter = mergeRouters(
@@ -24,6 +25,7 @@ export const anmeldungRouter = mergeRouters(
   anmeldungGliederungPatchProcedure.router,
   anmeldungCountProcedure.router,
   anmeldungListProcedure.router,
-  anmeldungGetProcedure.router
+  anmeldungGetProcedure.router,
+  anmeldungZuordnenProcedure.router
   // Add Routes here - do not delete this line
 )

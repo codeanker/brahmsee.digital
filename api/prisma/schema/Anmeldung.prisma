@@ -6,10 +6,11 @@ enum AnmeldungStatus {
 }
 
 model Anmeldung {
-  id        Int             @id @default(autoincrement())
-  createdAt DateTime        @default(now())
-  status    AnmeldungStatus @default(OFFEN)
-  comment   String?
+  id             Int             @id @default(autoincrement())
+  createdAt      DateTime        @default(now())
+  status         AnmeldungStatus @default(OFFEN)
+  comment        String?
+  assignmentCode String?         @db.Uuid
 
   unterveranstaltungId Int
   unterveranstaltung   Unterveranstaltung @relation(fields: [unterveranstaltungId], references: [id], onDelete: Cascade)

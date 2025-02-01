@@ -22,6 +22,12 @@ const routesMeineDaten: Route[] = [
         path: 'anmeldungen',
         component: () => import('./MeineAnmeldungen.vue'),
       },
+
+      {
+        name: 'Anmeldung zuordnen',
+        path: 'anmeldung-zuordnen',
+        component: () => import('./AnmeldungZuordnen.vue'),
+      },
     ],
   },
 ]
