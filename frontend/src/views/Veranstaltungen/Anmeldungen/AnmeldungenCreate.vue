@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAsyncState } from '@vueuse/core'
-import { ref } from 'vue'
+import { computed, provide, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 import AnmeldungFormGeneral from '../../Anmeldung/AnmeldungFormGeneral.vue'
@@ -35,6 +35,9 @@ const { state: unterveranstaltungen, isLoading } = useAsyncState(
 )
 
 const unterveranstaltungId = ref(-1)
+const unterveranstaltung = computed(() => unterveranstaltungen.value?.find((u) => u.id === unterveranstaltungId.value))
+
+provide('unterveranstaltung', unterveranstaltung)
 </script>
 
 <template>
@@ -57,7 +60,6 @@ const unterveranstaltungId = ref(-1)
       <AnmeldungFormGeneral
         v-if="unterveranstaltungId >= 0"
         :is-public="false"
-        :unterveranstaltung-id="unterveranstaltungId"
         ignore-closing-date
       />
     </div>

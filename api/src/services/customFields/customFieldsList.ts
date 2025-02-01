@@ -2,21 +2,32 @@ import { z } from 'zod'
 
 import prisma from '../../prisma.js'
 import { definePublicQueryProcedure } from '../../types/defineProcedure.js'
+import { CustomFieldPosition, Prisma } from '@prisma/client'
 
 export const customFieldsList = definePublicQueryProcedure({
   key: 'list',
   inputSchema: z.strictObject({
-    entity: z.enum(['veranstaltung', 'unterveranstaltung']).optional(),
+    entity: z.enum(['veranstaltung', 'unterveranstaltung']),
     entityId: z.number(),
+    position: z.nativeEnum(CustomFieldPosition).optional(),
   }),
   async handler({ input }) {
+    const customFieldsFilter: Prisma.CustomFieldWhereInput = {}
+    if (input.position !== undefined) {
+      customFieldsFilter.positions = {
+        hasSome: [input.position]
+      }
+    }
+
     if (input.entity === 'veranstaltung') {
       const veranstaltung = await prisma.veranstaltung.findUniqueOrThrow({
         where: {
           id: input.entityId,
         },
         include: {
-          customFields: true,
+          customFields: {
+            where: customFieldsFilter,
+          },
         },
       })
 
@@ -30,7 +41,9 @@ export const customFieldsList = definePublicQueryProcedure({
           customFields: true,
           veranstaltung: {
             include: {
-              customFields: true,
+              customFields: {
+                where: customFieldsFilter,
+              },
             },
           },
         },

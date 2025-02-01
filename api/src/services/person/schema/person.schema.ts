@@ -1,15 +1,4 @@
-import {
-  Essgewohnheit,
-  Gender,
-  Konfektionsgroesse,
-  NahrungsmittelIntoleranz,
-  Prisma,
-  QualificationErsteHilfe,
-  QualificationFahrerlaubnis,
-  QualificationFunk,
-  QualificationSanitaeter,
-  QualificationSchwimmer,
-} from '@prisma/client'
+import { Essgewohnheit, Gender, NahrungsmittelIntoleranz, Prisma } from '@prisma/client'
 import { z } from 'zod'
 
 import { addressSchema, createOrUpdateAddress } from '../../address/schema/address.schema.js'
@@ -28,12 +17,6 @@ export const personSchema = z.strictObject({
   essgewohnheit: z.nativeEnum(Essgewohnheit),
   nahrungsmittelIntoleranzen: z.array(z.nativeEnum(NahrungsmittelIntoleranz)),
   weitereIntoleranzen: z.array(z.string()).optional(),
-  qualifikationenFahrerlaubnis: z.array(z.nativeEnum(QualificationFahrerlaubnis)).optional(),
-  qualifikationenSchwimmer: z.array(z.nativeEnum(QualificationSchwimmer)).optional(),
-  qualifikationenErsteHilfe: z.array(z.nativeEnum(QualificationErsteHilfe)).optional(),
-  qualifikationenSanitaeter: z.array(z.nativeEnum(QualificationSanitaeter)).optional(),
-  qualifikationenFunk: z.array(z.nativeEnum(QualificationFunk)).optional(),
-  konfektionsgroesse: z.nativeEnum(Konfektionsgroesse).optional(),
   erziehungsberechtigtePersonen: z.array(kontaktSchema).optional(),
   notfallkontaktPersonen: z.array(kontaktSchema),
   photoId: z.string().nullish(),
@@ -60,12 +43,6 @@ export async function getPersonCreateData(
     essgewohnheit: input.essgewohnheit,
     nahrungsmittelIntoleranzen: input.nahrungsmittelIntoleranzen,
     weitereIntoleranzen: input.weitereIntoleranzen,
-    qualifikationenFahrerlaubnis: input.qualifikationenFahrerlaubnis,
-    qualifikationenSchwimmer: input.qualifikationenSchwimmer,
-    qualifikationenErsteHilfe: input.qualifikationenErsteHilfe,
-    qualifikationenSanitaeter: input.qualifikationenSanitaeter,
-    qualifikationenFunk: input.qualifikationenFunk,
-    konfektionsgroesse: input.konfektionsgroesse,
     addressId: addressId,
     notfallkontakte: {
       create: input.notfallkontaktPersonen,

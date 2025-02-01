@@ -7,8 +7,8 @@ import { ZPaginationSchema } from '../../types/defineQuery.js'
 import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
 
 const filter = z.strictObject({
-  unterveranstaltungId: z.number().optional(),
   veranstaltungId: z.number().optional(),
+  unterveranstaltungId: z.number().optional(),
 })
 
 const where = (filter: { gliederungId: number; unterveranstaltungId?: number; veranstaltungId?: number }) => {
@@ -65,7 +65,6 @@ export const anmeldungGliederungdListProcedure = defineProtectedQueryProcedure({
             lastname: true,
             photoId: true,
             birthday: true,
-            konfektionsgroesse: true,
             gliederung: {
               select: {
                 id: true,
@@ -75,7 +74,6 @@ export const anmeldungGliederungdListProcedure = defineProtectedQueryProcedure({
           },
         },
         status: true,
-        tshirtBestellt: true,
         unterveranstaltung: {
           select: {
             veranstaltung: {

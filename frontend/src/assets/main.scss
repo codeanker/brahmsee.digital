@@ -1,9 +1,9 @@
-@import './animations.scss';
-@import './tailwind.scss';
+@use './animations.scss';
+@use './tailwind.scss';
 // @import "@vuepic/vue-datepicker/dist/main.css";
-@import './baseFormStyle.scss';
-@import './datepicker.scss';
-@import './fonts.scss';
+@use './baseFormStyle.scss';
+@use './datepicker.scss';
+@use './fonts.scss';
 
 html {
   font-size: 14px;

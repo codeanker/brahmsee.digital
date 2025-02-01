@@ -6,7 +6,7 @@ import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
 
 export const personAuthenticatedGetProcedure = defineProtectedQueryProcedure({
   key: 'authenticatedGet',
-  roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
+  roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN, Role.USER],
   inputSchema: z.undefined(),
   async handler(options) {
     return prisma.account.findUniqueOrThrow({

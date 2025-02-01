@@ -10,4 +10,5 @@ export type BasicInputDefaultProps<TModelValue> = {
   required?: RequiredRulesParams
   placeholder?: string
   disabled?: boolean
+  class?: string
 }

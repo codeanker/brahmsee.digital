@@ -114,13 +114,31 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
   //   visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
   // },
   // { type: 'DividerItem', name: 'Ausschreibung', visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']) },
+  { type: 'DividerItem', name: 'Meine Daten', visible: hasPermissionToView(['USER']) },
+  {
+    type: 'SidebarItem',
+    name: 'Personen',
+    route: { name: 'Meine Personen' },
+    icon: UsersIcon,
+    visible: hasPermissionToView(['USER']),
+  },
+  {
+    type: 'SidebarItem',
+    name: 'Anmeldungen',
+    route: { name: 'Meine Anmeldungen' },
+    icon: UsersIcon,
+    visible: hasPermissionToView(['USER']),
+  },
+
+  { type: 'DividerItem', name: 'Gliederung', visible: hasPermissionToView(['GLIEDERUNG_ADMIN']) },
   {
     type: 'SidebarItem',
     name: 'Meine Veranstaltungen',
     route: { name: 'UnterveranstaltungList', params: { veranstaltungId: veranstaltungId.value } },
     icon: MegaphoneIcon,
-    visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
+    visible: hasPermissionToView(['GLIEDERUNG_ADMIN']),
   },
+
   { type: 'DividerItem', name: 'Verwaltung', visible: hasPermissionToView(['ADMIN']) },
   {
     type: 'SidebarItem',
@@ -164,6 +182,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     icon: QueueListIcon,
     visible: hasPermissionToView(['ADMIN']),
   },
+
   { type: 'DividerItem', name: 'Entwicklung', visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']) },
   {
     type: 'SidebarItem',
@@ -210,7 +229,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
       <button
         type="button"
         class="shrink-0 flex items-center justify-center h-8 aspect-square"
-        @click="logout"
+        @click="() => logout()"
       >
         <ArrowRightOnRectangleIcon class="h-5 aspect-square" />
       </button>

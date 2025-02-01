@@ -6,8 +6,8 @@ import { handle, inputSchema } from './anmeldungPublicCreate.js'
 export const anmeldungVerwaltungCreateProcedure = defineProtectedMutateProcedure({
   key: 'verwaltungCreate',
   inputSchema: inputSchema,
-  async handler(options) {
-    await handle(options.input, false)
+  async handler({ ctx, input }) {
+    await handle({ ctx, input, isPublic: false })
   },
   roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
 })
