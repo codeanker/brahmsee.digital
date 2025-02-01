@@ -18,7 +18,7 @@ select,
 
   &:disabled,
   &.disabled {
-    @apply bg-gray-50 dark:bg-gray-700 text-gray-50 cursor-not-allowed;
+    @apply bg-gray-50 dark:bg-gray-700 text-gray-400 cursor-not-allowed;
   }
 }
 
