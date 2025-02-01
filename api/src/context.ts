@@ -1,4 +1,3 @@
-import { type inferAsyncReturnType } from '@trpc/server'
 import type { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch'
 import type { CreateTrpcKoaContextOptions } from 'trpc-koa-adapter'
 
@@ -35,4 +34,5 @@ export async function createContext({ req }: CreateTrpcKoaContextOptions | Fetch
     throw error
   }
 }
-export type Context = inferAsyncReturnType<typeof createContext>
+
+export type Context = Awaited<ReturnType<typeof createContext>>

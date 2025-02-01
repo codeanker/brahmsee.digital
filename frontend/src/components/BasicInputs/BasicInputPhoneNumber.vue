@@ -44,6 +44,7 @@ onMounted(async () => {
     strictMode: true,
     initialCountry: 'de',
     autoPlaceholder: 'off',
+    formatAsYouType: true,
   })
 })
 
@@ -64,7 +65,7 @@ onUnmounted(() => {
       <input
         :id="id || name || label"
         ref="phone"
-        :value="model"
+        v-model="model"
         type="tel"
         :placeholder="placeholder || label || name"
         :class="inputClass"

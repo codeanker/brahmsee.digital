@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { CodeBracketIcon, SquaresPlusIcon, TicketIcon, UserIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref, onMounted, defineAsyncComponent } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-
-import AnmeldungTshirtSelect from './AnmeldungTshirtSelect.vue'
 
 import { apiClient } from '@/api'
 import AnmeldungStatusSelect from '@/components/AnmeldungStatusSelect.vue'
@@ -19,24 +17,21 @@ import { loggedInAccount } from '@/composables/useAuthentication'
 import { getAnmeldungStatusColor } from '@/helpers/getAnmeldungStatusColors'
 import {
   AnmeldungStatusMapping,
-  getEnumOptions,
-  KonfektionsgroesseMapping,
   type AnmeldungStatus,
   type NahrungsmittelIntoleranz,
   type RouterInput,
   type RouterOutput,
 } from '@codeanker/api'
-import { type TGridColumn, useDataGridFilter, useDataGridOrderBy, useGrid } from '@codeanker/datagrid'
+import { useDataGridFilter, useDataGridOrderBy, useGrid, type TGridColumn } from '@codeanker/datagrid'
 import { dayjs } from '@codeanker/helpers'
+import UserLogo from '../UIComponents/UserLogo.vue'
 
-const props = withDefaults(
-  defineProps<{
-    unterveranstaltungId?: number
-    veranstaltungId?: number
-    showStats?: boolean
-  }>(),
-  {}
-)
+type Props = {
+  filter: RouterInput['anmeldung']['list']['filter']
+  showStats?: boolean
+}
+
+const props = defineProps<Props>()
 
 const tabs = [
   { name: 'Anmeldung', icon: TicketIcon },
@@ -48,40 +43,15 @@ if (loggedInAccount.value?.role === 'ADMIN') {
   tabs.push({ name: 'Entwickler:in', icon: CodeBracketIcon })
 }
 
-const entityId = computed(() => {
-  return props.unterveranstaltungId || props.veranstaltungId
-})
-
 const showNotification = ref(false)
 
-const { state: countAnmeldungen } = useAsyncState(async () => {
-  if (loggedInAccount.value?.role === 'ADMIN') {
-    if (!props.unterveranstaltungId && !props.veranstaltungId)
-      return Promise.resolve({ OFFEN: 0, BESTAETIGT: 0, STORNIERT: 0, ABGELEHNT: 0 })
-    if (props.unterveranstaltungId && props.veranstaltungId)
-      throw new Error('You need to provide either unterveranstaltungId or veranstaltungId')
-
-    if (props.unterveranstaltungId)
-      return apiClient.anmeldung.verwaltungCount.query({
-        filter: {
-          unterveranstaltungId: props.unterveranstaltungId,
-        },
-      })
-    else if (props.veranstaltungId)
-      return apiClient.anmeldung.verwaltungCount.query({
-        filter: {
-          veranstaltungId: props.veranstaltungId,
-        },
-      })
-  } else {
-    return apiClient.anmeldung.gliederungCount.query({
-      filter: {
-        unterveranstaltungId: props.unterveranstaltungId,
-        veranstaltungId: props.veranstaltungId,
-      },
-    })
-  }
-}, undefined)
+const { state: countAnmeldungen } = useAsyncState(
+  () =>
+    apiClient.anmeldung.count.query({
+      filter: props.filter,
+    }),
+  { OFFEN: 0, BESTAETIGT: 0, STORNIERT: 0, ABGELEHNT: 0, total: 0 }
+)
 
 const stats = computed<
   {
@@ -131,18 +101,11 @@ const {
   isLoading: isLoading,
 } = useAsyncState(
   async () => {
-    if (loggedInAccount.value?.role === 'ADMIN')
-      return (
-        await apiClient.anmeldung.verwaltungGet.query({
-          anmeldungId: selectedAnmeldungId.value,
-        })
-      )[0]
-    else
-      return (
-        await apiClient.anmeldung.gliederungGet.query({
-          anmeldungId: selectedAnmeldungId.value,
-        })
-      )[0]
+    const result = await apiClient.anmeldung.get.query({
+      anmeldungId: selectedAnmeldungId.value,
+    })
+
+    return result[0]
   },
   null,
   { immediate: false }
@@ -176,7 +139,6 @@ const { execute: updateAnmeldung } = useAsyncState(
           essgewohnheit: anmeldung.essgewohnheiten.essgewohnheit,
           nahrungsmittelIntoleranzen,
           weitereIntoleranzen: anmeldung.essgewohnheiten.weitereIntoleranzen,
-          konfektionsgroesse: anmeldung.tshirt.groesse,
         },
       }
       if (loggedInAccount.value?.role === 'ADMIN') {
@@ -207,22 +169,30 @@ const { execute: updateAnmeldung } = useAsyncState(
   }
 )
 
-const konfektionsgroesseOptions = getEnumOptions(KonfektionsgroesseMapping)
-
-const getKonfektionsgroesseHuman = computed(() => (konfektionsgroesse) => {
-  return konfektionsgroesseOptions.find((item) => item.value === konfektionsgroesse)?.label
-})
-
 const route = useRoute()
 const router = useRouter()
 
 /// Typen von den Daten, Filter und Sortierung
-type TAnmeldungData = Awaited<RouterOutput['anmeldung']['verwaltungList']>[number]
-type TAnmeldungFilter = RouterInput['anmeldung']['verwaltungList']['filter']
-type TAnmeldungOrderBy = RouterInput['anmeldung']['verwaltungList']['orderBy']
+type TAnmeldungData = Awaited<RouterOutput['anmeldung']['list']>[number]
+type TAnmeldungFilter = RouterInput['anmeldung']['list']['filter']
+type TAnmeldungOrderBy = RouterInput['anmeldung']['list']['orderBy']
 
 /// Definieren der columns
 let columns: TGridColumn<TAnmeldungData, TAnmeldungFilter>[] = [
+  {
+    field: 'person.photoId',
+    title: ' ',
+    size: '78px',
+    cell: defineAsyncComponent(() => import('@/components/UIComponents/UserLogo.vue')),
+    cellProps: (formattedValue, row) => {
+      return {
+        firstname: row.content.person.firstname,
+        lastname: row.content.person.lastname,
+        photoId: row.content.person.photoId,
+        cssClasses: 'h-10 w-10',
+      }
+    },
+  },
   {
     field: 'person',
     title: 'Name',
@@ -237,11 +207,6 @@ let columns: TGridColumn<TAnmeldungData, TAnmeldungFilter>[] = [
     field: 'person.birthday',
     format: (value) => dayjs().diff(value, 'year') + ' Jahre',
     title: 'Alter',
-  },
-  {
-    field: 'tshirtBestellt',
-    format: (value, row) => (value ? getKonfektionsgroesseHuman.value(row.person.konfektionsgroesse) : '-'),
-    title: 'T-Shirt',
   },
   {
     field: 'status',
@@ -268,17 +233,12 @@ if (loggedInAccount.value?.role === 'ADMIN') {
 }
 
 /// Filter via Route laden
-const defaultFilter: TAnmeldungFilter = {
-  // Momentan müssen leere strings initialisiert werden!
-  unterveranstaltungId: props.unterveranstaltungId,
-  veranstaltungId: props.veranstaltungId,
-}
 
 const defaultOrderBy = {
   createdAt: 'desc',
 } as const
 
-const { filter, setFilter } = useDataGridFilter(defaultFilter, router, route)
+const { filter, setFilter } = useDataGridFilter(props.filter, router, route)
 const { orderBy, setOrderBy } = useDataGridOrderBy(columns, defaultOrderBy, router, route)
 
 /// Bauen der Query
@@ -294,7 +254,7 @@ const query = computed<Query>(() => {
 })
 
 /// useGrid und useFeathersGrid composable zum fetchen
-async function fetchPage(
+function fetchPage(
   pagination: {
     take: number
     skip: number
@@ -302,32 +262,14 @@ async function fetchPage(
   filter: TAnmeldungFilter,
   orderBy: TAnmeldungOrderBy
 ) {
-  if (loggedInAccount.value?.role === 'ADMIN')
-    return await apiClient.anmeldung.verwaltungList.query({
-      filter: filter,
-      orderBy: orderBy,
-      pagination: pagination,
-    })
-  else
-    return await apiClient.anmeldung.gliederungList.query({
-      filter: filter,
-      orderBy: orderBy,
-      pagination: pagination,
-    })
+  return apiClient.anmeldung.list.query({ filter, orderBy, pagination })
 }
 async function fetchCount(filter: TAnmeldungFilter) {
-  if (loggedInAccount.value?.role === 'ADMIN')
-    return (
-      await apiClient.anmeldung.verwaltungCount.query({
-        filter: filter,
-      })
-    )?.total
-  else
-    return (
-      await apiClient.anmeldung.gliederungCount.query({
-        filter: filter,
-      })
-    )?.total
+  const { total } = await apiClient.anmeldung.count.query({
+    filter: filter,
+  })
+
+  return total
 }
 
 const { grid, fetchVisiblePages, pageChange, page } = useGrid<Query, TAnmeldungData>({
@@ -390,14 +332,27 @@ onMounted(() => {
   >
     <template #title>
       <div class="mb-4 md:w-[700px] xl:w-[900px]">
-        <div class="flex items-center">
-          <h2 class="my-2 text-xl font-bold tracking-tight sm:text-2xl">
-            {{ currentAnmeldung?.person?.firstname }} {{ currentAnmeldung?.person?.lastname }}
-          </h2>
-          <div
-            class="w-4 h-4 rounded-full shrink-0 ml-2"
-            :class="`bg-${getAnmeldungStatusColor(currentAnmeldung?.status)}-600`"
-          />
+        <div class="mx-auto lg:mx-0 flex items-center space-x-4">
+          <div class="w-20 h-20 shrink-0">
+            <UserLogo
+              v-if="currentAnmeldung?.person?.firstname && currentAnmeldung?.person?.lastname"
+              :firstname="currentAnmeldung?.person?.firstname"
+              :lastname="currentAnmeldung?.person?.lastname"
+              :edit="true"
+              :person-id="currentAnmeldung?.person.id"
+              :photo-id="currentAnmeldung?.person.photoId"
+              size="xl"
+            />
+          </div>
+          <div class="flex items-center">
+            <h2 class="my-2 text-xl font-bold tracking-tight sm:text-2xl">
+              {{ currentAnmeldung?.person?.firstname }} {{ currentAnmeldung?.person?.lastname }}
+            </h2>
+            <div
+              class="w-4 h-4 rounded-full shrink-0 ml-2"
+              :class="`bg-${getAnmeldungStatusColor(currentAnmeldung?.status)}-600`"
+            />
+          </div>
         </div>
       </div>
     </template>
@@ -426,17 +381,6 @@ onMounted(() => {
                       class="w-[300px]"
                       :status="currentAnmeldung.status"
                       :meldeschluss="currentAnmeldung.unterveranstaltung.veranstaltung.meldeschluss"
-                      @changed="getSingleAnmeldung"
-                    />
-                  </dd>
-                </div>
-                <div class="sm:flex sm:px-6 sm:py-5">
-                  <dt class="text-gray-500 dark:text-gray-300 sm:w-40 sm:flex-shrink-0 lg:w-48">T-Shirt</dt>
-                  <dd class="mt-1 text-gray-900 dark:text-gray-100 sm:col-span-2 sm:ml-6 sm:mt-0 whitespace-pre-line">
-                    <AnmeldungTshirtSelect
-                      v-if="currentAnmeldung"
-                      :anmeldung="currentAnmeldung"
-                      :person="currentAnmeldung?.person"
                       @changed="getSingleAnmeldung"
                     />
                   </dd>
@@ -474,7 +418,7 @@ onMounted(() => {
           </Tab>
           <Tab>
             <CustomFieldsFormUser
-              v-if="currentAnmeldung?.customFieldValues && entityId"
+              v-if="currentAnmeldung?.customFieldValues"
               class="mt-8"
               :entry-id="currentAnmeldung.id"
               :custom-fields="customFields"

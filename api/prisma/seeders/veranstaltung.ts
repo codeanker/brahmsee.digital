@@ -4,15 +4,18 @@ import { PrismaClient } from '@prisma/client'
 import logActivity from '../../src/util/activity.js'
 
 import type { Seeder } from './index.js'
+import {dayjs} from '@codeanker/helpers'
 
 const createVeranstaltung: Seeder = async (prisma: PrismaClient) => {
+  const beginn = dayjs().add(1, 'month')
+
   const veranstaltung = await prisma.veranstaltung.create({
     data: {
       name: 'Brahmsee 2024',
-      beginn: new Date(),
-      ende: new Date(),
-      meldebeginn: new Date(),
-      meldeschluss: new Date(),
+      beginn: beginn.toDate(),
+      ende: beginn.add(2, 'day').toDate(),
+      meldebeginn: beginn.subtract(1, 'month').toDate(),
+      meldeschluss: beginn.subtract(1, 'week').toDate(),
       maxTeilnehmende: faker.number.int({ min: 7, max: 50 }),
       teilnahmegebuehr: faker.number.int({ min: 80, max: 110 }),
       beschreibung: faker.lorem.text(),
@@ -43,8 +46,8 @@ const createVeranstaltung: Seeder = async (prisma: PrismaClient) => {
         create: {
           teilnahmegebuehr: 13.37,
           maxTeilnehmende: 800,
-          meldebeginn: new Date(),
-          meldeschluss: new Date(),
+          meldebeginn: beginn.subtract(1, 'month').toDate(),
+          meldeschluss: beginn.subtract(1, 'week').toDate(),
           beschreibung: faker.lorem.text(),
           type: 'GLIEDERUNG',
           gliederung: {

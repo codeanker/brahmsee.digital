@@ -6,6 +6,8 @@ export const ZPaginationSchema = z.strictObject({
   take: z.number().max(100).optional(),
 })
 
+export const ZOrderbySchema = z.union([z.literal('asc'), z.literal('desc')])
+
 export type TQueryPagination = z.infer<typeof ZPaginationSchema>
 
 export const defineQuery = <TFilter extends z.AnyZodObject, TOrderBy extends z.ZodArray<z.AnyZodTuple>>({

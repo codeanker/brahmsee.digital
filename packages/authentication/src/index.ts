@@ -40,7 +40,7 @@ export function hashPassword(password: string) {
   return brypt.hash(password, 10)
 }
 
-export async function passwordMatches(hash: string, password: string) {
+export async function passwordMatches(hash: string | null, password: string) {
   if (!hash) return false
   return await brypt.compare(password, hash)
 }

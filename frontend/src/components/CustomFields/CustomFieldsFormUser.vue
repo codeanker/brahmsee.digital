@@ -11,7 +11,7 @@ import type { RouterOutput } from '@codeanker/api'
 import { ValidateForm } from '@codeanker/validation'
 
 type Field = Awaited<RouterOutput['customFields']['list']>[number]
-type Value = Awaited<RouterOutput['anmeldung']['verwaltungGet']>[number]['customFieldValues'][number]
+type Value = Awaited<RouterOutput['anmeldung']['get']>[number]['customFieldValues'][number]
 
 const props = defineProps<{
   customFields: Array<Field>

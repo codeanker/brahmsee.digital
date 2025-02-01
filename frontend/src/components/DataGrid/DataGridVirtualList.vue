@@ -116,7 +116,7 @@ const {
             />
           </div>
           <div class="ml-3 flex-1 md:flex md:justify-between">
-            <p class="text-sm mb-0">
+            <p class="mb-0">
               {{ noDataMessage ?? 'Keine Daten vorhanden.' }}
             </p>
           </div>
