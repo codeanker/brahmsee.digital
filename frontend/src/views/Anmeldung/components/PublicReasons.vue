@@ -1,5 +1,6 @@
 <script setup>
 import { ArrowPathIcon } from '@heroicons/vue/20/solid'
+import { CheckIcon } from '@heroicons/vue/24/solid'
 
 const features = [
   {
@@ -7,58 +8,58 @@ const features = [
     description:
       '{Marketing | Section Description} Das Zeltlager bietet spannende Outdoor-Aktivitäten, bei denen du neue Abenteuer erleben kannst.',
     href: '#',
-    icon: ArrowPathIcon,
+    icon: CheckIcon,
   },
   {
     name: 'Neue Freundschaften schließen',
     description:
       'Triff gleichgesinnte Kinder und Jugendliche und knüpfe neue Freundschaften, die ein Leben lang halten können.',
     href: '#',
-    icon: ArrowPathIcon,
+    icon: CheckIcon,
   },
   {
     name: 'Natur genießen',
     description:
       'Erlebe das wunderschöne Naturpanorama rund um den Brahmsee und genieße unvergessliche Tage in freier Natur.',
     href: '#',
-    icon: ArrowPathIcon,
+    icon: CheckIcon,
   },
   {
     name: 'Teamarbeit stärken',
     description: 'Lerne wertvolle Fähigkeiten im Team und baue deine Teamarbeit durch diverse Gruppenaktivitäten aus.',
     href: '#',
-    icon: ArrowPathIcon,
+    icon: CheckIcon,
   },
   {
     name: 'Lebensretterausbildung',
     description: 'Nimm an Kursen teil, die dir zeigen, wie du in Notsituationen helfen und Leben retten kannst.',
     href: '#',
-    icon: ArrowPathIcon,
+    icon: CheckIcon,
   },
   {
     name: 'Spaß im Wasser',
     description: 'Erlebe Wasserspaß mit Schwimmen, Spielen und Wassersportarten unter professioneller Aufsicht.',
     href: '#',
-    icon: ArrowPathIcon,
+    icon: CheckIcon,
   },
   {
     name: 'Kreative Workshops',
     description: 'Nimm an kreativen Workshops teil und entdecke neue Hobbys und Interessen.',
     href: '#',
-    icon: ArrowPathIcon,
+    icon: CheckIcon,
   },
   {
     name: 'Selbstständigkeit fördern',
     description:
       'Fördere deine Selbstständigkeit und Eigenverantwortung durch die Teilnahme an einem strukturierten Camp.',
     href: '#',
-    icon: ArrowPathIcon,
+    icon: CheckIcon,
   },
   {
     name: 'Erinnerungen sammeln',
     description: 'Schaffe bleibende Erinnerungen an eine besondere Zeit voller Freude und gemeinschaftlichem Erleben.',
     href: '#',
-    icon: ArrowPathIcon,
+    icon: CheckIcon,
   },
 ]
 </script>
