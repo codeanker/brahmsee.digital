@@ -15,7 +15,7 @@ const { state: unterveranstaltung, execute: fetchUnterveranstaltung } = useAsync
 </script>
 
 <template>
-  <div class="grid grid-cols-1 lg:grid-cols-2">
+  <div class="grid grid-cols-1 xl:grid-cols-2">
     <FormUnterveranstaltungGeneral
       v-if="unterveranstaltung !== null"
       :unterveranstaltung="unterveranstaltung"
