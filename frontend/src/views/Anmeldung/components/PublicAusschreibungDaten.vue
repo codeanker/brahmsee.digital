@@ -55,6 +55,7 @@ const stats = computed(() => {
             <h1 class="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl">
               Marketing | Section Title
             </h1>
+            <!-- eslint-disable vue/no-v-html -->
             <div
               class="max-w-xl prose dark:prose-invert"
               v-html="unterveranstaltung?.beschreibung"
