@@ -47,6 +47,7 @@ const unterveranstaltung = injectUnterveranstaltung()
       class="absolute left-1/2 right-0 top-0 -z-10 -ml-24 transform-gpu overflow-hidden blur-3xl lg:ml-24 xl:ml-48"
       aria-hidden="true"
     >
+      <!-- eslint-disable vue/no-static-inline-styles-->
       <div
         class="aspect-[801/801] w-[50.0625rem] bg-gradient-to-tr from-[#16a34a] to-[#0e5126] opacity-30"
         style="
