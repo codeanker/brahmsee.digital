@@ -1,5 +1,4 @@
 <script setup>
-import { ArrowPathIcon } from '@heroicons/vue/20/solid'
 import { CheckIcon } from '@heroicons/vue/24/solid'
 
 const features = [
