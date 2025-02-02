@@ -9,6 +9,7 @@ const navigation = [
   {
     name: 'Facebook',
     href: '#',
+    // eslint-disable-next-line vue/one-component-per-file
     icon: defineComponent({
       render: () =>
         h('svg', { fill: 'currentColor', viewBox: '0 0 24 24' }, [
@@ -23,6 +24,7 @@ const navigation = [
   {
     name: 'Instagram',
     href: '#',
+    // eslint-disable-next-line vue/one-component-per-file
     icon: defineComponent({
       render: () =>
         h('svg', { fill: 'currentColor', viewBox: '0 0 24 24' }, [
@@ -59,40 +61,34 @@ const navigation = [
         class="h-10 mb-5 lg:mb-0"
         src="@/assets/images/gliederung_sh.png"
       />
-      <p class="m-0 text-center text-sm/6 text-gray-600 md:order-1 md:mt-0">
-        &copy; {{ formatDate(new Date(), 'YYYY') }} DLRG Landesverband Schleswig-Holstein e.V. &bull; {{ version }}#{{
-          commitHash
-        }}
-      </p>
+      <div class="text-center text-sm/6 text-gray-600">
+        <p class="m-0 md:order-1 md:mt-0">
+          &copy; {{ formatDate(new Date(), 'YYYY') }} DLRG Landesverband Schleswig-Holstein e.V.
+        </p>
+        <RouterLink
+          class="hover:underline transition-all"
+          :to="{
+            name: 'Impressum',
+          }"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Impressum
+        </RouterLink>
+        &bull;
+        <RouterLink
+          class="hover:underline transition-all"
+          :to="{
+            name: 'Datenschutz',
+          }"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Datenschutz
+        </RouterLink>
+        &bull;
+        <span>v{{ version }}#{{ commitHash }}</span>
+      </div>
     </div>
   </footer>
-  <!-- <div class="flex flex-col lg:flex-row items-start justify-center lg:items-center lg:justify-between">
-    <img
-      class="h-10 mb-5 lg:mb-0"
-      src="@/assets/images/gliederung_sh.png"
-    />
-    <div class="flex flex-col space-y-3 lg:space-y-0 text-sm lg:text-xs text-left lg:text-right leading-4">
-      <RouterLink
-        class="hover:text-gray-700 transition-all"
-        :to="{
-          name: 'Impressum',
-        }"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Impressum
-      </RouterLink>
-      <RouterLink
-        class="hover:text-gray-700 transition-all"
-        :to="{
-          name: 'Datenschutz',
-        }"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Datenschutz
-      </RouterLink>
-      <div>v{{ version }}#{{ commitHash }}</div>
-    </div>
-  </div> -->
 </template>
