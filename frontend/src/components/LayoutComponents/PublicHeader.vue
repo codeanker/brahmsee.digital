@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import GliederungLogo from '@/components/UIComponents/GliederungLogo.vue'
 import { injectUnterveranstaltung } from '@/layouts/AnmeldungLayout.vue'
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 
+const router = useRouter()
 const unterveranstaltung = injectUnterveranstaltung()
 </script>
 
@@ -22,10 +23,21 @@ const unterveranstaltung = injectUnterveranstaltung()
       </div>
       <div class="lg:flex lg:flex-1 lg:justify-end">
         <RouterLink
+          v-if="router.currentRoute.value.name === 'Public Landing'"
           class="cursor-pointer text-gray-900 hover:underline"
-          :to="{ name: 'Login', query: { redirect: '/ausschreibung/' + unterveranstaltung?.id } }"
+          :to="{ name: 'Public Anmeldung' }"
         >
           Anmelden <span aria-hidden="true">&rarr;</span>
+        </RouterLink>
+        <RouterLink
+          v-if="
+            router.currentRoute.value.name === 'Public Anmeldung' ||
+            router.currentRoute.value.name === 'Public Anmeldung Result'
+          "
+          class="cursor-pointer text-gray-900 hover:underline"
+          :to="{ name: 'Public Landing' }"
+        >
+          <span aria-hidden="true">&larr;</span> Ausschreibung
         </RouterLink>
       </div>
     </nav>

@@ -11,20 +11,22 @@ const unterveranstaltung = injectUnterveranstaltung()
 </script>
 
 <template>
-  <div class="grow flex flex-col items-center justify-center">
-    <FaceSmileIcon class="w-20 h-20 text-primary-500 mb-5" />
-    <h1 class="text-2xl font-semibold mb-2">Anmeldung erfolgreich</h1>
-    <p class="mb-5">
-      Du hast dich erfolgreich für die Veranstaltung
-      <span class="font-semibold">{{ unterveranstaltung?.veranstaltung.name }}</span>
-      angemeldet.
-    </p>
-    <Button
-      class="w-full flex justify-center"
-      color="secondary"
-      @click="router.push('/ausschreibung/' + unterveranstaltung?.id + '/anmeldung')"
-    >
-      Weitere Person anmelden
-    </Button>
+  <div class="mx-auto max-w-7xl px-6 pb-32 pt-36 sm:pt-60 lg:px-8 lg:pt-32">
+    <div class="grow flex flex-col items-center justify-center">
+      <FaceSmileIcon class="w-20 h-20 text-primary-500 mb-5" />
+      <h1 class="text-2xl font-semibold mb-2">Anmeldung erfolgreich</h1>
+      <p class="mb-5">
+        Du hast dich erfolgreich für die Veranstaltung
+        <span class="font-semibold">{{ unterveranstaltung?.veranstaltung.name }}</span>
+        angemeldet.
+      </p>
+      <Button
+        class="w-full flex justify-center"
+        color="secondary"
+        @click="router.push('/ausschreibung/' + unterveranstaltung?.id + '/anmeldung')"
+      >
+        Weitere Person anmelden
+      </Button>
+    </div>
   </div>
 </template>

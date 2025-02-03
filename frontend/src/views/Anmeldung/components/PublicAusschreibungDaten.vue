@@ -71,13 +71,14 @@ const stats = computed(() => {
             </div>
           </dl>
           <div class="mt-10 flex">
-            <a
-              href="#"
+            <RouterLink
               class="text-base/7 font-semibold text-indigo-600"
-              >Melde dich jetzt bis zum
-              <span v-if="unterveranstaltung">{{ formatDate(unterveranstaltung?.meldeschluss, 'DD.MM') }}</span> an
-              <span aria-hidden="true">&rarr;</span></a
+              :to="{ name: 'Public Anmeldung' }"
             >
+              Melde dich jetzt bis zum
+              <span v-if="unterveranstaltung">{{ formatDate(unterveranstaltung?.meldeschluss, 'DD.MM') }}</span> an
+              <span aria-hidden="true">&rarr;</span>
+            </RouterLink>
           </div>
         </div>
         <div class="lg:pr-4">
