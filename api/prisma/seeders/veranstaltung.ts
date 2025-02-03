@@ -55,6 +55,32 @@ const createVeranstaltung: Seeder = async (prisma: PrismaClient) => {
               edv: '1205013',
             },
           },
+          landingSettings: {
+            create: {
+              heroTitle: faker.lorem.sentence(),
+              heroSubtitle: faker.lorem.sentence(),
+              eventDetailsTitle: faker.lorem.sentence(),
+              eventDetailsContent: faker.lorem.paragraph(),
+              miscellaneousVisible: true,
+              miscellaneousTitle: faker.lorem.sentence(),
+              miscellaneousItems: {
+                create: Array(3)
+                  .fill(0)
+                  .map(() => ({
+                    title: faker.lorem.sentence(),
+                    content: faker.lorem.paragraph(),
+                  })),
+              },
+              faqVisible: true,
+              faqEmail: faker.internet.email(),
+
+              instagramVisible: true,
+              instagramUrl: 'https://www.instagram.com/dlrgjugendsh',
+
+              facebookVisible: true,
+              facebookUrl: 'https://www.facebook.com/DLRGJugendSH/?locale=de_DE',
+            },
+          },
         },
       },
     },
