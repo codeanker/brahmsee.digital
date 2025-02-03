@@ -45,11 +45,6 @@ export const unterveranstaltungVerwaltungCreateProcedure = defineProtectedMutate
               },
             }
           : undefined,
-        faqVisible: options.input.landingSettings.faq?.visible ?? false,
-        faqEmail: options.input.landingSettings.faq?.email,
-      },
-      select: {
-        id: true,
       },
     })
   },

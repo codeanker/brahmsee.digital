@@ -75,9 +75,6 @@ export const unterveranstaltungGliederungCreateProcedure = defineProtectedMutate
         faqVisible: input.landingSettings.faq?.visible ?? false,
         faqEmail: input.landingSettings.faq?.email,
       },
-      select: {
-        id: true,
-      },
     })
   },
 })
