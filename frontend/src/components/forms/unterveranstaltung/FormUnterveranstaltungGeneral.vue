@@ -48,11 +48,6 @@ const landingSettings = ref<ILandingSettings>(
       subtitle: undefined,
       items: [],
     },
-    faq: {
-      visible: false,
-      email: undefined,
-      items: [],
-    },
   }
 )
 

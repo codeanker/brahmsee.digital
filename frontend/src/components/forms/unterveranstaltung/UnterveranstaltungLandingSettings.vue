@@ -6,7 +6,7 @@ import BasicTextArea from '@/components/BasicInputs/BasicTextArea.vue'
 import { computed } from 'vue'
 
 export interface IHeroImages {
-  url: string
+  fileId: string
   name: string
 }
 
@@ -37,9 +37,8 @@ export interface ILandingSettings {
     items?: IMiscellaneousItem[]
   }
   faq: {
-    visible?: boolean
+    visible: boolean
     email?: string
-    items?: IFaqItem[]
   }
 }
 
