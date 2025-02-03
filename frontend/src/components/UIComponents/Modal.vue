@@ -17,6 +17,7 @@ const props = withDefaults(
 )
 
 const emit = defineEmits<{
+  open: []
   close: []
 }>()
 const visible = ref(false)
@@ -33,6 +34,7 @@ const toggleHideOverflow = (hideOverflow) => {
 
 const show = (ctx = {}) => {
   window.addEventListener('keydown', handleKeypress)
+  emit('open')
   visible.value = true
   toggleHideOverflow(true)
   context.value = ctx
@@ -74,7 +76,7 @@ if (props.immediate) {
         @mousedown.self="hide('self')"
       >
         <div
-          class="mx-2 max-h-[calc(100vh-4rem)] rounded-md bg-white"
+          class="mx-2 max-h-[calc(100vh-4rem)] rounded-md bg-white dark:bg-slate-950 dark:text-white"
           :class="`size-${size} ${overflowVisible ? 'overflow-visible' : 'overflow-auto'}`"
         >
           <slot

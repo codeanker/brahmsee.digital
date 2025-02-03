@@ -4,7 +4,7 @@ import { PrismaClient } from '@prisma/client'
 import logActivity from '../../src/util/activity.js'
 
 import type { Seeder } from './index.js'
-import {dayjs} from '@codeanker/helpers'
+import { dayjs } from '@codeanker/helpers'
 
 const createVeranstaltung: Seeder = async (prisma: PrismaClient) => {
   const beginn = dayjs().add(1, 'month')
@@ -58,6 +58,32 @@ const createVeranstaltung: Seeder = async (prisma: PrismaClient) => {
         },
       },
     },
+    select: {
+      id: true,
+      unterveranstaltungen: {
+        select: {
+          id: true,
+        },
+      },
+    },
+  })
+
+  const faqCategories = await prisma.faqCategory.createManyAndReturn({
+    data: Array(3)
+      .fill(0)
+      .map(() => ({
+        name: faker.color.human(),
+        unterveranstaltungId: veranstaltung.unterveranstaltungen[0]!.id,
+      })),
+  })
+  await prisma.faq.createMany({
+    data: Array(9)
+      .fill(0)
+      .map(() => ({
+        question: faker.commerce.productAdjective(),
+        answer: faker.commerce.productDescription(),
+        categoryId: faqCategories[Math.floor(Math.random() * faqCategories.length)]!.id,
+      })),
   })
 
   await prisma.customField.create({

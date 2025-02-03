@@ -6,6 +6,7 @@ import { addressRouter } from './address/address.router.js'
 import { anmeldungRouter } from './anmeldung/anmeldung.router.js'
 import { authenticationRouter } from './authentication/authentication.router.js'
 import { customFieldsRouter } from './customFields/customFields.router.js'
+import { faqsRouter } from './faqs/faqs.router.js'
 import { fileRouter } from './file/file.router.js'
 import { gliederungRouter } from './gliederung/gliederung.router.js'
 import { ortRouter } from './ort/ort.router.js'
@@ -31,5 +32,6 @@ export const serviceRouter = router({
   customFields: customFieldsRouter,
   file: fileRouter,
   address: addressRouter,
+  faq: faqsRouter,
   // Add Routers here - do not delete this line
 })

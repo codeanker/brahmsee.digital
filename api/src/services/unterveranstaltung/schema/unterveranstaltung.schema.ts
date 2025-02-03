@@ -48,14 +48,6 @@ export const unterveranstaltungLandingSchema = z.strictObject({
     .strictObject({
       visible: z.boolean(),
       email: z.string().email().optional(),
-      items: z
-        .array(
-          z.strictObject({
-            question: z.string(),
-            answer: z.string(),
-          })
-        )
-        .optional(),
     })
     .optional(),
 })

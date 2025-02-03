@@ -19,8 +19,9 @@ model Unterveranstaltung {
   type             UnterveranstaltungType              @default(GLIEDERUNG)
   customFields     CustomField[]
   documents        UnterveranstaltungDocument[]
-  faq              Faq[]
   landingSettings  UnterveranstaltungLandingSettings[]
+  faqs             Faq[]
+  faqCategories    FaqCategory[]
 }
 
 model UnterveranstaltungDocument {

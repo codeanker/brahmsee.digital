@@ -52,18 +52,5 @@ export const unterveranstaltungVerwaltungCreateProcedure = defineProtectedMutate
         id: true,
       },
     })
-
-    await prisma.faq.createMany({
-      data: options.input.landingSettings.faq?.items
-        ? options.input.landingSettings.faq.items.map((item) => ({
-            unterveranstaltungId: unterveranstaltung.id,
-            question: item.question,
-            answer: item.answer,
-            category: 'DEFAULT',
-          }))
-        : [],
-    })
-
-    return unterveranstaltung
   },
 })

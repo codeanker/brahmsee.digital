@@ -1,17 +1,24 @@
-/*
-  Warnings:
+-- DropForeignKey
+ALTER TABLE "Person" DROP CONSTRAINT "Person_photoId_fkey";
 
-  - The primary key for the `_AnmeldungToMahlzeit` table will be changed. If it partially fails, the table could be left without primary key constraint.
-  - The primary key for the `_FaqToUnterveranstaltung` table will be changed. If it partially fails, the table could be left without primary key constraint.
-  - A unique constraint covering the columns `[A,B]` on the table `_AnmeldungToMahlzeit` will be added. If there are existing duplicate values, this will fail.
-  - A unique constraint covering the columns `[A,B]` on the table `_FaqToUnterveranstaltung` will be added. If there are existing duplicate values, this will fail.
+-- CreateTable
+CREATE TABLE "faq_categories" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "unterveranstaltungId" INTEGER NOT NULL,
 
-*/
--- AlterTable
-ALTER TABLE "_AnmeldungToMahlzeit" DROP CONSTRAINT "_AnmeldungToMahlzeit_AB_pkey";
+    CONSTRAINT "faq_categories_pkey" PRIMARY KEY ("id")
+);
 
--- AlterTable
-ALTER TABLE "_FaqToUnterveranstaltung" DROP CONSTRAINT "_FaqToUnterveranstaltung_AB_pkey";
+-- CreateTable
+CREATE TABLE "faqs" (
+    "id" SERIAL NOT NULL,
+    "question" TEXT NOT NULL,
+    "answer" TEXT NOT NULL,
+    "categoryId" INTEGER NOT NULL,
+
+    CONSTRAINT "faqs_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "UnterveranstaltungLandingSettings" (
@@ -24,6 +31,7 @@ CREATE TABLE "UnterveranstaltungLandingSettings" (
     "miscellaneousVisible" BOOLEAN,
     "miscellaneousTitle" TEXT,
     "faqVisible" BOOLEAN,
+    "faqEmail" TEXT,
     "instagramVisible" BOOLEAN,
     "instagramUrl" TEXT,
     "facebookVisible" BOOLEAN,
@@ -46,20 +54,37 @@ CREATE TABLE "UnterveranstaltungLandingImages" (
 CREATE TABLE "UnterveranstaltungLandingMiscellaneous" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
-    "conent" TEXT NOT NULL,
+    "content" TEXT NOT NULL,
     "unterveranstaltungLandingSettingsId" INTEGER,
 
     CONSTRAINT "UnterveranstaltungLandingMiscellaneous_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "_FaqToUnterveranstaltung" (
+    "A" INTEGER NOT NULL,
+    "B" INTEGER NOT NULL,
+
+    CONSTRAINT "_FaqToUnterveranstaltung_AB_pkey" PRIMARY KEY ("A","B")
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "faq_categories_name_unterveranstaltungId_key" ON "faq_categories"("name", "unterveranstaltungId");
+
 -- CreateIndex
 CREATE UNIQUE INDEX "UnterveranstaltungLandingImages_fileId_key" ON "UnterveranstaltungLandingImages"("fileId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "_AnmeldungToMahlzeit_AB_unique" ON "_AnmeldungToMahlzeit"("A", "B");
+CREATE INDEX "_FaqToUnterveranstaltung_B_index" ON "_FaqToUnterveranstaltung"("B");
 
--- CreateIndex
-CREATE UNIQUE INDEX "_FaqToUnterveranstaltung_AB_unique" ON "_FaqToUnterveranstaltung"("A", "B");
+-- AddForeignKey
+ALTER TABLE "faq_categories" ADD CONSTRAINT "faq_categories_unterveranstaltungId_fkey" FOREIGN KEY ("unterveranstaltungId") REFERENCES "Unterveranstaltung"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "faqs" ADD CONSTRAINT "faqs_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "faq_categories"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Person" ADD CONSTRAINT "Person_photoId_fkey" FOREIGN KEY ("photoId") REFERENCES "File"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "UnterveranstaltungLandingSettings" ADD CONSTRAINT "UnterveranstaltungLandingSettings_unterveranstaltungId_fkey" FOREIGN KEY ("unterveranstaltungId") REFERENCES "Unterveranstaltung"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -72,3 +97,9 @@ ALTER TABLE "UnterveranstaltungLandingImages" ADD CONSTRAINT "Unterveranstaltung
 
 -- AddForeignKey
 ALTER TABLE "UnterveranstaltungLandingMiscellaneous" ADD CONSTRAINT "UnterveranstaltungLandingMiscellaneous_unterveranstaltungL_fkey" FOREIGN KEY ("unterveranstaltungLandingSettingsId") REFERENCES "UnterveranstaltungLandingSettings"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_FaqToUnterveranstaltung" ADD CONSTRAINT "_FaqToUnterveranstaltung_A_fkey" FOREIGN KEY ("A") REFERENCES "faqs"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_FaqToUnterveranstaltung" ADD CONSTRAINT "_FaqToUnterveranstaltung_B_fkey" FOREIGN KEY ("B") REFERENCES "Unterveranstaltung"("id") ON DELETE CASCADE ON UPDATE CASCADE;
