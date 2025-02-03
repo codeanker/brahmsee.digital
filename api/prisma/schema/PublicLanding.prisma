@@ -1,0 +1,47 @@
+model UnterveranstaltungLandingSettings {
+  id Int @id @default(autoincrement())
+
+  unterveranstaltungId Int
+  unterveranstaltung   Unterveranstaltung @relation(fields: [unterveranstaltungId], references: [id])
+
+  heroTitle    String
+  heroSubtitle String
+  heroImages   UnterveranstaltungLandingImages[]
+
+  eventDetailsTitle   String
+  eventDetailsContent String
+
+  miscellaneousVisible Boolean?
+  miscellaneousTitle   String?
+  miscellaneousItems   UnterveranstaltungLandingMiscellaneous[]
+
+  faqVisible Boolean?
+  faqEmail   String?
+
+  instagramVisible Boolean?
+  instagramUrl     String?
+
+  facebookVisible Boolean?
+  facebookUrl     String?
+}
+
+model UnterveranstaltungLandingImages {
+  id   Int     @id @default(autoincrement())
+  name String?
+
+  UnterveranstaltungLandingSettings   UnterveranstaltungLandingSettings? @relation(fields: [unterveranstaltungLandingSettingsId], references: [id])
+  unterveranstaltungLandingSettingsId Int?
+
+  file   File   @relation(fields: [fileId], references: [id])
+  fileId String @unique
+}
+
+model UnterveranstaltungLandingMiscellaneous {
+  id Int @id @default(autoincrement())
+
+  title   String
+  content String
+
+  UnterveranstaltungLandingSettings   UnterveranstaltungLandingSettings? @relation(fields: [unterveranstaltungLandingSettingsId], references: [id])
+  unterveranstaltungLandingSettingsId Int?
+}

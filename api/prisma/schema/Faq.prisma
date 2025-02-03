@@ -6,9 +6,9 @@ model FaqCategory {
 
 model Faq {
   id                 Int                  @id @default(autoincrement())
-  categoryId         Int
-  category           FaqCategory          @relation(fields: [categoryId], references: [id])
   question           String
   answer             String
   unterveranstaltung Unterveranstaltung[]
+  FaqCategory        FaqCategory?         @relation(fields: [faqCategoryId], references: [id])
+  faqCategoryId      Int?
 }

@@ -18,7 +18,7 @@ import router from '@/router'
 import type { RouterInput } from '@codeanker/api'
 import { UnterveranstaltungTypeMapping, getEnumOptions } from '@codeanker/api'
 import { ValidateForm } from '@codeanker/validation'
-import UnterveranstaltungLandingSettings from './UnterveranstaltungLandingSettings.vue'
+import UnterveranstaltungLandingSettings, { type ILandingSettings } from './UnterveranstaltungLandingSettings.vue'
 
 const props = defineProps<{
   unterveranstaltung?: any
@@ -26,6 +26,35 @@ const props = defineProps<{
   mode: 'create' | 'update'
   onUpdate?: () => void
 }>()
+
+const unterveranstaltungId = props.unterveranstaltung?.id
+const gliederung = ref(props.unterveranstaltung?.gliederung)
+const documents = ref(props.unterveranstaltung?.documents || [])
+const deletedDocumentIds = ref<number[]>([])
+const landingSettings = ref<ILandingSettings>(
+  props.unterveranstaltung?.landingSettings || {
+    hero: {
+      title: undefined,
+      subtitle: undefined,
+      images: [],
+    },
+    eventDetails: {
+      title: null,
+      content: null,
+    },
+    miscellaneous: {
+      visible: false,
+      title: undefined,
+      subtitle: undefined,
+      items: [],
+    },
+    faq: {
+      visible: false,
+      email: undefined,
+      items: [],
+    },
+  }
+)
 
 const unterveranstaltungCopy = ref({
   beschreibung: props.unterveranstaltung?.beschreibung,
@@ -38,11 +67,6 @@ const unterveranstaltungCopy = ref({
   gliederungId: props.unterveranstaltung?.gliederung?.id,
   type: props.unterveranstaltung?.type,
 })
-
-const unterveranstaltungId = props.unterveranstaltung?.id
-const gliederung = ref(props.unterveranstaltung?.gliederung)
-const documents = ref(props.unterveranstaltung?.documents || [])
-const deletedDocumentIds = ref<number[]>([])
 
 // Wird benötig damit man direkt von einer Veranstaltung eine Unterveranstaltung anlegen kann ohne diese extra auswählen zu müssen
 if (props.mode === 'create') {
@@ -83,12 +107,16 @@ const {
       unterveranstaltungCopy.value.gliederungId = gliederung.value.id
       await apiClient.unterveranstaltung.verwaltungCreate.mutate({
         data: unterveranstaltungCopy.value as unknown as RouterInput['unterveranstaltung']['verwaltungCreate']['data'],
+        landingSettings:
+          landingSettings.value as unknown as RouterInput['unterveranstaltung']['verwaltungCreate']['landingSettings'],
       })
     } else {
       delete unterveranstaltungCopy.value.gliederungId
       delete unterveranstaltungCopy.value.type
       await apiClient.unterveranstaltung.gliederungCreate.mutate({
         data: unterveranstaltungCopy.value as unknown as RouterInput['unterveranstaltung']['gliederungCreate']['data'],
+        landingSettings:
+          landingSettings.value as unknown as RouterInput['unterveranstaltung']['gliederungCreate']['landingSettings'],
       })
     }
     router.back()
@@ -123,6 +151,7 @@ const {
           updateDocuments,
           deleteDocumentIds: deletedDocumentIds.value,
         } as RouterInput['unterveranstaltung']['verwaltungPatch']['data'],
+        landingSettings: landingSettings.value,
       })
     } else {
       delete unterveranstaltungCopy.value.gliederungId
@@ -139,6 +168,7 @@ const {
           updateDocuments,
           deleteDocumentIds: deletedDocumentIds.value,
         } as RouterInput['unterveranstaltung']['gliederungPatch']['data'],
+        landingSettings: landingSettings.value,
       })
     }
 
@@ -392,7 +422,10 @@ function deleteDocument(document, index) {
       </div>
 
       <!-- Einstellungen für die Landing-->
-      <UnterveranstaltungLandingSettings class="col-span-full" />
+      <UnterveranstaltungLandingSettings
+        v-model="landingSettings"
+        class="col-span-full"
+      />
     </div>
     <div class="mt-8 flex gap-4">
       <Button
