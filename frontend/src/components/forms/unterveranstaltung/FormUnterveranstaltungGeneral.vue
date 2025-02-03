@@ -32,22 +32,16 @@ const gliederung = ref(props.unterveranstaltung?.gliederung)
 const documents = ref(props.unterveranstaltung?.documents || [])
 const deletedDocumentIds = ref<number[]>([])
 const landingSettings = ref<ILandingSettings>(
-  props.unterveranstaltung?.landingSettings || {
-    hero: {
-      title: undefined,
-      subtitle: undefined,
-      images: [],
-    },
-    eventDetails: {
-      title: null,
-      content: null,
-    },
-    miscellaneous: {
-      visible: false,
-      title: undefined,
-      subtitle: undefined,
-      items: [],
-    },
+  props.unterveranstaltung?.landingSettings[0] || {
+    heroTitle: '',
+    heroSubtitle: '',
+    heroImages: [],
+    eventDetailsTitle: '',
+    eventDetailsContent: '',
+    miscellaneousVisible: false,
+    miscellaneousTitle: '',
+    miscellaneousSubtitle: '',
+    miscellaneousItems: [],
   }
 )
 
