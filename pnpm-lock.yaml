@@ -92,6 +92,9 @@ importers:
       '@codeanker/helpers':
         specifier: workspace:*
         version: link:../packages/helpers
+      '@codeanker/service-sms':
+        specifier: file:../vendor/codeanker-service-sms-0.0.2.tar.gz
+        version: codeanker-sms-service@file:vendor/codeanker-service-sms-0.0.2.tar.gz
       '@faker-js/faker':
         specifier: ^9.4.0
         version: 9.4.0
@@ -2008,6 +2011,10 @@ packages:
   co@4.6.0:
     resolution: {integrity: sha512-QVb0dM5HvG+uaxitm8wONl7jltx8dqhfU33DcqtOZcLSVIKSDDLDi7+0LbAKiyI8hD9u42m2YxXSkMGWThaecQ==}
     engines: {iojs: '>= 1.0.0', node: '>= 0.12.0'}
+
+  codeanker-sms-service@file:vendor/codeanker-service-sms-0.0.2.tar.gz:
+    resolution: {integrity: sha512-9AN3HS8dlDIZuUnH5B98K1eaNrTcMq0BtXGDe7GIfxNubOx7Op2xT7ndVnOR45vkSSceyqRfKkd9MprOMvLJIw==, tarball: file:vendor/codeanker-service-sms-0.0.2.tar.gz}
+    version: 0.0.1
 
   codepage@1.15.0:
     resolution: {integrity: sha512-3g6NUTPd/YtuuGrhMnOMRjFc+LJw/bnMp3+0r/Wcz3IXUuCosKRJvMphm5+Q+bvTVGcJJuRvVLuYba+WojaFaA==}
@@ -5704,6 +5711,12 @@ snapshots:
       type-is: 1.6.18
 
   co@4.6.0: {}
+
+  codeanker-sms-service@file:vendor/codeanker-service-sms-0.0.2.tar.gz:
+    dependencies:
+      axios: 1.7.9
+    transitivePeerDependencies:
+      - debug
 
   codepage@1.15.0: {}
 

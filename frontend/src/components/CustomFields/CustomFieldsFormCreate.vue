@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { useAsyncState } from '@vueuse/core'
-import { ref } from 'vue'
+import { ref, useTemplateRef } from 'vue'
 
 import { apiClient } from '@/api'
 import CustomFieldsFormGeneral, { type ICustomFieldData } from '@/components/CustomFields/CustomFieldsFormGeneral.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import router from '@/router'
-import { type CustomFieldType, type RouterInput } from '@codeanker/api'
+import { type Prisma, type CustomFieldType, type RouterInput, type CustomFieldPosition } from '@codeanker/api'
 import { ValidateForm } from '@codeanker/validation'
+import CustomFieldTemplateModal from './CustomFieldTemplateModal.vue'
 
 type Query = RouterInput['customFields']['list']
 
@@ -70,6 +71,19 @@ const { execute, error, isLoading } = useAsyncState(
   null,
   { immediate: false }
 )
+
+const templateModal = useTemplateRef('templateModal')
+
+function onSelectTemplate(data: Prisma.CustomFieldCreateInput) {
+  form.value = {
+    name: data.name,
+    description: data.description ?? '',
+    type: data.type,
+    required: data.required ?? false,
+    options: (data.options as string[]) ?? [],
+    positions: (data.positions as CustomFieldPosition[]) ?? [],
+  }
+}
 </script>
 
 <template>
@@ -96,6 +110,7 @@ const { execute, error, isLoading } = useAsyncState(
       <Button
         type="button"
         color="info"
+        @click="() => templateModal?.show()"
       >
         Vorlage auswählen
       </Button>
@@ -113,4 +128,9 @@ const { execute, error, isLoading } = useAsyncState(
       {{ error }}
     </div>
   </div>
+
+  <CustomFieldTemplateModal
+    ref="templateModal"
+    @select="onSelectTemplate"
+  />
 </template>

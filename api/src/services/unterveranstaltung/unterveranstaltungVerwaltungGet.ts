@@ -23,6 +23,7 @@ export const unterveranstaltungVerwaltungGetProcedure = defineProtectedQueryProc
         teilnahmegebuehr: true,
         meldebeginn: true,
         meldeschluss: true,
+        type: true,
         gliederung: {
           select: {
             id: true,

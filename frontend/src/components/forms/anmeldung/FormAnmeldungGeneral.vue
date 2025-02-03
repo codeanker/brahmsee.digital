@@ -14,9 +14,7 @@ const props = withDefaults(
 )
 
 const { state: anmeldungenPerson } = useAsyncState(
-  async () => {
-    return await apiClient.anmeldung.get.query({ personId: props.personId })
-  },
+  () => apiClient.anmeldung.get.query({ personId: props.personId }),
   null,
   {
     immediate: true,

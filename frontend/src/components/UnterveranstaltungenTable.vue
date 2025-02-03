@@ -40,6 +40,11 @@ const columns = computed<TGridColumn<TUnterveranstaltungData, TUnterveranstaltun
       filter: { component: BasicInput, key: 'gliederungName' },
     },
     {
+      field: 'type',
+      title: 'Typ',
+      sortable: true,
+    },
+    {
       field: 'meldeschluss',
       title: 'Meldeschluss',
       preset: 'date',
@@ -51,6 +56,7 @@ const columns = computed<TGridColumn<TUnterveranstaltungData, TUnterveranstaltun
       title: 'Gebühr',
       size: '120px',
       sortable: true,
+      format: (value) => `${value.toFixed(2)} €`,
     },
     {
       field: 'maxTeilnehmende',

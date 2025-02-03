@@ -43,7 +43,9 @@ function getSearchCommand() {
 <template>
   <div>
     <GlobalSearch ref="globalSearch" />
-    <div class="flex h-screen overflow-hidden relative">
+    <div
+      class="flex h-screen overflow-hidden relative apply bg-gray-50 dark:bg-dark-secondary text-primary-950 dark:text-gray-200"
+    >
       <Sidebar
         class="shrink-0 h-full p-6 w-72 absolute lg:relative z-50"
         :class="{ 'hidden lg:flex': !showMobileMenu, 'bg-white': showMobileMenu }"

@@ -77,6 +77,7 @@ const isClosed = computed(() => dayjs().isAfter(unterveranstaltung?.value?.melde
 
         <div class="mt-5 lg:mt-10 mb-5 text-lg font-semibold">Beschreibung</div>
         <div class="px-3 py-5">
+          <!-- eslint-disable vue/no-v-html -->
           <div
             class="prose dark:prose-invert"
             v-html="unterveranstaltung?.beschreibung"

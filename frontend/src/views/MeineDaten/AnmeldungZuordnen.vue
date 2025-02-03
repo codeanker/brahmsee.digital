@@ -26,7 +26,11 @@ async function onSubmit() {
     router.push({ name: 'Meine Anmeldungen' })
   } catch (error) {
     console.error(error)
-    errorMessage.value = error.message
+    if (error instanceof Error) {
+      errorMessage.value = error.message
+    } else {
+      errorMessage.value = 'Etwas ist schiefgelaufen.'
+    }
   }
 }
 </script>

@@ -1,8 +1,8 @@
 import { Role } from '@prisma/client'
 import z from 'zod'
 
+import type { Context } from '../../context.js'
 import prisma from '../../prisma.js'
-import type { AuthenticatedContext } from '../../trpc.js'
 import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
 
 export const ZGliederungVerwaltungCreateInputSchema = z.strictObject({
@@ -14,7 +14,7 @@ export const ZGliederungVerwaltungCreateInputSchema = z.strictObject({
 
 export type TGliederungVerwaltungCreateInputSchema = z.infer<typeof ZGliederungVerwaltungCreateInputSchema>
 
-type GliederungVerwaltungCreateOptions = AuthenticatedContext & {
+type GliederungVerwaltungCreateOptions = Context & {
   input: TGliederungVerwaltungCreateInputSchema
 }
 

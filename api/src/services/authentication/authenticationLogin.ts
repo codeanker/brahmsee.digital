@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { authenticationLogin } from '../../authentication.js'
 import prisma from '../../prisma.js'
 import { definePublicMutateProcedure } from '../../types/defineProcedure.js'
+import { personSelfSelect } from '../person/personAuthenticatedGet.js'
 
 export const authenticationLoginProcedure = definePublicMutateProcedure({
   key: 'login',
@@ -10,34 +11,18 @@ export const authenticationLoginProcedure = definePublicMutateProcedure({
     email: z.string(),
     password: z.string(),
   }),
-  async handler(options) {
-    const authResult = await authenticationLogin(options.input)
+  async handler({ input }) {
+    const { accessToken, user } = await authenticationLogin(input)
     const account = await prisma.account.findUniqueOrThrow({
       where: {
-        id: authResult.user.id,
+        id: user.id,
       },
-      select: {
-        role: true,
-        person: {
-          select: {
-            id: true,
-            firstname: true,
-            lastname: true,
-            gliederungId: true,
-            photoId: true,
-          },
-        },
-        status: true,
-      },
+      select: personSelfSelect,
     })
-    const person = account.person
+
     return {
-      ...authResult,
-      user: {
-        ...authResult.user,
-        person,
-        role: account.role,
-      },
+      accessToken,
+      account,
     }
   },
 })

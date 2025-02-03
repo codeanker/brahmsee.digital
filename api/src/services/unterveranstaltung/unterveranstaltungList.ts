@@ -20,6 +20,7 @@ const inputSchema = defineQuery({
         z.literal('gliederung.name'),
         z.literal('meldeschluss'),
         z.literal('teilnahmegebuehr'),
+        z.literal('type'),
       ]),
       z.union([z.literal('asc'), z.literal('desc')]),
     ])
@@ -41,6 +42,7 @@ export const unterveranstaltungListProcedure = defineProtectedQueryProcedure({
       orderBy: getOrderBy(options.input.orderBy),
       select: {
         id: true,
+        type: true,
         gliederung: {
           select: {
             id: true,

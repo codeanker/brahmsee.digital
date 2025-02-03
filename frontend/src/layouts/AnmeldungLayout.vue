@@ -31,14 +31,16 @@ export function injectUnterveranstaltung() {
 
 <template>
   <PublicLayout>
-    <!-- Header -->
-    <div class="sticky top-0 bg-white dark:bg-dark-primary z-10 pb-8">
-      <PublicHeader />
-      <div class="text-3xl font-medium">Ausschreibung {{ unterveranstaltung?.veranstaltung.name }}</div>
+    <PublicHeader />
+    <div class="z-10">
+      <router-view />
     </div>
-
-    <router-view />
-
     <PublicFooter />
   </PublicLayout>
 </template>
+
+<style lang="scss">
+html {
+  font-size: 16px;
+}
+</style>

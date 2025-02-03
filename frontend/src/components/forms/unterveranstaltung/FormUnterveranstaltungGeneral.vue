@@ -18,6 +18,7 @@ import router from '@/router'
 import type { RouterInput } from '@codeanker/api'
 import { UnterveranstaltungTypeMapping, getEnumOptions } from '@codeanker/api'
 import { ValidateForm } from '@codeanker/validation'
+import UnterveranstaltungLandingSettings from './UnterveranstaltungLandingSettings.vue'
 
 const props = defineProps<{
   unterveranstaltung?: any
@@ -219,6 +220,10 @@ function deleteDocument(document, index) {
 <template>
   <ValidateForm @submit="handle">
     <div class="grid grid-cols-1 lg:grid-cols-6 gap-6">
+      <div class="lg:col-span-full">
+        <div class="text-lg font-semibold">Ausschreibung</div>
+        <p class="max-w-2xl text-sm">Bearbeite hier die Stammdaten der Ausschreibung</p>
+      </div>
       <div
         v-if="mode === 'create'"
         class="lg:col-span-full"
@@ -316,8 +321,19 @@ function deleteDocument(document, index) {
           label="Bedingungen"
         />
       </div>
-      <div class="lg:col-span-full">
-        <label class="font-medium">Dokumente</label>
+      <!-- Dokumente ggf. in den Reiter Dokumente verschieben? @ToDo Design stimmt noch nicht -->
+      <div class="lg:col-span-full hidden">
+        <div class="my-10">
+          <div class="text-lg font-semibold">
+            Dokumente
+            <span
+              class="whitespace-nowrap inline-flex items-center rounded-md px-2 py-1 text-sm font-medium ring-1 ring-inset bg-indigo-50 text-indigo-600 ring-indigo-500/10"
+            >
+              New
+            </span>
+          </div>
+          <p class="max-w-2xl text-sm">Hier kannst Du Dokumente für die Ausschreibung hochladen</p>
+        </div>
         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
           <thead>
             <tr>
@@ -374,6 +390,9 @@ function deleteDocument(document, index) {
           </div>
         </div>
       </div>
+
+      <!-- Einstellungen für die Landing-->
+      <UnterveranstaltungLandingSettings class="col-span-full" />
     </div>
     <div class="mt-8 flex gap-4">
       <Button

@@ -8,7 +8,7 @@ import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.
 
 export const customFieldValuesUpdate = defineProtectedMutateProcedure({
   key: 'valuesUpdate',
-  roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
+  roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN, Role.USER],
   inputSchema: z.strictObject({
     data: z.array(
       z.strictObject({
@@ -18,12 +18,14 @@ export const customFieldValuesUpdate = defineProtectedMutateProcedure({
     ),
     anmeldungId: z.number().int(),
   }),
-  async handler(options) {
+  async handler({ ctx: { account, accountId }, input }) {
     type AnmeldungWhereUniqueInput = Parameters<typeof prisma.anmeldung.update>[0]['where']
-    const where: AnmeldungWhereUniqueInput = { id: options.input.anmeldungId }
+    const where: AnmeldungWhereUniqueInput = { id: input.anmeldungId }
 
-    if (options.ctx.account.role !== Role.ADMIN) {
-      const gliederung = await getGliederungRequireAdmin(options.ctx.accountId)
+    if (account.role === Role.USER) {
+      where.accountId = accountId
+    } else if (account.role === Role.GLIEDERUNG_ADMIN) {
+      const gliederung = await getGliederungRequireAdmin(accountId)
       where.unterveranstaltung = {
         gliederungId: gliederung.id,
       }
@@ -50,12 +52,12 @@ export const customFieldValuesUpdate = defineProtectedMutateProcedure({
     }
 
     const res = await Promise.all(
-      options.input.data.map(async (element) => {
+      input.data.map(async (element) => {
         const existingValues = (
           await prisma.customFieldValue.findMany({
             where: {
               fieldId: element.id,
-              anmeldungId: options.input.anmeldungId,
+              anmeldungId: input.anmeldungId,
             },
             select: {
               id: true,
@@ -78,12 +80,12 @@ export const customFieldValuesUpdate = defineProtectedMutateProcedure({
             description: 'Benutzerdefinierten Wert aktualisiert',
             subjectType: 'customFieldValues',
             subjectId: existingValues.id,
-            causerId: options.ctx.accountId,
+            causerId: accountId,
             metadata: {
               oldValue: existingValues.value,
               value: element.value,
               fieldId: element.id,
-              anmeldungId: options.input.anmeldungId,
+              anmeldungId: input.anmeldungId,
             },
           })
         } else {
@@ -91,7 +93,7 @@ export const customFieldValuesUpdate = defineProtectedMutateProcedure({
             data: {
               value: element.value,
               fieldId: element.id,
-              anmeldungId: options.input.anmeldungId,
+              anmeldungId: input.anmeldungId,
             },
           })
           await logActivity({
@@ -99,11 +101,11 @@ export const customFieldValuesUpdate = defineProtectedMutateProcedure({
             description: 'Benutzerdefinierten Wert hinzugefügt',
             subjectType: 'customFieldValues',
             subjectId: res.id,
-            causerId: options.ctx.accountId,
+            causerId: accountId,
             metadata: {
               value: element.value,
               fieldId: element.id,
-              anmeldungId: options.input.anmeldungId,
+              anmeldungId: input.anmeldungId,
             },
           })
         }

@@ -30,6 +30,7 @@
     "@azure/storage-blob": "^12.17.0",
     "@codeanker/authentication": "workspace:*",
     "@codeanker/datagrid": "file:../vendor/codeanker-datagrid-2.7.1-trimmed.tgz",
+    "@codeanker/service-sms": "file:../vendor/codeanker-service-sms-0.0.2.tar.gz",
     "@codeanker/helpers": "workspace:*",
     "@faker-js/faker": "^9.4.0",
     "@koa/cors": "^5.0.0",
