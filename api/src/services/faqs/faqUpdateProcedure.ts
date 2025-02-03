@@ -1,11 +1,12 @@
 import z from 'zod'
 
 import prisma from '../../prisma.js'
-import { definePublicMutateProcedure } from '../../types/defineProcedure.js'
+import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
 import { faqSchema } from './faqs.schema.js'
 
-export const faqUpdateProcedure = definePublicMutateProcedure({
+export const faqUpdateProcedure = defineProtectedMutateProcedure({
   key: 'update',
+  roleIds: ['ADMIN', 'GLIEDERUNG_ADMIN'],
   inputSchema: z.strictObject({
     id: z.number().int(),
     unterveranstaltungId: z.number().int(),

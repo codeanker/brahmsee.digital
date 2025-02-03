@@ -1,8 +1,8 @@
 import z from 'zod'
 
-import prisma from '../../prisma.js'
-import { definePublicQueryProcedure } from '../../types/defineProcedure.js'
 import { groupBy } from '@codeanker/helpers'
+import prisma from '../../prisma.js'
+import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
 
 export async function listFaqs(unterveranstaltungId: number) {
   const list = await prisma.faq.findMany({
@@ -33,16 +33,18 @@ export async function listFaqs(unterveranstaltungId: number) {
   return Object.fromEntries(Object.entries(groups).sort(([a], [b]) => a.localeCompare(b)))
 }
 
-export const faqListProcedure = definePublicQueryProcedure({
+export const faqListProcedure = defineProtectedQueryProcedure({
   key: 'list',
+  roleIds: ['ADMIN', 'GLIEDERUNG_ADMIN'],
   inputSchema: z.strictObject({
     unterveranstaltungId: z.number().int(),
   }),
   handler: ({ input }) => listFaqs(input.unterveranstaltungId),
 })
 
-export const faqCategorySearchProcedure = definePublicQueryProcedure({
+export const faqCategorySearchProcedure = defineProtectedQueryProcedure({
   key: 'searchCategory',
+  roleIds: ['ADMIN', 'GLIEDERUNG_ADMIN'],
   inputSchema: z.strictObject({
     term: z.string().optional(),
   }),

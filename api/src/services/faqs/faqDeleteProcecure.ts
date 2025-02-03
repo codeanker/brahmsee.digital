@@ -1,10 +1,11 @@
 import z from 'zod'
 
 import prisma from '../../prisma.js'
-import { definePublicMutateProcedure } from '../../types/defineProcedure.js'
+import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
 
-export const faqDeleteProcedure = definePublicMutateProcedure({
+export const faqDeleteProcedure = defineProtectedMutateProcedure({
   key: 'delete',
+  roleIds: ['ADMIN', 'GLIEDERUNG_ADMIN'],
   inputSchema: z.number().int(),
   handler: async ({ input }) => {
     await prisma.faq.delete({
