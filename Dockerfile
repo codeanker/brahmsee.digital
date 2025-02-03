@@ -1,4 +1,6 @@
-FROM node:22-alpine3.20 AS workspace-base
+FROM node:18.14.2-alpine3.16  AS workspace-base
+
+RUN apk add --no-cache bash curl jq
 
 RUN export COREPACK_INTEGRITY_KEYS="$(curl https://registry.npmjs.org/-/npm/v1/keys | jq -c '{npm: .keys}')"
 
