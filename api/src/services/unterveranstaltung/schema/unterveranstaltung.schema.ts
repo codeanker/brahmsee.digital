@@ -13,43 +13,40 @@ export const unterveranstaltungCreateSchema = z.strictObject({
 export type TUnterveranstaltungCreateSchema = z.infer<typeof unterveranstaltungCreateSchema>
 
 export const unterveranstaltungLandingSchema = z.strictObject({
-  hero: z.strictObject({
-    title: z.string(),
-    subtitle: z.string(),
-    images: z
-      .array(
-        z.strictObject({
-          name: z.string(),
-          fileId: z.string().uuid(),
-        })
-      )
-      .optional(),
-  }),
-  eventDetails: z.strictObject({
-    title: z.string(),
-    content: z.string(),
-  }),
-  miscellaneous: z
-    .strictObject({
-      visible: z.boolean(),
-      title: z.string().optional(),
-      subtitle: z.string().optional(),
-      items: z
-        .array(
-          z.strictObject({
-            title: z.string(),
-            content: z.string(),
-          })
-        )
-        .optional(),
-    })
+  heroTitle: z.string(),
+  heroSubtitle: z.string(),
+  heroImages: z
+    .array(
+      z.strictObject({
+        name: z.string(),
+        fileId: z.string().uuid(),
+      })
+    )
     .optional(),
-  faq: z
-    .strictObject({
-      visible: z.boolean(),
-      email: z.string().email().optional(),
-    })
+
+  eventDetails: z.string(),
+  eventContent: z.string(),
+
+  miscellaneousVisible: z.boolean().optional(),
+  miscellaneousTitle: z.string().optional(),
+  miscellaneousSubtitle: z.string().optional(),
+  miscellaneousItems: z
+    .array(
+      z.strictObject({
+        title: z.string(),
+        content: z.string(),
+      })
+    )
     .optional(),
+
+  faqVisible: z.boolean().optional(),
+  faqEmail: z.string().optional(),
+
+  instagramVisible: z.boolean().optional(),
+  instagramTitle: z.string().optional(),
+
+  facebookVisible: z.boolean().optional(),
+  facebookTitle: z.string().optional(),
 })
 
 export const unterveranstaltungUpdateSchema = unterveranstaltungCreateSchema.omit({ veranstaltungId: true }).extend({

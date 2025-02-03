@@ -55,25 +55,27 @@ export const unterveranstaltungGliederungCreateProcedure = defineProtectedMutate
     await prisma.unterveranstaltungLandingSettings.create({
       data: {
         unterveranstaltungId: unterveranstaltung.id,
-        heroTitle: input.landingSettings.hero.title,
-        heroSubtitle: input.landingSettings.hero.subtitle,
-        eventDetailsTitle: input.landingSettings.eventDetails.title,
-        eventDetailsContent: input.landingSettings.eventDetails.content,
-
-        miscellaneousVisible: input.landingSettings.miscellaneous?.visible ?? false,
-        miscellaneousTitle: input.landingSettings.miscellaneous?.title,
-        miscellaneousItems: input.landingSettings.miscellaneous?.items
+        ...input.landingSettings,
+        heroImages: input.landingSettings.heroImages
           ? {
               createMany: {
-                data: input.landingSettings.miscellaneous.items.map((item) => ({
+                data: input.landingSettings.heroImages.map((image) => ({
+                  name: image.name,
+                  fileId: image.fileId,
+                })),
+              },
+            }
+          : undefined,
+        miscellaneousItems: input.landingSettings.miscellaneousItems
+          ? {
+              createMany: {
+                data: input.landingSettings.miscellaneousItems.map((item) => ({
                   title: item.title,
                   content: item.content,
                 })),
               },
             }
           : undefined,
-        faqVisible: input.landingSettings.faq?.visible ?? false,
-        faqEmail: input.landingSettings.faq?.email,
       },
     })
   },

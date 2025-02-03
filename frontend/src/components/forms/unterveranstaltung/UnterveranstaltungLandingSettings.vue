@@ -21,25 +21,26 @@ export interface IMiscellaneousItem {
 }
 
 export interface ILandingSettings {
-  hero: {
-    title: string
-    subtitle: string
-    images: IHeroImages[]
-  }
-  eventDetails: {
-    title: string
-    content: string
-  }
-  miscellaneous: {
-    visible: boolean
-    title?: string
-    subtitle?: string
-    items?: IMiscellaneousItem[]
-  }
-  faq: {
-    visible: boolean
-    email?: string
-  }
+  heroTitle: string
+  heroSubtitle: string
+  heroImages: IHeroImages[]
+
+  eventDetailsTitle: string
+  eventDetailsContent: string
+
+  miscellaneousVisible: boolean
+  miscellaneousTitle?: string
+  miscellaneousSubtitle?: string
+  miscellaneousItems?: IMiscellaneousItem[]
+
+  faqVisible: boolean
+  faqEmail?: string
+
+  instagramVisible: boolean
+  instagramUrl?: string
+
+  facebookVisible: boolean
+  facebookUrl?: string
 }
 
 const props = withDefaults(
@@ -91,7 +92,7 @@ const model = computed({
           <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div class="col-span-full">
               <BasicTextArea
-                v-model="model.hero.title"
+                v-model="model.heroTitle"
                 label="Titel"
                 placeholder="Titel"
                 required
@@ -100,7 +101,7 @@ const model = computed({
 
             <div class="col-span-full">
               <BasicTextArea
-                v-model="model.hero.subtitle"
+                v-model="model.heroSubtitle"
                 label="Untertitel"
                 placeholder="Untertitel"
                 required
@@ -123,7 +124,7 @@ const model = computed({
           <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div class="col-span-full">
               <BasicTextArea
-                v-model="model.eventDetails.title"
+                v-model="model.eventDetailsTitle"
                 label="Titel"
                 placeholder="Titel"
                 required
@@ -132,7 +133,7 @@ const model = computed({
 
             <div class="col-span-full">
               <BasicEditor
-                v-model="model.eventDetails.content"
+                v-model="model.eventDetailsContent"
                 label="Content"
                 required
               />
@@ -153,16 +154,16 @@ const model = computed({
           <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div class="col-span-full">
               <BasicSwitch
-                v-model="model.miscellaneous.visible"
+                v-model="model.miscellaneousVisible"
                 label="Anzeigen"
               />
             </div>
             <div
-              v-if="model.miscellaneous.visible"
+              v-if="model.miscellaneousVisible"
               class="col-span-full"
             >
               <BasicTextArea
-                v-model="model.miscellaneous.title"
+                v-model="model.miscellaneousTitle"
                 label="Titel"
                 placeholder="Titel"
                 required
@@ -170,11 +171,11 @@ const model = computed({
             </div>
 
             <div
-              v-if="model.miscellaneous.visible"
+              v-if="model.miscellaneousVisible"
               class="col-span-full"
             >
               <BasicTextArea
-                v-model="model.miscellaneous.subtitle"
+                v-model="model.miscellaneousSubtitle"
                 label="Untertitel"
                 placeholder="Untertitel"
                 required
@@ -196,16 +197,16 @@ const model = computed({
           <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div class="col-span-full">
               <BasicSwitch
-                v-model="model.faq.visible"
+                v-model="model.faqVisible"
                 label="Anzeigen"
               />
             </div>
             <div
-              v-if="model.faq.visible"
+              v-if="model.faqVisible"
               class="col-span-full"
             >
               <BasicInput
-                v-model="model.faq.email"
+                v-model="model.faqEmail"
                 type="email"
                 label="Email für Nachfragen"
                 placeholder="example@gliederung.dlrg.de"
