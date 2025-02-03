@@ -24,8 +24,8 @@ export const unterveranstaltungLandingSchema = z.strictObject({
     )
     .optional(),
 
-  eventDetails: z.string(),
-  eventContent: z.string(),
+  eventDetailsTitle: z.string(),
+  eventDetailsContent: z.string(),
 
   miscellaneousVisible: z.boolean().optional(),
   miscellaneousTitle: z.string().optional(),

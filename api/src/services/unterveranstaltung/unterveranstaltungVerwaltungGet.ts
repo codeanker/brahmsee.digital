@@ -57,7 +57,30 @@ export const unterveranstaltungVerwaltungGetProcedure = defineProtectedQueryProc
             fileId: true,
           },
         },
-        landingSettings: true,
+        landingSettings: {
+          select: {
+            eventDetailsContent: true,
+            eventDetailsTitle: true,
+            faqEmail: true,
+            faqVisible: true,
+            heroImages: {
+              select: {
+                name: true,
+                file: true,
+              },
+            },
+            heroSubtitle: true,
+            heroTitle: true,
+            miscellaneousItems: {
+              select: {
+                title: true,
+                content: true,
+              },
+            },
+            miscellaneousTitle: true,
+            miscellaneousVisible: true,
+          },
+        },
       },
     }),
 })
