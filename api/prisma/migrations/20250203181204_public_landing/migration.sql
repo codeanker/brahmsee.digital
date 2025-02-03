@@ -22,8 +22,7 @@ CREATE TABLE "faqs" (
 
 -- CreateTable
 CREATE TABLE "UnterveranstaltungLandingSettings" (
-    "id" SERIAL NOT NULL,
-    "unterveranstaltungId" INTEGER NOT NULL,
+    "unterveranstaltungId" SERIAL NOT NULL,
     "heroTitle" TEXT NOT NULL,
     "heroSubtitle" TEXT NOT NULL,
     "eventDetailsTitle" TEXT NOT NULL,
@@ -37,7 +36,7 @@ CREATE TABLE "UnterveranstaltungLandingSettings" (
     "facebookVisible" BOOLEAN,
     "facebookUrl" TEXT,
 
-    CONSTRAINT "UnterveranstaltungLandingSettings_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "UnterveranstaltungLandingSettings_pkey" PRIMARY KEY ("unterveranstaltungId")
 );
 
 -- CreateTable
@@ -90,13 +89,13 @@ ALTER TABLE "Person" ADD CONSTRAINT "Person_photoId_fkey" FOREIGN KEY ("photoId"
 ALTER TABLE "UnterveranstaltungLandingSettings" ADD CONSTRAINT "UnterveranstaltungLandingSettings_unterveranstaltungId_fkey" FOREIGN KEY ("unterveranstaltungId") REFERENCES "Unterveranstaltung"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "UnterveranstaltungLandingImages" ADD CONSTRAINT "UnterveranstaltungLandingImages_unterveranstaltungLandingS_fkey" FOREIGN KEY ("unterveranstaltungLandingSettingsId") REFERENCES "UnterveranstaltungLandingSettings"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "UnterveranstaltungLandingImages" ADD CONSTRAINT "UnterveranstaltungLandingImages_unterveranstaltungLandingS_fkey" FOREIGN KEY ("unterveranstaltungLandingSettingsId") REFERENCES "UnterveranstaltungLandingSettings"("unterveranstaltungId") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "UnterveranstaltungLandingImages" ADD CONSTRAINT "UnterveranstaltungLandingImages_fileId_fkey" FOREIGN KEY ("fileId") REFERENCES "File"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "UnterveranstaltungLandingMiscellaneous" ADD CONSTRAINT "UnterveranstaltungLandingMiscellaneous_unterveranstaltungL_fkey" FOREIGN KEY ("unterveranstaltungLandingSettingsId") REFERENCES "UnterveranstaltungLandingSettings"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "UnterveranstaltungLandingMiscellaneous" ADD CONSTRAINT "UnterveranstaltungLandingMiscellaneous_unterveranstaltungL_fkey" FOREIGN KEY ("unterveranstaltungLandingSettingsId") REFERENCES "UnterveranstaltungLandingSettings"("unterveranstaltungId") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_FaqToUnterveranstaltung" ADD CONSTRAINT "_FaqToUnterveranstaltung_A_fkey" FOREIGN KEY ("A") REFERENCES "faqs"("id") ON DELETE CASCADE ON UPDATE CASCADE;

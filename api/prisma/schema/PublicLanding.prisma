@@ -1,7 +1,5 @@
 model UnterveranstaltungLandingSettings {
-  id Int @id @default(autoincrement())
-
-  unterveranstaltungId Int
+  unterveranstaltungId Int                @id @default(autoincrement())
   unterveranstaltung   Unterveranstaltung @relation(fields: [unterveranstaltungId], references: [id])
 
   heroTitle    String
@@ -29,7 +27,7 @@ model UnterveranstaltungLandingImages {
   id   Int     @id @default(autoincrement())
   name String?
 
-  UnterveranstaltungLandingSettings   UnterveranstaltungLandingSettings? @relation(fields: [unterveranstaltungLandingSettingsId], references: [id])
+  UnterveranstaltungLandingSettings   UnterveranstaltungLandingSettings? @relation(fields: [unterveranstaltungLandingSettingsId], references: [unterveranstaltungId])
   unterveranstaltungLandingSettingsId Int?
 
   file   File   @relation(fields: [fileId], references: [id])
@@ -42,6 +40,6 @@ model UnterveranstaltungLandingMiscellaneous {
   title   String
   content String
 
-  UnterveranstaltungLandingSettings   UnterveranstaltungLandingSettings? @relation(fields: [unterveranstaltungLandingSettingsId], references: [id])
+  UnterveranstaltungLandingSettings   UnterveranstaltungLandingSettings? @relation(fields: [unterveranstaltungLandingSettingsId], references: [unterveranstaltungId])
   unterveranstaltungLandingSettingsId Int?
 }

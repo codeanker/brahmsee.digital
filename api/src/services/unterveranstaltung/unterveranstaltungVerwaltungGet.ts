@@ -10,8 +10,8 @@ export const unterveranstaltungVerwaltungGetProcedure = defineProtectedQueryProc
   inputSchema: z.strictObject({
     id: z.number().int(),
   }),
-  async handler(options) {
-    return prisma.unterveranstaltung.findUniqueOrThrow({
+  handler: (options) =>
+    prisma.unterveranstaltung.findUniqueOrThrow({
       where: {
         id: options.input.id,
       },
@@ -57,7 +57,7 @@ export const unterveranstaltungVerwaltungGetProcedure = defineProtectedQueryProc
             fileId: true,
           },
         },
+        landingSettings: true,
       },
-    })
-  },
+    }),
 })

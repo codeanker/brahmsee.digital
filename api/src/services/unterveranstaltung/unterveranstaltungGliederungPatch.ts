@@ -6,33 +6,18 @@ import z from 'zod'
 import prisma from '../../prisma.js'
 import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
 import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
+import { unterveranstaltungLandingSchema, unterveranstaltungUpdateSchema } from './schema/unterveranstaltung.schema.js'
 
 export const unterveranstaltungGliederungPatchProcedure = defineProtectedMutateProcedure({
   key: 'gliederungPatch',
   roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
   inputSchema: z.strictObject({
     id: z.number().int(),
-    data: z.strictObject({
-      maxTeilnehmende: z.number().int().optional(),
-      teilnahmegebuehr: z.number({ description: 'In Cent' }).int().optional(),
-      meldebeginn: z.date().optional(),
-      meldeschluss: z.date().optional(),
-      beschreibung: z.string().optional(),
-      bedingungen: z.string().optional(),
-      addDocuments: z
-        .array(
-          z.strictObject({
-            name: z.string(),
-            fileId: z.string().uuid(),
-          })
-        )
-        .optional(),
-      updateDocuments: z.array(z.strictObject({ id: z.number().int(), name: z.string() })).optional(),
-      deleteDocumentIds: z.array(z.number().int()).optional(),
-    }),
+    data: unterveranstaltungUpdateSchema.partial().optional(),
+    landingSettings: unterveranstaltungLandingSchema.partial().optional(),
   }),
   async handler(options) {
-    const gliederung = await getGliederungRequireAdmin(options.ctx.accountId)
+    await getGliederungRequireAdmin(options.ctx.accountId)
 
     // Documents create, update, delete
     const documents: {
@@ -40,38 +25,66 @@ export const unterveranstaltungGliederungPatchProcedure = defineProtectedMutateP
       updateMany?: { where: { id: number }; data: { name: string } }[]
       deleteMany?: { id: number }[]
     } = {}
-    if (options.input.data.addDocuments) {
+    if (options.input.data?.addDocuments) {
       documents.createMany = {
         data: options.input.data.addDocuments.map((doc) => ({ ...doc, fileId: doc.fileId as UUID })),
       }
     }
-    if (options.input.data.updateDocuments) {
+    if (options.input.data?.updateDocuments) {
       documents.updateMany = options.input.data.updateDocuments.map((doc) => ({
         where: { id: doc.id },
         data: { name: doc.name },
       }))
     }
-    if (options.input.data.deleteDocumentIds) {
+    if (options.input.data?.deleteDocumentIds) {
       documents.deleteMany = options.input.data.deleteDocumentIds.map((id) => ({ id }))
     }
 
-    return prisma.unterveranstaltung.update({
-      where: {
-        id: options.input.id,
-        gliederungId: gliederung.id,
-      },
-      data: {
-        maxTeilnehmende: options.input.data.maxTeilnehmende,
-        teilnahmegebuehr: options.input.data.teilnahmegebuehr,
-        meldebeginn: options.input.data.meldebeginn,
-        meldeschluss: options.input.data.meldeschluss,
-        beschreibung: options.input.data.beschreibung,
-        bedingungen: options.input.data.bedingungen,
-        documents: documents,
-      },
-      select: {
-        id: true,
-      },
-    })
+    if (options.input.data) {
+      await prisma.unterveranstaltung.update({
+        where: {
+          id: options.input.id,
+        },
+        data: {
+          maxTeilnehmende: options.input.data.maxTeilnehmende,
+          teilnahmegebuehr: options.input.data.teilnahmegebuehr,
+          meldebeginn: options.input.data.meldebeginn,
+          meldeschluss: options.input.data.meldeschluss,
+          beschreibung: options.input.data.beschreibung,
+          bedingungen: options.input.data.bedingungen,
+          documents: documents,
+        },
+      })
+    }
+
+    if (options.input.landingSettings) {
+      await prisma.unterveranstaltungLandingSettings.update({
+        data: {
+          heroTitle: options.input.landingSettings.hero?.title,
+          heroSubtitle: options.input.landingSettings.hero?.subtitle,
+          eventDetailsTitle: options.input.landingSettings.eventDetails?.title,
+          eventDetailsContent: options.input.landingSettings.eventDetails?.content,
+
+          miscellaneousVisible: options.input.landingSettings.miscellaneous?.visible ?? false,
+          miscellaneousTitle: options.input.landingSettings.miscellaneous?.title,
+          miscellaneousItems: options.input.landingSettings.miscellaneous?.items
+            ? {
+                createMany: {
+                  data: options.input.landingSettings.miscellaneous.items.map((item) => ({
+                    title: item.title,
+                    content: item.content,
+                  })),
+                },
+              }
+            : undefined,
+
+          faqVisible: options.input.landingSettings.faq?.visible ?? false,
+          faqEmail: options.input.landingSettings.faq?.email,
+        },
+        where: {
+          unterveranstaltungId: options.input.id,
+        },
+      })
+    }
   },
 })

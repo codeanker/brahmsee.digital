@@ -52,4 +52,17 @@ export const unterveranstaltungLandingSchema = z.strictObject({
     .optional(),
 })
 
+export const unterveranstaltungUpdateSchema = unterveranstaltungCreateSchema.omit({ veranstaltungId: true }).extend({
+  addDocuments: z
+    .array(
+      z.strictObject({
+        name: z.string(),
+        fileId: z.string().uuid(),
+      })
+    )
+    .optional(),
+  updateDocuments: z.array(z.strictObject({ id: z.number().int(), name: z.string() })).optional(),
+  deleteDocumentIds: z.array(z.number().int()).optional(),
+})
+
 export type TUnterveranstaltungLandingSchema = z.infer<typeof unterveranstaltungLandingSchema>
