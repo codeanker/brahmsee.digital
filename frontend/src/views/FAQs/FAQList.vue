@@ -3,7 +3,7 @@ import { apiClient } from '@/api'
 import Loading from '@/components/UIComponents/Loading.vue'
 import { useAsyncState } from '@vueuse/core'
 import { computed, ref, useTemplateRef } from 'vue'
-import FAQFormModal, { type FAQFormData } from './FAQFormModal.vue'
+import FAQFormModal, { type FAQ } from './FAQFormModal.vue'
 
 type Props = {
   unterveranstaltungId: number
@@ -15,9 +15,9 @@ const { state, isLoading, execute } = useAsyncState(() => apiClient.faq.list.que
 const hasKeys = computed(() => Object.keys(state.value).length > 0)
 
 const formModal = useTemplateRef('formModal')
-const editFaq = ref<FAQFormData>()
+const editFaq = ref<FAQ>()
 
-function openFormModal(faq?: FAQFormData) {
+function openFormModal(faq?: FAQ) {
   if (faq !== undefined) {
     editFaq.value = faq
   }

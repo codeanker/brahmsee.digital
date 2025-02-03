@@ -14,6 +14,7 @@ export async function listFaqs(unterveranstaltungId: number) {
       },
     },
     select: {
+      id: true,
       question: true,
       answer: true,
       category: {

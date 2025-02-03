@@ -1,9 +1,9 @@
 <script setup lang="ts">
-export type FAQFormData = RouterInput['faq']['create']['faq']
+export type FAQ = RouterOutput['faq']['list'][string][number]
 
 export type Props = {
   unterveranstaltungId: number
-  faq?: FAQFormData
+  faq?: FAQ
 }
 
 import { apiClient } from '@/api'
@@ -14,9 +14,9 @@ import BasicTypeahead from '@/components/BasicInputs/BasicTypeahead.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import type { ModalApi } from '@/components/UIComponents/Modal.vue'
 import Modal from '@/components/UIComponents/Modal.vue'
-import type { RouterInput } from '@codeanker/api'
+import type { RouterOutput } from '@codeanker/api'
 import { ValidateForm } from '@codeanker/validation'
-import { computed, ref, useTemplateRef } from 'vue'
+import { computed, ref, useTemplateRef, watch } from 'vue'
 
 const props = defineProps<Props>()
 
@@ -26,7 +26,7 @@ const emit = defineEmits<{
 
 const isEdit = computed(() => props.faq !== undefined)
 
-const formData = ref<FAQFormData>({
+const formData = ref({
   question: '',
   answer: '',
   category: '',
@@ -38,17 +38,21 @@ function queryCategories(term?: string) {
 
 const modal = useTemplateRef('modal')
 
-function onOpen() {
-  if (!props.faq) {
-    return
-  }
+watch(
+  props,
+  ({ faq }) => {
+    if (!faq) {
+      return
+    }
 
-  formData.value = {
-    question: props.faq.question,
-    answer: props.faq.answer,
-    category: props.faq.category,
-  }
-}
+    formData.value = {
+      question: faq.question,
+      answer: faq.answer,
+      category: faq.category,
+    }
+  },
+  { immediate: true }
+)
 
 function onClose() {
   formData.value = {
@@ -60,7 +64,11 @@ function onClose() {
 
 async function onSubmit() {
   if (isEdit.value) {
-    // TODO: Implement
+    await apiClient.faq.update.mutate({
+      unterveranstaltungId: props.unterveranstaltungId,
+      id: props.faq!.id,
+      faq: formData.value,
+    })
   } else {
     await apiClient.faq.create.mutate({
       unterveranstaltungId: props.unterveranstaltungId,
@@ -86,7 +94,6 @@ defineExpose<ModalApi>({
   <Teleport to="body">
     <Modal
       ref="modal"
-      @open="onOpen"
       @close="onClose"
     >
       <template #content>
