@@ -79,7 +79,6 @@ const model = computed({
         Passe die Inhalte für die öffentliche Seite an um diese für deine Gliederung zu personalisieren.
       </p>
     </div>
-    <pre>{{ model }}</pre>
     <div class="divide-y divide-gray-200">
       <!-- Hero Section-->
       <div class="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-3 py-16">
