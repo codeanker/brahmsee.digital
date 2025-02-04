@@ -17,7 +17,7 @@ const unterveranstaltung = injectUnterveranstaltung()
         <p class="mt-4 text-pretty text-base/7 text-gray-600">
           Du kannst eine Frage nicht finden? Dann
           <a
-            href="#"
+            :href="`mailto:${unterveranstaltung?.landingSettings?.faqEmail}`"
             class="font-semibold text-primary-600 hover:text-primary-500"
             >schreib uns einfach</a
           >

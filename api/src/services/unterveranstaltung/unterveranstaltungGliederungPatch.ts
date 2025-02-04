@@ -60,13 +60,17 @@ export const unterveranstaltungGliederungPatchProcedure = defineProtectedMutateP
     if (options.input.landingSettings) {
       await prisma.unterveranstaltungLandingSettings.update({
         data: {
-          heroTitle: options.input.landingSettings.heroTitle,
-          heroSubtitle: options.input.landingSettings.heroSubtitle,
-          eventDetailsTitle: options.input.landingSettings.eventDetailsTitle,
-          eventDetailsContent: options.input.landingSettings.eventDetailsContent,
-
-          miscellaneousVisible: options.input.landingSettings.miscellaneousVisible,
-          miscellaneousTitle: options.input.landingSettings.miscellaneousTitle,
+          ...options.input.landingSettings,
+          heroImages: options.input.landingSettings.heroImages
+            ? {
+                createMany: {
+                  data: options.input.landingSettings.heroImages.map((image) => ({
+                    name: image.name,
+                    fileId: image.fileId,
+                  })),
+                },
+              }
+            : undefined,
           miscellaneousItems: options.input.landingSettings.miscellaneousItems
             ? {
                 createMany: {
@@ -77,9 +81,6 @@ export const unterveranstaltungGliederungPatchProcedure = defineProtectedMutateP
                 },
               }
             : undefined,
-
-          faqVisible: options.input.landingSettings.faqVisible,
-          faqEmail: options.input.landingSettings.faqEmail,
         },
         where: {
           unterveranstaltungId: options.input.id,

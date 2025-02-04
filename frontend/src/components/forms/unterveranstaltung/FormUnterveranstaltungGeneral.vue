@@ -32,7 +32,7 @@ const gliederung = ref(props.unterveranstaltung?.gliederung)
 const documents = ref(props.unterveranstaltung?.documents || [])
 const deletedDocumentIds = ref<number[]>([])
 const landingSettings = ref<ILandingSettings>(
-  props.unterveranstaltung?.landingSettings[0] || {
+  props.unterveranstaltung?.landingSettings || {
     heroTitle: '',
     heroSubtitle: '',
     heroImages: [],

@@ -72,6 +72,7 @@ export const unterveranstaltungGliederungGetProcedure = defineProtectedQueryProc
               },
             },
             miscellaneousTitle: true,
+            miscellaneousSubtitle: true,
             miscellaneousVisible: true,
           },
         },

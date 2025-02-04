@@ -78,6 +78,7 @@ export const unterveranstaltungVerwaltungGetProcedure = defineProtectedQueryProc
               },
             },
             miscellaneousTitle: true,
+            miscellaneousSubtitle: true,
             miscellaneousVisible: true,
           },
         },
