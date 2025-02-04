@@ -121,25 +121,27 @@ const {
     v-if="showBedingungen"
     @close="showBedingungen = false"
   >
-    <div class="container mx-auto">
-      <div class="text-lg font-semibold">Teilnahmebedingungen</div>
-      <!-- eslint-disable vue/no-v-html -->
-      <div
-        class="prose dark:prose-invert"
-        v-html="unterveranstaltung?.bedingungen"
-      />
-      <div
-        class="prose dark:prose-invert"
-        v-html="unterveranstaltung?.veranstaltung?.teilnahmeBedingungenPublic"
-      />
-      <hr class="my-10" />
-      <div class="text-lg font-semibold mt-10">Datenschutz</div>
+    <template #content>
+      <div class="container mx-auto">
+        <div class="text-lg font-semibold">Teilnahmebedingungen</div>
+        <!-- eslint-disable vue/no-v-html -->
+        <div
+          class="prose dark:prose-invert"
+          v-html="unterveranstaltung?.bedingungen"
+        />
+        <div
+          class="prose dark:prose-invert"
+          v-html="unterveranstaltung?.veranstaltung?.teilnahmeBedingungenPublic"
+        />
+        <hr class="my-10" />
+        <div class="text-lg font-semibold mt-10">Datenschutz</div>
 
-      <div
-        class="prose dark:prose-invert"
-        v-html="unterveranstaltung?.veranstaltung?.datenschutz"
-      />
-    </div>
+        <div
+          class="prose dark:prose-invert"
+          v-html="unterveranstaltung?.veranstaltung?.datenschutz"
+        />
+      </div>
+    </template>
   </Drawer>
 
   <div
