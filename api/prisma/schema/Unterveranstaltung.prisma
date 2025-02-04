@@ -23,8 +23,8 @@ model Unterveranstaltung {
   faqs          Faq[]
   faqCategories FaqCategory[]
 
-  landingSettings   UnterveranstaltungLandingSettings @relation(fields: [landingSettingsId], references: [unterveranstaltungId], onDelete: Cascade)
-  landingSettingsId Int                               @unique
+  landingSettings   UnterveranstaltungLandingSettings? @relation(fields: [landingSettingsId], references: [unterveranstaltungId], onDelete: Cascade)
+  landingSettingsId Int                                @unique
 }
 
 model UnterveranstaltungDocument {

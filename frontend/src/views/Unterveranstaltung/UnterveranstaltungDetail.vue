@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import {
+  ChatBubbleLeftRightIcon,
   ClipboardDocumentListIcon,
   CodeBracketIcon,
   DocumentDuplicateIcon,
   DocumentIcon,
-  FilmIcon,
   MegaphoneIcon,
   RocketLaunchIcon,
   SquaresPlusIcon,
@@ -93,7 +93,7 @@ const tabs = computed(() => {
     { name: 'Dokumente', icon: DocumentIcon },
     { name: 'Bedingungen', icon: ClipboardDocumentListIcon },
     { name: 'Felder', icon: SquaresPlusIcon },
-    { name: 'Marketing', icon: FilmIcon },
+    { name: 'FAQ', icon: ChatBubbleLeftRightIcon },
   ]
   if (loggedInAccount.value?.role === 'ADMIN') {
     tabs.push({ name: 'Entwickler:in', icon: CodeBracketIcon })

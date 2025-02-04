@@ -55,7 +55,6 @@ export const accountPasswordResetProcedure = definePublicMutateProcedure({
             email: options.input.email,
           },
           data: {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
             passwordResetToken: uuidv4(),
           },
         })

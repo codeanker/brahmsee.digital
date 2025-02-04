@@ -1,10 +1,10 @@
-import type { UUID } from 'crypto'
-
 import { Role } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma.js'
 import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
+import { crudFiles } from './schema/crudFiles.js'
+import { crudMiscellaneousItems } from './schema/crudMiscellaneousItems.js'
 import { unterveranstaltungLandingSchema, unterveranstaltungUpdateSchema } from './schema/unterveranstaltung.schema.js'
 
 export const unterveranstaltungVerwaltungPatchProcedure = defineProtectedMutateProcedure({
@@ -17,25 +17,23 @@ export const unterveranstaltungVerwaltungPatchProcedure = defineProtectedMutateP
   }),
   async handler(options) {
     // Documents create, update, delete
-    const documents: {
-      createMany?: { data: { name: string; fileId: UUID }[] }
-      updateMany?: { where: { id: number }; data: { name: string } }[]
-      deleteMany?: { id: number }[]
-    } = {}
-    if (options.input.data?.addDocuments) {
-      documents.createMany = {
-        data: options.input.data.addDocuments.map((doc) => ({ ...doc, fileId: doc.fileId as UUID })),
-      }
-    }
-    if (options.input.data?.updateDocuments) {
-      documents.updateMany = options.input.data.updateDocuments.map((doc) => ({
-        where: { id: doc.id },
-        data: { name: doc.name },
-      }))
-    }
-    if (options.input.data?.deleteDocumentIds) {
-      documents.deleteMany = options.input.data.deleteDocumentIds.map((id) => ({ id }))
-    }
+    const documents = crudFiles(
+      options.input.data?.addDocuments,
+      options.input.data?.updateDocuments,
+      options.input.data?.deleteDocumentIds
+    )
+
+    const heroImages = crudFiles(
+      options.input.landingSettings?.addHeroImages,
+      options.input.landingSettings?.updateHeroImages,
+      options.input.landingSettings?.deleteHeroImageIds
+    )
+
+    const miscellaneousItems = crudMiscellaneousItems(
+      options.input.landingSettings?.addMiscellaneousItems,
+      options.input.landingSettings?.updateMiscellaneousItems,
+      options.input.landingSettings?.deleteMiscellaneousItemIds
+    )
 
     if (options.input.data) {
       await prisma.unterveranstaltung.update({
@@ -58,26 +56,8 @@ export const unterveranstaltungVerwaltungPatchProcedure = defineProtectedMutateP
       await prisma.unterveranstaltungLandingSettings.update({
         data: {
           ...options.input.landingSettings,
-          heroImages: options.input.landingSettings.heroImages
-            ? {
-                createMany: {
-                  data: options.input.landingSettings.heroImages.map((image) => ({
-                    name: image.name,
-                    fileId: image.fileId,
-                  })),
-                },
-              }
-            : undefined,
-          miscellaneousItems: options.input.landingSettings.miscellaneousItems
-            ? {
-                createMany: {
-                  data: options.input.landingSettings.miscellaneousItems.map((item) => ({
-                    title: item.title,
-                    content: item.content,
-                  })),
-                },
-              }
-            : undefined,
+          heroImages: heroImages,
+          miscellaneousItems: miscellaneousItems,
         },
         where: {
           unterveranstaltungId: options.input.id,

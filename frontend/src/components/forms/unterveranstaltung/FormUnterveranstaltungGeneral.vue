@@ -31,19 +31,6 @@ const unterveranstaltungId = props.unterveranstaltung?.id
 const gliederung = ref(props.unterveranstaltung?.gliederung)
 const documents = ref(props.unterveranstaltung?.documents || [])
 const deletedDocumentIds = ref<number[]>([])
-const landingSettings = ref<ILandingSettings>(
-  props.unterveranstaltung?.landingSettings || {
-    heroTitle: '',
-    heroSubtitle: '',
-    heroImages: [],
-    eventDetailsTitle: '',
-    eventDetailsContent: '',
-    miscellaneousVisible: false,
-    miscellaneousTitle: '',
-    miscellaneousSubtitle: '',
-    miscellaneousItems: [],
-  }
-)
 
 const unterveranstaltungCopy = ref({
   beschreibung: props.unterveranstaltung?.beschreibung,
@@ -55,6 +42,22 @@ const unterveranstaltungCopy = ref({
   veranstaltungId: props.unterveranstaltung?.veranstaltung?.id,
   gliederungId: props.unterveranstaltung?.gliederung?.id,
   type: props.unterveranstaltung?.type,
+})
+
+const landingSettings = ref<ILandingSettings>({
+  heroTitle: props.unterveranstaltung?.landingSettings?.heroTitle,
+  heroSubtitle: props.unterveranstaltung?.landingSettings?.heroSubtitle,
+  eventDetailsTitle: props.unterveranstaltung?.landingSettings?.eventDetailsTitle,
+  eventDetailsContent: props.unterveranstaltung?.landingSettings?.eventDetailsContent,
+  miscellaneousVisible: props.unterveranstaltung?.landingSettings?.miscellaneousVisible,
+  miscellaneousTitle: props.unterveranstaltung?.landingSettings?.miscellaneousTitle,
+  miscellaneousSubtitle: props.unterveranstaltung?.landingSettings?.miscellaneousSubtitle,
+  faqVisible: props.unterveranstaltung?.landingSettings?.faqVisible,
+  faqEmail: props.unterveranstaltung?.landingSettings?.faqEmail,
+  instagramVisible: props.unterveranstaltung?.landingSettings?.instagramVisible,
+  instagramUrl: props.unterveranstaltung?.landingSettings?.instagramUrl,
+  facebookVisible: props.unterveranstaltung?.landingSettings?.facebookVisible,
+  facebookUrl: props.unterveranstaltung?.landingSettings?.facebookUrl,
 })
 
 // Wird benötig damit man direkt von einer Veranstaltung eine Unterveranstaltung anlegen kann ohne diese extra auswählen zu müssen

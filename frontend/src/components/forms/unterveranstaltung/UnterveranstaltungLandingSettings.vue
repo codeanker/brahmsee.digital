@@ -16,6 +16,7 @@ export interface IFaqItem {
 }
 
 export interface IMiscellaneousItem {
+  id: number
   title: string
   content: string
 }
@@ -23,7 +24,6 @@ export interface IMiscellaneousItem {
 export interface ILandingSettings {
   heroTitle: string
   heroSubtitle: string
-  heroImages: IHeroImages[]
 
   eventDetailsTitle: string
   eventDetailsContent: string
@@ -31,7 +31,6 @@ export interface ILandingSettings {
   miscellaneousVisible: boolean
   miscellaneousTitle?: string
   miscellaneousSubtitle?: string
-  miscellaneousItems?: IMiscellaneousItem[]
 
   faqVisible: boolean
   faqEmail?: string

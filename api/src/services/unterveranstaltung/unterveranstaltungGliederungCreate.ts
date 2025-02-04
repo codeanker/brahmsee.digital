@@ -6,6 +6,8 @@ import prisma from '../../prisma.js'
 import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
 import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
 import { unterveranstaltungCreateSchema, unterveranstaltungLandingSchema } from './schema/unterveranstaltung.schema.js'
+import { crudFiles } from './schema/crudFiles.js'
+import { crudMiscellaneousItems } from './schema/crudMiscellaneousItems.js'
 
 export const unterveranstaltungGliederungCreateProcedure = defineProtectedMutateProcedure({
   key: 'gliederungCreate',
@@ -41,41 +43,47 @@ export const unterveranstaltungGliederungCreateProcedure = defineProtectedMutate
       })
     }
 
-    const unterveranstaltung = await prisma.unterveranstaltung.create({
+    const heroImages = crudFiles(
+      input.landingSettings.addHeroImages,
+      input.landingSettings.updateHeroImages,
+      input.landingSettings.deleteHeroImageIds
+    )
+
+    const miscellaneousItems = crudMiscellaneousItems(
+      input.landingSettings.addMiscellaneousItems,
+      input.landingSettings.updateMiscellaneousItems,
+      input.landingSettings.deleteMiscellaneousItemIds
+    )
+
+    return await prisma.unterveranstaltung.create({
       data: {
-        ...input.data,
+        veranstaltung: {
+          connect: {
+            id: input.data.veranstaltungId,
+          },
+        },
+        maxTeilnehmende: input.data.maxTeilnehmende,
+        teilnahmegebuehr: input.data.teilnahmegebuehr,
+        meldebeginn: input.data.meldebeginn,
+        meldeschluss: input.data.meldeschluss,
+        beschreibung: input.data.beschreibung,
+        bedingungen: input.data.bedingungen,
         type: 'GLIEDERUNG',
-        gliederungId: gliederung.id,
+        gliederung: {
+          connect: {
+            id: gliederung.id,
+          },
+        },
+        landingSettings: {
+          create: {
+            ...input.landingSettings,
+            heroImages: heroImages,
+            miscellaneousItems: miscellaneousItems,
+          },
+        },
       },
       select: {
         id: true,
-      },
-    })
-
-    await prisma.unterveranstaltungLandingSettings.create({
-      data: {
-        unterveranstaltungId: unterveranstaltung.id,
-        ...input.landingSettings,
-        heroImages: input.landingSettings.heroImages
-          ? {
-              createMany: {
-                data: input.landingSettings.heroImages.map((image) => ({
-                  name: image.name,
-                  fileId: image.fileId,
-                })),
-              },
-            }
-          : undefined,
-        miscellaneousItems: input.landingSettings.miscellaneousItems
-          ? {
-              createMany: {
-                data: input.landingSettings.miscellaneousItems.map((item) => ({
-                  title: item.title,
-                  content: item.content,
-                })),
-              },
-            }
-          : undefined,
       },
     })
   },

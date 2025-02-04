@@ -15,7 +15,7 @@ export type TUnterveranstaltungCreateSchema = z.infer<typeof unterveranstaltungC
 export const unterveranstaltungLandingSchema = z.strictObject({
   heroTitle: z.string(),
   heroSubtitle: z.string(),
-  heroImages: z
+  addHeroImages: z
     .array(
       z.strictObject({
         name: z.string(),
@@ -23,6 +23,8 @@ export const unterveranstaltungLandingSchema = z.strictObject({
       })
     )
     .optional(),
+  updateHeroImages: z.array(z.strictObject({ id: z.number().int(), name: z.string() })).optional(),
+  deleteHeroImageIds: z.array(z.number().int()).optional(),
 
   eventDetailsTitle: z.string(),
   eventDetailsContent: z.string(),
@@ -30,23 +32,29 @@ export const unterveranstaltungLandingSchema = z.strictObject({
   miscellaneousVisible: z.boolean().optional(),
   miscellaneousTitle: z.string().optional(),
   miscellaneousSubtitle: z.string().optional(),
-  miscellaneousItems: z
+
+  addMiscellaneousItems: z
     .array(
       z.strictObject({
+        id: z.number().int(),
         title: z.string(),
         content: z.string(),
       })
     )
     .optional(),
+  updateMiscellaneousItems: z
+    .array(z.strictObject({ id: z.number().int(), title: z.string(), content: z.string() }))
+    .optional(),
+  deleteMiscellaneousItemIds: z.array(z.number().int()).optional(),
 
   faqVisible: z.boolean().optional(),
   faqEmail: z.string().optional(),
 
   instagramVisible: z.boolean().optional(),
-  instagramTitle: z.string().optional(),
+  instagramUrl: z.string().optional(),
 
   facebookVisible: z.boolean().optional(),
-  facebookTitle: z.string().optional(),
+  facebookUrl: z.string().optional(),
 })
 
 export const unterveranstaltungUpdateSchema = unterveranstaltungCreateSchema.omit({ veranstaltungId: true }).extend({
