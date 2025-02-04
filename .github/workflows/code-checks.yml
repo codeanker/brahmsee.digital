@@ -22,15 +22,16 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           run_install: false
-      - name: Use Node.js 22
+      - name: Use Node.js 18
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 18
           cache: 'pnpm'
       - name: corepack
         run: corepack enable
       - name: Install dependencies
         run: |
+          export COREPACK_INTEGRITY_KEYS="$(curl https://registry.npmjs.org/-/npm/v1/keys | jq -c '{npm: .keys}')"
           pnpm install
       - name: turbo-checks
         run: pnpm run turbo-checks
