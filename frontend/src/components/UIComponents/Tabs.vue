@@ -54,7 +54,7 @@ function changeTab(index) {
     :right="false"
     :append="true"
     class="w-full"
-    button-style="w-full min-w-52 text-left md:hidden"
+    button-style="w-full min-w-52 text-left lg:hidden"
   >
     <template #buttonContent>
       <button
@@ -103,7 +103,7 @@ function changeTab(index) {
     @change="changeTab"
   >
     <TabList
-      class="hidden md:flex border-b border-gray-300 dark:border-gray-700 -mb-px space-x-5"
+      class="hidden lg:flex border-b border-gray-300 dark:border-gray-700 -mb-px space-x-5"
       as="div"
       :class="[`mb-${contentSpace}`]"
     >

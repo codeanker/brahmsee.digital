@@ -142,7 +142,7 @@ const faqList = useTemplateRef('faqList')
 <template>
   <div>
     <div class="pb-8">
-      <div class="mx-auto max-w-2xl lg:mx-0">
+      <div class="max-w-2xl lg:mx-0">
         <h2 class="text-2xl font-bold tracking-tight sm:text-4xl items-start flex">
           {{ unterveranstaltung?.veranstaltung?.name }}
           <Badge
