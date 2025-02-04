@@ -7,7 +7,7 @@ import { TRPCError } from '@trpc/server'
 
 export const anmeldungZuordnenProcedure = defineProtectedMutateProcedure({
   key: 'zuordnen',
-  roleIds: [Role.USER],
+  roleIds: [Role.USER, Role.GLIEDERUNG_ADMIN, Role.ADMIN],
   inputSchema: z.string().uuid(),
   handler: async ({ ctx, input }) => {
     const anmeldung = await prisma.anmeldung.findFirst({
