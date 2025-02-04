@@ -93,11 +93,10 @@ const unterveranstaltung = injectUnterveranstaltung()
               </span>
             </div>
             <h1 class="mt-10 text-pretty text-5xl tracking-tight text-gray-900 sm:text-7xl">
-              {Marketing | Titel} Landeskindertreffen im Waldheim am Brahmsee 2025
+              {{ unterveranstaltung?.landingSettings?.heroTitle }}
             </h1>
             <p class="mt-8 text-pretty text-lg font-medium text-gray-500 sm:max-w-md sm:text-xl/8 lg:max-w-none">
-              {Marketing | Untertitel} Es ist das Event des Jahres! Sei dabei und erlebe eine unvergessliche Zeit mit
-              deinen Freunden. Melde dich jetzt an und sichere dir deinen Platz. Wir freuen uns auf dich!
+              {{ unterveranstaltung?.landingSettings?.heroSubtitle }}
             </p>
             <div class="mt-10 flex items-center gap-x-6">
               <RouterLink

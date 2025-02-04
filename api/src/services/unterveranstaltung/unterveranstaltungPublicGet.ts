@@ -45,6 +45,7 @@ export const unterveranstaltungPublicGetProcedure = definePublicQueryProcedure({
             name: true,
           },
         },
+        landingSettings: true,
         _count: {
           select: {
             Anmeldung: {

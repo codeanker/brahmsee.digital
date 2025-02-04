@@ -7,7 +7,10 @@ const unterveranstaltung = injectUnterveranstaltung()
 </script>
 
 <template>
-  <div class="bg-white">
+  <div
+    v-if="unterveranstaltung?.landingSettings.faqVisible && unterveranstaltung?.faqs"
+    class="bg-white"
+  >
     <div class="mx-auto max-w-7xl px-6 py-24 sm:pt-32 lg:px-8 lg:py-40">
       <div class="mx-auto max-w-4xl">
         <h2 class="text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">Häufig gestellte Fragen</h2>
@@ -24,7 +27,7 @@ const unterveranstaltung = injectUnterveranstaltung()
           v-for="(faqs, category) in unterveranstaltung?.faqs"
           :key="category"
         >
-          <div class="mt-16 mb-8 text-lg text-gray-600 font-semibold">{{ category }}</div>
+          <div class="mt-16 mb-8 text-base text-gray-600 font-semibold">{{ category }}</div>
           <dl class="divide-y divide-gray-900/10">
             <Disclosure
               v-for="faq in faqs"

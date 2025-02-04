@@ -128,7 +128,7 @@
         "reveal": "always",
         "revealProblems": "onProblem",
         "panel": "new",
-        "close": true
+        "close": false
       }
     },
     {

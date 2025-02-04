@@ -1,6 +1,6 @@
 model UnterveranstaltungLandingSettings {
-  unterveranstaltungId Int                @id @default(autoincrement())
-  unterveranstaltung   Unterveranstaltung @relation(fields: [unterveranstaltungId], references: [id])
+  unterveranstaltungId Int                 @id @default(autoincrement())
+  unterveranstaltung   Unterveranstaltung?
 
   heroTitle    String
   heroSubtitle String
@@ -9,9 +9,10 @@ model UnterveranstaltungLandingSettings {
   eventDetailsTitle   String
   eventDetailsContent String
 
-  miscellaneousVisible Boolean?
-  miscellaneousTitle   String?
-  miscellaneousItems   UnterveranstaltungLandingMiscellaneous[]
+  miscellaneousVisible  Boolean?
+  miscellaneousTitle    String?
+  miscellaneousSubtitle String?
+  miscellaneousItems    UnterveranstaltungLandingMiscellaneous[]
 
   faqVisible Boolean?
   faqEmail   String?
