@@ -4,14 +4,21 @@ import { useRoute } from 'vue-router'
 
 import { apiClient } from '@/api'
 import FormUnterveranstaltungGeneral from '@/components/forms/unterveranstaltung/FormUnterveranstaltungGeneral.vue'
+import { loggedInAccount } from '@/composables/useAuthentication'
 
 const route = useRoute()
 const { state: unterveranstaltung, execute: fetchUnterveranstaltung } = useAsyncState(async () => {
   const unterveranstaltungId = route.params.unterveranstaltungId as string
-  return apiClient.unterveranstaltung.gliederungGet.query({
-    id: parseInt(unterveranstaltungId),
-  })
-}, null)
+  if (loggedInAccount.value?.role === 'ADMIN') {
+    return apiClient.unterveranstaltung.verwaltungGet.query({
+      id: parseInt(unterveranstaltungId),
+    })
+  } else {
+    return apiClient.unterveranstaltung.gliederungGet.query({
+      id: parseInt(unterveranstaltungId),
+    })
+  }
+})
 </script>
 
 <template>
