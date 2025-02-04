@@ -45,7 +45,35 @@ export const unterveranstaltungPublicGetProcedure = definePublicQueryProcedure({
             name: true,
           },
         },
-        landingSettings: true,
+        landingSettings: {
+          select: {
+            heroTitle: true,
+            heroSubtitle: true,
+            heroImages: {
+              select: {
+                fileId: true,
+                name: true,
+              },
+            },
+            eventDetailsTitle: true,
+            eventDetailsContent: true,
+            miscellaneousVisible: true,
+            miscellaneousTitle: true,
+            miscellaneousSubtitle: true,
+            miscellaneousItems: {
+              select: {
+                title: true,
+                content: true,
+              },
+            },
+            faqVisible: true,
+            faqEmail: true,
+            instagramVisible: true,
+            instagramUrl: true,
+            facebookVisible: true,
+            facebookUrl: true,
+          },
+        },
         _count: {
           select: {
             Anmeldung: {
