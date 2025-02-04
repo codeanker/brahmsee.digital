@@ -28,6 +28,7 @@ export const unterveranstaltungVerwaltungGetProcedure = defineProtectedQueryProc
           select: {
             id: true,
             name: true,
+            edv: true,
           },
         },
         veranstaltung: {

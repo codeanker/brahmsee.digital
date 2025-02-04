@@ -42,7 +42,13 @@ export const unterveranstaltungGliederungGetProcedure = defineProtectedQueryProc
             hostname: true,
           },
         },
-        gliederung: true,
+        gliederung: {
+          select: {
+            id: true,
+            name: true,
+            edv: true,
+          },
+        },
         documents: {
           select: {
             id: true,
