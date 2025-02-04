@@ -108,7 +108,7 @@ const files = [
 </script>
 
 <template>
-  <div class="mx-auto max-w-2xl lg:mx-0 mb-6">
+  <div class="max-w-2xl lg:mx-0 mb-6">
     <h2 class="text-2xl font-bold tracking-tight sm:text-4xl">
       {{ veranstaltung?.name }}
     </h2>

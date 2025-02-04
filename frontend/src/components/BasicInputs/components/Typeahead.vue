@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/vue'
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 
 import { debounce } from '@/helpers/debounce'
 
@@ -39,9 +39,11 @@ const emit = defineEmits<{
 }>()
 
 // Bei Seitenaufrufs
-if (props.immediate) {
-  filterItems()
-}
+onMounted(() => {
+  if (props.immediate) {
+    filterItems()
+  }
+})
 
 /** Der Suchbegriff und Inhalt des Inputs des Typeaheads. Wird mit dem formatierten modelValue initialisiert */
 const searchTerm = ref(props.inputFormatter(props.modelValue) || '')

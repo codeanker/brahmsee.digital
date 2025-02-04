@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { injectUnterveranstaltung } from '@/layouts/AnmeldungLayout.vue'
-import { dayjs } from '@codeanker/helpers'
+import { formatDate } from '@vueuse/core'
 
 const unterveranstaltung = injectUnterveranstaltung()
 </script>
@@ -80,37 +80,31 @@ const unterveranstaltung = injectUnterveranstaltung()
               <span
                 v-if="unterveranstaltung?.veranstaltung?.beginn"
                 class="rounded-full bg-primary-600/10 px-3 py-1 text-sm/6 font-semibold text-primary-600 ring-1 ring-primary-600/10 ring-inset"
-                >{{ dayjs(unterveranstaltung?.veranstaltung.beginn).format('DD.MM') }}
+                >{{ formatDate(unterveranstaltung?.veranstaltung.beginn, 'DD.MM') }}
                 <span v-if="unterveranstaltung?.veranstaltung?.ende"
-                  >- {{ dayjs(unterveranstaltung?.veranstaltung?.ende).format('DD.MM.YY') }}</span
+                  >- {{ formatDate(unterveranstaltung?.veranstaltung?.ende, 'DD.MM.YY') }}</span
                 ></span
               >
               <span
                 v-if="unterveranstaltung?.meldeschluss"
                 class="inline-flex items-center space-x-2 text-sm/6 text-gray-600"
               >
-                <span>Meldeschluss am {{ dayjs(unterveranstaltung?.meldeschluss).format('DD.MM.YY') }}</span>
+                <span>Meldeschluss am {{ formatDate(unterveranstaltung?.meldeschluss, 'DD.MM.YY') }}</span>
               </span>
             </div>
             <h1 class="mt-10 text-pretty text-5xl tracking-tight text-gray-900 sm:text-7xl">
-              {Marketing | Titel} Landeskindertreffen im Waldheim am Brahmsee 2025
+              {{ unterveranstaltung?.landingSettings?.heroTitle }}
             </h1>
             <p class="mt-8 text-pretty text-lg font-medium text-gray-500 sm:max-w-md sm:text-xl/8 lg:max-w-none">
-              {Marketing | Untertitel} Es ist das Event des Jahres! Sei dabei und erlebe eine unvergessliche Zeit mit
-              deinen Freunden. Melde dich jetzt an und sichere dir deinen Platz. Wir freuen uns auf dich!
+              {{ unterveranstaltung?.landingSettings?.heroSubtitle }}
             </p>
             <div class="mt-10 flex items-center gap-x-6">
               <RouterLink
-                class="cursor-pointer text-gray-900 hover:underline"
-                :to="{ name: 'Login', query: { redirect: '/ausschreibung/' + unterveranstaltung?.id } }"
+                class="rounded-md bg-primary-600 px-3.5 py-2.5 text font-semibold text-white shadow-sm hover:bg-primary-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                :to="{ name: 'Public Anmeldung' }"
               >
                 Anmelden <span aria-hidden="true">&rarr;</span>
               </RouterLink>
-              <a
-                href="#"
-                class="rounded-md bg-primary-600 px-3.5 py-2.5 text font-semibold text-white shadow-sm hover:bg-primary-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >Jetzt anmelden</a
-              >
             </div>
           </div>
           <div class="pt-16 lg:row-span-2 lg:-mr-16 xl:mr-auto">

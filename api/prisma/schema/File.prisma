@@ -4,14 +4,15 @@ enum FileProvider {
 }
 
 model File {
-  id                         String                      @id @unique @default(uuid())
-  createdAt                  DateTime                    @default(now())
-  uploaded                   Boolean                     @default(false)
-  uploadedAt                 DateTime?
-  provider                   FileProvider
-  key                        String                      @unique()
-  filename                   String?
-  mimetype                   String?
-  UnterveranstaltungDocument UnterveranstaltungDocument?
-  Persons                    Person[]
+  id                              String                            @id @unique @default(uuid())
+  createdAt                       DateTime                          @default(now())
+  uploaded                        Boolean                           @default(false)
+  uploadedAt                      DateTime?
+  provider                        FileProvider
+  key                             String                            @unique()
+  filename                        String?
+  mimetype                        String?
+  UnterveranstaltungDocument      UnterveranstaltungDocument?
+  Persons                         Person[]
+  UnterveranstaltungLandingImages UnterveranstaltungLandingImages[]
 }

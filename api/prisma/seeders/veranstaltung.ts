@@ -4,7 +4,7 @@ import { PrismaClient } from '@prisma/client'
 import logActivity from '../../src/util/activity.js'
 
 import type { Seeder } from './index.js'
-import {dayjs} from '@codeanker/helpers'
+import { dayjs } from '@codeanker/helpers'
 
 const createVeranstaltung: Seeder = async (prisma: PrismaClient) => {
   const beginn = dayjs().add(1, 'month')
@@ -55,9 +55,61 @@ const createVeranstaltung: Seeder = async (prisma: PrismaClient) => {
               edv: '1205013',
             },
           },
+          landingSettings: {
+            create: {
+              heroTitle: faker.lorem.sentence(),
+              heroSubtitle: faker.lorem.sentence(),
+              eventDetailsTitle: faker.lorem.sentence(),
+              eventDetailsContent: faker.lorem.paragraph(),
+              miscellaneousVisible: true,
+              miscellaneousTitle: faker.lorem.sentence(),
+              miscellaneousItems: {
+                create: Array(3)
+                  .fill(0)
+                  .map(() => ({
+                    title: faker.lorem.sentence(),
+                    content: faker.lorem.paragraph(),
+                  })),
+              },
+              faqVisible: true,
+              faqEmail: faker.internet.email(),
+
+              instagramVisible: true,
+              instagramUrl: 'https://www.instagram.com/dlrgjugendsh',
+
+              facebookVisible: true,
+              facebookUrl: 'https://www.facebook.com/DLRGJugendSH/?locale=de_DE',
+            },
+          },
         },
       },
     },
+    select: {
+      id: true,
+      unterveranstaltungen: {
+        select: {
+          id: true,
+        },
+      },
+    },
+  })
+
+  const faqCategories = await prisma.faqCategory.createManyAndReturn({
+    data: Array(3)
+      .fill(0)
+      .map(() => ({
+        name: faker.color.human(),
+        unterveranstaltungId: veranstaltung.unterveranstaltungen[0]!.id,
+      })),
+  })
+  await prisma.faq.createMany({
+    data: Array(9)
+      .fill(0)
+      .map(() => ({
+        question: faker.commerce.productAdjective(),
+        answer: faker.commerce.productDescription(),
+        categoryId: faqCategories[Math.floor(Math.random() * faqCategories.length)]!.id,
+      })),
   })
 
   await prisma.customField.create({

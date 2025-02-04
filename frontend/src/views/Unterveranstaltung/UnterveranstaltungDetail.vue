@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {
+  ChatBubbleLeftRightIcon,
   ClipboardDocumentListIcon,
   CodeBracketIcon,
   DocumentDuplicateIcon,
@@ -11,21 +12,24 @@ import {
   UsersIcon,
 } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
-import { computed } from 'vue'
+import { computed, useTemplateRef } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { apiClient } from '@/api'
-import AnmeldungenTable from '@/components/data/AnmeldungenTable.vue'
 import CustomFieldsTable from '@/components/CustomFields/CustomFieldsTable.vue'
+import AnmeldungenTable from '@/components/data/AnmeldungenTable.vue'
 import DownloadLink from '@/components/DownloadLink.vue'
 import FilesExport from '@/components/FilesExport.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
+import Button from '@/components/UIComponents/Button.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import InfoList from '@/components/UIComponents/InfoList.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
 import { useRouteTitle } from '@/composables/useRouteTitle'
 import { formatDate } from '@codeanker/helpers'
+import FAQList from '../FAQs/FAQList.vue'
+import Abbr from '@/components/Abbr.vue'
 
 const route = useRoute()
 const { setTitle } = useRouteTitle()
@@ -89,6 +93,7 @@ const tabs = computed(() => {
     { name: 'Dokumente', icon: DocumentIcon },
     { name: 'Bedingungen', icon: ClipboardDocumentListIcon },
     { name: 'Felder', icon: SquaresPlusIcon },
+    { name: 'FAQ', icon: ChatBubbleLeftRightIcon },
   ]
   if (loggedInAccount.value?.role === 'ADMIN') {
     tabs.push({ name: 'Entwickler:in', icon: CodeBracketIcon })
@@ -130,12 +135,14 @@ const files = [
     hoverColor: 'hover:text-primary-700',
   },
 ]
+
+const faqList = useTemplateRef('faqList')
 </script>
 
 <template>
   <div>
     <div class="pb-8">
-      <div class="mx-auto max-w-2xl lg:mx-0">
+      <div class="max-w-2xl lg:mx-0">
         <h2 class="text-2xl font-bold tracking-tight sm:text-4xl items-start flex">
           {{ unterveranstaltung?.veranstaltung?.name }}
           <Badge
@@ -155,7 +162,7 @@ const files = [
       content-space="4"
       :tabs="tabs"
     >
-      <Tab>
+      <Tab key="allgemeines">
         <div class="p-6 bg-primary-100 dark:bg-primary-900 rounded-md my-8 flex items-top space-x-4">
           <div><RocketLaunchIcon class="h-10 w-10 text-primary-500" /></div>
           <div>
@@ -203,24 +210,37 @@ const files = [
         </div>
 
         <div class="mt-5 lg:mt-10 mb-5 text-lg font-semibold">Dokumente</div>
-        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
+        <table
+          v-if="unterveranstaltung?.documents"
+          class="min-w-full divide-y divide-gray-200 dark:divide-gray-800"
+        >
           <tbody class="divide-y divide-gray-200 dark:divide-gray-800 bg-white dark:bg-dark-primary">
             <tr
               v-for="(document, index) in unterveranstaltung?.documents ?? []"
               :key="'document-' + index"
               class="even:bg-gray-50 dark:even:bg-gray-800"
             >
-              <td class="whitespace-nowrap w-full py-5 pl-4 pr-3 text-sm">
+              <td class="whitespace-nowrap w-full py-5 pl-4 pr-3">
                 {{ document.name }}
               </td>
-              <td class="text-sm pl-4 pr-3">
+              <td class="pl-4 pr-3">
                 <DownloadLink :file-id="document.fileId" />
               </td>
             </tr>
           </tbody>
         </table>
+        <div
+          v-else
+          class="rounded-md bg-blue-50 dark:bg-blue-950 text-blue-500 p-4"
+        >
+          <div class="flex">
+            <div class="ml-3 flex-1 md:flex md:justify-between">
+              <p class="mb-0">Es sind keine Dokumente vorhanden, klicke auf bearbeiten um welche hinzuzufügen</p>
+            </div>
+          </div>
+        </div>
       </Tab>
-      <Tab>
+      <Tab key="anmeldungen">
         <div class="my-10">
           <div class="text-lg font-semibold">Anmeldungen</div>
           <p class="max-w-2xl text-sm">Die folgenden Personen haben sich angemeldet</p>
@@ -230,14 +250,14 @@ const files = [
           :filter="{ type: 'unterveranstaltung', unterveranstaltungId: unterveranstaltung.id }"
         />
       </Tab>
-      <Tab>
+      <Tab key="dokumente">
         <div class="my-10">
           <div class="text-lg font-semibold">Dokumente</div>
           <p class="max-w-2xl text-sm text-gray-500">Exports von Daten zu dieser Veranstaltung</p>
         </div>
         <FilesExport :files="files" />
       </Tab>
-      <Tab>
+      <Tab key="bedingungen">
         <div class="my-10">
           <div class="text-lg font-semibold">Bedingungen <Badge color="secondary"> Gliederung </Badge></div>
           <p class="max-w-2xl text-sm">Bitte beachte die folgenden Bedingungen</p>
@@ -276,7 +296,7 @@ const files = [
           v-html="unterveranstaltung?.veranstaltung?.datenschutz"
         />
       </Tab>
-      <Tab>
+      <Tab key="felder">
         <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
           <div>
             <div class="text-lg font-semibold">Benutzerdefinierte Felder</div>
@@ -300,8 +320,31 @@ const files = [
           entity="unterveranstaltung"
         />
       </Tab>
+      <Tab key="marketing">
+        <div class="my-10 flex items-center gap-x-4">
+          <div>
+            <div class="text-lg font-semibold"><Abbr abbr="faq" /> <Badge color="secondary"> Gliederung </Badge></div>
+            <p class="max-w-2xl text-sm">
+              Verwalte hier häufig gestellte Fragen, damit die Teilnehmenden wissen, wie der Hase läuft.
+            </p>
+          </div>
+          <div class="flex-1"></div>
+          <Button @click="() => faqList?.openFormModal()"> Frage anlegen </Button>
+        </div>
+        <div class="grid grid-cols-3 gap-8">
+          <FAQList
+            v-if="unterveranstaltung"
+            ref="faqList"
+            :unterveranstaltung-id="unterveranstaltung.id"
+          />
+        </div>
+        <hr class="my-10" />
+      </Tab>
 
-      <Tab v-if="loggedInAccount?.role === 'ADMIN'">
+      <Tab
+        v-if="loggedInAccount?.role === 'ADMIN'"
+        key="entwickler"
+      >
         <div class="my-10">
           <div class="text-lg font-semibold">Entwickler:innen</div>
           <p class="max-w-2xl text-sm">Informationen zur Veranstaltung</p>

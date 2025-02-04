@@ -18,7 +18,7 @@ import router from '@/router'
 import type { RouterInput } from '@codeanker/api'
 import { UnterveranstaltungTypeMapping, getEnumOptions } from '@codeanker/api'
 import { ValidateForm } from '@codeanker/validation'
-import UnterveranstaltungLandingSettings from './UnterveranstaltungLandingSettings.vue'
+import UnterveranstaltungLandingSettings, { type ILandingSettings } from './UnterveranstaltungLandingSettings.vue'
 
 const props = defineProps<{
   unterveranstaltung?: any
@@ -26,6 +26,11 @@ const props = defineProps<{
   mode: 'create' | 'update'
   onUpdate?: () => void
 }>()
+
+const unterveranstaltungId = props.unterveranstaltung?.id
+const gliederung = ref(props.unterveranstaltung?.gliederung)
+const documents = ref(props.unterveranstaltung?.documents || [])
+const deletedDocumentIds = ref<number[]>([])
 
 const unterveranstaltungCopy = ref({
   beschreibung: props.unterveranstaltung?.beschreibung,
@@ -39,10 +44,21 @@ const unterveranstaltungCopy = ref({
   type: props.unterveranstaltung?.type,
 })
 
-const unterveranstaltungId = props.unterveranstaltung?.id
-const gliederung = ref(props.unterveranstaltung?.gliederung)
-const documents = ref(props.unterveranstaltung?.documents || [])
-const deletedDocumentIds = ref<number[]>([])
+const landingSettings = ref<ILandingSettings>({
+  heroTitle: props.unterveranstaltung?.landingSettings?.heroTitle,
+  heroSubtitle: props.unterveranstaltung?.landingSettings?.heroSubtitle,
+  eventDetailsTitle: props.unterveranstaltung?.landingSettings?.eventDetailsTitle,
+  eventDetailsContent: props.unterveranstaltung?.landingSettings?.eventDetailsContent,
+  miscellaneousVisible: props.unterveranstaltung?.landingSettings?.miscellaneousVisible,
+  miscellaneousTitle: props.unterveranstaltung?.landingSettings?.miscellaneousTitle,
+  miscellaneousSubtitle: props.unterveranstaltung?.landingSettings?.miscellaneousSubtitle,
+  faqVisible: props.unterveranstaltung?.landingSettings?.faqVisible,
+  faqEmail: props.unterveranstaltung?.landingSettings?.faqEmail,
+  instagramVisible: props.unterveranstaltung?.landingSettings?.instagramVisible,
+  instagramUrl: props.unterveranstaltung?.landingSettings?.instagramUrl,
+  facebookVisible: props.unterveranstaltung?.landingSettings?.facebookVisible,
+  facebookUrl: props.unterveranstaltung?.landingSettings?.facebookUrl,
+})
 
 // Wird benötig damit man direkt von einer Veranstaltung eine Unterveranstaltung anlegen kann ohne diese extra auswählen zu müssen
 if (props.mode === 'create') {
@@ -83,12 +99,16 @@ const {
       unterveranstaltungCopy.value.gliederungId = gliederung.value.id
       await apiClient.unterveranstaltung.verwaltungCreate.mutate({
         data: unterveranstaltungCopy.value as unknown as RouterInput['unterveranstaltung']['verwaltungCreate']['data'],
+        landingSettings:
+          landingSettings.value as unknown as RouterInput['unterveranstaltung']['verwaltungCreate']['landingSettings'],
       })
     } else {
       delete unterveranstaltungCopy.value.gliederungId
       delete unterveranstaltungCopy.value.type
       await apiClient.unterveranstaltung.gliederungCreate.mutate({
         data: unterveranstaltungCopy.value as unknown as RouterInput['unterveranstaltung']['gliederungCreate']['data'],
+        landingSettings:
+          landingSettings.value as unknown as RouterInput['unterveranstaltung']['gliederungCreate']['landingSettings'],
       })
     }
     router.back()
@@ -123,6 +143,7 @@ const {
           updateDocuments,
           deleteDocumentIds: deletedDocumentIds.value,
         } as RouterInput['unterveranstaltung']['verwaltungPatch']['data'],
+        landingSettings: landingSettings.value,
       })
     } else {
       delete unterveranstaltungCopy.value.gliederungId
@@ -139,6 +160,7 @@ const {
           updateDocuments,
           deleteDocumentIds: deletedDocumentIds.value,
         } as RouterInput['unterveranstaltung']['gliederungPatch']['data'],
+        landingSettings: landingSettings.value,
       })
     }
 
@@ -322,7 +344,7 @@ function deleteDocument(document, index) {
         />
       </div>
       <!-- Dokumente ggf. in den Reiter Dokumente verschieben? @ToDo Design stimmt noch nicht -->
-      <div class="lg:col-span-full hidden">
+      <div class="lg:col-span-full">
         <div class="my-10">
           <div class="text-lg font-semibold">
             Dokumente
@@ -335,11 +357,11 @@ function deleteDocument(document, index) {
           <p class="max-w-2xl text-sm">Hier kannst Du Dokumente für die Ausschreibung hochladen</p>
         </div>
         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
-          <thead>
+          <thead class="border-b border-gray-200">
             <tr>
               <th
                 scope="col"
-                class="px-3 py-3.5 text-left text-sm font-semibold"
+                class="px-3 py-3.5 text-left font-semibold"
               >
                 Name
               </th>
@@ -353,16 +375,16 @@ function deleteDocument(document, index) {
               :key="'document-' + index"
               class="even:bg-gray-50 dark:even:bg-gray-800"
             >
-              <td class="whitespace-nowrap w-full py-5 pl-4 pr-3 text-sm">
+              <td class="whitespace-nowrap w-full py-5 pl-4 pr-3">
                 <BasicInput
                   :id="'documentName-' + index"
                   v-model="document.name"
                 />
               </td>
-              <td class="text-sm pl-4 pr-3">
+              <td class="pl-4 pr-3">
                 <DownloadLink :file-id="document.fileId" />
               </td>
-              <td class="text-sm pl-4 pr-3">
+              <td class="pl-4 pr-3">
                 <XMarkIcon
                   class="h-5 w-5 text-danger-600 cursor-pointer"
                   @click="deleteDocument(document, index)"
@@ -371,7 +393,7 @@ function deleteDocument(document, index) {
             </tr>
           </tbody>
         </table>
-        <div class="flex justify-end">
+        <div class="flex justify-start">
           <div>
             <label
               for="documentFileInput"
@@ -392,7 +414,10 @@ function deleteDocument(document, index) {
       </div>
 
       <!-- Einstellungen für die Landing-->
-      <UnterveranstaltungLandingSettings class="col-span-full" />
+      <UnterveranstaltungLandingSettings
+        v-model="landingSettings"
+        class="col-span-full"
+      />
     </div>
     <div class="mt-8 flex gap-4">
       <Button

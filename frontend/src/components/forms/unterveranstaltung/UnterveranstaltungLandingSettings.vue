@@ -3,28 +3,62 @@ import BasicEditor from '@/components/BasicInputs/BasicEditor.vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import BasicSwitch from '@/components/BasicInputs/BasicSwitch.vue'
 import BasicTextArea from '@/components/BasicInputs/BasicTextArea.vue'
-import { ref } from 'vue'
+import { computed } from 'vue'
 
-const landingSettings = ref({
-  hero: {
-    title: '',
-    subtitle: '',
-    image: '',
+export interface IHeroImages {
+  fileId: string
+  name: string
+}
+
+export interface IFaqItem {
+  question: string
+  answer: string
+}
+
+export interface IMiscellaneousItem {
+  id: number
+  title: string
+  content: string
+}
+
+export interface ILandingSettings {
+  heroTitle: string
+  heroSubtitle: string
+
+  eventDetailsTitle: string
+  eventDetailsContent: string
+
+  miscellaneousVisible: boolean
+  miscellaneousTitle?: string
+  miscellaneousSubtitle?: string
+
+  faqVisible: boolean
+  faqEmail?: string
+
+  instagramVisible: boolean
+  instagramUrl?: string
+
+  facebookVisible: boolean
+  facebookUrl?: string
+}
+
+const props = withDefaults(
+  defineProps<{
+    modelValue: ILandingSettings
+  }>(),
+  {}
+)
+
+const emit = defineEmits<{
+  'update:modelValue': [ILandingSettings]
+}>()
+
+const model = computed({
+  get() {
+    return props.modelValue
   },
-  eventDetails: {
-    title: '',
-    content: '',
-  },
-  miscellaneous: {
-    showSection: false,
-    title: '',
-    subtitle: '',
-    items: [],
-  },
-  faq: {
-    showSection: false,
-    email: '',
-    items: [],
+  set(val) {
+    emit('update:modelValue', val)
   },
 })
 </script>
@@ -56,7 +90,7 @@ const landingSettings = ref({
           <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div class="col-span-full">
               <BasicTextArea
-                v-model="landingSettings.hero.title"
+                v-model="model.heroTitle"
                 label="Titel"
                 placeholder="Titel"
                 required
@@ -65,7 +99,7 @@ const landingSettings = ref({
 
             <div class="col-span-full">
               <BasicTextArea
-                v-model="landingSettings.hero.subtitle"
+                v-model="model.heroSubtitle"
                 label="Untertitel"
                 placeholder="Untertitel"
                 required
@@ -88,7 +122,7 @@ const landingSettings = ref({
           <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div class="col-span-full">
               <BasicTextArea
-                v-model="landingSettings.eventDetails.title"
+                v-model="model.eventDetailsTitle"
                 label="Titel"
                 placeholder="Titel"
                 required
@@ -97,7 +131,7 @@ const landingSettings = ref({
 
             <div class="col-span-full">
               <BasicEditor
-                v-model="landingSettings.eventDetails.content"
+                v-model="model.eventDetailsContent"
                 label="Content"
                 required
               />
@@ -118,16 +152,16 @@ const landingSettings = ref({
           <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div class="col-span-full">
               <BasicSwitch
-                v-model="landingSettings.miscellaneous.showSection"
+                v-model="model.miscellaneousVisible"
                 label="Anzeigen"
               />
             </div>
             <div
-              v-if="landingSettings.miscellaneous.showSection"
+              v-if="model.miscellaneousVisible"
               class="col-span-full"
             >
               <BasicTextArea
-                v-model="landingSettings.miscellaneous.title"
+                v-model="model.miscellaneousTitle"
                 label="Titel"
                 placeholder="Titel"
                 required
@@ -135,11 +169,11 @@ const landingSettings = ref({
             </div>
 
             <div
-              v-if="landingSettings.miscellaneous.showSection"
+              v-if="model.miscellaneousVisible"
               class="col-span-full"
             >
               <BasicTextArea
-                v-model="landingSettings.miscellaneous.subtitle"
+                v-model="model.miscellaneousSubtitle"
                 label="Untertitel"
                 placeholder="Untertitel"
                 required
@@ -161,16 +195,16 @@ const landingSettings = ref({
           <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div class="col-span-full">
               <BasicSwitch
-                v-model="landingSettings.faq.showSection"
+                v-model="model.faqVisible"
                 label="Anzeigen"
               />
             </div>
             <div
-              v-if="landingSettings.faq.showSection"
+              v-if="model.faqVisible"
               class="col-span-full"
             >
               <BasicInput
-                v-model="landingSettings.faq.email"
+                v-model="model.faqEmail"
                 type="email"
                 label="Email für Nachfragen"
                 placeholder="example@gliederung.dlrg.de"

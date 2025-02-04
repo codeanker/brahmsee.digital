@@ -53,12 +53,12 @@ const stats = computed(() => {
         <div>
           <div class="text-base/7 text-gray-700 lg:max-w-lg">
             <h1 class="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl">
-              Marketing | Section Title
+              {{ unterveranstaltung?.landingSettings?.eventDetailsTitle }}
             </h1>
             <!-- eslint-disable vue/no-v-html -->
             <div
               class="max-w-xl prose dark:prose-invert"
-              v-html="unterveranstaltung?.beschreibung"
+              v-html="unterveranstaltung?.landingSettings?.eventDetailsContent"
             />
           </div>
           <dl class="mt-10 grid grid-cols-2 gap-8 border-t border-gray-900/10 pt-10 sm:grid-cols-4">
@@ -71,13 +71,14 @@ const stats = computed(() => {
             </div>
           </dl>
           <div class="mt-10 flex">
-            <a
-              href="#"
-              class="text-base/7 font-semibold text-indigo-600"
-              >Melde dich jetzt bis zum
-              <span v-if="unterveranstaltung">{{ formatDate(unterveranstaltung?.meldeschluss, 'DD.MM') }}</span> an
-              <span aria-hidden="true">&rarr;</span></a
+            <RouterLink
+              class="text-base/7 font-semibold text-primary-600"
+              :to="{ name: 'Public Anmeldung' }"
             >
+              Melde dich jetzt bis zum
+              <span v-if="unterveranstaltung">{{ formatDate(unterveranstaltung?.meldeschluss, 'DD.MM') }}</span> an
+              <span aria-hidden="true">&rarr;</span>
+            </RouterLink>
           </div>
         </div>
         <div class="lg:pr-4">

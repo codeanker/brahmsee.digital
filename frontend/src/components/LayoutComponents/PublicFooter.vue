@@ -41,7 +41,9 @@ const navigation = [
 
 <template>
   <footer class="bg-white">
-    <div class="mx-auto max-w-7xl px-6 py-12 md:flex md:items-center md:justify-between lg:px-8">
+    <div
+      class="mx-auto max-w-7xl px-6 py-12 space-y-6 flex flex-col md:flex-row items-center md:justify-between lg:px-8"
+    >
       <div class="flex justify-center gap-x-6 md:order-2">
         <a
           v-for="item in navigation"
@@ -61,7 +63,7 @@ const navigation = [
         class="h-10 mb-5 lg:mb-0"
         src="@/assets/images/gliederung_sh.png"
       />
-      <div class="text-center text-sm/6 text-gray-600">
+      <div class="text-center text-xs md:text-sm/6 text-gray-600">
         <p class="m-0 md:order-1 md:mt-0">
           &copy; {{ formatDate(new Date(), 'YYYY') }} DLRG Landesverband Schleswig-Holstein e.V.
         </p>

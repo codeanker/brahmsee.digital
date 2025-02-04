@@ -59,7 +59,6 @@ export async function getAccountCreateData(data: TGetAccountCreateDataSchema): P
             },
           }
         : undefined,
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
     activationToken: uuidv4(),
   }
 }

@@ -10,8 +10,8 @@ export const unterveranstaltungGliederungGetProcedure = defineProtectedQueryProc
   inputSchema: z.strictObject({
     id: z.number().int(),
   }),
-  async handler(options) {
-    return prisma.unterveranstaltung.findUniqueOrThrow({
+  handler: (options) =>
+    prisma.unterveranstaltung.findUniqueOrThrow({
       where: {
         id: options.input.id,
       },
@@ -42,7 +42,13 @@ export const unterveranstaltungGliederungGetProcedure = defineProtectedQueryProc
             hostname: true,
           },
         },
-        gliederung: true,
+        gliederung: {
+          select: {
+            id: true,
+            name: true,
+            edv: true,
+          },
+        },
         documents: {
           select: {
             id: true,
@@ -51,7 +57,31 @@ export const unterveranstaltungGliederungGetProcedure = defineProtectedQueryProc
             fileId: true,
           },
         },
+        landingSettings: {
+          select: {
+            eventDetailsContent: true,
+            eventDetailsTitle: true,
+            faqEmail: true,
+            faqVisible: true,
+            heroImages: {
+              select: {
+                name: true,
+                file: true,
+              },
+            },
+            heroSubtitle: true,
+            heroTitle: true,
+            miscellaneousItems: {
+              select: {
+                title: true,
+                content: true,
+              },
+            },
+            miscellaneousTitle: true,
+            miscellaneousSubtitle: true,
+            miscellaneousVisible: true,
+          },
+        },
       },
-    })
-  },
+    }),
 })

@@ -19,7 +19,12 @@ model Unterveranstaltung {
   type             UnterveranstaltungType       @default(GLIEDERUNG)
   customFields     CustomField[]
   documents        UnterveranstaltungDocument[]
-  faq              Faq[]
+
+  faqs          Faq[]
+  faqCategories FaqCategory[]
+
+  landingSettings   UnterveranstaltungLandingSettings? @relation(fields: [landingSettingsId], references: [unterveranstaltungId], onDelete: Cascade)
+  landingSettingsId Int                                @unique
 }
 
 model UnterveranstaltungDocument {
