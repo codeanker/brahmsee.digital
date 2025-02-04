@@ -344,7 +344,7 @@ function deleteDocument(document, index) {
         />
       </div>
       <!-- Dokumente ggf. in den Reiter Dokumente verschieben? @ToDo Design stimmt noch nicht -->
-      <div class="lg:col-span-full hidden">
+      <div class="lg:col-span-full">
         <div class="my-10">
           <div class="text-lg font-semibold">
             Dokumente
@@ -357,11 +357,11 @@ function deleteDocument(document, index) {
           <p class="max-w-2xl text-sm">Hier kannst Du Dokumente für die Ausschreibung hochladen</p>
         </div>
         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
-          <thead>
+          <thead class="border-b border-gray-200">
             <tr>
               <th
                 scope="col"
-                class="px-3 py-3.5 text-left text-sm font-semibold"
+                class="px-3 py-3.5 text-left font-semibold"
               >
                 Name
               </th>
@@ -375,16 +375,16 @@ function deleteDocument(document, index) {
               :key="'document-' + index"
               class="even:bg-gray-50 dark:even:bg-gray-800"
             >
-              <td class="whitespace-nowrap w-full py-5 pl-4 pr-3 text-sm">
+              <td class="whitespace-nowrap w-full py-5 pl-4 pr-3">
                 <BasicInput
                   :id="'documentName-' + index"
                   v-model="document.name"
                 />
               </td>
-              <td class="text-sm pl-4 pr-3">
+              <td class="pl-4 pr-3">
                 <DownloadLink :file-id="document.fileId" />
               </td>
-              <td class="text-sm pl-4 pr-3">
+              <td class="pl-4 pr-3">
                 <XMarkIcon
                   class="h-5 w-5 text-danger-600 cursor-pointer"
                   @click="deleteDocument(document, index)"
@@ -393,7 +393,7 @@ function deleteDocument(document, index) {
             </tr>
           </tbody>
         </table>
-        <div class="flex justify-end">
+        <div class="flex justify-start">
           <div>
             <label
               for="documentFileInput"

@@ -210,22 +210,35 @@ const faqList = useTemplateRef('faqList')
         </div>
 
         <div class="mt-5 lg:mt-10 mb-5 text-lg font-semibold">Dokumente</div>
-        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
+        <table
+          v-if="unterveranstaltung?.documents"
+          class="min-w-full divide-y divide-gray-200 dark:divide-gray-800"
+        >
           <tbody class="divide-y divide-gray-200 dark:divide-gray-800 bg-white dark:bg-dark-primary">
             <tr
               v-for="(document, index) in unterveranstaltung?.documents ?? []"
               :key="'document-' + index"
               class="even:bg-gray-50 dark:even:bg-gray-800"
             >
-              <td class="whitespace-nowrap w-full py-5 pl-4 pr-3 text-sm">
+              <td class="whitespace-nowrap w-full py-5 pl-4 pr-3">
                 {{ document.name }}
               </td>
-              <td class="text-sm pl-4 pr-3">
+              <td class="pl-4 pr-3">
                 <DownloadLink :file-id="document.fileId" />
               </td>
             </tr>
           </tbody>
         </table>
+        <div
+          v-else
+          class="rounded-md bg-blue-50 dark:bg-blue-950 text-blue-500 p-4"
+        >
+          <div class="flex">
+            <div class="ml-3 flex-1 md:flex md:justify-between">
+              <p class="mb-0">Es sind keine Dokumente vorhanden, klicke auf bearbeiten um welche hinzuzufügen</p>
+            </div>
+          </div>
+        </div>
       </Tab>
       <Tab key="anmeldungen">
         <div class="my-10">
