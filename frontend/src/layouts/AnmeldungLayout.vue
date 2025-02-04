@@ -6,7 +6,7 @@ import PublicFooter from '@/components/LayoutComponents/PublicFooter.vue'
 import PublicHeader from '@/components/LayoutComponents/PublicHeader.vue'
 import type { RouterOutput } from '@codeanker/api'
 import { useAsyncState } from '@vueuse/core'
-import { computed, inject, provide, type Ref } from 'vue'
+import { computed, inject, provide, ref, type Ref } from 'vue'
 import PublicLayout from './PublicLayout.vue'
 
 const route = useRoute()
@@ -24,8 +24,12 @@ provide('unterveranstaltung', unterveranstaltung)
 </script>
 
 <script lang="ts">
+type Unterveranstaltung = RouterOutput['unterveranstaltung']['publicGet']
+
+const emptyRef = ref()
+
 export function injectUnterveranstaltung() {
-  return inject<Ref<RouterOutput['unterveranstaltung']['publicGet']>>('unterveranstaltung')
+  return inject<Ref<Unterveranstaltung>>('unterveranstaltung', emptyRef)
 }
 </script>
 

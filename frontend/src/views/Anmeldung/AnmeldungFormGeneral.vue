@@ -40,7 +40,7 @@ if (!props.ignoreClosingDate && props.isPublic) {
   })
 }
 
-const { state: customFields } = useAsyncState(async () => {
+const { state: customFields, execute: loadCustomFields } = useAsyncState(async () => {
   if (!unterveranstaltung) {
     return undefined
   }
@@ -50,7 +50,10 @@ const { state: customFields } = useAsyncState(async () => {
     entityId: unterveranstaltung.value.id,
     position: 'PUBLIC_ANMELDUNG',
   })
-}, undefined)
+}, [])
+
+// load custom fields when the unterveranstaltung has been injected
+watch(unterveranstaltung, () => loadCustomFields())
 
 const customFieldValues = ref<Record<number, any>>({})
 
