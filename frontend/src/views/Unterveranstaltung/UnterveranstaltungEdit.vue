@@ -18,7 +18,7 @@ const { state: unterveranstaltung, execute: fetchUnterveranstaltung } = useAsync
       id: parseInt(unterveranstaltungId),
     })
   }
-})
+}, null)
 </script>
 
 <template>
