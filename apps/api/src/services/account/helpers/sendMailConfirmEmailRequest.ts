@@ -1,11 +1,16 @@
 import config from '../../../config.js'
-import client from '../../../prisma.js'
+import type { BaseContext } from '../../../context.js'
 import { sendMail } from '../../../util/mail.js'
 
-export async function sendMailConfirmEmailRequest(email: string, activationToken: string) {
+type Props = {
+  email: string
+  activationToken: string
+}
+
+export async function sendMailConfirmEmailRequest({ prisma }: BaseContext, { activationToken, email }: Props) {
   const activationUrl = `${config.clientUrl}/registrierung/confirm/${activationToken}`
 
-  const account = await client.account.findUniqueOrThrow({
+  const account = await prisma.account.findUniqueOrThrow({
     where: {
       email,
     },

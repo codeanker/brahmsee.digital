@@ -27,35 +27,35 @@ const ZAccountGliederungAdminCreateInput = z.strictObject({
 export const accountGliederungAdminCreateProcedure = definePublicMutateProcedure({
   key: 'gliederungAdminCreate',
   inputSchema: ZAccountGliederungAdminCreateInput,
-  async handler(options) {
+  async handler({ ctx, input }) {
     let dlrgOauthId: undefined | string = undefined
     // check if jwtOAuthToken set and if so, check if it is valid
 
-    if (options.input.data.jwtOAuthToken) {
+    if (input.data.jwtOAuthToken) {
       const jwtOAuthTokenPayload = ZOauthRegisterJwtPayloadSchema.parse(
-        jwt.verify(options.input.data.jwtOAuthToken, `${config.authentication.secret}-oauth`)
+        jwt.verify(input.data.jwtOAuthToken, `${config.authentication.secret}-oauth`)
       )
-      options.input.data.email = jwtOAuthTokenPayload.email
+      input.data.email = jwtOAuthTokenPayload.email
       dlrgOauthId = jwtOAuthTokenPayload.sub
     }
 
-    if (!options.input.data.email) {
+    if (!input.data.email) {
       throw new TRPCError({
         code: 'BAD_REQUEST',
         message: 'Email muss angegeben werden',
       })
     }
     const accountData = await getAccountCreateData({
-      email: options.input.data.email,
-      firstname: options.input.data.firstname,
-      lastname: options.input.data.lastname,
-      password: options.input.data.password,
-      birthday: options.input.data.birthday,
-      gender: options.input.data.gender,
+      email: input.data.email,
+      firstname: input.data.firstname,
+      lastname: input.data.lastname,
+      password: input.data.password,
+      birthday: input.data.birthday,
+      gender: input.data.gender,
       roleId: 'GLIEDERUNG_ADMIN',
       isActiv: false,
-      gliederungId: options.input.data.gliederungId,
-      adminInGliederungId: options.input.data.gliederungId,
+      gliederungId: input.data.gliederungId,
+      adminInGliederungId: input.data.gliederungId,
     })
     const res = await prisma.account.create({
       data: {
@@ -68,7 +68,10 @@ export const accountGliederungAdminCreateProcedure = definePublicMutateProcedure
     })
 
     if (!accountData.activationToken) throw new Error('No activation token generated')
-    await sendMailConfirmEmailRequest(accountData.email, accountData.activationToken)
+    await sendMailConfirmEmailRequest(ctx, {
+      activationToken: accountData.activationToken,
+      email: accountData.email,
+    })
 
     return res
   },

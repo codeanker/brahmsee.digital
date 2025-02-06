@@ -1,31 +1,25 @@
-import type { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch'
 import type { CreateTrpcKoaContextOptions } from 'trpc-koa-adapter'
+import type { Simplify } from 'type-fest'
 
+import type { Account, PrismaClient } from '@prisma/client'
 import { getEntityIdFromHeader } from './authentication.js'
 import { logger } from './logger.js'
-import client from './prisma.js'
-import type { Account } from '@prisma/client'
+import prisma from './prisma.js'
 
-function getAuthorizationHeader(
-  headers: CreateTrpcKoaContextOptions['req']['headers'] | FetchCreateContextFnOptions['req']['headers']
-) {
-  if ('authorization' in headers && typeof headers['authorization'] === 'string') {
-    return headers['authorization']
-  } else {
-    return (headers as FetchCreateContextFnOptions['req']['headers']).get('authorization')
+export async function createContext({ req }: CreateTrpcKoaContextOptions): Promise<Context> {
+  const baseContext: BaseContext = {
+    prisma,
   }
-}
 
-export async function createContext({
-  req,
-}: CreateTrpcKoaContextOptions | FetchCreateContextFnOptions): Promise<Context> {
   try {
-    const authorization = getAuthorizationHeader(req.headers)
+    const authorization = req.headers.authorization
     if (authorization === null) throw new Error('No authorization header found.')
 
     const accountIdFromHeader = getEntityIdFromHeader(authorization)
     if (accountIdFromHeader === undefined) {
       return {
+        ...baseContext,
+
         authenticated: false,
         account: undefined,
         accountId: undefined,
@@ -33,13 +27,15 @@ export async function createContext({
     }
 
     const accountId = parseInt(accountIdFromHeader)
-    const account = await client.account.findFirstOrThrow({
+    const account = await prisma.account.findFirstOrThrow({
       where: {
         id: accountId,
       },
     })
 
     return {
+      ...baseContext,
+
       authenticated: true,
       accountId,
       account,
@@ -54,7 +50,11 @@ export async function createContext({
   }
 }
 
-type AuthContext =
+export type BaseContext = {
+  prisma: PrismaClient
+}
+
+export type AuthContext =
   | {
       authenticated: false
       accountId: undefined
@@ -66,4 +66,4 @@ type AuthContext =
       account: Account
     }
 
-export type Context = AuthContext
+export type Context = Simplify<BaseContext & AuthContext>

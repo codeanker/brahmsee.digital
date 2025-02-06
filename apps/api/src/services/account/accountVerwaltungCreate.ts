@@ -13,8 +13,8 @@ export const accountVerwaltungCreateProcedure = defineProtectedMutateProcedure({
   inputSchema: z.strictObject({
     data: accountSchema,
   }),
-  async handler(options) {
-    const accountData = await getAccountCreateData(options.input.data)
+  async handler({ ctx, input }) {
+    const accountData = await getAccountCreateData(input.data)
     if (typeof accountData.activationToken !== 'string') {
       throw new Error('no activation token found!')
     }
@@ -26,7 +26,10 @@ export const accountVerwaltungCreateProcedure = defineProtectedMutateProcedure({
       },
     })
 
-    await sendMailConfirmEmailRequest(accountData.email, accountData.activationToken)
+    await sendMailConfirmEmailRequest(ctx, {
+      activationToken: accountData.activationToken,
+      email: accountData.email,
+    })
 
     return res
   },

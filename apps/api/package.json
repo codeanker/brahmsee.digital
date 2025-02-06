@@ -82,6 +82,7 @@
     "inquirer": "^12.3.0",
     "prisma": "^5.19.1",
     "tsx": "^4.2.0",
+    "type-fest": "^4.33.0",
     "typescript": "catalog:"
   }
 }

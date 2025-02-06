@@ -1,7 +1,6 @@
 import { Role } from '@prisma/client'
 import z from 'zod'
 
-import prisma from '../../prisma.js'
 import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
 import logActivity from '../../util/activity.js'
 
@@ -13,10 +12,10 @@ export const accountEmailConfirmRequestProcedure = defineProtectedQueryProcedure
   inputSchema: z.strictObject({
     accountId: z.number().int(),
   }),
-  async handler(options) {
-    const account = await prisma.account.findUnique({
+  async handler({ ctx, input }) {
+    const account = await ctx.prisma.account.findUnique({
       where: {
-        id: options.input.accountId,
+        id: input.accountId,
       },
       select: {
         id: true,
@@ -39,12 +38,15 @@ export const accountEmailConfirmRequestProcedure = defineProtectedQueryProcedure
     await logActivity({
       type: 'OTHER',
       subjectType: 'account',
-      subjectId: options.input.accountId,
-      causerId: options.ctx.accountId,
+      subjectId: input.accountId,
+      causerId: ctx.accountId,
       description: 'email confirmation requested',
     })
 
-    await sendMailConfirmEmailRequest(account.email, account.activationToken)
+    await sendMailConfirmEmailRequest(ctx, {
+      email: account.email,
+      activationToken: account.activationToken,
+    })
 
     return {
       success: true,
