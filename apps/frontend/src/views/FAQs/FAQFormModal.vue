@@ -27,32 +27,31 @@ const emit = defineEmits<{
 const isEdit = computed(() => props.faq !== undefined)
 
 const formData = ref({
-  question: '',
-  answer: '',
-  category: '',
+  question: props.faq?.question ?? '',
+  answer: props.faq?.answer ?? '',
+  category: props.faq?.category ?? '',
 })
+
+watch(
+  () => props.faq,
+  (faq) => {
+    formData.value = {
+      question: faq?.question ?? '',
+      answer: faq?.answer ?? '',
+      category: faq?.category ?? '',
+    }
+  },
+  {
+    deep: true,
+    immediate: true,
+  }
+)
 
 function queryCategories(term?: string) {
   return apiClient.faq.searchCategory.query({ term })
 }
 
 const modal = useTemplateRef('modal')
-
-watch(
-  props,
-  ({ faq }) => {
-    if (!faq) {
-      return
-    }
-
-    formData.value = {
-      question: faq.question,
-      answer: faq.answer,
-      category: faq.category,
-    }
-  },
-  { immediate: true }
-)
 
 function onClose() {
   formData.value = {
