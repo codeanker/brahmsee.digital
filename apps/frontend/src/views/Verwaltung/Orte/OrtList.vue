@@ -30,8 +30,9 @@ const columns: TGridColumn<TData, TFilter>[] = [
     sortable: true,
   },
   {
-    field: 'address.city',
-    title: 'Ort',
+    field: 'address',
+    format: (address) => `${address.street} ${address.streetNumber}, ${address.zip} ${address.city}`,
+    title: 'Adresse',
     filter: { component: BasicInput, key: 'city' },
     sortable: true,
   },

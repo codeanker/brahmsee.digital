@@ -45,7 +45,7 @@ export const unterveranstaltungVerwaltungCreateProcedure = defineProtectedMutate
         meldeschluss: input.data.meldeschluss,
         beschreibung: input.data.beschreibung,
         bedingungen: input.data.bedingungen,
-        type: 'GLIEDERUNG',
+        type: input.data.type,
         gliederung: {
           connect: {
             id: input.data.gliederungId,

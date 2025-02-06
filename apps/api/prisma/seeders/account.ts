@@ -7,6 +7,7 @@ import { isProduction } from '../../src/util/is-production.js'
 import type { Seeder } from './index.js'
 
 import { hashPassword } from '@codeanker/authentication'
+import { faker } from '@faker-js/faker'
 
 const createAccount: Seeder = async (prisma: PrismaClient) => {
   // create default user in development
@@ -29,6 +30,7 @@ const createAccount: Seeder = async (prisma: PrismaClient) => {
           firstname: 'Gabi',
           lastname: 'Musterfrau',
           telefon: '+49 123 4567890',
+          birthday: faker.date.past(),
           email,
         },
       },

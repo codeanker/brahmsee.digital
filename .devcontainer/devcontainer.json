@@ -45,7 +45,7 @@
     }
   },
   "onCreateCommand": {
-    "dependencies": "pnpm i",
+    // "dependencies": "pnpm install",
     "environment": "cp -n apps/api/.env.example apps/api/.env"
   }
 }

@@ -32,7 +32,6 @@
     "@tiptap/starter-kit": "catalog:",
     "@tiptap/vue-3": "catalog:",
     "@trpc/client": "catalog:",
-    "@vitejs/plugin-basic-ssl": "^1.0.2",
     "@vuepic/vue-datepicker": "^4.5.1",
     "@vueuse/core": "^12.5.0",
     "@vueuse/router": "^12.3.0",
@@ -51,14 +50,15 @@
     "@codeanker/eslint-config": "workspace:*",
     "@codeanker/typescript-config": "workspace:*",
     "@types/node": "catalog:",
-    "@vitejs/plugin-vue": "^4.5.0",
+    "@vitejs/plugin-basic-ssl": "^1.2.0",
+    "@vitejs/plugin-vue": "^5.2.1",
     "autoprefixer": "^10.4.16",
     "eslint": "catalog:",
     "postcss": "^8.4.31",
     "sass": "^1.69.5",
     "tailwindcss": "^3.3.5",
     "typescript": "catalog:",
-    "vite": "^4.5.6",
+    "vite": "^6.1.0",
     "vue-tsc": "catalog:"
   }
 }
