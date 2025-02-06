@@ -1,35 +1,54 @@
 import type LoadingVue from '@/components/UIComponents/Loading.vue';
 <script setup lang="ts">
 import { useAsyncState } from '@vueuse/core'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 import { apiClient } from '@/api'
+import type { IAddress } from '@/components/BasicInputs/BasicAddressPicker.vue'
+import BasicAddressPicker from '@/components/BasicInputs/BasicAddressPicker.vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import router from '@/router'
-import type { RouterInput } from '@codeanker/api'
+import type { RouterOutput } from '@codeanker/api'
+
+type Ort = RouterOutput['ort']['verwaltungGet']
 
 const props = defineProps<{
-   
-  ort?: any
+  ort?: Ort
   mode: 'create' | 'update'
   onUpdate?: () => void
 }>()
 
-const fill = (ort) => {
-  return {
-    name: ort?.name ?? '',
-    address: ort?.address ?? {
-      street: undefined,
-      number: undefined,
-      zip: undefined,
-      city: undefined,
-    },
-  }
-}
+const nameForm = ref(props.ort?.name ?? '')
 
-const ortId = parseInt(props.ort?.id as string)
-const ortCopy = ref(fill(props.ort))
+const addressForm = ref<IAddress>({
+  street: props.ort?.address?.street ?? '',
+  streetNumber: props.ort?.address?.streetNumber ?? '',
+  zip: props.ort?.address?.zip ?? '',
+  city: props.ort?.address?.city ?? '',
+  country: props.ort?.address?.country ?? 'DE',
+  position: {
+    lat: props.ort?.address?.lat ?? 0,
+    lon: props.ort?.address?.lon ?? 0,
+  },
+})
+
+watch(addressForm, (addressForm) => {
+  if (nameForm.value.trim().length === 0) {
+    nameForm.value = `${addressForm.street} ${addressForm.streetNumber}`
+  }
+})
+
+async function addressFind(params: { query: string; country: string; language: string }) {
+  return apiClient.address.findAddress.query({
+    query: params.query,
+    zip: addressForm.value.zip,
+    city: addressForm.value.city,
+    street: addressForm.value.street,
+    streetNumber: addressForm.value.streetNumber,
+    country: addressForm.value.country,
+  })
+}
 
 const {
   execute: createOrt,
@@ -38,7 +57,10 @@ const {
 } = useAsyncState(
   async () => {
     await apiClient.ort.verwaltungCreate.mutate({
-      data: ortCopy.value as unknown as RouterInput['ort']['verwaltungCreate']['data'],
+      data: {
+        name: nameForm.value,
+        address: addressForm.value,
+      },
     })
     router.back()
   },
@@ -52,9 +74,16 @@ const {
   isLoading: isLoadingUpdate,
 } = useAsyncState(
   async () => {
+    if (!props.ort) {
+      return
+    }
+
     await apiClient.ort.verwaltungPatch.mutate({
-      id: ortId,
-      data: ortCopy.value as unknown as RouterInput['ort']['verwaltungPatch']['data'],
+      id: props.ort.id,
+      data: {
+        name: nameForm.value,
+        address: addressForm.value,
+      },
     })
     props.onUpdate?.()
     router.back()
@@ -65,7 +94,12 @@ const {
 
 const { execute: deleteOrt, error: errorDelete } = useAsyncState(
   async () => {
-    await apiClient.ort.verwaltungRemove.mutate({ id: ortId })
+    if (!props.ort) {
+      return
+    }
+    await apiClient.ort.verwaltungRemove.mutate({
+      id: props.ort.id,
+    })
     router.push({ name: 'Verwaltung Alle Orte' })
   },
   null,
@@ -89,41 +123,45 @@ const handle = async (event: Event) => {
   <form @submit="handle">
     <div class="space-y-4">
       <BasicInput
-        v-model="ortCopy.name"
+        v-model="nameForm"
         label="Name"
         name="name"
         required
       />
-      <div class="grid grid-cols-3 gap-4">
-        <BasicInput
-          v-model="ortCopy.address.street"
-          label="Straße"
-          name="street"
-          class="col-span-2"
-          required
-        />
-        <BasicInput
-          v-model="ortCopy.address.number"
-          label="Hausnummer"
-          name="number"
-          class="col-span-1"
-          required
-        />
-        <BasicInput
-          v-model="ortCopy.address.zip"
-          label="PLZ"
-          name="zip"
-          class="col-span-1"
-          required
-        />
-        <BasicInput
-          v-model="ortCopy.address.city"
-          label="Stadt"
-          name="city"
-          class="col-span-2"
-          required
-        />
-      </div>
+
+      <BasicAddressPicker
+        label="Adresse"
+        country-label="Land"
+        city-label="Ort"
+        zip-label="Postleitzahl"
+        street-label="Straße"
+        house-number-label="Hausnummer"
+        autocomplete-label="Intelligente Suche"
+        manual-entry-label="Manuell eingeben"
+        :address-find="addressFind"
+        :country-formatter="(country) => country.name"
+        :country="addressForm.country"
+        :ort="addressForm.city"
+        :plz="addressForm.zip"
+        :strasse="addressForm.street"
+        :hausnummer="addressForm.streetNumber"
+        :is-valid-address="addressForm.valid"
+        :validation="true"
+        required
+        :include-non-independent-countries="true"
+        :street="addressForm.street"
+        :street-number="addressForm.streetNumber"
+        :zip="addressForm.zip"
+        :city="addressForm.city"
+        :position="addressForm.position"
+        @update:country="addressForm['country'] = $event ?? ''"
+        @update:city="addressForm['city'] = $event ?? ''"
+        @update:zip="addressForm['zip'] = $event ?? ''"
+        @update:street="addressForm['street'] = $event ?? ''"
+        @update:street-number="addressForm['streetNumber'] = $event ?? ''"
+        @update:position="addressForm['position'] = $event"
+        @update:is-valid-address="addressForm['valid'] = $event"
+      />
     </div>
 
     <div class="mt-4 flex gap-4 items-center">
@@ -136,6 +174,7 @@ const handle = async (event: Event) => {
         <span v-else>Loading...</span>
       </Button>
       <Button
+        v-if="props.ort"
         type="button"
         color="danger"
         @click="deleteOrt"
