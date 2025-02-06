@@ -52,7 +52,7 @@ const columns: TGridColumn<TData, TFilter>[] = [
     cell: DataGridDoubleLineCell,
     cellProps: (formattedValue, row) => {
       return {
-        title: `${dayjs().diff(row.birthday, 'year')} Jahre`,
+        title: `${dayjs().diff(row.content.birthday, 'year')} Jahre`,
         message: formattedValue.value,
       }
     },
