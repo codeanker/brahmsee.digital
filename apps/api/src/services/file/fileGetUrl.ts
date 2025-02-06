@@ -23,8 +23,6 @@ export const fileGetUrlActionProcedure = definePublicQueryProcedure({
     type FileWhereUniqueInput = Parameters<typeof prisma.file.findUnique>[0]['where']
     const where: FileWhereUniqueInput = { id: input.id }
 
-    console.log('personId', input.personId)
-
     if (input.personId) {
       where.Persons = {
         some: {

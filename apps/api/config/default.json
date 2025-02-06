@@ -34,7 +34,7 @@
   "fileDefaultProvider": "LOCAL",
   "fileProviders": {
     "LOCAL": {
-      "path": "../uploads"
+      "path": "../../uploads"
     },
     "AZURE": {
       "account": "",
