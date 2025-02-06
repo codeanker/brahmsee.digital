@@ -11,9 +11,7 @@ import { inputSchema as anmeldungCreateSchema } from '../services/anmeldung/anme
 import { getPersonCreateData } from '../services/person/schema/person.schema.js'
 import { customFieldValuesCreateMany } from '../types/defineCustomFieldValues.js'
 
-import { customParseFormat, dayjs } from '@codeanker/helpers'
-
-dayjs.extend(customParseFormat)
+import { dayjs } from '@codeanker/helpers'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const importAnmeldungen: Middleware = async function (ctx, next) {
