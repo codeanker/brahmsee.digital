@@ -32,7 +32,11 @@
         "prisma.prisma",
         "github.copilot",
         "actboy168.tasks",
-        "esbenp.prettier-vscode"
+        "esbenp.prettier-vscode",
+        "YoavBls.pretty-ts-errors",
+        "christian-kohler.path-intellisense",
+        "herrmannplatz.npm-dependency-links",
+        "mskelton.npm-outdated"
       ],
       "settings": {
         "terminal.integrated.defaultProfile.linux": "zsh",
