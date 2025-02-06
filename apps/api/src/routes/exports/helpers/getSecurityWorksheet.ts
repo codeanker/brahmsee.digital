@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import XLSX from 'xlsx'
+import XLSX from '@e965/xlsx'
 
 interface exportAccount {
   person: {

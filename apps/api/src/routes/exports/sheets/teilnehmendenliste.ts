@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import type { Context } from 'koa'
-import XLSX from 'xlsx'
+import XLSX from '@e965/xlsx'
 import { AnmeldungStatusMapping, GenderMapping } from '../../../client.js'
 import prisma from '../../../prisma.js'
 import { getSecurityWorksheet } from '../helpers/getSecurityWorksheet.js'
