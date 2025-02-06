@@ -45,19 +45,19 @@ const unterveranstaltungCopy = ref({
 })
 
 const landingSettings = ref<ILandingSettings>({
-  heroTitle: props.unterveranstaltung?.landingSettings?.heroTitle,
-  heroSubtitle: props.unterveranstaltung?.landingSettings?.heroSubtitle,
-  eventDetailsTitle: props.unterveranstaltung?.landingSettings?.eventDetailsTitle,
-  eventDetailsContent: props.unterveranstaltung?.landingSettings?.eventDetailsContent,
-  miscellaneousVisible: props.unterveranstaltung?.landingSettings?.miscellaneousVisible,
-  miscellaneousTitle: props.unterveranstaltung?.landingSettings?.miscellaneousTitle,
-  miscellaneousSubtitle: props.unterveranstaltung?.landingSettings?.miscellaneousSubtitle,
-  faqVisible: props.unterveranstaltung?.landingSettings?.faqVisible,
-  faqEmail: props.unterveranstaltung?.landingSettings?.faqEmail,
-  instagramVisible: props.unterveranstaltung?.landingSettings?.instagramVisible,
-  instagramUrl: props.unterveranstaltung?.landingSettings?.instagramUrl,
-  facebookVisible: props.unterveranstaltung?.landingSettings?.facebookVisible,
-  facebookUrl: props.unterveranstaltung?.landingSettings?.facebookUrl,
+  heroTitle: props.unterveranstaltung?.landingSettings?.heroTitle ?? '',
+  heroSubtitle: props.unterveranstaltung?.landingSettings?.heroSubtitle ?? '',
+  eventDetailsTitle: props.unterveranstaltung?.landingSettings?.eventDetailsTitle ?? '',
+  eventDetailsContent: props.unterveranstaltung?.landingSettings?.eventDetailsContent ?? '',
+  miscellaneousVisible: props.unterveranstaltung?.landingSettings?.miscellaneousVisible ?? false,
+  miscellaneousTitle: props.unterveranstaltung?.landingSettings?.miscellaneousTitle ?? '',
+  miscellaneousSubtitle: props.unterveranstaltung?.landingSettings?.miscellaneousSubtitle ?? '',
+  faqVisible: props.unterveranstaltung?.landingSettings?.faqVisible ?? false,
+  faqEmail: props.unterveranstaltung?.landingSettings?.faqEmail ?? '',
+  instagramVisible: props.unterveranstaltung?.landingSettings?.instagramVisible ?? false,
+  instagramUrl: props.unterveranstaltung?.landingSettings?.instagramUrl ?? '',
+  facebookVisible: props.unterveranstaltung?.landingSettings?.facebookVisible ?? false,
+  facebookUrl: props.unterveranstaltung?.landingSettings?.facebookUrl ?? '',
 })
 
 // Wird benötig damit man direkt von einer Veranstaltung eine Unterveranstaltung anlegen kann ohne diese extra auswählen zu müssen
