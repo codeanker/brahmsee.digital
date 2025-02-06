@@ -1,6 +1,5 @@
 packages:
-  - api/
-  - frontend/
+  - apps/*
   - packages/*
 catalog:
   # project

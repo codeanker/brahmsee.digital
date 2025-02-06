@@ -4,9 +4,7 @@
   "version": "2.0.0",
   "description": "",
   "workspaces": [
-    "api",
-    "frontend",
-    "docs",
+    "apps/*",
     "packages/*"
   ],
   "engines": {
@@ -16,15 +14,15 @@
   "scripts": {
     "turbo-checks": "turbo typecheck lint --concurrency 100%",
     "start:services": "docker-compose -f docker-compose-services.yml up --build",
-    "start:api": "npm run dev -w ./api",
-    "start:frontend": "VITE_APP_API_HOST=http://localhost:3030 npm run dev -w ./frontend",
-    "start:docs": "npm run docs:dev -w ./docs",
-    "migrate:api": "npm exec -w ./api prisma migrate deploy",
+    "start:api": "npm run dev -w ./apps/api",
+    "start:frontend": "VITE_APP_API_HOST=http://localhost:3030 npm run dev -w ./apps/frontend",
+    "start:docs": "npm run docs:dev -w ./apps/docs",
+    "migrate:api": "npm exec -w ./apps/api prisma migrate deploy",
     "lint": "turbo lint",
     "lint:fix": "eslint \"**/*.{vue,ts,js}\" --fix",
     "prepare": "husky install",
     "test": "vitest",
-    "generate": "tsx ./api/src/cli/index.ts"
+    "generate": "tsx ./apps/api/src/cli/index.ts"
   },
   "devDependencies": {
     "husky": "^8.0.3",

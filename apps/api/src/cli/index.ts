@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url'
 import { Prisma } from '@prisma/client'
 import { Command } from 'commander'
 
-import pkg from '../../../package.json' assert { type: 'json' }
+import pkg from '../../../../package.json' assert { type: 'json' }
 import { pascalToCamelCase } from '../util/casing.js'
 import { getDirectories } from '../util/files.js'
 

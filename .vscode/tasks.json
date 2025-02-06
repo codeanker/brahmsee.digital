@@ -88,12 +88,20 @@
     },
     {
       "label": "start:apps",
-      "dependsOn": ["start:api", "start:frontend", "start:test"],
+      "dependsOn": [
+        "start:api",
+        "start:frontend",
+        "start:test"
+      ],
       "problemMatcher": []
     },
     {
       "label": "start:apps and services",
-      "dependsOn": ["start:api", "start:frontend", "start:services"],
+      "dependsOn": [
+        "start:api",
+        "start:frontend",
+        "start:services"
+      ],
       "problemMatcher": [],
       "options": {
         "statusbar": {
@@ -106,7 +114,7 @@
       "type": "shell",
       "command": "npx prisma studio",
       "options": {
-        "cwd": "${workspaceFolder}/api"
+        "cwd": "${workspaceFolder}/apps/api"
       },
       "problemMatcher": [],
       "presentation": {
@@ -121,7 +129,7 @@
       "type": "shell",
       "command": "npx prisma migrate deploy & npx prisma generate",
       "options": {
-        "cwd": "${workspaceFolder}/api"
+        "cwd": "${workspaceFolder}/apps/api"
       },
       "problemMatcher": [],
       "presentation": {
@@ -137,7 +145,7 @@
       "label": "run:createAccount",
       "problemMatcher": [],
       "options": {
-        "cwd": "${workspaceFolder}/api",
+        "cwd": "${workspaceFolder}/apps/api",
         "statusbar": {
           "hide": false
         }
@@ -155,7 +163,7 @@
       "label": "run:initMeilisearch",
       "problemMatcher": [],
       "options": {
-        "cwd": "${workspaceFolder}/api",
+        "cwd": "${workspaceFolder}/apps/api",
         "statusbar": {
           "hide": false
         }
@@ -190,7 +198,7 @@
       "command": "npx prisma migrate reset",
       "problemMatcher": [],
       "options": {
-        "cwd": "${workspaceFolder}/api",
+        "cwd": "${workspaceFolder}/apps/api",
         "statusbar": {
           "hide": false
         }

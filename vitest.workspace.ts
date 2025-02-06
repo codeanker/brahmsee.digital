@@ -1,4 +1,4 @@
 export default [
-  // 'api/vitest.config.{e2e,unit,integration}.ts',
-  'frontend/vitest.config.{e2e,unit,integration}.ts',
+  // 'apps/api/vitest.config.{e2e,unit,integration}.ts',
+  'apps/frontend/vitest.config.{e2e,unit,integration}.ts',
 ]
