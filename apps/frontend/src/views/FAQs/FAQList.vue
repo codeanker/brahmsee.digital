@@ -55,7 +55,9 @@ defineExpose({
     >
       <span class="font-bold">{{ faq.question }}</span>
       <br />
+      <!-- eslint-disable vue/no-v-html -->
       <div v-html="faq.answer" />
+      <!-- eslint-enable vue/no-v-html -->
     </div>
   </div>
 </template>
