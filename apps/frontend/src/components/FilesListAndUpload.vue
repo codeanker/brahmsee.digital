@@ -146,14 +146,7 @@ async function deleteDocument(document, index) {
 <template>
   <!-- Dokumente ggf. in den Reiter Dokumente verschieben? @ToDo Design stimmt noch nicht -->
   <div class="my-10">
-    <div class="text-lg font-semibold">
-      Dokumente
-      <span
-        class="whitespace-nowrap inline-flex items-center rounded-md px-2 py-1 text-sm font-medium ring-1 ring-inset bg-indigo-50 text-indigo-600 ring-indigo-500/10"
-      >
-        New
-      </span>
-    </div>
+    <div class="text-lg font-semibold">Dokumente</div>
     <p class="max-w-2xl text-sm text-gray-500">Lade hier eigene Dokumente hoch</p>
   </div>
   <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
