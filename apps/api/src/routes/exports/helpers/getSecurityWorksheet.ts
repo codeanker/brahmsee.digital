@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import dayjs from 'dayjs'
+import XLSX from '@e965/xlsx'
 
 interface exportAccount {
   person: {
@@ -10,7 +8,7 @@ interface exportAccount {
   }
 }
 
-export function getSecurityWorksheet(XLSX, account: exportAccount, countDataEntries: number) {
+export function getSecurityWorksheet(account: exportAccount, countDataEntries: number) {
   const securityWorksheet = XLSX.utils.json_to_sheet([
     { '': 'Sicherheit' },
     { '': '' },

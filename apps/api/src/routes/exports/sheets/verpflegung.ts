@@ -1,61 +1,19 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { AnmeldungStatus, Essgewohnheit, NahrungsmittelIntoleranz, Role } from '@prisma/client'
+import { AnmeldungStatus, Essgewohnheit, NahrungsmittelIntoleranz } from '@prisma/client'
 import dayjs from 'dayjs'
-import XLSX from 'xlsx'
-
-import { getEntityIdFromHeader } from '../../authentication.js'
-import prisma from '../../prisma.js'
-import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
+import type { Context } from 'koa'
+import XLSX from '@e965/xlsx'
+import prisma from '../../../prisma.js'
 import { getSecurityWorksheet } from '../helpers/getSecurityWorksheet.js'
 import { getWorkbookDefaultProps } from '../helpers/getWorkbookDefaultProps.js'
+import { sheetAuthorize } from './sheets.schema.js'
 
-export async function veranstaltungVerpflegung(ctx) {
-  const jwt = ctx.query.jwt
-  const accountId = getEntityIdFromHeader('Bearer ' + jwt)
-  const unterveranstaltungId = ctx.query.unterveranstaltungId
-  const veranstaltungId = ctx.query.veranstaltungId
-
-  if (accountId == null || (unterveranstaltungId == null && veranstaltungId == null)) {
-    ctx.res.statusCode = 401
-    ctx.res.end()
+export async function veranstaltungVerpflegung(ctx: Context) {
+  const authorization = await sheetAuthorize(ctx)
+  if (!authorization) {
     return
   }
 
-  const account = await prisma.account.findUnique({
-    where: {
-      id: parseInt(accountId),
-    },
-    select: {
-      role: true,
-      person: {
-        select: {
-          firstname: true,
-          lastname: true,
-        },
-      },
-    },
-  })
-
-  if (account == null) {
-    ctx.res.statusCode = 401
-    ctx.res.end()
-    return
-  }
-
-  let gliederung: { id: number; name: string } | undefined
-  if (account.role == Role.GLIEDERUNG_ADMIN) {
-    try {
-      gliederung = await getGliederungRequireAdmin(parseInt(accountId))
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-      ctx.res.statusCode = 401
-      ctx.res.end()
-      return
-    }
-  }
+  const { query, account, gliederung } = authorization
 
   const gliederungen = await prisma.gliederung.findMany({
     where: {
@@ -64,10 +22,10 @@ export async function veranstaltungVerpflegung(ctx) {
         some: {
           OR: [
             {
-              id: parseInt(unterveranstaltungId || -1),
+              id: query.unterveranstaltungId,
             },
             {
-              veranstaltungId: parseInt(veranstaltungId || -1),
+              veranstaltungId: query.veranstaltungId,
             },
           ],
         },
@@ -80,10 +38,10 @@ export async function veranstaltungVerpflegung(ctx) {
         where: {
           OR: [
             {
-              id: parseInt(unterveranstaltungId || -1),
+              id: query.unterveranstaltungId,
             },
             {
-              veranstaltungId: parseInt(veranstaltungId || -1),
+              veranstaltungId: query.veranstaltungId,
             },
           ],
         },
@@ -166,15 +124,14 @@ export async function veranstaltungVerpflegung(ctx) {
   worksheet['!cols'] = [{ wch: 6 }, { wch: 40 }]
   XLSX.utils.book_append_sheet(workbook, worksheet, `Verpflegung`)
 
-  /** add Security Worksheet */
-  const { securityWorksheet, securityWorksheetName } = getSecurityWorksheet(XLSX, account, rows.length)
+  const { securityWorksheet, securityWorksheetName } = getSecurityWorksheet(account, rows.length)
   XLSX.utils.book_append_sheet(workbook, securityWorksheet, securityWorksheetName)
 
-  const buf = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' })
-  /* prepare response headers */
-  ctx.res.statusCode = 200
   const filename = `${dayjs().format('YYYYMMDD-hhmm')}-Verpflegung.xlsx`
+  const buffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' }) as Buffer
+
+  ctx.res.statusCode = 201
   ctx.res.setHeader('Content-Disposition', `attachment; filename="${filename}"`)
   ctx.res.setHeader('Content-Type', 'application/vnd.ms-excel')
-  ctx.res.end(buf)
+  ctx.res.end(buffer)
 }

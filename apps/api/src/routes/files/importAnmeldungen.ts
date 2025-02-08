@@ -5,11 +5,11 @@ import { Role } from '@prisma/client'
 import * as csv from 'fast-csv'
 import type { Middleware } from 'koa'
 
-import { getEntityIdFromHeader } from '../authentication.js'
-import prisma from '../prisma.js'
-import { inputSchema as anmeldungCreateSchema } from '../services/anmeldung/anmeldungPublicCreate.js'
-import { getPersonCreateData } from '../services/person/schema/person.schema.js'
-import { customFieldValuesCreateMany } from '../types/defineCustomFieldValues.js'
+import { getEntityIdFromHeader } from '../../authentication.js'
+import prisma from '../../prisma.js'
+import { inputSchema as anmeldungCreateSchema } from '../../services/anmeldung/anmeldungPublicCreate.js'
+import { getPersonCreateData } from '../../services/person/schema/person.schema.js'
+import { customFieldValuesCreateMany } from '../../types/defineCustomFieldValues.js'
 
 import { dayjs } from '@codeanker/helpers'
 
