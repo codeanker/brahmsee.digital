@@ -15,14 +15,6 @@ const routesRegistrierung: Route[] = [
         },
       },
       {
-        name: 'CrewRegistrierung',
-        path: 'crew',
-        component: () => import('./CrewRegistrierung.vue'),
-        meta: {
-          public: true,
-        },
-      },
-      {
         name: 'GliederungRegistrierung',
         path: 'gliederung',
         component: () => import('./GliederungRegistrierung.vue'),

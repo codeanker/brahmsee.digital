@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { HandRaisedIcon, UserGroupIcon } from '@heroicons/vue/24/outline'
+import { UserGroupIcon } from '@heroicons/vue/24/outline'
 </script>
 
 <template>
@@ -10,18 +10,6 @@ import { HandRaisedIcon, UserGroupIcon } from '@heroicons/vue/24/outline'
       </h2>
       <p class="text-center">Wofür möchtest Du dich registrieren?</p>
       <div class="mt-5 lg:mt-10 space-y-5">
-        <RouterLink
-          :to="{ name: 'CrewRegistrierung' }"
-          class="w-full p-5 rounded-lg flex cursor-pointer transition-all ease-in-out border border-gray-200 hover:border-primary-600 group"
-        >
-          <div class="mr-4">
-            <HandRaisedIcon class="h-8 w-8 transition-all ease-in-out group-hover:text-primary-600" />
-          </div>
-          <div class="">
-            <div class="font-medium text-lg transition-all ease-in-out group-hover:text-primary-600">CREW-Mitglied</div>
-            <div>Registriere dich als CREW-Mitglied für unsere Veranstaltungen.</div>
-          </div>
-        </RouterLink>
         <RouterLink
           :to="{ name: 'GliederungRegistrierung' }"
           class="w-full p-5 rounded-lg flex cursor-pointer transition-all ease-in-out border border-gray-200 hover:border-primary-600 group"
