@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { XMarkIcon } from '@heroicons/vue/24/solid'
 import { useAsyncState } from '@vueuse/core'
 import { computed, ref } from 'vue'
 
@@ -10,10 +9,8 @@ import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import BasicInputNumber from '@/components/BasicInputs/BasicInputNumber.vue'
 import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
 import BasicTypeahead from '@/components/BasicInputs/BasicTypeahead.vue'
-import DownloadLink from '@/components/DownloadLink.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
-import { handleUpload } from '@/helpers/handleUpload'
 import router from '@/router'
 import type { RouterInput } from '@codeanker/api'
 import { UnterveranstaltungTypeMapping, getEnumOptions } from '@codeanker/api'
@@ -29,8 +26,6 @@ const props = defineProps<{
 
 const unterveranstaltungId = props.unterveranstaltung?.id
 const gliederung = ref(props.unterveranstaltung?.gliederung)
-const documents = ref(props.unterveranstaltung?.documents || [])
-const deletedDocumentIds = ref<number[]>([])
 
 const unterveranstaltungCopy = ref({
   beschreibung: props.unterveranstaltung?.beschreibung,
@@ -123,11 +118,6 @@ const {
   isLoading: isLoadingUpdate,
 } = useAsyncState(
   async () => {
-    const addDocuments = documents.value
-      .filter((document) => document.added)
-      .map(({ name, fileId }) => ({ name, fileId }))
-    const updateDocuments = documents.value.filter((document) => !document.added).map(({ id, name }) => ({ id, name }))
-
     if (loggedInAccount.value?.role === 'ADMIN') {
       delete unterveranstaltungCopy.value.gliederungId
       delete unterveranstaltungCopy.value.veranstaltungId
@@ -139,9 +129,6 @@ const {
         id: unterveranstaltungId,
         data: {
           ...unterveranstaltungCopy.value,
-          addDocuments,
-          updateDocuments,
-          deleteDocumentIds: deletedDocumentIds.value,
         } as RouterInput['unterveranstaltung']['verwaltungPatch']['data'],
         landingSettings: landingSettings.value,
       })
@@ -156,9 +143,6 @@ const {
         id: unterveranstaltungId,
         data: {
           ...unterveranstaltungCopy.value,
-          addDocuments,
-          updateDocuments,
-          deleteDocumentIds: deletedDocumentIds.value,
         } as RouterInput['unterveranstaltung']['gliederungPatch']['data'],
         landingSettings: landingSettings.value,
       })
@@ -214,29 +198,6 @@ const disableddates = computed(() => {
   }
   return obj
 })
-
-const fileInput = ref<HTMLInputElement | null>(null)
-
-async function onFileChanged($event: Event) {
-  const target = $event.target as HTMLInputElement
-  const file = target?.files?.[0]
-  if (!file) return
-
-  const { id } = await handleUpload(file)
-  documents.value.push({
-    name: file.name,
-    fileId: id,
-    added: true,
-  })
-  if (fileInput.value) fileInput.value.value = ''
-}
-
-function deleteDocument(document, index) {
-  documents.value.splice(index, 1)
-  if (!document.added) {
-    deletedDocumentIds.value.push(document.id)
-  }
-}
 </script>
 
 <template>
@@ -342,75 +303,6 @@ function deleteDocument(document, index) {
           v-model="unterveranstaltungCopy.bedingungen"
           label="Bedingungen"
         />
-      </div>
-      <!-- Dokumente ggf. in den Reiter Dokumente verschieben? @ToDo Design stimmt noch nicht -->
-      <div class="lg:col-span-full">
-        <div class="my-10">
-          <div class="text-lg font-semibold">
-            Dokumente
-            <span
-              class="whitespace-nowrap inline-flex items-center rounded-md px-2 py-1 text-sm font-medium ring-1 ring-inset bg-indigo-50 text-indigo-600 ring-indigo-500/10"
-            >
-              New
-            </span>
-          </div>
-          <p class="max-w-2xl text-sm">Hier kannst Du Dokumente für die Ausschreibung hochladen</p>
-        </div>
-        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
-          <thead class="border-b border-gray-200">
-            <tr>
-              <th
-                scope="col"
-                class="px-3 py-3.5 text-left font-semibold"
-              >
-                Name
-              </th>
-              <th scope="col" />
-              <th scope="col" />
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-200 dark:divide-gray-800 bg-white dark:bg-dark-primary">
-            <tr
-              v-for="(document, index) in documents"
-              :key="'document-' + index"
-              class="even:bg-gray-50 dark:even:bg-gray-800"
-            >
-              <td class="whitespace-nowrap w-full py-5 pl-4 pr-3">
-                <BasicInput
-                  :id="'documentName-' + index"
-                  v-model="document.name"
-                />
-              </td>
-              <td class="pl-4 pr-3">
-                <DownloadLink :file-id="document.fileId" />
-              </td>
-              <td class="pl-4 pr-3">
-                <XMarkIcon
-                  class="h-5 w-5 text-danger-600 cursor-pointer"
-                  @click="deleteDocument(document, index)"
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="flex justify-start">
-          <div>
-            <label
-              for="documentFileInput"
-              class="input-style w-fit mt-3 cursor-pointer flex items-center"
-            >
-              <span>Dokument hinzufügen</span>
-            </label>
-            <input
-              id="documentFileInput"
-              ref="fileInput"
-              type="file"
-              capture
-              class="hidden"
-              @change="onFileChanged($event)"
-            />
-          </div>
-        </div>
       </div>
 
       <!-- Einstellungen für die Landing-->

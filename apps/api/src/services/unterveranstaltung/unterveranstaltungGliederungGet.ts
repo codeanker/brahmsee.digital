@@ -55,6 +55,14 @@ export const unterveranstaltungGliederungGetProcedure = defineProtectedQueryProc
             name: true,
             description: true,
             fileId: true,
+            file: {
+              select: {
+                id: true,
+                filename: true,
+                mimetype: true,
+                createdAt: true,
+              },
+            },
           },
         },
         landingSettings: {

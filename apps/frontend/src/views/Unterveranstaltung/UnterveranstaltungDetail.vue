@@ -16,10 +16,11 @@ import { computed, useTemplateRef } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { apiClient } from '@/api'
+import Abbr from '@/components/Abbr.vue'
 import CustomFieldsTable from '@/components/CustomFields/CustomFieldsTable.vue'
 import AnmeldungenTable from '@/components/data/AnmeldungenTable.vue'
-import DownloadLink from '@/components/DownloadLink.vue'
 import FilesExport from '@/components/FilesExport.vue'
+import FilesListAndUpload from '@/components/FilesListAndUpload.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
@@ -29,7 +30,6 @@ import { loggedInAccount } from '@/composables/useAuthentication'
 import { useRouteTitle } from '@/composables/useRouteTitle'
 import { formatDate } from '@codeanker/helpers'
 import FAQList from '../FAQs/FAQList.vue'
-import Abbr from '@/components/Abbr.vue'
 
 const route = useRoute()
 const { setTitle } = useRouteTitle()
@@ -208,37 +208,6 @@ const faqList = useTemplateRef('faqList')
             v-html="unterveranstaltung?.beschreibung"
           />
         </div>
-
-        <div class="mt-5 lg:mt-10 mb-5 text-lg font-semibold">Dokumente</div>
-        <table
-          v-if="unterveranstaltung?.documents"
-          class="min-w-full divide-y divide-gray-200 dark:divide-gray-800"
-        >
-          <tbody class="divide-y divide-gray-200 dark:divide-gray-800 bg-white dark:bg-dark-primary">
-            <tr
-              v-for="(document, index) in unterveranstaltung?.documents ?? []"
-              :key="'document-' + index"
-              class="even:bg-gray-50 dark:even:bg-gray-800"
-            >
-              <td class="whitespace-nowrap w-full py-5 pl-4 pr-3">
-                {{ document.name }}
-              </td>
-              <td class="pl-4 pr-3">
-                <DownloadLink :file-id="document.fileId" />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div
-          v-else
-          class="rounded-md bg-blue-50 dark:bg-blue-950 text-blue-500 p-4"
-        >
-          <div class="flex">
-            <div class="ml-3 flex-1 md:flex md:justify-between">
-              <p class="mb-0">Es sind keine Dokumente vorhanden, klicke auf bearbeiten um welche hinzuzufügen</p>
-            </div>
-          </div>
-        </div>
       </Tab>
       <Tab key="anmeldungen">
         <div class="my-10">
@@ -251,11 +220,22 @@ const faqList = useTemplateRef('faqList')
         />
       </Tab>
       <Tab key="dokumente">
-        <div class="my-10">
-          <div class="text-lg font-semibold">Dokumente</div>
-          <p class="max-w-2xl text-sm text-gray-500">Exports von Daten zu dieser Veranstaltung</p>
+        <div class="grid xl:grid-cols-3 gap-8">
+          <div class="col-span-2">
+            <FilesListAndUpload
+              v-if="unterveranstaltung"
+              :entity-id="unterveranstaltung?.id"
+              entity-type="unterveranstaltung"
+            />
+          </div>
+          <div class="col-span-2 xl:col-span-1">
+            <div class="my-10">
+              <div class="text-lg font-semibold">Generierte Dokumente</div>
+              <p class="max-w-2xl text-sm text-gray-500">Exports von Daten zu dieser Veranstaltung</p>
+            </div>
+            <FilesExport :files="files" />
+          </div>
         </div>
-        <FilesExport :files="files" />
       </Tab>
       <Tab key="bedingungen">
         <div class="my-10">

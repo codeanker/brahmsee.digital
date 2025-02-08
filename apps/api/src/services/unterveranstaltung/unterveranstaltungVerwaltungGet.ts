@@ -56,6 +56,17 @@ export const unterveranstaltungVerwaltungGetProcedure = defineProtectedQueryProc
             name: true,
             description: true,
             fileId: true,
+            file: {
+              select: {
+                id: true,
+                filename: true,
+                mimetype: true,
+                createdAt: true,
+              },
+            },
+          },
+          orderBy: {
+            id: 'asc',
           },
         },
         landingSettings: {
