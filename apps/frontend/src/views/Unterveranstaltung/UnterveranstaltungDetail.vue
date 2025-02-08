@@ -91,7 +91,6 @@ const tabs = computed(() => {
     { name: 'Ausschreibung', icon: MegaphoneIcon },
     { name: 'Anmeldungen', icon: UserGroupIcon, count: countAnmeldungen.value?.total },
     { name: 'Dokumente', icon: DocumentIcon },
-    { name: 'Bedingungen', icon: ClipboardDocumentListIcon },
     { name: 'Felder', icon: SquaresPlusIcon },
     { name: 'FAQ', icon: ChatBubbleLeftRightIcon },
   ]
@@ -199,7 +198,7 @@ const faqList = useTemplateRef('faqList')
         </div>
 
         <InfoList :infos="keyInfos" />
-
+        <hr class="my-10" />
         <div class="mt-5 lg:mt-10 mb-5 text-lg font-semibold">Beschreibung</div>
         <div class="px-3 py-5">
           <!-- eslint-disable vue/no-v-html -->
@@ -208,11 +207,49 @@ const faqList = useTemplateRef('faqList')
             v-html="unterveranstaltung?.beschreibung"
           />
         </div>
+        <hr class="my-10" />
+        <div class="my-10">
+          <div class="text-lg font-semibold">Bedingungen <Badge color="secondary"> Gliederung </Badge></div>
+          <p class="text-sm">Bitte beachte die folgenden Bedingungen</p>
+        </div>
+        <div
+          class="prose dark:prose-invert"
+          v-html="unterveranstaltung?.bedingungen"
+        />
+        <hr class="my-10" />
+        <div class="my-10">
+          <div class="text-lg font-semibold">Öffentliche Teilnahmebedingungen <Badge>Veranstaltung</Badge></div>
+          <p class="text-sm">
+            Bitte beachte die folgenden Teilnahmebedingungen, diese sind bei der Anmeldung öffentlich einsehbar.
+          </p>
+        </div>
+        <div
+          class="prose dark:prose-invert"
+          v-html="unterveranstaltung?.veranstaltung?.teilnahmeBedingungenPublic"
+        />
+        <hr class="my-10" />
+        <div class="my-10">
+          <div class="text-lg font-semibold">Interne Teilnahmebedingungen <Badge>Veranstaltung</Badge></div>
+          <p class="text-sm">Bitte beachte die folgenden Teilnahmebedingungen für die Gliederung</p>
+        </div>
+        <div
+          class="prose dark:prose-invert"
+          v-html="unterveranstaltung?.veranstaltung?.teilnahmeBedingungen"
+        />
+        <hr class="my-10" />
+        <div class="my-10">
+          <div class="text-lg font-semibold">Datenschutz <Badge>Veranstaltung</Badge></div>
+          <p class="text-sm">Bitte beachte die Hinweise zum Datenschutz</p>
+        </div>
+        <div
+          class="prose dark:prose-invert"
+          v-html="unterveranstaltung?.veranstaltung?.datenschutz"
+        />
       </Tab>
       <Tab key="anmeldungen">
         <div class="my-10">
           <div class="text-lg font-semibold">Anmeldungen</div>
-          <p class="max-w-2xl text-sm">Die folgenden Personen haben sich angemeldet</p>
+          <p class="text-sm text-gray-500">Die folgenden Personen haben sich angemeldet</p>
         </div>
         <AnmeldungenTable
           v-if="unterveranstaltung"
@@ -231,56 +268,17 @@ const faqList = useTemplateRef('faqList')
           <div class="col-span-2 xl:col-span-1">
             <div class="my-10">
               <div class="text-lg font-semibold">Generierte Dokumente</div>
-              <p class="max-w-2xl text-sm text-gray-500">Exports von Daten zu dieser Veranstaltung</p>
+              <p class="text-sm text-gray-500">Exports von Daten zu dieser Veranstaltung</p>
             </div>
             <FilesExport :files="files" />
           </div>
         </div>
       </Tab>
-      <Tab key="bedingungen">
-        <div class="my-10">
-          <div class="text-lg font-semibold">Bedingungen <Badge color="secondary"> Gliederung </Badge></div>
-          <p class="max-w-2xl text-sm">Bitte beachte die folgenden Bedingungen</p>
-        </div>
-        <div
-          class="prose dark:prose-invert"
-          v-html="unterveranstaltung?.bedingungen"
-        />
-        <hr class="my-10" />
-        <div class="my-10">
-          <div class="text-lg font-semibold">Öffentliche Teilnahmebedingungen <Badge>Veranstaltung</Badge></div>
-          <p class="max-w-2xl text-sm">
-            Bitte beachte die folgenden Teilnahmebedingungen, diese sind bei der Anmeldung öffentlich einsehbar.
-          </p>
-        </div>
-        <div
-          class="prose dark:prose-invert"
-          v-html="unterveranstaltung?.veranstaltung?.teilnahmeBedingungenPublic"
-        />
-        <hr class="my-10" />
-        <div class="my-10">
-          <div class="text-lg font-semibold">Interne Teilnahmebedingungen <Badge>Veranstaltung</Badge></div>
-          <p class="max-w-2xl text-sm">Bitte beachte die folgenden Teilnahmebedingungen für die Gliederung</p>
-        </div>
-        <div
-          class="prose dark:prose-invert"
-          v-html="unterveranstaltung?.veranstaltung?.teilnahmeBedingungen"
-        />
-        <hr class="my-10" />
-        <div class="my-10">
-          <div class="text-lg font-semibold">Datenschutz <Badge>Veranstaltung</Badge></div>
-          <p class="max-w-2xl text-sm">Bitte beachte die Hinweise zum Datenschutz</p>
-        </div>
-        <div
-          class="prose dark:prose-invert"
-          v-html="unterveranstaltung?.veranstaltung?.datenschutz"
-        />
-      </Tab>
       <Tab key="felder">
         <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
           <div>
             <div class="text-lg font-semibold">Benutzerdefinierte Felder</div>
-            <p class="max-w-2xl text-sm text-gray-500">
+            <p class="text-sm text-gray-500">
               Hier können benutzerdefinierte Felder erstellt werden, welche für alle Unterveranstaltungen gelten.
             </p>
           </div>
@@ -303,8 +301,8 @@ const faqList = useTemplateRef('faqList')
       <Tab key="marketing">
         <div class="my-10 flex items-center gap-x-4">
           <div>
-            <div class="text-lg font-semibold"><Abbr abbr="faq" /> <Badge color="secondary"> Gliederung </Badge></div>
-            <p class="max-w-2xl text-sm">
+            <div class="text-lg font-semibold"><Abbr abbr="faq" /></div>
+            <p class="text-sm text-sm text-gray-500">
               Verwalte hier häufig gestellte Fragen, damit die Teilnehmenden wissen, wie der Hase läuft.
             </p>
           </div>
@@ -327,7 +325,7 @@ const faqList = useTemplateRef('faqList')
       >
         <div class="my-10">
           <div class="text-lg font-semibold">Entwickler:innen</div>
-          <p class="max-w-2xl text-sm">Informationen zur Veranstaltung</p>
+          <p class="text-sm text-gray-500">Informationen zur Veranstaltung</p>
         </div>
 
         <pre>{{ unterveranstaltung }}</pre>

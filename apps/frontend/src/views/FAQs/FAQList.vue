@@ -46,7 +46,7 @@ defineExpose({
     :key="category"
     class="space-y-4"
   >
-    <p class="text-xl font-medium">{{ category }}</p>
+    <p class="text-gray-500 font-normal">{{ category }}</p>
     <div
       v-for="(faq, index) in list"
       :key="index"
