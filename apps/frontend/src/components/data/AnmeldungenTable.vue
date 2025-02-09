@@ -311,7 +311,7 @@ onMounted(() => {
       </div>
     </div>
   </div>
-  <div class="relative w-full h-[80vh]">
+  <div class="grid-rows[1fr, 50px] grid flex-grow">
     <DataGridVirtualList
       :grid="grid"
       :columns="columns"

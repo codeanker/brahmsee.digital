@@ -16,7 +16,7 @@ import { PlusIcon } from '@heroicons/vue/24/outline'
     </RouterLink>
   </div>
 
-  <div class="w-full h-[80vh]">
+  <div class="grid-rows[1fr, 50px] grid flex-grow">
     <PersonTable />
   </div>
 </template>

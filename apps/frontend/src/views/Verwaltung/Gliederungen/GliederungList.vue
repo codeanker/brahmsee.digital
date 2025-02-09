@@ -68,7 +68,7 @@ async function fetchCount(filter: TFilter): Promise<number> {
       </RouterLink>
     </div>
     <div class="flow-root">
-      <div class="w-full h-[80vh]">
+      <div class="grid-rows[1fr, 50px] grid flex-grow">
         <GenericDataGrid
           :columns="columns"
           :fetch-page="fetchPage"

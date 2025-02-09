@@ -92,7 +92,7 @@ async function fetchCount(filter: TUnterveranstaltungFilter): Promise<number> {
 </script>
 
 <template>
-  <div class="w-full h-[80vh]">
+  <div class="grid-rows[1fr, 50px] grid flex-grow">
     <GenericDataGrid
       :columns="columns"
       :fetch-page="fetchPage"

@@ -108,7 +108,7 @@ async function fetchCount(filter: TFilter): Promise<number> {
     In der Verwaltung werden Aktivitäten aufgezeichnet, z.B. wenn Accounts erstellt oder gelöscht werden.
   </p>
   <div class="flow-root">
-    <div class="w-full h-[80vh]">
+    <div class="grid-rows[1fr, 50px] grid flex-grow">
       <GenericDataGrid
         :columns="columns"
         :fetch-page="fetchPage"
