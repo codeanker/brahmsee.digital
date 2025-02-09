@@ -66,6 +66,8 @@ export const unterveranstaltungVerwaltungPatchProcedure = defineProtectedMutateP
           faqEmail: options.input.landingSettings.faqEmail,
           heroImages: heroImages,
           miscellaneousItems: miscellaneousItems,
+          facebookUrl: options.input.landingSettings.facebookUrl,
+          instagramUrl: options.input.landingSettings.instagramUrl,
         },
         where: {
           unterveranstaltungId: options.input.id,
