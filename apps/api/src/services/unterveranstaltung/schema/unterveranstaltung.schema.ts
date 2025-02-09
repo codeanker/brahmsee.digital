@@ -36,7 +36,6 @@ export const unterveranstaltungLandingSchema = z.strictObject({
   addMiscellaneousItems: z
     .array(
       z.strictObject({
-        id: z.number().int(),
         title: z.string(),
         content: z.string(),
       })

@@ -109,34 +109,24 @@ const unterveranstaltung = injectUnterveranstaltung()
           </div>
           <div class="pt-16 lg:row-span-2 lg:-mr-16 xl:mr-auto">
             <div class="-mx-8 grid grid-cols-2 gap-4 sm:-mx-16 sm:grid-cols-4 lg:mx-0 lg:grid-cols-2 lg:gap-4 xl:gap-8">
-              <div class="aspect-square overflow-hidden rounded-xl shadow-xl">
-                <img
-                  alt=""
-                  src="https://jugendherberge-brahmsee.de/wp-content/uploads/2024/03/Jugendherberge-Brahmsee-Angebote-Keyvisual.jpg"
-                  class="block size-full object-cover"
-                />
-              </div>
-              <div class="-mt-8 aspect-square overflow-hidden rounded-xl shadow-xl lg:-mt-40">
-                <img
-                  alt=""
-                  src="https://jugendherberge-brahmsee.de/wp-content/uploads/2024/04/jh_angebote_tagung_slider_05.jpg"
-                  class="block size-full object-cover"
-                />
-              </div>
-              <div class="aspect-square overflow-hidden rounded-xl shadow-xl">
-                <img
-                  alt=""
-                  src="https://jugendherberge-brahmsee.de/wp-content/uploads/2024/04/jh_angebote_wochenende_slider_01.jpg"
-                  class="block size-full object-cover"
-                />
-              </div>
-              <div class="-mt-8 aspect-square overflow-hidden rounded-xl shadow-xl lg:-mt-40">
-                <img
-                  alt=""
-                  src="https://jugendherberge-brahmsee.de/wp-content/uploads/2024/04/jh_angebote_wochenende_slider_04.jpg"
-                  class="block size-full object-cover"
-                />
-              </div>
+              <template
+                v-for="(image, index) in unterveranstaltung?.heroImages"
+                :key="image.id"
+              >
+                <div
+                  :class="
+                    index % 2 === 0
+                      ? 'aspect-square overflow-hidden rounded-xl shadow-xl'
+                      : '-mt-8 aspect-square overflow-hidden rounded-xl shadow-xl lg:-mt-40'
+                  "
+                >
+                  <img
+                    :key="image.id"
+                    :src="image.url"
+                    class="block size-full object-cover"
+                  />
+                </div>
+              </template>
             </div>
           </div>
         </div>

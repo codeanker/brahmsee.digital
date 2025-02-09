@@ -6,15 +6,13 @@ import prisma from '../../prisma.js'
 import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
 import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
 import { unterveranstaltungCreateSchema, unterveranstaltungLandingSchema } from './schema/unterveranstaltung.schema.js'
-import { crudFiles } from './schema/crudFiles.js'
-import { crudMiscellaneousItems } from './schema/crudMiscellaneousItems.js'
 
 export const unterveranstaltungGliederungCreateProcedure = defineProtectedMutateProcedure({
   key: 'gliederungCreate',
   roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
   inputSchema: z.strictObject({
     data: unterveranstaltungCreateSchema,
-    landingSettings: unterveranstaltungLandingSchema,
+    landingSettings: unterveranstaltungLandingSchema.optional(),
   }),
   async handler({ ctx, input }) {
     // check logged in user is admin of gliederung
@@ -43,18 +41,6 @@ export const unterveranstaltungGliederungCreateProcedure = defineProtectedMutate
       })
     }
 
-    const heroImages = crudFiles(
-      input.landingSettings.addHeroImages,
-      input.landingSettings.updateHeroImages,
-      input.landingSettings.deleteHeroImageIds
-    )
-
-    const miscellaneousItems = crudMiscellaneousItems(
-      input.landingSettings.addMiscellaneousItems,
-      input.landingSettings.updateMiscellaneousItems,
-      input.landingSettings.deleteMiscellaneousItemIds
-    )
-
     return await prisma.unterveranstaltung.create({
       data: {
         veranstaltung: {
@@ -72,13 +58,6 @@ export const unterveranstaltungGliederungCreateProcedure = defineProtectedMutate
         gliederung: {
           connect: {
             id: gliederung.id,
-          },
-        },
-        landingSettings: {
-          create: {
-            ...input.landingSettings,
-            heroImages: heroImages,
-            miscellaneousItems: miscellaneousItems,
           },
         },
       },

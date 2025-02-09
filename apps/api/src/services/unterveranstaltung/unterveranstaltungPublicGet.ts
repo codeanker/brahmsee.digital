@@ -3,6 +3,7 @@ import z from 'zod'
 import prisma from '../../prisma.js'
 import { definePublicQueryProcedure } from '../../types/defineProcedure.js'
 import { listFaqs } from '../faqs/faqListProcedure.js'
+import { getFileUrl } from '../file/helpers/getFileUrl.js'
 
 export const unterveranstaltungPublicGetProcedure = definePublicQueryProcedure({
   key: 'publicGet',
@@ -53,6 +54,14 @@ export const unterveranstaltungPublicGetProcedure = definePublicQueryProcedure({
               select: {
                 fileId: true,
                 name: true,
+                file: {
+                  select: {
+                    id: true,
+                    provider: true,
+                    uploaded: true,
+                    key: true,
+                  },
+                },
               },
             },
             eventDetailsTitle: true,
@@ -94,10 +103,20 @@ export const unterveranstaltungPublicGetProcedure = definePublicQueryProcedure({
       },
     })
 
+    const heroImages = await Promise.all(
+      unterveranstaltung.landingSettings?.heroImages.map(async (image) => {
+        return {
+          ...image.file,
+          url: await getFileUrl(image.file),
+        }
+      }) ?? []
+    )
+
     const faqs = await listFaqs(input.id)
 
     return {
       ...unterveranstaltung,
+      heroImages,
       faqs,
     }
   },

@@ -15,7 +15,6 @@ import router from '@/router'
 import type { RouterInput } from '@codeanker/api'
 import { UnterveranstaltungTypeMapping, getEnumOptions } from '@codeanker/api'
 import { ValidateForm } from '@codeanker/validation'
-import UnterveranstaltungLandingSettings, { type ILandingSettings } from './UnterveranstaltungLandingSettings.vue'
 
 const props = defineProps<{
   unterveranstaltung?: any
@@ -37,22 +36,6 @@ const unterveranstaltungCopy = ref({
   veranstaltungId: props.unterveranstaltung?.veranstaltung?.id,
   gliederungId: props.unterveranstaltung?.gliederung?.id,
   type: props.unterveranstaltung?.type,
-})
-
-const landingSettings = ref<ILandingSettings>({
-  heroTitle: props.unterveranstaltung?.landingSettings?.heroTitle ?? '',
-  heroSubtitle: props.unterveranstaltung?.landingSettings?.heroSubtitle ?? '',
-  eventDetailsTitle: props.unterveranstaltung?.landingSettings?.eventDetailsTitle ?? '',
-  eventDetailsContent: props.unterveranstaltung?.landingSettings?.eventDetailsContent ?? '',
-  miscellaneousVisible: props.unterveranstaltung?.landingSettings?.miscellaneousVisible ?? false,
-  miscellaneousTitle: props.unterveranstaltung?.landingSettings?.miscellaneousTitle ?? '',
-  miscellaneousSubtitle: props.unterveranstaltung?.landingSettings?.miscellaneousSubtitle ?? '',
-  faqVisible: props.unterveranstaltung?.landingSettings?.faqVisible ?? false,
-  faqEmail: props.unterveranstaltung?.landingSettings?.faqEmail ?? '',
-  instagramVisible: props.unterveranstaltung?.landingSettings?.instagramVisible ?? false,
-  instagramUrl: props.unterveranstaltung?.landingSettings?.instagramUrl ?? '',
-  facebookVisible: props.unterveranstaltung?.landingSettings?.facebookVisible ?? false,
-  facebookUrl: props.unterveranstaltung?.landingSettings?.facebookUrl ?? '',
 })
 
 // Wird benötig damit man direkt von einer Veranstaltung eine Unterveranstaltung anlegen kann ohne diese extra auswählen zu müssen
@@ -94,16 +77,12 @@ const {
       unterveranstaltungCopy.value.gliederungId = gliederung.value.id
       await apiClient.unterveranstaltung.verwaltungCreate.mutate({
         data: unterveranstaltungCopy.value as unknown as RouterInput['unterveranstaltung']['verwaltungCreate']['data'],
-        landingSettings:
-          landingSettings.value as unknown as RouterInput['unterveranstaltung']['verwaltungCreate']['landingSettings'],
       })
     } else {
       delete unterveranstaltungCopy.value.gliederungId
       delete unterveranstaltungCopy.value.type
       await apiClient.unterveranstaltung.gliederungCreate.mutate({
         data: unterveranstaltungCopy.value as unknown as RouterInput['unterveranstaltung']['gliederungCreate']['data'],
-        landingSettings:
-          landingSettings.value as unknown as RouterInput['unterveranstaltung']['gliederungCreate']['landingSettings'],
       })
     }
     router.back()
@@ -130,7 +109,6 @@ const {
         data: {
           ...unterveranstaltungCopy.value,
         } as RouterInput['unterveranstaltung']['verwaltungPatch']['data'],
-        landingSettings: landingSettings.value,
       })
     } else {
       delete unterveranstaltungCopy.value.gliederungId
@@ -144,7 +122,6 @@ const {
         data: {
           ...unterveranstaltungCopy.value,
         } as RouterInput['unterveranstaltung']['gliederungPatch']['data'],
-        landingSettings: landingSettings.value,
       })
     }
 
@@ -205,7 +182,7 @@ const disableddates = computed(() => {
     <div class="grid grid-cols-1 lg:grid-cols-6 gap-6">
       <div class="lg:col-span-full">
         <div class="text-lg font-semibold">Ausschreibung</div>
-        <p class="max-w-2xl text-sm">Bearbeite hier die Stammdaten der Ausschreibung</p>
+        <p class="max-w-2xl text-gray-500 text-sm">Bearbeite hier die Stammdaten der Ausschreibung</p>
       </div>
       <div
         v-if="mode === 'create'"
@@ -304,12 +281,12 @@ const disableddates = computed(() => {
           label="Bedingungen"
         />
       </div>
-
-      <!-- Einstellungen für die Landing-->
-      <UnterveranstaltungLandingSettings
-        v-model="landingSettings"
-        class="col-span-full"
-      />
+    </div>
+    <div
+      v-if="errorCreate || errorUpdate"
+      class="bg-danger-400 mb-2 mt-5 rounded p-3 text-center text-white"
+    >
+      {{ errorCreate }} {{ errorUpdate }}
     </div>
     <div class="mt-8 flex gap-4">
       <Button
@@ -319,13 +296,6 @@ const disableddates = computed(() => {
         <span v-if="!isLoadingCreate && !isLoadingUpdate">Speichern</span>
         <span v-else>Loading...</span>
       </Button>
-    </div>
-
-    <div
-      v-if="errorCreate || errorUpdate"
-      class="bg-danger-400 mb-2 mt-5 rounded p-3 text-center text-white"
-    >
-      {{ errorCreate }} {{ errorUpdate }}
     </div>
   </ValidateForm>
 </template>

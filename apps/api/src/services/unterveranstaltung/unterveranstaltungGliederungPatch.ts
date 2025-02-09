@@ -58,6 +58,15 @@ export const unterveranstaltungGliederungPatchProcedure = defineProtectedMutateP
     if (options.input.landingSettings) {
       await prisma.unterveranstaltungLandingSettings.update({
         data: {
+          heroTitle: options.input.landingSettings.heroTitle,
+          heroSubtitle: options.input.landingSettings.heroSubtitle,
+          eventDetailsTitle: options.input.landingSettings.eventDetailsTitle,
+          eventDetailsContent: options.input.landingSettings.eventDetailsContent,
+          miscellaneousVisible: options.input.landingSettings.miscellaneousVisible,
+          miscellaneousTitle: options.input.landingSettings.miscellaneousTitle,
+          miscellaneousSubtitle: options.input.landingSettings.miscellaneousSubtitle,
+          faqVisible: options.input.landingSettings.faqVisible,
+          faqEmail: options.input.landingSettings.faqEmail,
           heroImages: heroImages,
           miscellaneousItems: miscellaneousItems,
         },

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import {
   ChatBubbleLeftRightIcon,
-  ClipboardDocumentListIcon,
   CodeBracketIcon,
   DocumentDuplicateIcon,
   DocumentIcon,
+  HandRaisedIcon,
   MegaphoneIcon,
   RocketLaunchIcon,
   SquaresPlusIcon,
@@ -21,6 +21,7 @@ import CustomFieldsTable from '@/components/CustomFields/CustomFieldsTable.vue'
 import AnmeldungenTable from '@/components/data/AnmeldungenTable.vue'
 import FilesExport from '@/components/FilesExport.vue'
 import FilesListAndUpload from '@/components/FilesListAndUpload.vue'
+import FormUnterveranstaltungLandingSettings from '@/components/forms/unterveranstaltung/FormUnterveranstaltungLandingSettings.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
@@ -89,6 +90,7 @@ const keyInfos = computed<KeyInfo[]>(() => {
 const tabs = computed(() => {
   const tabs = [
     { name: 'Ausschreibung', icon: MegaphoneIcon },
+    { name: 'Marketing', icon: HandRaisedIcon },
     { name: 'Anmeldungen', icon: UserGroupIcon, count: countAnmeldungen.value?.total },
     { name: 'Dokumente', icon: DocumentIcon },
     { name: 'Felder', icon: SquaresPlusIcon },
@@ -162,6 +164,72 @@ const faqList = useTemplateRef('faqList')
       :tabs="tabs"
     >
       <Tab key="allgemeines">
+        <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
+          <div class="text-lg font-semibold">Veranstaltungsdaten</div>
+          <RouterLink
+            class="text-primary-500"
+            :to="{ name: 'UnterveranstaltungEdit' }"
+          >
+            Ausschreibung bearbeiten
+          </RouterLink>
+        </div>
+
+        <InfoList :infos="keyInfos" />
+        <hr class="my-10" />
+        <div class="mt-5 lg:mt-10 mb-5 text-lg font-semibold">Beschreibung</div>
+        <div class="px-3 py-5">
+          <!-- eslint-disable vue/no-v-html -->
+          <div
+            class="prose dark:prose-invert"
+            v-html="unterveranstaltung?.beschreibung"
+          />
+        </div>
+        <hr class="my-10" />
+        <div class="my-10">
+          <div class="text-lg font-semibold">Bedingungen <Badge color="secondary"> Gliederung </Badge></div>
+          <p class="text-sm text-gray-500">Bitte beachte die folgenden Bedingungen</p>
+        </div>
+        <div
+          class="prose dark:prose-invert"
+          v-html="unterveranstaltung?.bedingungen"
+        />
+        <hr class="my-10" />
+        <div class="my-10">
+          <div class="text-lg font-semibold">Öffentliche Teilnahmebedingungen <Badge>Veranstaltung</Badge></div>
+          <p class="text-sm text-gray-500">
+            Bitte beachte die folgenden Teilnahmebedingungen, diese sind bei der Anmeldung öffentlich einsehbar.
+          </p>
+        </div>
+        <div
+          class="prose dark:prose-invert"
+          v-html="unterveranstaltung?.veranstaltung?.teilnahmeBedingungenPublic"
+        />
+        <hr class="my-10" />
+        <div class="my-10">
+          <div class="text-lg font-semibold">Interne Teilnahmebedingungen <Badge>Veranstaltung</Badge></div>
+          <p class="text-sm text-gray-500">Bitte beachte die folgenden Teilnahmebedingungen für die Gliederung</p>
+        </div>
+        <div
+          class="prose dark:prose-invert"
+          v-html="unterveranstaltung?.veranstaltung?.teilnahmeBedingungen"
+        />
+        <hr class="my-10" />
+        <div class="my-10">
+          <div class="text-lg font-semibold">Datenschutz <Badge>Veranstaltung</Badge></div>
+          <p class="text-sm text-gray-500">Bitte beachte die Hinweise zum Datenschutz</p>
+        </div>
+        <div
+          class="prose dark:prose-invert"
+          v-html="unterveranstaltung?.veranstaltung?.datenschutz"
+        />
+      </Tab>
+      <Tab key="marketing">
+        <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
+          <div>
+            <div class="text-lg font-semibold">Marketing</div>
+            <p class="text-sm text-gray-500">Bearbeite hier deine öffentliche Seite für die Anmeldung.</p>
+          </div>
+        </div>
         <div class="p-6 bg-primary-100 dark:bg-primary-900 rounded-md my-8 flex items-top space-x-4">
           <div><RocketLaunchIcon class="h-10 w-10 text-primary-500" /></div>
           <div>
@@ -186,64 +254,10 @@ const faqList = useTemplateRef('faqList')
             </div>
           </div>
         </div>
-
-        <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
-          <div class="text-lg font-semibold">Veranstaltungsdaten</div>
-          <RouterLink
-            class="text-primary-500"
-            :to="{ name: 'UnterveranstaltungEdit' }"
-          >
-            Ausschreibung bearbeiten
-          </RouterLink>
-        </div>
-
-        <InfoList :infos="keyInfos" />
-        <hr class="my-10" />
-        <div class="mt-5 lg:mt-10 mb-5 text-lg font-semibold">Beschreibung</div>
-        <div class="px-3 py-5">
-          <!-- eslint-disable vue/no-v-html -->
-          <div
-            class="prose dark:prose-invert"
-            v-html="unterveranstaltung?.beschreibung"
-          />
-        </div>
-        <hr class="my-10" />
-        <div class="my-10">
-          <div class="text-lg font-semibold">Bedingungen <Badge color="secondary"> Gliederung </Badge></div>
-          <p class="text-sm">Bitte beachte die folgenden Bedingungen</p>
-        </div>
-        <div
-          class="prose dark:prose-invert"
-          v-html="unterveranstaltung?.bedingungen"
-        />
-        <hr class="my-10" />
-        <div class="my-10">
-          <div class="text-lg font-semibold">Öffentliche Teilnahmebedingungen <Badge>Veranstaltung</Badge></div>
-          <p class="text-sm">
-            Bitte beachte die folgenden Teilnahmebedingungen, diese sind bei der Anmeldung öffentlich einsehbar.
-          </p>
-        </div>
-        <div
-          class="prose dark:prose-invert"
-          v-html="unterveranstaltung?.veranstaltung?.teilnahmeBedingungenPublic"
-        />
-        <hr class="my-10" />
-        <div class="my-10">
-          <div class="text-lg font-semibold">Interne Teilnahmebedingungen <Badge>Veranstaltung</Badge></div>
-          <p class="text-sm">Bitte beachte die folgenden Teilnahmebedingungen für die Gliederung</p>
-        </div>
-        <div
-          class="prose dark:prose-invert"
-          v-html="unterveranstaltung?.veranstaltung?.teilnahmeBedingungen"
-        />
-        <hr class="my-10" />
-        <div class="my-10">
-          <div class="text-lg font-semibold">Datenschutz <Badge>Veranstaltung</Badge></div>
-          <p class="text-sm">Bitte beachte die Hinweise zum Datenschutz</p>
-        </div>
-        <div
-          class="prose dark:prose-invert"
-          v-html="unterveranstaltung?.veranstaltung?.datenschutz"
+        <FormUnterveranstaltungLandingSettings
+          v-if="unterveranstaltung"
+          :unterveranstaltung-id="unterveranstaltung.id"
+          :unterveranstaltung="unterveranstaltung"
         />
       </Tab>
       <Tab key="anmeldungen">
@@ -298,7 +312,7 @@ const faqList = useTemplateRef('faqList')
           entity="unterveranstaltung"
         />
       </Tab>
-      <Tab key="marketing">
+      <Tab key="faq">
         <div class="my-10 flex items-center gap-x-4">
           <div>
             <div class="text-lg font-semibold"><Abbr abbr="faq" /></div>

@@ -46,7 +46,6 @@ async function upload(toUploadFile: File) {
         photoId: res.id,
       },
     })
-    console.log('ressss', res.id)
     emit('uploaded', res.id)
     close()
   } catch (error) {

@@ -73,6 +73,7 @@ export const unterveranstaltungGliederungGetProcedure = defineProtectedQueryProc
             faqVisible: true,
             heroImages: {
               select: {
+                id: true,
                 name: true,
                 file: true,
               },
@@ -81,6 +82,7 @@ export const unterveranstaltungGliederungGetProcedure = defineProtectedQueryProc
             heroTitle: true,
             miscellaneousItems: {
               select: {
+                id: true,
                 title: true,
                 content: true,
               },

@@ -4,8 +4,6 @@ import z from 'zod'
 import prisma from '../../prisma.js'
 import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
 import { unterveranstaltungCreateSchema, unterveranstaltungLandingSchema } from './schema/unterveranstaltung.schema.js'
-import { crudMiscellaneousItems } from './schema/crudMiscellaneousItems.js'
-import { crudFiles } from './schema/crudFiles.js'
 
 const unterveranstaltungVerwaltungCreateSchema = unterveranstaltungCreateSchema.extend({
   gliederungId: z.number().int(),
@@ -17,21 +15,9 @@ export const unterveranstaltungVerwaltungCreateProcedure = defineProtectedMutate
   roleIds: [Role.ADMIN],
   inputSchema: z.strictObject({
     data: unterveranstaltungVerwaltungCreateSchema,
-    landingSettings: unterveranstaltungLandingSchema,
+    landingSettings: unterveranstaltungLandingSchema.optional(),
   }),
   async handler({ input }) {
-    const heroImages = crudFiles(
-      input.landingSettings?.addHeroImages,
-      input.landingSettings?.updateHeroImages,
-      input.landingSettings?.deleteHeroImageIds
-    )
-
-    const miscellaneousItems = crudMiscellaneousItems(
-      input.landingSettings?.addMiscellaneousItems,
-      input.landingSettings?.updateMiscellaneousItems,
-      input.landingSettings?.deleteMiscellaneousItemIds
-    )
-
     const unterveranstaltung = await prisma.unterveranstaltung.create({
       data: {
         veranstaltung: {
@@ -49,19 +35,6 @@ export const unterveranstaltungVerwaltungCreateProcedure = defineProtectedMutate
         gliederung: {
           connect: {
             id: input.data.gliederungId,
-          },
-        },
-        landingSettings: {
-          create: {
-            heroTitle: input.landingSettings.heroTitle,
-            heroSubtitle: input.landingSettings.heroSubtitle,
-            heroImages: heroImages,
-            eventDetailsTitle: input.landingSettings.eventDetailsTitle,
-            eventDetailsContent: input.landingSettings.eventDetailsContent,
-            miscellaneousVisible: input.landingSettings.miscellaneousVisible,
-            miscellaneousTitle: input.landingSettings.miscellaneousTitle,
-            miscellaneousSubtitle: input.landingSettings.miscellaneousSubtitle,
-            miscellaneousItems: miscellaneousItems,
           },
         },
       },

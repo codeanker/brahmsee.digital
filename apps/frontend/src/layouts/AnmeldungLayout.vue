@@ -15,10 +15,11 @@ const unterveranstaltungId = computed(() => {
   return parseInt(route.params.unterveranstaltungId as string)
 })
 
-const { state: unterveranstaltung } = useAsyncState(
-  () => apiClient.unterveranstaltung.publicGet.query({ id: unterveranstaltungId.value }),
-  undefined
-)
+const { state: unterveranstaltung } = useAsyncState(async () => {
+  return apiClient.unterveranstaltung.publicGet.query({
+    id: unterveranstaltungId.value,
+  })
+}, null)
 
 provide('unterveranstaltung', unterveranstaltung)
 </script>
