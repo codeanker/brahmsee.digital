@@ -2,9 +2,11 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: 'brahmsee.digital',
-  description: 'Documentation for brahmsee.digital',
+  title: 'brahmsee.digital Dokumentation',
+  head: [['link', { rel: 'icon', href: '/favicon.ico' }]],
+
   srcDir: './src',
+
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [

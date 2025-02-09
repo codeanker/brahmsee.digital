@@ -247,12 +247,11 @@ importers:
   apps/docs:
     dependencies:
       vitepress:
-        specifier: ^1.0.0-rc.31
+        specifier: ^1.6.3
         version: 1.6.3(@algolia/client-search@5.20.1)(@types/node@22.10.2)(axios@1.7.9)(postcss@8.5.1)(sass@1.83.0)(search-insights@2.17.3)(sortablejs@1.14.0)(typescript@5.7.2)
-    optionalDependencies:
-      '@rollup/rollup-linux-arm64-gnu':
-        specifier: ^4.8.0
-        version: 4.34.4
+      vue:
+        specifier: ^3.5.13
+        version: 3.5.13(typescript@5.7.2)
 
   apps/frontend:
     dependencies:

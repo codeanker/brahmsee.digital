@@ -1,13 +1,11 @@
 {
   "scripts": {
-    "docs:dev": "vitepress dev",
-    "docs:build": "vitepress build",
-    "docs:preview": "vitepress preview"
+    "dev": "vitepress dev --host",
+    "build": "vitepress build",
+    "preview": "vitepress preview"
   },
   "dependencies": {
-    "vitepress": "^1.0.0-rc.31"
-  },
-  "optionalDependencies": {
-    "@rollup/rollup-linux-arm64-gnu": "^4.8.0"
+    "vitepress": "^1.6.3",
+    "vue": "^3.5.13"
   }
 }
