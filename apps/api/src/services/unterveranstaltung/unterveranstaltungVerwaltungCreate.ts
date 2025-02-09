@@ -3,7 +3,7 @@ import z from 'zod'
 
 import prisma from '../../prisma.js'
 import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
-import { unterveranstaltungCreateSchema, unterveranstaltungLandingSchema } from './schema/unterveranstaltung.schema.js'
+import { unterveranstaltungCreateSchema } from './schema/unterveranstaltung.schema.js'
 
 const unterveranstaltungVerwaltungCreateSchema = unterveranstaltungCreateSchema.extend({
   gliederungId: z.number().int(),
@@ -15,7 +15,6 @@ export const unterveranstaltungVerwaltungCreateProcedure = defineProtectedMutate
   roleIds: [Role.ADMIN],
   inputSchema: z.strictObject({
     data: unterveranstaltungVerwaltungCreateSchema,
-    landingSettings: unterveranstaltungLandingSchema.optional(),
   }),
   async handler({ input }) {
     const unterveranstaltung = await prisma.unterveranstaltung.create({

@@ -5,14 +5,13 @@ import z from 'zod'
 import prisma from '../../prisma.js'
 import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
 import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
-import { unterveranstaltungCreateSchema, unterveranstaltungLandingSchema } from './schema/unterveranstaltung.schema.js'
+import { unterveranstaltungCreateSchema } from './schema/unterveranstaltung.schema.js'
 
 export const unterveranstaltungGliederungCreateProcedure = defineProtectedMutateProcedure({
   key: 'gliederungCreate',
   roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
   inputSchema: z.strictObject({
     data: unterveranstaltungCreateSchema,
-    landingSettings: unterveranstaltungLandingSchema.optional(),
   }),
   async handler({ ctx, input }) {
     // check logged in user is admin of gliederung
