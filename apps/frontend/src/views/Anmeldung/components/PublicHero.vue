@@ -100,11 +100,21 @@ const unterveranstaltung = injectUnterveranstaltung()
             </p>
             <div class="mt-10 flex items-center gap-x-6">
               <RouterLink
+                v-if="
+                  unterveranstaltung?.meldeschluss > new Date() &&
+                  unterveranstaltung?.maxTeilnehmende - unterveranstaltung?._count.Anmeldung > 0
+                "
                 class="rounded-md bg-primary-600 px-3.5 py-2.5 text font-semibold text-white shadow-sm hover:bg-primary-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 :to="{ name: 'Public Anmeldung' }"
               >
                 Anmelden <span aria-hidden="true">&rarr;</span>
               </RouterLink>
+              <span
+                v-else
+                class="rounded-md bg-gray-200 px-3.5 py-2.5 text text-gray-800 shadow-sm"
+              >
+                Meldeschluss erreicht
+              </span>
             </div>
           </div>
           <div class="pt-16 lg:row-span-2 lg:-mr-16 xl:mr-auto">
