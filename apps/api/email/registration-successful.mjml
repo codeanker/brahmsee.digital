@@ -37,6 +37,32 @@
   font-size="16px"
   line-height="1.5"
 >
+  <p>Dazu befolgt du einfach die folgenden Schritte:</p>
+
+  <ol>
+    <li>
+      Du erstellst dir einen Account auf
+      <a
+        href="https://{{ hostname }}/registrierung"
+        rel="noreferrer"
+        >{{ hostname }}</a
+      >
+    </li>
+    <li>
+      Du gibst den unten genannten <b>Zuordnungscode</b> auf der folgenden Seite ein:
+      <a
+        href="https://{{ hostname }}/my/anmeldung-zuordnen"
+        rel="noreferrer"
+        >Anmeldung per Code zuordnen</a
+      >
+    </li>
+  </ol>
+</mj-text>
+
+<mj-text
+  font-size="16px"
+  line-height="1.5"
+>
   Dein Code lautet: <u>{{ assignmentCode }}</u>
 </mj-text>
 {{/if}} {{/layout}}

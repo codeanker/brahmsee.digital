@@ -10,6 +10,7 @@ model Anmeldung {
   createdAt      DateTime        @default(now())
   status         AnmeldungStatus @default(OFFEN)
   comment        String?
+  accessToken    String?         @db.Uuid
   assignmentCode String?         @db.Uuid
 
   unterveranstaltungId Int
