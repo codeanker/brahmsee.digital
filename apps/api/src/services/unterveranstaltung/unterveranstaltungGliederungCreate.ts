@@ -59,6 +59,16 @@ export const unterveranstaltungGliederungCreateProcedure = defineProtectedMutate
             id: gliederung.id,
           },
         },
+        landingSettings: {
+          create: {
+            heroTitle: 'Es ist die Veranstaltung des Jahres',
+            heroSubtitle: 'Pflege hier einen kurzen beschreibenden Untertitel ein.',
+            eventDetailsTitle: 'Alle Details auf einen Blick',
+            eventDetailsContent: 'Hier kannst du alle wichtigen Informationen zur Veranstaltung einsehen.',
+            miscellaneousVisible: false,
+            faqVisible: false,
+          },
+        },
       },
       select: {
         id: true,
