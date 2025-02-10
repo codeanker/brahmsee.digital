@@ -3,7 +3,22 @@
   "version": "1.0.0",
   "main": "index.ts",
   "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "tsc": "tsc --noCheck",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
+  },
   "dependencies": {
-    "dayjs": "^1.11.10"
+    "dayjs": "^1.11.13"
+  },
+  "devDependencies": {
+    "@codeanker/typescript-config": "workspace:*",
+    "@codeanker/eslint-config": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "eslint": "catalog:"
   }
 }

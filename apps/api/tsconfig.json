@@ -1,0 +1,8 @@
+{
+  "extends": "@codeanker/typescript-config/tsconfig-node-tsc",
+  "compilerOptions": {
+    "lib": ["ES2022"],
+    "outDir": "./dist"
+  },
+  "include": ["src", "prisma", "eslint.config.js"]
+}

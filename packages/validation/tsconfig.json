@@ -1,12 +1,8 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "@codeanker/typescript-config/tsconfig-node-tsc",
   "compilerOptions": {
-    "lib": [
-      "ES2022",
-      "DOM"
-    ]
+    "lib": ["ES2022"],
+    "outDir": "./dist"
   },
-  "include": [
-    "src"
-  ],
+  "include": ["src", "eslint.config.js"]
 }

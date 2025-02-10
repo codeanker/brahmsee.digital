@@ -1,0 +1,17 @@
+{{#> layout }}
+
+<mj-text
+  font-size="16px"
+  line-height="1.5"
+>
+  Deine Anmeldung zur Veranstaltung {{ veranstaltung }} <b>wurde abgelehnt</b>.
+</mj-text>
+
+<mj-text
+  font-size="16px"
+  line-height="1.5"
+>
+  Bei Fragen wende dich bitte an deine Gliederung unter der nachfolgenden E-Mail Adresse:
+</mj-text>
+
+{{/layout}}

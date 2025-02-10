@@ -1,0 +1,42 @@
+{{#> layout }}
+
+<mj-text
+  font-size="16px"
+  line-height="1.5"
+>
+  Vielen Dank für deine Anmeldung zur Veranstaltung {{ veranstaltung }}.
+</mj-text>
+
+<mj-text
+  font-size="16px"
+  line-height="1.5"
+>
+  <b>Wichtig</b>: Deine Anmeldung ist noch nicht bestätigt. Sobald sich der Status ändert, erhältst Du eine weitere
+  E-Mail.
+</mj-text>
+
+{{#if assignmentCode}}
+<mj-text
+  font-size="16px"
+  line-height="1.5"
+>
+  <b>Noch ein wichtiger Hinweis</b>: Die Anmeldung wurde keinem Account zugeordnet, da du nicht angemeldet warst, als
+  die Daten abgeschickt worden sind.
+</mj-text>
+
+<mj-text
+  font-size="16px"
+  line-height="1.5"
+>
+  Das macht aber nichts, denn wir haben einen sog. <b>Zuordnungscode</b> für dich erstellt. Solltest du dich in Zukunft
+  dazu entscheiden, einen Account bei <b>{{ hostname }}</b> zu erstellen, kannst du den Code nutzen, um die Anmeldung
+  deinem Account zuzuordnen.
+</mj-text>
+
+<mj-text
+  font-size="16px"
+  line-height="1.5"
+>
+  Dein Code lautet: <u>{{ assignmentCode }}</u>
+</mj-text>
+{{/if}} {{/layout}}

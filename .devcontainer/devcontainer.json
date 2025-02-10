@@ -1,52 +1,55 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/docker-outside-of-docker
 {
-	"name": "brahmsee-digital",
-	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	// "image": "mcr.microsoft.com/devcontainers/base:bullseye",
-
-	"dockerComposeFile": ["../docker-compose-services.yml", "./docker-compose.yml"],
-	"service": "app",
-	"features": {
-		"ghcr.io/devcontainers/features/github-cli:1": {},
-    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
-	},
-	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-	// "workspaceMount": "source=${localWorkspaceFolder},target=${localWorkspaceFolder},type=bind",
-	// Use this environment variable if you need to bind mount your local source code into a new container.
-	"remoteEnv": {
-		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
-	},
-	"forwardPorts": [3030, 8080, 7700],
-	"portsAttributes":{
-		"3030": {
-			"label": "API",
-			"onAutoForward": "silent"
-		},
-		"8080": {
-			"label": "Frontend",
-			"onAutoForward": "silent"
-		},
-		"7700": {
-			"label": "Meilisearch",
-			"onAutoForward": "silent"
-		}
-	},
-	"customizations": {
-		"vscode": {
-			"extensions": [
-				"eamodio.gitlens",
-				"dbaeumer.vscode-eslint",
-				"GitHub.vscode-pull-request-github",
-				"bradlc.vscode-tailwindcss",
-				"prisma.prisma",
-				"github.copilot",
-				"actboy168.tasks"
-			]
-		}
-	},
-	"onCreateCommand": {
-		"dependencies": "npm ci",
-		"environment": "cp -n api/.env.example api/.env"
-	}
+  "name": "brahmsee-digital",
+  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+  // "image": "mcr.microsoft.com/devcontainers/base:bullseye",
+  "dockerComposeFile": [
+    "../docker-compose-services.yml",
+    "./docker-compose.yml"
+  ],
+  "service": "app",
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+      "dockerDashComposeVersion": "v2.32.3"
+    }
+  },
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  // "workspaceMount": "source=${localWorkspaceFolder},target=${localWorkspaceFolder},type=bind",
+  // Use this environment variable if you need to bind mount your local source code into a new container.
+  "remoteEnv": {
+    "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "Vue.volar",
+        "eamodio.gitlens",
+        "dbaeumer.vscode-eslint",
+        "GitHub.vscode-pull-request-github",
+        "bradlc.vscode-tailwindcss",
+        "prisma.prisma",
+        "github.copilot",
+        "actboy168.tasks",
+        "esbenp.prettier-vscode",
+        "YoavBls.pretty-ts-errors",
+        "christian-kohler.path-intellisense",
+        "herrmannplatz.npm-dependency-links",
+        "mskelton.npm-outdated"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.profiles.linux": {
+          "zsh": {
+            "path": "/bin/zsh"
+          }
+        }
+      }
+    }
+  },
+  "onCreateCommand": {
+    // "dependencies": "pnpm install",
+    "environment": "cp -n apps/api/.env.example apps/api/.env"
+  }
 }

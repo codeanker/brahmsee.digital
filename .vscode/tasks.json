@@ -1,216 +1,213 @@
 {
-	"version": "2.0.0",
-	"tasks": [
-		{
-			"type": "npm",
-			"script": "start:frontend",
-			"label": "start:frontend",
-			"problemMatcher": [],
-			"presentation": {
-				"reveal": "always",
-				"panel": "new",
-				"group": "start",
-				"close": false
-			},
-			"options": {
-				"statusbar": {
-					"hide" : true
-				}
-			}
-		},
-		{
-			"type": "npm",
-			"script": "start:api",
-			"label": "start:api",
-			"problemMatcher": [],
-			"presentation": {
-				"reveal": "always",
-				"panel": "new",
-				"group": "start",
-				"close": false
-			},
-			"options": {
-				"statusbar": {
-					"hide" : true
-				}
-			}
-		},
-		{
-			"type": "npm",
-			"script": "start:docs",
-			"label": "start:docs",
-			"problemMatcher": [],
-			"presentation": {
-				"reveal": "silent",
-				"panel": "new",
-				"group": "start",
-				"close": false
-			},
-			"options": {
-				"statusbar": {
-					"hide" : true
-				}
-			}
-		},
-		{
-			"type": "npm",
-			"script": "test",
-			"label": "start:test",
-			"problemMatcher": [],
-			"presentation": {
-				"reveal": "always",
-				"panel": "new",
-				"group": "start",
-				"close": false
-			},
-			"options": {
-				"statusbar": {
-					"hide" : true
-				}
-			}
-		},
-		{
-			"type": "npm",
-			"script": "start:services",
-			"label": "start:services",
-			"problemMatcher": [],
-			"presentation": {
-				"reveal": "always",
-				"panel": "new",
-				"group": "start",
-				"close": false
-			},
-			"options": {
-				"statusbar": {
-					"hide" : true
-				}
-			}
-		},
-		{
-			"label": "start:apps",
-			"dependsOn": [
-				"start:api",
-				"start:frontend",
-				"start:test"
-			],
-			"problemMatcher": []
-		},
-		{
-			"label": "start:apps and services",
-			"dependsOn": [
-				"start:api",
-				"start:frontend",
-				"start:services"
-			],
-			"problemMatcher": [],
-			"options": {
-				"statusbar": {
-					"hide" : true
-				}
-			}
-		},
-		{
-			"label": "start:prisma studio",
-			"type": "shell",
-			"command": "npx prisma studio",
-			"options": {
-        "cwd": "${workspaceFolder}/api"
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "npm",
+      "script": "start:frontend",
+      "label": "start:frontend",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "start",
+        "close": false
       },
-			"problemMatcher": [],
-			"presentation": {
-				"reveal": "silent",
-				"revealProblems": "onProblem",
-				"panel": "new",
-				"close": true
-			}
-		},
-		{
-			"label": "run:migration",
-			"type": "shell",
-			"command": "npx prisma migrate deploy & npx prisma generate",
-			"options": {
-        "cwd": "${workspaceFolder}/api"
+      "options": {
+        "statusbar": {
+          "hide": true
+        }
+      }
+    },
+    {
+      "type": "npm",
+      "script": "start:api",
+      "label": "start:api",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "start",
+        "close": false
       },
-			"problemMatcher": [],
-			"presentation": {
-				"reveal": "always",
-				"revealProblems": "onProblem",
-				"panel": "new",
-				"close": true
-			}
-		},
-		{
-			"type": "npm",
-			"script": "createAccount",
-			"label": "run:createAccount",
-			"problemMatcher": [],
-			"options": {
-        "cwd": "${workspaceFolder}/api",
-				"statusbar": {
-					"hide" : false
-				}
-			},
-			"presentation": {
-				"reveal": "always",
-				"panel": "new",
-				"group": "start",
-				"close": false
-			},
-
-		},
-		{
-			"type": "npm",
-			"script": "initMeilisearch",
-			"label": "run:initMeilisearch",
-			"problemMatcher": [],
-			"options": {
-        "cwd": "${workspaceFolder}/api",
-				"statusbar": {
-					"hide" : false
-				}
-			},
-			"presentation": {
-				"reveal": "always",
-				"panel": "new",
-				"group": "start",
-				"close": false
-			},
-
-		},
-		{
-			"type": "shell",
-			"label": "install:playwright",
-			"command": "npx playwright install && npx playwright install-deps",
-			"options": {
-				"statusbar": {
-					"hide" : true
-				}
-			},
-			"problemMatcher": [],
-			"presentation": {
-				"reveal": "always",
-				"revealProblems": "onProblem",
-				"panel": "new",
-				"close": true
-			}
-		},
-		{
-			"type": "shell",
-			"label": "run:reset_db",
-			"command": "npx prisma migrate reset",
-			"problemMatcher": [],
-			"options": {
-        "cwd": "${workspaceFolder}/api",
-				"statusbar": {
-					"hide" : true
-				}
-			},
-			"presentation": {
-				"reveal": "always",
-				"revealProblems": "onProblem",
-				"panel": "new",
-				"close": true
-			}
-		}
-	]
+      "options": {
+        "statusbar": {
+          "hide": true
+        }
+      }
+    },
+    {
+      "type": "npm",
+      "script": "start:docs",
+      "label": "start:docs",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "panel": "new",
+        "group": "start",
+        "close": false
+      },
+      "options": {
+        "statusbar": {
+          "hide": true
+        }
+      }
+    },
+    {
+      "type": "npm",
+      "script": "test",
+      "label": "start:test",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "start",
+        "close": false
+      },
+      "options": {
+        "statusbar": {
+          "hide": true
+        }
+      }
+    },
+    {
+      "type": "npm",
+      "script": "start:services",
+      "label": "start:services",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "start",
+        "close": false
+      },
+      "options": {
+        "statusbar": {
+          "hide": true
+        }
+      }
+    },
+    {
+      "label": "start:apps",
+      "dependsOn": [
+        "start:api",
+        "start:frontend"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "start:apps and services",
+      "dependsOn": [
+        "start:api",
+        "start:frontend",
+        "start:services"
+      ],
+      "problemMatcher": [],
+      "options": {
+        "statusbar": {
+          "hide": true
+        }
+      }
+    },
+    {
+      "label": "start:prisma studio",
+      "type": "shell",
+      "command": "npx prisma studio",
+      "options": {
+        "cwd": "${workspaceFolder}/apps/api"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "revealProblems": "onProblem",
+        "panel": "new",
+        "close": true
+      }
+    },
+    {
+      "label": "run:migration",
+      "type": "shell",
+      "command": "npx prisma migrate deploy & npx prisma generate",
+      "options": {
+        "cwd": "${workspaceFolder}/apps/api"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "revealProblems": "onProblem",
+        "panel": "new",
+        "close": false
+      }
+    },
+    {
+      "type": "npm",
+      "script": "createAccount",
+      "label": "run:createAccount",
+      "problemMatcher": [],
+      "options": {
+        "cwd": "${workspaceFolder}/apps/api",
+        "statusbar": {
+          "hide": false
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "start",
+        "close": false
+      }
+    },
+    {
+      "type": "npm",
+      "script": "initMeilisearch",
+      "label": "run:initMeilisearch",
+      "problemMatcher": [],
+      "options": {
+        "cwd": "${workspaceFolder}/apps/api",
+        "statusbar": {
+          "hide": false
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "start",
+        "close": false
+      }
+    },
+    {
+      "type": "shell",
+      "label": "install:playwright",
+      "command": "npx playwright install && npx playwright install-deps",
+      "options": {
+        "statusbar": {
+          "hide": true
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "revealProblems": "onProblem",
+        "panel": "new",
+        "close": true
+      }
+    },
+    {
+      "type": "shell",
+      "label": "run:reset_db",
+      "command": "npx prisma migrate reset",
+      "problemMatcher": [],
+      "options": {
+        "cwd": "${workspaceFolder}/apps/api",
+        "statusbar": {
+          "hide": false
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "revealProblems": "onProblem",
+        "panel": "new",
+        "close": true
+      }
+    }
+  ]
 }

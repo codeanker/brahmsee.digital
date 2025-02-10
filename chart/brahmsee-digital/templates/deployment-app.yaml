@@ -24,9 +24,6 @@ spec:
           env:
             - name: NODE_ENV
               value: "{{ .Values.global.env }}"
-            - name: CLIENT_URL
-              value: "https://{{ .Values.global.ingress.hosts | first }}"
-
             # CLIENT_URL
             - name: CLIENT_URL
               value: "https://{{ .Values.global.ingress.hosts | first }}"
@@ -38,7 +35,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: sendgrid
-                  key: apiKey
+                  key: apikey
 
             # Auth secrets
             - name: AUTHENTICATION_SECRET
@@ -64,6 +61,41 @@ spec:
                 secretKeyRef:
                   name: meilisearch
                   key: key
+
+
+            # FILE PROVIDER
+            - name: FILE_DEFAULT_PROVIDER
+              value: "{{ .Values.app.fileDefaultProvider }}"
+            - name: FILE_PROVIDER_LOCAL_PATH
+              value: "{{ .Values.app.fileProviders.LOCAL.path }}"
+{{- if eq .Values.app.fileDefaultProvider "AZURE" }}
+            - name: FILE_PROVIDER_AZURE_ACCOUNT
+              valueFrom:
+                secretKeyRef:
+                  name: azure
+                  key: account
+            - name: FILE_PROVIDER_AZURE_ACCOUNT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: azure
+                  key: accountKey
+            - name: FILE_PROVIDER_AZURE_CONTAINER
+              valueFrom:
+                secretKeyRef:
+                  name: azure
+                  key: container
+            - name: FILE_PROVIDER_AZURE_FOLDER
+              valueFrom:
+                secretKeyRef:
+                  name: azure
+                  key: folder
+{{- end }}
+            # Postgres
+            - name: TOMTOM_APIKEY
+              valueFrom:
+                secretKeyRef:
+                  name: tomtom
+                  key: apikey
 
           # readinessProbe:
           #   httpGet:
@@ -108,6 +140,6 @@ spec:
   ports:
     - name: http
       port: 80
-      targetPort: 80
+      targetPort: 3030
   selector:
     app: {{ .Chart.Name }}-app

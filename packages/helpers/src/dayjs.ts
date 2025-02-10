@@ -1,9 +1,14 @@
-import dayjs from 'dayjs'
-import customParseFormat from 'dayjs/plugin/customParseFormat'
-import dayjsDuration from 'dayjs/plugin/duration'
-import relativeTime from 'dayjs/plugin/relativeTime'
+import dayjs, { type Dayjs } from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat.js'
 import 'dayjs/locale/de'
+import timezone from 'dayjs/plugin/timezone.js'
+import utc from 'dayjs/plugin/utc.js'
 
+dayjs.extend(customParseFormat)
+dayjs.extend(utc)
+dayjs.extend(timezone)
 dayjs.locale('de')
 
-export { dayjs, dayjsDuration, relativeTime, customParseFormat }
+dayjs.tz.setDefault('Europe/Berlin')
+
+export { dayjs, type Dayjs }
