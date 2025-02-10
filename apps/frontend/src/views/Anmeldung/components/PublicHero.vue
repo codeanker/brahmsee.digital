@@ -73,7 +73,7 @@ const unterveranstaltung = injectUnterveranstaltung()
       />
     </div>
   </div>
-  <div class="overflow-hidden">
+
     <div class="mx-auto max-w-7xl px-6 pb-32 pt-36 sm:pt-60 lg:px-8 lg:pt-32">
       <div class="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
         <div class="relative w-full lg:max-w-xl lg:shrink-0 xl:max-w-2xl">
@@ -142,5 +142,5 @@ const unterveranstaltung = injectUnterveranstaltung()
         </div>
       </div>
     </div>
-  </div>
+
 </template>
