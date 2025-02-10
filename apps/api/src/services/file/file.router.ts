@@ -1,5 +1,6 @@
 // Prettier ignored is because this file is generated
 import { mergeRouters } from '../../trpc.js'
+import { anmeldungPublicFotoUploadProcedure } from './anmeldungPublicFotoUpload.js'
 
 import { fileCreateProcedure } from './fileCreate.js'
 import { fileGetUrlActionProcedure } from './fileGetUrl.js'
@@ -7,6 +8,7 @@ import { fileGetUrlActionProcedure } from './fileGetUrl.js'
 
 export const fileRouter = mergeRouters(
   fileCreateProcedure.router,
-  fileGetUrlActionProcedure.router
+  fileGetUrlActionProcedure.router,
+  anmeldungPublicFotoUploadProcedure.router
   // Add Routes here - do not delete this line
 )

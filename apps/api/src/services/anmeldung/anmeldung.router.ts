@@ -1,5 +1,7 @@
 // Prettier ignored is because this file is generated
 import { mergeRouters } from '../../trpc.js'
+import { anmeldungAccessTokenValidateProcedure } from './anmeldungAccessTokenValidate.js'
+import { anmeldungFotoUploadProcedure } from './anmeldungFotoUpload.js'
 
 import { anmeldungGetProcedure } from './anmeldungGet.js'
 import { anmeldungGliederungPatchProcedure } from './anmeldungGliederungPatch.js'
@@ -26,6 +28,8 @@ export const anmeldungRouter = mergeRouters(
   anmeldungCountProcedure.router,
   anmeldungListProcedure.router,
   anmeldungGetProcedure.router,
-  anmeldungZuordnenProcedure.router
+  anmeldungZuordnenProcedure.router,
+  anmeldungAccessTokenValidateProcedure.router,
+  anmeldungFotoUploadProcedure.router
   // Add Routes here - do not delete this line
 )

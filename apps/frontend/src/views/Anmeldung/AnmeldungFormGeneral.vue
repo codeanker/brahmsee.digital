@@ -160,7 +160,6 @@ const {
         :error="errorCreate as Error"
         submit-text="Anmeldung abschicken"
         :is-public-anmeldung="props.isPublic"
-        :show-tshirt="unterveranstaltung?.veranstaltung?.hostname?.hostname !== 'landes.digital'"
         @submit="(value) => createAnmeldung(undefined, value)"
         @show-terms="showBedingungen = true"
       >

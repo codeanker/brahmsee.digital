@@ -71,6 +71,7 @@ export async function handle({ ctx, input, isPublic }: HandleProps) {
     },
   })
 
+  const accessToken = randomUUID()
   const assignmentCode = ctx.authenticated ? null : randomUUID()
   const anmeldung = await prisma.anmeldung.create({
     data: {
@@ -90,6 +91,7 @@ export async function handle({ ctx, input, isPublic }: HandleProps) {
       customFieldValues: {
         createMany: customFieldValuesCreateMany(input.customFieldValues),
       },
+      accessToken,
       assignmentCode,
     },
   })
@@ -119,7 +121,10 @@ export async function handle({ ctx, input, isPublic }: HandleProps) {
       gliederung: unterveranstaltung.gliederung.name,
       veranstaltung: unterveranstaltung.veranstaltung.name,
       hostname: unterveranstaltung.veranstaltung.hostname!.hostname,
+      unterveranstaltungId: unterveranstaltung.id,
+      anmeldungId: anmeldung.id,
       assignmentCode,
+      accessToken,
     },
   })
 }

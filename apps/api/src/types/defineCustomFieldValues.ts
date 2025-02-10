@@ -5,7 +5,7 @@ export function defineCustomFieldValues() {
   return z.array(
     z.strictObject({
       fieldId: z.number().int(),
-      value: z.union([z.string(), z.boolean(), z.undefined()]),
+      value: z.union([z.string(), z.boolean(), z.undefined(), z.number()]),
     })
   )
 }

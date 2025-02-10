@@ -1,23 +1,28 @@
 <script setup lang="ts">
-import { useVModel } from '@vueuse/core'
-
 import useValidationModel from '../../composables/useValidationModel'
 
 import BasicFormGroup from './components/BasicFormGroup.vue'
 import { type BasicInputDefaultProps } from './defaultProps'
+import InputNumber from 'primevue/inputnumber'
 
 const props = withDefaults(
   defineProps<
     BasicInputDefaultProps<number> & {
-      inputClass?: string
-      disableValidation?: boolean
+      locale?: string
+      currency?: string
+      prefix?: string
+      suffix?: string
+      minFractionDigits?: number
+      maxFractionDigits?: number
+      useGrouping?: boolean
+      min?: number
+      max?: number
+      step?: number
     }
   >(),
   {
-    type: 'text',
-    autocapitalize: 'off',
-    inputClass: '',
-    disableValidation: false,
+    locale: 'de-DE',
+    useGrouping: true,
   }
 )
 const emit = defineEmits<{
@@ -25,12 +30,7 @@ const emit = defineEmits<{
   focus: []
   blur: []
 }>()
-const { model, errorMessage } = props.disableValidation
-  ? {
-      model: useVModel(props, 'modelValue', emit),
-      errorMessage: undefined,
-    }
-  : useValidationModel(props, emit)
+const { model, errorMessage } = useValidationModel(props, emit)
 </script>
 
 <template>
@@ -41,21 +41,30 @@ const { model, errorMessage } = props.disableValidation
     :required="required"
     :error-message="errorMessage"
   >
-    <div class="align-items-center flex">
-      <input
-        :id="id || name || label"
-        v-model="model"
-        :name="id || name || label"
-        type="number"
-        :placeholder="placeholder || label || name"
-        :class="[{ 'rounded-r-none': $slots.append }, inputClass]"
-        :disabled="disabled"
-        @focus="emit('focus')"
-        @blur="emit('blur')"
-      />
-      <div class="flex-shrink-0">
-        <slot name="append" />
-      </div>
+    <InputNumber
+      :id="id || name || label"
+      v-model="model"
+      :name="id || name || label"
+      :placeholder="placeholder || label || name"
+      :class="{ 'rounded-r-none': $slots.append }"
+      :disabled="disabled"
+      :locale="locale"
+      :currency="currency"
+      :prefix="prefix"
+      :suffix="suffix"
+      :min-fraction-digits="minFractionDigits"
+      :max-fraction-digits="maxFractionDigits"
+      :use-grouping="useGrouping"
+      :min="min"
+      :max="max"
+      :step="step"
+      mode="decimal"
+      input-class="input-style"
+      class="block"
+      unstyled
+    />
+    <div class="flex-shrink-0">
+      <slot name="append" />
     </div>
   </BasicFormGroup>
 </template>

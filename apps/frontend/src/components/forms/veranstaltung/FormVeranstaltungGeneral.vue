@@ -154,6 +154,7 @@ const { state: hostnames } = useAsyncState(async () => {
           required
           label="Maximale Teilnehmenden Zahl"
           placeholder="Maximale Teilnehmenden Zahl"
+          :min="0"
         />
       </div>
 
@@ -163,6 +164,11 @@ const { state: hostnames } = useAsyncState(async () => {
           required
           label="Teilnahmegebühr"
           placeholder="Teilnahmegebühr"
+          :min="0"
+          :min-fraction-digits="2"
+          :max-fraction-digits="2"
+          currency="EUR"
+          suffix="€"
         />
       </div>
 
