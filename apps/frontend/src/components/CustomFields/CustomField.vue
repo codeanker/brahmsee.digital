@@ -69,6 +69,7 @@ const model = computed({
     v-model="model"
     :label="field.name"
     :required="field.required"
+    :min="0"
   />
   <BasicRadio
     v-if="field.type === 'BASIC_RADIO'"

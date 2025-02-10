@@ -257,6 +257,11 @@ const disableddates = computed(() => {
           required
           label="Teilnahmegebühr"
           placeholder="Teilnahmegebühr"
+          :min="0"
+          :min-fraction-digits="2"
+          :max-fraction-digits="2"
+          currency="EUR"
+          suffix="€"
         />
       </div>
       <div class="lg:col-span-3">
@@ -265,6 +270,7 @@ const disableddates = computed(() => {
           required
           label="Maximale Teilnehmenden Zahl"
           placeholder="Maximale Teilnehmenden Zahl"
+          :min="0"
         />
       </div>
 
