@@ -3,6 +3,7 @@
   "author": "CODEANKER GmbH",
   "version": "2.0.0",
   "description": "",
+  "license": "CC-BY-3.0-DE",
   "workspaces": [
     "apps/*",
     "packages/*"
