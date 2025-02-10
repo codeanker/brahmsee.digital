@@ -26,7 +26,17 @@ const routesAusschreibungen: Route[] = [
       {
         name: 'Public Anmeldung Result',
         path: 'anmeldung/result',
-        component: () => import('../Anmeldung/PublicAnmeldungResultView.vue'),
+        component: () => import('./PublicAnmeldungResultView.vue'),
+        meta: {
+          public: true,
+          hidePublicHeaderBgOnMobile: true,
+          useFullheight: true,
+        },
+      },
+      {
+        name: 'Public Anmeldung Fotoupload',
+        path: 'anmeldung/:anmeldungId/foto-upload',
+        component: () => import('./FotoUpload.vue'),
         meta: {
           public: true,
           hidePublicHeaderBgOnMobile: true,

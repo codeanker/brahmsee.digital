@@ -13,7 +13,7 @@ export type Seeder = (prisma: PrismaClient) => Promise<void>
 
 const seeders: Seeder[] = (() => {
   // in produktion nur Gliederungen importieren
-  if (isProduction()) {
+  if (isProduction() || process.env.DISABLE_SEEDER === '1') {
     return [importGliederungen]
   }
 
