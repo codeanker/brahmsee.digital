@@ -45,7 +45,7 @@ app.use(
       transport: 'session',
     },
     dlrg: {
-      dynamic: ['mode'],
+      dynamic: ['mode', 'origin'],
       transport: 'session',
       oauth: 2,
       response: ['token', 'profile'],
