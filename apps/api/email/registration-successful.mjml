@@ -15,7 +15,8 @@
   <span>Bitte lade im nächsten Schritt ein Bild für {{ name }} hoch:&nbsp;</span>
   <a
     href="https://{{ hostname }}/ausschreibung/{{ unterveranstaltungId }}/anmeldung/{{ anmeldungId }}/foto-upload?accessToken={{ accessToken }}"
-  ></a>
+    >Hier Foto hochladen</a
+  >
 </mj-text>
 {{/if}}
 
