@@ -249,7 +249,7 @@ const submit = () => {
       <Button
         color="primary"
         class="w-full justify-center mt-5 mb-20 disabled:bg-gray-300"
-        :disabled="isPublicAnmeldung && (!acceptTeilnahmebedingungen || !acceptDatenschutz)"
+        :disabled="isLoading || (isPublicAnmeldung && (!acceptTeilnahmebedingungen || !acceptDatenschutz))"
         type="submit"
       >
         <template v-if="isLoading">
