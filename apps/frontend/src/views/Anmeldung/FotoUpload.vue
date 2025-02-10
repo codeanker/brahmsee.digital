@@ -4,7 +4,7 @@ import { useRoute } from 'vue-router'
 import { apiClient } from '@/api'
 import InputFileUploadArea from '@/components/BasicInputs/InputFileUploadArea.vue'
 import Loading from '@/components/UIComponents/Loading.vue'
-import { handleUpload } from '@/helpers/handleUpload'
+import { handlePublicPhotoUpload } from '@/helpers/handleUpload'
 import { injectUnterveranstaltung } from '@/layouts/AnmeldungLayout.vue'
 import { useAsyncState } from '@vueuse/core'
 import { ref, watch } from 'vue'
@@ -38,7 +38,12 @@ const uploadSuccess = ref(false)
 async function upload(toUploadFile: File) {
   uploadPending.value = true
   try {
-    const res = await handleUpload(toUploadFile)
+    const res = await handlePublicPhotoUpload(toUploadFile, {
+      unterveranstaltungId: unterveranstaltung.value.id,
+      anmeldungId: parseInt(anmeldungId),
+      accessToken,
+    })
+    console.log(res)
     await apiClient.anmeldung.anmeldungFotoUpload.mutate({
       unterveranstaltungId: unterveranstaltung.value.id,
       anmeldungId: parseInt(anmeldungId),
