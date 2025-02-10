@@ -7,6 +7,18 @@
   Vielen Dank für deine Anmeldung zur Veranstaltung {{ veranstaltung }}.
 </mj-text>
 
+{{#if accessToken}}
+<mj-text
+  font-size="16px"
+  line-height="1.5"
+>
+  <span>Bitte lade im nächsten Schritt ein Bild für {{ name }} hoch:&nbsp;</span>
+  <a
+    href="https://{{ hostname }}/ausschreibung/{{ unterveranstaltungId }}/anmeldung/{{ anmeldungId }}/foto-upload?accessToken={{ accessToken }}"
+  ></a>
+</mj-text>
+{{/if}}
+
 <mj-text
   font-size="16px"
   line-height="1.5"
