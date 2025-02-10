@@ -152,7 +152,7 @@ const submit = () => {
         street-label="Straße"
         house-number-label="Hausnummer"
         autocomplete-label="Intelligente Suche"
-        manual-entry-label="Manuell eingeben"
+        manual-entry-label="Adresse nicht gefunden? Manuell eingeben"
         :address-find="addressFind"
         :country-formatter="(country) => country.name"
         :country="addressForm.country"
