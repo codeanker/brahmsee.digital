@@ -21,7 +21,8 @@ export const { getEntityIdFromHeader, authenticationLogin, sign } = createAuthen
     if (account === null) throw new Error('Es konnte kein Account gefunden werden.')
     if (account.activationToken !== null)
       throw new Error('Account noch nicht bestätigt, bitte bestätige deine E-Mail-Adresse.')
-    if (account.status !== 'AKTIV') throw new Error('Account ist nicht Aktiv.')
+    if (account.status !== 'AKTIV')
+      throw new Error('Dein Account ist noch nicht von einem Administrator freigeschaltet worden.')
     if (account.password === null) throw new Error('Account has no password')
     return {
       id: account.id,
