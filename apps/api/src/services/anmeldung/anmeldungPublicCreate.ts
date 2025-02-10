@@ -121,7 +121,10 @@ export async function handle({ ctx, input, isPublic }: HandleProps) {
       gliederung: unterveranstaltung.gliederung.name,
       veranstaltung: unterveranstaltung.veranstaltung.name,
       hostname: unterveranstaltung.veranstaltung.hostname!.hostname,
+      unterveranstaltungId: unterveranstaltung.id,
+      anmeldungId: anmeldung.id,
       assignmentCode,
+      accessToken,
     },
   })
 }
