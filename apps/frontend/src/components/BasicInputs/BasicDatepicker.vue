@@ -52,13 +52,13 @@ const props = withDefaults(
     multiCalendars: false,
     flow: undefined,
     utc: false,
-    timezone: undefined,
+    timezone: 'Europe/Berlin',
     presetRanges: undefined,
     markers: undefined,
     autoApply: true,
     icon: undefined,
-    textInput: true,
-    format: 'dd.MM.yyyy HH:mm',
+    textInput: false,
+    format: 'dd.MM.yyyy',
     modelType: undefined,
   }
 )
@@ -109,6 +109,7 @@ const { model, errorMessage } = useValidationModel(props, emit)
         :required="required"
         :min-date="disabledDates?.to"
         :max-date="disabledDates?.from"
+        locale="de"
       />
     </BasicFormGroup>
   </div>

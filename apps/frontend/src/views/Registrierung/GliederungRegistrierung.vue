@@ -69,7 +69,10 @@ async function registerGliederung() {
     if (oauthRegistration.value) {
       // first optain jwt containing the oauth sub id
       // open new tab with oauth login
-      window.open('/api/connect/dlrg?mode=register', '_blank')
+
+      const origin = `${location.href}/api`
+      const oauthHref = `/api/connect/dlrg?mode=register&origin=${encodeURIComponent(origin)}`
+      window.open(oauthHref, '_blank')
 
       accountData.jwtOAuthToken = await watiForOAuth()
       accountData.password = undefined

@@ -23,7 +23,7 @@ app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
-        'img-src': ["'self'", '*.githubusercontent.com'],
+        'img-src': ["'self'", '*.githubusercontent.com', 'data', 'dlrgbrahmseedigitalprod.blob.core.windows.net'],
       },
     },
   })
@@ -45,7 +45,7 @@ app.use(
       transport: 'session',
     },
     dlrg: {
-      dynamic: ['mode'],
+      dynamic: ['mode', 'origin'],
       transport: 'session',
       oauth: 2,
       response: ['token', 'profile'],
