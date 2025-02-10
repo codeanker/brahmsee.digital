@@ -43,7 +43,6 @@ async function upload(toUploadFile: File) {
       anmeldungId: parseInt(anmeldungId),
       accessToken,
     })
-    console.log(res)
     await apiClient.anmeldung.anmeldungFotoUpload.mutate({
       unterveranstaltungId: unterveranstaltung.value.id,
       anmeldungId: parseInt(anmeldungId),

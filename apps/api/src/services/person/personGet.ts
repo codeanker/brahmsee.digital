@@ -17,8 +17,6 @@ export const personGetProcedure = defineProtectedQueryProcedure({
       id: input.id,
     }
 
-    console.log(where)
-
     return prisma.person.findUniqueOrThrow({
       where,
       select: {

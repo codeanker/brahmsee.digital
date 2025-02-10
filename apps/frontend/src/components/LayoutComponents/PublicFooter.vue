@@ -5,7 +5,6 @@ const commitHash = import.meta.env.VITE_APP_COMMIT_HASH || '000000'
 import { injectUnterveranstaltung } from '@/layouts/AnmeldungLayout.vue'
 import { formatDate } from '@vueuse/core'
 const unterveranstaltung = injectUnterveranstaltung()
-console.log(unterveranstaltung)
 </script>
 
 <template>
