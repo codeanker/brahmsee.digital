@@ -99,10 +99,12 @@ const model = computed({
         class="input-style w-full text-left flex justify-between items-center"
       >
         <slot>
-          <div class="flex space-x-2 items-center">
-            <span>{{ model ?? 'Bitte auswählen…' }}</span>
+          <div class="flex space-x-2 items-center justify-between">
+            <div class="flex space-x-2 items-center">
+              <span>{{ model ?? 'Bitte auswählen…' }}</span>
+            </div>
+            <ChevronDownIcon class="h-5 text-gray-500" />
           </div>
-          <ChevronDownIcon class="h-5 text-gray-500" />
         </slot>
       </button>
     </template>

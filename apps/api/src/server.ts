@@ -23,7 +23,8 @@ app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
-        'img-src': ["'self'", '*.githubusercontent.com', 'data', 'dlrgbrahmseedigitalprod.blob.core.windows.net'],
+        'img-src': ["'self'", '*.githubusercontent.com', 'data:', 'dlrgbrahmseedigitalprod.blob.core.windows.net'],
+        'connect-src': ["'self'", 'dlrgbrahmseedigitalprod.blob.core.windows.net'],
       },
     },
   })

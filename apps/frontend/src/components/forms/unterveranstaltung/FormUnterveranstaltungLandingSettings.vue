@@ -260,7 +260,7 @@ const deleteMiscellaneousItem = (item, index) => {
                 Bild hochladen…
               </div>
 
-              <div
+              <!-- <div
                 v-for="(image, index) in heroImages"
                 :key="index"
                 class="hidden h-40 w-40 aspect-square relative group cursor-pointer rounded-lg"
@@ -283,9 +283,9 @@ const deleteMiscellaneousItem = (item, index) => {
                   alt="Placeholder"
                   class="rounded-lg aspect-square object-cover"
                 />
-              </div>
+              </div> -->
 
-              <div class="hidden w-40 aspect-square relative group cursor-pointer rounded-lg">
+              <!-- <div class="hidden w-40 aspect-square relative group cursor-pointer rounded-lg">
                 <div class="hidden group-hover:block absolute inset-0 bg-black opacity-50 rounded-lg transition"></div>
                 <div
                   class="hidden group-hover:flex absolute inset-0 justify-center items-center text-white text-sm/6 font-semibold transition"
@@ -304,7 +304,7 @@ const deleteMiscellaneousItem = (item, index) => {
                   alt="Placeholder"
                   class="rounded-lg aspect-square object-cover"
                 />
-              </div>
+              </div> -->
               <!-- // Upload Image Wrapper-->
             </div>
           </div>
