@@ -26,7 +26,6 @@ app.use(
         'img-src': ["'self'", '*.githubusercontent.com', 'data:', 'dlrgbrahmseedigitalprod.blob.core.windows.net'],
         'connect-src': ["'self'", 'dlrgbrahmseedigitalprod.blob.core.windows.net'],
       },
-      reportOnly: true,
     },
   })
 )
