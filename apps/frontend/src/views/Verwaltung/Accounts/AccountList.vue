@@ -171,18 +171,20 @@ function changeTab(index: number) {
             Account anlegen
           </RouterLink>
         </div>
-        <GenericDataGrid
-          :columns="columns"
-          :fetch-page="fetchPage"
-          :fetch-count="fetchCount"
-          :default-filter="defaultFilter"
-          :default-order-by="[]"
-          no-data-message="Es gibt bisher keine Accounts."
-          show-clickable
-          @row-click="
-            (account) => router.push({ name: 'Verwaltung Accountdetails', params: { accountId: account.id } })
-          "
-        />
+        <div class="grid-rows[1fr, 50px] grid flex-grow">
+          <GenericDataGrid
+            :columns="columns"
+            :fetch-page="fetchPage"
+            :fetch-count="fetchCount"
+            :default-filter="defaultFilter"
+            :default-order-by="[]"
+            no-data-message="Es gibt bisher keine Accounts."
+            show-clickable
+            @row-click="
+              (account) => router.push({ name: 'Verwaltung Accountdetails', params: { accountId: account.id } })
+            "
+          />
+        </div>
       </Tab>
       <Tab>
         <div class="my-8 flex justify-between">
