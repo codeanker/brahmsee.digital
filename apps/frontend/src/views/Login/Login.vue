@@ -2,38 +2,32 @@
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import BasicInput from '@/components/BasicInputs/BasicInput.vue'
-import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
 import DarkModeSwitch from '@/components/DarkModeSwitch.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import Loading from '@/components/UIComponents/Loading.vue'
-import { login, loginError, loginPending } from '@/composables/useAuthentication'
-import { ValidateForm } from '@codeanker/validation'
+import { loggedInAccount } from '@/composables/useAuthentication'
+import { ErrorMessage, Field, ValidateForm } from '@codeanker/validation'
+import { useMutation } from '@tanstack/vue-query'
+import z from 'zod'
+import { apiClient } from '@/api'
 
 const router = useRouter()
 const route = useRoute()
 
-const email = ref('')
-const password = ref('')
+const formSchema = z.strictObject({
+  email: z.string().email(),
+  password: z.string().min(1),
+})
 
-// read "jwt" from url hashbang
-if (location.hash) {
-  const hash = location.hash.substr(1)
-  const hashParams = new URLSearchParams(hash)
-  const jwt = hashParams.get('jwt')
-  if (jwt) {
-    localStorage.setItem('jwt', jwt)
-    location.hash = ''
-  }
-  const error = hashParams.get('error')
-  if (error) {
-    loginError.value = new Error(error)
-  }
-}
+const login = useMutation({
+  mutationKey: ['login'],
+  mutationFn: async ({ email, password }: z.infer<typeof formSchema>) => {
+    const { accessToken, account } = await apiClient.authentication.login.mutate({ email, password })
 
-async function loginWithRecirect() {
-  const response = await login({ email: email.value, password: password.value })
-  if (response) {
+    loggedInAccount.value = account
+    localStorage.setItem('jwt', accessToken)
+  },
+  onSuccess: () => {
     if (route.query.redirect) {
       return router.push(route.query.redirect as string)
     } else {
@@ -42,11 +36,28 @@ async function loginWithRecirect() {
         return router.push({ name: 'Dashboard', params: { veranstaltungId: letzteVeranstaltung } })
       else return router.push({ name: 'Auschreibungen' })
     }
+  },
+})
+
+const hashError = ref<string>()
+
+// read "jwt" from url hashbang
+if (location.hash) {
+  const hash = location.hash.slice(1)
+  const params = new URLSearchParams(hash)
+
+  location.hash = ''
+
+  if (params.has('error')) {
+    hashError.value = params.get('error') ?? undefined
+  } else if (params.has('jwt')) {
+    const jwt = params.get('jwt') as string
+    localStorage.setItem('jwt', jwt)
   }
 }
 
 const formatLoginError = computed(() => {
-  return loginError.value ? loginError.value.message.replace('TRPCClientError: ', '') : ''
+  return login.isError.value ? login.error.value?.message.replace('TRPCClientError: ', '') : ''
 })
 
 const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.env.VITE_APP_COMMIT_HASH || 'unknown'}`
@@ -74,7 +85,7 @@ const oauthHref = `/api/connect/dlrg?mode=login&origin=${encodeURIComponent(orig
 
     <div class="mt-5 lg:mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
       <div
-        v-if="loginError"
+        v-if="login.isError.value"
         class="bg-danger-100 text-danger-600 mb-10 rounded p-2 text-center"
       >
         {{ formatLoginError }}
@@ -82,25 +93,29 @@ const oauthHref = `/api/connect/dlrg?mode=login&origin=${encodeURIComponent(orig
       <div class="px-6 py-12 sm:rounded-lg sm:px-12">
         <ValidateForm
           class="space-y-8"
-          @submit="loginWithRecirect"
+          :schema="formSchema"
+          @submit="login.mutateAsync"
         >
-          <BasicInput
-            id="email"
-            v-model="email"
+          <Field
+            name="email"
             type="email"
-            class="w-full"
-            placeholder="E-Mail"
-            label="E-Mail"
-            required
+            placeholder="E-Mail Adresse"
           />
-          <BasicPassword
-            id="password"
-            v-model="password"
-            class="w-full"
-            placeholder="Passwort"
-            label="Passwort"
-            required
+          <ErrorMessage
+            name="email"
+            class="text-red-500 text-sm mt-1"
           />
+
+          <Field
+            name="password"
+            type="password"
+            placeholder="********"
+          />
+          <ErrorMessage
+            name="password"
+            class="text-red-500 text-sm mt-1"
+          />
+
           <div class="flex items-center justify-center">
             <div class="text-sm">
               <RouterLink
@@ -114,10 +129,10 @@ const oauthHref = `/api/connect/dlrg?mode=login&origin=${encodeURIComponent(orig
           <Button
             color="primary"
             type="submit"
-            :disabled="loginPending"
+            :disabled="login.isPending.value"
             full
           >
-            <template v-if="loginPending">
+            <template v-if="login.isPending.value">
               <Loading color="white" />
             </template>
             <template v-else> Anmelden </template>

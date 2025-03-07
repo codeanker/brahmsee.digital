@@ -10,26 +10,6 @@ type LoggedInAccount = RouterOutput['authentication']['login']['account']
 export const loggedInAccount = ref<LoggedInAccount>()
 export const isAuthenticated = computed(() => loggedInAccount.value !== undefined)
 
-export const loginPending = ref(false)
-export const loginError = ref<Error | null>(null)
-
-export async function login({ email, password }: { email: string; password: string }) {
-  loginPending.value = true
-  loginError.value = null
-  try {
-    const { accessToken, account } = await apiClient.authentication.login.mutate({ email, password })
-
-    loggedInAccount.value = account
-    localStorage.setItem('jwt', accessToken)
-    loginPending.value = false
-
-    return { accessToken, account }
-  } catch (error) {
-    loginPending.value = false
-    loginError.value = error as Error
-  }
-}
-
 export async function reAuthenticate() {
   const storedJwt = localStorage.getItem('jwt')
   if (storedJwt === null) return false

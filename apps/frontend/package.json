@@ -23,6 +23,7 @@
     "@heroicons/vue": "^2.0.18",
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.16",
+    "@tanstack/vue-query": "^5.67.2",
     "@tiptap/extension-document": "catalog:",
     "@tiptap/extension-highlight": "catalog:",
     "@tiptap/extension-link": "catalog:",
@@ -45,11 +46,13 @@
     "superjson": "catalog:",
     "tailwind-merge": "^2.6.0",
     "vue": "catalog:",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@codeanker/eslint-config": "workspace:*",
     "@codeanker/typescript-config": "workspace:*",
+    "@tanstack/vue-query-devtools": "^5.67.2",
     "@types/node": "catalog:",
     "@vitejs/plugin-basic-ssl": "^1.2.0",
     "@vitejs/plugin-vue": "^5.2.1",
