@@ -50,7 +50,7 @@ const {
     const data = form.value
 
     try {
-      await apiClient.customFields.veranstaltungUpdate.mutate({
+      await apiClient.customFields.update.mutate({
         fieldId: props.fieldId,
         data: {
           name: data.name,
@@ -79,7 +79,7 @@ const {
   isLoading: isDeleting,
 } = useAsyncState(
   async () => {
-    await apiClient.customFields.veranstaltungDelete.mutate({
+    await apiClient.customFields.delete.mutate({
       fieldId: field.value!.id,
       veranstaltungId: 0,
     })

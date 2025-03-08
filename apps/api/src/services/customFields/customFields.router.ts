@@ -6,8 +6,8 @@ import { customFieldsList } from './customFieldsList.js'
 import { customFieldsTemplates } from './customFieldsTemplates.js'
 import { customFieldsUnterveranstaltungCreate } from './customFieldsUnterveranstaltungCreate.js'
 import { customFieldsVeranstaltungCreate } from './customFieldsVeranstaltungCreate.js'
-import { customFieldsVeranstaltungDelete } from './customFieldsVeranstaltungDelete.js'
-import { customFieldsVeranstaltungUpdate } from './customFieldsVeranstaltungUpdate.js'
+import { customFieldsDelete } from './customFieldsDelete.js'
+import { customFieldsUpdate } from './customFieldsUpdate.js'
 import { customFieldValuesUpdate } from './customFieldValuesUpdate.js'
 // Import Routes here - do not delete this line
 
@@ -15,8 +15,8 @@ export const customFieldsRouter = mergeRouters(
   customFieldsList.router,
   customFieldsGet.router,
   customFieldsVeranstaltungCreate.router,
-  customFieldsVeranstaltungUpdate.router,
-  customFieldsVeranstaltungDelete.router,
+  customFieldsUpdate.router,
+  customFieldsDelete.router,
   customFieldsUnterveranstaltungCreate.router,
   customFieldValuesUpdate.router,
   customFieldsTemplates.router
