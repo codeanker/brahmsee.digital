@@ -174,6 +174,14 @@ const mimeMap: Record<FileKind, string> = {
       />
     </div>
 
+    <Button
+      class="w-full mt-4"
+      :disabled="files.length === 0 || props.disabled"
+      @click="upload"
+    >
+      Hochladen
+    </Button>
+
     <template v-if="files.length > 0">
       <div class="mt-4 flex flex-row gap-x-4 justify-center">
         <template
@@ -187,6 +195,7 @@ const mimeMap: Record<FileKind, string> = {
               class="h-[384px] drop-shadow-lg"
             />
             <div
+              v-else
               class="size-[192px] bg-primary-100 flex flex-col gap-y-2 items-center justify-center rounded border-2 border-primary-200"
             >
               <p>
@@ -208,13 +217,5 @@ const mimeMap: Record<FileKind, string> = {
         </template>
       </div>
     </template>
-
-    <Button
-      class="w-full mt-4"
-      :disabled="files.length === 0 || props.disabled"
-      @click="upload"
-    >
-      Hochladen
-    </Button>
   </div>
 </template>

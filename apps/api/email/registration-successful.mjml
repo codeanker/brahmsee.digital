@@ -18,6 +18,13 @@
     >Hier Foto hochladen</a
   >
 </mj-text>
+
+<mj-text
+  font-size="16px"
+  line-height="1.5"
+>
+  Du kannst den Fotoupload beliebig oft machen, bis der Meldeschluss erreicht ist.
+</mj-text>
 {{/if}}
 
 <mj-text

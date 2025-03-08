@@ -7,11 +7,14 @@ import Loading from '@/components/UIComponents/Loading.vue'
 import { handlePublicPhotoUpload } from '@/helpers/handleUpload'
 import { injectUnterveranstaltung } from '@/layouts/AnmeldungLayout.vue'
 import { useAsyncState } from '@vueuse/core'
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
+import { dayjs } from '@codeanker/helpers'
 
 const route = useRoute()
 
 const unterveranstaltung = injectUnterveranstaltung()
+
+const meldeschlussErreicht = computed(() => dayjs().isAfter(unterveranstaltung.value.meldeschluss))
 
 const anmeldungId = route.params.anmeldungId as string
 const accessToken = route.query.accessToken as string
@@ -35,6 +38,7 @@ watch(unterveranstaltung, (unterveranstaltung) => {
 
 const uploadPending = ref(false)
 const uploadSuccess = ref(false)
+const uploadError = ref<Error>()
 async function upload(toUploadFile: File) {
   uploadPending.value = true
   try {
@@ -52,6 +56,9 @@ async function upload(toUploadFile: File) {
     uploadSuccess.value = true
   } catch (error) {
     console.error(error)
+    if (error instanceof Error) {
+      uploadError.value = error
+    }
   }
   uploadPending.value = false
 }
@@ -83,40 +90,50 @@ async function upload(toUploadFile: File) {
         Veranstaltung <u>{{ state.unterveranstaltung.veranstaltung.name }}</u
         >.
       </p>
-      <p>
-        Lade hier ein Bild von <u>{{ state.person.firstname }} {{ state.person.lastname }}</u> hoch. Dieses wird dann
-        bspw. für Teilnehmendenausweise verwendet.
-      </p>
-      <p>
-        <strong>Wichtig:</strong> Bitte achte darauf, dass das Foto möglichst quadratisch ist (gleiche Höhe wie Breite).
-      </p>
 
-      <div
-        v-if="uploadPending"
-        class="flex flex-col text-justify-center items-center"
-      >
-        <Loading size="md" />
-        <span>dein Bild wird hochgeladen</span>
-      </div>
+      <template v-if="!meldeschlussErreicht">
+        <p class="text-red-500">Leider ist der Meldeschluss bereits erreicht.</p>
+      </template>
+      <template v-else>
+        <p>
+          Lade hier ein Bild von <u>{{ state.person.firstname }} {{ state.person.lastname }}</u> hoch. Dieses wird dann
+          bspw. für Teilnehmendenausweise verwendet.
+        </p>
+        <p>
+          <strong>Wichtig:</strong> Bitte achte darauf, dass das Foto möglichst quadratisch ist (gleiche Höhe wie
+          Breite).
+        </p>
 
-      <div class="mb-6 flex justify-between">
-        <button
-          type="button"
-          class="btn btn-link -mr-3 -mt-1 px-3 py-1"
+        <div
+          v-if="uploadPending"
+          class="flex flex-col text-justify-center items-center"
         >
-          <i class="fas fa-times" />
-        </button>
-      </div>
-      <div class="flex w-full justify-center">
-        <InputFileUploadArea
-          accept="image/*"
-          :multiple="false"
-          :disabled="uploadPending"
-          upload-text="Bild hier hin ziehen oder klicken."
-          class="w-full"
-          @uploaded="upload"
-        />
-      </div>
+          <Loading size="md" />
+          <span>dein Bild wird hochgeladen</span>
+        </div>
+        <div v-else-if="uploadError">
+          <p class="text-red-500">{{ uploadError.message }}</p>
+        </div>
+
+        <div class="mb-6 flex justify-between">
+          <button
+            type="button"
+            class="btn btn-link -mr-3 -mt-1 px-3 py-1"
+          >
+            <i class="fas fa-times" />
+          </button>
+        </div>
+        <div class="flex w-full justify-center">
+          <InputFileUploadArea
+            accept="image/*"
+            :multiple="false"
+            :disabled="uploadPending"
+            upload-text="Bild hier hin ziehen oder klicken."
+            class="w-full"
+            @uploaded="upload"
+          />
+        </div>
+      </template>
     </template>
   </div>
 </template>
