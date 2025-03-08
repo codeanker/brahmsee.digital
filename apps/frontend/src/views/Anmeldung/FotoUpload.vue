@@ -91,7 +91,7 @@ async function upload(toUploadFile: File) {
         >.
       </p>
 
-      <template v-if="!meldeschlussErreicht">
+      <template v-if="meldeschlussErreicht">
         <p class="text-red-500">Leider ist der Meldeschluss bereits erreicht.</p>
       </template>
       <template v-else>
