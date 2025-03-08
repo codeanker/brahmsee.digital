@@ -80,8 +80,24 @@ async function upload(toUploadFile: File) {
     <template v-else>
       <p>
         Vielen Dank für die Anmeldung von <u>{{ state.person.firstname }} {{ state.person.lastname }}</u> zur
-        Veranstaltung <u>{{ state.unterveranstaltung.veranstaltung.name }}</u>
+        Veranstaltung <u>{{ state.unterveranstaltung.veranstaltung.name }}</u
+        >.
       </p>
+      <p>
+        Lade hier ein Bild von <u>{{ state.person.firstname }} {{ state.person.lastname }}</u> hoch. Dieses wird dann
+        bspw. für Teilnehmendenausweise verwendet.
+      </p>
+      <p>
+        <strong>Wichtig:</strong> Bitte achte darauf, dass das Foto möglichst quadratisch ist (gleiche Höhe wie Breite).
+      </p>
+
+      <div
+        v-if="uploadPending"
+        class="flex flex-col text-justify-center items-center"
+      >
+        <Loading size="md" />
+        <span>dein Bild wird hochgeladen</span>
+      </div>
 
       <div class="mb-6 flex justify-between">
         <button
@@ -92,17 +108,10 @@ async function upload(toUploadFile: File) {
         </button>
       </div>
       <div class="flex w-full justify-center">
-        <div
-          v-if="uploadPending"
-          class="flex flex-col text-justify-center items-center"
-        >
-          <Loading size="md" />
-          <span>dein Bild wird hochgeladen</span>
-        </div>
         <InputFileUploadArea
-          v-else
           accept="image/*"
           :multiple="false"
+          :disabled="uploadPending"
           upload-text="Bild hier hin ziehen oder klicken."
           class="w-full"
           @uploaded="upload"
