@@ -4,12 +4,12 @@ import { computed } from 'vue'
 
 import { computePasswordLevel, isStrongPassword } from '@codeanker/helpers'
 
-const props = defineProps<{
-  password: string
+const { password } = defineProps<{
+  password?: string
 }>()
 
-const level = computed(() => computePasswordLevel(props.password))
-const isValid = computed(() => isStrongPassword(props.password))
+const level = computed(() => (password ? computePasswordLevel(password) : 0))
+const isValid = computed(() => (password ? isStrongPassword(password) : false))
 
 defineExpose({ isValid })
 </script>

@@ -7,20 +7,27 @@ import { definePublicMutateProcedure } from '../../types/defineProcedure.js'
 import { sendMail } from '../../util/mail.js'
 
 import { hashPassword } from '@codeanker/authentication'
+import { TRPCError } from '@trpc/server'
 
 export const accountPasswordResetProcedure = definePublicMutateProcedure({
   key: 'resetPassword',
-  inputSchema: z.strictObject({
-    email: z.string().optional(),
-    passwordResetToken: z.string().optional(),
-    password: z.string().optional(),
-  }),
-  async handler(options) {
+  inputSchema: z.discriminatedUnion('type', [
+    z.strictObject({
+      type: z.literal('request'),
+      email: z.string(),
+    }),
+    z.strictObject({
+      type: z.literal('reset'),
+      token: z.string(),
+      password: z.string(),
+    }),
+  ]),
+  async handler({ input }) {
     // Create Reset Token and send per Mail
-    if (options.input.email != null && options.input.passwordResetToken == null && options.input.password == null) {
+    if (input.type === 'request') {
       const findRes = await prisma.account.findUnique({
         where: {
-          email: options.input.email,
+          email: input.email,
         },
         select: {
           email: true,
@@ -52,7 +59,7 @@ export const accountPasswordResetProcedure = definePublicMutateProcedure({
       } else {
         const res = await prisma.account.update({
           where: {
-            email: options.input.email,
+            email: input.email,
           },
           data: {
             passwordResetToken: uuidv4(),
@@ -81,15 +88,13 @@ export const accountPasswordResetProcedure = definePublicMutateProcedure({
         status: true,
         process: 'sendResetToken',
       }
-    } else if (
-      options.input.email == null &&
-      options.input.passwordResetToken != null &&
-      options.input.password != null
-    ) {
-      // Reset Password with Token
+    }
+
+    // Reset Password with Token
+    if (input.type === 'reset') {
       const findRes = await prisma.account.findUnique({
         where: {
-          passwordResetToken: options.input.passwordResetToken,
+          passwordResetToken: input.token,
         },
         select: {
           id: true,
@@ -97,17 +102,18 @@ export const accountPasswordResetProcedure = definePublicMutateProcedure({
         },
       })
 
-      if (findRes == null)
-        return {
-          status: true,
-        }
+      if (findRes == null) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+        })
+      }
 
       await prisma.account.update({
         where: {
           id: findRes.id,
         },
         data: {
-          password: await hashPassword(options.input.password),
+          password: await hashPassword(input.password),
           passwordResetToken: null,
         },
       })

@@ -17,20 +17,18 @@ const routesAuth: Route[] = [
       {
         name: 'PasswortReset',
         path: 'password-reset',
-        component: () => import('./PasswordReset.vue'),
+        component: () => import('./RequestPasswordReset.vue'),
         meta: {
           public: true,
         },
-        children: [
-          {
-            name: 'PasswortResetToken',
-            path: ':token',
-            component: () => import('./PasswordReset.vue'),
-            meta: {
-              public: true,
-            },
-          },
-        ],
+      },
+      {
+        name: 'PasswortResetToken',
+        path: 'password-reset/:token',
+        component: () => import('./ResetPassword.vue'),
+        meta: {
+          public: true,
+        },
       },
     ],
   },

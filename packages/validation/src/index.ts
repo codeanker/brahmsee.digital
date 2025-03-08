@@ -1,5 +1,3 @@
-export * from './watchAndValidateValue.js'
-export * from './defineRule.js'
+export * from 'vee-validate'
 
 export { default as ValidateForm } from './ValidateForm.vue'
-export { Field, ErrorMessage } from 'vee-validate'

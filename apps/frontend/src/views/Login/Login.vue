@@ -10,6 +10,7 @@ import { ErrorMessage, Field, ValidateForm } from '@codeanker/validation'
 import { useMutation } from '@tanstack/vue-query'
 import z from 'zod'
 import { apiClient } from '@/api'
+import AppVersion from '@/components/AppVersion.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -59,8 +60,6 @@ if (location.hash) {
 const formatLoginError = computed(() => {
   return login.isError.value ? login.error.value?.message.replace('TRPCClientError: ', '') : ''
 })
-
-const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.env.VITE_APP_COMMIT_HASH || 'unknown'}`
 
 const origin = `${location.href}/api`
 const oauthHref = `/api/connect/dlrg?mode=login&origin=${encodeURIComponent(origin)}`
@@ -220,7 +219,7 @@ const oauthHref = `/api/connect/dlrg?mode=login&origin=${encodeURIComponent(orig
         </RouterLink>
       </p>
       <p class="flex items-center justify-center mt-20 text-center text-xs">
-        {{ version }}
+        <AppVersion />
         <span class="mx-1">-</span>
         <a
           href="https://codeanker.de?utm_source=brahmsee.digital"

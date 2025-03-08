@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="TOutput extends Record<string, any>, TSchema extends Zod.ZodSchema<TOutput>">
 import { toTypedSchema } from '@vee-validate/zod'
 import { Form } from 'vee-validate'
-import { useTemplateRef } from 'vue'
+import { computed, useTemplateRef } from 'vue'
 import z from 'zod'
 
 type Props = {
@@ -27,8 +27,11 @@ function onSubmit(values: FormSchema) {
   emit('submit', values)
 }
 
+const values = computed<TOutput>(() => (form.value?.values ?? {}) as TOutput)
+
 defineExpose({
   form,
+  values,
 })
 </script>
 
