@@ -40,7 +40,7 @@ async function upload(toUploadFile: File) {
   uploadPending.value = true
   try {
     const res = await handleUpload(toUploadFile)
-    await apiClient.person.verwaltungPatch.mutate({
+    await apiClient.person.patch.mutate({
       id: props.personId,
       data: {
         photoId: res.id,
@@ -57,7 +57,7 @@ async function upload(toUploadFile: File) {
 async function remove() {
   uploadPending.value = true
   try {
-    await apiClient.person.verwaltungPatch.mutate({
+    await apiClient.person.patch.mutate({
       id: props.personId,
       data: {
         photoId: null,

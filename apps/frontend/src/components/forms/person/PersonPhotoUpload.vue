@@ -35,7 +35,7 @@ async function onFileChanged(event: Event) {
   if (!file) return
 
   const res = await handleUpload(file)
-  await apiClient.person.verwaltungPatch.mutate({
+  await apiClient.person.patch.mutate({
     id: props.person.id,
     data: {
       photoId: res.id,
@@ -46,7 +46,7 @@ async function onFileChanged(event: Event) {
 }
 
 async function handleFileDelete() {
-  await apiClient.person.verwaltungPatch.mutate({
+  await apiClient.person.patch.mutate({
     id: props.person.id,
     data: {
       photoId: null,
