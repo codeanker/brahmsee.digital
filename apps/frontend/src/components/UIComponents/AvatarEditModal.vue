@@ -101,7 +101,7 @@ defineExpose({ open, close })
             :multiple="false"
             upload-text="Bild hier hin ziehen oder klicken."
             class="w-full"
-            @uploaded="upload"
+            :on-upload="upload"
           />
         </div>
         <div class="mt-6 grid gap-4">

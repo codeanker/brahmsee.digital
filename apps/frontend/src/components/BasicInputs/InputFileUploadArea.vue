@@ -13,10 +13,7 @@ const props = defineProps<{
   maxFileSize?: number
   fullWindowDropzone?: boolean
   uploadText?: string
-}>()
-
-const emit = defineEmits<{
-  uploaded: [Multiple extends true ? File[] : File]
+  onUpload: (files: Multiple extends true ? File[] : File) => Promise<void>
 }>()
 
 const InputFileUploadAreaConf = {
@@ -85,8 +82,9 @@ async function upload() {
   try {
     uploadPending.value = true
     error.value = null
-    const result = await handleUpload(files.value, props.multiple, props.maxFileSize)
-    emit('uploaded', result)
+    const result = await prepareUpload(files.value, props.multiple, props.maxFileSize)
+    await props.onUpload(result)
+    files.value = []
   } catch (uploadError: any) {
     if (uploadError.message === 'file size too large' && props.maxFileSize) {
       error.value = `Die Dateigröße muss kleiner als ${formatBytes(props.maxFileSize)} sein`
@@ -102,7 +100,7 @@ async function upload() {
   }
 }
 
-async function handleUpload(uploadFiles, multiple = false, maxFileSize) {
+async function prepareUpload(uploadFiles, multiple = false, maxFileSize) {
   if (multiple) {
     const toUploadFiles: any[] = []
     for (const key in uploadFiles) {
@@ -143,6 +141,8 @@ const mimeMap: Record<FileKind, string> = {
   application: 'Ausführbare Datei',
   unknown: 'Unbekanntes Dateiformat',
 }
+
+defineExpose({ files })
 </script>
 
 <template>
