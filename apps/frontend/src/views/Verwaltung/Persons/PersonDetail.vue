@@ -41,7 +41,7 @@ const { execute: update } = useAsyncState(
       })
       .map((entry) => entry[0] as NahrungsmittelIntoleranz)
 
-    await apiClient.person.verwaltungPatch.mutate({
+    await apiClient.person.patch.mutate({
       id: person.value!.id,
       data: {
         gliederungId: anmeldung.gliederung.id,
