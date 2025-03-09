@@ -6,6 +6,9 @@ settings:
 
 catalogs:
   default:
+    '@eslint/js':
+      specifier: ^9.17.0
+      version: 9.19.0
     '@tiptap/extension-document':
       specifier: ^2.11.0
       version: 2.11.5
@@ -33,6 +36,9 @@ catalogs:
     '@trpc/client':
       specifier: 11.0.0-rc.682
       version: 11.0.0-rc.682
+    '@trpc/server':
+      specifier: 11.0.0-rc.682
+      version: 11.0.0-rc.682
     '@types/node':
       specifier: ^22.10.2
       version: 22.10.2
@@ -45,6 +51,9 @@ catalogs:
     typescript:
       specifier: ^5.7.2
       version: 5.7.2
+    typescript-eslint:
+      specifier: ^8.18.2
+      version: 8.18.2
     vue:
       specifier: ^3.5.13
       version: 3.5.13
@@ -57,8 +66,8 @@ importers:
   .:
     devDependencies:
       husky:
-        specifier: ^8.0.3
-        version: 8.0.3
+        specifier: ^9.1.7
+        version: 9.1.7
       prettier:
         specifier: 3.4.2
         version: 3.4.2
@@ -1353,6 +1362,7 @@ packages:
   '@faker-js/faker@9.4.0':
     resolution: {integrity: sha512-85+k0AxaZSTowL0gXp8zYWDIrWclTbRPg/pm/V0dSFZ6W6D4lhcG3uuZl4zLsEKfEvs69xDbLN2cHQudwp95JA==}
     engines: {node: '>=18.0.0', npm: '>=9.0.0'}
+    deprecated: Please update to a newer version
 
   '@fast-csv/format@5.0.2':
     resolution: {integrity: sha512-fRYcWvI8vs0Zxa/8fXd/QlmQYWWkJqKZPAXM+vksnplb3owQFKTPPh9JqOtD0L3flQw/AZjjXdPkD7Kp/uHm8g==}
@@ -3318,9 +3328,9 @@ packages:
   human-filetypes@1.1.3:
     resolution: {integrity: sha512-vtGxjtt0pdKULyCD3juFr0gjxSU3tJb995/oZN84LHP45HGryg1/2xJCLvoKw6zEpWfVCZiFNaGLOF16u28Bbg==}
 
-  husky@8.0.3:
-    resolution: {integrity: sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==}
-    engines: {node: '>=14'}
+  husky@9.1.7:
+    resolution: {integrity: sha512-5gs5ytaNjBrh5Ow3zrvdUUY+0VxIuWVL4i9irt6friV+BqdCfmV11CQTWMiBYWHbXhco+J1kHfTOUkePhCDvMA==}
+    engines: {node: '>=18'}
     hasBin: true
 
   iconv-lite@0.4.24:
@@ -7821,7 +7831,7 @@ snapshots:
 
   human-filetypes@1.1.3: {}
 
-  husky@8.0.3: {}
+  husky@9.1.7: {}
 
   iconv-lite@0.4.24:
     dependencies:
