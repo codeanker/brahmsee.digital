@@ -1,15 +1,32 @@
 import { Role } from '@prisma/client'
-import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 
 import prisma from '../../prisma.js'
 import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
+import { TRPCError } from '@trpc/server'
 
-export const customFieldsDelete = defineProtectedMutateProcedure({
-  key: 'delete',
-  roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
+export const customFieldsVeranstaltungDelete = defineProtectedMutateProcedure({
+  key: 'veranstaltungDelete',
+  roleIds: [Role.ADMIN],
   inputSchema: z.strictObject({
     veranstaltungId: z.number(),
+    fieldId: z.number(),
+  }),
+  async handler({ input }) {
+    await prisma.customField.delete({
+      where: {
+        id: input.fieldId,
+        veranstaltungId: input.veranstaltungId,
+      },
+    })
+  },
+})
+
+export const customFieldsUnterveranstaltungDelete = defineProtectedMutateProcedure({
+  key: 'unterveranstaltungDelete',
+  roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
+  inputSchema: z.strictObject({
+    unterveranstaltungId: z.number(),
     fieldId: z.number(),
   }),
   async handler({ ctx, input }) {
@@ -43,23 +60,9 @@ export const customFieldsDelete = defineProtectedMutateProcedure({
       }
     }
 
-    const field = await prisma.customField.findUnique({
-      where: {
-        id: input.fieldId,
-        veranstaltungId: input.veranstaltungId,
-      },
-    })
-
-    if (field === null) {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-      })
-    }
-
     await prisma.customField.delete({
       where: {
         id: input.fieldId,
-        veranstaltungId: input.veranstaltungId,
       },
     })
   },

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAsyncState } from '@vueuse/core'
-import { ref, watch } from 'vue'
+import { ref, useTemplateRef, watch } from 'vue'
 
 import { apiClient } from '@/api'
 import CustomFieldsFormGeneral, { type ICustomFieldData } from '@/components/CustomFields/CustomFieldsFormGeneral.vue'
@@ -8,10 +8,15 @@ import Button from '@/components/UIComponents/Button.vue'
 import router from '@/router'
 import type { CustomFieldType } from '@codeanker/api'
 import { ValidateForm } from '@codeanker/validation'
+import CustomFieldDeleteModal from './CustomFieldDeleteModal.vue'
 
 const props = defineProps<{
+  entity: 'veranstaltung' | 'unterveranstaltung'
+  entityId: number
   fieldId: number
 }>()
+
+const deleteModal = useTemplateRef('deleteModal')
 
 const { state: field } = useAsyncState(async () => {
   return apiClient.customFields.get.query({
@@ -72,23 +77,6 @@ const {
   null,
   { immediate: false }
 )
-
-const {
-  execute: doDelete,
-  // error: errorDelete,
-  isLoading: isDeleting,
-} = useAsyncState(
-  async () => {
-    await apiClient.customFields.delete.mutate({
-      fieldId: field.value!.id,
-      veranstaltungId: 0,
-    })
-
-    router.back()
-  },
-  null,
-  { immediate: false }
-)
 </script>
 
 <template>
@@ -101,7 +89,7 @@ const {
       <Button
         type="submit"
         color="primary"
-        :disabled="isUpdating || isDeleting"
+        :disabled="isUpdating"
       >
         <span v-if="!isUpdating">Speichern</span>
         <span v-else>Loading...</span>
@@ -109,7 +97,7 @@ const {
       <Button
         type="button"
         color="warning"
-        :disabled="isUpdating || isDeleting"
+        :disabled="isUpdating"
         @click="() => router.back()"
       >
         Abbrechen
@@ -118,8 +106,8 @@ const {
       <Button
         type="button"
         color="danger"
-        :disabled="isUpdating || isDeleting"
-        @click="doDelete"
+        :disabled="isUpdating"
+        @click="deleteModal?.show()"
       >
         Löschen
       </Button>
@@ -137,4 +125,13 @@ const {
       {{ error }}
     </div>
   </div>
+
+  <CustomFieldDeleteModal
+    v-if="field"
+    ref="deleteModal"
+    :entity="props.entity"
+    :entity-id="props.entityId"
+    :field="field"
+    @delete="router.back()"
+  />
 </template>
