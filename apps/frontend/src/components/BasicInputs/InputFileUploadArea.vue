@@ -2,6 +2,9 @@
 import { computed, onMounted, ref, shallowRef } from 'vue'
 
 import { formatBytes } from '@codeanker/helpers'
+import { TrashIcon } from '@heroicons/vue/24/solid'
+import { fromMime, type FileKind } from 'human-filetypes'
+import Button from '../UIComponents/Button.vue'
 
 const props = defineProps<{
   multiple?: Multiple
@@ -10,10 +13,7 @@ const props = defineProps<{
   maxFileSize?: number
   fullWindowDropzone?: boolean
   uploadText?: string
-}>()
-
-const emit = defineEmits<{
-  uploaded: [Multiple extends true ? File[] : File]
+  onUpload: (files: Multiple extends true ? File[] : File) => Promise<void>
 }>()
 
 const InputFileUploadAreaConf = {
@@ -61,22 +61,30 @@ function dropZoneDrop(event) {
   event.preventDefault()
   event.stopPropagation()
   dragCounter.value = 0
-  return upload(event.dataTransfer.files)
+
+  files.value.push(...Array.from<File>(event.dataTransfer.files))
 }
+
+const files = ref<File[]>([])
 
 function uploadFileInput(event) {
-  return upload(event.target.files)
+  files.value.push(...Array.from<File>(event.target.files))
 }
 
-async function upload(files) {
-  if (uploadPending.value || !files || !files[0]) {
+function fileUrl(file: File) {
+  return URL.createObjectURL(file)
+}
+
+async function upload() {
+  if (uploadPending.value || !files.value || !files.value[0]) {
     return
   }
   try {
     uploadPending.value = true
     error.value = null
-    const result = await handleUpload(files, props.multiple, props.maxFileSize)
-    emit('uploaded', result)
+    const result = await prepareUpload(files.value, props.multiple, props.maxFileSize)
+    await props.onUpload(result)
+    files.value = []
   } catch (uploadError: any) {
     if (uploadError.message === 'file size too large' && props.maxFileSize) {
       error.value = `Die Dateigröße muss kleiner als ${formatBytes(props.maxFileSize)} sein`
@@ -92,7 +100,7 @@ async function upload(files) {
   }
 }
 
-async function handleUpload(uploadFiles, multiple = false, maxFileSize) {
+async function prepareUpload(uploadFiles, multiple = false, maxFileSize) {
   if (multiple) {
     const toUploadFiles: any[] = []
     for (const key in uploadFiles) {
@@ -119,6 +127,22 @@ async function handleUpload(uploadFiles, multiple = false, maxFileSize) {
     }
   }
 }
+
+const mimeMap: Record<FileKind, string> = {
+  image: 'Bild',
+  video: 'Video',
+  audio: 'Audio',
+  archive: 'Archiv',
+  document: 'Dokument',
+  spreadsheet: 'Tabelle',
+  presentation: 'Präsentation',
+  font: 'Schriftart',
+  text: 'Text',
+  application: 'Ausführbare Datei',
+  unknown: 'Unbekanntes Dateiformat',
+}
+
+defineExpose({ files })
 </script>
 
 <template>
@@ -131,25 +155,67 @@ async function handleUpload(uploadFiles, multiple = false, maxFileSize) {
       }"
       @click="fileInput?.click()"
     >
-      <div>
-        <slot>
-          <div class="flex items-center space-x-4">
-            <i class="fad fa-upload fa-2x flex-shrink-0" />
-            <h5 class="mb-0">{{ uploadText ?? 'Datei hier hin ziehen oder klicken.' }}</h5>
-          </div>
-        </slot>
-      </div>
+      <slot>
+        <div class="flex items-center space-x-4">
+          <i class="fad fa-upload fa-2x flex-shrink-0" />
+          <h5 class="mb-0">{{ uploadText ?? 'Datei hier hin ziehen oder klicken.' }}</h5>
+        </div>
+      </slot>
+
       <input
-        id="hidden-input"
         ref="fileInput"
         type="file"
         :multiple="multiple"
         :accept="accept"
         :disabled="uploadPending || disabled"
-        class="hidden"
+        class="!hidden"
         @change="uploadFileInput"
         @click.stop
       />
     </div>
+
+    <Button
+      class="w-full mt-4"
+      :disabled="files.length === 0 || props.disabled"
+      @click="upload"
+    >
+      Hochladen
+    </Button>
+
+    <template v-if="files.length > 0">
+      <div class="mt-4 flex flex-row gap-x-4 justify-center">
+        <template
+          v-for="(file, index) in files"
+          :key="index"
+        >
+          <div class="relative">
+            <img
+              v-if="file.type.startsWith('image')"
+              :src="fileUrl(file)"
+              class="h-[384px] drop-shadow-lg"
+            />
+            <div
+              v-else
+              class="size-[192px] bg-primary-100 flex flex-col gap-y-2 items-center justify-center rounded border-2 border-primary-200"
+            >
+              <p>
+                <strong>{{ file.name }}</strong>
+              </p>
+              <p>
+                <i>{{ mimeMap[fromMime(file.type)] }}</i>
+              </p>
+            </div>
+
+            <button
+              type="button"
+              class="absolute top-2 right-2 bg-white/80 text-red-500 p-2 rounded-full"
+              @click="files.splice(index, 1)"
+            >
+              <TrashIcon class="size-6" />
+            </button>
+          </div>
+        </template>
+      </div>
+    </template>
   </div>
 </template>

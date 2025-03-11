@@ -10,8 +10,8 @@ export const anmeldungAccessTokenValidateProcedure = definePublicQueryProcedure(
     anmeldungId: z.number().int(),
     accessToken: z.string().uuid(),
   }),
-  handler: ({ input: { unterveranstaltungId, anmeldungId, accessToken } }) =>
-    prisma.anmeldung.findFirst({
+  handler: ({ input: { unterveranstaltungId, anmeldungId, accessToken } }) => {
+    return prisma.anmeldung.findFirst({
       where: {
         unterveranstaltungId,
         id: anmeldungId,
@@ -23,6 +23,7 @@ export const anmeldungAccessTokenValidateProcedure = definePublicQueryProcedure(
             id: true,
             firstname: true,
             lastname: true,
+            photoId: true,
           },
         },
         unterveranstaltung: {
@@ -40,5 +41,6 @@ export const anmeldungAccessTokenValidateProcedure = definePublicQueryProcedure(
           },
         },
       },
-    }),
+    })
+  },
 })

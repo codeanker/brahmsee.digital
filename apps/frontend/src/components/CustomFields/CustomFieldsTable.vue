@@ -34,7 +34,15 @@ const router = useRouter()
 type Field = (typeof fields.value)[number]
 
 function canEdit(field: Field) {
-  return loggedInAccount.value?.role === 'ADMIN' || field.unterveranstaltungId !== null
+  if (field.veranstaltungId !== null && loggedInAccount.value?.role === 'ADMIN') {
+    return true
+  }
+
+  if (field.unterveranstaltungId !== null && loggedInAccount.value?.role !== 'USER') {
+    return true
+  }
+
+  return false
 }
 
 function onClickRow(field: Field) {

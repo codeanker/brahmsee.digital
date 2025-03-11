@@ -152,7 +152,6 @@ async function onFileChanged($event: Event) {
 async function deleteHeroImages(image, index) {
   heroImages.value.splice(index, 1)
   if (!image.added) {
-    console.log('deleteHeroImages', image)
     deletedHeroImagesIds.value.push(image.id)
   }
 }

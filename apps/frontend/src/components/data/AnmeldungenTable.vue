@@ -141,8 +141,8 @@ const { execute: updateAnmeldung } = useAsyncState(
           weitereIntoleranzen: anmeldung.essgewohnheiten.weitereIntoleranzen,
         },
       }
+      await apiClient.person.patch.mutate(data)
       if (loggedInAccount.value?.role === 'ADMIN') {
-        await apiClient.person.verwaltungPatch.mutate(data)
         await apiClient.anmeldung.verwaltungPatch.mutate({
           id: selectedAnmeldungId.value,
           data: {
@@ -150,7 +150,6 @@ const { execute: updateAnmeldung } = useAsyncState(
           },
         })
       } else {
-        await apiClient.person.gliederungPatch.mutate(data)
         await apiClient.anmeldung.gliederungPatch.mutate({
           id: selectedAnmeldungId.value,
           data: {
