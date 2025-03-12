@@ -40,7 +40,7 @@
     "@prisma/extension-accelerate": "^1.1.0",
     "@sendgrid/mail": "^8.1.0",
     "@trpc/server": "catalog:",
-    "axios": "^1.7.7",
+    "axios": "^1.8.3",
     "config": "^3.3.9",
     "dayjs": "^1.11.10",
     "dot-prop": "^9.0.0",
