@@ -5,8 +5,8 @@ import { apiClient } from '@/api'
 import PasswordStrength from '@/components/PasswordStrength.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import Loading from '@/components/UIComponents/Loading.vue'
-import { ErrorMessage, Field, ValidateForm } from '@codeanker/validation'
 import { useMutation } from '@tanstack/vue-query'
+import { useForm } from '@volverjs/form-vue'
 import { useTemplateRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { z } from 'zod'
@@ -19,7 +19,6 @@ if (typeof token !== 'string') {
   router.replace({ name: 'Login' })
 }
 
-const form = useTemplateRef('form')
 const strength = useTemplateRef('strength')
 
 const formSchema = z.strictObject({
@@ -28,15 +27,18 @@ const formSchema = z.strictObject({
 
 type FormSchema = z.infer<typeof formSchema>
 
+const { VvForm, VvFormField, formData } = useForm(formSchema, {
+  onSubmit: (values) => sendResetPasswordRequest.mutateAsync(values),
+})
+
 const sendResetPasswordRequest = useMutation({
   mutationKey: ['password-reset-request'],
-  mutationFn: async (values: FormSchema) => {
-    return await apiClient.account.resetPassword.mutate({
+  mutationFn: (values: FormSchema) =>
+    apiClient.account.resetPassword.mutate({
       type: 'reset',
       password: values.password,
       token: token as string,
-    })
-  },
+    }),
 })
 </script>
 
@@ -49,13 +51,8 @@ const sendResetPasswordRequest = useMutation({
 
     <div class="mt-5 lg:mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
       <div class="bg-white px-6 py-12 sm:rounded-lg sm:px-12">
-        <ValidateForm
-          ref="form"
-          class="space-y-8"
-          :schema="formSchema"
-          @submit="sendResetPasswordRequest.mutate"
-        >
-          <Field
+        <VvForm class="space-y-8">
+          <VvFormField
             name="password"
             type="password"
             class="w-full"
@@ -63,14 +60,10 @@ const sendResetPasswordRequest = useMutation({
             :disabled="sendResetPasswordRequest.isPending.value || sendResetPasswordRequest.isSuccess.value"
             required
           />
-          <ErrorMessage
-            name="password"
-            class="text-red-500 text-sm"
-          />
 
           <PasswordStrength
             ref="strength"
-            :password="form?.values.password"
+            :password="formData?.password"
           />
 
           <Button
@@ -86,7 +79,7 @@ const sendResetPasswordRequest = useMutation({
             </template>
             <template v-else>Zurücksetzen</template>
           </Button>
-        </ValidateForm>
+        </VvForm>
       </div>
 
       <template v-if="sendResetPasswordRequest.isSuccess.value">

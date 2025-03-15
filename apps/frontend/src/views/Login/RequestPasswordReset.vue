@@ -4,17 +4,23 @@ import { CheckCircleIcon } from '@heroicons/vue/24/outline'
 import { apiClient } from '@/api'
 import Button from '@/components/UIComponents/Button.vue'
 import Loading from '@/components/UIComponents/Loading.vue'
-import { ErrorMessage, Field, ValidateForm } from '@codeanker/validation'
 import { useMutation } from '@tanstack/vue-query'
+import { useForm } from '@volverjs/form-vue'
 import { z } from 'zod'
 
 const formSchema = z.strictObject({
   email: z.string().email(),
 })
 
+type FormSchema = z.infer<typeof formSchema>
+
+const { VvForm, VvFormField } = useForm(formSchema, {
+  onSubmit: (values) => sendResetPasswordRequest.mutateAsync(values),
+})
+
 const sendResetPasswordRequest = useMutation({
   mutationKey: ['password-reset-request'],
-  mutationFn: async (values: z.infer<typeof formSchema>) => {
+  mutationFn: async (values: FormSchema) => {
     return await apiClient.account.resetPassword.mutate({
       type: 'request',
       email: values.email,
@@ -32,22 +38,14 @@ const sendResetPasswordRequest = useMutation({
 
     <div class="mt-5 lg:mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
       <div class="bg-white px-6 py-12 sm:rounded-lg sm:px-12">
-        <ValidateForm
-          class="space-y-8"
-          :schema="formSchema"
-          @submit="sendResetPasswordRequest.mutate"
-        >
-          <Field
+        <VvForm class="space-y-8">
+          <VvFormField
             name="email"
             type="email"
             class="w-full"
             placeholder="E-Mail"
             :disabled="sendResetPasswordRequest.isPending.value || sendResetPasswordRequest.isSuccess.value"
             required
-          />
-          <ErrorMessage
-            name="email"
-            class="text-red-500 text-sm"
           />
 
           <Button
@@ -61,7 +59,7 @@ const sendResetPasswordRequest = useMutation({
             </template>
             <template v-else> Anfrage senden </template>
           </Button>
-        </ValidateForm>
+        </VvForm>
       </div>
 
       <template v-if="sendResetPasswordRequest.isSuccess.value">

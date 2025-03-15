@@ -2,15 +2,15 @@
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
+import { apiClient } from '@/api'
+import AppVersion from '@/components/AppVersion.vue'
 import DarkModeSwitch from '@/components/DarkModeSwitch.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import Loading from '@/components/UIComponents/Loading.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
-import { ErrorMessage, Field, ValidateForm } from '@codeanker/validation'
 import { useMutation } from '@tanstack/vue-query'
+import { useForm } from '@volverjs/form-vue'
 import z from 'zod'
-import { apiClient } from '@/api'
-import AppVersion from '@/components/AppVersion.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -20,10 +20,16 @@ const formSchema = z.strictObject({
   password: z.string().min(1),
 })
 
+type FormSchema = z.infer<typeof formSchema>
+
+const { VvForm, VvFormField, status } = useForm(formSchema, {
+  onSubmit: (values) => login.mutateAsync(values),
+})
+
 const login = useMutation({
   mutationKey: ['login'],
-  mutationFn: async ({ email, password }: z.infer<typeof formSchema>) => {
-    const { accessToken, account } = await apiClient.authentication.login.mutate({ email, password })
+  mutationFn: async (values: FormSchema) => {
+    const { accessToken, account } = await apiClient.authentication.login.mutate(values)
 
     loggedInAccount.value = account
     localStorage.setItem('jwt', accessToken)
@@ -33,9 +39,11 @@ const login = useMutation({
       return router.push(route.query.redirect as string)
     } else {
       const letzteVeranstaltung = localStorage.getItem('letzteVeranstaltung')
-      if (letzteVeranstaltung)
+      if (letzteVeranstaltung) {
         return router.push({ name: 'Dashboard', params: { veranstaltungId: letzteVeranstaltung } })
-      else return router.push({ name: 'Auschreibungen' })
+      } else {
+        return router.push({ name: 'Auschreibungen' })
+      }
     }
   },
 })
@@ -90,29 +98,17 @@ const oauthHref = `/api/connect/dlrg?mode=login&origin=${encodeURIComponent(orig
         {{ formatLoginError }}
       </div>
       <div class="px-6 py-12 sm:rounded-lg sm:px-12">
-        <ValidateForm
-          class="space-y-8"
-          :schema="formSchema"
-          @submit="login.mutateAsync"
-        >
-          <Field
+        <VvForm class="space-y-8">
+          <VvFormField
             name="email"
             type="email"
             placeholder="E-Mail Adresse"
           />
-          <ErrorMessage
-            name="email"
-            class="text-red-500 text-sm mt-1"
-          />
 
-          <Field
+          <VvFormField
             name="password"
             type="password"
             placeholder="********"
-          />
-          <ErrorMessage
-            name="password"
-            class="text-red-500 text-sm mt-1"
           />
 
           <div class="flex items-center justify-center">
@@ -128,7 +124,7 @@ const oauthHref = `/api/connect/dlrg?mode=login&origin=${encodeURIComponent(orig
           <Button
             color="primary"
             type="submit"
-            :disabled="login.isPending.value"
+            :disabled="status === 'valid' || login.isPending.value"
             full
           >
             <template v-if="login.isPending.value">
@@ -136,7 +132,7 @@ const oauthHref = `/api/connect/dlrg?mode=login&origin=${encodeURIComponent(orig
             </template>
             <template v-else> Anmelden </template>
           </Button>
-        </ValidateForm>
+        </VvForm>
 
         <div>
           <div class="relative mt-5 lg:mt-10">
