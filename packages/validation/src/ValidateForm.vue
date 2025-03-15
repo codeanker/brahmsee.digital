@@ -1,46 +1,46 @@
-<script setup lang="ts" generic="TOutput extends Record<string, any>, TSchema extends Zod.ZodSchema<TOutput>">
-import { toTypedSchema } from '@vee-validate/zod'
+<script setup lang="ts">
 import { Form } from 'vee-validate'
-import { computed, useTemplateRef } from 'vue'
-import z from 'zod'
-
-type Props = {
-  schema: TSchema
-  defaultValues?: TOutput
-}
-
-const props = defineProps<Props>()
+import { ref } from 'vue'
 
 const emit = defineEmits<{
-  submit: [z.infer<TSchema>]
+  submit: []
 }>()
 
-const formSchema = toTypedSchema(props.schema, {
-  async: true,
-})
+const form = ref<InstanceType<typeof Form>>()
 
-type FormSchema = z.infer<TSchema>
-
-const form = useTemplateRef('form')
-
-function onSubmit(values: FormSchema) {
-  emit('submit', values)
+async function validate({ scrollIntoView = true } = {}) {
+  if (!form.value) return
+  const validationResult = await form.value.validate()
+  if (!validationResult.valid) {
+    const errors = validationResult.errors
+    const errorKeys = Object.keys(errors)
+    if (scrollIntoView) {
+      const firstErrorKey = errorKeys.find((key) => {
+        const errorByKey = errors[key]
+        return errorByKey && errorByKey.length > 0
+      })
+      const label = document.querySelector(`label[for="${firstErrorKey}"]`)
+      const element = document.querySelector(`*[data-error-scroll-anchor="${firstErrorKey}"]`)
+      const scrollToElement = label || element
+      scrollToElement?.scrollIntoView({ block: 'start', behavior: 'smooth' })
+    }
+  }
+  return validationResult
 }
-
-const values = computed<TOutput>(() => (form.value?.values ?? {}) as TOutput)
-
+async function reset() {
+  await form.value?.resetForm()
+}
 defineExpose({
-  form,
-  values,
+  validate,
+  reset,
 })
 </script>
 
 <template>
   <Form
     ref="form"
-    :validation-schema="formSchema"
-    :initial-values="props.defaultValues"
-    @submit="(values) => onSubmit(values as FormSchema)"
+    slim
+    @submit="emit('submit')"
   >
     <slot />
   </Form>

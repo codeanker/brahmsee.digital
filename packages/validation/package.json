@@ -12,16 +12,16 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@vee-validate/zod": "^4.15.0",
-    "vee-validate": "^4.15.0",
-    "vue": "catalog:",
-    "zod": "catalog:"
+    "vee-validate": "^4.11.8"
   },
   "devDependencies": {
-    "@codeanker/eslint-config": "workspace:*",
     "@codeanker/typescript-config": "workspace:*",
+    "@codeanker/eslint-config": "workspace:*",
     "@types/node": "catalog:",
-    "eslint": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "eslint": "catalog:"
+  },
+  "peerDependencies": {
+    "vue": "^3.2.47"
   }
 }
