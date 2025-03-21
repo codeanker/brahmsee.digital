@@ -39,6 +39,7 @@
     "@vueuse/router": "^12.3.0",
     "clsx": "^2.1.1",
     "http2-proxy": "^5.0.53",
+    "human-filetypes": "^1.1.3",
     "intl-tel-input": "^24.4.0",
     "primevue": "^4.2.5",
     "radix-vue": "^1.9.5",
