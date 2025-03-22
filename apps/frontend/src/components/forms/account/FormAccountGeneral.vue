@@ -367,37 +367,40 @@ const tabs = computed(() => {
       </div>
     </Tab>
     <Tab>
-      <div
-        v-if="!isSelf && edit"
-        class="p-6 border-2 border-danger-600 rounded-md my-8 flex items-top space-x-4"
-      >
-        <div><TrashIcon class="h-10 w-10 text-danger-600" /></div>
-        <div>
-          <div class="font-bold text-lg text-danger-600">Account löschen</div>
-          <div>
-            Du benötigst diesen Account nicht mehr? Hier kannst Du das Konto löschen. Dieser Vorgang ist nicht
-            rückgängig zu machen. Alle Informationen, die mit diesem Konto verbunden sind, werden dauerhaft gelöscht.
+      <div class="grid grid-cols-1 lg:grid-cols-2">
+        <div
+          v-if="!isSelf && edit"
+          class="p-6 border border-danger-600 rounded-md my-8 flex items-top space-x-4"
+        >
+          <TrashIcon class="size-8 shrink-0 text-danger-600 mt-1" />
+          <div class="space-y-3">
+            <div class="font-bold text-lg text-danger-600">Account löschen</div>
+            <div>
+              Du benötigst diesen Account nicht mehr? Hier kannst du ihn löschen. Dieser Vorgang ist endgültig. Alle
+              Informationen werden gelöscht.
+            </div>
+            <div>Gebe den Text <span class="font-bold">Account löschen</span> ein, um den Account zu löschen.</div>
+            <div class="flex">
+              <input
+                v-model="deleteAccount"
+                type="text"
+                class="form-control rounded-r-none focus:border-danger-600"
+                placeholder="Account löschen"
+              />
+              <Button
+                class="p-2 rounded-l-none"
+                color="danger"
+                :disabled="deleteAccount !== 'Account löschen'"
+                @click="deleteUser"
+              >
+                Löschen
+              </Button>
+            </div>
           </div>
-          <div class="flex mt-4">
-            <input
-              v-model="deleteAccount"
-              type="text"
-              class="form-control rounded-r-none focus:border-danger-600"
-              placeholder="Account löschen"
-            />
-            <Button
-              class="p-2 rounded-l-none"
-              color="danger"
-              :disabled="deleteAccount !== 'Account löschen'"
-              @click="deleteUser"
-            >
-              Löschen
-            </Button>
-          </div>
+          <template v-if="errorDelete">
+            {{ errorDelete }}
+          </template>
         </div>
-        <template v-if="errorDelete">
-          {{ errorDelete }}
-        </template>
       </div>
     </Tab>
     <Tab v-if="loggedInAccount?.role === 'ADMIN'">
