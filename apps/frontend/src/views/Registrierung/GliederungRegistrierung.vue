@@ -10,6 +10,9 @@ import Modal from '@/components/UIComponents/Modal.vue'
 import { toast } from 'vue-sonner'
 import IscRedirectModal from '@/components/Modal/IscRedirectModal.vue'
 import RegisterModal from '@/components/Modal/RegisterModal.vue'
+import { useAssets } from '@/composables/useAssets'
+
+const { logo } = useAssets()
 
 const iscModal = ref<InstanceType<typeof Modal>>()
 const defaultModal = ref<InstanceType<typeof Modal>>()
@@ -92,7 +95,12 @@ async function registerGliederung(stammdatenForm, registrationForm) {
       </div>
 
       <!-- Title Header -->
-      <div class="flex flex-col items-center justify-center relative">
+      <div class="flex flex-col space-y-4 items-center justify-center relative">
+        <img
+          :src="logo"
+          alt="Brahmsee Logo"
+          class="size-28"
+        />
         <h2 class="text-center text-4xl text-primary-700">Registrierung als Gliederung</h2>
         <p class="text-center text-red-600 font-bold">
           Bitte beachte das diese Registrierung nur für Verantwortliche einer Gliederung vorgesehen ist.

@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { UserGroupIcon, ChevronLeftIcon, UserIcon } from '@heroicons/vue/24/outline'
 import ButtonCard from '@/components/UIComponents/ButtonCard.vue'
+import { useAssets } from '@/composables/useAssets'
+
+const { logo } = useAssets()
 </script>
 
 <template>
@@ -17,7 +20,12 @@ import ButtonCard from '@/components/UIComponents/ButtonCard.vue'
       </div>
 
       <!-- Title Header -->
-      <div class="flex flex-col items-center justify-center relative">
+      <div class="flex flex-col items-center justify-center relative space-y-4">
+        <img
+          :src="logo"
+          alt="Brahmsee Logo"
+          class="size-28"
+        />
         <h2 class="text-center text-4xl text-primary-700">Registrierung</h2>
         <p class="text-center">Wie möchtest Du dich registrieren?</p>
       </div>

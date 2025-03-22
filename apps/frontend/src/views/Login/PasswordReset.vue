@@ -10,12 +10,15 @@ import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import Loading from '@/components/UIComponents/Loading.vue'
 import { ValidateForm } from '@codeanker/validation'
+import { useAssets } from '@/composables/useAssets'
 
 const email = ref('')
 const password = ref('')
 const route = useRoute()
 
 const lastAction = ref('')
+
+const { logo } = useAssets()
 
 const requestPasswordReset = (action) => {
   lastAction.value = action
@@ -63,7 +66,12 @@ const showSet = computed(() => {
       </div>
 
       <!-- Title Header -->
-      <div class="flex flex-col items-center justify-center relative">
+      <div class="flex flex-col space-y-4 items-center justify-center relative">
+        <img
+          :src="logo"
+          alt="Website Logo"
+          class="size-28"
+        />
         <h2 class="text-center text-4xl text-primary-700">Passwort vergessen</h2>
         <p class="text-center">Nicht schlimm, hier kannst Du es zurücksetzen</p>
       </div>

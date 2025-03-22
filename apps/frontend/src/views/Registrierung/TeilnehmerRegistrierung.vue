@@ -9,6 +9,9 @@ import IscBadge from '@/components/IscBadge.vue'
 import IscRedirectModal from '@/components/Modal/IscRedirectModal.vue'
 import RegisterModal from '@/components/Modal/RegisterModal.vue'
 import { toast } from 'vue-sonner'
+import { useAssets } from '@/composables/useAssets'
+
+const { logo } = useAssets()
 
 const iscModal = ref<InstanceType<typeof IscRedirectModal>>()
 const defaultModal = ref<InstanceType<typeof RegisterModal>>()
@@ -91,7 +94,12 @@ async function registerGliederung(stammdatenForm, registrationForm) {
       </div>
 
       <!-- Title Header -->
-      <div class="flex flex-col items-center justify-center relative">
+      <div class="flex flex-col space-y-4 items-center justify-center relative">
+        <img
+          :src="logo"
+          alt="Brahmsee Logo"
+          class="size-28"
+        />
         <h2 class="text-center text-4xl text-primary-700">Registrierung als Teilnehmer</h2>
         <p class="text-center">Wie möchtest Du dich registrieren?</p>
       </div>

@@ -9,9 +9,12 @@ import Button from '@/components/UIComponents/Button.vue'
 import Loading from '@/components/UIComponents/Loading.vue'
 import { login, loginError, loginPending } from '@/composables/useAuthentication'
 import { ValidateForm } from '@codeanker/validation'
+import { useAssets } from '@/composables/useAssets'
 
 const router = useRouter()
 const route = useRoute()
+
+const { logo, appname } = useAssets()
 
 const email = ref('')
 const password = ref('')
@@ -59,8 +62,13 @@ const oauthHref = `/api/connect/dlrg?mode=login&origin=${encodeURIComponent(orig
   <div class="h-svh flex flex-col items-center w-full p-6 lg:p-0">
     <div class="flex h-full flex-col lg:justify-center w-full lg:max-w-xl space-y-12">
       <!-- Title Header -->
-      <div class="flex flex-col items-center justify-center relative">
-        <h2 class="text-center text-4xl tracking-tight text-primary-700 dark:text-primary-600">brahmsee.digital</h2>
+      <div class="flex flex-col items-center justify-center relative space-y-4">
+        <img
+          :src="logo"
+          alt="Website Logo"
+          class="size-28"
+        />
+        <h2 class="text-center text-4xl tracking-tight text-primary-700 dark:text-primary-600">{{ appname }}</h2>
         <p class="text-center">Melde dich zu deinem Konto an</p>
         <div class="absolute right-0">
           <DarkModeSwitch />
