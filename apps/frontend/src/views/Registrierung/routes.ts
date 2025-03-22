@@ -23,6 +23,14 @@ const routesRegistrierung: Route[] = [
         },
       },
       {
+        name: 'TeilnehmerRegistrierung',
+        path: 'teilnehmer',
+        component: () => import('./TeilnehmerRegistrierung.vue'),
+        meta: {
+          public: true,
+        },
+      },
+      {
         name: 'GliederungRegistrierungCallback',
         path: 'gliederung/callback',
         component: () => import('./GliederungRegistrierungCallback.vue'),

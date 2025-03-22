@@ -1,11 +1,13 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div
-    class="flex flex-col bg-white dark:bg-dark-primary min-h-full min-h-screen transition-colors duration-200 justify-between sm:px-6 lg:px-8"
-  >
-    <slot>
+  <div class="grid grid-cols-1 lg:grid-cols-2 w-screen h-svh">
+    <!-- Grid Cell 1-->
+    <div class="bg-public bg-center bg-cover"></div>
+
+    <!-- Grid Cell 2-->
+    <div class="h-svh">
       <router-view />
-    </slot>
+    </div>
   </div>
 </template>

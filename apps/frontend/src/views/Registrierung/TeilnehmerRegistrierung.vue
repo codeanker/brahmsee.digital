@@ -41,7 +41,7 @@ async function queryObject(searchTerm) {
 }
 
 const errorCreate = ref<unknown | null>(null)
-const account = ref<null | Awaited<RouterOutput['account']['gliederungAdminCreate']>>(null)
+const account = ref<null | Awaited<RouterOutput['account']['teilnehmerCreate']>>(null)
 
 async function watiForOAuth(): Promise<string> {
   const channel = new BroadcastChannel('auth')
@@ -56,7 +56,7 @@ async function watiForOAuth(): Promise<string> {
   })
 }
 
-type TAccountData = RouterInput['account']['gliederungAdminCreate']['data']
+type TAccountData = RouterInput['account']['teilnehmerCreate']['data']
 
 async function registerGliederung() {
   try {
@@ -85,8 +85,8 @@ async function registerGliederung() {
       accountData.email = undefined
     }
 
-    account.value = await apiClient.account.gliederungAdminCreate.mutate({
-      data: accountData as unknown as RouterInput['account']['gliederungAdminCreate']['data'],
+    account.value = await apiClient.account.teilnehmerCreate.mutate({
+      data: accountData as unknown as RouterInput['account']['teilnehmerCreate']['data'],
     })
   } catch (error) {
     errorCreate.value = error
@@ -122,6 +122,7 @@ const oauthRegistration = ref()
     >
       <template #content>
         <ValidateForm
+          v-if="!account"
           class="grow"
           @submit="registerGliederung"
         >
@@ -172,6 +173,18 @@ const oauthRegistration = ref()
             Anmelden
           </Button>
         </ValidateForm>
+        <div
+          v-else
+          class="flex flex-col justify-center items-center text-center space-y-4 py-8"
+        >
+          <CheckCircleIcon class="w-14 h-14 text-primary-700" />
+          <h2 class="text-center text-4xl leading-9 tracking-tight text-primary-700 flex items-center justify-center">
+            Registrierung erfolgreich
+          </h2>
+          <div>
+            Du hast Dich erfolgreich registriert. Wir haben dir eine E-Mail mit einem Bestätigungslink geschickt.
+          </div>
+        </div>
       </template>
     </Modal>
 
@@ -188,18 +201,12 @@ const oauthRegistration = ref()
 
       <!-- Title Header -->
       <div class="flex flex-col items-center justify-center relative">
-        <h2 class="text-center text-4xl text-primary-700">Registrierung als Gliederung</h2>
-        <p class="text-center text-red-600 font-bold">
-          Bitte beachte das diese Registrierung nur für Verantwortliche einer Gliederung vorgesehen ist.
-        </p>
+        <h2 class="text-center text-4xl text-primary-700">Registrierung als Teilnehmer</h2>
         <p class="text-center">Wie möchtest Du dich registrieren?</p>
       </div>
 
       <!-- Form -->
-      <div
-        v-if="!account"
-        class="space-y-4"
-      >
+      <div class="space-y-4">
         <ButtonCard
           :badge="IscBadge"
           title="Mit DLRG-Account"
@@ -211,17 +218,6 @@ const oauthRegistration = ref()
           description="Registriere dich mit deiner E-Mail Adresse und einem Passwort."
           @click="defaultModal.show()"
         />
-      </div>
-
-      <div
-        v-if="account"
-        class="grow justify-center items-center flex flex-col text-center space-y-3"
-      >
-        <CheckCircleIcon class="w-14 h-14 text-primary-700" />
-        <h2 class="text-center text-4xl leading-9 tracking-tight text-primary-700 flex items-center justify-center">
-          Registrierung erfolgreich
-        </h2>
-        <div>Du hast Dich erfolgreich registriert. Wir haben dir eine E-Mail mit einem Bestätigungslink geschickt.</div>
       </div>
     </div>
   </div>
