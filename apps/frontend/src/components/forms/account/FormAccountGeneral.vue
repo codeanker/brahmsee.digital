@@ -138,7 +138,7 @@ const { execute: deleteUser, error: errorDelete } = useAsyncState(
     }
 
     await apiClient.account.verwaltungRemove.mutate({ id: props.account.id })
-    router.back()
+    router.push({ name: 'Verwaltung Accounts' })
   },
   null,
   { immediate: false }
