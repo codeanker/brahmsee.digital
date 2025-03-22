@@ -410,12 +410,6 @@ importers:
       '@trpc/server':
         specifier: ^10.38.1
         version: 10.45.2
-      '@types/bcryptjs':
-        specifier: ^2.4.6
-        version: 2.4.6
-      '@types/jsonwebtoken':
-        specifier: ^9.0.8
-        version: 9.0.8
       bcryptjs:
         specifier: ^2.4.3
         version: 2.4.3
@@ -432,6 +426,15 @@ importers:
       '@codeanker/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
+      '@types/bcryptjs':
+        specifier: ^2.4.6
+        version: 2.4.6
+      '@types/jsonwebtoken':
+        specifier: ^9.0.8
+        version: 9.0.8
+      '@types/ms':
+        specifier: ^2.1.0
+        version: 2.1.0
       '@types/node':
         specifier: 'catalog:'
         version: 22.10.2
