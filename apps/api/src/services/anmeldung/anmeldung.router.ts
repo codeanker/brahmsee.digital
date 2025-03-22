@@ -17,19 +17,19 @@ import { anmeldungZuordnenProcedure } from './anmeldungZuordnen.js'
 // Import Routes here - do not delete this line
 
 export const anmeldungRouter = mergeRouters(
-  anmeldungPublicCreateProcedure.router,
-  anmeldungTeilnehmerStornoProcedure.router,
-  anmeldungVerwaltungAblehnenProcedure.router,
-  anmeldungVerwaltungAnnehmenProcedure.router,
-  anmeldungVerwaltungStornoProcedure.router,
-  anmeldungVerwaltungCreateProcedure.router,
-  anmeldungVerwaltungPatchProcedure.router,
-  anmeldungGliederungPatchProcedure.router,
-  anmeldungCountProcedure.router,
-  anmeldungListProcedure.router,
-  anmeldungGetProcedure.router,
-  anmeldungZuordnenProcedure.router,
-  anmeldungAccessTokenValidateProcedure.router,
-  anmeldungFotoUploadProcedure.router
+  anmeldungPublicCreateProcedure,
+  anmeldungTeilnehmerStornoProcedure,
+  anmeldungVerwaltungAblehnenProcedure,
+  anmeldungVerwaltungAnnehmenProcedure,
+  anmeldungVerwaltungStornoProcedure,
+  anmeldungVerwaltungCreateProcedure,
+  anmeldungVerwaltungPatchProcedure,
+  anmeldungGliederungPatchProcedure,
+  anmeldungCountProcedure,
+  anmeldungListProcedure,
+  anmeldungGetProcedure,
+  anmeldungZuordnenProcedure,
+  anmeldungAccessTokenValidateProcedure,
+  anmeldungFotoUploadProcedure
   // Add Routes here - do not delete this line
 )

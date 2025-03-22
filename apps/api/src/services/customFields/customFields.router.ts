@@ -12,14 +12,14 @@ import { customFieldValuesUpdate } from './customFieldValuesUpdate.js'
 // Import Routes here - do not delete this line
 
 export const customFieldsRouter = mergeRouters(
-  customFieldsList.router,
-  customFieldsGet.router,
-  customFieldsVeranstaltungCreate.router,
-  customFieldsUpdate.router,
-  customFieldsVeranstaltungDelete.router,
-  customFieldsUnterveranstaltungDelete.router,
-  customFieldsUnterveranstaltungCreate.router,
-  customFieldValuesUpdate.router,
-  customFieldsTemplates.router
+  customFieldsList,
+  customFieldsGet,
+  customFieldsVeranstaltungCreate,
+  customFieldsUpdate,
+  customFieldsVeranstaltungDelete,
+  customFieldsUnterveranstaltungDelete,
+  customFieldsUnterveranstaltungCreate,
+  customFieldValuesUpdate,
+  customFieldsTemplates
   // Add Routes here - do not delete this line
 )

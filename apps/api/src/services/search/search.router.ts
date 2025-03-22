@@ -6,6 +6,6 @@ import { searchProcedure } from './search.js'
 // Import Routes here - do not delete this line
 
 export const searchRouter = mergeRouters(
-  searchProcedure.router
+  searchProcedure
   // Add Routes here - do not delete this line
 )

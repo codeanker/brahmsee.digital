@@ -6,7 +6,6 @@ import { systemHostnamesGetProcedure } from './systemHostnamesGet.js'
 // Import Routes here - do not delete this line
 
 export const systemRouter = mergeRouters(
-  systemHostnamesGetProcedure.router
-
+  systemHostnamesGetProcedure
   // Add Routes here - do not delete this line
 )

@@ -9,11 +9,11 @@ import { ortVerwaltungRemoveProcedure } from './ortVerwaltungRemove.js'
 // Import Routes here - do not delete this line
 
 export const ortRouter = mergeRouters(
-  ortVerwaltungCreateProcedure.router,
-  ortVerwaltungGetProcedure.router,
-  ortListProcedure.router,
-  ortCountProcedure.router,
-  ortVerwaltungPatchProcedure.router,
-  ortVerwaltungRemoveProcedure.router
+  ortVerwaltungCreateProcedure,
+  ortVerwaltungGetProcedure,
+  ortListProcedure,
+  ortCountProcedure,
+  ortVerwaltungPatchProcedure,
+  ortVerwaltungRemoveProcedure
   // Add Routes here - do not delete this line
 )
