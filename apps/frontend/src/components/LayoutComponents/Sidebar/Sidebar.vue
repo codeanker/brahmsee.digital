@@ -213,8 +213,13 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
   <div class="h-full flex flex-col text-primary-900 dark:text-gray-200 font-medium">
     <!-- Sidebar Header -->
     <div
-      class="mb-4 p-2 text-white bg-primary-600 dark:bg-primary-800 focus:outline-primary-600 w-full rounded-lg text-center"
+      class="mb-4 px-4 py-2 relative text-white bg-primary-600 dark:bg-primary-800 focus:outline-primary-600 w-full rounded-lg text-right"
     >
+      <img
+        src="@/assets/images/dilly_sm.webp"
+        alt="Dilly"
+        class="absolute left-4 h-8"
+      />
       brahmsee.digital
     </div>
     <!-- <SidebarVeranstaltungSwitcher/> -->

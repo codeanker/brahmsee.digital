@@ -89,7 +89,7 @@ const oauthHref = `/api/connect/dlrg?mode=login&origin=${encodeURIComponent(orig
         @submit="loginWithRecirect"
       >
         <BasicInput
-          id="email"
+          id="E-Mail"
           v-model="email"
           type="email"
           class="w-full"
@@ -98,7 +98,7 @@ const oauthHref = `/api/connect/dlrg?mode=login&origin=${encodeURIComponent(orig
           required
         />
         <BasicPassword
-          id="password"
+          id="Passwort"
           v-model="password"
           class="w-full"
           placeholder="Passwort"
