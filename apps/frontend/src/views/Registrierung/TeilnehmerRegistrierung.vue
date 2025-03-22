@@ -1,49 +1,22 @@
 <script setup lang="ts">
-import { CheckCircleIcon, ChevronLeftIcon } from '@heroicons/vue/24/outline'
+import { ChevronLeftIcon } from '@heroicons/vue/24/outline'
 import { ref } from 'vue'
 
 import { apiClient } from '@/api'
-import BasicInput from '@/components/BasicInputs/BasicInput.vue'
-import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
-import BasicTypeahead from '@/components/BasicInputs/BasicTypeahead.vue'
-import Stammdaten, { type IStammdaten } from '@/components/forms/anmeldung/Stammdaten.vue'
-import Button from '@/components/UIComponents/Button.vue'
 import type { RouterInput, RouterOutput } from '@codeanker/api'
-import { ValidateForm } from '@codeanker/validation'
 import ButtonCard from '@/components/UIComponents/ButtonCard.vue'
 import IscBadge from '@/components/IscBadge.vue'
-import Modal from '@/components/UIComponents/Modal.vue'
-import Loading from '@/components/UIComponents/Loading.vue'
+import IscRedirectModal from '@/components/Modal/IscRedirectModal.vue'
+import RegisterModal from '@/components/Modal/RegisterModal.vue'
+import { toast } from 'vue-sonner'
 
-const iscModal = ref<InstanceType<typeof Modal>>()
-const defaultModal = ref<InstanceType<typeof Modal>>()
+const iscModal = ref<InstanceType<typeof IscRedirectModal>>()
+const defaultModal = ref<InstanceType<typeof RegisterModal>>()
 
-const stammdatenForm = ref<IStammdaten>({
-  firstname: '',
-  lastname: '',
-  gender: 'MALE',
-  birthday: null,
-})
-
-const registrationForm = ref<{
-  dataprivacy?: boolean
-  email?: string
-  gliederung?: { id: number; name: string }
-  password?: string
-}>({})
-
-async function queryObject(searchTerm) {
-  return apiClient.gliederung.publicList.query({
-    filter: { name: searchTerm },
-    orderBy: [],
-    pagination: { take: 100, skip: 0 },
-  })
-}
-
-const errorCreate = ref<unknown | null>(null)
 const account = ref<null | Awaited<RouterOutput['account']['teilnehmerCreate']>>(null)
+const isOauthRegistration = ref(false)
 
-async function watiForOAuth(): Promise<string> {
+async function waitForOAuth(): Promise<string> {
   const channel = new BroadcastChannel('auth')
   return new Promise((resolve, reject) => {
     channel.addEventListener('message', (event) => {
@@ -58,21 +31,20 @@ async function watiForOAuth(): Promise<string> {
 
 type TAccountData = RouterInput['account']['teilnehmerCreate']['data']
 
-async function registerGliederung() {
+async function registerGliederung(stammdatenForm, registrationForm) {
   try {
     account.value = null
-    errorCreate.value = null
     const accountData: TAccountData = {
-      firstname: stammdatenForm.value.firstname,
-      lastname: stammdatenForm.value.lastname,
-      gender: stammdatenForm.value.gender,
-      birthday: stammdatenForm.value.birthday ?? new Date(),
-      email: registrationForm.value.email,
-      password: registrationForm.value.password,
-      gliederungId: registrationForm.value.gliederung!.id,
+      firstname: stammdatenForm.firstname,
+      lastname: stammdatenForm.lastname,
+      gender: stammdatenForm.gender,
+      birthday: stammdatenForm.birthday ?? new Date(),
+      email: registrationForm.email,
+      password: registrationForm.password,
+      gliederungId: registrationForm.gliederung!.id,
     }
 
-    if (oauthRegistration.value) {
+    if (isOauthRegistration.value) {
       // first optain jwt containing the oauth sub id
       // open new tab with oauth login
 
@@ -80,7 +52,7 @@ async function registerGliederung() {
       const oauthHref = `/api/connect/dlrg?mode=register&origin=${encodeURIComponent(origin)}`
       window.open(oauthHref, '_blank')
 
-      accountData.jwtOAuthToken = await watiForOAuth()
+      accountData.jwtOAuthToken = await waitForOAuth()
       accountData.password = undefined
       accountData.email = undefined
     }
@@ -88,105 +60,24 @@ async function registerGliederung() {
     account.value = await apiClient.account.teilnehmerCreate.mutate({
       data: accountData as unknown as RouterInput['account']['teilnehmerCreate']['data'],
     })
-  } catch (error) {
-    errorCreate.value = error
+  } catch {
+    toast.error('Es ist ein Fehler aufgetreten. Bitte versuche es erneut.', {
+      duration: 5000,
+    })
   }
 }
-const oauthRegistration = ref()
 </script>
 
 <template>
   <div class="h-svh flex flex-col items-center w-full p-6 lg:p-0">
     <!-- Modals -->
-    <Modal
-      ref="iscModal"
-      size="xl"
-    >
-      <template #content>
-        <div class="flex items-center justify-center space-x-4">
-          <Loading
-            color="primary"
-            size="md"
-          />
-          <span>
-            Du wirst nun in das ISC weitergeleitet. Bitte melde dich dort mit deinem DLRG-Account an und bestätige die
-            Registrierung.
-          </span>
-        </div>
-      </template>
-    </Modal>
-
-    <Modal
+    <IscRedirectModal ref="iscModal" />
+    <RegisterModal
       ref="defaultModal"
-      size="xl"
-    >
-      <template #content>
-        <ValidateForm
-          v-if="!account"
-          class="grow"
-          @submit="registerGliederung"
-        >
-          <Stammdaten v-model="stammdatenForm" />
-          <hr class="my-5" />
-          <div class="grid grid-flow-row lg:grid-cols-2 gap-5">
-            <BasicTypeahead
-              v-model="registrationForm.gliederung"
-              :query="queryObject"
-              :input-formatter="(result) => result?.name"
-              :result-formatter="(result) => result.name"
-              :strict="true"
-              label="Gliederung"
-              class="col-span-2"
-              required
-              placeholder="Gliederung eingeben"
-            />
-            <BasicInput
-              v-if="!oauthRegistration"
-              v-model="registrationForm.email"
-              label="E-Mail Adresse"
-              class="col-span-2"
-              type="email"
-              required
-              placeholder="E-Mail Adresse eingeben"
-            />
-            <BasicPassword
-              v-if="!oauthRegistration"
-              v-model="registrationForm.password"
-              label="Passwort"
-              class="col-span-2"
-              required
-              placeholder=""
-            />
-          </div>
-          <hr class="my-5" />
-          <div
-            v-if="errorCreate"
-            class="bg-danger-400 mb-5 rounded p-3 text-center text-white"
-          >
-            {{ errorCreate }}
-          </div>
-          <Button
-            type="submit"
-            color="primary"
-            full
-          >
-            Anmelden
-          </Button>
-        </ValidateForm>
-        <div
-          v-else
-          class="flex flex-col justify-center items-center text-center space-y-4 py-8"
-        >
-          <CheckCircleIcon class="w-14 h-14 text-primary-700" />
-          <h2 class="text-center text-4xl leading-9 tracking-tight text-primary-700 flex items-center justify-center">
-            Registrierung erfolgreich
-          </h2>
-          <div>
-            Du hast Dich erfolgreich registriert. Wir haben dir eine E-Mail mit einem Bestätigungslink geschickt.
-          </div>
-        </div>
-      </template>
-    </Modal>
+      :account="account"
+      :is-oauth-registration="isOauthRegistration"
+      @submit="registerGliederung"
+    />
 
     <div class="flex h-full flex-col lg:justify-center w-full lg:max-w-xl space-y-12">
       <div class="flex">
@@ -208,12 +99,14 @@ const oauthRegistration = ref()
       <!-- Form -->
       <div class="space-y-4">
         <ButtonCard
+          v-if="iscModal"
           :badge="IscBadge"
           title="Mit DLRG-Account"
           description="Registriere dich bequem mit deinem bestehenden DLRG-Account."
           @click="iscModal.show()"
         />
         <ButtonCard
+          v-if="defaultModal"
           title="Mit E-Mail und Passwort"
           description="Registriere dich mit deiner E-Mail Adresse und einem Passwort."
           @click="defaultModal.show()"

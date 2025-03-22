@@ -48,7 +48,8 @@
     "tailwind-merge": "^2.6.0",
     "vaul-vue": "^0.4.1",
     "vue": "catalog:",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "vue-sonner": "^1.3.0"
   },
   "devDependencies": {
     "@codeanker/eslint-config": "workspace:*",
