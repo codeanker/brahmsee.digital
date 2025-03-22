@@ -3,6 +3,7 @@ import eslintPluginVue from 'eslint-plugin-vue'
 import globals from 'globals'
 import typescriptEslint from 'typescript-eslint'
 import eslintConfigPrettier from 'eslint-config-prettier'
+import pluginQuery from '@tanstack/eslint-plugin-query'
 
 const recommended = eslintPluginVue.configs['flat/recommended'].map((item) => {
   if (item.rules) delete item.rules['vue/multi-word-component-names']
@@ -74,5 +75,6 @@ export default typescriptEslint.config(
       'vue/define-emits-declaration': ['error', 'type-literal'],
       'no-constant-binary-expression': 'error',
     },
-  }
+  },
+  ...pluginQuery.configs['flat/recommended']
 )

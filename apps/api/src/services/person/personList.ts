@@ -2,21 +2,27 @@ import { Prisma, Role } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma.js'
-import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
-import { defineQuery, getOrderBy } from '../../types/defineQuery.js'
 import type { AuthenticatedContext } from '../../trpc.js'
+import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
+import { getOrderBy } from '../../types/defineQuery.js'
 
-const inputSchema = defineQuery({
-  filter: z.strictObject({
-    name: z.string().optional(),
-    gliederungName: z.string().optional(),
-  }),
+const inputSchema = z.strictObject({
+  filter: z
+    .strictObject({
+      name: z.string(),
+      'gliederung.name': z.string(),
+    })
+    .partial(),
   orderBy: z.array(
     z.tuple([
       z.union([z.literal('firstname'), z.literal('birthday'), z.literal('gliederung.name')]),
       z.union([z.literal('asc'), z.literal('desc')]),
     ])
   ),
+  pagination: z.strictObject({
+    page: z.number().int().min(1),
+    perPage: z.number().int().min(1),
+  }),
 })
 
 type TInput = z.infer<typeof inputSchema>
@@ -25,15 +31,24 @@ export const personListProcedure = defineProtectedQueryProcedure({
   key: 'list',
   roleIds: [Role.ADMIN, Role.USER],
   inputSchema,
-  handler: ({ ctx, input }) => {
-    const { skip, take } = input.pagination
+  handler: async ({ ctx, input }) => {
+    const { page, perPage } = input.pagination
 
-    return prisma.person.findMany({
-      skip,
-      take,
+    const total = await prisma.person.count({
+      where: getWhere(input.filter, ctx),
+    })
+
+    const data = await prisma.person.findMany({
+      take: perPage,
+      skip: (page - 1) * perPage,
       where: getWhere(input.filter, ctx),
       orderBy: getOrderBy(input.orderBy),
       select: {
+        _count: {
+          select: {
+            anmeldungen: true,
+          },
+        },
         id: true,
         firstname: true,
         lastname: true,
@@ -45,26 +60,17 @@ export const personListProcedure = defineProtectedQueryProcedure({
             name: true,
           },
         },
-        account: {
-          select: {
-            id: true,
-            activatedAt: true,
-            role: true,
-            status: true,
-            GliederungToAccount: {
-              select: {
-                role: true,
-                gliederung: {
-                  select: {
-                    name: true,
-                  },
-                },
-              },
-            },
-          },
-        },
       },
     })
+
+    const pages = Math.ceil(total / perPage)
+
+    return {
+      data,
+      page,
+      pages,
+      total,
+    }
   },
 })
 
@@ -97,18 +103,23 @@ export function getPersonProtectionFilter({
 }
 
 function getWhere(filter: TInput['filter'], ctx: AuthenticatedContext): Prisma.PersonWhereInput {
-  const where: Prisma.PersonWhereInput = {}
+  const where: Prisma.PersonWhereInput = {
+    account: null,
+  }
 
-  if (filter.name != null && filter.name != '') {
-    where.OR = [{ firstname: { contains: filter.name } }, { lastname: { contains: filter.name } }]
+  if (filter.name) {
+    where.OR = [
+      { firstname: { contains: filter.name, mode: 'insensitive' } },
+      { lastname: { contains: filter.name, mode: 'insensitive' } },
+    ]
   }
-  if (filter.gliederungName != null && filter.gliederungName != '') {
-    where.gliederung = {
-      name: {
-        contains: filter.gliederungName,
-      },
-    }
-  }
+  // if (filter.gliederungN) {
+  //   where.gliederung = {
+  //     name: {
+  //       contains: filter.gliederungName,
+  //     },
+  //   }
+  // }
 
   return {
     ...where,
