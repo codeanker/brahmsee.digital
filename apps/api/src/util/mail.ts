@@ -122,7 +122,7 @@ export async function sendMail(mailParams: EMailParams) {
     }
 
     const mailToSend: EMail = {
-      from: 'brahmsee.digital<noreply@brahmsee.digital>',
+      from: `${mailParams.variables.hostname}<noreply@brahmsee.digital>`,
       to: parseMaybeArray(mailParams.to),
       attachments: formatAttachments(mailParams.attachments),
       subject,

@@ -9,12 +9,12 @@ import { personVerwaltungRemoveProcedure } from './personVerwaltungRemove.js'
 // Import Routes here - do not delete this line
 
 export const personRouter = mergeRouters(
-  personAuthenticatedGetProcedure.router,
-  personVerwaltungCreateProcedure.router,
-  personListProcedure.router,
-  personCountProcedure.router,
-  personGetProcedure.router,
-  personVerwaltungPatchProcedure.router,
-  personVerwaltungRemoveProcedure.router
+  personAuthenticatedGetProcedure,
+  personVerwaltungCreateProcedure,
+  personListProcedure,
+  personCountProcedure,
+  personGetProcedure,
+  personVerwaltungPatchProcedure,
+  personVerwaltungRemoveProcedure
   // Add Routes here - do not delete this line
 )

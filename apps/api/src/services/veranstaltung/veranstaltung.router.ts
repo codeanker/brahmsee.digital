@@ -12,11 +12,11 @@ import { veranstaltungVerwaltungPatchProcedure } from './veranstaltungVerwaltung
 // Import Routes here - do not delete this line
 
 export const veranstaltungRouter = mergeRouters(
-  veranstaltungVerwaltungCreateProcedure.router,
-  veranstaltungVerwaltungGetProcedure.router,
-  veranstaltungVerwaltungListProcedure.router,
-  veranstaltungVerwaltungCountProcedure.router,
-  veranstaltungVerwaltungPatchProcedure.router,
-  veranstaltungGliederungListProcedure.router
+  veranstaltungVerwaltungCreateProcedure,
+  veranstaltungVerwaltungGetProcedure,
+  veranstaltungVerwaltungListProcedure,
+  veranstaltungVerwaltungCountProcedure,
+  veranstaltungVerwaltungPatchProcedure,
+  veranstaltungGliederungListProcedure
   // Add Routes here - do not delete this line
 )

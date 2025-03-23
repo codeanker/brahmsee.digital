@@ -8,10 +8,10 @@ import { faqUpdateProcedure } from './faqUpdateProcedure.js'
 // Import Routes here - do not delete this line
 
 export const faqsRouter = mergeRouters(
-  faqListProcedure.router,
-  faqCategorySearchProcedure.router,
-  faqCreateProcedure.router,
-  faqUpdateProcedure.router,
-  faqDeleteProcedure.router
+  faqListProcedure,
+  faqCategorySearchProcedure,
+  faqCreateProcedure,
+  faqUpdateProcedure,
+  faqDeleteProcedure
   // Add Routes here - do not delete this line
 )

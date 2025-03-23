@@ -20,13 +20,13 @@ const keyInfos = computed<KeyInfo[]>(() => {
   return [
     {
       title: 'Beginn',
-      value: `${formatDate(unterveranstaltung.value.veranstaltung.beginn, 'DD.MM.YYYY, HH:mm')} Uhr`,
+      value: formatDate(unterveranstaltung.value.veranstaltung.beginn, 'DD.MM.YYYY, HH:mm [Uhr]'),
     },
     {
       title: 'Ende',
-      value: `${formatDate(unterveranstaltung.value.veranstaltung.ende, 'DD.MM.YYYY, HH:mm')} Uhr`,
+      value: formatDate(unterveranstaltung.value.veranstaltung.ende, 'DD.MM.YYYY, HH:mm [Uhr]'),
     },
-    { title: 'Meldeschluss', value: `${formatDate(unterveranstaltung.value.meldeschluss, 'DD.MM.YYYY')} ` },
+    { title: 'Meldeschluss', value: formatDate(unterveranstaltung.value.meldeschluss, 'DD.MM.YYYY') },
     { title: 'Veranstaltungsort', value: unterveranstaltung.value.veranstaltung.ort?.name ?? '' },
     { title: 'Teilnahmebeitrag', value: unterveranstaltung.value.teilnahmegebuehr + '€' },
     { title: 'Zielgruppe', value: unterveranstaltung.value.veranstaltung.zielgruppe ?? '' },
