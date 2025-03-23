@@ -18,12 +18,10 @@ export const unterveranstaltungVerwaltungCreateProcedure = defineProtectedMutate
     data: unterveranstaltungVerwaltungCreateSchema,
   }),
   async handler({ input }) {
-    const existing = await prisma.unterveranstaltung.findUnique({
+    const existing = await prisma.unterveranstaltung.findFirst({
       where: {
-        veranstaltungId_gliederungId: {
-          veranstaltungId: input.data.veranstaltungId,
-          gliederungId: input.data.gliederungId,
-        },
+        veranstaltungId: input.data.veranstaltungId,
+        gliederungId: input.data.gliederungId,
       },
     })
     if (existing !== null) {
