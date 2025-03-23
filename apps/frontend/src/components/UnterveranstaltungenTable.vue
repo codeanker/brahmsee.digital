@@ -101,7 +101,7 @@ async function fetchCount(filter: TUnterveranstaltungFilter): Promise<number> {
         veranstaltungId: veranstaltungId,
         gliederungName: '',
       }"
-      :default-order-by="[['id', 'asc']]"
+      :default-order-by="[['gliederung.name', 'asc']]"
       no-data-message="Es gibt bisher keine Ausschreibungen."
       show-clickable
       @row-click="

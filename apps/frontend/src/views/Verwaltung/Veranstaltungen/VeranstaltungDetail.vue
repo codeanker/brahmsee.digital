@@ -22,6 +22,7 @@ import UnterveranstaltungenTable from '@/components/UnterveranstaltungenTable.vu
 import { useRouteTitle } from '@/composables/useRouteTitle'
 import { formatDate } from '@codeanker/helpers'
 import { PlusIcon } from '@heroicons/vue/24/solid'
+import ProgramList from '../Program/ProgramList.vue'
 
 const { setTitle } = useRouteTitle()
 
@@ -75,6 +76,7 @@ const tabs = computed(() => {
     { name: 'Allgemein', icon: WalletIcon },
     { name: 'Dokumente', icon: DocumentIcon },
     { name: 'Bedingungen', icon: ClipboardDocumentListIcon },
+    { name: 'Programm', icon: ClipboardDocumentListIcon },
     { name: 'Ausschreibungen', icon: MegaphoneIcon },
     { name: 'Felder', icon: SquaresPlusIcon },
   ]
@@ -118,7 +120,7 @@ const files = [
     content-space="4"
     :tabs="tabs"
   >
-    <Tab>
+    <Tab key="Allgemein">
       <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
         <div class="text-lg font-semibold">Veranstaltungsdaten</div>
         <RouterLink
@@ -140,14 +142,14 @@ const files = [
         />
       </div>
     </Tab>
-    <Tab>
+    <Tab key="Dokumente">
       <div class="my-10">
         <div class="text-lg font-semibold">Dokumente</div>
         <p class="max-w-2xl text-sm text-gray-500">Exports von Daten zu dieser Veranstaltung</p>
       </div>
       <FilesExport :files="files" />
     </Tab>
-    <Tab>
+    <Tab key="Bedingungen">
       <div class="my-10">
         <div class="text-lg font-semibold">Öffentliche Teilnahmebedingungen <Badge>Veranstaltung</Badge></div>
         <p class="max-w-2xl text-sm">
@@ -189,7 +191,13 @@ const files = [
         <p class="text-gray-500">Keine Datenschutzhinweise hinterlegt</p>
       </div>
     </Tab>
-    <Tab>
+    <Tab key="Programm">
+      <ProgramList
+        v-if="veranstaltung"
+        :veranstaltung-id="veranstaltung.id"
+      />
+    </Tab>
+    <Tab key="Ausschreibungen">
       <div class="my-10 flex items-center justify-between">
         <div>
           <div class="text-lg font-semibold">Unterveranstaltungen</div>
@@ -212,7 +220,7 @@ const files = [
         :hide-columns="['veranstaltung.name']"
       />
     </Tab>
-    <Tab>
+    <Tab key="Felder">
       <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
         <div>
           <div class="text-lg font-semibold">Benutzerdefinierte Felder</div>

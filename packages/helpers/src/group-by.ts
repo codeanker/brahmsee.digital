@@ -1,4 +1,4 @@
-export function groupBy<T, K extends string = string>(arr: T[], key: (item: T) => K): Record<K, T[]> {
+export function groupBy<T, K extends string | number>(arr: T[], key: (item: T) => K): Record<K, T[]> {
   const result = {} as Record<K, T[]>
 
   for (const item of arr) {
