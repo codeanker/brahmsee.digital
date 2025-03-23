@@ -70,7 +70,7 @@ const oauthHref = `/api/connect/dlrg?mode=login&origin=${encodeURIComponent(orig
         />
         <h2 class="text-center text-4xl tracking-tight text-primary-700 dark:text-primary-600">{{ appname }}</h2>
         <p class="text-center">Melde dich zu deinem Konto an</p>
-        <div class="absolute right-0">
+        <div class="absolute right-0 top-0">
           <DarkModeSwitch />
         </div>
       </div>
