@@ -69,7 +69,7 @@ const oauthHref = `/api/connect/dlrg?mode=login&origin=${encodeURIComponent(orig
           class="size-28"
         />
         <h2 class="text-center text-4xl tracking-tight text-primary-700 dark:text-primary-600">{{ appname }}</h2>
-        <p class="text-center">Melde dich zu deinem Konto an</p>
+        <p class="text-center dark:text-gray-200">Melde dich zu deinem Konto an</p>
         <div class="absolute right-0 top-0">
           <DarkModeSwitch />
         </div>
@@ -132,10 +132,10 @@ const oauthHref = `/api/connect/dlrg?mode=login&origin=${encodeURIComponent(orig
             class="absolute inset-0 flex items-center"
             aria-hidden="true"
           >
-            <div class="w-full border-t border-gray-200 dark:border-gray-800" />
+            <div class="w-full border-t border-gray-200 dark:border-gray-600" />
           </div>
           <div class="relative flex justify-center text-sm font-medium">
-            <span class="bg-white dark:bg-dark-primary px-6">oder anmelden mit</span>
+            <span class="bg-white dark:bg-dark-primary dark:text-gray-200 px-6">oder anmelden mit</span>
           </div>
         </div>
 
@@ -150,7 +150,7 @@ const oauthHref = `/api/connect/dlrg?mode=login&origin=${encodeURIComponent(orig
           />
         </a>
       </ValidateForm>
-      <p class="text-center text-sm">
+      <p class="text-center text-sm dark:text-gray-200">
         Noch kein Konto?
         <RouterLink
           :to="{ name: 'Registrierung' }"
@@ -159,7 +159,7 @@ const oauthHref = `/api/connect/dlrg?mode=login&origin=${encodeURIComponent(orig
           Registriere dich jetzt
         </RouterLink>
       </p>
-      <p class="flex items-center justify-center text-center text-xs">
+      <p class="flex items-center justify-center text-center text-xs darl:text-gray-200">
         {{ version }}
         <span class="mx-1">-</span>
         <a
