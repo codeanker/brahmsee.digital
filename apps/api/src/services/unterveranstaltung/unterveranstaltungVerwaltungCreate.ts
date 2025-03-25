@@ -18,19 +18,19 @@ export const unterveranstaltungVerwaltungCreateProcedure = defineProtectedMutate
     data: unterveranstaltungVerwaltungCreateSchema,
   }),
   async handler({ input }) {
-    const existing = await prisma.unterveranstaltung.findUnique({
-      where: {
-        veranstaltungId_gliederungId: {
+    if (input.data.type !== 'CREW') {
+      const existing = await prisma.unterveranstaltung.findFirst({
+        where: {
           veranstaltungId: input.data.veranstaltungId,
           gliederungId: input.data.gliederungId,
         },
-      },
-    })
-    if (existing !== null) {
-      throw new TRPCError({
-        code: 'BAD_REQUEST',
-        message: `Für die angegebene Veranstaltung`,
       })
+      if (existing !== null) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: `Für die angegebene Veranstaltung`,
+        })
+      }
     }
 
     const unterveranstaltung = await prisma.unterveranstaltung.create({
