@@ -80,7 +80,7 @@ async function oauthLogin(ctx: Context, profile: (typeof ZUserInfoReponse._type)
     } else {
       const jwt = sign({
         sub: existingUser.id.toString(),
-      }) as string
+      })
       // important to redirect with hash, so the jwt is not sent to the server
       ctx.redirect(`${config.clientUrl}/login#jwt=${jwt}`)
     }
