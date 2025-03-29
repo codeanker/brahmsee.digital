@@ -16,18 +16,18 @@ import { accountVerwaltungRemoveProcedure } from './accountVerwaltungRemove.js'
 // Import Routes here - do not delete this line
 
 export const accountRouter = mergeRouters(
-  accountActivateProcedure.router,
-  accountChangePasswordProcedure.router,
-  accountGliederungAdminCreateProcedure.router,
-  accountVerwaltungCreateProcedure.router,
-  accountVerwaltungGetProcedure.router,
-  accountVerwaltungListProcedure.router,
-  accountVerwaltungCountProcedure.router,
-  accountVerwaltungPatchProcedure.router,
-  accountEmailConfirmRequestProcedure.router,
-  accountEmailConfirmProcedure.router,
-  accountPasswordResetProcedure.router,
-  accountVerwaltungRemoveProcedure.router,
-  accountTeilnehmerCreateProcedure.router
+  accountActivateProcedure,
+  accountChangePasswordProcedure,
+  accountGliederungAdminCreateProcedure,
+  accountVerwaltungCreateProcedure,
+  accountVerwaltungGetProcedure,
+  accountVerwaltungListProcedure,
+  accountVerwaltungCountProcedure,
+  accountVerwaltungPatchProcedure,
+  accountEmailConfirmRequestProcedure,
+  accountEmailConfirmProcedure,
+  accountPasswordResetProcedure,
+  accountVerwaltungRemoveProcedure,
+  accountTeilnehmerCreateProcedure
   // Add Routes here - do not delete this line
 )

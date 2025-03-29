@@ -10,12 +10,12 @@ import { gliederungVerwaltungPatchProcedure } from './gliederungVerwaltungPatch.
 // Import Routes here - do not delete this line
 
 export const gliederungRouter = mergeRouters(
-  gliederungPublicGetProcedure.router,
-  gliederungPublicListProcedure.router,
-  gliederungVerwaltungCreateProcedure.router,
-  gliederungVerwaltungGetProcedure.router,
-  gliederungListProcedure.router,
-  gliederungCountProcedure.router,
-  gliederungVerwaltungPatchProcedure.router
+  gliederungPublicGetProcedure,
+  gliederungPublicListProcedure,
+  gliederungVerwaltungCreateProcedure,
+  gliederungVerwaltungGetProcedure,
+  gliederungListProcedure,
+  gliederungCountProcedure,
+  gliederungVerwaltungPatchProcedure
   // Add Routes here - do not delete this line
 )

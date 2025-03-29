@@ -5,7 +5,7 @@ import { activityListProcedure, activityCountProcedure } from './activityList.js
 // Import Routes here - do not delete this line
 
 export const activityRouter = mergeRouters(
-  activityListProcedure.router,
-  activityCountProcedure.router
+  activityListProcedure,
+  activityCountProcedure
   // Add Routes here - do not delete this line
 )

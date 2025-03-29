@@ -16,6 +16,20 @@ export const unterveranstaltungGliederungCreateProcedure = defineProtectedMutate
   async handler({ ctx, input }) {
     // check logged in user is admin of gliederung
     const gliederung = await getGliederungRequireAdmin(ctx.accountId)
+
+    const existing = await prisma.unterveranstaltung.findFirst({
+      where: {
+        veranstaltungId: input.data.veranstaltungId,
+        gliederungId: gliederung.id,
+      },
+    })
+    if (existing !== null) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: `Für die angegebene Veranstaltung`,
+      })
+    }
+
     const veranstaltung = await prisma.veranstaltung.findUniqueOrThrow({
       where: {
         id: input.data.veranstaltungId,

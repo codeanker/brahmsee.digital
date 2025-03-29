@@ -23,11 +23,9 @@ export function defineProtectedQueryProcedure<
   const procedure = protectedProcedure(config.roleIds)
     .input(config.inputSchema)
     .query((opts) => config.handler(opts))
-  return {
-    router: router({
-      [config.key]: procedure,
-    } as { [k in TProcedureKey]: typeof procedure }),
-  }
+  return router({
+    [config.key]: procedure,
+  } as { [k in TProcedureKey]: typeof procedure })
 }
 
 export function defineProtectedMutateProcedure<
@@ -47,11 +45,9 @@ export function defineProtectedMutateProcedure<
   const procedure = protectedProcedure(config.roleIds)
     .input(config.inputSchema)
     .mutation((opts) => config.handler(opts))
-  return {
-    router: router({
-      [config.key]: procedure,
-    } as { [k in TProcedureKey]: typeof procedure }),
-  }
+  return router({
+    [config.key]: procedure,
+  } as { [k in TProcedureKey]: typeof procedure })
 }
 
 export function definePublicQueryProcedure<
@@ -67,11 +63,9 @@ export function definePublicQueryProcedure<
   handler: (options: { ctx: Context; input: z.infer<TInputSchema> }) => MaybePromise<TProcedureResult>
 }) {
   const procedure = publicProcedure.input(config.inputSchema).query((opts) => config.handler(opts))
-  return {
-    router: router({
-      [config.key]: procedure,
-    } as { [k in TProcedureKey]: typeof procedure }),
-  }
+  return router({
+    [config.key]: procedure,
+  } as { [k in TProcedureKey]: typeof procedure })
 }
 
 export function definePublicMutateProcedure<
@@ -87,9 +81,7 @@ export function definePublicMutateProcedure<
   handler: (options: { ctx: Context; input: z.infer<TInputSchema> }) => MaybePromise<TProcedureResult>
 }) {
   const procedure = publicProcedure.input(config.inputSchema).mutation((opts) => config.handler(opts))
-  return {
-    router: router({
-      [config.key]: procedure,
-    } as { [k in TProcedureKey]: typeof procedure }),
-  }
+  return router({
+    [config.key]: procedure,
+  } as { [k in TProcedureKey]: typeof procedure })
 }
