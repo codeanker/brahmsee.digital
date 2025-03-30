@@ -15,11 +15,13 @@ const props = withDefaults(
     }[]
     contentSpace?: string
     defaultIndex?: number
+    persistent?: boolean
   }>(),
   {
     contentSpace: '1',
     type: 'register-cards',
     defaultIndex: undefined,
+    persistent: true,
   }
 )
 
@@ -34,7 +36,7 @@ const currentindex = computed(() => {
   if (props.defaultIndex !== undefined) {
     return props.defaultIndex
   }
-  if (route.query.tab !== undefined && typeof route.query.tab === 'string') {
+  if (props.persistent && route.query.tab !== undefined && typeof route.query.tab === 'string') {
     return parseInt(route.query.tab)
   }
   return 0
@@ -43,7 +45,10 @@ const currentindex = computed(() => {
 const selectedTab = ref()
 
 function changeTab(index) {
-  router.push({ query: { tab: index.toString() } })
+  if (props.persistent) {
+    router.push({ query: { tab: index.toString() } })
+  }
+
   setTimeout(() => {
     selectedTab.value = index
     emit('changeTabIndex', index)
