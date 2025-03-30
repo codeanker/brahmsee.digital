@@ -43,9 +43,11 @@ const currentindex = computed(() => {
 const selectedTab = ref()
 
 function changeTab(index) {
-  selectedTab.value = index
   router.push({ query: { tab: index.toString() } })
-  emit('changeTabIndex', index)
+  setTimeout(() => {
+    selectedTab.value = index
+    emit('changeTabIndex', index)
+  }, 10)
 }
 </script>
 
