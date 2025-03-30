@@ -1,6 +1,7 @@
 import path from 'node:path'
 import { fileURLToPath } from 'url'
 
+import type { StringValue } from '@codeanker/authentication'
 import { FileProvider } from '@prisma/client'
 import config from 'config'
 import { z } from 'zod'
@@ -10,6 +11,15 @@ const __dirname = path.dirname(__filename)
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const baseConfig = config.util.loadFileConfigs(path.join(__dirname, '..', 'config'))
+
+const zMsUnit = z
+  .string()
+  .regex(
+    /^\d+\s?\w*$/g,
+    'Value must be a valid duration as specified by vercel/ms: https://github.com/vercel/ms?tab=readme-ov-file#examples'
+  )
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  .transform((arg) => arg as StringValue)
 
 export const configSchema = z.strictObject({
   clientUrl: z.string(),
@@ -25,7 +35,7 @@ export const configSchema = z.strictObject({
 
   authentication: z.strictObject({
     secret: z.string(),
-    expiresIn: z.string(),
+    expiresIn: zMsUnit,
     dlrg: z.strictObject({
       client_id: z.string(),
     }),

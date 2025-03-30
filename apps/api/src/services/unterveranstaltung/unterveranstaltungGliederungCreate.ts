@@ -17,12 +17,10 @@ export const unterveranstaltungGliederungCreateProcedure = defineProtectedMutate
     // check logged in user is admin of gliederung
     const gliederung = await getGliederungRequireAdmin(ctx.accountId)
 
-    const existing = await prisma.unterveranstaltung.findUnique({
+    const existing = await prisma.unterveranstaltung.findFirst({
       where: {
-        veranstaltungId_gliederungId: {
-          veranstaltungId: input.data.veranstaltungId,
-          gliederungId: gliederung.id,
-        },
+        veranstaltungId: input.data.veranstaltungId,
+        gliederungId: gliederung.id,
       },
     })
     if (existing !== null) {
