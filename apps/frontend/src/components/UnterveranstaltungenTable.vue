@@ -7,7 +7,7 @@ import GenericDataGrid from './GenericDataGrid.vue'
 import { apiClient } from '@/api'
 // import DataGridVirtualList from '@/components/DataGrid/DataGridVirtualList.vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
-import { type RouterInput, type RouterOutput } from '@codeanker/api'
+import { UnterveranstaltungTypeMapping, type RouterInput, type RouterOutput } from '@codeanker/api'
 import { type TGridColumn } from '@codeanker/datagrid'
 
 const props = defineProps<{
@@ -43,6 +43,7 @@ const columns = computed<TGridColumn<TUnterveranstaltungData, TUnterveranstaltun
       field: 'type',
       title: 'Typ',
       sortable: true,
+      format: (value) => UnterveranstaltungTypeMapping[value].human,
     },
     {
       field: 'meldeschluss',
