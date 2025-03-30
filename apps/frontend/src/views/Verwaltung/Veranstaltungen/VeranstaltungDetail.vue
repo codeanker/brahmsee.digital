@@ -6,6 +6,7 @@ import {
   UsersIcon,
   SquaresPlusIcon,
   WalletIcon,
+  CameraIcon,
 } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 import { computed } from 'vue'
@@ -13,7 +14,7 @@ import { useRoute } from 'vue-router'
 
 import { apiClient } from '@/api'
 import CustomFieldsTable from '@/components/CustomFields/CustomFieldsTable.vue'
-import FilesExport from '@/components/FilesExport.vue'
+import FilesExport, { type ExportedFileType } from '@/components/FilesExport.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import InfoList from '@/components/UIComponents/InfoList.vue'
@@ -87,7 +88,7 @@ const getJWT = () => {
 
 const exportParams = `jwt=${getJWT()}&veranstaltungId=${route.params.veranstaltungId}`
 
-const files = [
+const files: ExportedFileType[] = [
   {
     name: 'Teilnehmendenliste',
     icon: UsersIcon,
@@ -103,6 +104,14 @@ const files = [
     description: 'Übersicht der Verpflegungswünsche',
     bgColor: 'bg-primary-600',
     hoverColor: 'hover:text-primary-700',
+  },
+  {
+    name: 'Fotos',
+    description: 'Alle Fotos von bestätigten Teilnehmenden',
+    icon: CameraIcon,
+    bgColor: 'bg-orange-600',
+    hoverColor: 'hover:text-orange-700',
+    href: `/api/export/archive/photos?${exportParams}`,
   },
 ]
 </script>

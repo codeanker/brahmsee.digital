@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {
+  CameraIcon,
   ChatBubbleLeftRightIcon,
   CodeBracketIcon,
   DocumentDuplicateIcon,
@@ -19,7 +20,7 @@ import { apiClient } from '@/api'
 import Abbr from '@/components/Abbr.vue'
 import CustomFieldsTable from '@/components/CustomFields/CustomFieldsTable.vue'
 import AnmeldungenTable from '@/components/data/AnmeldungenTable.vue'
-import FilesExport from '@/components/FilesExport.vue'
+import FilesExport, { type ExportedFileType } from '@/components/FilesExport.vue'
 import FilesListAndUpload from '@/components/FilesListAndUpload.vue'
 import FormUnterveranstaltungLandingSettings from '@/components/forms/unterveranstaltung/FormUnterveranstaltungLandingSettings.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
@@ -118,7 +119,7 @@ function copyLink() {
 const getJWT = () => localStorage.getItem('jwt')
 const exportParams = `jwt=${getJWT()}&unterveranstaltungId=${route.params.unterveranstaltungId}`
 
-const files = [
+const files: ExportedFileType[] = [
   {
     name: 'Teilnehmendenliste',
     icon: UsersIcon,
@@ -134,6 +135,14 @@ const files = [
     description: 'Übersicht der Verpflegungswünsche',
     bgColor: 'bg-primary-600',
     hoverColor: 'hover:text-primary-700',
+  },
+  {
+    name: 'Fotos',
+    description: 'Alle Fotos von bestätigten Teilnehmenden',
+    icon: CameraIcon,
+    bgColor: 'bg-orange-600',
+    hoverColor: 'hover:text-orange-700',
+    href: `/api/export/archive/photos?${exportParams}`,
   },
 ]
 
