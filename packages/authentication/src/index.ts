@@ -4,6 +4,8 @@ import jwt from 'jsonwebtoken'
 import type { StringValue } from 'ms'
 import z from 'zod'
 
+export { type StringValue }
+
 // type AuthenticateJwtOptions = {
 //   ctx: {
 //     user: NonNullable<Context['user']>
