@@ -4,7 +4,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npx prisma migrate deploy && tsx src/server.ts",
-    "dev": "tsx watch --clear-screen=false --env-file .env src/server.ts",
+    "dev": "tsx watch --inspect --clear-screen=false --env-file .env src/server.ts",
     "createAccount": "tsx src/scripts/createAccount.ts",
     "initMeilisearch": "tsx src/scripts/initMeilisearch.ts",
     "cli": "tsx src/cli/index.ts",

@@ -1,0 +1,31 @@
+{
+  // Verwendet IntelliSense zum Ermitteln möglicher Attribute.
+  // Zeigen Sie auf vorhandene Attribute, um die zugehörigen Beschreibungen anzuzeigen.
+  // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Frontend",
+      "request": "launch",
+      "type": "chrome",
+      "url": "https://localhost:8080",
+      "webRoot": "${workspaceFolder}/apps/frontend/src",
+      "pathMapping": {
+        "/@fs/workspaces/brahmsee.digital": "${workspaceFolder}"
+      },
+      "runtimeArgs": [
+        "--ignore-certificate-errors",
+        "--auto-open-devtools-for-tabs"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Attach to API",
+      "restart": true,
+      "address": "localhost",
+      "port": 9229,
+      "localRoot": "${workspaceFolder}/apps/api/src",
+    },
+  ]
+}
