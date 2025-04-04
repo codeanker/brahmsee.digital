@@ -46,7 +46,7 @@ const { state: unterveranstaltung } = useAsyncState(async () => {
       id: parseInt(route.params.unterveranstaltungId as string),
     })
   }
-  setTitle(`Ausschreibung für ${result.veranstaltung.name}`)
+  setTitle(`Ausschreibung für ${result.veranstaltung.name} (${result.gliederung.name})`)
   return result
 }, undefined)
 
@@ -68,6 +68,10 @@ interface KeyInfo {
 const keyInfos = computed<KeyInfo[]>(() => {
   if (unterveranstaltung.value) {
     return [
+      {
+        title: 'Gliederung',
+        value: unterveranstaltung.value.gliederung.name,
+      },
       {
         title: 'Beginn',
         value: formatDate(unterveranstaltung.value.veranstaltung.beginn),
@@ -165,7 +169,7 @@ const faqList = useTemplateRef('faqList')
     >
       <Tab key="allgemeines">
         <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
-          <div class="text-lg font-semibold">Veranstaltungsdaten</div>
+          <div class="text-lg font-semibold">Überblick zur Ausschreibung</div>
           <RouterLink
             class="text-primary-500"
             :to="{ name: 'UnterveranstaltungEdit' }"
@@ -176,7 +180,7 @@ const faqList = useTemplateRef('faqList')
 
         <InfoList :infos="keyInfos" />
         <hr class="my-10" />
-        <div class="mt-5 lg:mt-10 mb-5 text-lg font-semibold">Beschreibung</div>
+        <div class="mt-5 lg:mt-10 mb-5 text-lg font-semibold">Kurze Beschreibung</div>
         <div class="px-3 py-5">
           <!-- eslint-disable vue/no-v-html -->
           <div

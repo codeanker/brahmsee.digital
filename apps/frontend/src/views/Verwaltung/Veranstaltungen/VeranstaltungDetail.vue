@@ -120,7 +120,7 @@ const files = [
   >
     <Tab>
       <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
-        <div class="text-lg font-semibold">Veranstaltungsdaten</div>
+        <div class="text-lg font-semibold">Überblick zur Veranstaltung</div>
         <RouterLink
           class="text-primary-600"
           :to="{ name: 'VerwaltungVeranstaltungEdit' }"
