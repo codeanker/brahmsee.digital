@@ -37,6 +37,7 @@ export async function handle({ ctx, input, isPublic }: HandleProps) {
     select: {
       id: true,
       meldeschluss: true,
+      maxTeilnehmende: true,
       veranstaltung: {
         select: {
           id: true,
@@ -53,6 +54,15 @@ export async function handle({ ctx, input, isPublic }: HandleProps) {
           name: true,
         },
       },
+      _count: {
+        select: {
+          Anmeldung: {
+            where: {
+              status: 'BESTAETIGT',
+            },
+          },
+        },
+      },
     },
   })
 
@@ -60,6 +70,42 @@ export async function handle({ ctx, input, isPublic }: HandleProps) {
     throw new TRPCError({
       code: 'FORBIDDEN',
       message: 'Meldeschluss erreicht',
+    })
+  }
+
+  const veranstaltung = await prisma.veranstaltung.findUniqueOrThrow({
+    where: {
+      id: unterveranstaltung.veranstaltung.id,
+    },
+    select: {
+      maxTeilnehmende: true,
+      unterveranstaltungen: {
+        select: {
+          _count: {
+            select: {
+              Anmeldung: {
+                where: {
+                  status: 'BESTAETIGT',
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  })
+  const activeAnmeldungenGlobal = veranstaltung.unterveranstaltungen.reduce(
+    (prev, curr) => prev + curr._count.Anmeldung,
+    0
+  )
+  if (
+    activeAnmeldungenGlobal >= veranstaltung.maxTeilnehmende ||
+    unterveranstaltung._count.Anmeldung >= veranstaltung.maxTeilnehmende ||
+    unterveranstaltung._count.Anmeldung >= unterveranstaltung.maxTeilnehmende
+  ) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: 'Maximale Anzahl an Anmeldungen ist bereits erreicht!',
     })
   }
 
