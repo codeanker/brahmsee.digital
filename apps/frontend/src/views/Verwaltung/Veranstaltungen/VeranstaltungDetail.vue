@@ -192,6 +192,15 @@ const files = [
       </div>
     </Tab>
     <Tab key="Programm">
+      <div class="my-10 flex items-center justify-between">
+        <div>
+          <div class="text-lg font-semibold">Programmpunkte</div>
+          <p class="max-w-2xl text-sm text-gray-500">
+            Hier kann eine Übersicht über Programmpunkte der Veranstaltung angelegt werden.
+          </p>
+        </div>
+      </div>
+
       <ProgramList
         v-if="veranstaltung"
         :veranstaltung-id="veranstaltung.id"

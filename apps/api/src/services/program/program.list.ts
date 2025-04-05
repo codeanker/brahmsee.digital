@@ -1,4 +1,3 @@
-import { groupBy } from '@codeanker/helpers'
 import { z } from 'zod'
 import prisma from '../../prisma.js'
 import { definePublicQueryProcedure } from '../../types/defineProcedure.js'
@@ -8,8 +7,8 @@ export const programListProcedure = definePublicQueryProcedure({
   inputSchema: z.strictObject({
     veranstaltungId: z.number().int(),
   }),
-  handler: async ({ input }) => {
-    const result = await prisma.programmPunkt.findMany({
+  handler: ({ input }) =>
+    prisma.programmPunkt.findMany({
       where: {
         veranstaltungId: input.veranstaltungId,
       },
@@ -24,9 +23,5 @@ export const programListProcedure = definePublicQueryProcedure({
       orderBy: {
         startingAt: 'asc',
       },
-    })
-
-    const grouped = groupBy(result, (row) => row.startingAt.getTime())
-    return Object.entries(grouped).sort(([timestampA], [timestampB]) => timestampB.localeCompare(timestampA))
-  },
+    }),
 })
