@@ -20,7 +20,7 @@ import InfoList from '@/components/UIComponents/InfoList.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
 import UnterveranstaltungenTable from '@/components/UnterveranstaltungenTable.vue'
 import { useRouteTitle } from '@/composables/useRouteTitle'
-import { formatDate } from '@codeanker/helpers'
+import { formatDateWith } from '@codeanker/helpers'
 import { PlusIcon } from '@heroicons/vue/24/solid'
 
 const { setTitle } = useRouteTitle()
@@ -41,6 +41,8 @@ interface KeyInfo {
   small?: boolean
 }
 
+const keyInfoDateFormat = 'dddd, DD. MMMM YYYY'
+
 const keyInfos = computed<KeyInfo[]>(() => {
   if (veranstaltung.value) {
     return [
@@ -49,16 +51,12 @@ const keyInfos = computed<KeyInfo[]>(() => {
         value: 'https://' + veranstaltung.value.hostname?.hostname + '',
       },
       {
-        title: 'Beginn',
-        value: `${formatDate(veranstaltung.value.beginn)} Uhr`,
+        title: 'Zeitraum der Veranstaltung',
+        value: `${formatDateWith(veranstaltung.value.beginn, keyInfoDateFormat)} - ${formatDateWith(veranstaltung.value.ende, keyInfoDateFormat)}`,
       },
       {
-        title: 'Ende',
-        value: `${formatDate(veranstaltung.value.ende)} Uhr`,
-      },
-      {
-        title: 'Anmeldezeitraum',
-        value: `${formatDate(veranstaltung.value.meldebeginn)} - ${formatDate(veranstaltung.value.meldeschluss)}`,
+        title: 'Zeitraum für Anmeldungen',
+        value: `${formatDateWith(veranstaltung.value.meldebeginn, keyInfoDateFormat)} - ${formatDateWith(veranstaltung.value.meldeschluss, keyInfoDateFormat)}`,
       },
       { title: 'Veranstaltungsort', value: veranstaltung.value.ort?.name ?? '' },
       { title: 'Teilnahmebeitrag', value: veranstaltung.value.teilnahmegebuehr + '€' },
@@ -120,7 +118,7 @@ const files = [
   >
     <Tab>
       <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
-        <div class="text-lg font-semibold">Veranstaltungsdaten</div>
+        <div class="text-lg font-semibold">Überblick zur Veranstaltung</div>
         <RouterLink
           class="text-primary-600"
           :to="{ name: 'VerwaltungVeranstaltungEdit' }"
@@ -209,7 +207,6 @@ const files = [
       <UnterveranstaltungenTable
         v-if="veranstaltung?.id"
         :veranstaltung-id="veranstaltung?.id"
-        :hide-columns="['veranstaltung.name']"
       />
     </Tab>
     <Tab>

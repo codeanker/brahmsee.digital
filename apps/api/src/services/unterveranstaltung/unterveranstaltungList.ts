@@ -43,6 +43,7 @@ export const unterveranstaltungListProcedure = defineProtectedQueryProcedure({
       select: {
         id: true,
         type: true,
+        beschreibung: true,
         gliederung: {
           select: {
             id: true,

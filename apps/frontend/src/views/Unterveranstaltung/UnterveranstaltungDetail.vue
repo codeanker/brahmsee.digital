@@ -29,7 +29,7 @@ import InfoList from '@/components/UIComponents/InfoList.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
 import { useRouteTitle } from '@/composables/useRouteTitle'
-import { formatDate } from '@codeanker/helpers'
+import { formatDateWith } from '@codeanker/helpers'
 import FAQList from '../FAQs/FAQList.vue'
 
 const route = useRoute()
@@ -46,7 +46,7 @@ const { state: unterveranstaltung } = useAsyncState(async () => {
       id: parseInt(route.params.unterveranstaltungId as string),
     })
   }
-  setTitle(`Ausschreibung für ${result.veranstaltung.name}`)
+  setTitle(`Ausschreibung für ${result.veranstaltung.name} (${result.gliederung.name})`)
   return result
 }, undefined)
 
@@ -65,18 +65,27 @@ interface KeyInfo {
   small?: boolean
 }
 
+const keyInfoDateFormat = 'dddd, DD. MMMM YYYY'
+
 const keyInfos = computed<KeyInfo[]>(() => {
   if (unterveranstaltung.value) {
     return [
       {
-        title: 'Beginn',
-        value: formatDate(unterveranstaltung.value.veranstaltung.beginn),
+        title: 'Gliederung',
+        value: unterveranstaltung.value.gliederung.name,
       },
       {
-        title: 'Ende',
-        value: formatDate(unterveranstaltung.value.veranstaltung.ende),
+        title: 'Eigener Titel',
+        value: unterveranstaltung.value.beschreibung,
       },
-      { title: 'Meldeschluss', value: formatDate(unterveranstaltung.value.meldeschluss) },
+      {
+        title: 'Zeitraum der Veranstaltung',
+        value: `${formatDateWith(unterveranstaltung.value.beginn, keyInfoDateFormat)} - ${formatDateWith(unterveranstaltung.value.ende, keyInfoDateFormat)}`,
+      },
+      {
+        title: 'Zeitraum für Anmeldungen',
+        value: `${formatDateWith(unterveranstaltung.value.meldebeginn, keyInfoDateFormat)} - ${formatDateWith(unterveranstaltung.value.meldeschluss, keyInfoDateFormat)}`,
+      },
       { title: 'Veranstaltungsort', value: unterveranstaltung.value.veranstaltung.ort?.name ?? '' },
       { title: 'Teilnahmebeitrag', value: unterveranstaltung.value.teilnahmegebuehr + '€' },
       { title: 'max. Teilnahmezahl', value: unterveranstaltung.value.maxTeilnehmende + '' },
@@ -144,14 +153,16 @@ const faqList = useTemplateRef('faqList')
   <div>
     <div class="pb-8">
       <div class="max-w-2xl lg:mx-0">
-        <h2 class="text-2xl font-bold tracking-tight sm:text-4xl items-start flex">
-          {{ unterveranstaltung?.veranstaltung?.name }}
+        <h2 class="text-2xl font-bold tracking-tight sm:text-4xl items-start flex space-x-2">
+          <span>
+            {{ unterveranstaltung?.beschreibung || unterveranstaltung?.veranstaltung?.name }}
+          </span>
           <Badge
             v-if="unterveranstaltung?.type === 'CREW'"
-            class="ml-2"
             color="warning"
-            >CREW</Badge
           >
+            CREW
+          </Badge>
         </h2>
         <p class="mt-4 text-md leading-6">
           Erstelle und bearbeite deine Ausschreibung, Teilnehmende können sich direkt über die Ausschreibung anmelden,
@@ -165,7 +176,7 @@ const faqList = useTemplateRef('faqList')
     >
       <Tab key="allgemeines">
         <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
-          <div class="text-lg font-semibold">Veranstaltungsdaten</div>
+          <div class="text-lg font-semibold">Überblick zur Ausschreibung</div>
           <RouterLink
             class="text-primary-500"
             :to="{ name: 'UnterveranstaltungEdit' }"
@@ -175,15 +186,7 @@ const faqList = useTemplateRef('faqList')
         </div>
 
         <InfoList :infos="keyInfos" />
-        <hr class="my-10" />
-        <div class="mt-5 lg:mt-10 mb-5 text-lg font-semibold">Beschreibung</div>
-        <div class="px-3 py-5">
-          <!-- eslint-disable vue/no-v-html -->
-          <div
-            class="prose dark:prose-invert"
-            v-html="unterveranstaltung?.beschreibung"
-          />
-        </div>
+
         <hr class="my-10" />
         <div class="my-10">
           <div class="text-lg font-semibold">Bedingungen <Badge color="secondary"> Gliederung </Badge></div>
