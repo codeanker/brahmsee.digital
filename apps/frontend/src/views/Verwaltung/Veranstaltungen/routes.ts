@@ -1,4 +1,13 @@
 import type { Route } from '@/router'
+import type { BreadcrumbDefinition } from '@/types'
+
+const detailCrumb: BreadcrumbDefinition = ({ params }) => ({
+  text: 'Details zur Veranstaltung',
+  to: {
+    name: 'Verwaltung Veranstaltungsdetails',
+    params,
+  },
+})
 
 const veranstaltungRoutes: Route[] = [
   {
@@ -43,6 +52,7 @@ const veranstaltungRoutes: Route[] = [
         component: () => import('./VeranstaltungEdit.vue'),
         meta: {
           breadcrumbs: [
+            detailCrumb,
             {
               text: 'Veranstaltung bearbeiten',
             },
@@ -54,11 +64,7 @@ const veranstaltungRoutes: Route[] = [
         path: ':veranstaltungId',
         component: () => import('./VeranstaltungDetail.vue'),
         meta: {
-          breadcrumbs: [
-            {
-              text: 'Detail',
-            },
-          ],
+          breadcrumbs: [detailCrumb],
         },
       },
       {
@@ -67,6 +73,7 @@ const veranstaltungRoutes: Route[] = [
         component: () => import('./CustomFields/CustomFieldVeranstaltungCreate.vue'),
         meta: {
           breadcrumbs: [
+            detailCrumb,
             {
               text: 'Benutzerdefiniertes Feld erstellen',
             },
@@ -79,6 +86,7 @@ const veranstaltungRoutes: Route[] = [
         component: () => import('./CustomFields/CustomFieldVeranstaltungEdit.vue'),
         meta: {
           breadcrumbs: [
+            detailCrumb,
             {
               text: 'Benutzerdefiniertes Feld bearbeiten',
             },

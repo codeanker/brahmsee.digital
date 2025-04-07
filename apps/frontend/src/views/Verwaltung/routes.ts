@@ -11,13 +11,6 @@ const routesVerwaltung: Route[] = [
   {
     name: 'Verwaltung',
     path: '/verwaltung',
-    meta: {
-      breadcrumbs: [
-        {
-          text: 'Verwaltung',
-        },
-      ],
-    },
     children: [
       ...gliederungRoutes,
       ...orteRoutes,
