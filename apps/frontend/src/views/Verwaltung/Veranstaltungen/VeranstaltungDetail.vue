@@ -22,6 +22,7 @@ import UnterveranstaltungenTable from '@/components/UnterveranstaltungenTable.vu
 import { useRouteTitle } from '@/composables/useRouteTitle'
 import { formatDateWith } from '@codeanker/helpers'
 import { PlusIcon } from '@heroicons/vue/24/solid'
+import VeranstaltungCard from '@/components/UIComponents/VeranstaltungCard.vue'
 
 const { setTitle } = useRouteTitle()
 
@@ -60,7 +61,6 @@ const keyInfos = computed<KeyInfo[]>(() => {
       },
       { title: 'Veranstaltungsort', value: veranstaltung.value.ort?.name ?? '' },
       { title: 'Teilnahmebeitrag', value: veranstaltung.value.teilnahmegebuehr + '€' },
-      { title: 'max. Teilnahmezahl', value: veranstaltung.value.maxTeilnehmende + '' },
       { title: 'Zielgruppe', value: veranstaltung.value.zielgruppe ?? '' },
     ]
   } else {
@@ -127,16 +127,14 @@ const files = [
         </RouterLink>
       </div>
 
-      <InfoList :infos="keyInfos" />
+      <VeranstaltungCard
+        v-if="veranstaltung"
+        :key="veranstaltung.id"
+        :veranstaltung="veranstaltung"
+      />
 
-      <div class="mt-5 lg:mt-10 mb-5 text-lg font-semibold">Beschreibung</div>
-      <div class="px-3 py-5">
-        <!-- eslint-disable vue/no-v-html -->
-        <div
-          class="prose dark:prose-invert"
-          v-html="veranstaltung?.beschreibung"
-        />
-      </div>
+      <div class="text-lg font-semibold mt-8 mb-4">Weitere Daten</div>
+      <InfoList :infos="keyInfos" />
     </Tab>
     <Tab>
       <div class="my-10">

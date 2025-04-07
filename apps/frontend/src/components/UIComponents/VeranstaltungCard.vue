@@ -7,7 +7,7 @@ import Badge from './Badge.vue'
 import Button from './Button.vue'
 
 import type { RouterOutput } from '@codeanker/api'
-import { formatDate } from '@codeanker/helpers'
+import { formatDateWith } from '@codeanker/helpers'
 
 const { veranstaltung } = defineProps<Props>()
 
@@ -23,6 +23,7 @@ interface Props {
 const totalAnmeldungen = computed(() =>
   veranstaltung.unterveranstaltungen.map((u) => u._count.Anmeldung).reduce((a, b) => a + b, 0)
 )
+const keyInfoDateFormat = 'dddd, DD. MMMM YYYY'
 
 const percent = computed(() => (totalAnmeldungen.value / veranstaltung.maxTeilnehmende) * 100)
 </script>
@@ -36,9 +37,9 @@ const percent = computed(() => (totalAnmeldungen.value / veranstaltung.maxTeilne
       {{ veranstaltung.name }}
     </h2>
 
-    <p class="mt-4 text-sm leading-6">
-      vom {{ formatDate(veranstaltung.beginn) }} bis
-      {{ formatDate(veranstaltung.ende) }}
+    <p class="mt-4 text-sm leading-6 underline-offset-4">
+      von <u>{{ formatDateWith(veranstaltung.beginn, keyInfoDateFormat) }}</u> bis
+      <u>{{ formatDateWith(veranstaltung.ende, keyInfoDateFormat) }}</u>
     </p>
 
     <p class="text-sm leading-6">
