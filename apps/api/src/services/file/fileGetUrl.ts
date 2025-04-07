@@ -28,12 +28,6 @@ export const fileGetUrlActionProcedure = definePublicQueryProcedure({
 
     const file = await prisma.file.findUnique({
       where,
-      select: {
-        id: true,
-        provider: true,
-        uploaded: true,
-        key: true,
-      },
     })
 
     if (file === null) {

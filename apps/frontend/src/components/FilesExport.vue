@@ -2,7 +2,7 @@
 import { ArrowDownTrayIcon } from '@heroicons/vue/24/outline'
 import type { FunctionalComponent } from 'vue'
 
-interface fileType {
+export interface ExportedFileType {
   name: string
   initial?: string
   icon?: FunctionalComponent
@@ -13,7 +13,7 @@ interface fileType {
 }
 
 defineProps<{
-  files: fileType[]
+  files: ExportedFileType[]
 }>()
 </script>
 
