@@ -199,6 +199,13 @@ const files = [
             Hier kann eine Übersicht über Programmpunkte der Veranstaltung angelegt werden.
           </p>
         </div>
+        <RouterLink
+          class="text-primary-500 flex items-center"
+          :to="{ name: 'Verwaltung Programmpunkt erstellen' }"
+        >
+          <PlusIcon class="h-5 w-5 mr-1" />
+          <span>Programmpunkt erstellen</span>
+        </RouterLink>
       </div>
 
       <ProgramList

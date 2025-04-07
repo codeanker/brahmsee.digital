@@ -32,7 +32,7 @@
     "@tiptap/starter-kit": "catalog:",
     "@tiptap/vue-3": "catalog:",
     "@trpc/client": "catalog:",
-    "@vuepic/vue-datepicker": "^4.5.1",
+    "@vuepic/vue-datepicker": "^11.0.2",
     "@vueuse/core": "^12.5.0",
     "@vueuse/router": "^12.3.0",
     "clsx": "^2.1.1",

@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import VueDatePicker from '@vuepic/vue-datepicker'
+import VueDatePicker, { type PartialTimeObj } from '@vuepic/vue-datepicker'
 
 import useValidationModel from '../../composables/useValidationModel'
 
+import { computed } from 'vue'
 import BasicFormGroup from './components/BasicFormGroup.vue'
 
 const props = withDefaults(
@@ -66,6 +67,17 @@ const emit = defineEmits<{
   'update:modelValue': [boolean | undefined]
 }>()
 
+const minTime = computed<PartialTimeObj | undefined>(() => {
+  if (!props.disabledDates?.to) {
+    return
+  }
+
+  return {
+    hours: props.disabledDates.to.getHours(),
+    minutes: props.disabledDates.to.getMinutes(),
+  }
+})
+
 const { model, errorMessage } = useValidationModel(props, emit)
 </script>
 
@@ -83,7 +95,7 @@ const { model, errorMessage } = useValidationModel(props, emit)
         v-model="model"
         :name="id || name || label"
         :placeholder="placeholder || label || name"
-        input-class-name="input-style"
+        :ui="{ input: 'input-style' }"
         :range="range"
         :auto-range="autoRange"
         :multi-calendars="multiCalendars"
@@ -104,13 +116,19 @@ const { model, errorMessage } = useValidationModel(props, emit)
         :auto-apply="autoApply"
         :markers="markers"
         :enable-time-picker="timePicker || enableTimePicker"
+        :time-picker-inline="timePicker || enableTimePicker"
         :format="format"
         :model-type="modelType"
         :required="required"
         :min-date="disabledDates?.to"
         :max-date="disabledDates?.from"
+        :min-time="minTime"
         locale="de"
       />
     </BasicFormGroup>
   </div>
 </template>
+
+<style>
+@import '@vuepic/vue-datepicker/dist/main.css';
+</style>
