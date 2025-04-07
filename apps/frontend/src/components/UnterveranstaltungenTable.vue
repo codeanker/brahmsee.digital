@@ -9,6 +9,7 @@ import { apiClient } from '@/api'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import { UnterveranstaltungTypeMapping, type RouterInput, type RouterOutput } from '@codeanker/api'
 import { type TGridColumn } from '@codeanker/datagrid'
+import TwoRowText from './UIComponents/TwoRowText.vue'
 
 const props = defineProps<{
   veranstaltungId?: number
@@ -26,13 +27,17 @@ const columns = computed<TGridColumn<TUnterveranstaltungData, TUnterveranstaltun
   const columns: TGridColumn<TUnterveranstaltungData, TUnterveranstaltungFilter>[] = [
     {
       field: 'id',
-      title: 'Id',
+      title: '#',
       size: '50px',
     },
     {
       field: 'veranstaltung.name',
       title: 'Veranstaltung',
-      sortable: true,
+      cell: TwoRowText,
+      cellProps: (_, { content }) => ({
+        title: content.veranstaltung.name,
+        subtitle: content.beschreibung.split(' ').slice(0, 5).join(' '),
+      }),
     },
     {
       field: 'gliederung.name',
