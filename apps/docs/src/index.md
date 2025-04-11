@@ -4,21 +4,14 @@ layout: home
 
 hero:
   name: 'brahmsee.digital'
-  text: 'documentation'
-  tagline: Structure and Hints
-  actions:
-    - theme: brand
-      text: Markdown Examples
-      link: /markdown-examples
-    - theme: alt
-      text: API Examples
-      link: /api-examples
+  text: 'dokumentation'
+  tagline: Veranstaltungsmanagement Plattform für die DLRG Schleswig-Holstein.
 
 features:
-  - title: Project Setup
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Entwicklung
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Inhalt
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: Frontend
+    details: Eine Ansammlung aller Seiten im Frontend
+    link: /frontend
+  - title: Backend
+    details: Eine Ansammlung aller Endpunkte im Backend
+    link: /backend
 ---

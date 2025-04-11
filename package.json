@@ -16,7 +16,7 @@
     "turbo-checks": "turbo typecheck lint --concurrency 100%",
     "start:services": "docker-compose -f docker-compose-services.yml up --build",
     "start:api": "npm run dev -w ./apps/api",
-    "start:frontend": "VITE_APP_API_HOST=http://localhost:3030 npm run dev -w ./apps/frontend",
+    "start:frontend": "VITE_APP_API_HOST=/ npm run dev -w ./apps/frontend",
     "start:docs": "npm run docs:dev -w ./apps/docs",
     "migrate:api": "npm exec -w ./apps/api prisma migrate deploy",
     "lint": "turbo lint",

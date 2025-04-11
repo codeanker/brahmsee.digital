@@ -16,7 +16,6 @@ const routesVerwaltung: Route[] = [
       ...orteRoutes,
       ...routesPerson,
       ...veranstaltungRoutes,
-      ...orteRoutes,
       ...routesAccount,
       ...routesMeineDaten,
     ],

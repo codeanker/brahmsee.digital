@@ -15,7 +15,7 @@ const auswertungRoutes: Route[] = [
     children: [
       {
         name: 'VeranstaltungAuswertungVeranstaltung',
-        path: 'verpflegung',
+        path: '',
         component: () => import('./AuswertungVeranstaltung.vue'),
         meta: {
           breadcrumbs: [
