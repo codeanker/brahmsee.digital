@@ -1,0 +1,29 @@
+enum AnmeldungStatus {
+  OFFEN
+  BESTAETIGT
+  STORNIERT
+  ABGELEHNT
+}
+
+model Anmeldung {
+  id             Int             @id @default(autoincrement())
+  createdAt      DateTime        @default(now())
+  status         AnmeldungStatus @default(OFFEN)
+  comment        String?
+  accessToken    String?         @db.Uuid
+  assignmentCode String?         @db.Uuid
+
+  unterveranstaltungId Int
+  unterveranstaltung   Unterveranstaltung @relation(fields: [unterveranstaltungId], references: [id], onDelete: Cascade)
+
+  personId Int
+  person   Person @relation(fields: [personId], references: [id], onDelete: Cascade)
+
+  accountId Int?
+  account   Account? @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  mahlzeitenIds      Int[]
+  mahlzeiten         Mahlzeit[]
+  uebernachtungsTage DateTime[]         @db.Date
+  customFieldValues  CustomFieldValue[]
+}

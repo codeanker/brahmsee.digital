@@ -1,0 +1,55 @@
+//region Enums
+
+enum Gender {
+  MALE
+  FEMALE
+  UNSPECIFIED
+}
+
+enum Essgewohnheit {
+  OMNIVOR
+  VEGETARISCH
+  VEGAN
+}
+
+enum NahrungsmittelIntoleranz {
+  SCHWEIN
+  GLUTEN
+  LAKTOSE
+  FRUCTOSE
+}
+
+//endregion
+
+model Person {
+  id                         Int                        @id @default(autoincrement())
+  firstname                  String
+  lastname                   String
+  birthday                   DateTime?                  @db.Date
+  gender                     Gender?
+  email                      String
+  telefon                    String
+  anmeldungen                Anmeldung[]
+  gliederungId               Int?
+  gliederung                 Gliederung?                @relation(fields: [gliederungId], references: [id], onDelete: SetNull)
+  account                    Account?
+  essgewohnheit              Essgewohnheit?
+  nahrungsmittelIntoleranzen NahrungsmittelIntoleranz[]
+  weitereIntoleranzen        String[]
+  notfallkontaktIds          Int[]
+  notfallkontakte            Notfallkontakt[]
+  addressId                  Int?
+  address                    Address?                   @relation(fields: [addressId], references: [id], onDelete: Cascade)
+  photoId                    String?
+  photo                      File?                      @relation(fields: [photoId], references: [id])
+}
+
+model Notfallkontakt {
+  id                      Int     @id @default(autoincrement())
+  firstname               String
+  lastname                String
+  telefon                 String
+  istErziehungsberechtigt Boolean @default(false)
+  personId                Int
+  person                  Person  @relation(fields: [personId], references: [id], onDelete: Cascade)
+}

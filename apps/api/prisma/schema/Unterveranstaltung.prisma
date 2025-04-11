@@ -1,0 +1,38 @@
+enum UnterveranstaltungType {
+  CREW
+  GLIEDERUNG
+}
+
+model Unterveranstaltung {
+  id               Int                          @id @default(autoincrement())
+  maxTeilnehmende  Int
+  teilnahmegebuehr Int
+  meldebeginn      DateTime
+  meldeschluss     DateTime
+  veranstaltungId  Int
+  veranstaltung    Veranstaltung                @relation(fields: [veranstaltungId], references: [id], onDelete: Cascade)
+  gliederungId     Int
+  gliederung       Gliederung                   @relation(fields: [gliederungId], references: [id], onDelete: Cascade)
+  Anmeldung        Anmeldung[]
+  beschreibung     String?
+  bedingungen      String?
+  type             UnterveranstaltungType       @default(GLIEDERUNG)
+  customFields     CustomField[]
+  documents        UnterveranstaltungDocument[]
+
+  faqs          Faq[]
+  faqCategories FaqCategory[]
+
+  landingSettings   UnterveranstaltungLandingSettings? @relation(fields: [landingSettingsId], references: [unterveranstaltungId], onDelete: Cascade)
+  landingSettingsId Int?                               @unique
+}
+
+model UnterveranstaltungDocument {
+  id                   Int                 @id @default(autoincrement())
+  name                 String
+  description          String?
+  unterveranstaltungId Int
+  unterveranstaltung   Unterveranstaltung? @relation(fields: [unterveranstaltungId], references: [id], onDelete: Cascade)
+  file                 File                @relation(fields: [fileId], references: [id])
+  fileId               String              @unique
+}

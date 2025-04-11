@@ -1,0 +1,88 @@
+{{#> layout }}
+
+<mj-text
+  font-size="16px"
+  line-height="1.5"
+>
+  Vielen Dank für deine Anmeldung zur Veranstaltung {{ veranstaltung }}.
+</mj-text>
+
+{{#if accessToken}}
+<mj-text
+  font-size="16px"
+  line-height="1.5"
+>
+  <span>Bitte lade im nächsten Schritt ein Bild für {{ name }} hoch:&nbsp;</span>
+  <a
+    href="https://{{ hostname }}/ausschreibung/{{ unterveranstaltungId }}/anmeldung/{{ anmeldungId }}/foto-upload?accessToken={{ accessToken }}"
+    >Hier Foto hochladen</a
+  >
+</mj-text>
+
+<mj-text
+  font-size="16px"
+  line-height="1.5"
+>
+  Du kannst den Fotoupload beliebig oft machen, bis der Meldeschluss erreicht ist.
+</mj-text>
+{{/if}}
+
+<mj-text
+  font-size="16px"
+  line-height="1.5"
+>
+  <b>Wichtig</b>: Deine Anmeldung ist noch nicht bestätigt. Sobald sich der Status ändert, erhältst Du eine weitere
+  E-Mail.
+</mj-text>
+
+{{#if assignmentCode}}
+<mj-text
+  font-size="16px"
+  line-height="1.5"
+>
+  <b>Noch ein wichtiger Hinweis</b>: Die Anmeldung wurde keinem Account zugeordnet, da du nicht angemeldet warst, als
+  die Daten abgeschickt worden sind.
+</mj-text>
+
+<mj-text
+  font-size="16px"
+  line-height="1.5"
+>
+  Das macht aber nichts, denn wir haben einen sog. <b>Zuordnungscode</b> für dich erstellt. Solltest du dich in Zukunft
+  dazu entscheiden, einen Account bei <b>{{ hostname }}</b> zu erstellen, kannst du den Code nutzen, um die Anmeldung
+  deinem Account zuzuordnen.
+</mj-text>
+
+<mj-text
+  font-size="16px"
+  line-height="1.5"
+>
+  <p>Dazu befolgt du einfach die folgenden Schritte:</p>
+
+  <ol>
+    <li>
+      Du erstellst dir einen Account auf
+      <a
+        href="https://{{ hostname }}/registrierung"
+        rel="noreferrer"
+        >{{ hostname }}</a
+      >
+    </li>
+    <li>
+      Du gibst den unten genannten <b>Zuordnungscode</b> auf der folgenden Seite ein:
+      <a
+        href="https://{{ hostname }}/my/anmeldung-zuordnen"
+        rel="noreferrer"
+        >Anmeldung per Code zuordnen</a
+      >
+    </li>
+  </ol>
+</mj-text>
+
+<mj-text
+  font-size="16px"
+  line-height="1.5"
+>
+  Dein Code lautet: <u>{{ assignmentCode }}</u>
+</mj-text>
+{{/if}} {{/layout}}

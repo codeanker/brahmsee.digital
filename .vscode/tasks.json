@@ -14,7 +14,7 @@
 			},
 			"options": {
 				"statusbar": {
-					"hide" : true
+					"hide": true
 				}
 			}
 		},
@@ -31,7 +31,7 @@
 			},
 			"options": {
 				"statusbar": {
-					"hide" : true
+					"hide": true
 				}
 			}
 		},
@@ -48,14 +48,14 @@
 			},
 			"options": {
 				"statusbar": {
-					"hide" : true
+					"hide": true
 				}
 			}
 		},
 		{
 			"type": "npm",
-			"script": "test:e2e",
-			"label": "run:test:e2e",
+			"script": "test",
+			"label": "start:test",
 			"problemMatcher": [],
 			"presentation": {
 				"reveal": "always",
@@ -65,24 +65,7 @@
 			},
 			"options": {
 				"statusbar": {
-					"hide" : true
-				}
-			}
-		},
-		{
-			"type": "npm",
-			"script": "test:e2e:ui",
-			"label": "start:test:e2e:ui",
-			"problemMatcher": [],
-			"presentation": {
-				"reveal": "always",
-				"panel": "new",
-				"group": "start",
-				"close": false
-			},
-			"options": {
-				"statusbar": {
-					"hide" : true
+					"hide": true
 				}
 			}
 		},
@@ -99,7 +82,7 @@
 			},
 			"options": {
 				"statusbar": {
-					"hide" : true
+					"hide": true
 				}
 			}
 		},
@@ -121,7 +104,7 @@
 			"problemMatcher": [],
 			"options": {
 				"statusbar": {
-					"hide" : true
+					"hide": true
 				}
 			}
 		},
@@ -130,8 +113,8 @@
 			"type": "shell",
 			"command": "npx prisma studio",
 			"options": {
-        "cwd": "${workspaceFolder}/api"
-      },
+				"cwd": "${workspaceFolder}/apps/api"
+			},
 			"problemMatcher": [],
 			"presentation": {
 				"reveal": "silent",
@@ -145,29 +128,14 @@
 			"type": "shell",
 			"command": "npx prisma migrate deploy & npx prisma generate",
 			"options": {
-        "cwd": "${workspaceFolder}/api"
-      },
+				"cwd": "${workspaceFolder}/apps/api"
+			},
 			"problemMatcher": [],
 			"presentation": {
 				"reveal": "always",
 				"revealProblems": "onProblem",
 				"panel": "new",
-				"close": true
-			}
-		},
-		{
-			"label": "run:seeder",
-			"type": "shell",
-			"command": "npx prisma db seed",
-			"options": {
-        "cwd": "${workspaceFolder}/api"
-      },
-			"problemMatcher": [],
-			"presentation": {
-				"reveal": "always",
-				"revealProblems": "onProblem",
-				"panel": "new",
-				"close": true
+				"close": false
 			}
 		},
 		{
@@ -176,9 +144,9 @@
 			"label": "run:createAccount",
 			"problemMatcher": [],
 			"options": {
-        "cwd": "${workspaceFolder}/api",
+				"cwd": "${workspaceFolder}/apps/api",
 				"statusbar": {
-					"hide" : false
+					"hide": false
 				}
 			},
 			"presentation": {
@@ -186,8 +154,7 @@
 				"panel": "new",
 				"group": "start",
 				"close": false
-			},
-
+			}
 		},
 		{
 			"type": "npm",
@@ -195,9 +162,9 @@
 			"label": "run:initMeilisearch",
 			"problemMatcher": [],
 			"options": {
-        "cwd": "${workspaceFolder}/api",
+				"cwd": "${workspaceFolder}/apps/api",
 				"statusbar": {
-					"hide" : false
+					"hide": false
 				}
 			},
 			"presentation": {
@@ -205,8 +172,7 @@
 				"panel": "new",
 				"group": "start",
 				"close": false
-			},
-
+			}
 		},
 		{
 			"type": "shell",
@@ -214,7 +180,7 @@
 			"command": "npx playwright install && npx playwright install-deps",
 			"options": {
 				"statusbar": {
-					"hide" : true
+					"hide": true
 				}
 			},
 			"problemMatcher": [],
@@ -231,9 +197,9 @@
 			"command": "npx prisma migrate reset",
 			"problemMatcher": [],
 			"options": {
-        "cwd": "${workspaceFolder}/api",
+				"cwd": "${workspaceFolder}/apps/api",
 				"statusbar": {
-					"hide" : false
+					"hide": false
 				}
 			},
 			"presentation": {
@@ -242,6 +208,40 @@
 				"panel": "new",
 				"close": true
 			}
-		}
+		},
+		{
+			"type": "npm",
+			"script": "test:e2e",
+			"label": "run:test:e2e",
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"group": "start",
+				"close": false
+			},
+			"options": {
+				"statusbar": {
+					"hide": true
+				}
+			}
+		},
+		{
+			"type": "npm",
+			"script": "test:e2e:ui",
+			"label": "start:test:e2e:ui",
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"group": "start",
+				"close": false
+			},
+			"options": {
+				"statusbar": {
+					"hide": true
+				}
+			}
+		},
 	]
 }

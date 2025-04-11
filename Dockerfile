@@ -1,23 +1,30 @@
-FROM node:20-alpine3.17 AS workspace-base
+FROM node:18.14.2-alpine3.16  AS workspace-base
+
+RUN apk add --no-cache bash curl jq
+
+RUN export COREPACK_INTEGRITY_KEYS="$(curl https://registry.npmjs.org/-/npm/v1/keys | jq -c '{npm: .keys}')"
+
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
 
 ENV CI=true
 ENV HUSKY=0
 
 WORKDIR /app
 
-COPY frontend/package.json ./frontend/
-COPY api/package.json ./api/
+COPY apps/frontend/package.json ./apps/frontend/
+COPY apps/api/package.json ./apps/api/
 
 COPY packages/authentication/package.json ./packages/authentication/
 COPY packages/helpers/package.json ./packages/helpers/
 COPY packages/validation/package.json ./packages/validation/
 COPY vendor/ ./vendor/
 
-COPY package*.json ./
-
+COPY pnpm-lock.yaml ./
+RUN pnpm fetch
 COPY . ./
-RUN npm ci
-RUN npm run postinstall --workspace ./api
+RUN pnpm install --frozen-lockfile
 
 ENV TZ=Europe/Berlin
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
@@ -28,19 +35,19 @@ ENV VERSION=$version
 
 FROM api-build-stage AS api-production-stage
 
-CMD [ "npm", "start", "-w", "./api"]
+CMD [ "pnpm", "start", "-w", "./apps/api"]
 
 FROM workspace-base AS frontend-build-stage
 
 ENV VITE_APP_COMMIT_HASH=$commitHash
 ENV VITE_APP_VERSION=$version
-RUN npm run build --workspace ./frontend
+RUN npm run build --workspace ./apps/frontend
 
 FROM workspace-base AS api-build-stage
 
 # todo packing
-# RUN npm run build --workspace ./api
+# RUN npm run build --workspace ./apps/api
 
-COPY --from=frontend-build-stage /app/frontend/dist ./api/static/
+COPY --from=frontend-build-stage /app/apps/frontend/dist ./apps/api/static/
 ENV NODE_ENV=production
-CMD [ "npm", "start", "-w", "./api" ]
+CMD [ "npm", "start", "-w", "./apps/api" ]

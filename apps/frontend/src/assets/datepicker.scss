@@ -1,0 +1,240 @@
+.dp__main {
+  @apply relative w-full;
+  .dp__input_wrap {
+    input {
+      @apply cursor-pointer;
+    }
+    @apply relative w-full;
+    .dp__icon.dp__input_icon {
+      @apply cursor-pointer absolute top-1/2 right-0 -translate-y-1/2 text-gray-500 w-4 h-4 mr-3 inline-block text-base;
+    }
+    .dp__icon.dp__clear_icon {
+      @apply cursor-pointer absolute top-1/2 right-6 -translate-y-1/2 text-gray-500 w-4 h-4 mr-3 inline-block text-base;
+    }
+  }
+  .dp__menu_index {
+    @apply z-dropdown;
+  }
+  // Ausgeklapptes Menü
+  .dp__menu {
+    @apply shadow rounded-lg bg-white absolute min-w-[260px] z-dropdown;
+    .dp__menu_content_wrapper {
+      @apply flex;
+    }
+    .dp__flex_display {
+      @apply flex w-full;
+    }
+    .dp__preset_ranges {
+      @apply border-r p-4 px-3;
+      .dp__preset_range {
+        @apply hover:bg-gray-100 rounded-lg flex items-center justify-center cursor-pointer py-2 px-3 whitespace-nowrap;
+      }
+    }
+    .dp__instance_calendar {
+      @apply w-full relative pt-0 px-0;
+    }
+    .dp__instance_calendar:not(:has(.dp__instance_calendar)) {
+      @apply w-full relative pt-4 px-4;
+    }
+    .dp__overlay {
+      @apply absolute w-full h-full bg-white rounded-lg transition-opacity top-0 left-0 z-dropdown px-4;
+      .dp__time_picker_overlay_container,
+      .dp__overlay_container {
+        @apply h-full flex flex-col overflow-y-auto pt-4;
+        &::-webkit-scrollbar {
+          @apply w-1 bg-white;
+        }
+        &::-webkit-scrollbar-thumb {
+          @apply rounded-lg bg-gray-300;
+        }
+        .dp__overlay_row {
+          @apply max-w-full w-full flex items-center justify-center flex-1 flex-wrap;
+          .dp__time_input {
+            @apply flex justify-center max-w-full w-full items-center;
+            .dp__time_col.dp__time_col_reg {
+              @apply text-3xl flex flex-col items-center justify-center px-4;
+              .dp__inc_dec_button {
+                @apply w-8 hover:bg-gray-100 cursor-pointer rounded-lg p-2;
+              }
+              .dp__time_display {
+                @apply hover:bg-gray-100 cursor-pointer rounded-lg p-2;
+              }
+            }
+          }
+          .dp__overlay_col {
+            @apply w-1/3 text-center;
+            .dp__overlay_cell {
+              @apply py-2 hover:bg-gray-100 cursor-pointer rounded-lg;
+            }
+          }
+        }
+      }
+    }
+    // Obere Leiste mit Jahren und Buttons
+    .dp__month_year_row,
+    .dp__month_picker_header {
+      @apply flex items-center w-full mb-4;
+      //Navigation der Monate
+      .dp__month_year_col_nav {
+        @apply order-2;
+        .dp__inner_nav {
+          @apply flex items-center justify-center cursor-pointer rounded-md transition-all hover:bg-gray-100 p-2;
+          .dp__icon {
+            @apply h-6 text-gray-400;
+          }
+        }
+      }
+      .dp__month_picker_header {
+        @apply justify-center;
+      }
+      // Monat und Jahr
+      .dp__month_year_wrap {
+        @apply flex w-full order-1;
+      }
+      .dp__month_year_select {
+        @apply text-lg px-0 hover:px-3 py-1 transition-all hover:bg-gray-100 rounded-md;
+      }
+      .dp__month_year_select:nth-of-type(1) {
+        @apply font-bold text-gray-900 mr-2;
+      }
+      .dp__month_year_select:nth-of-type(2) {
+        @apply text-gray-400;
+      }
+      // Monat / Jahr Select
+      .dp__overlay {
+        @apply absolute w-full h-full bg-white rounded-lg transition-opacity top-0 left-0 z-dropdown px-4;
+        .dp__overlay_container {
+          @apply flex flex-col overflow-y-auto pt-4;
+          &::-webkit-scrollbar {
+            @apply w-1 bg-white;
+          }
+          &::-webkit-scrollbar-thumb {
+            @apply rounded-lg bg-gray-300;
+          }
+          .dp__overlay_row {
+            @apply grid grid-cols-3 max-w-full w-full items-center;
+            .dp__overlay_col {
+              @apply w-full mb-2;
+              .dp__overlay_cell {
+                @apply cursor-pointer rounded-md text-center hover:bg-gray-100 transition-colors py-2;
+              }
+              .dp__overlay_cell_active {
+                @apply cursor-pointer rounded-md text-center bg-primary-500 text-white py-2;
+              }
+            }
+          }
+        }
+      }
+    }
+    // Kalender
+    .dp__calendar {
+      @apply w-full mb-2;
+      & > div {
+        @apply w-full;
+      }
+      .dp__calendar_wrap {
+        @apply w-full;
+        // Wochentage
+        .dp__calendar_header {
+          @apply flex relative whitespace-nowrap text-xs font-bold w-full;
+          .dp__calendar_header_item {
+            @apply w-full flex items-center justify-center rounded-full aspect-square text-gray-700 p-2;
+          }
+        }
+        .dp__calendar_header_separator {
+        }
+        // Tage
+        .dp__calendar {
+          @apply relative;
+          .dp__calendar_row {
+            @apply grid grid-cols-7 relative whitespace-nowrap;
+            .dp__calendar_item {
+              @apply w-full flex items-center justify-center aspect-square text-base;
+              .dp__cell_inner {
+                @apply text-gray-900 relative w-full h-full flex items-center justify-center hover:bg-gray-100 transition-colors cursor-pointer rounded-lg;
+                &.dp__cell_offset {
+                  @apply text-gray-400;
+                }
+                &.dp__today {
+                  @apply bg-primary-100 rounded-lg;
+                }
+                &.dp__date_hover_start {
+                  @apply rounded-r-none;
+                }
+                &.dp__date_hover_end {
+                  @apply rounded-l-none;
+                }
+                &.dp__cell_auto_range {
+                  @apply border-gray-500 border-dashed rounded-none border-y;
+                }
+                &.dp__cell_auto_range_start {
+                  @apply border-gray-500 border-dashed border-y border-l rounded-r-none;
+                }
+                &.dp__cell_auto_range_end {
+                  @apply border-gray-500 border-dashed border-y border-r rounded-l-none;
+                }
+                &.dp__range_between,
+                &.dp__range_between_week {
+                  @apply bg-gray-100 rounded-none;
+                }
+                &.dp__range_start {
+                  @apply bg-primary-500 text-white rounded-r-none;
+                }
+                &.dp__range_end {
+                  @apply bg-primary-500 text-white rounded-l-none;
+                }
+                &.dp__active_date {
+                  @apply bg-primary-500 text-white;
+                }
+                &.dp__cell_disabled {
+                  @apply text-gray-400 cursor-not-allowed;
+                }
+                .dp__marker_dot {
+                  @apply w-1.5 h-1.5 rounded-full bottom-0 absolute left-1/2 -translate-x-1/2 bg-danger-400;
+                }
+                .dp__marker_line {
+                  @apply w-full h-1.5 rounded-full bottom-0 absolute left-1/2 -translate-x-1/2 bg-danger-400;
+                }
+                .dp__marker_tooltip {
+                  @apply absolute rounded cursor-default bg-white shadow-md p-2 px-4;
+                }
+                .dp__tooltip_content {
+                  @apply whitespace-nowrap;
+                }
+                .dp__tooltip_text {
+                  @apply text-gray-900 flex items-center;
+                }
+                .dp__tooltip_mark {
+                  @apply text-gray-900 w-2 h-2 rounded-full mr-2;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    // Zeit Button
+    .dp__button {
+      @apply hover:bg-gray-100 rounded-lg flex items-center justify-center p-2;
+      .dp__icon {
+        @apply h-6 fill-gray-400;
+      }
+    }
+    // select und cancel
+    .dp__action_row {
+      @apply pb-4 px-4;
+      .dp__selection_preview {
+        @apply font-bold text-center;
+      }
+      .dp__action_buttons {
+        @apply flex justify-end;
+        .dp__action.dp__cancel {
+          @apply px-2 py-1 cursor-pointer transition-colors hover:bg-gray-100 rounded-md text-gray-500;
+        }
+        .dp__action.dp__select {
+          @apply px-2 py-1 cursor-pointer transition-colors hover:bg-gray-100 rounded-md text-primary-500;
+        }
+      }
+    }
+  }
+}

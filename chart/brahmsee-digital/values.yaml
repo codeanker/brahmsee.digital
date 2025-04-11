@@ -16,6 +16,15 @@ app:
   jwt_secret: ""
   meilisearch:
     key: 'defaultKey'
+  fileDefaultProvider: 'LOCAL'
+  fileProviders:
+    LOCAL:
+      path: /tmp
+    AZURE:
+      account: ""
+      accountKey: ""
+      container: ""
+      folder: ""
 
 postgres:
   enabled: true

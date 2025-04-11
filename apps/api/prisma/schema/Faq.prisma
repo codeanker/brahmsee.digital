@@ -1,0 +1,24 @@
+model FaqCategory {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  unterveranstaltungId Int
+  unterveranstaltung   Unterveranstaltung @relation(fields: [unterveranstaltungId], references: [id])
+  faqs                 Faq[]
+
+  @@unique([name, unterveranstaltungId])
+  @@map("faq_categories")
+}
+
+model Faq {
+  id       Int    @id @default(autoincrement())
+  question String
+  answer   String
+
+  categoryId Int
+  category   FaqCategory @relation(fields: [categoryId], references: [id])
+
+  unterveranstaltung Unterveranstaltung[]
+
+  @@map("faqs")
+}

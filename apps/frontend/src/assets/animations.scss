@@ -1,0 +1,49 @@
+.shake-enter-active {
+  animation: shake 0.5s;
+}
+
+@keyframes shake {
+  8%,
+  41% {
+    -webkit-transform: translateX(-10px);
+  }
+
+  25%,
+  58% {
+    -webkit-transform: translateX(10px);
+  }
+
+  75% {
+    -webkit-transform: translateX(-5px);
+  }
+
+  92% {
+    -webkit-transform: translateX(5px);
+  }
+
+  0%,
+  100% {
+    -webkit-transform: translateX(0);
+  }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(120px);
+  opacity: 0;
+}

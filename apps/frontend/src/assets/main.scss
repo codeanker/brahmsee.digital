@@ -1,0 +1,29 @@
+@use './animations.scss';
+@use './tailwind.scss';
+// @import "@vuepic/vue-datepicker/dist/main.css";
+@use './baseFormStyle.scss';
+@use './datepicker.scss';
+@use './fonts.scss';
+
+html {
+  font-size: 14px;
+}
+
+html,
+body,
+#app {
+  width: 100vw;
+  overflow: hidden;
+  overflow-y: overlay;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  scrollbar-gutter: stable;
+}
+
+body {
+  @apply transition-colors duration-200;
+}
+
+abbr {
+  cursor: help;
+}

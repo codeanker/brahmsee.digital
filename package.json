@@ -1,58 +1,36 @@
 {
   "name": "codeanker-project",
   "author": "CODEANKER GmbH",
-  "version": "1.8.0",
+  "version": "2.1.1",
   "description": "",
+  "license": "CC-BY-3.0-DE",
   "workspaces": [
-    "api",
-    "frontend",
-    "docs",
+    "apps/*",
     "packages/*"
   ],
   "engines": {
     "node": ">=20"
   },
+  "packageManager": "pnpm@9.15.2",
   "scripts": {
+    "turbo-checks": "turbo typecheck lint --concurrency 100%",
     "start:services": "docker-compose -f docker-compose-services.yml up --build",
-    "start:api": "npm run dev -w ./api",
-    "start:frontend": "npm run dev -w ./frontend",
-    "start:docs": "npm run docs:dev -w ./docs",
-    "migrate:api": "npm exec -w ./api prisma migrate deploy",
-    "lint": "eslint \"**/*.{vue,ts,js}\"",
+    "start:api": "npm run dev -w ./apps/api",
+    "start:frontend": "VITE_APP_API_HOST=http://localhost:3030 npm run dev -w ./apps/frontend",
+    "start:docs": "npm run docs:dev -w ./apps/docs",
+    "migrate:api": "npm exec -w ./apps/api prisma migrate deploy",
+    "lint": "turbo lint",
     "lint:fix": "eslint \"**/*.{vue,ts,js}\" --fix",
-    "lint-staged": "lint-staged -c .lintstagedrc.js",
     "prepare": "husky install",
-    "typecheck": "vue-tsc -b",
     "test:all": "concurrently -n api,frontend,test-e2e -s command-test-e2e --kill-others \"npm run start:api\" \"npm run start:frontend\" \"npm run test:e2e\"",
     "test:e2e": "npx playwright test",
     "test:e2e:ui": "DISPLAY=host.docker.internal:0 npx playwright test --ui",
-    "generate": "tsx ./api/src/cli/index.ts"
+    "generate": "tsx ./apps/api/src/cli/index.ts"
   },
   "devDependencies": {
-    "@playwright/test": "^1.41.1",
-    "@tailwindcss/forms": "^0.5.7",
-    "@types/node": "^20.11.8",
-    "@typescript-eslint/eslint-plugin": "^6.12.0",
-    "@typescript-eslint/parser": "^6.12.0",
-    "concurrently": "^8.2.2",
-    "eslint": "^8.54.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-import-resolver-typescript": "^3.6.1",
-    "eslint-plugin-import": "^2.29.0",
-    "eslint-plugin-prettier": "^5.0.1",
-    "eslint-plugin-vue": "^9.18.1",
-    "husky": "^8.0.3",
-    "lint-staged": "^15.2.9",
-    "prettier": "^3.1.0",
-    "prettier-plugin-tailwindcss": "^0.5.7",
-    "tailwindcss": "^3.3.5",
-    "typescript": "^5.3.2",
-    "vitest": "^0.34.6",
-    "vue-tsc": "^1.8.22"
-  },
-  "dependencies": {
-    "commander": "^11.1.0",
-    "inquirer": "^9.2.12",
-    "simple-syntax-highlighter": "^3.0.2"
+    "husky": "^9.1.7",
+    "prettier": "3.4.2",
+    "turbo": "^2.3.3",
+    "vitest": "^3.1.1"
   }
 }
