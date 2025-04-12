@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { apiClient } from '@/api'
-import GenericDataGrid from '@/components/GenericDataGrid.vue'
+import DataTable, { type Query } from '@/components/Table/DataTable.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
 import { useRouteTitle } from '@/composables/useRouteTitle'
 import type { StatusColors } from '@/helpers/getAnmeldungStatusColors'
 import router from '@/router'
-import { type Activity, type ActivityType, type RouterInput, type RouterOutput } from '@codeanker/api'
-import { type TGridColumn } from '@codeanker/datagrid'
+import { type ActivityType, type Activity } from '@codeanker/api'
+import { formatDateWith } from '@codeanker/helpers'
+import { keepPreviousData, useQuery } from '@tanstack/vue-query'
+import { createColumnHelper } from '@tanstack/vue-table'
+import { h } from 'vue'
 
 const { setTitle } = useRouteTitle()
 setTitle('Aufgezeichnete Aktivitäten')
@@ -39,86 +42,90 @@ function onClick({ subjectType, subjectId }: Activity) {
   }
 }
 
-/// Typen von den Daten, Filter und Sortierung
-type TData = Awaited<RouterOutput['activity']['list']>[number]
-type TFilter = RouterInput['activity']['list']['filter']
-type TOrderBy = RouterInput['activity']['list']['orderBy']
-
-const columns: TGridColumn<TData, TFilter>[] = [
-  {
-    field: 'createdAt',
-    title: 'Datum',
-    preset: 'datetime',
-  },
-  {
-    field: 'description',
-    title: 'Beschreibung',
-    format: (value) => value ?? '-',
-  },
-  {
-    field: 'type',
-    title: 'Typ',
-    cell: Badge,
-    cellProps: (formattedValue, row) => {
-      return {
-        color: colorFromType(row.content.type),
-        text: row.content.type,
-      }
+const column = createColumnHelper<Activity>()
+const columns = [
+  column.accessor('createdAt', {
+    header: 'Zeitstempel',
+    maxSize: 50,
+    enableColumnFilter: false,
+    cell({ getValue }) {
+      const value = getValue<string>()
+      return formatDateWith(value, 'dddd, DD. MMMM YYYY [um] HH:mm [Uhr]')
     },
-  },
-  {
-    field: 'subjectType',
-    title: 'Betroffen',
-    format: (value, row) => {
-      return `${value} #${row.subjectId}`
+  }),
+  column.accessor('description', {
+    header: 'Beschreibung',
+    enableColumnFilter: false,
+  }),
+  column.accessor('type', {
+    header: 'Typ',
+    meta: {
+      filter: {
+        type: 'select',
+        options: [
+          { label: 'Erstellt', value: 'CREATE' },
+          { label: 'Aktualisiert', value: 'UPDATE' },
+          { label: 'Gelöscht', value: 'DELETE' },
+          { label: 'Sonstiges', value: 'OTHER' },
+          { label: 'E-Mail', value: 'EMAIL' },
+        ],
+      },
     },
-  },
-  {
-    field: 'causerId',
-    title: 'Akteur',
-    format: (value, row) => `${row.causer?.person.firstname ?? ''} ${row.causer?.person.lastname ?? ''}`,
-  },
+    cell: ({ getValue }) => {
+      const value = getValue<ActivityType>()
+      return h(Badge, {
+        color: colorFromType(value),
+        text: value,
+      })
+    },
+  }),
+  column.accessor('subjectType', {
+    header: 'Betroffen',
+  }),
+  column.accessor('causerId', {
+    header: 'Akteur',
+    enableColumnFilter: false,
+  }),
 ]
 
-/// useGrid und useFeathersGrid composable zum fetchen
-async function fetchPage(
-  pagination: {
-    take: number
-    skip: number
-  },
-  filter: TFilter,
-
-  orderBy: TOrderBy
-): Promise<TData[]> {
-  return apiClient.activity.list.query({
-    filter: filter,
-    orderBy: orderBy,
-    pagination: pagination,
+const query: Query<Activity> = (pagination, filter) =>
+  useQuery({
+    queryKey: ['activity', pagination, filter],
+    queryFn: () =>
+      apiClient.activity.list.query({
+        pagination: {
+          pageIndex: pagination.value.pageIndex,
+          pageSize: pagination.value.pageSize,
+        },
+        filter: filter.value.reduce((prev, curr) => {
+          return {
+            ...prev,
+            [curr.id]: curr.value,
+          }
+        }, {}),
+      }),
+    initialData: {
+      data: [],
+      total: 0,
+      pagination: {
+        page: 0,
+        pages: 0,
+        hasNextPage: false,
+        hasPreviousPage: false,
+      },
+    },
+    placeholderData: keepPreviousData,
   })
-}
-async function fetchCount(filter: TFilter): Promise<number> {
-  return apiClient.activity.count.query({
-    filter: filter,
-  })
-}
 </script>
 
 <template>
   <p class="max-w-2xl text-sm text-gray-500 mb-6">
     In der Verwaltung werden Aktivitäten aufgezeichnet, z.B. wenn Accounts erstellt oder gelöscht werden.
   </p>
-  <div class="flow-root">
-    <div class="grid-rows[1fr, 50px] grid flex-grow">
-      <GenericDataGrid
-        :columns="columns"
-        :fetch-page="fetchPage"
-        :fetch-count="fetchCount"
-        :default-filter="{}"
-        :default-order-by="[['createdAt', 'desc']]"
-        no-data-message="Es gibt bisher keine Anmeldungen."
-        show-clickable
-        @row-click="onClick"
-      />
-    </div>
-  </div>
+
+  <DataTable
+    :query="query"
+    :columns="columns"
+    @click="onClick"
+  />
 </template>
