@@ -54,6 +54,9 @@ catalogs:
     typescript-eslint:
       specifier: ^8.18.2
       version: 8.18.2
+    vitest:
+      specifier: ^3.1.1
+      version: 3.1.1
     vue:
       specifier: ^3.5.13
       version: 3.5.13
@@ -75,7 +78,7 @@ importers:
         specifier: ^2.3.3
         version: 2.3.3
       vitest:
-        specifier: ^3.1.1
+        specifier: 'catalog:'
         version: 3.1.1(@edge-runtime/vm@3.2.0)(@types/node@22.10.2)(jiti@1.21.7)(sass@1.83.0)(tsx@4.19.2)(yaml@2.7.0)
 
   apps/api:
@@ -521,6 +524,9 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 5.7.2
+      vitest:
+        specifier: 'catalog:'
+        version: 3.1.1(@edge-runtime/vm@3.2.0)(@types/node@22.10.2)(jiti@1.21.7)(sass@1.83.0)(tsx@4.19.2)(yaml@2.7.0)
 
   packages/interfaces:
     devDependencies:
