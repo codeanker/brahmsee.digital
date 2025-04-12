@@ -4,7 +4,7 @@ import { test } from '@playwright/test'
 test.describe(`Feature: Login Email`, () => {
   // test.describe.configure({ mode: 'serial' })
   test('Erfolgreicher Login', async ({ page }) => {
-    await page.goto('login')
+    await page.goto('/login')
     await page.getByPlaceholder('E-Mail').click()
     await page.getByPlaceholder('E-Mail').fill('admin@example.org')
     await page.getByPlaceholder('Passwort').click()

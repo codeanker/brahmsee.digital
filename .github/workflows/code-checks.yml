@@ -2,7 +2,7 @@ name: code-checks
 
 on:
   push:
-    branches: [main, master, development, feature/**, hotfix/**]
+    branches: [main, master, development, feature/**, hotfix/**, e2e-test-rework]
 
 jobs:
   turbo-checks:
@@ -74,11 +74,11 @@ jobs:
         continue-on-error: true
         run: npm list
       - run: npm ci
-      - run: cp -n api/.env.example api/.env
+      - run: cp -n apps/api/.env.example apps/api/.env
       - name: set test env
-        run: sed -i 's/NODE_ENV=development/NODE_ENV=test/g' api/.env
-      - run: npx -w api prisma migrate reset --force
-      - run: npx playwright install --with-deps
+        run: sed -i 's/NODE_ENV=development/NODE_ENV=test/g' apps/api/.env
+      - run: pnpm -w apps/api prisma migrate reset --force
+      - run: pnpm playwright install --with-deps
       - run: npm run test:all
       - uses: actions/upload-artifact@v3
         if: always()
