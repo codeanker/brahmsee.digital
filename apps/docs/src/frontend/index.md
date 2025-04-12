@@ -17,6 +17,10 @@ order: 0
 🟣 weiß noch nicht / nicht richtig nachgeschaut
 
 🟢 alles tutti-frutti
+
+⚪️ test-file angelegt
+
+🧪 tests angelegt
 :::
 
 ### Public
@@ -25,28 +29,28 @@ order: 0
 
 #### Auth
 
-- 🟢 login
-- 🟢 password-reset
-- 🟢 password-reset/:token
+- 🧪🟢 login
+- ⚪️🟢 password-reset
+- ⚪️🟢 password-reset/:token
 
 #### Public
 
-- 🟢 public/datenschutz
-- 🟢 public/impressum
+- 🧪🟢 public/datenschutz
+- 🧪🟢 public/impressum
 
 #### PublicAnmeldung
 
-- 🟢 ausschreibung/:unterveranstaltungId
-- 🟢 ausschreibung/:unterveranstaltungId/anmeldung
-- 🟢 ausschreibung/:unterveranstaltungId/anmeldung/result
-- 🟡 ausschreibung/:unterveranstaltungId/anmeldung/foto-upload
+- ⚪️🟢 ausschreibung/:unterveranstaltungId
+- ⚪️🟢 ausschreibung/:unterveranstaltungId/anmeldung
+- ⚪️🟢 ausschreibung/:unterveranstaltungId/anmeldung/result
+- ⚪️🟡 ausschreibung/:unterveranstaltungId/anmeldung/foto-upload
 
 #### Registrierung
 
-- 🟢 registrierung
-- 🟢 registrierung/gliederung
+- ⚪️🟢 registrierung
+- ⚪️🟢 registrierung/gliederung
 - 🟢 registrierung/gliederung/callback
-- 🟣 registrierung/:activationToken
+- ⚪️🟣 registrierung/:activationToken
 
 ### Intern
 
@@ -73,37 +77,37 @@ order: 0
 
 ##### Gliederung
 
-- 🟢 verwaltung/gliederungen/liste
-- 🟢 verwaltung/gliederungen/erstellen
-- 🟢 verwaltung/gliederungen/:gliederungId
+- ⚪️🟢 verwaltung/gliederungen/liste
+- ⚪️🟢 verwaltung/gliederungen/erstellen
+- ⚪️🟢 verwaltung/gliederungen/:gliederungId
 - 🔴 verwaltung/gliederungen/anfrage
 
 ##### Orte
 
-- 🟢 verwaltung/orte/liste
-- 🟢 verwaltung/orte/erstellen
-- 🟢 verwaltung/orte/:ortId
+- ⚪️🟢 verwaltung/orte/liste
+- ⚪️🟢 verwaltung/orte/erstellen
+- ⚪️🟢 verwaltung/orte/:ortId
 
 ##### Personen
 
-- 🟢 verwaltung/persons/list
-- 🟢 verwaltung/persons/create
-- 🟢 verwaltung/persons/:personId/detail
+- ⚪️🟢 verwaltung/persons/list
+- ⚪️🟢 verwaltung/persons/create
+- ⚪️🟢 verwaltung/persons/:personId/detail
 
 ##### Veranstaltungen
 
-- 🟢 verwaltung/veranstaltung/liste
-- 🟢 verwaltung/veranstaltung/erstellen
-- 🟢 verwaltung/veranstaltung/:veranstaltungId/edit
-- 🟢 verwaltung/veranstaltung/:veranstaltungId
-- 🟢 verwaltung/veranstaltung/:veranstaltungId/fields/create
-- 🟢 verwaltung/veranstaltung/:veranstaltungId/fields/:fieldId
+- ⚪️🟢 verwaltung/veranstaltung/liste
+- ⚪️🟢 verwaltung/veranstaltung/erstellen
+- ⚪️🟢 verwaltung/veranstaltung/:veranstaltungId/edit
+- ⚪️🟢 verwaltung/veranstaltung/:veranstaltungId
+- ⚪️🟢 verwaltung/veranstaltung/:veranstaltungId/fields/create
+- ⚪️🟢 verwaltung/veranstaltung/:veranstaltungId/fields/:fieldId
 
 ##### Accounts
 
-- 🟢 verwaltung/accounts/list
-- 🟢 verwaltung/accounts/create
-- 🟢 verwaltung/accounts/:accountId/detail
+- ⚪️🟢 verwaltung/accounts/list
+- ⚪️🟢 verwaltung/accounts/create
+- ⚪️🟢 verwaltung/accounts/:accountId/detail
 
 ##### Meine Daten
 
@@ -113,8 +117,8 @@ order: 0
 
 #### Development
 
-- 🟢 development/components
-- 🟢 development/mitwirkende
+- ⚪️🟢 development/components
+- ⚪️🟢 development/mitwirkende
 
 #### Unterveranstaltung
 

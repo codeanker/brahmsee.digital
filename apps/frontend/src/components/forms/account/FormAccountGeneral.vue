@@ -229,6 +229,7 @@ const tabs = computed(() => {
               <button
                 type="button"
                 class="input-style w-full text-left !flex justify-between items-center"
+                data-testid="BasicDropdown-accountStatus"
               >
                 <slot>
                   <div class="flex space-x-2 items-center">
@@ -252,6 +253,7 @@ const tabs = computed(() => {
                   :key="status.value"
                   type="button"
                   class="hover:bg-primary-light rounded items-center flex p-2 w-full space-x-2 text-left"
+                  :data-testid="`BasicDropdown-accountStatus-${status.value}`"
                   @click="accountForm.status = status.value"
                 >
                   <div
@@ -271,6 +273,7 @@ const tabs = computed(() => {
             class="w-full lg:w-auto justify-center items-center space-x-2"
             :disabled="isLoadingCreate"
             type="submit"
+            data-testid="FormAccountGeneral-submit"
           >
             <template v-if="isLoadingCreate">
               <Loading color="white" />

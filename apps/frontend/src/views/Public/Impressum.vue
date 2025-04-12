@@ -1,9 +1,17 @@
 <template>
   <div class="bg-white py-10 px-8 md:px-8 lg:px-0">
     <div class="mx-auto max-w-3xl text-base leading-7 text-gray-700">
-      <h1 class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Impressum</h1>
+      <h1
+        class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl"
+        data-testid="impressum-heading"
+      >
+        Impressum
+      </h1>
       <p class="mt-6 text-xl leading-8">Deutsche Lebens-Rettungs-Gesellschaft Landesverband Schleswig-Holstein e.V.</p>
-      <div class="mt-10 max-w-2xl">
+      <div
+        class="mt-10 max-w-2xl"
+        data-testid="impressum-text"
+      >
         <p class="font-medium">Die Datenverarbeitung erfolgt durch</p>
         <p>
           DLRG Landesverband Schleswig-Holstein e.V. <br />

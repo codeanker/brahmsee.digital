@@ -4,10 +4,13 @@ import { authenticationLogin } from '../authentication.js'
 import prisma from '../prisma.js'
 
 import { hashPassword } from '@codeanker/authentication'
+import { faker } from '@faker-js/faker'
 
-export async function createMock(runId: string) {
-  const accountPassword = 'test'
-  const email = `log+${runId}@codeanker.de`
+export async function createMockAccountAdmin() {
+  const runID = faker.string.nanoid(10)
+
+  const accountPassword = runID
+  const email = `log+${runID}@codeanker.de`
   const account = await prisma.account.create({
     data: {
       email,
@@ -16,8 +19,8 @@ export async function createMock(runId: string) {
       role: Role.ADMIN,
       person: {
         create: {
-          firstname: 'Test',
-          lastname: 'User',
+          firstname: 'e2e-admin',
+          lastname: runID,
           email,
           telefon: '+49 123 4567890',
         },
@@ -27,24 +30,17 @@ export async function createMock(runId: string) {
   })
   const { accessToken } = await authenticationLogin({
     email: account.email,
-    password: accountPassword,
+    password: runID,
   })
 
-  const veranstaltung = await prisma.veranstaltung.findFirstOrThrow({
-    take: 1,
-    select: {
-      id: true,
-    },
-  })
-
-  return { account, accountPassword, accessToken, veranstaltung }
+  return { account, accountPassword: runID, accessToken }
 }
 
-export async function cleanup(runId: string) {
+export async function cleanupAccount(email: string) {
   await prisma.person.deleteMany({
     where: {
       account: {
-        email: `log+${runId}@codeanker.de`,
+        email,
       },
     },
   })

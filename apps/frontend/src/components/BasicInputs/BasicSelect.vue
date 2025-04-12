@@ -48,7 +48,10 @@ const { model, errorMessage } = useValidationModel(props, emit)
       :name="id || name || label"
       :multiple="props.multiple"
     >
-      <ListboxButton class="input-style !flex flex-row items-center gap-x-2 justify-between">
+      <ListboxButton
+        class="input-style !flex flex-row items-center gap-x-2 justify-between"
+        :data-testid="`BasicSelect-${id || name || label}`"
+      >
         <span class="text-start">
           {{ options.find((option) => option.value === modelValue)?.label || placeholder || 'Bitte wählen...' }}
         </span>
@@ -69,6 +72,7 @@ const { model, errorMessage } = useValidationModel(props, emit)
               :key="option.value"
               :value="option.value"
               :disabled="option.disabled"
+              :data-testid="`BasicSelect-${id || name || label}-${option.value}`"
             >
               <div
                 :class="[

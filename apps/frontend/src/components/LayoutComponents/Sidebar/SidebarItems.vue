@@ -54,6 +54,7 @@ function isCurrentRoute(checkRoute: SidebarItemRoute) {
             :to="item.route"
             class="flex items-center space-x-3 p-2 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-all"
             active-class="text-primary-600 dark:text-primary-400"
+            :data-testid="'sidebaritem-' + item.name"
           >
             <component
               :is="item.icon"
@@ -95,6 +96,7 @@ function isCurrentRoute(checkRoute: SidebarItemRoute) {
                 :to="child.route"
                 class="flex items-center text-sm flex-grow"
                 active-class="text-primary-600 dark:text-primary-400"
+                :data-testid="'sidebaritem-' + child.name"
               >
                 {{ child.name }}
               </AppLink>

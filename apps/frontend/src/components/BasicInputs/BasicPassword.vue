@@ -47,6 +47,7 @@ const { model, errorMessage } = props.disableValidation
         :placeholder="placeholder || label || name"
         class="rounded-r-none"
         :disabled="disabled"
+        :data-testid="`BasicPassword-${id || name || label}`"
         @focus="emit('focus')"
         @blur="emit('blur')"
       />

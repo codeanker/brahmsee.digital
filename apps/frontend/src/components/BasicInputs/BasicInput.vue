@@ -54,6 +54,7 @@ const { model, errorMessage } = props.disableValidation
         :placeholder="placeholder || label || name"
         :class="[{ 'rounded-r-none': $slots.append }, inputClass]"
         :disabled="disabled"
+        :data-testid="`BasicInput-${id || name || label}`"
         @focus="emit('focus')"
         @blur="emit('blur')"
       />

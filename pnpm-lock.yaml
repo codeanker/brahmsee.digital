@@ -65,9 +65,6 @@ importers:
 
   .:
     devDependencies:
-      '@playwright/test':
-        specifier: ^1.51.1
-        version: 1.51.1
       concurrently:
         specifier: ^9.1.2
         version: 9.1.2
@@ -82,7 +79,7 @@ importers:
         version: 2.5.0
       vitest:
         specifier: ^3.1.1
-        version: 3.1.1(@edge-runtime/vm@3.2.0)(@types/node@22.10.2)(jiti@1.21.7)(sass@1.86.3)(tsx@4.19.3)(yaml@2.7.1)
+        version: 3.1.1(@edge-runtime/vm@3.2.0)(@types/node@22.14.1)(jiti@1.21.7)(sass@1.86.3)(tsx@4.19.3)(yaml@2.7.1)
 
   apps/api:
     dependencies:
@@ -260,7 +257,7 @@ importers:
         version: 1.0.2
       vitepress:
         specifier: 2.0.0-alpha.4
-        version: 2.0.0-alpha.4(@algolia/client-search@5.23.3)(@types/node@22.10.2)(axios@1.8.4)(jiti@1.21.7)(postcss@8.5.3)(sass@1.86.3)(search-insights@2.17.3)(sortablejs@1.14.0)(tsx@4.19.3)(typescript@5.7.2)(yaml@2.7.1)
+        version: 2.0.0-alpha.4(@algolia/client-search@5.23.3)(@types/node@22.14.1)(axios@1.8.4)(jiti@1.21.7)(postcss@8.5.3)(sass@1.86.3)(search-insights@2.17.3)(sortablejs@1.14.0)(tsx@4.19.3)(typescript@5.7.2)(yaml@2.7.1)
     optionalDependencies:
       '@rollup/rollup-linux-arm64-gnu':
         specifier: ^4.8.0
@@ -490,9 +487,15 @@ importers:
 
   packages/e2e:
     devDependencies:
+      '@codeanker/api':
+        specifier: workspace:*
+        version: link:../../apps/api
       '@playwright/test':
         specifier: ^1.51.1
         version: 1.51.1
+      '@types/node':
+        specifier: 'catalog:'
+        version: 22.10.2
 
   packages/eslint-config:
     devDependencies:
@@ -1916,6 +1919,9 @@ packages:
 
   '@types/node@22.10.2':
     resolution: {integrity: sha512-Xxr6BBRCAOQixvonOye19wnzyDiUtTeqldOOmj3CkeblonbccA12PFwlufvRdrpjXxqnmUaeiU5EOA+7s5diUQ==}
+
+  '@types/node@22.14.1':
+    resolution: {integrity: sha512-u0HuPQwe/dHrItgHHpmw3N2fYCR6x4ivMNbPHRkBVP4CvN+kiRrKHWk3i8tXiO/joPwXLMYvF9TTF0eqgHIuOw==}
 
   '@types/qs@6.9.18':
     resolution: {integrity: sha512-kK7dgTYDyGqS+e2Q4aK9X3D7q234CIZ1Bv0q/7Z5IwRDoADNU81xXJK/YVyLbLTZCoIwUoDoffFeF+p/eIklAA==}
@@ -4571,6 +4577,9 @@ packages:
   undici-types@6.20.0:
     resolution: {integrity: sha512-Ny6QZ2Nju20vw1SRHe3d9jVu6gJ+4e3+MMpqu7pqE5HT6WsTSlce++GQmK5UXS8mzV8DSYHrQH+Xrf2jVcuKNg==}
 
+  undici-types@6.21.0:
+    resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
+
   unist-util-is@6.0.0:
     resolution: {integrity: sha512-2qCTHimwdxLfz+YzdGfkqNlH0tLi9xjTnHddPmJwtIG9MGsdbutfTc4P+haPD7l7Cjxf/WZj+we5qfVPvvxfYw==}
 
@@ -6111,7 +6120,7 @@ snapshots:
 
   '@types/accepts@1.3.7':
     dependencies:
-      '@types/node': 22.10.2
+      '@types/node': 22.14.1
 
   '@types/archiver@6.0.3':
     dependencies:
@@ -6122,18 +6131,18 @@ snapshots:
   '@types/body-parser@1.19.5':
     dependencies:
       '@types/connect': 3.4.38
-      '@types/node': 22.10.2
+      '@types/node': 22.14.1
 
   '@types/co-body@6.1.3':
     dependencies:
-      '@types/node': 22.10.2
+      '@types/node': 22.14.1
       '@types/qs': 6.9.18
 
   '@types/config@3.3.5': {}
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 22.10.2
+      '@types/node': 22.14.1
 
   '@types/content-disposition@0.5.8': {}
 
@@ -6142,7 +6151,7 @@ snapshots:
       '@types/connect': 3.4.38
       '@types/express': 5.0.0
       '@types/keygrip': 1.0.6
-      '@types/node': 22.10.2
+      '@types/node': 22.14.1
 
   '@types/estree@1.0.6': {}
 
@@ -6150,7 +6159,7 @@ snapshots:
 
   '@types/express-serve-static-core@5.0.6':
     dependencies:
-      '@types/node': 22.10.2
+      '@types/node': 22.14.1
       '@types/qs': 6.9.18
       '@types/range-parser': 1.2.7
       '@types/send': 0.17.4
@@ -6164,7 +6173,7 @@ snapshots:
 
   '@types/formidable@2.0.6':
     dependencies:
-      '@types/node': 22.10.2
+      '@types/node': 22.14.1
 
   '@types/hast@3.0.4':
     dependencies:
@@ -6237,23 +6246,27 @@ snapshots:
     dependencies:
       undici-types: 6.20.0
 
+  '@types/node@22.14.1':
+    dependencies:
+      undici-types: 6.21.0
+
   '@types/qs@6.9.18': {}
 
   '@types/range-parser@1.2.7': {}
 
   '@types/readdir-glob@1.1.5':
     dependencies:
-      '@types/node': 22.10.2
+      '@types/node': 22.14.1
 
   '@types/send@0.17.4':
     dependencies:
       '@types/mime': 1.3.5
-      '@types/node': 22.10.2
+      '@types/node': 22.14.1
 
   '@types/serve-static@1.15.7':
     dependencies:
       '@types/http-errors': 2.0.4
-      '@types/node': 22.10.2
+      '@types/node': 22.14.1
       '@types/send': 0.17.4
 
   '@types/triple-beam@1.3.5': {}
@@ -6352,6 +6365,11 @@ snapshots:
       vite: 6.2.6(@types/node@22.10.2)(jiti@1.21.7)(sass@1.86.3)(tsx@4.19.3)(yaml@2.7.1)
       vue: 3.5.13(typescript@5.7.2)
 
+  '@vitejs/plugin-vue@5.2.3(vite@6.2.6(@types/node@22.14.1)(jiti@1.21.7)(sass@1.86.3)(tsx@4.19.3)(yaml@2.7.1))(vue@3.5.13(typescript@5.7.2))':
+    dependencies:
+      vite: 6.2.6(@types/node@22.14.1)(jiti@1.21.7)(sass@1.86.3)(tsx@4.19.3)(yaml@2.7.1)
+      vue: 3.5.13(typescript@5.7.2)
+
   '@vitest/expect@3.1.1':
     dependencies:
       '@vitest/spy': 3.1.1
@@ -6359,13 +6377,13 @@ snapshots:
       chai: 5.2.0
       tinyrainbow: 2.0.0
 
-  '@vitest/mocker@3.1.1(vite@6.2.4(@types/node@22.10.2)(jiti@1.21.7)(sass@1.86.3)(tsx@4.19.3)(yaml@2.7.1))':
+  '@vitest/mocker@3.1.1(vite@6.2.4(@types/node@22.14.1)(jiti@1.21.7)(sass@1.86.3)(tsx@4.19.3)(yaml@2.7.1))':
     dependencies:
       '@vitest/spy': 3.1.1
       estree-walker: 3.0.3
       magic-string: 0.30.17
     optionalDependencies:
-      vite: 6.2.4(@types/node@22.10.2)(jiti@1.21.7)(sass@1.86.3)(tsx@4.19.3)(yaml@2.7.1)
+      vite: 6.2.4(@types/node@22.14.1)(jiti@1.21.7)(sass@1.86.3)(tsx@4.19.3)(yaml@2.7.1)
 
   '@vitest/pretty-format@3.1.1':
     dependencies:
@@ -9376,6 +9394,8 @@ snapshots:
 
   undici-types@6.20.0: {}
 
+  undici-types@6.21.0: {}
+
   unist-util-is@6.0.0:
     dependencies:
       '@types/unist': 3.0.3
@@ -9439,13 +9459,13 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.2
 
-  vite-node@3.1.1(@types/node@22.10.2)(jiti@1.21.7)(sass@1.86.3)(tsx@4.19.3)(yaml@2.7.1):
+  vite-node@3.1.1(@types/node@22.14.1)(jiti@1.21.7)(sass@1.86.3)(tsx@4.19.3)(yaml@2.7.1):
     dependencies:
       cac: 6.7.14
       debug: 4.4.0
       es-module-lexer: 1.6.0
       pathe: 2.0.3
-      vite: 6.2.4(@types/node@22.10.2)(jiti@1.21.7)(sass@1.86.3)(tsx@4.19.3)(yaml@2.7.1)
+      vite: 6.2.4(@types/node@22.14.1)(jiti@1.21.7)(sass@1.86.3)(tsx@4.19.3)(yaml@2.7.1)
     transitivePeerDependencies:
       - '@types/node'
       - jiti
@@ -9460,13 +9480,13 @@ snapshots:
       - tsx
       - yaml
 
-  vite@6.2.4(@types/node@22.10.2)(jiti@1.21.7)(sass@1.86.3)(tsx@4.19.3)(yaml@2.7.1):
+  vite@6.2.4(@types/node@22.14.1)(jiti@1.21.7)(sass@1.86.3)(tsx@4.19.3)(yaml@2.7.1):
     dependencies:
       esbuild: 0.25.2
       postcss: 8.5.3
       rollup: 4.38.0
     optionalDependencies:
-      '@types/node': 22.10.2
+      '@types/node': 22.14.1
       fsevents: 2.3.3
       jiti: 1.21.7
       sass: 1.86.3
@@ -9486,7 +9506,20 @@ snapshots:
       tsx: 4.19.3
       yaml: 2.7.1
 
-  vitepress@2.0.0-alpha.4(@algolia/client-search@5.23.3)(@types/node@22.10.2)(axios@1.8.4)(jiti@1.21.7)(postcss@8.5.3)(sass@1.86.3)(search-insights@2.17.3)(sortablejs@1.14.0)(tsx@4.19.3)(typescript@5.7.2)(yaml@2.7.1):
+  vite@6.2.6(@types/node@22.14.1)(jiti@1.21.7)(sass@1.86.3)(tsx@4.19.3)(yaml@2.7.1):
+    dependencies:
+      esbuild: 0.25.2
+      postcss: 8.5.3
+      rollup: 4.34.4
+    optionalDependencies:
+      '@types/node': 22.14.1
+      fsevents: 2.3.3
+      jiti: 1.21.7
+      sass: 1.86.3
+      tsx: 4.19.3
+      yaml: 2.7.1
+
+  vitepress@2.0.0-alpha.4(@algolia/client-search@5.23.3)(@types/node@22.14.1)(axios@1.8.4)(jiti@1.21.7)(postcss@8.5.3)(sass@1.86.3)(search-insights@2.17.3)(sortablejs@1.14.0)(tsx@4.19.3)(typescript@5.7.2)(yaml@2.7.1):
     dependencies:
       '@docsearch/css': 3.9.0
       '@docsearch/js': 3.9.0(@algolia/client-search@5.23.3)(search-insights@2.17.3)
@@ -9494,7 +9527,7 @@ snapshots:
       '@shikijs/core': 3.2.2
       '@shikijs/transformers': 3.2.2
       '@shikijs/types': 3.2.2
-      '@vitejs/plugin-vue': 5.2.3(vite@6.2.6(@types/node@22.10.2)(jiti@1.21.7)(sass@1.86.3)(tsx@4.19.3)(yaml@2.7.1))(vue@3.5.13(typescript@5.7.2))
+      '@vitejs/plugin-vue': 5.2.3(vite@6.2.6(@types/node@22.14.1)(jiti@1.21.7)(sass@1.86.3)(tsx@4.19.3)(yaml@2.7.1))(vue@3.5.13(typescript@5.7.2))
       '@vue/devtools-api': 7.7.2
       '@vue/shared': 3.5.13
       '@vueuse/core': 12.8.2(typescript@5.7.2)
@@ -9503,7 +9536,7 @@ snapshots:
       mark.js: 8.11.1
       minisearch: 7.1.2
       shiki: 3.2.2
-      vite: 6.2.6(@types/node@22.10.2)(jiti@1.21.7)(sass@1.86.3)(tsx@4.19.3)(yaml@2.7.1)
+      vite: 6.2.6(@types/node@22.14.1)(jiti@1.21.7)(sass@1.86.3)(tsx@4.19.3)(yaml@2.7.1)
       vue: 3.5.13(typescript@5.7.2)
     optionalDependencies:
       postcss: 8.5.3
@@ -9537,10 +9570,10 @@ snapshots:
       - universal-cookie
       - yaml
 
-  vitest@3.1.1(@edge-runtime/vm@3.2.0)(@types/node@22.10.2)(jiti@1.21.7)(sass@1.86.3)(tsx@4.19.3)(yaml@2.7.1):
+  vitest@3.1.1(@edge-runtime/vm@3.2.0)(@types/node@22.14.1)(jiti@1.21.7)(sass@1.86.3)(tsx@4.19.3)(yaml@2.7.1):
     dependencies:
       '@vitest/expect': 3.1.1
-      '@vitest/mocker': 3.1.1(vite@6.2.4(@types/node@22.10.2)(jiti@1.21.7)(sass@1.86.3)(tsx@4.19.3)(yaml@2.7.1))
+      '@vitest/mocker': 3.1.1(vite@6.2.4(@types/node@22.14.1)(jiti@1.21.7)(sass@1.86.3)(tsx@4.19.3)(yaml@2.7.1))
       '@vitest/pretty-format': 3.1.1
       '@vitest/runner': 3.1.1
       '@vitest/snapshot': 3.1.1
@@ -9556,12 +9589,12 @@ snapshots:
       tinyexec: 0.3.2
       tinypool: 1.0.2
       tinyrainbow: 2.0.0
-      vite: 6.2.4(@types/node@22.10.2)(jiti@1.21.7)(sass@1.86.3)(tsx@4.19.3)(yaml@2.7.1)
-      vite-node: 3.1.1(@types/node@22.10.2)(jiti@1.21.7)(sass@1.86.3)(tsx@4.19.3)(yaml@2.7.1)
+      vite: 6.2.4(@types/node@22.14.1)(jiti@1.21.7)(sass@1.86.3)(tsx@4.19.3)(yaml@2.7.1)
+      vite-node: 3.1.1(@types/node@22.14.1)(jiti@1.21.7)(sass@1.86.3)(tsx@4.19.3)(yaml@2.7.1)
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@edge-runtime/vm': 3.2.0
-      '@types/node': 22.10.2
+      '@types/node': 22.14.1
     transitivePeerDependencies:
       - jiti
       - less

@@ -176,23 +176,6 @@
 		},
 		{
 			"type": "shell",
-			"label": "install:playwright",
-			"command": "npx playwright install && npx playwright install-deps",
-			"options": {
-				"statusbar": {
-					"hide": true
-				}
-			},
-			"problemMatcher": [],
-			"presentation": {
-				"reveal": "always",
-				"revealProblems": "onProblem",
-				"panel": "new",
-				"close": true
-			}
-		},
-		{
-			"type": "shell",
 			"label": "run:reset_db",
 			"command": "npx prisma migrate reset",
 			"problemMatcher": [],
