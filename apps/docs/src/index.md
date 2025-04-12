@@ -14,4 +14,7 @@ features:
   - title: Backend
     details: Eine Ansammlung aller Endpunkte im Backend
     link: /backend
+  - title: Tests
+    details: e2e
+    link: /e2e-tests
 ---

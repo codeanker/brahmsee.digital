@@ -75,6 +75,7 @@ jobs:
         run: sed -i 's/NODE_ENV=development/NODE_ENV=test/g' apps/api/.env
       - run: pnpm --filter @codeanker/api exec prisma migrate reset --force
       - run: pnpm playwright install --with-deps
+        working-directory: ./packages/e2e
       - run: pnpm run test:ci
       - uses: actions/upload-artifact@v4
         if: always()

@@ -22,7 +22,7 @@
     "lint": "turbo lint",
     "lint:fix": "eslint \"**/*.{vue,ts,js}\" --fix",
     "prepare": "husky install",
-    "test:ci": "concurrently -n api,frontend,test-e2e -s command-test-e2e --kill-others \"pnpm run start:api\" \"pnpm run start:frontend\" \"URL=https://localhost:8080 pnpm --filter @codeanker/test exec playwright test\"",
+    "test:ci": "concurrently -n api,frontend,test-e2e -s command-test-e2e --kill-others \"pnpm run start:api\" \"pnpm run start:frontend\" \"URL=https://localhost:8080 pnpm --filter @codeanker/e2e exec playwright test\"",
     "generate": "tsx ./apps/api/src/cli/index.ts"
   },
   "devDependencies": {

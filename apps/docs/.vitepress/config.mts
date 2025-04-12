@@ -15,6 +15,7 @@ export default defineConfig({
     sidebar: [
       { text: 'Frontend', items: SidebarBuilder.get.filesAndOrder('./src/frontend', ['_partial']) },
       { text: 'Backend', items: SidebarBuilder.get.filesAndOrder('./src/backend', ['_partial']) },
+      { text: 'e2e Tests', link: '/e2e-tests/' },
     ],
 
     socialLinks: [{ icon: 'github', link: 'https://github.com/codeanker/brahmsee.digital' }],

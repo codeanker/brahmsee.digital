@@ -1,5 +1,5 @@
 {
-  "name": "@codeanker/test",
+  "name": "@codeanker/e2e",
   "type": "module",
   "scripts": {
     "test:e2e": "PW_TEST_CONNECT_WS_ENDPOINT=ws://playwright:3000/ playwright test",
