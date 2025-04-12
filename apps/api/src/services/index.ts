@@ -4,6 +4,7 @@ import { accountRouter } from './account/account.router.js'
 import { activityRouter } from './activity/activity.routes.js'
 import { addressRouter } from './address/address.router.js'
 import { anmeldungRouter } from './anmeldung/anmeldung.router.js'
+import { anmeldungLinkRouter } from './anmeldungLink/anmeldungLink.router.js'
 import { authenticationRouter } from './authentication/authentication.router.js'
 import { customFieldsRouter } from './customFields/customFields.router.js'
 import { faqsRouter } from './faqs/faqs.router.js'
@@ -33,5 +34,6 @@ export const serviceRouter = router({
   file: fileRouter,
   address: addressRouter,
   faq: faqsRouter,
+  anmeldungLink: anmeldungLinkRouter,
   // Add Routers here - do not delete this line
 })

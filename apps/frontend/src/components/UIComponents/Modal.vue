@@ -50,6 +50,10 @@ const hide = (ctx = {}) => {
 }
 
 const handleKeypress = (e) => {
+  if (!props.closeable) {
+    return
+  }
+
   if (e.key === 'Escape') {
     hide()
   }

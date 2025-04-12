@@ -6,6 +6,7 @@ import {
   DocumentDuplicateIcon,
   DocumentIcon,
   HandRaisedIcon,
+  LinkIcon,
   MegaphoneIcon,
   RocketLaunchIcon,
   SquaresPlusIcon,
@@ -32,6 +33,9 @@ import { loggedInAccount } from '@/composables/useAuthentication'
 import { useRouteTitle } from '@/composables/useRouteTitle'
 import { formatDateWith } from '@codeanker/helpers'
 import FAQList from '../FAQs/FAQList.vue'
+import { PlusIcon } from '@heroicons/vue/24/solid'
+import AnmeldeLinkTable from '@/components/data/AnmeldeLinkTable.vue'
+import AnmeldeLinkCreateModal from '@/components/UIComponents/AnmeldeLinkCreateModal.vue'
 
 const route = useRoute()
 const { setTitle } = useRouteTitle()
@@ -98,18 +102,20 @@ const keyInfos = computed<KeyInfo[]>(() => {
 })
 
 const tabs = computed(() => {
+  const isAdmin = loggedInAccount.value?.role === 'ADMIN'
+
   const tabs = [
     { name: 'Ausschreibung', icon: MegaphoneIcon },
     { name: 'Marketing', icon: HandRaisedIcon },
     { name: 'Anmeldungen', icon: UserGroupIcon, count: countAnmeldungen.value?.total },
+    isAdmin && { name: 'Anmeldelinks', icon: LinkIcon },
     { name: 'Dokumente', icon: DocumentIcon },
     { name: 'Felder', icon: SquaresPlusIcon },
     { name: 'FAQ', icon: ChatBubbleLeftRightIcon },
+    isAdmin && { name: 'Entwickler:in', icon: CodeBracketIcon },
   ]
-  if (loggedInAccount.value?.role === 'ADMIN') {
-    tabs.push({ name: 'Entwickler:in', icon: CodeBracketIcon })
-  }
-  return tabs
+
+  return tabs.filter((t) => t !== false)
 })
 
 const publicLink = computed(() => {
@@ -156,6 +162,8 @@ const files: ExportedFileType[] = [
 ]
 
 const faqList = useTemplateRef('faqList')
+
+const anmeldeLinkCreateModal = useTemplateRef('anmeldeLinkCreateModal')
 </script>
 
 <template>
@@ -280,6 +288,38 @@ const faqList = useTemplateRef('faqList')
         <AnmeldungenTable
           v-if="unterveranstaltung"
           :filter="{ type: 'unterveranstaltung', unterveranstaltungId: unterveranstaltung.id }"
+        />
+      </Tab>
+      <Tab
+        v-if="loggedInAccount?.role === 'ADMIN'"
+        key="anmeldelinks"
+      >
+        <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
+          <div>
+            <div class="text-lg font-semibold">Anmeldelinks</div>
+            <p class="text-sm text-gray-500">
+              Mit einem Anmeldelink können Personen sich auch dann anmelden, wenn der Meldeschluss erreicht oder die
+              maximale Teilnehmendenzahl erreicht ist.
+            </p>
+            <p class="text-sm text-gray-500">Eine Bestätigung der Anmeldung ist trotzdem erforderlich.</p>
+          </div>
+          <Button @click="anmeldeLinkCreateModal?.open()">
+            <PlusIcon class="size-4" />
+            <span class="ml-1">Anmeldelink erstellen</span>
+          </Button>
+        </div>
+
+        <AnmeldeLinkTable
+          v-if="unterveranstaltung"
+          :unterveranstaltung-id="unterveranstaltung.id"
+        />
+
+        <AnmeldeLinkCreateModal
+          v-if="unterveranstaltung"
+          ref="anmeldeLinkCreateModal"
+          :veranstaltung="`${unterveranstaltung.veranstaltung.name} (${unterveranstaltung.gliederung.name})`"
+          :unterveranstaltung-id="unterveranstaltung.id"
+          :url="`${publicLink}/anmeldung`"
         />
       </Tab>
       <Tab key="dokumente">
