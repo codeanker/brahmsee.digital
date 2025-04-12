@@ -90,7 +90,8 @@
 			"label": "start:apps",
 			"dependsOn": [
 				"start:api",
-				"start:frontend"
+				"start:frontend",
+				"start:test:e2e:ui"
 			],
 			"problemMatcher": []
 		},

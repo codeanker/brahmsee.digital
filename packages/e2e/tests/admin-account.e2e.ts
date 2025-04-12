@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { expect, mergeTests } from '@playwright/test'
 import { fixtureAccountAdmin } from './fixtures/accountAdmin'
-import { beforeEach } from 'vitest'
 
 const test = mergeTests(fixtureAccountAdmin)
 
@@ -15,7 +14,7 @@ test.describe(`Feature Gliederung Ausschreibung`, () => {
   })
 
   test('Kann liste einsehen', async ({ page, accountAdmin }) => {
-    await page.getByTestId('sidebar-accounts').click()
+    await page.getByTestId('sidebaritem-Accounts').click()
     await expect(
       page.getByText('Hier findest Du alle Personen die sich zu Veranstaltungen angemeldet haben.')
     ).toBeVisible()
