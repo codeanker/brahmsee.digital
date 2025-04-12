@@ -61,10 +61,10 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           run_install: false
-      - name: Use Node.js 18
+      - name: Use Node.js 22
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
           cache: 'pnpm'
       - name: Install dependencies
         run: |
@@ -73,7 +73,7 @@ jobs:
       - run: cp -n apps/api/.env.example apps/api/.env
       - name: set test env
         run: sed -i 's/NODE_ENV=development/NODE_ENV=test/g' apps/api/.env
-      - run: pnpm -w apps/api prisma migrate reset --force
+      - run: pnpm --filter @codeanker/api exec prisma migrate reset --force
       - run: pnpm playwright install --with-deps
       - run: pnpm run test:all
       - uses: actions/upload-artifact@v4
