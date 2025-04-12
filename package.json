@@ -22,13 +22,10 @@
     "lint": "turbo lint",
     "lint:fix": "eslint \"**/*.{vue,ts,js}\" --fix",
     "prepare": "husky install",
-    "test:ci": "concurrently -n api,frontend,test-e2e -s command-test-e2e --kill-others \"npm run start:api\" \"npm run start:frontend\" \"URL=https://localhost:8080 playwright test\"",
-    "test:e2e": "PW_TEST_CONNECT_WS_ENDPOINT=ws://playwright:3000/ playwright test",
-    "test:e2e:ui": "PW_TEST_CONNECT_WS_ENDPOINT=ws://playwright:3000/ playwright test --ui --ui-host 0.0.0.0",
+    "test:ci": "concurrently -n api,frontend,test-e2e -s command-test-e2e --kill-others \"pnpm run start:api\" \"pnpm run start:frontend\" \"URL=https://localhost:8080 pnpm --filter @codeanker/test exec playwright test\"",
     "generate": "tsx ./apps/api/src/cli/index.ts"
   },
   "devDependencies": {
-    "@playwright/test": "^1.51.1",
     "concurrently": "^9.1.2",
     "husky": "^9.1.7",
     "prettier": "3.4.2",

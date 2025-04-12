@@ -221,6 +221,7 @@
 				"close": false
 			},
 			"options": {
+				"cwd": "${workspaceFolder}/packages/e2e",
 				"statusbar": {
 					"hide": true
 				}
@@ -238,6 +239,7 @@
 				"close": false
 			},
 			"options": {
+				"cwd": "${workspaceFolder}/packages/e2e",
 				"statusbar": {
 					"hide": true
 				}

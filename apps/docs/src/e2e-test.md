@@ -15,18 +15,12 @@ In der GitHub Pipeline ist playwright konfiguriert, sodass Fehler schnell auffal
 
 ## Tests lokal ausführen
 
-Zunächst müssen die playwright dependencies installiert werden. Dazu muss lediglich der Task `install:playwright` ausgeführt werden.
-
-Danach kann via Task `run:test:e2e` die Tests ausgeführt werden.
+Wenn du deine apps gestartet hast via `start:apps`, können die tests via `run:test:e2e` lokal ausgeführt werden.
 
 ## Tests entwickeln
 
-Sind die playwright dependencies installiert (`install:playwright`) muss zusätzlich noch ein xserver installiert/gestartet werden.
-Dieser wird gebraucht, um die Playwright UI zu nutzen. Die Playwright UI ist zum entwickeln und debuggen von Tests äußerst hilfreich.
-
-- todo: xserver oder ähnliches installieren, da im devcontainer kein xserver vorhanden ist.
-
-Danach über den Task `start:test:e2e:ui` gestartet werden und in dem Ordner `tests/`die Tests geschrieben werden.
+Um Tests zu entwickeln nutzen wir die playwright-ui. Diese kann via dem Task `run:test:ui` gestartet werden.
+Im Ordner `tests/` können die Tests angepasst werden.
 
 ## Test-Szenarien
 
@@ -36,12 +30,16 @@ Danach über den Task `start:test:e2e:ui` gestartet werden und in dem Ordner `te
     - ✅ Falscher Nutzername
     - ✅ Falsches Passwort
     - ✅ Pflichtfelder
-  - Feature: Login DLRG
-    - Note: kann man das testen?
   - Feature: Passwort vergessen
     - Link von Login vorhanden/erfolgreich
     - Erfolgreiches senden
     - Pflichtfelder
+  - Feature: Registrierung
+  - Page: Datenschutz und Impressum
+  - Feature: PublicAnmeldung
+    - Anmeldestrecke als Teilnehmer
+    - Anmeldestrecke als Crew
+    - Foto-Upload
 - Ausschreibung
   - Feature: Ausschreibung Gliederung erstellen
   - Feature: Ausschreibung Crew erstellen

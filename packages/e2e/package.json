@@ -1,0 +1,14 @@
+{
+  "name": "@codeanker/test",
+  "type": "module",
+  "scripts": {
+    "test:e2e": "PW_TEST_CONNECT_WS_ENDPOINT=ws://playwright:3000/ playwright test",
+    "test:e2e:ui": "PW_TEST_CONNECT_WS_ENDPOINT=ws://playwright:3000/ playwright test --ui --ui-host 0.0.0.0"
+  },
+  "prisma": {
+    "schema": "../../apps/api/prisma/schema.prisma"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.51.1"
+  }
+}

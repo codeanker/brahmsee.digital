@@ -488,6 +488,12 @@ importers:
         specifier: 'catalog:'
         version: 2.2.0(typescript@5.7.2)
 
+  packages/e2e:
+    devDependencies:
+      '@playwright/test':
+        specifier: ^1.51.1
+        version: 1.51.1
+
   packages/eslint-config:
     devDependencies:
       '@eslint/js':
