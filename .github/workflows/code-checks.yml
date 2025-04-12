@@ -66,11 +66,6 @@ jobs:
         with:
           node-version: 22
           cache: 'pnpm'
-      - name: Use Node.js 22
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: 'pnpm'
       - name: Install dependencies
         run: |
           export COREPACK_INTEGRITY_KEYS="$(curl https://registry.npmjs.org/-/npm/v1/keys | jq -c '{npm: .keys}')"

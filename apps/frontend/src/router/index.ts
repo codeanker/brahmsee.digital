@@ -47,6 +47,16 @@ const routes: Route[] = [
       },
     ],
   },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import('../views/NotFound.vue'),
+    meta: {
+      public: true,
+      hidePublicHeaderBgOnMobile: true,
+      useFullheight: true,
+    },
+  },
 ]
 
 const router = createRouter({
