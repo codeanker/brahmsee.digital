@@ -483,6 +483,10 @@ importers:
         version: 2.2.0(typescript@5.7.2)
 
   packages/e2e:
+    dependencies:
+      '@faker-js/faker':
+        specifier: ^9.4.0
+        version: 9.6.0
     devDependencies:
       '@codeanker/api':
         specifier: workspace:*

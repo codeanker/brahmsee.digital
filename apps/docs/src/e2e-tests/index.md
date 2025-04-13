@@ -13,9 +13,9 @@ Die Tests werden teilweise parallel ausgeführt, was Zeit spart, und bietet zeit
 
 ## CI-Tests
 
-Die Tests werden automatisiert via Github-Actions ausgeführt und aufgezeichnet. Sollte ein Test fehlschlagen, ist in den Artefacts der Actions das Videomaterial zu nachvollziehen.
+Die Tests werden automatisiert via Github-Actions ausgeführt und aufgezeichnet. Sollte ein Test fehlschlagen, ist in dem Artifact der Actions das Videomaterial zu nachvollziehen.
 
-:: TODO: screenshot einfügen
+![GitHub Artifact](./gh-artifact.png)
 
 ## Tests lokal ausführen
 
@@ -33,16 +33,18 @@ Unter `packages/e2e/tests` sind alle tests angelegt und können angepasst werden
 :::info Emoji
 🟡 Verbesserungswürdig / WIP
 ✅ Test ist angelegt und fertig
-::
+:::
 
 ### admin-accounts
 
 Vorrausetzung: Nutzer hat Rolle ADMIN
 
-- 🟡Kann Accounts liste einsehen
-- ✅Kann Accounts erstellen
-- Kann Accounts details einsehen
-- Kann Accounts bearbeiten einsehen
+- ✅Kann liste einsehen
+- ✅Kann erstellen
+- ✅Kann details einsehen
+- ✅Kann Allgemein bearbeiten einsehen
+- ✅Kann Sicherheit bearbeiten einsehen
+- ✅Kann löschen
 
 ### admin-activity
 

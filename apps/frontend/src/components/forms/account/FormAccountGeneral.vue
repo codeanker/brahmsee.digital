@@ -166,7 +166,9 @@ const tabs = computed(() => {
     <div class="mx-auto max-w-xl lg:mx-0">
       <div class="flex items-center space-x-3 mb-1">
         <h2 class="text-xl font-bold tracking-tight sm:text-2xl mb-0">
-          <span>{{ stammdatenForm?.firstname }} {{ stammdatenForm?.lastname }}</span>
+          <span data-testid="FormAccountGeneral-title"
+            >{{ stammdatenForm?.firstname }} {{ stammdatenForm?.lastname }}</span
+          >
         </h2>
         <Badge
           v-if="edit && props?.account?.status"

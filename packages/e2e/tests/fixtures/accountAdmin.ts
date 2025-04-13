@@ -9,6 +9,6 @@ export const fixtureAccountAdmin = base.extend<MyFixtures>({
   accountAdmin: async ({}, use) => {
     const accountAdmin = await createMockAccountAdmin()
     await use(accountAdmin)
-    await cleanupAccount(accountAdmin.account.email)
+    await cleanupAccount(accountAdmin.account.id)
   },
 })

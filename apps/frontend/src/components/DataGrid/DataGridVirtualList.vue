@@ -42,6 +42,7 @@ const {
   <div
     v-bind="containerProps"
     class="relative h-full w-full"
+    data-testid="DataGridVirtualList"
   >
     <div
       :style="gridHeaderStyle"

@@ -6,8 +6,11 @@
     "test:e2e:ui": "PW_TEST_CONNECT_WS_ENDPOINT=ws://playwright:3000/ BROWSER=none playwright test --ui --ui-host 0.0.0.0 --ui-port 8090"
   },
   "devDependencies": {
+    "@codeanker/api": "workspace:*",
     "@playwright/test": "^1.51.1",
-    "@types/node": "catalog:",
-    "@codeanker/api": "workspace:*"
+    "@types/node": "catalog:"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^9.4.0"
   }
 }
