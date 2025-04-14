@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="TData extends RowData">
-import { FunnelIcon as FunnelIconOutline } from '@heroicons/vue/24/outline'
+import { BackspaceIcon, FunnelIcon as FunnelIconOutline } from '@heroicons/vue/24/outline'
 import {
   ArrowPathIcon,
   ChevronDoubleLeftIcon,
@@ -24,6 +24,7 @@ import { computed, ref, Teleport, useTemplateRef, type Ref } from 'vue'
 import LoadingBar from '../LoadingBar.vue'
 import Button from '../UIComponents/Button.vue'
 import Filter from './Filter.vue'
+import illustrationNoData from '@/assets/illustration/undraw_empty_4zx0.svg'
 
 export type QueryResponse<T> = {
   data: T[]
@@ -104,7 +105,7 @@ const filterContainer = useTemplateRef('filterContainer')
 </script>
 
 <template>
-  <div class="grid grid-cols-2 items-center mb-4">
+  <div class="grid grid-cols-1 md:grid-cols-2 items-end mb-4 gap-y-6">
     <div class="justify-self-start space-x-2">
       <Button
         color="secondary"
@@ -154,10 +155,21 @@ const filterContainer = useTemplateRef('filterContainer')
       </Button>
       <span> Seite {{ table.getState().pagination.pageIndex + 1 }} von {{ table.getPageCount() }} </span>
     </div>
-    <div
-      ref="filterContainer"
-      class="justify-self-end flex flex-row gap-x-4"
-    ></div>
+
+    <div class="md:justify-self-end flex flex-col md:flex-row gap-4 md:items-end">
+      <div
+        ref="filterContainer"
+        class="flex flex-col md:flex-row gap-x-4"
+      ></div>
+      <Button
+        color="danger"
+        class="mb-1"
+        title="Alle Filter löschen"
+        @click="table.setColumnFilters([])"
+      >
+        <BackspaceIcon class="size-5" />
+      </Button>
+    </div>
   </div>
 
   <LoadingBar :active="query.isFetching.value" />
@@ -201,13 +213,13 @@ const filterContainer = useTemplateRef('filterContainer')
         </th>
       </tr>
     </thead>
-    <tbody>
+    <tbody v-if="table.getRowCount() > 0">
       <tr
         v-for="row in table.getRowModel().rows"
         :key="row.id"
         class="even:bg-slate-50 transition-colors hover:bg-slate-200"
         @click="emit('click', row.original)"
-        @dblclick="emit('click', row.original)"
+        @dblclick="emit('dblclick', row.original)"
       >
         <td
           v-for="cell in row.getVisibleCells()"
@@ -217,6 +229,20 @@ const filterContainer = useTemplateRef('filterContainer')
           <FlexRender
             :render="cell.column.columnDef.cell"
             :props="cell.getContext()"
+          />
+        </td>
+      </tr>
+    </tbody>
+    <tbody v-else-if="!query.isFetching.value">
+      <tr>
+        <td
+          :colspan="table.getFlatHeaders().length"
+          class="py-12 space-y-12"
+        >
+          <p class="font-medium text-2xl text-center">Keine Ergebnisse …</p>
+          <img
+            :src="illustrationNoData"
+            class="mx-auto size-1/4"
           />
         </td>
       </tr>
