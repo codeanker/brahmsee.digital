@@ -41,6 +41,13 @@ const columnFilterValue = computed(() => column.getFilterValue())
 
 <template>
   <BasicDatepicker
+    v-if="type === 'date'"
+    :label="label"
+    :model-value="columnFilterValue ?? ''"
+    @update:model-value="column.setFilterValue"
+  />
+
+  <BasicDatepicker
     v-if="type === 'date-range'"
     :label="label"
     :model-value="columnFilterValue ?? ''"
