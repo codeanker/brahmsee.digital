@@ -45,6 +45,7 @@ const emit = defineEmits<{
 function useUpdater<T>(ref: Ref<T>): OnChangeFn<T> {
   return (updater) => {
     if (typeof updater === 'function') {
+      // @ts-expect-error Type Inference seems broken
       ref.value = updater(ref.value)
     } else {
       ref.value = updater
