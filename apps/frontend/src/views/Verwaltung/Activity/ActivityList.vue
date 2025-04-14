@@ -46,10 +46,13 @@ const column = createColumnHelper<Activity>()
 const columns = [
   column.accessor('createdAt', {
     header: 'Zeitstempel',
-    maxSize: 50,
-    enableColumnFilter: false,
+    meta: {
+      filter: {
+        type: 'date-range',
+      },
+    },
     cell({ getValue }) {
-      const value = getValue<string>()
+      const value = getValue<Date>()
       return formatDateWith(value, 'dddd, DD. MMMM YYYY [um] HH:mm [Uhr]')
     },
   }),
@@ -81,6 +84,15 @@ const columns = [
   }),
   column.accessor('subjectType', {
     header: 'Betroffen',
+    meta: {
+      filter: {
+        type: 'select',
+        options: async () => {
+          const values = await apiClient.activity.listSubjectTypes.query()
+          return values.map((v) => ({ value: v, label: v }))
+        },
+      },
+    },
   }),
   column.accessor('causerId', {
     header: 'Akteur',

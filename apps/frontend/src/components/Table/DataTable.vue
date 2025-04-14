@@ -1,10 +1,12 @@
 <script setup lang="ts" generic="TData extends RowData">
+import { FunnelIcon as FunnelIconOutline } from '@heroicons/vue/24/outline'
 import {
   ArrowPathIcon,
   ChevronDoubleLeftIcon,
   ChevronDoubleRightIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  FunnelIcon as FunnelIconSolid,
 } from '@heroicons/vue/24/solid'
 import type { UseQueryDefinedReturnType } from '@tanstack/vue-query'
 import {
@@ -18,7 +20,7 @@ import {
   type PaginationState,
   type RowData,
 } from '@tanstack/vue-table'
-import { computed, ref, type Ref } from 'vue'
+import { computed, ref, Teleport, useTemplateRef, type Ref } from 'vue'
 import LoadingBar from '../LoadingBar.vue'
 import Button from '../UIComponents/Button.vue'
 import Filter from './Filter.vue'
@@ -94,6 +96,8 @@ const table = useVueTable({
   },
 })
 
+const filterContainer = useTemplateRef('filterContainer')
+
 // const paginationButtons = computed(() =>
 //   generatePagination(query.data.value.pagination.pages, query.data.value.pagination.page + 1)
 // )
@@ -150,13 +154,16 @@ const table = useVueTable({
       </Button>
       <span> Seite {{ table.getState().pagination.pageIndex + 1 }} von {{ table.getPageCount() }} </span>
     </div>
-    <div class="justify-self-end">Filter</div>
+    <div
+      ref="filterContainer"
+      class="justify-self-end flex flex-row gap-x-4"
+    ></div>
   </div>
 
   <LoadingBar :active="query.isFetching.value" />
 
   <table class="w-full">
-    <thead class="sticky -top-8 bg-primary-700 text-white z-10">
+    <thead class="bg-primary-700 text-white">
       <tr
         v-for="headerGroup in table.getHeaderGroups()"
         :key="headerGroup.id"
@@ -174,10 +181,21 @@ const table = useVueTable({
               :props="header.getContext()"
             />
             <template v-if="!header.isPlaceholder && header.column.getCanFilter()">
-              <Filter
-                :column="header.column"
-                :table="table"
+              <FunnelIconSolid
+                v-if="header.column.getIsFiltered()"
+                class="size-4"
               />
+              <FunnelIconOutline
+                v-if="!header.column.getIsFiltered()"
+                class="size-4"
+              />
+
+              <Teleport
+                v-if="filterContainer"
+                :to="filterContainer"
+              >
+                <Filter :column="header.column" />
+              </Teleport>
             </template>
           </div>
         </th>

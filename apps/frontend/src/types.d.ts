@@ -21,7 +21,7 @@ declare module '@tanstack/vue-table' {
     filter?:
       | {
           type: 'select' | 'multi-select'
-          options: Option[]
+          options: Option[] | (() => Promise<Option[]>)
         }
       | {
           type: 'text'
