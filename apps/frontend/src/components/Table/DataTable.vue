@@ -197,7 +197,10 @@ const filterContainer = useTemplateRef('filterContainer')
                 v-if="filterContainer"
                 :to="filterContainer"
               >
-                <Filter :column="header.column" />
+                <Filter
+                  :column="header.column"
+                  :context="header.getContext()"
+                />
               </Teleport>
             </template>
           </div>
