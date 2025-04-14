@@ -1,30 +1,22 @@
 import { ActivityType, Prisma, Role } from '@prisma/client'
 import z from 'zod'
 
+import dayjs from 'dayjs'
 import prisma from '../../prisma.js'
 import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
-import dayjs from 'dayjs'
+import { calculatePagination, defineQueryResponse, defineTableInput } from '../../types/defineTableProcedure.js'
 
 export const activityListProcedure = defineProtectedQueryProcedure({
   key: 'list',
   roleIds: [Role.ADMIN],
-  inputSchema: z.strictObject({
-    pagination: z
-      .strictObject({
-        pageIndex: z.number().min(0),
-        pageSize: z.number().min(1).max(50),
-      })
-      .optional(),
-    filter: z
-      .strictObject({
-        createdAt: z
-          .tuple([z.date(), z.date()])
-          .transform(([from, to]) => [dayjs(from).startOf('day').toDate(), dayjs(to).endOf('day').toDate()]),
-        type: z.nativeEnum(ActivityType),
-        subjectType: z.string(),
-      })
-      .partial()
-      .optional(),
+  inputSchema: defineTableInput({
+    filter: {
+      createdAt: z
+        .tuple([z.date(), z.date()])
+        .transform(([from, to]) => [dayjs(from).startOf('day').toDate(), dayjs(to).endOf('day').toDate()]),
+      type: z.nativeEnum(ActivityType),
+      subjectType: z.string(),
+    },
   }),
   handler: async ({ input: { pagination, filter } }) => {
     const where: Prisma.ActivityWhereInput = {
@@ -39,10 +31,7 @@ export const activityListProcedure = defineProtectedQueryProcedure({
     }
 
     const total = await prisma.activity.count({ where })
-
-    const pageIndex = pagination?.pageIndex ?? 0
-    const pageSize = pagination?.pageSize ?? 50
-    const pages = Math.ceil(total / pageSize)
+    const { pageIndex, pageSize, pages } = calculatePagination(total, pagination)
 
     const activities = await prisma.activity.findMany({
       take: pageSize,
@@ -65,16 +54,7 @@ export const activityListProcedure = defineProtectedQueryProcedure({
       },
     })
 
-    return {
-      data: activities,
-      total,
-      pagination: {
-        page: pageIndex,
-        pages,
-        hasNextPage: pageIndex < pages - 1,
-        hasPreviousPage: pageIndex > 0,
-      },
-    }
+    return defineQueryResponse({ data: activities, total, pagination: { pageIndex, pageSize, pages } })
   },
 })
 

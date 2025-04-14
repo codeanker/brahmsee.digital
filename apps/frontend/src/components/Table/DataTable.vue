@@ -20,22 +20,12 @@ import {
   type PaginationState,
   type RowData,
 } from '@tanstack/vue-table'
-import { computed, ref, Teleport, useTemplateRef, type Ref } from 'vue'
+import { computed, ref, useTemplateRef, type Ref } from 'vue'
 import LoadingBar from '../LoadingBar.vue'
 import Button from '../UIComponents/Button.vue'
 import Filter from './Filter.vue'
 import illustrationNoData from '@/assets/illustration/undraw_empty_4zx0.svg'
-
-export type QueryResponse<T> = {
-  data: T[]
-  total: number
-  pagination: {
-    page: number
-    pages: number
-    hasNextPage: boolean
-    hasPreviousPage: boolean
-  }
-}
+import type { QueryResponse } from '@codeanker/api'
 
 export type Query<T> = (
   pagination: Ref<PaginationState>,
