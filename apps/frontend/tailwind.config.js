@@ -66,6 +66,19 @@ module.exports = {
       boxShadow: {
         hover: '0px 0px 12px 0px rgba(0,0,0,0.06);',
       },
+      keyframes: {
+        progress: {
+          '0%': { transform: ' translateX(0) scaleX(0)' },
+          '40%': { transform: 'translateX(0) scaleX(0.4)' },
+          '100%': { transform: 'translateX(100%) scaleX(0.5)' },
+        },
+      },
+      animation: {
+        progress: 'progress 1s infinite linear',
+      },
+      transformOrigin: {
+        'left-right': '0% 50%',
+      },
     },
   },
   safelist: [
