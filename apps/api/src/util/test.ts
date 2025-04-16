@@ -102,3 +102,12 @@ export async function getAccountById({ id }: { id: number }) {
   })
   return account
 }
+
+export async function getLastActivity() {
+  const lastActivity = await prisma.activity.findFirst({
+    orderBy: {
+      createdAt: 'desc',
+    },
+  })
+  return lastActivity
+}

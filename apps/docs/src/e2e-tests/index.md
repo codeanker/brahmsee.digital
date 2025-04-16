@@ -50,9 +50,7 @@ Vorrausetzung: Nutzer hat Rolle ADMIN
 
 Vorrausetzung: Nutzer hat Rolle ADMIN
 
-- Kann liste einsehen
-- Kann erstellen
-- Kann bearbeiten
+- ✅Kann liste einsehen
 
 ### admin-ausschreibung
 

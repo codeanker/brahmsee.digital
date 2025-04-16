@@ -7,7 +7,7 @@ import { faker } from '@faker-js/faker'
 
 const test = mergeTests(fixtureAccountAdmin)
 
-test.describe(`Feature Gliederung Ausschreibung`, () => {
+test.describe(`Als Admin accounts verwalten`, () => {
   test.beforeEach(async ({ page, accountAdmin }) => {
     await page.goto('/')
     await page.waitForLoadState('networkidle')
@@ -141,9 +141,6 @@ test.describe(`Feature Gliederung Ausschreibung`, () => {
   mergeTests(fixtureAccountAdmin, fixtureAccountGliederungAdmin)(
     'Kann löschen',
     async ({ page, accountGliederungAdmin }) => {
-      const oldPasswordHash = accountGliederungAdmin.account.password
-      const newPassword = '8FxPoMSdJh@WM!'
-
       await page.goto(`/verwaltung/accounts/${accountGliederungAdmin.account.id}/detail`)
       await page.waitForLoadState('networkidle')
 
