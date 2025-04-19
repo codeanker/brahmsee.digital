@@ -8,6 +8,7 @@ import { apiClient } from '@/api'
 import PublicFooter from '@/components/LayoutComponents/PublicFooter.vue'
 import PublicHeader from '@/components/LayoutComponents/PublicHeader.vue'
 import Loading from '@/components/UIComponents/Loading.vue'
+import Button from '@/components/UIComponents/Button.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -71,14 +72,12 @@ const feedback = computed(() => {
         {{ feedback?.title }}
       </div>
       <div>{{ feedback?.message }}</div>
-      <button
+      <Button
         v-if="feedback?.showLoginButton"
-        type="button"
-        class="btn-primary"
         @click="router.push({ name: 'Login' })"
       >
         Jetzt anmelden
-      </button>
+      </Button>
     </div>
 
     <div class="flex flex-col">
