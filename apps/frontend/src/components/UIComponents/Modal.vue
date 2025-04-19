@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useMediaQuery } from '@vueuse/core'
-import { DrawerContent, DrawerOverlay, DrawerPortal, DrawerRoot } from 'vaul-vue'
-import { DialogContent, DialogOverlay, DialogPortal, DialogRoot } from 'reka-ui'
-import { ref, onMounted } from 'vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
+import { useMediaQuery } from '@vueuse/core'
+import { DialogContent, DialogOverlay, DialogPortal, DialogRoot } from 'reka-ui'
+import { DrawerContent, DrawerOverlay, DrawerPortal, DrawerRoot } from 'vaul-vue'
+import { onMounted, ref } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -22,25 +22,6 @@ const isOpen = ref(false)
 
 const isMobile = useMediaQuery('(max-width: 640px)')
 
-const hide = (ctx = {}) => {
-  if (ctx === 'self' && !props.closeable) return
-  visible.value = false
-  toggleHideOverflow(false)
-  context.value = ctx
-  emit('close')
-  window.removeEventListener('keydown', handleKeypress)
-}
-
-const handleKeypress = (e) => {
-  if (!props.closeable) {
-    return
-  }
-
-  if (e.key === 'Escape') {
-    hide()
-  }
-})
-
 const show = () => {
   isOpen.value = true
 }
@@ -52,6 +33,12 @@ const hide = () => {
 defineExpose({
   show,
   hide,
+})
+
+onMounted(() => {
+  if (props.immediate) {
+    show()
+  }
 })
 </script>
 
