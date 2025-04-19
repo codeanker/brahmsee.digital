@@ -51,5 +51,9 @@
       "imprint": "https://localhost:8080",
       "privacy": "https://localhost:8080"
     }
+  },
+
+  "export": {
+    "sheetPassword": "brahmsee.digital"
   }
 }

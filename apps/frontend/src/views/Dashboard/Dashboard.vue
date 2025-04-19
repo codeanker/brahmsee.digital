@@ -16,10 +16,8 @@ setTitle('Aktuelle Veranstaltungen')
 <template>
   <div class="dashboard">
     <div class="mx-auto">
-      <div
-        class="isolate grid grid-cols-1 md:grid-cols-12 gap-8"
-      >
-        <div class="col-span-8">
+      <div class="isolate grid grid-cols-1 md:grid-cols-12 gap-8">
+        <div class="col-span-8 flex flex-col gap-y-4">
           <Verwaltung v-if="role === 'ADMIN'" />
           <Gliederung v-if="role === 'GLIEDERUNG_ADMIN'" />
         </div>
@@ -32,7 +30,6 @@ setTitle('Aktuelle Veranstaltungen')
             <li>Admins: Account anfragen</li>
           </ul>
         </div>
-
       </div>
     </div>
 

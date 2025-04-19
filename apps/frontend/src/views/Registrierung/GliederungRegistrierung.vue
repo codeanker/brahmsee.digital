@@ -1,41 +1,24 @@
 <script setup lang="ts">
-import { CheckCircleIcon } from '@heroicons/vue/24/outline'
-import { CheckIcon } from '@heroicons/vue/24/solid'
+import { CheckCircleIcon, ChevronLeftIcon } from '@heroicons/vue/24/outline'
 import { ref } from 'vue'
 
 import { apiClient } from '@/api'
-import BasicInput from '@/components/BasicInputs/BasicInput.vue'
-import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
-import BasicTypeahead from '@/components/BasicInputs/BasicTypeahead.vue'
-import Stammdaten, { type IStammdaten } from '@/components/forms/anmeldung/Stammdaten.vue'
-import Button from '@/components/UIComponents/Button.vue'
 import type { RouterInput, RouterOutput } from '@codeanker/api'
-import { ValidateForm } from '@codeanker/validation'
+import ButtonCard from '@/components/UIComponents/ButtonCard.vue'
+import IscBadge from '@/components/IscBadge.vue'
+import Modal from '@/components/UIComponents/Modal.vue'
+import { toast } from 'vue-sonner'
+import IscRedirectModal from '@/components/Modal/IscRedirectModal.vue'
+import RegisterModal from '@/components/Modal/RegisterModal.vue'
+import { useAssets } from '@/composables/useAssets'
 
-const stammdatenForm = ref<IStammdaten>({
-  firstname: '',
-  lastname: '',
-  gender: 'MALE',
-  birthday: null,
-})
+const { logo } = useAssets()
 
-const registrationForm = ref<{
-  dataprivacy?: boolean
-  email?: string
-  gliederung?: { id: number; name: string }
-  password?: string
-}>({})
+const iscModal = ref<InstanceType<typeof Modal>>()
+const defaultModal = ref<InstanceType<typeof Modal>>()
 
-async function queryObject(searchTerm) {
-  return apiClient.gliederung.publicList.query({
-    filter: { name: searchTerm },
-    orderBy: [],
-    pagination: { take: 100, skip: 0 },
-  })
-}
-
-const errorCreate = ref<unknown | null>(null)
 const account = ref<null | Awaited<RouterOutput['account']['gliederungAdminCreate']>>(null)
+const isOauthRegistration = ref(false)
 
 async function watiForOAuth(): Promise<string> {
   const channel = new BroadcastChannel('auth')
@@ -52,21 +35,20 @@ async function watiForOAuth(): Promise<string> {
 
 type TAccountData = RouterInput['account']['gliederungAdminCreate']['data']
 
-async function registerGliederung() {
+async function registerGliederung(stammdatenForm, registrationForm) {
   try {
     account.value = null
-    errorCreate.value = null
     const accountData: TAccountData = {
-      firstname: stammdatenForm.value.firstname,
-      lastname: stammdatenForm.value.lastname,
-      gender: stammdatenForm.value.gender,
-      birthday: stammdatenForm.value.birthday ?? new Date(),
-      email: registrationForm.value.email,
-      password: registrationForm.value.password,
-      gliederungId: registrationForm.value.gliederung!.id,
+      firstname: stammdatenForm.firstname,
+      lastname: stammdatenForm.lastname,
+      gender: stammdatenForm.gender,
+      birthday: stammdatenForm.birthday ?? new Date(),
+      email: registrationForm.email,
+      password: registrationForm.password,
+      gliederungId: registrationForm.gliederung!.id,
     }
 
-    if (oauthRegistration.value) {
+    if (isOauthRegistration.value) {
       // first optain jwt containing the oauth sub id
       // open new tab with oauth login
 
@@ -82,135 +64,78 @@ async function registerGliederung() {
     account.value = await apiClient.account.gliederungAdminCreate.mutate({
       data: accountData as unknown as RouterInput['account']['gliederungAdminCreate']['data'],
     })
-  } catch (error) {
-    errorCreate.value = error
+  } catch {
+    toast.error('Es ist ein Fehler aufgetreten. Bitte versuche es erneut.', {
+      duration: 5000,
+    })
   }
 }
-const oauthRegistration = ref()
 </script>
 
 <template>
-  <div class="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
-    <div v-if="!account">
-      <h2 class="text-center text-4xl leading-9 tracking-tight text-primary-700 flex items-center justify-center">
-        Registrierung als Gliederung
-      </h2>
-      <p class="text-center">Erstelle Ausschreibungen und versende diese zur Anmeldung und verwalte diese.</p>
+  <div class="h-svh flex flex-col items-center w-full p-6 lg:p-0">
+    <!-- Modals -->
+    <IscRedirectModal ref="iscModal" />
+    <RegisterModal
+      ref="defaultModal"
+      :account="account"
+      :is-oauth-registration="isOauthRegistration"
+      @submit="registerGliederung"
+    />
 
-      <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 my-5">
-        <div
-          class="relative w-full p-5 rounded-lg flex cursor-pointer transition-all ease-in-out border border-gray-200 hover:border-primary-500 group"
-          :class="{ 'border-primary-500': oauthRegistration }"
-          @click="oauthRegistration = true"
+    <div class="flex h-full flex-col lg:justify-center w-full lg:max-w-xl space-y-12">
+      <div class="flex">
+        <RouterLink
+          :to="{ name: 'Registrierung' }"
+          class="flex justify-center text-sm transition-all text-gray-600 hover:text-primary-600 space-x-1"
         >
-          <CheckIcon
-            class="shrink-0 h-6 w-6 bg-primary-500 rounded-full p-1 text-white mr-2 opacity-0"
-            :class="{ 'opacity-100': oauthRegistration }"
-          />
-          <div class="">
-            <div
-              class="font-medium text-lg transition-all ease-in-out group-hover:text-primary-500"
-              :class="{ 'text-primary-500': oauthRegistration }"
-            >
-              mit DLRG-Account (ISC)
-            </div>
-            <div>Registriere dich bequem mit deinem DLRG-Account (ISC)</div>
-          </div>
-        </div>
-        <div
-          class="relative w-full p-5 rounded-lg flex cursor-pointer transition-all ease-in-out border border-gray-200 hover:border-primary-500 group"
-          :class="{ 'border-primary-500': oauthRegistration == false }"
-          @click="oauthRegistration = false"
-        >
-          <CheckIcon
-            class="shrink-0 h-6 w-6 bg-primary-500 rounded-full p-1 text-white mr-2 opacity-0"
-            :class="{ 'opacity-100': oauthRegistration == false }"
-          />
-          <div class="">
-            <div
-              class="font-medium text-lg transition-all ease-in-out group-hover:text-primary-500"
-              :class="{ 'text-primary-500': oauthRegistration == false }"
-            >
-              mit E-Mail und Passwort
-            </div>
-            <div>Registriere dich mit deiner E-Mail Adresse und einem Passwort</div>
-          </div>
-        </div>
+          <ChevronLeftIcon class="h-5 w-5" />
+          <span>Zurück</span>
+        </RouterLink>
+      </div>
+
+      <!-- Title Header -->
+      <div class="flex flex-col space-y-4 items-center justify-center relative">
+        <img
+          :src="logo"
+          alt="Brahmsee Logo"
+          class="size-28"
+        />
+        <h2 class="text-center text-4xl text-primary-700">Registrierung als Gliederung</h2>
+        <p class="text-center text-red-600 font-bold">
+          Bitte beachte, dass diese Art der Registrierung nur für die Verantwortlichen einer Gliederung vorgesehen ist.
+        </p>
+        <p class="text-center">Wie möchtest Du dich registrieren?</p>
+      </div>
+
+      <!-- Form -->
+      <div
+        v-if="!account"
+        class="space-y-4"
+      >
+        <ButtonCard
+          :badge="IscBadge"
+          title="Mit DLRG-Account"
+          description="Registriere dich bequem mit deinem bestehenden DLRG-Account."
+          @click="iscModal?.show()"
+        />
+        <ButtonCard
+          title="Mit E-Mail und Passwort"
+          description="Registriere dich mit deiner E-Mail Adresse und einem Passwort."
+          @click="defaultModal?.show()"
+        />
       </div>
 
       <div
-        v-if="oauthRegistration !== undefined"
-        class="h-full grow mt-5 lg:mt-10"
+        v-if="account"
+        class="grow justify-center items-center flex flex-col text-center space-y-3"
       >
-        <!-- Form -->
-        <ValidateForm
-          class="grow"
-          @submit="registerGliederung"
-        >
-          <Stammdaten v-model="stammdatenForm" />
-          <hr class="my-5" />
-          <div class="grid grid-flow-row lg:grid-cols-2 gap-5">
-            <BasicTypeahead
-              v-model="registrationForm.gliederung"
-              :query="queryObject"
-              :input-formatter="(result) => result?.name"
-              :result-formatter="(result) => result.name"
-              :strict="true"
-              label="Gliederung"
-              class="col-span-2"
-              required
-              placeholder="Gliederung eingeben"
-            />
-            <BasicInput
-              v-if="!oauthRegistration"
-              v-model="registrationForm.email"
-              label="E-Mail Adresse"
-              class="col-span-2"
-              type="email"
-              required
-              placeholder="E-Mail Adresse eingeben"
-            />
-            <BasicPassword
-              v-if="!oauthRegistration"
-              v-model="registrationForm.password"
-              label="Passwort"
-              class="col-span-2"
-              required
-              placeholder=""
-            />
-          </div>
-          <hr class="my-5" />
-          <div
-            v-if="errorCreate"
-            class="bg-danger-400 mb-5 rounded p-3 text-center text-white"
-          >
-            {{ errorCreate }}
-          </div>
-          <Button
-            type="submit"
-            color="primary"
-            full
-          >
-            Anmelden
-          </Button>
-        </ValidateForm>
-        <RouterLink
-          :to="{ name: 'Registrierung' }"
-          class="mt-5 flex justify-center text-sm transition-all text-gray-500 hover:text-primary-500"
-        >
-          zurück
-        </RouterLink>
+        <CheckCircleIcon class="w-14 h-14 text-primary-700" />
+        <h2 class="text-center text-4xl leading-9 tracking-tight text-primary-700 flex items-center justify-center">
+          Registrierung erfolgreich
+        </h2>
+        <div>Du hast Dich erfolgreich registriert. Wir haben dir eine E-Mail mit einem Bestätigungslink geschickt.</div>
       </div>
-    </div>
-    <div
-      v-if="account"
-      class="grow justify-center items-center flex flex-col text-center space-y-3"
-    >
-      <CheckCircleIcon class="w-14 h-14 text-primary-700" />
-      <h2 class="text-center text-4xl leading-9 tracking-tight text-primary-700 flex items-center justify-center">
-        Registrierung erfolgreich
-      </h2>
-      <div>Du hast Dich erfolgreich registriert. Wir haben dir eine E-Mail mit einem Bestätigungslink geschickt.</div>
     </div>
   </div>
 </template>

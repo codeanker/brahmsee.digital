@@ -1,6 +1,6 @@
+import XLSX from '@e965/xlsx'
 import dayjs from 'dayjs'
 import type { Context } from 'koa'
-import XLSX from '@e965/xlsx'
 import { AnmeldungStatusMapping, GenderMapping } from '../../../client.js'
 import prisma from '../../../prisma.js'
 import { getSecurityWorksheet } from '../helpers/getSecurityWorksheet.js'
@@ -41,13 +41,8 @@ export async function veranstaltungTeilnehmendenliste(ctx: Context) {
           birthday: true,
           email: true,
           telefon: true,
+          photoId: true,
           essgewohnheit: true,
-          gliederung: {
-            select: {
-              id: true,
-              name: true,
-            },
-          },
           address: {
             select: {
               zip: true,
@@ -69,8 +64,16 @@ export async function veranstaltungTeilnehmendenliste(ctx: Context) {
       status: true,
       unterveranstaltung: {
         select: {
+          beschreibung: true,
+          type: true,
+          gliederung: {
+            select: {
+              name: true,
+            },
+          },
           veranstaltung: {
             select: {
+              name: true,
               meldeschluss: true,
               beginn: true,
             },
@@ -103,26 +106,35 @@ export async function veranstaltungTeilnehmendenliste(ctx: Context) {
       })
       .reduce((acc, cur) => ({ ...acc, ...cur }), {})
     return {
-      ['id']: anmeldung.id,
-      ['Status']: AnmeldungStatusMapping[anmeldung.status].human,
-      ['Gender']: anmeldung.person.gender ? GenderMapping[anmeldung.person.gender].human : '',
-      ['Vorname']: anmeldung.person.firstname,
-      ['Nachname']: anmeldung.person.lastname,
-      ['Geburtstag']: anmeldung.person.birthday,
-      ['Alter zu Beginn']: dayjs(anmeldung.unterveranstaltung.veranstaltung.beginn).diff(
+      '#': anmeldung.id,
+
+      Veranstaltung: anmeldung.unterveranstaltung.veranstaltung.name,
+      Ausschreibung:
+        anmeldung.unterveranstaltung.beschreibung?.substring(0, 30) || anmeldung.unterveranstaltung.gliederung.name,
+      'Art der Ausschreibung': anmeldung.unterveranstaltung.type,
+
+      Status: AnmeldungStatusMapping[anmeldung.status].human,
+      Anmeldedatum: anmeldung.createdAt,
+      Foto: anmeldung.person.photoId ? 'Ja' : 'Nein',
+
+      Geschlecht: anmeldung.person.gender ? GenderMapping[anmeldung.person.gender].human : '',
+      Vorname: anmeldung.person.firstname,
+      Nachname: anmeldung.person.lastname,
+      Geburtstag: anmeldung.person.birthday,
+      'Alter zu Beginn': dayjs(anmeldung.unterveranstaltung.veranstaltung.beginn).diff(
         anmeldung.person.birthday,
         'years'
       ),
-      ['Gliederung']: anmeldung.person.gliederung?.name,
-      ['Email']: anmeldung.person.email,
-      ['Telefon']: anmeldung.person.telefon,
-      ['Essgewohnheit']: anmeldung.person.essgewohnheit,
-      ['Anmeldedatum']: anmeldung.createdAt,
+      Email: anmeldung.person.email,
+      Telefon: anmeldung.person.telefon,
+      Essgewohnheit: anmeldung.person.essgewohnheit,
+
+      PLZ: anmeldung.person.address?.zip ?? '',
+      Stadt: anmeldung.person.address?.city ?? '',
+      Straße: anmeldung.person.address?.street ?? '',
+
       ...customFields,
 
-      ['PLZ']: anmeldung.person.address?.zip,
-      ['Stadt']: anmeldung.person.address?.city,
-      ['Straße']: anmeldung.person.address?.street,
       ...anmeldung.person.notfallkontakte
         .map((kontakt, index) => ({
           [`NF ${index + 1} Vorname`]: kontakt.firstname,

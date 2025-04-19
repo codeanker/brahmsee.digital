@@ -26,4 +26,23 @@ model Anmeldung {
   mahlzeiten         Mahlzeit[]
   uebernachtungsTage DateTime[]         @db.Date
   customFieldValues  CustomFieldValue[]
+
+  link AnmeldungLink?
+}
+
+model AnmeldungLink {
+  id          Int       @id @default(autoincrement())
+  createdAt   DateTime  @default(now())
+  usedAt      DateTime?
+  comment     String?
+  accessToken String    @db.Uuid
+
+  unterveranstaltungId Int
+  unterveranstaltung   Unterveranstaltung @relation(fields: [unterveranstaltungId], references: [id], onDelete: Cascade)
+
+  createdById Int
+  createdBy   Account @relation(fields: [createdById], references: [id])
+
+  anmeldungId Int?       @unique
+  anmeldung   Anmeldung? @relation(fields: [anmeldungId], references: [id])
 }

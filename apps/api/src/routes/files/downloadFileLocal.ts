@@ -1,11 +1,10 @@
 import * as fs from 'fs'
-import * as path from 'path'
 
 import type { Middleware } from 'koa'
-import mime from 'mime-types'
+import mime from 'mime'
 
-import config from '../../config.js'
 import prisma from '../../prisma.js'
+import { uploadDir } from '../../services/file/helpers/getFileUrl.js'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const downloadFileLocal: Middleware = async function (ctx, next) {
@@ -14,6 +13,7 @@ export const downloadFileLocal: Middleware = async function (ctx, next) {
   const file = await prisma.file.findFirst({
     where: {
       id: fileId,
+      provider: 'LOCAL',
     },
   })
   if (file === null) {
@@ -26,10 +26,8 @@ export const downloadFileLocal: Middleware = async function (ctx, next) {
     return
   }
 
-  const uploadDir = path.join(process.cwd(), config.fileProviders.LOCAL.path)
   const mimetype = file.mimetype ?? 'application/octet-stream'
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-  const filename = file.filename ?? `${file.id}.${mime.extension(mimetype)}`
+  const filename = file.filename ?? `${file.id}.${mime.getExtension(mimetype)}`
   ctx.set('Content-disposition', `attachment; filename=${filename.replace(/[^a-zA-Z0-9._-]/g, '_')}`)
   ctx.set('Content-type', mimetype)
   ctx.response.body = fs.createReadStream(uploadDir + '/' + file.key)

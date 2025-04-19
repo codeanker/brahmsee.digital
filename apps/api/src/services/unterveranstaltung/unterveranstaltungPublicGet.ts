@@ -54,14 +54,7 @@ export const unterveranstaltungPublicGetProcedure = definePublicQueryProcedure({
               select: {
                 fileId: true,
                 name: true,
-                file: {
-                  select: {
-                    id: true,
-                    provider: true,
-                    uploaded: true,
-                    key: true,
-                  },
-                },
+                file: true,
               },
             },
             eventDetailsTitle: true,

@@ -77,6 +77,10 @@ export const configSchema = z.strictObject({
       privacy: z.string().url(),
     }),
   }),
+
+  export: z.strictObject({
+    sheetPassword: z.string().optional(),
+  }),
 })
 
 export default configSchema.parse(baseConfig)

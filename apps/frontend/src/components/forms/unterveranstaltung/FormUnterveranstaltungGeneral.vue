@@ -275,10 +275,9 @@ const disableddates = computed(() => {
       </div>
 
       <div class="lg:col-span-full">
-        <BasicEditor
+        <BasicInput
           v-model="unterveranstaltungCopy.beschreibung"
-          required
-          label="Beschreibung"
+          label="Eigener Titel"
         />
       </div>
       <div class="lg:col-span-full">

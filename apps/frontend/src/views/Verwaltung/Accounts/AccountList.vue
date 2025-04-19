@@ -152,61 +152,65 @@ function changeTab(index: number) {
 </script>
 
 <template>
-  <div class="flow-root">
-    <Tabs
-      content-space="4"
-      :tabs="tabs"
-      @change-tab-index="changeTab"
-    >
-      <Tab>
-        <div class="my-8 flex justify-between">
-          <div>
-            <p class="max-w-2xl text-sm">Hier findest Du alle Personen die sich zu Veranstaltungen angemeldet haben.</p>
+  <div>
+    <div class="flow-root">
+      <Tabs
+        content-space="4"
+        :tabs="tabs"
+        @change-tab-index="changeTab"
+      >
+        <Tab>
+          <div class="my-8 flex justify-between">
+            <div>
+              <p class="max-w-2xl text-sm">
+                Hier findest Du alle Personen die sich zu Veranstaltungen angemeldet haben.
+              </p>
+            </div>
+            <RouterLink
+              class="text-primary-500 flex items-center"
+              :to="{ name: 'Verwaltung Account erstellen' }"
+            >
+              <PlusIcon class="h-5 w-5 mr-1" />
+              Account anlegen
+            </RouterLink>
           </div>
-          <RouterLink
-            class="text-primary-500 flex items-center"
-            :to="{ name: 'Verwaltung Account erstellen' }"
-          >
-            <PlusIcon class="h-5 w-5 mr-1" />
-            Account anlegen
-          </RouterLink>
-        </div>
-        <div class="grid-rows[1fr, 50px] grid flex-grow">
+          <div class="grid-rows[1fr, 50px] grid flex-grow">
+            <GenericDataGrid
+              :columns="columns"
+              :fetch-page="fetchPage"
+              :fetch-count="fetchCount"
+              :default-filter="defaultFilter"
+              :default-order-by="[]"
+              no-data-message="Es gibt bisher keine Accounts."
+              show-clickable
+              @row-click="
+                (account) => router.push({ name: 'Verwaltung Accountdetails', params: { accountId: account.id } })
+              "
+            />
+          </div>
+        </Tab>
+        <Tab>
+          <div class="my-8 flex justify-between">
+            <div>
+              <p class="max-w-2xl text-sm">
+                Hier findest Du alle Personen sich registriert haben und noch bestätigt werden müssen.
+              </p>
+            </div>
+          </div>
           <GenericDataGrid
             :columns="columns"
             :fetch-page="fetchPage"
             :fetch-count="fetchCount"
             :default-filter="defaultFilter"
             :default-order-by="[]"
-            no-data-message="Es gibt bisher keine Accounts."
+            no-data-message="Es gibt keine offenen Account anfragen."
             show-clickable
             @row-click="
               (account) => router.push({ name: 'Verwaltung Accountdetails', params: { accountId: account.id } })
             "
           />
-        </div>
-      </Tab>
-      <Tab>
-        <div class="my-8 flex justify-between">
-          <div>
-            <p class="max-w-2xl text-sm">
-              Hier findest Du alle Personen sich registriert haben und noch bestätigt werden müssen.
-            </p>
-          </div>
-        </div>
-        <GenericDataGrid
-          :columns="columns"
-          :fetch-page="fetchPage"
-          :fetch-count="fetchCount"
-          :default-filter="defaultFilter"
-          :default-order-by="[]"
-          no-data-message="Es gibt keine offenen Account anfragen."
-          show-clickable
-          @row-click="
-            (account) => router.push({ name: 'Verwaltung Accountdetails', params: { accountId: account.id } })
-          "
-        />
-      </Tab>
-    </Tabs>
+        </Tab>
+      </Tabs>
+    </div>
   </div>
 </template>

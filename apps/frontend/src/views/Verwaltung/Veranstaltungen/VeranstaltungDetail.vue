@@ -6,6 +6,7 @@ import {
   UsersIcon,
   SquaresPlusIcon,
   WalletIcon,
+  CameraIcon,
 } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 import { computed } from 'vue'
@@ -13,16 +14,17 @@ import { useRoute } from 'vue-router'
 
 import { apiClient } from '@/api'
 import CustomFieldsTable from '@/components/CustomFields/CustomFieldsTable.vue'
-import FilesExport from '@/components/FilesExport.vue'
+import FilesExport, { type ExportedFileType } from '@/components/FilesExport.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import InfoList from '@/components/UIComponents/InfoList.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
 import UnterveranstaltungenTable from '@/components/UnterveranstaltungenTable.vue'
 import { useRouteTitle } from '@/composables/useRouteTitle'
-import { formatDate } from '@codeanker/helpers'
+import { formatDateWith } from '@codeanker/helpers'
 import { PlusIcon } from '@heroicons/vue/24/solid'
 import ProgramList from '../Program/ProgramList.vue'
+import VeranstaltungCard from '@/components/UIComponents/VeranstaltungCard.vue'
 
 const { setTitle } = useRouteTitle()
 
@@ -42,6 +44,8 @@ interface KeyInfo {
   small?: boolean
 }
 
+const keyInfoDateFormat = 'dddd, DD. MMMM YYYY'
+
 const keyInfos = computed<KeyInfo[]>(() => {
   if (veranstaltung.value) {
     return [
@@ -50,20 +54,15 @@ const keyInfos = computed<KeyInfo[]>(() => {
         value: 'https://' + veranstaltung.value.hostname?.hostname + '',
       },
       {
-        title: 'Beginn',
-        value: `${formatDate(veranstaltung.value.beginn)} Uhr`,
+        title: 'Zeitraum der Veranstaltung',
+        value: `${formatDateWith(veranstaltung.value.beginn, keyInfoDateFormat)} - ${formatDateWith(veranstaltung.value.ende, keyInfoDateFormat)}`,
       },
       {
-        title: 'Ende',
-        value: `${formatDate(veranstaltung.value.ende)} Uhr`,
-      },
-      {
-        title: 'Anmeldezeitraum',
-        value: `${formatDate(veranstaltung.value.meldebeginn)} - ${formatDate(veranstaltung.value.meldeschluss)}`,
+        title: 'Zeitraum für Anmeldungen',
+        value: `${formatDateWith(veranstaltung.value.meldebeginn, keyInfoDateFormat)} - ${formatDateWith(veranstaltung.value.meldeschluss, keyInfoDateFormat)}`,
       },
       { title: 'Veranstaltungsort', value: veranstaltung.value.ort?.name ?? '' },
       { title: 'Teilnahmebeitrag', value: veranstaltung.value.teilnahmegebuehr + '€' },
-      { title: 'max. Teilnahmezahl', value: veranstaltung.value.maxTeilnehmende + '' },
       { title: 'Zielgruppe', value: veranstaltung.value.zielgruppe ?? '' },
     ]
   } else {
@@ -89,7 +88,7 @@ const getJWT = () => {
 
 const exportParams = `jwt=${getJWT()}&veranstaltungId=${route.params.veranstaltungId}`
 
-const files = [
+const files: ExportedFileType[] = [
   {
     name: 'Teilnehmendenliste',
     icon: UsersIcon,
@@ -105,6 +104,14 @@ const files = [
     description: 'Übersicht der Verpflegungswünsche',
     bgColor: 'bg-primary-600',
     hoverColor: 'hover:text-primary-700',
+  },
+  {
+    name: 'Fotos',
+    description: 'Alle Fotos von bestätigten Teilnehmenden',
+    icon: CameraIcon,
+    bgColor: 'bg-orange-600',
+    hoverColor: 'hover:text-orange-700',
+    href: `/api/export/archive/photos?${exportParams}`,
   },
 ]
 </script>
@@ -122,7 +129,7 @@ const files = [
   >
     <Tab key="Allgemein">
       <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
-        <div class="text-lg font-semibold">Veranstaltungsdaten</div>
+        <div class="text-lg font-semibold">Überblick zur Veranstaltung</div>
         <RouterLink
           class="text-primary-600"
           :to="{ name: 'VerwaltungVeranstaltungEdit' }"
@@ -131,16 +138,14 @@ const files = [
         </RouterLink>
       </div>
 
-      <InfoList :infos="keyInfos" />
+      <VeranstaltungCard
+        v-if="veranstaltung"
+        :key="veranstaltung.id"
+        :veranstaltung="veranstaltung"
+      />
 
-      <div class="mt-5 lg:mt-10 mb-5 text-lg font-semibold">Beschreibung</div>
-      <div class="px-3 py-5">
-        <!-- eslint-disable vue/no-v-html -->
-        <div
-          class="prose dark:prose-invert"
-          v-html="veranstaltung?.beschreibung"
-        />
-      </div>
+      <div class="text-lg font-semibold mt-8 mb-4">Weitere Daten</div>
+      <InfoList :infos="keyInfos" />
     </Tab>
     <Tab key="Dokumente">
       <div class="my-10">
@@ -233,7 +238,6 @@ const files = [
       <UnterveranstaltungenTable
         v-if="veranstaltung?.id"
         :veranstaltung-id="veranstaltung?.id"
-        :hide-columns="['veranstaltung.name']"
       />
     </Tab>
     <Tab key="Felder">
