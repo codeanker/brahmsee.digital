@@ -43,5 +43,9 @@
       "imprint": "PUBLIC_LEGAL_IMPRINT",
       "privacy": "PUBLIC_LEGAL_PRIVACY"
     }
+  },
+
+  "export": {
+    "sheetPassword": "EXPORT_SHEET_PASSWORD"
   }
 }

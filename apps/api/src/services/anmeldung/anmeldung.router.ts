@@ -10,7 +10,6 @@ import { anmeldungPublicCreateProcedure } from './anmeldungPublicCreate.js'
 import { anmeldungTeilnehmerStornoProcedure } from './anmeldungTeilnehmerStorno.js'
 import { anmeldungVerwaltungAblehnenProcedure } from './anmeldungVerwaltungAblehnen.js'
 import { anmeldungVerwaltungAnnehmenProcedure } from './anmeldungVerwaltungAnnehmen.js'
-import { anmeldungVerwaltungCreateProcedure } from './anmeldungVerwaltungCreate.js'
 import { anmeldungVerwaltungPatchProcedure } from './anmeldungVerwaltungPatch.js'
 import { anmeldungVerwaltungStornoProcedure } from './anmeldungVerwaltungStorno.js'
 import { anmeldungZuordnenProcedure } from './anmeldungZuordnen.js'
@@ -22,7 +21,6 @@ export const anmeldungRouter = mergeRouters(
   anmeldungVerwaltungAblehnenProcedure,
   anmeldungVerwaltungAnnehmenProcedure,
   anmeldungVerwaltungStornoProcedure,
-  anmeldungVerwaltungCreateProcedure,
   anmeldungVerwaltungPatchProcedure,
   anmeldungGliederungPatchProcedure,
   anmeldungCountProcedure,

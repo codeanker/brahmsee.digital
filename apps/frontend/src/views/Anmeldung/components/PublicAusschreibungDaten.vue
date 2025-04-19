@@ -38,8 +38,8 @@ const stats = computed(() => {
   const freiePlaetze = (unterveranstaltung?.value?.maxTeilnehmende ?? 0) - anmeldungen
 
   const stats: { label: string; value: number }[] = []
-  if (freiePlaetze > 0) stats.push({ label: 'Freie Plätze', value: freiePlaetze })
-  if (anmeldungen > 0) stats.push({ label: 'Anmeldungen', value: anmeldungen })
+  stats.push({ label: 'Freie Plätze', value: freiePlaetze })
+  stats.push({ label: 'Anmeldungen', value: anmeldungen })
   return stats
 })
 </script>

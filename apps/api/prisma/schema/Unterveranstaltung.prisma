@@ -25,6 +25,7 @@ model Unterveranstaltung {
 
   landingSettings   UnterveranstaltungLandingSettings? @relation(fields: [landingSettingsId], references: [unterveranstaltungId], onDelete: Cascade)
   landingSettingsId Int?                               @unique
+  AnmeldungLink     AnmeldungLink[]
 }
 
 model UnterveranstaltungDocument {

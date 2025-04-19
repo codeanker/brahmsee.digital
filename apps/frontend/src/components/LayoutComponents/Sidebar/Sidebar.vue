@@ -166,13 +166,6 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
   },
   {
     type: 'SidebarItem',
-    name: 'Ausschreibungen',
-    route: { name: 'UnterveranstaltungList', params: { veranstaltungId: veranstaltungId.value } },
-    icon: MegaphoneIcon,
-    visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
-  },
-  {
-    type: 'SidebarItem',
     name: 'Gliederungen',
     route: { name: 'Verwaltung Alle Gliederungen' },
     icon: MapPinIcon,

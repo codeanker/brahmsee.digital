@@ -22,9 +22,22 @@ const isOpen = ref(false)
 
 const isMobile = useMediaQuery('(max-width: 640px)')
 
-onMounted(() => {
-  if (props.immediate) {
-    show()
+const hide = (ctx = {}) => {
+  if (ctx === 'self' && !props.closeable) return
+  visible.value = false
+  toggleHideOverflow(false)
+  context.value = ctx
+  emit('close')
+  window.removeEventListener('keydown', handleKeypress)
+}
+
+const handleKeypress = (e) => {
+  if (!props.closeable) {
+    return
+  }
+
+  if (e.key === 'Escape') {
+    hide()
   }
 })
 
