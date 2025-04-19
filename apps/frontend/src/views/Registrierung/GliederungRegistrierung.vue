@@ -103,7 +103,7 @@ async function registerGliederung(stammdatenForm, registrationForm) {
         />
         <h2 class="text-center text-4xl text-primary-700">Registrierung als Gliederung</h2>
         <p class="text-center text-red-600 font-bold">
-          Bitte beachte das diese Registrierung nur für Verantwortliche einer Gliederung vorgesehen ist.
+          Bitte beachte, dass diese Art der Registrierung nur für die Verantwortlichen einer Gliederung vorgesehen ist.
         </p>
         <p class="text-center">Wie möchtest Du dich registrieren?</p>
       </div>
