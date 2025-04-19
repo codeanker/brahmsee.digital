@@ -55,19 +55,19 @@ const {
 )
 
 defineExpose<ModalApi>({
-  show(ctx) {
+  show() {
     if (isDeleting) {
       return
     }
 
-    modal.value?.show(ctx)
+    modal.value?.show()
   },
-  hide(ctx) {
+  hide() {
     if (isDeleting) {
       return
     }
 
-    modal.value?.hide(ctx)
+    modal.value?.hide()
   },
 })
 </script>

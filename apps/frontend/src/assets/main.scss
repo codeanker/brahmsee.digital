@@ -21,7 +21,7 @@ body,
 }
 
 body {
-  @apply transition-colors duration-200;
+  @apply transition-colors duration-200 dark:text-gray-200;
 }
 
 abbr {
