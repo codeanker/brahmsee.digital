@@ -30,7 +30,12 @@ const hide = () => {
   isOpen.value = false
 }
 
-defineExpose({
+export type ModalApi = {
+  show: typeof show
+  hide: typeof hide
+}
+
+defineExpose<ModalApi>({
   show,
   hide,
 })
