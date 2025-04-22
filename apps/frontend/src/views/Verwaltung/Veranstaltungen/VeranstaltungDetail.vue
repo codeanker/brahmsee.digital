@@ -7,6 +7,8 @@ import {
   SquaresPlusIcon,
   WalletIcon,
   CameraIcon,
+  RocketLaunchIcon,
+  DocumentDuplicateIcon,
 } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 import { computed } from 'vue'
@@ -114,6 +116,17 @@ const files: ExportedFileType[] = [
     href: `/api/export/archive/photos?${exportParams}`,
   },
 ]
+
+const publicProgramLink = computed(() => {
+  if (veranstaltung.value) {
+    return `https://${veranstaltung.value.hostname?.hostname}/veranstaltung/${veranstaltung.value.id}`
+  }
+  return ''
+})
+
+function copyProgramLink() {
+  navigator.clipboard.writeText(publicProgramLink.value)
+}
 </script>
 
 <template>
@@ -204,6 +217,7 @@ const files: ExportedFileType[] = [
             Hier kann eine Übersicht über Programmpunkte der Veranstaltung angelegt werden.
           </p>
         </div>
+
         <RouterLink
           class="text-primary-500 flex items-center"
           :to="{ name: 'Verwaltung Programmpunkt erstellen' }"
@@ -211,6 +225,31 @@ const files: ExportedFileType[] = [
           <PlusIcon class="h-5 w-5 mr-1" />
           <span>Programmpunkt erstellen</span>
         </RouterLink>
+      </div>
+
+      <div class="p-6 bg-primary-100 dark:bg-primary-900 rounded-md my-8 flex items-top space-x-4">
+        <div><RocketLaunchIcon class="h-10 w-10 text-primary-500" /></div>
+        <div>
+          <div class="font-bold text-lg text-primary-500">Die Programmpunkte sind öffentlich verfügbar</div>
+          <div>Verteile den folgenden Link an die Teilnehmenden</div>
+          <div class="flex mt-4">
+            <input
+              id="linkInput"
+              v-model="publicProgramLink"
+              type="text"
+              class="form-control rounded-r-none bg-white dark:bg-primary-950"
+              placeholder="Link"
+              readonly
+            />
+            <button
+              class="p-2 btn-primary rounded-l-none"
+              type="button"
+              @click="copyProgramLink"
+            >
+              <DocumentDuplicateIcon class="h-5 w-5" />
+            </button>
+          </div>
+        </div>
       </div>
 
       <ProgramList

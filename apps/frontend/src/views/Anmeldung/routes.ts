@@ -2,6 +2,23 @@ import type { Route } from '@/router'
 
 const routesAusschreibungen: Route[] = [
   {
+    name: 'Veranstaltung',
+    path: '/veranstaltung/:veranstaltungId',
+    component: () => import('@/layouts/AnmeldungLayout.vue'),
+    children: [
+      {
+        name: 'Public Programm',
+        path: 'programm',
+        component: () => import('./PublicProgrammView.vue'),
+        meta: {
+          public: true,
+          hidePublicHeaderBgOnMobile: true,
+          useFullheight: true,
+        },
+      },
+    ],
+  },
+  {
     name: 'Ausschreibung',
     path: '/ausschreibung/:unterveranstaltungId',
     component: () => import('@/layouts/AnmeldungLayout.vue'),
@@ -37,16 +54,6 @@ const routesAusschreibungen: Route[] = [
         name: 'Public Anmeldung Fotoupload',
         path: 'anmeldung/:anmeldungId/foto-upload',
         component: () => import('./FotoUpload.vue'),
-        meta: {
-          public: true,
-          hidePublicHeaderBgOnMobile: true,
-          useFullheight: true,
-        },
-      },
-      {
-        name: 'Public Anmeldung Programm',
-        path: 'programm',
-        component: () => import('./PublicProgrammView.vue'),
         meta: {
           public: true,
           hidePublicHeaderBgOnMobile: true,
