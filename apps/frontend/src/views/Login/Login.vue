@@ -122,7 +122,7 @@ const oauthHref = `/api/connect/dlrg?mode=login&origin=${encodeURIComponent(orig
           full
         >
           <template v-if="loginPending">
-            <Loading color="white" />
+            <Loading class="text-white mx-auto" />
           </template>
           <template v-else> Anmelden </template>
         </Button>
