@@ -43,6 +43,16 @@ const routesAusschreibungen: Route[] = [
           useFullheight: true,
         },
       },
+      {
+        name: 'Public Anmeldung Programm',
+        path: 'programm',
+        component: () => import('./PublicProgrammView.vue'),
+        meta: {
+          public: true,
+          hidePublicHeaderBgOnMobile: true,
+          useFullheight: true,
+        },
+      },
     ],
   },
 ]

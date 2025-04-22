@@ -2,10 +2,11 @@ import { TRPCError } from '@trpc/server'
 import dayjs from 'dayjs'
 import { z } from 'zod'
 import client from '../../prisma.js'
-import { definePublicMutateProcedure } from '../../types/defineProcedure.js'
+import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
 
-export const programCreateProcedure = definePublicMutateProcedure({
+export const programCreateProcedure = defineProtectedMutateProcedure({
   key: 'create',
+  roleIds: ['ADMIN'],
   inputSchema: z.strictObject({
     veranstaltungId: z.number().int(),
     name: z.string(),

@@ -9,9 +9,15 @@ const { veranstaltungId } = defineProps<{
   veranstaltungId: number
 }>()
 
+const emit = defineEmits<{
+  dblclick: []
+}>()
+
 const { state: programm } = useAsyncState(() => apiClient.program.list.query({ veranstaltungId }), undefined, {
   immediate: true,
 })
+
+const hasData = computed(() => (programm.value?.length ?? 0) > 0)
 
 const programmGroups = computed(() =>
   groupBy(programm.value ?? [], (item) => dayjs(item.startingAt).format('dddd, DD. MMMM'))
@@ -41,38 +47,51 @@ function toggleHighlight(name: string) {
       </tr>
     </thead>
     <tbody>
-      <template
-        v-for="(list, timestamp) in programmGroups"
-        :key="timestamp"
-      >
-        <tr class="text-xl font-bold bg-slate-50 border-t-2">
+      <template v-if="hasData">
+        <template
+          v-for="(list, timestamp) in programmGroups"
+          :key="timestamp"
+        >
+          <tr class="text-xl font-bold bg-slate-50 border-t-2">
+            <td
+              colspan="5"
+              class="p-4"
+            >
+              {{ timestamp }}
+            </td>
+          </tr>
+          <tr
+            v-for="(row, index) in list"
+            :key="index"
+            :class="
+              cn(
+                '*:p-2 transition-colors hover:bg-slate-200 cursor-pointer',
+                highlighted.includes(row.name) ? 'odd:bg-primary-600 bg-primary-500' : 'odd:bg-slate-100'
+              )
+            "
+            @click="() => toggleHighlight(row.name)"
+            @dblclick="emit('dblclick')"
+          >
+            <td>
+              <strong>{{ dayjs(row.startingAt).format('HH:mm [Uhr]') }}</strong>
+            </td>
+            <td>
+              <strong>{{ dayjs(row.endingAt).format('HH:mm [Uhr]') }}</strong>
+            </td>
+            <td>{{ row.name }}</td>
+            <td>{{ row.location }}</td>
+            <td>{{ row.responsible }}</td>
+          </tr>
+        </template>
+      </template>
+      <template v-else>
+        <tr>
           <td
             colspan="5"
-            class="p-4"
+            class="p-4 text-center"
           >
-            {{ timestamp }}
+            <i>Es gibt noch keine Programmpunkte</i>
           </td>
-        </tr>
-        <tr
-          v-for="(row, index) in list"
-          :key="index"
-          :class="
-            cn(
-              '*:p-2 transition-colors hover:bg-slate-200 cursor-pointer',
-              highlighted.includes(row.name) ? 'odd:bg-primary-600 bg-primary-500' : 'odd:bg-slate-100'
-            )
-          "
-          @click="() => toggleHighlight(row.name)"
-        >
-          <td>
-            <strong>{{ dayjs(row.startingAt).format('HH:mm [Uhr]') }}</strong>
-          </td>
-          <td>
-            <strong>{{ dayjs(row.endingAt).format('HH:mm [Uhr]') }}</strong>
-          </td>
-          <td>{{ row.name }}</td>
-          <td>{{ row.location }}</td>
-          <td>{{ row.responsible }}</td>
         </tr>
       </template>
     </tbody>
