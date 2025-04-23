@@ -76,9 +76,9 @@ onMounted(() => {
   <template v-else>
     <DialogRoot v-model:open="isOpen">
       <DialogPortal>
-        <DialogOverlay class="fixed inset-0 bg-black/50 dark:3bg-white/50" />
+        <DialogOverlay class="fixed inset-0 bg-black/50 dark:3bg-white/50 z-modal-backdrop" />
         <DialogContent
-          class="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-white dark:bg-dark-primary rounded-lg p-6 w-full focus:outline-none"
+          class="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-white dark:bg-dark-primary rounded-lg p-6 w-full focus:outline-none z-modal"
           :class="{ 'max-w-lg': size === 'lg', 'max-w-2xl': size === 'xl', 'max-w-4xl': size === '2xl' }"
         >
           <div
