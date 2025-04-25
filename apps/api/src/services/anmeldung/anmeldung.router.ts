@@ -10,26 +10,24 @@ import { anmeldungPublicCreateProcedure } from './anmeldungPublicCreate.js'
 import { anmeldungTeilnehmerStornoProcedure } from './anmeldungTeilnehmerStorno.js'
 import { anmeldungVerwaltungAblehnenProcedure } from './anmeldungVerwaltungAblehnen.js'
 import { anmeldungVerwaltungAnnehmenProcedure } from './anmeldungVerwaltungAnnehmen.js'
-import { anmeldungVerwaltungCreateProcedure } from './anmeldungVerwaltungCreate.js'
 import { anmeldungVerwaltungPatchProcedure } from './anmeldungVerwaltungPatch.js'
 import { anmeldungVerwaltungStornoProcedure } from './anmeldungVerwaltungStorno.js'
 import { anmeldungZuordnenProcedure } from './anmeldungZuordnen.js'
 // Import Routes here - do not delete this line
 
 export const anmeldungRouter = mergeRouters(
-  anmeldungPublicCreateProcedure.router,
-  anmeldungTeilnehmerStornoProcedure.router,
-  anmeldungVerwaltungAblehnenProcedure.router,
-  anmeldungVerwaltungAnnehmenProcedure.router,
-  anmeldungVerwaltungStornoProcedure.router,
-  anmeldungVerwaltungCreateProcedure.router,
-  anmeldungVerwaltungPatchProcedure.router,
-  anmeldungGliederungPatchProcedure.router,
-  anmeldungCountProcedure.router,
-  anmeldungListProcedure.router,
-  anmeldungGetProcedure.router,
-  anmeldungZuordnenProcedure.router,
-  anmeldungAccessTokenValidateProcedure.router,
-  anmeldungFotoUploadProcedure.router
+  anmeldungPublicCreateProcedure,
+  anmeldungTeilnehmerStornoProcedure,
+  anmeldungVerwaltungAblehnenProcedure,
+  anmeldungVerwaltungAnnehmenProcedure,
+  anmeldungVerwaltungStornoProcedure,
+  anmeldungVerwaltungPatchProcedure,
+  anmeldungGliederungPatchProcedure,
+  anmeldungCountProcedure,
+  anmeldungListProcedure,
+  anmeldungGetProcedure,
+  anmeldungZuordnenProcedure,
+  anmeldungAccessTokenValidateProcedure,
+  anmeldungFotoUploadProcedure
   // Add Routes here - do not delete this line
 )

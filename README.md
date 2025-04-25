@@ -12,7 +12,6 @@ Am besten wird das Projekt in einem Devcontainer gestartet. Dazu wird nur Docker
 Über den Eintrag "Clone Repository in Container Volume" kann das Projekt heruntergeladen und geöffnet werden.
 Das Projekt wird dann automatisch eingerichtet und kann wenn das Abgeschlossen ist auch gestartet werden.
 
-
 ## Starten
 
 Find all Tasks in CMD/CTRL-SHIFT-P -> `Tasks: Run Tasks`

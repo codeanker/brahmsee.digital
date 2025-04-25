@@ -1,7 +1,10 @@
 import { TRPCError } from '@trpc/server'
 import brypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import type { StringValue } from 'ms'
 import z from 'zod'
+
+export { type StringValue }
 
 // type AuthenticateJwtOptions = {
 //   ctx: {
@@ -29,7 +32,7 @@ function verify(token: string, jwtSecret: string): TAuthenticateJwtSchema {
   return jwtAuth
 }
 
-function sign(payload: TAuthenticateJwtPayloadSchema, jwtSecret: string, expiresIn: string) {
+function sign(payload: TAuthenticateJwtPayloadSchema, jwtSecret: string, expiresIn: StringValue) {
   ZAuthenticateJwtPayloadSchema.parse(payload)
   return jwt.sign(payload, jwtSecret, {
     expiresIn,
@@ -51,7 +54,7 @@ export function createAuthentication<EnitiyId>({
   getEnityByEmail,
 }: {
   jwtSecret: string
-  expiresIn: string
+  expiresIn: StringValue
   getEnityByEmail: (email: string) => Promise<{
     id: EnitiyId
     password: string

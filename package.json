@@ -1,7 +1,7 @@
 {
   "name": "codeanker-project",
   "author": "CODEANKER GmbH",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "",
   "license": "CC-BY-3.0-DE",
   "workspaces": [
@@ -26,9 +26,9 @@
     "generate": "tsx ./apps/api/src/cli/index.ts"
   },
   "devDependencies": {
-    "husky": "^8.0.3",
+    "husky": "^9.1.7",
     "prettier": "3.4.2",
     "turbo": "^2.3.3",
-    "vitest": "^0.34.6"
+    "vitest": "catalog:"
   }
 }

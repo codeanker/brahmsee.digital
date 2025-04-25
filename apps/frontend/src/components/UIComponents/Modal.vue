@@ -1,58 +1,33 @@
 <script setup lang="ts">
-import { onUnmounted, ref } from 'vue'
+import { XMarkIcon } from '@heroicons/vue/24/outline'
+import { useMediaQuery } from '@vueuse/core'
+import { DialogContent, DialogOverlay, DialogPortal, DialogRoot } from 'reka-ui'
+import { DrawerContent, DrawerOverlay, DrawerPortal, DrawerRoot } from 'vaul-vue'
+import { onMounted, ref } from 'vue'
 
 const props = withDefaults(
   defineProps<{
     immediate?: boolean
     closeable?: boolean
     size?: string
-    overflowVisible?: boolean
   }>(),
   {
     immediate: false,
     closeable: true,
-    size: 'md',
-    overflowVisible: false,
+    size: 'lg',
   }
 )
 
-const emit = defineEmits<{
-  open: []
-  close: []
-}>()
-const visible = ref(false)
-const context = ref()
+const isOpen = ref(false)
 
-onUnmounted(() => {
-  toggleHideOverflow(false)
-})
+const isMobile = useMediaQuery('(max-width: 640px)')
 
-const toggleHideOverflow = (hideOverflow) => {
-  document.body.style.overflow = hideOverflow ? 'hidden' : ''
-  document.body.style.paddingRight = hideOverflow ? '10px' : ''
+const show = () => {
+  isOpen.value = true
 }
 
-const show = (ctx = {}) => {
-  window.addEventListener('keydown', handleKeypress)
-  emit('open')
-  visible.value = true
-  toggleHideOverflow(true)
-  context.value = ctx
-}
-
-const hide = (ctx = {}) => {
-  if (ctx === 'self' && !props.closeable) return
-  visible.value = false
-  toggleHideOverflow(false)
-  context.value = ctx
-  emit('close')
-  window.removeEventListener('keydown', handleKeypress)
-}
-
-const handleKeypress = (e) => {
-  if (e.key === 'Escape') {
-    hide()
-  }
+const hide = () => {
+  isOpen.value = false
 }
 
 export type ModalApi = {
@@ -60,91 +35,64 @@ export type ModalApi = {
   hide: typeof hide
 }
 
-defineExpose<ModalApi>({ show, hide })
+defineExpose<ModalApi>({
+  show,
+  hide,
+})
 
-if (props.immediate) {
-  show()
-}
+onMounted(() => {
+  if (props.immediate) {
+    show()
+  }
+})
 </script>
 
 <template>
-  <div>
-    <transition name="fade">
-      <div
-        v-if="visible"
-        class="backdrop z-modal-backdrop fixed inset-0 flex items-center justify-center"
-        @mousedown.self="hide('self')"
-      >
-        <div
-          class="mx-2 max-h-[calc(100vh-4rem)] rounded-md bg-white dark:bg-slate-950 dark:text-white"
-          :class="`size-${size} ${overflowVisible ? 'overflow-visible' : 'overflow-auto'}`"
-        >
-          <slot
-            name="header"
-            :hide="hide"
-          />
+  <!-- Bottom Sheet for mobile use -->
+  <template v-if="isMobile">
+    <DrawerRoot v-model:open="isOpen">
+      <DrawerPortal>
+        <DrawerOverlay class="fixed inset-0 bg-black/50 dark:bg-white/50" />
+        <DrawerContent class="bg-white dark:bg-dark-primary fixed inset-x-0 bottom-0 rounded-t-lg p-6">
+          <div class="absolute inset-0 h-6 flex items-center justify-center">
+            <div class="w-12 h-1 bg-gray-300 rounded-full" />
+          </div>
           <div
-            class="modal z-modal p-6"
-            @keyup.esc="hide('self')"
+            v-if="closeable"
+            class="absolute right-0 top-0 p-4 cursor-pointer"
           >
-            <slot
-              name="content"
-              :hide="hide"
-              :context="context"
+            <XMarkIcon
+              class="size-6"
+              @click="hide"
             />
           </div>
-        </div>
-      </div>
-    </transition>
-  </div>
+          <slot name="content" />
+        </DrawerContent>
+      </DrawerPortal>
+    </DrawerRoot>
+  </template>
+
+  <!-- Dialog for desktop use -->
+  <template v-else>
+    <DialogRoot v-model:open="isOpen">
+      <DialogPortal>
+        <DialogOverlay class="fixed inset-0 bg-black/50 dark:3bg-white/50 z-modal-backdrop" />
+        <DialogContent
+          class="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-white dark:bg-dark-primary rounded-lg p-6 w-full focus:outline-none z-modal"
+          :class="{ 'max-w-lg': size === 'lg', 'max-w-2xl': size === 'xl', 'max-w-4xl': size === '2xl' }"
+        >
+          <div
+            v-if="closeable"
+            class="absolute right-0 top-0 p-4 cursor-pointer"
+          >
+            <XMarkIcon
+              class="size-6"
+              @click="hide"
+            />
+          </div>
+          <slot name="content" />
+        </DialogContent>
+      </DialogPortal>
+    </DialogRoot>
+  </template>
 </template>
-
-<style lang="scss" scoped>
-.backdrop {
-  background-color: rgba($color: #000000, $alpha: 0.4);
-}
-.size-md,
-.size-full {
-  width: 100%;
-}
-@media (min-width: 576px) {
-  .size-sm {
-    width: 22rem;
-  }
-  .size-md {
-    width: 30rem;
-  }
-  .size-lg {
-    width: 100%;
-    max-width: 600px;
-  }
-  .size-xl {
-    width: 100%;
-    max-width: 1200px;
-  }
-}
-@media (min-width: 768px) {
-  .size-sm {
-    width: 32rem;
-  }
-  .size-md {
-    width: 40rem;
-  }
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 300ms;
-}
-.fade-enter-to, .fade-leave /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 1;
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
-}
-
-.fade-enter-active .modal,
-.fade-leave-active .modal {
-  transition: transform 300ms;
-}
-</style>

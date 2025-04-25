@@ -7,8 +7,8 @@ import { fileGetUrlActionProcedure } from './fileGetUrl.js'
 // Import Routes here - do not delete this line
 
 export const fileRouter = mergeRouters(
-  fileCreateProcedure.router,
-  fileGetUrlActionProcedure.router,
-  anmeldungPublicFotoUploadProcedure.router
+  fileCreateProcedure,
+  fileGetUrlActionProcedure,
+  anmeldungPublicFotoUploadProcedure
   // Add Routes here - do not delete this line
 )

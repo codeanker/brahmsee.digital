@@ -1,33 +1,48 @@
 <script setup lang="ts">
-import { UserGroupIcon } from '@heroicons/vue/24/outline'
+import { UserGroupIcon, ChevronLeftIcon, UserIcon } from '@heroicons/vue/24/outline'
+import ButtonCard from '@/components/UIComponents/ButtonCard.vue'
+import { useAssets } from '@/composables/useAssets'
+
+const { logo } = useAssets()
 </script>
 
 <template>
-  <div class="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
-    <div class="sm:mx-auto sm:w-full sm:max-w-md">
-      <h2 class="text-center text-4xl leading-9 tracking-tight text-primary-700 flex items-center justify-center">
-        Registrierung
-      </h2>
-      <p class="text-center">Wofür möchtest Du dich registrieren?</p>
-      <div class="mt-5 lg:mt-10 space-y-5">
-        <RouterLink
-          :to="{ name: 'GliederungRegistrierung' }"
-          class="w-full p-5 rounded-lg flex cursor-pointer transition-all ease-in-out border border-gray-200 hover:border-primary-600 group"
-        >
-          <div class="mr-4">
-            <UserGroupIcon class="h-8 w-8 transition-all ease-in-out group-hover:text-primary-600" />
-          </div>
-          <div class="">
-            <div class="font-medium text-lg transition-all ease-in-out group-hover:text-primary-600">Gliederung</div>
-            <div>Erstelle Ausschreibungen und versende diese zur Anmeldung und verwalte diese.</div>
-          </div>
-        </RouterLink>
+  <div class="h-svh flex flex-col items-center w-full p-6 lg:p-0">
+    <div class="flex h-full flex-col lg:justify-center w-full lg:max-w-xl space-y-12">
+      <div class="flex">
         <RouterLink
           :to="{ name: 'Login' }"
-          class="flex justify-center text-sm transition-all text-gray-600 hover:text-primary-600"
+          class="flex justify-center text-sm transition-all text-gray-600 hover:text-primary-600 space-x-1"
         >
-          zurück
+          <ChevronLeftIcon class="h-5 w-5" />
+          <span>Zurück</span>
         </RouterLink>
+      </div>
+
+      <!-- Title Header -->
+      <div class="flex flex-col items-center justify-center relative space-y-4">
+        <img
+          :src="logo"
+          alt="Brahmsee Logo"
+          class="size-28"
+        />
+        <h2 class="text-center text-4xl text-primary-700">Registrierung</h2>
+        <p class="text-center">Wie möchtest Du dich registrieren?</p>
+      </div>
+
+      <div class="space-y-4">
+        <ButtonCard
+          to="TeilnehmerRegistrierung"
+          :icon="UserIcon"
+          title="Teilnehmer"
+          description="Eigene Daten und Anmeldungen verwalten."
+        />
+        <ButtonCard
+          to="GliederungRegistrierung"
+          :icon="UserGroupIcon"
+          title="Gliederung"
+          description="Erstellen, Versenden und Verwalten von Ausschreibungen."
+        />
       </div>
     </div>
   </div>

@@ -5,6 +5,6 @@ import { addressFindActionProcedure } from './addressFindAddress.js'
 // Import Routes here - do not delete this line
 
 export const addressRouter = mergeRouters(
-  addressFindActionProcedure.router
+  addressFindActionProcedure
   // Add Routes here - do not delete this line
 )

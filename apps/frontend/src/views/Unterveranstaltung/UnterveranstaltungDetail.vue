@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import {
+  CameraIcon,
   ChatBubbleLeftRightIcon,
   CodeBracketIcon,
   DocumentDuplicateIcon,
   DocumentIcon,
   HandRaisedIcon,
+  LinkIcon,
   MegaphoneIcon,
   RocketLaunchIcon,
   SquaresPlusIcon,
@@ -19,7 +21,7 @@ import { apiClient } from '@/api'
 import Abbr from '@/components/Abbr.vue'
 import CustomFieldsTable from '@/components/CustomFields/CustomFieldsTable.vue'
 import AnmeldungenTable from '@/components/data/AnmeldungenTable.vue'
-import FilesExport from '@/components/FilesExport.vue'
+import FilesExport, { type ExportedFileType } from '@/components/FilesExport.vue'
 import FilesListAndUpload from '@/components/FilesListAndUpload.vue'
 import FormUnterveranstaltungLandingSettings from '@/components/forms/unterveranstaltung/FormUnterveranstaltungLandingSettings.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
@@ -29,8 +31,11 @@ import InfoList from '@/components/UIComponents/InfoList.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
 import { useRouteTitle } from '@/composables/useRouteTitle'
-import { formatDate } from '@codeanker/helpers'
+import { formatDateWith } from '@codeanker/helpers'
 import FAQList from '../FAQs/FAQList.vue'
+import { PlusIcon } from '@heroicons/vue/24/solid'
+import AnmeldeLinkTable from '@/components/data/AnmeldeLinkTable.vue'
+import AnmeldeLinkCreateModal from '@/components/UIComponents/AnmeldeLinkCreateModal.vue'
 
 const route = useRoute()
 const { setTitle } = useRouteTitle()
@@ -46,7 +51,7 @@ const { state: unterveranstaltung } = useAsyncState(async () => {
       id: parseInt(route.params.unterveranstaltungId as string),
     })
   }
-  setTitle(`Ausschreibung für ${result.veranstaltung.name}`)
+  setTitle(`Ausschreibung für ${result.veranstaltung.name} (${result.gliederung.name})`)
   return result
 }, undefined)
 
@@ -65,18 +70,27 @@ interface KeyInfo {
   small?: boolean
 }
 
+const keyInfoDateFormat = 'dddd, DD. MMMM YYYY'
+
 const keyInfos = computed<KeyInfo[]>(() => {
   if (unterveranstaltung.value) {
     return [
       {
-        title: 'Beginn',
-        value: `${formatDate(unterveranstaltung.value.veranstaltung.beginn)} Uhr`,
+        title: 'Gliederung',
+        value: unterveranstaltung.value.gliederung.name,
       },
       {
-        title: 'Ende',
-        value: `${formatDate(unterveranstaltung.value.veranstaltung.ende)} Uhr`,
+        title: 'Eigener Titel',
+        value: unterveranstaltung.value.beschreibung,
       },
-      { title: 'Meldeschluss', value: formatDate(unterveranstaltung.value.meldeschluss) },
+      {
+        title: 'Zeitraum der Veranstaltung',
+        value: `${formatDateWith(unterveranstaltung.value.beginn, keyInfoDateFormat)} - ${formatDateWith(unterveranstaltung.value.ende, keyInfoDateFormat)}`,
+      },
+      {
+        title: 'Zeitraum für Anmeldungen',
+        value: `${formatDateWith(unterveranstaltung.value.meldebeginn, keyInfoDateFormat)} - ${formatDateWith(unterveranstaltung.value.meldeschluss, keyInfoDateFormat)}`,
+      },
       { title: 'Veranstaltungsort', value: unterveranstaltung.value.veranstaltung.ort?.name ?? '' },
       { title: 'Teilnahmebeitrag', value: unterveranstaltung.value.teilnahmegebuehr + '€' },
       { title: 'max. Teilnahmezahl', value: unterveranstaltung.value.maxTeilnehmende + '' },
@@ -88,18 +102,20 @@ const keyInfos = computed<KeyInfo[]>(() => {
 })
 
 const tabs = computed(() => {
+  const isAdmin = loggedInAccount.value?.role === 'ADMIN'
+
   const tabs = [
     { name: 'Ausschreibung', icon: MegaphoneIcon },
     { name: 'Marketing', icon: HandRaisedIcon },
     { name: 'Anmeldungen', icon: UserGroupIcon, count: countAnmeldungen.value?.total },
+    isAdmin && { name: 'Anmeldelinks', icon: LinkIcon },
     { name: 'Dokumente', icon: DocumentIcon },
     { name: 'Felder', icon: SquaresPlusIcon },
     { name: 'FAQ', icon: ChatBubbleLeftRightIcon },
+    isAdmin && { name: 'Entwickler:in', icon: CodeBracketIcon },
   ]
-  if (loggedInAccount.value?.role === 'ADMIN') {
-    tabs.push({ name: 'Entwickler:in', icon: CodeBracketIcon })
-  }
-  return tabs
+
+  return tabs.filter((t) => t !== false)
 })
 
 const publicLink = computed(() => {
@@ -118,7 +134,7 @@ function copyLink() {
 const getJWT = () => localStorage.getItem('jwt')
 const exportParams = `jwt=${getJWT()}&unterveranstaltungId=${route.params.unterveranstaltungId}`
 
-const files = [
+const files: ExportedFileType[] = [
   {
     name: 'Teilnehmendenliste',
     icon: UsersIcon,
@@ -135,23 +151,35 @@ const files = [
     bgColor: 'bg-primary-600',
     hoverColor: 'hover:text-primary-700',
   },
+  {
+    name: 'Fotos',
+    description: 'Alle Fotos von bestätigten Teilnehmenden',
+    icon: CameraIcon,
+    bgColor: 'bg-orange-600',
+    hoverColor: 'hover:text-orange-700',
+    href: `/api/export/archive/photos?${exportParams}`,
+  },
 ]
 
 const faqList = useTemplateRef('faqList')
+
+const anmeldeLinkCreateModal = useTemplateRef('anmeldeLinkCreateModal')
 </script>
 
 <template>
   <div>
     <div class="pb-8">
       <div class="max-w-2xl lg:mx-0">
-        <h2 class="text-2xl font-bold tracking-tight sm:text-4xl items-start flex">
-          {{ unterveranstaltung?.veranstaltung?.name }}
+        <h2 class="text-2xl font-bold tracking-tight sm:text-4xl items-start flex space-x-2">
+          <span>
+            {{ unterveranstaltung?.beschreibung || unterveranstaltung?.veranstaltung?.name }}
+          </span>
           <Badge
             v-if="unterveranstaltung?.type === 'CREW'"
-            class="ml-2"
             color="warning"
-            >CREW</Badge
           >
+            CREW
+          </Badge>
         </h2>
         <p class="mt-4 text-md leading-6">
           Erstelle und bearbeite deine Ausschreibung, Teilnehmende können sich direkt über die Ausschreibung anmelden,
@@ -165,7 +193,7 @@ const faqList = useTemplateRef('faqList')
     >
       <Tab key="allgemeines">
         <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
-          <div class="text-lg font-semibold">Veranstaltungsdaten</div>
+          <div class="text-lg font-semibold">Überblick zur Ausschreibung</div>
           <RouterLink
             class="text-primary-500"
             :to="{ name: 'UnterveranstaltungEdit' }"
@@ -175,15 +203,7 @@ const faqList = useTemplateRef('faqList')
         </div>
 
         <InfoList :infos="keyInfos" />
-        <hr class="my-10" />
-        <div class="mt-5 lg:mt-10 mb-5 text-lg font-semibold">Beschreibung</div>
-        <div class="px-3 py-5">
-          <!-- eslint-disable vue/no-v-html -->
-          <div
-            class="prose dark:prose-invert"
-            v-html="unterveranstaltung?.beschreibung"
-          />
-        </div>
+
         <hr class="my-10" />
         <div class="my-10">
           <div class="text-lg font-semibold">Bedingungen <Badge color="secondary"> Gliederung </Badge></div>
@@ -268,6 +288,38 @@ const faqList = useTemplateRef('faqList')
         <AnmeldungenTable
           v-if="unterveranstaltung"
           :filter="{ type: 'unterveranstaltung', unterveranstaltungId: unterveranstaltung.id }"
+        />
+      </Tab>
+      <Tab
+        v-if="loggedInAccount?.role === 'ADMIN'"
+        key="anmeldelinks"
+      >
+        <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
+          <div>
+            <div class="text-lg font-semibold">Anmeldelinks</div>
+            <p class="text-sm text-gray-500">
+              Mit einem Anmeldelink können Personen sich auch dann anmelden, wenn der Meldeschluss erreicht oder die
+              maximale Teilnehmendenzahl erreicht ist.
+            </p>
+            <p class="text-sm text-gray-500">Eine Bestätigung der Anmeldung ist trotzdem erforderlich.</p>
+          </div>
+          <Button @click="anmeldeLinkCreateModal?.open()">
+            <PlusIcon class="size-4" />
+            <span class="ml-1">Anmeldelink erstellen</span>
+          </Button>
+        </div>
+
+        <AnmeldeLinkTable
+          v-if="unterveranstaltung"
+          :unterveranstaltung-id="unterveranstaltung.id"
+        />
+
+        <AnmeldeLinkCreateModal
+          v-if="unterveranstaltung"
+          ref="anmeldeLinkCreateModal"
+          :veranstaltung="`${unterveranstaltung.veranstaltung.name} (${unterveranstaltung.gliederung.name})`"
+          :unterveranstaltung-id="unterveranstaltung.id"
+          :url="`${publicLink}/anmeldung`"
         />
       </Tab>
       <Tab key="dokumente">

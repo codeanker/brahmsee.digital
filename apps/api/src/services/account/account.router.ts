@@ -7,6 +7,7 @@ import { accountEmailConfirmProcedure } from './accountEmailConfirm.js'
 import { accountEmailConfirmRequestProcedure } from './accountEmailConfirmRequest.js'
 import { accountGliederungAdminCreateProcedure } from './accountGliederungAdminCreate.js'
 import { accountPasswordResetProcedure } from './accountPasswordReset.js'
+import { accountTeilnehmerCreateProcedure } from './accountTeilnehmerCreate.js'
 import { accountVerwaltungCreateProcedure } from './accountVerwaltungCreate.js'
 import { accountVerwaltungGetProcedure } from './accountVerwaltungGet.js'
 import { accountVerwaltungCountProcedure, accountVerwaltungListProcedure } from './accountVerwaltungList.js'
@@ -15,17 +16,18 @@ import { accountVerwaltungRemoveProcedure } from './accountVerwaltungRemove.js'
 // Import Routes here - do not delete this line
 
 export const accountRouter = mergeRouters(
-  accountActivateProcedure.router,
-  accountChangePasswordProcedure.router,
-  accountGliederungAdminCreateProcedure.router,
-  accountVerwaltungCreateProcedure.router,
-  accountVerwaltungGetProcedure.router,
-  accountVerwaltungListProcedure.router,
-  accountVerwaltungCountProcedure.router,
-  accountVerwaltungPatchProcedure.router,
-  accountEmailConfirmRequestProcedure.router,
-  accountEmailConfirmProcedure.router,
-  accountPasswordResetProcedure.router,
-  accountVerwaltungRemoveProcedure.router
+  accountActivateProcedure,
+  accountChangePasswordProcedure,
+  accountGliederungAdminCreateProcedure,
+  accountVerwaltungCreateProcedure,
+  accountVerwaltungGetProcedure,
+  accountVerwaltungListProcedure,
+  accountVerwaltungCountProcedure,
+  accountVerwaltungPatchProcedure,
+  accountEmailConfirmRequestProcedure,
+  accountEmailConfirmProcedure,
+  accountPasswordResetProcedure,
+  accountVerwaltungRemoveProcedure,
+  accountTeilnehmerCreateProcedure
   // Add Routes here - do not delete this line
 )

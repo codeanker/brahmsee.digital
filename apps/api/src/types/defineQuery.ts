@@ -1,5 +1,5 @@
+import { setProperty } from 'dot-prop'
 import z from 'zod'
-import { set } from 'lodash-es'
 
 export const ZPaginationSchema = z.strictObject({
   skip: z.number().optional(),
@@ -34,13 +34,11 @@ export interface TQuery {
   filter: Record<string, unknown>
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function getOrderBy<T extends string>(orderBy: Array<[T, 'asc' | 'desc']>): Record<string, any> {
+export function getOrderBy<T extends string>(orderBy: Array<[T, 'asc' | 'desc']>) {
   return orderBy.map(([field, order]) => {
     const result = {} as { [key in T]: 'asc' | 'desc' }
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    set(result, field, order)
+    setProperty(result, field, order)
     return result
   })
 }

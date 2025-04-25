@@ -20,13 +20,13 @@ const keyInfos = computed<KeyInfo[]>(() => {
   return [
     {
       title: 'Beginn',
-      value: `${formatDate(unterveranstaltung.value.veranstaltung.beginn, 'DD.MM.YYYY, HH:mm')} Uhr`,
+      value: formatDate(unterveranstaltung.value.veranstaltung.beginn, 'DD.MM.YYYY, HH:mm [Uhr]'),
     },
     {
       title: 'Ende',
-      value: `${formatDate(unterveranstaltung.value.veranstaltung.ende, 'DD.MM.YYYY, HH:mm')} Uhr`,
+      value: formatDate(unterveranstaltung.value.veranstaltung.ende, 'DD.MM.YYYY, HH:mm [Uhr]'),
     },
-    { title: 'Meldeschluss', value: `${formatDate(unterveranstaltung.value.meldeschluss, 'DD.MM.YYYY')} ` },
+    { title: 'Meldeschluss', value: formatDate(unterveranstaltung.value.meldeschluss, 'DD.MM.YYYY') },
     { title: 'Veranstaltungsort', value: unterveranstaltung.value.veranstaltung.ort?.name ?? '' },
     { title: 'Teilnahmebeitrag', value: unterveranstaltung.value.teilnahmegebuehr + '€' },
     { title: 'Zielgruppe', value: unterveranstaltung.value.veranstaltung.zielgruppe ?? '' },
@@ -38,8 +38,8 @@ const stats = computed(() => {
   const freiePlaetze = (unterveranstaltung?.value?.maxTeilnehmende ?? 0) - anmeldungen
 
   const stats: { label: string; value: number }[] = []
-  if (freiePlaetze > 0) stats.push({ label: 'Freie Plätze', value: freiePlaetze })
-  if (anmeldungen > 0) stats.push({ label: 'Anmeldungen', value: anmeldungen })
+  stats.push({ label: 'Freie Plätze', value: freiePlaetze })
+  stats.push({ label: 'Anmeldungen', value: anmeldungen })
   return stats
 })
 </script>

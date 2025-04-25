@@ -361,6 +361,7 @@ onMounted(() => {
           content-space="4"
           :default-index="0"
           :tabs="tabs"
+          :persistent="false"
         >
           <Tab>
             <div class="px-4 py-5 sm:px-0 sm:py-0">

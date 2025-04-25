@@ -4,6 +4,7 @@ import z from 'zod'
 import prisma from '../../prisma.js'
 import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
 import { unterveranstaltungCreateSchema } from './schema/unterveranstaltung.schema.js'
+import { TRPCError } from '@trpc/server'
 
 const unterveranstaltungVerwaltungCreateSchema = unterveranstaltungCreateSchema.extend({
   gliederungId: z.number().int(),
@@ -17,6 +18,21 @@ export const unterveranstaltungVerwaltungCreateProcedure = defineProtectedMutate
     data: unterveranstaltungVerwaltungCreateSchema,
   }),
   async handler({ input }) {
+    if (input.data.type !== 'CREW') {
+      const existing = await prisma.unterveranstaltung.findFirst({
+        where: {
+          veranstaltungId: input.data.veranstaltungId,
+          gliederungId: input.data.gliederungId,
+        },
+      })
+      if (existing !== null) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: `Für die angegebene Veranstaltung`,
+        })
+      }
+    }
+
     const unterveranstaltung = await prisma.unterveranstaltung.create({
       data: {
         veranstaltung: {

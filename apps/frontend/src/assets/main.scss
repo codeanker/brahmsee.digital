@@ -12,6 +12,7 @@ html {
 html,
 body,
 #app {
+  height: 100vh;
   width: 100vw;
   overflow: hidden;
   overflow-y: overlay;
@@ -21,7 +22,7 @@ body,
 }
 
 body {
-  @apply transition-colors duration-200;
+  @apply transition-colors duration-200 dark:text-gray-200;
 }
 
 abbr {

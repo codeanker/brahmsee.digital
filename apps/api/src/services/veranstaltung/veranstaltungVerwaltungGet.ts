@@ -41,6 +41,22 @@ export const veranstaltungVerwaltungGetProcedure = defineProtectedQueryProcedure
             hostname: true,
           },
         },
+        unterveranstaltungen: {
+          select: {
+            id: true,
+            _count: {
+              select: {
+                Anmeldung: {
+                  where: {
+                    status: {
+                      equals: 'BESTAETIGT',
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
       },
     })
     return veranstaltungWithunterveranstaltungen
