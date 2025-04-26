@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import {
+  CameraIcon,
   ClipboardDocumentListIcon,
   DocumentIcon,
   MegaphoneIcon,
-  UsersIcon,
   SquaresPlusIcon,
+  UsersIcon,
   WalletIcon,
-  CameraIcon,
 } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 import { computed } from 'vue'
@@ -19,11 +19,11 @@ import Badge from '@/components/UIComponents/Badge.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import InfoList from '@/components/UIComponents/InfoList.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
+import VeranstaltungCard from '@/components/UIComponents/VeranstaltungCard.vue'
 import UnterveranstaltungenTable from '@/components/UnterveranstaltungenTable.vue'
 import { useRouteTitle } from '@/composables/useRouteTitle'
 import { formatDateWith } from '@codeanker/helpers'
 import { PlusIcon } from '@heroicons/vue/24/solid'
-import VeranstaltungCard from '@/components/UIComponents/VeranstaltungCard.vue'
 
 const { setTitle } = useRouteTitle()
 

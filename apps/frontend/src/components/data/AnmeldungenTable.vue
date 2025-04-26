@@ -233,7 +233,6 @@ if (loggedInAccount.value?.role === 'ADMIN') {
 }
 
 /// Filter via Route laden
-
 const defaultOrderBy = {
   createdAt: 'desc',
 } as const
