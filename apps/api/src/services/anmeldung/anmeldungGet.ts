@@ -46,6 +46,14 @@ const select = {
   unterveranstaltung: {
     select: {
       id: true,
+      beschreibung: true,
+      gliederung: {
+        select: {
+          id: true,
+          name: true,
+          edv: true,
+        },
+      },
       veranstaltung: {
         select: {
           id: true,
