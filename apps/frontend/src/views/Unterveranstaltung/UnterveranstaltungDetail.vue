@@ -20,10 +20,12 @@ import { useRoute } from 'vue-router'
 import { apiClient } from '@/api'
 import Abbr from '@/components/Abbr.vue'
 import CustomFieldsTable from '@/components/CustomFields/CustomFieldsTable.vue'
+import AnmeldeLinkTable from '@/components/data/AnmeldeLinkTable.vue'
 import AnmeldungenTable from '@/components/data/AnmeldungenTable.vue'
 import FilesExport, { type ExportedFileType } from '@/components/FilesExport.vue'
 import FilesListAndUpload from '@/components/FilesListAndUpload.vue'
 import FormUnterveranstaltungLandingSettings from '@/components/forms/unterveranstaltung/FormUnterveranstaltungLandingSettings.vue'
+import AnmeldeLinkCreateModal from '@/components/UIComponents/AnmeldeLinkCreateModal.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
@@ -33,9 +35,6 @@ import { loggedInAccount } from '@/composables/useAuthentication'
 import { useRouteTitle } from '@/composables/useRouteTitle'
 import { formatDateWith } from '@codeanker/helpers'
 import FAQList from '../FAQs/FAQList.vue'
-import { PlusIcon } from '@heroicons/vue/24/solid'
-import AnmeldeLinkTable from '@/components/data/AnmeldeLinkTable.vue'
-import AnmeldeLinkCreateModal from '@/components/UIComponents/AnmeldeLinkCreateModal.vue'
 
 const route = useRoute()
 const { setTitle } = useRouteTitle()
@@ -152,12 +151,20 @@ const files: ExportedFileType[] = [
     hoverColor: 'hover:text-primary-700',
   },
   {
-    name: 'Fotos',
-    description: 'Alle Fotos von bestätigten Teilnehmenden',
+    name: 'Fotos (Gruppiert)',
+    description: 'Alle Fotos von bestätigten Teilnehmenden, gruppiert nach Veranstaltung und Ausschreibung',
     icon: CameraIcon,
     bgColor: 'bg-orange-600',
     hoverColor: 'hover:text-orange-700',
-    href: `/api/export/archive/photos?${exportParams}`,
+    href: `/api/export/archive/photos?${exportParams}&mode=group`,
+  },
+  {
+    name: 'Fotos (Für automatisierte Verarbeitung)',
+    description: 'Alle Fotos von bestätigten Teilnehmenden, optimiert für automatisierte Verarbeitung',
+    icon: CameraIcon,
+    bgColor: 'bg-orange-600',
+    hoverColor: 'hover:text-orange-700',
+    href: `/api/export/archive/photos?${exportParams}&mode=flat`,
   },
 ]
 
@@ -295,23 +302,26 @@ const anmeldeLinkCreateModal = useTemplateRef('anmeldeLinkCreateModal')
         key="anmeldelinks"
       >
         <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
-          <div>
+          <div class="max-w-4xl">
             <div class="text-lg font-semibold">Anmeldelinks</div>
             <p class="text-sm text-gray-500">
               Mit einem Anmeldelink können Personen sich auch dann anmelden, wenn der Meldeschluss erreicht oder die
-              maximale Teilnehmendenzahl erreicht ist.
+              maximale Teilnehmendenzahl erreicht ist. Eine Bestätigung der Anmeldung ist dennoch erforderlich.
             </p>
-            <p class="text-sm text-gray-500">Eine Bestätigung der Anmeldung ist trotzdem erforderlich.</p>
           </div>
-          <Button @click="anmeldeLinkCreateModal?.open()">
-            <PlusIcon class="size-4" />
-            <span class="ml-1">Anmeldelink erstellen</span>
-          </Button>
+          <div class="shrink-0">
+            <Button
+              type="button"
+              @click="anmeldeLinkCreateModal?.open()"
+            >
+              Anmeldelink erstellen
+            </Button>
+          </div>
         </div>
 
         <AnmeldeLinkTable
           v-if="unterveranstaltung"
-          :unterveranstaltung-id="unterveranstaltung.id"
+          :filter="{ type: 'unterveranstaltung', unterveranstaltungId: unterveranstaltung.id }"
         />
 
         <AnmeldeLinkCreateModal

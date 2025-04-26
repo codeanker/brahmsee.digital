@@ -115,7 +115,7 @@ export async function veranstaltungTeilnehmendenliste(ctx: Context) {
 
       Status: AnmeldungStatusMapping[anmeldung.status].human,
       Anmeldedatum: anmeldung.createdAt,
-      Foto: anmeldung.person.photoId ? 'Ja' : 'Nein',
+      'Foto ID': anmeldung.person.photoId ?? '',
 
       Geschlecht: anmeldung.person.gender ? GenderMapping[anmeldung.person.gender].human : '',
       Vorname: anmeldung.person.firstname,
