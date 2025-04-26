@@ -136,7 +136,7 @@ async function createAnmeldung(
         //Person Schema
         firstname: row.vorname,
         lastname: row.nachname,
-        birthday: dayjs(row.geburtstag, 'DD.MM.YY').toDate(),
+        birthday: dayjs(row.geburtstag, 'DD.MM.YYYY').toDate(),
         gender: row.geschlecht,
         email: row.email,
         telefon: row.telefon,
