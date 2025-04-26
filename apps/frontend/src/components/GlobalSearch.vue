@@ -134,6 +134,7 @@ const { state: searchResults, execute: searchAPI } = useAsyncState(
                   aria-hidden="true"
                 />
                 <ComboboxInput
+                  auto-focus
                   class="h-12 w-full border-0 bg-transparent !pl-11 pr-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 focus:border-0 sm:text-sm"
                   placeholder="Suchen..."
                   @change="search($event.target.value)"
@@ -167,14 +168,14 @@ const { state: searchResults, execute: searchAPI } = useAsyncState(
                         <li
                           :class="[
                             'flex cursor-default select-none items-center rounded-md px-3 py-2',
-                            active && 'bg-primary-600 cursor-pointer group',
+                            active && 'bg-primary-50 cursor-pointer group',
                           ]"
                         >
                           <UsersIcon
-                            :class="['h-6 w-6 flex-none text-gray-400 group-hover:text-white dark:text-white']"
+                            :class="['h-6 w-6 flex-none text-gray-400 dark:text-white text-gray-400']"
                             aria-hidden="true"
                           />
-                          <div class="ml-3 flex-auto truncate highlight dark:text-white group-hover:text-white">
+                          <div :class="['ml-3 flex-auto truncate highlight text-gray-900']">
                             <!-- eslint-disable vue/no-v-html -->
                             <span
                               class="mr-1"
@@ -197,7 +198,7 @@ const { state: searchResults, execute: searchAPI } = useAsyncState(
                           </div>
                           <span
                             v-if="active"
-                            class="ml-3 flex-none text-primary-100"
+                            class="ml-3 flex-none text-primary-600"
                             >öffnen</span
                           >
                         </li>
@@ -267,7 +268,7 @@ const { state: searchResults, execute: searchAPI } = useAsyncState(
 <style scoped lang="scss">
 :deep(.highlight) {
   em {
-    @apply text-primary-600 group-hover:text-white not-italic border-b-2 border-primary-600 group-hover:border-white;
+    @apply text-primary-600 not-italic border-b-2 border-primary-600;
   }
 }
 </style>
