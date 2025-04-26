@@ -142,9 +142,11 @@ async function createAnmeldung(
         telefon: row.telefon,
         address: {
           street: row.strasse,
-          number: row.hausnummer,
+          streetNumber: row.hausnummer,
           zip: row.plz,
           city: row.ort,
+          country: 'DE',
+          valid: false,
         },
         essgewohnheit: row.essgewohnheit,
         nahrungsmittelIntoleranzen: formatNahrungsmittelIntoleranzen(row.nahrungsmittelIntoleranzen),
