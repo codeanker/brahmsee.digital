@@ -9,6 +9,7 @@ import { definePublicMutateProcedure } from '../../types/defineProcedure.js'
 import logActivity from '../../util/activity.js'
 import { sendMail } from '../../util/mail.js'
 import { getPersonCreateData, personSchema } from '../person/schema/person.schema.js'
+import { updateMeiliPerson } from '../../meilisearch/person.js'
 
 export const inputSchema = z.strictObject({
   token: z.string().optional(),
@@ -118,7 +119,26 @@ export const anmeldungPublicCreateProcedure = definePublicMutateProcedure({
       data: personData,
       select: {
         id: true,
+        firstname: true,
+        lastname: true,
+        birthday: true,
+        email: true,
+        gliederung: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
       },
+    })
+
+    await updateMeiliPerson({
+      id: person.id,
+      firstname: person.firstname,
+      lastname: person.lastname,
+      birthday: person.birthday,
+      email: person.email,
+      gliederung: person.gliederung,
     })
 
     const accessToken = randomUUID()
