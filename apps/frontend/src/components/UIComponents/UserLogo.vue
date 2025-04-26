@@ -58,7 +58,7 @@ const {
 } = useAsyncState(
   async () => {
     if (photoId.value) {
-      return apiClient.file.fileGetUrl.query({
+      return await apiClient.file.fileGetUrl.query({
         id: photoId.value,
         personId: props.personId,
       })
