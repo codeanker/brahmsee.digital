@@ -36,6 +36,18 @@ const routesDevelopment: Route[] = [
           ],
         },
       },
+      {
+        name: 'Einstellungen',
+        path: 'settings',
+        component: () => import('./Settings.vue'),
+        meta: {
+          breadcrumbs: [
+            {
+              text: 'Settings',
+            },
+          ],
+        },
+      },
     ],
   },
 ]

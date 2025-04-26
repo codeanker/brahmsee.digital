@@ -33,34 +33,40 @@ export async function deleteMeiliPerson(id: number) {
 }
 
 export async function syncAllPersonsToMeili() {
-  await meilisearchClient.index(searchIndex).updateSettings(updateSettings)
-  await meilisearchClient.updateIndex(searchIndex, { primaryKey: 'id' })
+  try {
+    await meilisearchClient.index(searchIndex).updateSettings(updateSettings)
+    await meilisearchClient.updateIndex(searchIndex, { primaryKey: 'id' })
 
-  let cursorValue: number | undefined
-  const batchSize = 1000
-  do {
-    const skip: number = cursorValue ? 1 : 0
-    const cursor: { id: number } | undefined = cursorValue ? { id: cursorValue } : undefined
-    const persons = await prisma.person.findMany({
-      take: batchSize,
-      skip,
-      cursor,
-      select: {
-        id: true,
-        firstname: true,
-        lastname: true,
-        birthday: true,
-        email: true,
-        gliederung: {
-          select: {
-            id: true,
-            name: true,
+    let cursorValue: number | undefined
+    const batchSize = 1000
+    do {
+      const skip: number = cursorValue ? 1 : 0
+      const cursor: { id: number } | undefined = cursorValue ? { id: cursorValue } : undefined
+      const persons = await prisma.person.findMany({
+        take: batchSize,
+        skip,
+        cursor,
+        select: {
+          id: true,
+          firstname: true,
+          lastname: true,
+          birthday: true,
+          email: true,
+          gliederung: {
+            select: {
+              id: true,
+              name: true,
+            },
           },
         },
-      },
-    })
-    await meilisearchClient.index(searchIndex).addDocuments(persons)
-    if (persons.length < batchSize) cursorValue = undefined
-    else cursorValue = persons[persons.length - 1]?.id
-  } while (cursorValue)
+      })
+      await meilisearchClient.index(searchIndex).addDocuments(persons)
+      if (persons.length < batchSize) cursorValue = undefined
+      else cursorValue = persons[persons.length - 1]?.id
+    } while (cursorValue)
+    return true
+  } catch (error) {
+    console.error('syncAllPersonsToMeili', error)
+    return false
+  }
 }
