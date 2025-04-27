@@ -5,6 +5,7 @@ import { AnmeldungStatusMapping, GenderMapping } from '../../../client.js'
 import prisma from '../../../prisma.js'
 import { getSecurityWorksheet } from '../helpers/getSecurityWorksheet.js'
 import { sheetAuthorize } from './sheets.schema.js'
+import mime from 'mime'
 
 export async function veranstaltungTeilnehmendenliste(ctx: Context) {
   const authorization = await sheetAuthorize(ctx)
@@ -29,6 +30,7 @@ export async function veranstaltungTeilnehmendenliste(ctx: Context) {
       unterveranstaltung: {
         gliederungId: gliederung?.id,
       },
+      status: 'BESTAETIGT',
     },
     select: {
       id: true,
@@ -41,7 +43,12 @@ export async function veranstaltungTeilnehmendenliste(ctx: Context) {
           birthday: true,
           email: true,
           telefon: true,
-          photoId: true,
+          photo: {
+            select: {
+              id: true,
+              mimetype: true,
+            },
+          },
           essgewohnheit: true,
           address: {
             select: {
@@ -105,7 +112,15 @@ export async function veranstaltungTeilnehmendenliste(ctx: Context) {
         }
       })
       .reduce((acc, cur) => ({ ...acc, ...cur }), {})
+
+    const age = dayjs(anmeldung.unterveranstaltung.veranstaltung.beginn).diff(anmeldung.person.birthday, 'years')
+
+    const extension = mime.getExtension(anmeldung.person.photo?.mimetype ?? 'text/plain')
     return {
+      Fotomarker: anmeldung.person.photo ? `Fotos/${anmeldung.person.photo.id}.${extension}` : '',
+      Altersmarker: age < 16 ? 'U16' : age < 18 ? 'U18' : '',
+      Veggiemarker: anmeldung.person.essgewohnheit === 'OMNIVOR' ? '' : 'brocolli.svg',
+
       '#': anmeldung.id,
 
       Veranstaltung: anmeldung.unterveranstaltung.veranstaltung.name,
@@ -115,16 +130,13 @@ export async function veranstaltungTeilnehmendenliste(ctx: Context) {
 
       Status: AnmeldungStatusMapping[anmeldung.status].human,
       Anmeldedatum: anmeldung.createdAt,
-      'Foto ID': anmeldung.person.photoId ?? '',
+      Foto: anmeldung.person.photo ? 'Ja' : 'Nein',
 
       Geschlecht: anmeldung.person.gender ? GenderMapping[anmeldung.person.gender].human : '',
       Vorname: anmeldung.person.firstname,
       Nachname: anmeldung.person.lastname,
       Geburtstag: anmeldung.person.birthday,
-      'Alter zu Beginn': dayjs(anmeldung.unterveranstaltung.veranstaltung.beginn).diff(
-        anmeldung.person.birthday,
-        'years'
-      ),
+      'Alter zu Beginn': age,
       Email: anmeldung.person.email,
       Telefon: anmeldung.person.telefon,
       Essgewohnheit: anmeldung.person.essgewohnheit,
@@ -146,14 +158,17 @@ export async function veranstaltungTeilnehmendenliste(ctx: Context) {
     }
   })
   const workbook = XLSX.utils.book_new()
+
   const worksheet = XLSX.utils.json_to_sheet(rows)
+  worksheet['!cols'] = [{ hidden: true }, { hidden: true }, { hidden: true }]
+
   XLSX.utils.book_append_sheet(workbook, worksheet, `Teilnehmendenliste`)
 
   /** add Security Worksheet */
   const { securityWorksheet, securityWorksheetName } = getSecurityWorksheet(account, rows.length)
   XLSX.utils.book_append_sheet(workbook, securityWorksheet, securityWorksheetName)
 
-  const filename = `${dayjs().format('YYYYMMDD-hhmm')}-Teilnehmenden.xlsx`
+  const filename = `${dayjs().format('YYYYMMDD-hhmm')}-Teilnehmendenliste.xlsx`
   const buf = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' }) as Buffer
 
   ctx.res.statusCode = 201

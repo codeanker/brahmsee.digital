@@ -101,7 +101,7 @@ export async function veranstaltungPhotoArchive(ctx: Context) {
     const extension = mime.getExtension(person.photo.mimetype ?? 'text/plain')
 
     zip.append(stream, {
-      name: mode === 'group' ? `${directory}/${basename}.${extension}` : `${person.photo.id}.${extension}`,
+      name: mode === 'group' ? `${directory}/${basename}.${extension}` : `Fotos/${person.photo.id}.${extension}`,
       date: person.photo.createdAt,
     })
   }
