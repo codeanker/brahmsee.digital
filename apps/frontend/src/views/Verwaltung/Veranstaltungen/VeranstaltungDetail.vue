@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import {
+  CameraIcon,
   ClipboardDocumentListIcon,
   DocumentIcon,
   MegaphoneIcon,
-  UsersIcon,
   SquaresPlusIcon,
+  UsersIcon,
   WalletIcon,
   CameraIcon,
   RocketLaunchIcon,
@@ -21,6 +22,7 @@ import Badge from '@/components/UIComponents/Badge.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import InfoList from '@/components/UIComponents/InfoList.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
+import VeranstaltungCard from '@/components/UIComponents/VeranstaltungCard.vue'
 import UnterveranstaltungenTable from '@/components/UnterveranstaltungenTable.vue'
 import { useRouteTitle } from '@/composables/useRouteTitle'
 import { formatDateWith } from '@codeanker/helpers'
@@ -108,12 +110,20 @@ const files: ExportedFileType[] = [
     hoverColor: 'hover:text-primary-700',
   },
   {
-    name: 'Fotos',
-    description: 'Alle Fotos von bestätigten Teilnehmenden',
+    name: 'Fotos (Gruppiert)',
+    description: 'Alle Fotos von bestätigten Teilnehmenden, gruppiert nach Veranstaltung und Ausschreibung',
     icon: CameraIcon,
     bgColor: 'bg-orange-600',
     hoverColor: 'hover:text-orange-700',
-    href: `/api/export/archive/photos?${exportParams}`,
+    href: `/api/export/archive/photos?${exportParams}&mode=group`,
+  },
+  {
+    name: 'Fotos (Für automatisierte Verarbeitung)',
+    description: 'Alle Fotos von bestätigten Teilnehmenden, optimiert für automatisierte Verarbeitung',
+    icon: CameraIcon,
+    bgColor: 'bg-orange-600',
+    hoverColor: 'hover:text-orange-700',
+    href: `/api/export/archive/photos?${exportParams}&mode=flat`,
   },
 ]
 

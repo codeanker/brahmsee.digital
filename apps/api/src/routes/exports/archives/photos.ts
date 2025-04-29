@@ -5,6 +5,11 @@ import { randomUUID } from 'node:crypto'
 import prisma from '../../../prisma.js'
 import { openFileStream } from '../../../services/file/helpers/getFileUrl.js'
 import { sheetAuthorize } from '../sheets/sheets.schema.js'
+import { z } from 'zod'
+
+const querySchema = z.object({
+  mode: z.enum(['group', 'flat']),
+})
 
 export async function veranstaltungPhotoArchive(ctx: Context) {
   const authorization = await sheetAuthorize(ctx)
@@ -13,6 +18,7 @@ export async function veranstaltungPhotoArchive(ctx: Context) {
   }
 
   const { query, gliederung } = authorization
+  const { mode } = querySchema.parse(ctx.query)
 
   const anmeldungen = await prisma.anmeldung.findMany({
     where: {
@@ -54,6 +60,7 @@ export async function veranstaltungPhotoArchive(ctx: Context) {
       },
       person: {
         select: {
+          id: true,
           firstname: true,
           lastname: true,
           photo: true,
@@ -90,9 +97,11 @@ export async function veranstaltungPhotoArchive(ctx: Context) {
     const stream = await openFileStream(person.photo)
 
     const directory = `Fotos Teilnehmende ${unterveranstaltung.veranstaltung.name}/${unterveranstaltung.gliederung.name}`
-    const name = `${person.firstname} ${person.lastname}.${mime.getExtension(person.photo.mimetype ?? 'text/plain')}`
+    const basename = mode === 'group' ? `${person.firstname} ${person.lastname}` : person.id
+    const extension = mime.getExtension(person.photo.mimetype ?? 'text/plain')
+
     zip.append(stream, {
-      name: `${directory}/${name}`,
+      name: mode === 'group' ? `${directory}/${basename}.${extension}` : `${person.photo.id}.${extension}`,
       date: person.photo.createdAt,
     })
   }

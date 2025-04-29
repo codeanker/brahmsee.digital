@@ -6,6 +6,7 @@ import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
 
 import { getPersonCreateData, personSchemaOptional } from './schema/person.schema.js'
 import { TRPCError } from '@trpc/server'
+import { updateMeiliPerson } from '../../meilisearch/person.js'
 
 export const personVerwaltungPatchProcedure = defineProtectedMutateProcedure({
   key: 'patch',
@@ -47,15 +48,35 @@ export const personVerwaltungPatchProcedure = defineProtectedMutateProcedure({
         personId: input.id,
       },
     })
-
-    return prisma.person.update({
+    const person = await prisma.person.update({
       where: {
         id: input.id,
       },
       data: await getPersonCreateData(input.data),
       select: {
         id: true,
+        firstname: true,
+        lastname: true,
+        birthday: true,
+        email: true,
+        gliederung: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
       },
     })
+
+    await updateMeiliPerson({
+      id: person.id,
+      firstname: person.firstname,
+      lastname: person.lastname,
+      birthday: person.birthday,
+      email: person.email,
+      gliederung: person.gliederung,
+    })
+
+    return person
   },
 })

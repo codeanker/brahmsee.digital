@@ -1,85 +1,148 @@
 <script setup lang="ts">
 import { apiClient } from '@/api'
-import type { RouterOutput } from '@codeanker/api'
-import type { TGridColumn } from '@codeanker/datagrid'
-import GenericDataGrid, {
-  type FetchCountFunction,
-  type FetchPageFunction,
-  type GenericGridProps,
-} from '../GenericDataGrid.vue'
+import type { RouterInput, RouterOutput } from '@codeanker/api'
+import { computed, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { formatTimestamp } from '@codeanker/helpers'
+
+import DataGridVirtualList from '@/components/DataGrid/DataGridVirtualList.vue'
+import { useDataGridFilter, useDataGridOrderBy, useGrid, type TGridColumn } from '@codeanker/datagrid'
 import Badge from '../UIComponents/Badge.vue'
+import DataGridDoubleLineCell from '../DataGridDoubleLineCell.vue'
 
-export type TData = RouterOutput['anmeldungLink']['list'][number]
-export type GridProps = GenericGridProps<TData, unknown, unknown>
+type TAnmeldeLinkData = Awaited<RouterOutput['anmeldungLink']['list']>[number]
+type TAnmeldeLinkFilter = RouterInput['anmeldungLink']['list']['filter']
+type TAnmeldeLinkOrderBy = RouterInput['anmeldungLink']['list']['orderBy']
 
-export type FetchPersonCountFunction = FetchCountFunction<unknown>
-export type FetchPersonPageFunction = FetchPageFunction<TData, unknown, unknown>
+type Props = {
+  filter: RouterInput['anmeldungLink']['list']['filter']
+}
 
-const props = defineProps<{
-  unterveranstaltungId: number
-}>()
+const props = defineProps<Props>()
 
-const columns: TGridColumn<TData, unknown>[] = [
+const route = useRoute()
+const router = useRouter()
+
+const columns: TGridColumn<TAnmeldeLinkData, TAnmeldeLinkFilter>[] = [
   {
     field: 'id',
     title: '#',
     size: 'min-content',
   },
   {
-    field: 'createdBy.person',
-    title: 'Erstellt von',
-    format: (row) => `${row.firstname} ${row.lastname}`,
-  },
-  {
-    field: 'comment',
-    title: 'Bemerkung',
+    field: 'accessToken',
+    title: 'Token',
+    size: '330px',
+    cell: DataGridDoubleLineCell,
+    cellProps: (formattedValue, row) => {
+      return {
+        title: row.content?.accessToken ? `${row.content.accessToken}` : '',
+        message: row.content?.comment ? row.content.comment : '',
+      }
+    },
   },
   {
     field: 'usedAt',
     title: 'Status',
+    size: '100px',
     cell: Badge,
     cellProps: (ref) => {
       return {
-        color: ref.value ? 'primary' : 'muted',
-        text: ref.value ? 'Anmeldung erhalten' : 'Offen',
+        color: ref.value ? 'primary' : 'warning',
+        text: ref.value ? 'Verwendet' : 'Offen',
       }
     },
   },
   {
     field: 'anmeldung.person',
-    title: 'Angemeldete Person',
-    format: (row) => row && `${row.firstname} ${row.lastname}`,
+    title: 'Anmeldung',
+    cell: DataGridDoubleLineCell,
+    cellProps: (formattedValue, row) => {
+      return {
+        title: row.content?.anmeldung
+          ? `${row.content.anmeldung.person.firstname} ${row.content.anmeldung.person.lastname}`
+          : 'keine',
+        message: row.content?.anmeldung?.createdAt ? formatTimestamp(row.content.anmeldung.createdAt) : '',
+      }
+    },
   },
   {
-    field: 'createdAt',
-    title: 'Erstellt am',
-    preset: 'datetime',
-  },
-  {
-    field: 'usedAt',
-    title: 'Benutzt am',
-    preset: 'datetime',
+    field: 'createdBy.person',
+    title: 'Erstellt von',
+    cell: DataGridDoubleLineCell,
+    cellProps: (formattedValue, row) => {
+      return {
+        title: `${row.content.createdBy.person.firstname} ${row.content.createdBy.person.lastname}`,
+        message: formatTimestamp(row.content.createdAt),
+      }
+    },
   },
 ]
 
-const fetchPage: FetchPersonPageFunction = () =>
-  apiClient.anmeldungLink.list.query({
-    unterveranstaltungId: props.unterveranstaltungId,
+const defaultOrderBy = {
+  createdAt: 'desc',
+} as const
+
+const { filter, setFilter } = useDataGridFilter(props.filter, router, route)
+const { orderBy, setOrderBy } = useDataGridOrderBy(columns, defaultOrderBy, router, route)
+
+type Query = {
+  filter: TAnmeldeLinkFilter
+  orderBy: TAnmeldeLinkOrderBy
+}
+
+const query = computed<Query>(() => {
+  return {
+    filter: filter.value,
+    orderBy: orderBy.value as NonNullable<TAnmeldeLinkOrderBy>,
+  }
+})
+
+function fetchPage(
+  pagination: {
+    take: number
+    skip: number
+  },
+  filter: TAnmeldeLinkFilter,
+  orderBy: TAnmeldeLinkOrderBy
+) {
+  return apiClient.anmeldungLink.list.query({ filter, orderBy, pagination })
+}
+
+async function fetchCount(filter: TAnmeldeLinkFilter) {
+  const total = await apiClient.anmeldungLink.count.query({
+    filter: filter,
   })
 
-const fetchCount: FetchPersonCountFunction = () =>
-  apiClient.anmeldungLink.count.query({
-    unterveranstaltungId: props.unterveranstaltungId,
-  })
+  return total
+}
+
+const { grid, fetchVisiblePages, pageChange, page } = useGrid<Query, TAnmeldeLinkData>({
+  query,
+  fetchPage: fetchPage,
+  fetchCount: fetchCount,
+  idField: 'id',
+  route,
+  router,
+})
+onMounted(() => {
+  fetchVisiblePages()
+})
 </script>
 
 <template>
-  <GenericDataGrid
-    :columns="columns"
-    :fetch-page="fetchPage"
-    :fetch-count="fetchCount"
-    :default-filter="{}"
-    :default-order-by="[]"
-    no-data-message="Es gibt keine Anmeldelinks."
-  />
+  <div class="grid-rows[1fr, 50px] grid flex-grow">
+    <DataGridVirtualList
+      :grid="grid"
+      :columns="columns"
+      :page="page"
+      :filter="filter"
+      :order-by="orderBy"
+      no-data-message="Es gibt bisher keine Anmeldungen."
+      show-clickable
+      @update:page="pageChange"
+      @set-order-by="setOrderBy"
+      @set-filter="setFilter"
+    />
+  </div>
 </template>
