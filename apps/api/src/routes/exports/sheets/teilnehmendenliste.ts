@@ -5,7 +5,6 @@ import { AnmeldungStatusMapping, GenderMapping } from '../../../client.js'
 import prisma from '../../../prisma.js'
 import { getSecurityWorksheet } from '../helpers/getSecurityWorksheet.js'
 import { sheetAuthorize } from './sheets.schema.js'
-import mime from 'mime'
 
 export async function veranstaltungTeilnehmendenliste(ctx: Context) {
   const authorization = await sheetAuthorize(ctx)
@@ -115,12 +114,7 @@ export async function veranstaltungTeilnehmendenliste(ctx: Context) {
 
     const age = dayjs(anmeldung.unterveranstaltung.veranstaltung.beginn).diff(anmeldung.person.birthday, 'years')
 
-    const extension = mime.getExtension(anmeldung.person.photo?.mimetype ?? 'text/plain')
     return {
-      Fotomarker: anmeldung.person.photo ? `Fotos/${anmeldung.person.photo.id}.${extension}` : '',
-      Altersmarker: age < 16 ? 'U16' : age < 18 ? 'U18' : '',
-      Veggiemarker: anmeldung.person.essgewohnheit === 'OMNIVOR' ? '' : 'brocolli.svg',
-
       '#': anmeldung.id,
 
       Veranstaltung: anmeldung.unterveranstaltung.veranstaltung.name,
