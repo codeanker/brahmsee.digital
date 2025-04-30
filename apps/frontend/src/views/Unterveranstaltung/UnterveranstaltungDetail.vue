@@ -151,20 +151,12 @@ const files: ExportedFileType[] = [
     hoverColor: 'hover:text-primary-700',
   },
   {
-    name: 'Fotos (Gruppiert)',
+    name: 'Fotos',
     description: 'Alle Fotos von bestätigten Teilnehmenden, gruppiert nach Veranstaltung und Ausschreibung',
     icon: CameraIcon,
     bgColor: 'bg-orange-600',
     hoverColor: 'hover:text-orange-700',
     href: `/api/export/archive/photos?${exportParams}&mode=group`,
-  },
-  {
-    name: 'Fotos (Für automatisierte Verarbeitung)',
-    description: 'Alle Fotos von bestätigten Teilnehmenden, optimiert für automatisierte Verarbeitung',
-    icon: CameraIcon,
-    bgColor: 'bg-orange-600',
-    hoverColor: 'hover:text-orange-700',
-    href: `/api/export/archive/photos?${exportParams}&mode=flat`,
   },
 ]
 
