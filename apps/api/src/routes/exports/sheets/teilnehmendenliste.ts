@@ -152,9 +152,7 @@ export async function veranstaltungTeilnehmendenliste(ctx: Context) {
     }
   })
   const workbook = XLSX.utils.book_new()
-
   const worksheet = XLSX.utils.json_to_sheet(rows)
-  worksheet['!cols'] = [{ hidden: true }, { hidden: true }, { hidden: true }]
 
   XLSX.utils.book_append_sheet(workbook, worksheet, `Teilnehmendenliste`)
 
