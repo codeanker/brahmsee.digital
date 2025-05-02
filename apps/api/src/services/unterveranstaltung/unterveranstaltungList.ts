@@ -58,7 +58,13 @@ export const unterveranstaltungListProcedure = defineProtectedQueryProcedure({
           },
         },
         _count: {
-          select: { Anmeldung: true },
+          select: {
+            Anmeldung: {
+              where: {
+                status: 'BESTAETIGT',
+              },
+            },
+          },
         },
         meldebeginn: true,
         meldeschluss: true,
