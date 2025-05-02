@@ -2,61 +2,62 @@
 import { PlusIcon } from '@heroicons/vue/24/outline'
 
 import { apiClient } from '@/api'
-import BasicInput from '@/components/BasicInputs/BasicInput.vue'
-import GenericDataGrid from '@/components/GenericDataGrid.vue'
+import type { Query } from '@/components/Table/DataTable.vue'
+import DataTable from '@/components/Table/DataTable.vue'
 import { useRouteTitle } from '@/composables/useRouteTitle'
-import router from '@/router'
-import { type RouterInput, type RouterOutput } from '@codeanker/api'
-import { type TGridColumn } from '@codeanker/datagrid'
+import { type RouterOutput } from '@codeanker/api'
+import { keepPreviousData, useQuery } from '@tanstack/vue-query'
+import { createColumnHelper } from '@tanstack/vue-table'
 
 const { setTitle } = useRouteTitle()
 setTitle('Orte')
 
-/// Typen von den Daten, Filter und Sortierung
-type TData = Awaited<RouterOutput['ort']['list']>[number]
-type TFilter = RouterInput['ort']['list']['filter']
-type TOrderBy = RouterInput['ort']['list']['orderBy']
+type Ort = RouterOutput['ort']['list']['data'][number]
+type Address = Ort['address']
 
-const columns: TGridColumn<TData, TFilter>[] = [
-  {
-    field: 'id',
-    title: 'Id',
-    sortable: true,
-  },
-  {
-    field: 'name',
-    title: 'Name',
-    filter: { component: BasicInput, key: 'name' },
-    sortable: true,
-  },
-  {
-    field: 'address',
-    format: (address) => `${address.street} ${address.streetNumber}, ${address.zip} ${address.city}`,
-    title: 'Adresse',
-    filter: { component: BasicInput, key: 'city' },
-    sortable: true,
-  },
+const column = createColumnHelper<Ort>()
+const columns = [
+  column.accessor('name', {
+    header: 'Name',
+  }),
+  column.accessor('address', {
+    header: 'Adresse',
+    cell({ getValue }) {
+      const value = getValue<Address>()
+      return value ? `${value.street} ${value.streetNumber}, ${value.zip} ${value.city}` : 'Keine Adresse angegeben'
+    },
+    enableColumnFilter: false,
+  }),
 ]
 
-async function fetchPage(
-  pagination: {
-    take: number
-    skip: number
-  },
-  filter: TFilter,
-  orderBy: TOrderBy
-): Promise<TData[]> {
-  return apiClient.ort.list.query({
-    filter: filter,
-    orderBy: orderBy,
-    pagination: pagination,
+const query: Query<Ort> = (pagination, filter) =>
+  useQuery({
+    queryKey: ['ort', pagination, filter],
+    queryFn: () =>
+      apiClient.ort.list.query({
+        pagination: {
+          pageIndex: pagination.value.pageIndex,
+          pageSize: pagination.value.pageSize,
+        },
+        filter: filter.value.reduce((prev, curr) => {
+          return {
+            ...prev,
+            [curr.id]: curr.value,
+          }
+        }, {}),
+      }),
+    initialData: {
+      data: [],
+      total: 0,
+      pagination: {
+        page: 0,
+        pages: 0,
+        hasNextPage: false,
+        hasPreviousPage: false,
+      },
+    },
+    placeholderData: keepPreviousData,
   })
-}
-async function fetchCount(filter: TFilter): Promise<number> {
-  return apiClient.ort.count.query({
-    filter: filter,
-  })
-}
 </script>
 
 <template>
@@ -71,22 +72,10 @@ async function fetchCount(filter: TFilter): Promise<number> {
         Ort erstellen
       </RouterLink>
     </div>
-    <div class="flow-root">
-      <div class="grid-rows[1fr, 50px] grid flex-grow">
-        <GenericDataGrid
-          :columns="columns"
-          :fetch-page="fetchPage"
-          :fetch-count="fetchCount"
-          :default-filter="{
-            name: '',
-            city: '',
-          }"
-          :default-order-by="[['id', 'asc']]"
-          no-data-message="Es gibt bisher keine Orte."
-          show-clickable
-          @row-click="(ort) => router.push({ name: 'Verwaltung Ortdetails', params: { ortId: ort.id } })"
-        />
-      </div>
-    </div>
+
+    <DataTable
+      :query="query"
+      :columns="columns"
+    />
   </div>
 </template>

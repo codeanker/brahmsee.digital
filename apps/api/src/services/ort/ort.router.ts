@@ -1,7 +1,7 @@
 // Prettier ignored is because this file is generated
 import { mergeRouters } from '../../trpc.js'
 
-import { ortListProcedure, ortCountProcedure } from './ortList.js'
+import { ortListProcedure } from './ortList.js'
 import { ortVerwaltungCreateProcedure } from './ortVerwaltungCreate.js'
 import { ortVerwaltungGetProcedure } from './ortVerwaltungGet.js'
 import { ortVerwaltungPatchProcedure } from './ortVerwaltungPatch.js'
@@ -12,7 +12,6 @@ export const ortRouter = mergeRouters(
   ortVerwaltungCreateProcedure,
   ortVerwaltungGetProcedure,
   ortListProcedure,
-  ortCountProcedure,
   ortVerwaltungPatchProcedure,
   ortVerwaltungRemoveProcedure
   // Add Routes here - do not delete this line
