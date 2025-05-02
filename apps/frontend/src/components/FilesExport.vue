@@ -10,6 +10,7 @@ export interface ExportedFileType {
   description: string
   bgColor: string
   hoverColor: string
+  fileType: string
 }
 
 defineProps<{
@@ -62,6 +63,7 @@ defineProps<{
             {{ file.name }}
             <p class="text-gray-500 text-sm mb-0">{{ file.description }}</p>
           </div>
+          <div class="text-gray-400">{{ file.fileType }}</div>
           <div class="flex-shrink-0 pr-2">
             <button
               type="button"

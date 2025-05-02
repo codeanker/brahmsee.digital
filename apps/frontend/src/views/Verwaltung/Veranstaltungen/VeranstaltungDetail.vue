@@ -92,8 +92,18 @@ const files: ExportedFileType[] = [
     icon: UsersIcon,
     href: `/api/export/sheet/teilnehmendenliste?${exportParams}`,
     description: 'Liste aller Teilnehmenden',
+    bgColor: 'bg-primary-600',
+    hoverColor: 'hover:text-blue-700',
+    fileType: 'XLSX',
+  },
+  {
+    name: 'Unterschriftenliste',
+    icon: UsersIcon,
+    href: `/api/export/sheet/unterschriftenliste?${exportParams}`,
+    description: 'Unterschriftenliste mit allen bestätigten Teilnehmenden',
     bgColor: 'bg-blue-600',
     hoverColor: 'hover:text-blue-700',
+    fileType: 'XLSX',
   },
   {
     name: 'Verpflegung',
@@ -102,6 +112,7 @@ const files: ExportedFileType[] = [
     description: 'Übersicht der Verpflegungswünsche',
     bgColor: 'bg-primary-600',
     hoverColor: 'hover:text-primary-700',
+    fileType: 'XLSX',
   },
   {
     name: 'Fotos (Gruppiert)',
@@ -110,6 +121,7 @@ const files: ExportedFileType[] = [
     bgColor: 'bg-orange-600',
     hoverColor: 'hover:text-orange-700',
     href: `/api/export/archive/photos?${exportParams}&mode=group`,
+    fileType: 'ZIP',
   },
   {
     name: 'Fotos (Für automatisierte Verarbeitung)',
@@ -118,6 +130,7 @@ const files: ExportedFileType[] = [
     bgColor: 'bg-orange-600',
     hoverColor: 'hover:text-orange-700',
     href: `/api/export/archive/photos?${exportParams}&mode=flat`,
+    fileType: 'ZIP',
   },
 ]
 </script>

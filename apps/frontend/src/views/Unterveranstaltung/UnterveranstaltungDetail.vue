@@ -141,6 +141,7 @@ const files: ExportedFileType[] = [
     description: 'Liste aller Teilnehmenden',
     bgColor: 'bg-blue-600',
     hoverColor: 'hover:text-blue-700',
+    fileType: 'XLSX',
   },
   {
     name: 'Verpflegung',
@@ -149,6 +150,7 @@ const files: ExportedFileType[] = [
     description: 'Übersicht der Verpflegungswünsche',
     bgColor: 'bg-primary-600',
     hoverColor: 'hover:text-primary-700',
+    fileType: 'XLSX',
   },
   {
     name: 'Fotos',
@@ -157,6 +159,7 @@ const files: ExportedFileType[] = [
     bgColor: 'bg-orange-600',
     hoverColor: 'hover:text-orange-700',
     href: `/api/export/archive/photos?${exportParams}&mode=group`,
+    fileType: 'ZIP',
   },
 ]
 
