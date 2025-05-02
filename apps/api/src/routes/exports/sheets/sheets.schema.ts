@@ -16,6 +16,8 @@ export const sheetQuerySchema = z
     message: 'Exactly one of veranstaltungId or unterveranstaltungId must be provided',
   })
 
+export type SheetQuery = z.infer<typeof sheetQuerySchema>
+
 export async function sheetAuthorize(ctx: Context) {
   const [success, query] = await zodSafe(sheetQuerySchema, ctx.query)
   if (!success) {
