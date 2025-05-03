@@ -11,13 +11,14 @@ export const personGetProcedure = defineProtectedQueryProcedure({
   inputSchema: z.strictObject({
     id: z.number().int(),
   }),
-  handler: ({ ctx, input }) => {
+  handler: async ({ ctx, input }) => {
+    const protection = await getPersonProtectionFilter(ctx)
     const where: Prisma.PersonWhereUniqueInput = {
-      ...getPersonProtectionFilter(ctx),
+      ...protection,
       id: input.id,
     }
 
-    return prisma.person.findUniqueOrThrow({
+    return await prisma.person.findUniqueOrThrow({
       where,
       select: {
         id: true,
