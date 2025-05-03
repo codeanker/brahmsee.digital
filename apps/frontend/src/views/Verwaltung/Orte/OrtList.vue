@@ -4,6 +4,7 @@ import { PlusIcon } from '@heroicons/vue/24/outline'
 import { apiClient } from '@/api'
 import type { Query } from '@/components/Table/DataTable.vue'
 import DataTable from '@/components/Table/DataTable.vue'
+import initialData from '@/components/Table/initialData'
 import { useRouteTitle } from '@/composables/useRouteTitle'
 import { type RouterOutput } from '@codeanker/api'
 import { keepPreviousData, useQuery } from '@tanstack/vue-query'
@@ -46,16 +47,7 @@ const query: Query<Ort> = (pagination, filter) =>
           }
         }, {}),
       }),
-    initialData: {
-      data: [],
-      total: 0,
-      pagination: {
-        page: 0,
-        pages: 0,
-        hasNextPage: false,
-        hasPreviousPage: false,
-      },
-    },
+    initialData,
     placeholderData: keepPreviousData,
   })
 </script>

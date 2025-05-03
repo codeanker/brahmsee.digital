@@ -3,40 +3,42 @@ import z from 'zod'
 
 import prisma from '../../prisma.js'
 import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
-import { defineQuery, getOrderBy } from '../../types/defineQuery.js'
-
-const inputSchema = defineQuery({
-  filter: z.strictObject({
-    name: z.string().optional(),
-  }),
-  orderBy: z.array(
-    z.tuple([
-      z.union([
-        z.literal('id'),
-        z.literal('name'),
-        z.literal('maxTeilnehmende'),
-        z.literal('teilnahmegebuehr'),
-        z.literal('beginn'),
-        z.literal('meldeschluss'),
-      ]),
-      z.union([z.literal('asc'), z.literal('desc')]),
-    ])
-  ),
-})
-
-type TInput = z.infer<typeof inputSchema>
+import { calculatePagination, defineQueryResponse, defineTableInput } from '../../types/defineTableProcedure.js'
+import { dayjs } from '@codeanker/helpers'
 
 export const veranstaltungVerwaltungListProcedure = defineProtectedQueryProcedure({
   key: 'verwaltungList',
   roleIds: [Role.ADMIN],
-  inputSchema,
-  async handler(options) {
-    const { skip, take } = options.input.pagination
-    const veranstaltungen = await prisma.veranstaltung.findMany({
-      skip,
-      take,
-      where: await getWhere(options.input.filter, options.ctx.account),
-      orderBy: getOrderBy(options.input.orderBy),
+  inputSchema: defineTableInput({
+    filter: {
+      name: z.string(),
+      meldeschluss: z.tuple([z.date(), z.date()]),
+    },
+  }),
+  async handler({ input: { pagination, filter } }) {
+    const where: Prisma.VeranstaltungWhereInput = {
+      name: {
+        contains: filter?.name,
+        mode: 'insensitive',
+      },
+      meldeschluss: filter?.meldeschluss
+        ? {
+            gte: dayjs(filter.meldeschluss[0]).startOf('day').toDate(),
+            lte: dayjs(filter.meldeschluss[1]).endOf('day').toDate(),
+          }
+        : undefined,
+    }
+
+    const total = await prisma.veranstaltung.count({ where })
+    const { pageIndex, pageSize, pages } = calculatePagination(total, pagination)
+
+    const orte = await prisma.veranstaltung.findMany({
+      take: pageSize,
+      skip: pageSize * pageIndex,
+      orderBy: {
+        name: 'asc',
+      },
+      where,
       select: {
         id: true,
         name: true,
@@ -82,37 +84,6 @@ export const veranstaltungVerwaltungListProcedure = defineProtectedQueryProcedur
       },
     })
 
-    return veranstaltungen
+    return defineQueryResponse({ data: orte, total, pagination: { pageIndex, pageSize, pages } })
   },
 })
-
-export const veranstaltungVerwaltungCountProcedure = defineProtectedQueryProcedure({
-  key: 'verwaltungCount',
-  roleIds: [Role.ADMIN],
-  inputSchema: inputSchema.pick({ filter: true }),
-  async handler(options) {
-    return await prisma.veranstaltung.count({
-      where: await getWhere(options.input.filter, options.ctx.account),
-    })
-  },
-})
-
-// eslint-disable-next-line @typescript-eslint/require-await
-async function getWhere(
-  filter: TInput['filter'],
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _account: {
-    id: number
-    role: Role
-  }
-): Promise<Prisma.VeranstaltungWhereInput> {
-  const where: Prisma.VeranstaltungWhereInput = {}
-
-  if (filter.name != undefined && filter.name != '') {
-    where.name = {
-      contains: filter.name,
-    }
-  }
-
-  return where
-}

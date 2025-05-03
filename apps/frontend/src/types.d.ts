@@ -1,6 +1,7 @@
 import '@tanstack/vue-table'
 import type { RouteLocationNormalizedLoadedGeneric, RouteLocationRaw } from 'vue-router'
 import type { Option } from './components/BasicInputs/BasicSelect.vue'
+import type { MaybeRef } from 'vue'
 
 type Breadcrumb = {
   text: string
@@ -18,6 +19,7 @@ declare module 'vue-router' {
 
 declare module '@tanstack/vue-table' {
   interface ColumnMeta {
+    hidden?: MaybeRef<boolean>
     filter?:
       | {
           type: 'select' | 'multi-select'

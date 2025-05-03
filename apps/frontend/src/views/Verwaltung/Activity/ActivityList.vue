@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { apiClient } from '@/api'
 import DataTable, { type Query } from '@/components/Table/DataTable.vue'
+import initialData from '@/components/Table/initialData'
 import Badge from '@/components/UIComponents/Badge.vue'
 import { useRouteTitle } from '@/composables/useRouteTitle'
 import type { StatusColors } from '@/helpers/getAnmeldungStatusColors'
 import router from '@/router'
-import { type ActivityType, type Activity } from '@codeanker/api'
+import { type Activity, type ActivityType } from '@codeanker/api'
 import { formatDateWith } from '@codeanker/helpers'
 import { keepPreviousData, useQuery } from '@tanstack/vue-query'
 import { createColumnHelper } from '@tanstack/vue-table'
@@ -116,16 +117,7 @@ const query: Query<Activity> = (pagination, filter) =>
           }
         }, {}),
       }),
-    initialData: {
-      data: [],
-      total: 0,
-      pagination: {
-        page: 0,
-        pages: 0,
-        hasNextPage: false,
-        hasPreviousPage: false,
-      },
-    },
+    initialData,
     placeholderData: keepPreviousData,
   })
 </script>

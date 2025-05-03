@@ -20,7 +20,7 @@ import {
   type PaginationState,
   type RowData,
 } from '@tanstack/vue-table'
-import { computed, ref, useTemplateRef, type Ref } from 'vue'
+import { computed, ref, unref, useTemplateRef, type Ref } from 'vue'
 import LoadingBar from '../LoadingBar.vue'
 import Button from '../UIComponents/Button.vue'
 import Filter from './Filter.vue'
@@ -35,6 +35,7 @@ export type Query<T> = (
 const props = defineProps<{
   columns: ColumnDef<TData, any>[]
   query: Query<TData>
+  initialPagination?: PaginationState
 }>()
 
 const emit = defineEmits<{
@@ -53,10 +54,12 @@ function useUpdater<T>(ref: Ref<T>): OnChangeFn<T> {
   }
 }
 
-const pagination = ref<PaginationState>({
-  pageIndex: 0,
-  pageSize: 10,
-})
+const pagination = ref<PaginationState>(
+  props.initialPagination ?? {
+    pageIndex: 0,
+    pageSize: 10,
+  }
+)
 const columnFilters = ref<ColumnFiltersState>([])
 
 const query = props.query(pagination, columnFilters)
@@ -86,6 +89,11 @@ const table = useVueTable({
       return columnFilters.value
     },
   },
+})
+
+defineExpose({
+  query,
+  table,
 })
 
 const filterContainer = useTemplateRef('filterContainer')
@@ -151,7 +159,9 @@ const filterContainer = useTemplateRef('filterContainer')
       <div
         ref="filterContainer"
         class="flex flex-col md:flex-row gap-x-4"
-      ></div>
+      >
+        <slot name="filter" />
+      </div>
       <Button
         color="danger"
         class="mb-1"
@@ -171,40 +181,45 @@ const filterContainer = useTemplateRef('filterContainer')
         v-for="headerGroup in table.getHeaderGroups()"
         :key="headerGroup.id"
       >
-        <th
+        <template
           v-for="header in headerGroup.headers"
           :key="header.id"
-          :colSpan="header.colSpan"
-          class="text-left px-2 py-4 border-b-2"
         >
-          <div class="flex flex-row justify-between items-center">
-            <FlexRender
-              v-if="!header.isPlaceholder"
-              :render="header.column.columnDef.header"
-              :props="header.getContext()"
-            />
-            <template v-if="!header.isPlaceholder && header.column.getCanFilter()">
-              <FunnelIconSolid
-                v-if="header.column.getIsFiltered()"
-                class="size-4"
+          <th
+            v-if="unref(header.column.columnDef.meta?.hidden) !== false"
+            :colSpan="header.colSpan"
+            class="text-left px-2 py-4 border-b-2"
+            :style="{ width: `${header.getSize()}px` }"
+          >
+            <div class="flex flex-row justify-between items-center">
+              <FlexRender
+                v-if="!header.isPlaceholder"
+                :render="header.column.columnDef.header"
+                :props="header.getContext()"
               />
-              <FunnelIconOutline
-                v-if="!header.column.getIsFiltered()"
-                class="size-4"
-              />
-
-              <Teleport
-                v-if="filterContainer"
-                :to="filterContainer"
-              >
-                <Filter
-                  :column="header.column"
-                  :context="header.getContext()"
+              <template v-if="!header.isPlaceholder && header.column.getCanFilter()">
+                <FunnelIconSolid
+                  v-if="header.column.getIsFiltered()"
+                  class="size-4"
                 />
-              </Teleport>
-            </template>
-          </div>
-        </th>
+                <FunnelIconOutline
+                  v-if="!header.column.getIsFiltered()"
+                  class="size-4"
+                />
+
+                <Teleport
+                  v-if="filterContainer"
+                  :to="filterContainer"
+                >
+                  <Filter
+                    :column="header.column"
+                    :context="header.getContext()"
+                  />
+                </Teleport>
+              </template>
+            </div>
+          </th>
+        </template>
       </tr>
     </thead>
     <tbody v-if="table.getRowCount() > 0">
@@ -215,16 +230,21 @@ const filterContainer = useTemplateRef('filterContainer')
         @click="emit('click', row.original)"
         @dblclick="emit('dblclick', row.original)"
       >
-        <td
+        <template
           v-for="cell in row.getVisibleCells()"
           :key="cell.id"
-          class="px-2 py-4"
         >
-          <FlexRender
-            :render="cell.column.columnDef.cell"
-            :props="cell.getContext()"
-          />
-        </td>
+          <td
+            v-if="unref(cell.column.columnDef.meta?.hidden) !== false"
+            class="px-2 py-4"
+            :style="{ width: `${cell.column.getSize()}px` }"
+          >
+            <FlexRender
+              :render="cell.column.columnDef.cell"
+              :props="cell.getContext()"
+            />
+          </td>
+        </template>
       </tr>
     </tbody>
     <tbody v-else-if="!query.isFetching.value">
@@ -246,17 +266,22 @@ const filterContainer = useTemplateRef('filterContainer')
         v-for="footerGroup in table.getFooterGroups()"
         :key="footerGroup.id"
       >
-        <th
+        <template
           v-for="header in footerGroup.headers"
           :key="header.id"
-          :colSpan="header.colSpan"
         >
-          <FlexRender
-            v-if="!header.isPlaceholder"
-            :render="header.column.columnDef.footer"
-            :props="header.getContext()"
-          />
-        </th>
+          <th
+            v-if="unref(header.column.columnDef.meta?.hidden) !== false"
+            :colSpan="header.colSpan"
+            :style="{ width: `${header.getSize()}px` }"
+          >
+            <FlexRender
+              v-if="!header.isPlaceholder"
+              :render="header.column.columnDef.footer"
+              :props="header.getContext()"
+            />
+          </th>
+        </template>
       </tr>
     </tfoot>
   </table>
