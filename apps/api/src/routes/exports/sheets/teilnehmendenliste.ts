@@ -42,6 +42,7 @@ export async function veranstaltungTeilnehmendenliste(ctx: Context) {
           birthday: true,
           email: true,
           telefon: true,
+          photoId: true,
           photo: {
             select: {
               id: true,
@@ -124,7 +125,7 @@ export async function veranstaltungTeilnehmendenliste(ctx: Context) {
 
       Status: AnmeldungStatusMapping[anmeldung.status].human,
       Anmeldedatum: anmeldung.createdAt,
-      Foto: anmeldung.person.photo ? 'Ja' : 'Nein',
+      'Foto ID': anmeldung.person.photoId ?? '',
 
       Geschlecht: anmeldung.person.gender ? GenderMapping[anmeldung.person.gender].human : '',
       Vorname: anmeldung.person.firstname,
