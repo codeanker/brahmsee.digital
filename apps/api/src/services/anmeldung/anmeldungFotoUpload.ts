@@ -2,9 +2,8 @@ import z from 'zod'
 
 import prisma from '../../prisma.js'
 
-import { definePublicMutateProcedure } from '../../types/defineProcedure.js'
-import { TRPCError } from '@trpc/server'
 import type { Prisma } from '@prisma/client'
+import { definePublicMutateProcedure } from '../../types/defineProcedure.js'
 
 export const anmeldungFotoUploadProcedure = definePublicMutateProcedure({
   key: 'anmeldungFotoUpload',
@@ -15,21 +14,6 @@ export const anmeldungFotoUploadProcedure = definePublicMutateProcedure({
     fileId: z.string(),
   }),
   handler: async ({ input: { unterveranstaltungId, anmeldungId, accessToken, fileId } }) => {
-    const unterveranstaltung = await prisma.unterveranstaltung.findFirst({
-      where: {
-        id: unterveranstaltungId,
-        meldeschluss: {
-          gt: new Date(),
-        },
-      },
-    })
-    if (unterveranstaltung === null) {
-      throw new TRPCError({
-        code: 'FORBIDDEN',
-        message: 'Der Meldeschluss ist bereits erreicht!',
-      })
-    }
-
     const where: Prisma.AnmeldungWhereUniqueInput = {
       unterveranstaltungId,
       id: anmeldungId,
