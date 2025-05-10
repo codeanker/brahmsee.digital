@@ -19,4 +19,14 @@ model Veranstaltung {
   hostnameId                 Int?
   hostname                   Hostname?            @relation(fields: [hostnameId], references: [id])
   customFields               CustomField[]
+
+  settings VeranstaltungSettings?
+}
+
+model VeranstaltungSettings {
+  veranstaltungId Int           @id @unique
+  veranstaltung   Veranstaltung @relation(fields: [veranstaltungId], references: [id])
+
+  enablePhotoUpload  Boolean @default(false)
+  enableThshirtOrder Boolean @default(true)
 }

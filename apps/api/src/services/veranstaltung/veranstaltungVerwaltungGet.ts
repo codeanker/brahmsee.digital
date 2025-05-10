@@ -26,6 +26,12 @@ export const veranstaltungVerwaltungGetProcedure = defineProtectedQueryProcedure
             id: true,
           },
         },
+        settings: {
+          select: {
+            enablePhotoUpload: true,
+            enableThshirtOrder: true,
+          },
+        },
         meldebeginn: true,
         meldeschluss: true,
         maxTeilnehmende: true,

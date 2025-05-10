@@ -42,6 +42,9 @@ const createVeranstaltung: Seeder = async (prisma: PrismaClient) => {
           },
         },
       },
+      settings: {
+        create: {},
+      },
       unterveranstaltungen: {
         create: {
           teilnahmegebuehr: 13.37,
