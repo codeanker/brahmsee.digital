@@ -4,6 +4,9 @@ const routesAusschreibungen: Route[] = [
   {
     name: 'Veranstaltung',
     path: '/veranstaltung/:veranstaltungId',
+    redirect: (to) => {
+      return { path: `/veranstaltung/${to.params.veranstaltungId}/programm` }
+    },
     component: () => import('@/layouts/AnmeldungLayout.vue'),
     children: [
       {

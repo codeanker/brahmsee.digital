@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import {
-  CameraIcon,
   ClipboardDocumentListIcon,
   DocumentIcon,
   MegaphoneIcon,
@@ -28,7 +27,6 @@ import { useRouteTitle } from '@/composables/useRouteTitle'
 import { formatDateWith } from '@codeanker/helpers'
 import { PlusIcon } from '@heroicons/vue/24/solid'
 import ProgramList from '../Program/ProgramList.vue'
-import VeranstaltungCard from '@/components/UIComponents/VeranstaltungCard.vue'
 
 const { setTitle } = useRouteTitle()
 
@@ -150,7 +148,10 @@ function copyProgramLink() {
     content-space="4"
     :tabs="tabs"
   >
-    <Tab key="Allgemein">
+    <Tab
+      key="Allgemein"
+      class="grid grid-col-2"
+    >
       <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
         <div class="text-lg font-semibold">Überblick zur Veranstaltung</div>
         <RouterLink
