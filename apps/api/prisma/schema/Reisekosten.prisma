@@ -1,0 +1,38 @@
+enum ReisekostenTyp {
+  VERANSTALTUNG
+  AUSLAGEN
+}
+
+enum ReisekostenTravel {
+  CAR
+  PUBLIC_TRANSPORT
+}
+
+model Reisekosten {
+  id        Int            @id @default(autoincrement())
+  createdAt DateTime       @default(now())
+  type      ReisekostenTyp
+
+  personId Int
+  person   Person @relation(fields: [personId], references: [id])
+
+  veranstaltungId Int
+  veranstaltung   Veranstaltung @relation(fields: [veranstaltungId], references: [id])
+
+  travel                ReisekostenTravel
+  licensePlateArrival   String?
+  priceArrival          Float?
+  distanceArrival       Float?
+  routeArrival          String[]          @default([])
+  licensePlateDeparture String?
+  priceDeparture        Float?
+  distanceDeparture     Float?
+  routeDeparture        String[]          @default([])
+
+  extraCosts Json[]
+
+  donation      Boolean
+  accountHolder String?
+  iban          String?
+  bic           String?
+}

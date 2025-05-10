@@ -42,6 +42,7 @@ model Person {
   address                    Address?                   @relation(fields: [addressId], references: [id], onDelete: Cascade)
   photoId                    String?
   photo                      File?                      @relation(fields: [photoId], references: [id])
+  reisekosten                Reisekosten[]
 }
 
 model Notfallkontakt {
