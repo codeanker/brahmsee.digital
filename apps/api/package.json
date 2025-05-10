@@ -41,7 +41,7 @@
     "@sendgrid/mail": "^8.1.0",
     "@trpc/server": "catalog:",
     "archiver": "^7.0.1",
-    "axios": "^1.7.7",
+    "axios": "^1.8.2",
     "config": "^3.3.9",
     "dayjs": "^1.11.10",
     "dot-prop": "^9.0.0",
