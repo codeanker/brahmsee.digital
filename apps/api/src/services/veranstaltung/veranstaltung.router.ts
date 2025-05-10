@@ -2,6 +2,8 @@
 import { mergeRouters } from '../../trpc.js'
 
 import { veranstaltungGliederungListProcedure } from './veranstaltungGliederungList.js'
+import { veranstaltungSettingsGetProcedure } from './veranstaltungSettingsGet.js'
+import { veranstaltungSettingsPatchProcedure } from './veranstaltungSettingsPatch.js'
 import { veranstaltungVerwaltungCreateProcedure } from './veranstaltungVerwaltungCreate.js'
 import { veranstaltungVerwaltungGetProcedure } from './veranstaltungVerwaltungGet.js'
 import {
@@ -17,6 +19,9 @@ export const veranstaltungRouter = mergeRouters(
   veranstaltungVerwaltungListProcedure,
   veranstaltungVerwaltungCountProcedure,
   veranstaltungVerwaltungPatchProcedure,
-  veranstaltungGliederungListProcedure
+  veranstaltungGliederungListProcedure,
+
+  veranstaltungSettingsGetProcedure,
+  veranstaltungSettingsPatchProcedure
   // Add Routes here - do not delete this line
 )

@@ -2,6 +2,7 @@
 import {
   CameraIcon,
   ClipboardDocumentListIcon,
+  CogIcon,
   DocumentIcon,
   MegaphoneIcon,
   SquaresPlusIcon,
@@ -24,6 +25,7 @@ import UnterveranstaltungenTable from '@/components/UnterveranstaltungenTable.vu
 import { useRouteTitle } from '@/composables/useRouteTitle'
 import { formatDateWith } from '@codeanker/helpers'
 import { PlusIcon } from '@heroicons/vue/24/solid'
+import FormVeranstaltungSettings from '@/components/forms/veranstaltung/FormVeranstaltungSettings.vue'
 
 const { setTitle } = useRouteTitle()
 
@@ -76,6 +78,7 @@ const tabs = computed(() => {
     { name: 'Bedingungen', icon: ClipboardDocumentListIcon },
     { name: 'Ausschreibungen', icon: MegaphoneIcon },
     { name: 'Felder', icon: SquaresPlusIcon },
+    { name: 'Einstellungen', icon: CogIcon },
   ]
   return tabs
 })
@@ -243,6 +246,17 @@ const files: ExportedFileType[] = [
         v-if="veranstaltung?.id"
         :id="veranstaltung?.id"
         entity="veranstaltung"
+      />
+    </Tab>
+    <Tab>
+      <div class="my-5 lg:mt-10">
+        <div class="text-lg font-semibold">Einstellungen</div>
+        <p class="max-w-2xl text-sm text-gray-500">Hier können veranstaltungsweite Eintellungen getroffen werden.</p>
+      </div>
+
+      <FormVeranstaltungSettings
+        v-if="veranstaltung"
+        :veranstaltung-id="veranstaltung.id"
       />
     </Tab>
   </Tabs>

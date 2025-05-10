@@ -10,6 +10,7 @@ import logActivity from '../../util/activity.js'
 import { sendMail } from '../../util/mail.js'
 import { getPersonCreateData, personSchema } from '../person/schema/person.schema.js'
 import { updateMeiliPerson } from '../../meilisearch/person.js'
+import { veranstaltungSettingsGet } from '../veranstaltung/veranstaltung.schema.js'
 
 export const inputSchema = z.strictObject({
   token: z.string().optional(),
@@ -46,6 +47,7 @@ export const anmeldungPublicCreateProcedure = definePublicMutateProcedure({
               },
             },
             maxTeilnehmende: true,
+            settings: true,
             unterveranstaltungen: {
               select: {
                 _count: {
@@ -141,7 +143,9 @@ export const anmeldungPublicCreateProcedure = definePublicMutateProcedure({
       gliederung: person.gliederung,
     })
 
-    const accessToken = randomUUID()
+    const accessToken = veranstaltungSettingsGet(unterveranstaltung.veranstaltung.settings, 'enablePhotoUpload')
+      ? randomUUID()
+      : null
     const assignmentCode = ctx.authenticated ? null : randomUUID()
     const anmeldung = await prisma.anmeldung.create({
       data: {
