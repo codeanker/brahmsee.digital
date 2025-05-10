@@ -13,7 +13,7 @@ const publicReadToken = useRouteParams('publicReadToken', '')
 const { state: veranstaltung, isLoading } = useAsyncState(
   () => {
     if (!publicReadToken.value) {
-      return null
+      return Promise.resolve(null)
     }
 
     return apiClient.veranstaltung.publicGet.query(publicReadToken.value)
@@ -28,9 +28,9 @@ const keyInfos = computed(() => {
   }
 
   const infos = [
-    { title: 'Veranstaltungsort', value: veranstaltung.value?.ort?.name },
-    { title: 'Beginn', value: formatDate(veranstaltung.value?.beginn) },
-    { title: 'Ende', value: formatDate(veranstaltung.value?.ende) },
+    { title: 'Veranstaltungsort', value: veranstaltung.value?.ort?.name || '' },
+    { title: 'Beginn', value: formatDate(veranstaltung.value?.beginn) || '' },
+    { title: 'Ende', value: formatDate(veranstaltung.value?.ende) || '' },
   ]
 
   return infos.filter((info) => info.value)
@@ -77,7 +77,10 @@ const keyInfos = computed(() => {
             Hier findest du die aktuelle Programmübersicht für die Veranstaltung {{ veranstaltung?.name }}
           </p>
         </div>
-        <div class="bg-white rounded-lg border p-4 lg:p-6">
+        <div
+          v-if="keyInfos"
+          class="bg-white rounded-lg border p-4 lg:p-6"
+        >
           <p>Veranstaltungsinfos</p>
           <div class="text-xs lg:text-base">
             <InfoList :infos="keyInfos" />
