@@ -41,6 +41,7 @@ export const veranstaltungVerwaltungGetProcedure = defineProtectedQueryProcedure
             hostname: true,
           },
         },
+        publicReadToken: true,
         unterveranstaltungen: {
           select: {
             id: true,

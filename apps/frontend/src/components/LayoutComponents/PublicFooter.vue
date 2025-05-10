@@ -10,9 +10,13 @@ const unterveranstaltung = injectUnterveranstaltung()
 <template>
   <footer class="bg-white">
     <div
-      class="mx-auto max-w-7xl px-6 py-12 space-y-6 flex flex-col md:flex-row items-center md:justify-between lg:px-8"
+      class="mx-auto max-w-7xl px-6 py-12 lg:px-8 grid grid-cols-1 gap-y-6"
+      :class="unterveranstaltung ? 'lg:grid-cols-3' : 'lg:grid-cols-2'"
     >
-      <div class="flex justify-center gap-x-6 md:order-2">
+      <div
+        v-if="unterveranstaltung"
+        class="flex justify-center lg:justify-end space-x-6 md:order-2"
+      >
         <a
           v-if="unterveranstaltung?.landingSettings?.facebookUrl"
           :href="unterveranstaltung?.landingSettings?.facebookUrl"
@@ -54,11 +58,16 @@ const unterveranstaltung = injectUnterveranstaltung()
           </svg>
         </a>
       </div>
-      <img
-        class="h-10 mb-5 lg:mb-0"
-        src="@/assets/images/gliederung_sh.png"
-      />
-      <div class="text-center text-xs md:text-sm/6 text-gray-600">
+      <div class="flex justify-center lg:justify-start">
+        <img
+          class="h-10 lg:mb-0"
+          src="@/assets/images/gliederung_sh.png"
+        />
+      </div>
+      <div
+        :class="unterveranstaltung ? 'text-center' : 'text-center lg:text-right'"
+        class="text-xs md:text-sm/6 text-gray-600"
+      >
         <p class="m-0 md:order-1 md:mt-0">
           &copy; {{ formatDate(new Date(), 'YYYY') }} DLRG Landesverband Schleswig-Holstein e.V.
         </p>
