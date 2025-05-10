@@ -1,9 +1,10 @@
 import { z } from 'zod'
 import prisma from '../../prisma.js'
-import { definePublicQueryProcedure } from '../../types/defineProcedure.js'
+import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
 
-export const programListProcedure = definePublicQueryProcedure({
+export const programListProcedure = defineProtectedQueryProcedure({
   key: 'list',
+  roleIds: ['ADMIN'],
   inputSchema: z.strictObject({
     veranstaltungId: z.number().int(),
   }),

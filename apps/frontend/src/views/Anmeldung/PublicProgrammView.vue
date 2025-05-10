@@ -88,7 +88,11 @@ const keyInfos = computed(() => {
         </div>
       </div>
       <div class="bg-white rounded-lg border p-2 overflow-x-auto">
-        <ProgramList :veranstaltung-id="veranstaltung?.id" />
+        <ProgramList
+          v-if="veranstaltung"
+          :veranstaltung-id="veranstaltung.id"
+          :programm="veranstaltung.programmPunkte"
+        />
       </div>
     </template>
     <template v-else-if="isLoading">

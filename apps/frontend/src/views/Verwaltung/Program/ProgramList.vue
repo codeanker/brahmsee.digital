@@ -1,29 +1,39 @@
 <script setup lang="ts">
 import { apiClient } from '@/api'
 import cn from '@/helpers/cn'
+import type { RouterOutput } from '@codeanker/api'
 import { dayjs, groupBy } from '@codeanker/helpers'
 import { useAsyncState, useLocalStorage } from '@vueuse/core'
 import { computed } from 'vue'
 
-const { veranstaltungId } = defineProps<{
+type ProgrammPunkte = RouterOutput['program']['list']
+
+const props = defineProps<{
   veranstaltungId: number
+  programm?: ProgrammPunkte
 }>()
 
 const emit = defineEmits<{
   dblclick: []
 }>()
 
-const { state: programm } = useAsyncState(() => apiClient.program.list.query({ veranstaltungId }), undefined, {
-  immediate: true,
-})
-
-const hasData = computed(() => (programm.value?.length ?? 0) > 0)
-
-const programmGroups = computed(() =>
-  groupBy(programm.value ?? [], (item) => dayjs(item.startingAt).format('dddd, DD. MMMM'))
+const { state: programm } = useAsyncState(
+  () => apiClient.program.list.query({ veranstaltungId: props.veranstaltungId }),
+  undefined,
+  {
+    immediate: props.programm === undefined,
+  }
 )
 
-const highlighted = useLocalStorage<string[]>(`program-highlight-v-${veranstaltungId}`, [])
+const programmPunkte = computed(() => props.programm ?? programm.value)
+
+const hasData = computed(() => (programmPunkte.value?.length ?? 0) > 0)
+
+const programmGroups = computed(() =>
+  groupBy(programmPunkte.value ?? [], (item) => dayjs(item.startingAt).format('dddd, DD. MMMM'))
+)
+
+const highlighted = useLocalStorage<string[]>(`program-highlight-v-${props.veranstaltungId}`, [])
 
 function toggleHighlight(name: string) {
   if (highlighted.value.includes(name)) {
