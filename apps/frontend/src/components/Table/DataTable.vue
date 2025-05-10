@@ -1,4 +1,6 @@
 <script setup lang="ts" generic="TData extends RowData">
+import illustrationNoData from '@/assets/illustration/undraw_empty_4zx0.svg'
+import type { QueryResponse } from '@codeanker/api'
 import { BackspaceIcon, FunnelIcon as FunnelIconOutline } from '@heroicons/vue/24/outline'
 import {
   ArrowPathIcon,
@@ -8,7 +10,7 @@ import {
   ChevronRightIcon,
   FunnelIcon as FunnelIconSolid,
 } from '@heroicons/vue/24/solid'
-import type { UseQueryDefinedReturnType } from '@tanstack/vue-query'
+import { type UseQueryDefinedReturnType } from '@tanstack/vue-query'
 import {
   FlexRender,
   getCoreRowModel,
@@ -24,8 +26,6 @@ import { computed, ref, unref, useTemplateRef, watch, type Ref } from 'vue'
 import LoadingBar from '../LoadingBar.vue'
 import Button from '../UIComponents/Button.vue'
 import Filter from './Filter.vue'
-import illustrationNoData from '@/assets/illustration/undraw_empty_4zx0.svg'
-import type { QueryResponse } from '@codeanker/api'
 
 export type Query<T> = (
   pagination: Ref<PaginationState>,
@@ -109,73 +109,21 @@ const filterContainer = useTemplateRef('filterContainer')
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 items-end mb-4 gap-y-6">
-    <div class="justify-self-start space-x-2">
-      <Button
-        color="secondary"
-        @click="query.refetch()"
-      >
-        <ArrowPathIcon class="size-4" />
-      </Button>
-
-      <Button
-        :disabled="!table.getCanPreviousPage() || !query.isSuccess"
-        @click="table.firstPage()"
-      >
-        <ChevronDoubleLeftIcon class="size-4" />
-      </Button>
-      <Button
-        :disabled="!table.getCanPreviousPage() || !query.isSuccess"
-        @click="table.previousPage()"
-      >
-        <ChevronLeftIcon class="size-4" />
-      </Button>
-
-      <!-- <Button
-        v-for="(button, index) in paginationButtons"
-        :key="index"
-        :disabled="typeof button === 'symbol'"
-        :color="query.data.value.pagination.page + 1 === button ? 'primary' : 'info'"
-      >
-        <template v-if="typeof button === 'number'">
-          {{ button }}
-        </template>
-        <template v-else>
-          <EllipsisHorizontalIcon class="size-4" />
-        </template>
-      </Button> -->
-
-      <Button
-        :disabled="!table.getCanNextPage() || !query.isSuccess.value"
-        @click="table.nextPage()"
-      >
-        <ChevronRightIcon class="size-4" />
-      </Button>
-      <Button
-        :disabled="!table.getCanNextPage() || !query.isSuccess.value"
-        @click="table.lastPage()"
-      >
-        <ChevronDoubleRightIcon class="size-4" />
-      </Button>
-      <span> Seite {{ table.getState().pagination.pageIndex + 1 }} von {{ table.getPageCount() }} </span>
+  <div class="justify-self-start flex flex-col md:flex-row gap-4 md:items-end mb-4">
+    <div
+      ref="filterContainer"
+      class="flex flex-col md:flex-row gap-x-4"
+    >
+      <slot name="filter" />
     </div>
-
-    <div class="md:justify-self-end flex flex-col md:flex-row gap-4 md:items-end">
-      <div
-        ref="filterContainer"
-        class="flex flex-col md:flex-row gap-x-4"
-      >
-        <slot name="filter" />
-      </div>
-      <Button
-        color="danger"
-        class="mb-1"
-        title="Alle Filter löschen"
-        @click="table.setColumnFilters([])"
-      >
-        <BackspaceIcon class="size-5" />
-      </Button>
-    </div>
+    <Button
+      color="danger"
+      class="mb-1"
+      title="Alle Filter löschen"
+      @click="table.setColumnFilters([])"
+    >
+      <BackspaceIcon class="size-5" />
+    </Button>
   </div>
 
   <LoadingBar :active="query.isFetching.value" />
@@ -196,7 +144,7 @@ const filterContainer = useTemplateRef('filterContainer')
             class="text-left px-2 py-4 border-b-2"
             :style="{ width: `${header.getSize()}px` }"
           >
-            <div class="flex flex-row justify-between items-center">
+            <div class="flex flex-row gap-x-4 items-center">
               <FlexRender
                 v-if="!header.isPlaceholder"
                 :render="header.column.columnDef.header"
@@ -231,7 +179,7 @@ const filterContainer = useTemplateRef('filterContainer')
       <tr
         v-for="row in table.getRowModel().rows"
         :key="row.id"
-        class="even:bg-slate-50 transition-colors hover:bg-slate-200"
+        class="even:bg-slate-50 transition-colors hover:bg-slate-200 cursor-pointer"
         @click="emit('click', row.original)"
         @dblclick="emit('dblclick', row.original)"
       >
@@ -290,4 +238,54 @@ const filterContainer = useTemplateRef('filterContainer')
       </tr>
     </tfoot>
   </table>
+
+  <div class="md:justify-self-end space-x-2 mt-4">
+    <Button
+      color="secondary"
+      @click="query.refetch()"
+    >
+      <ArrowPathIcon class="size-4" />
+    </Button>
+
+    <Button
+      :disabled="!table.getCanPreviousPage() || !query.isSuccess"
+      @click="table.firstPage()"
+    >
+      <ChevronDoubleLeftIcon class="size-4" />
+    </Button>
+    <Button
+      :disabled="!table.getCanPreviousPage() || !query.isSuccess"
+      @click="table.previousPage()"
+    >
+      <ChevronLeftIcon class="size-4" />
+    </Button>
+
+    <!-- <Button
+        v-for="(button, index) in paginationButtons"
+        :key="index"
+        :disabled="typeof button === 'symbol'"
+        :color="query.data.value.pagination.page + 1 === button ? 'primary' : 'info'"
+      >
+        <template v-if="typeof button === 'number'">
+          {{ button }}
+        </template>
+        <template v-else>
+          <EllipsisHorizontalIcon class="size-4" />
+        </template>
+      </Button> -->
+
+    <Button
+      :disabled="!table.getCanNextPage() || !query.isSuccess.value"
+      @click="table.nextPage()"
+    >
+      <ChevronRightIcon class="size-4" />
+    </Button>
+    <Button
+      :disabled="!table.getCanNextPage() || !query.isSuccess.value"
+      @click="table.lastPage()"
+    >
+      <ChevronDoubleRightIcon class="size-4" />
+    </Button>
+    <span> Seite {{ table.getState().pagination.pageIndex + 1 }} von {{ table.getPageCount() }} </span>
+  </div>
 </template>
