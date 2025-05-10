@@ -7,7 +7,7 @@
   Vielen Dank für deine Anmeldung zur Veranstaltung {{ veranstaltung }}.
 </mj-text>
 
-{{#if accessToken}}
+{{#if settings.enablePhotoUpload && accessToken}}
 <mj-text
   font-size="16px"
   line-height="1.5"

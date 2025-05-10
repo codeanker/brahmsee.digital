@@ -22,11 +22,29 @@ export const anmeldungFotoUploadProcedure = definePublicMutateProcedure({
           gt: new Date(),
         },
       },
+      select: {
+        veranstaltung: {
+          select: {
+            name: true,
+            settings: {
+              select: {
+                enablePhotoUpload: true,
+              },
+            },
+          },
+        },
+      },
     })
     if (unterveranstaltung === null) {
       throw new TRPCError({
         code: 'FORBIDDEN',
         message: 'Der Meldeschluss ist bereits erreicht!',
+      })
+    }
+    if (!unterveranstaltung.veranstaltung.settings?.enablePhotoUpload) {
+      throw new TRPCError({
+        code: 'FORBIDDEN',
+        message: `Für die Veranstaltung ${unterveranstaltung.veranstaltung.name} werden keine Fotos benötigt.`,
       })
     }
 

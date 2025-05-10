@@ -18,11 +18,33 @@ export const anmeldungPublicFotoUploadProcedure = definePublicMutateProcedure({
         id: anmeldungId,
         accessToken,
       },
+      select: {
+        unterveranstaltung: {
+          select: {
+            veranstaltung: {
+              select: {
+                name: true,
+                settings: {
+                  select: {
+                    enablePhotoUpload: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     })
 
     if (anmeldung === null) {
       throw new TRPCError({
         code: 'UNAUTHORIZED',
+      })
+    }
+    if (!anmeldung.unterveranstaltung.veranstaltung.settings?.enablePhotoUpload) {
+      throw new TRPCError({
+        code: 'FORBIDDEN',
+        message: `Für die Veranstaltung ${anmeldung.unterveranstaltung.veranstaltung.name} werden keine Fotos benötigt.`,
       })
     }
 
