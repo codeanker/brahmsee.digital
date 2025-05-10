@@ -10,6 +10,7 @@ import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import { UnterveranstaltungTypeMapping, type RouterInput, type RouterOutput } from '@codeanker/api'
 import { type TGridColumn } from '@codeanker/datagrid'
 import DataGridDoubleLineCell from './DataGridDoubleLineCell.vue'
+import { formatCurrency } from '@codeanker/helpers'
 
 const props = defineProps<{
   veranstaltungId?: number
@@ -64,7 +65,7 @@ const columns = computed<TGridColumn<TUnterveranstaltungData, TUnterveranstaltun
       title: 'Gebühr',
       size: '120px',
       sortable: true,
-      format: (value) => `${value.toFixed(2)} €`,
+      format: (value) => formatCurrency(value),
     },
     {
       field: 'maxTeilnehmende',

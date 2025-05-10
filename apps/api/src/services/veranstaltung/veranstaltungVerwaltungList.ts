@@ -81,8 +81,18 @@ export const veranstaltungVerwaltungListProcedure = defineProtectedQueryProcedur
         },
       },
     })
-
-    return veranstaltungen
+    return veranstaltungen.map((veranstaltung) => {
+      const count = veranstaltung.unterveranstaltungen.reduce((acc, unterveranstaltung) => {
+        if (unterveranstaltung._count.Anmeldung) {
+          acc += unterveranstaltung._count.Anmeldung
+        }
+        return acc
+      }, 0)
+      return {
+        ...veranstaltung,
+        anzahlAnmeldungen: count,
+      }
+    })
   },
 })
 
