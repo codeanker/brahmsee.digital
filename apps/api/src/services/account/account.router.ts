@@ -9,7 +9,7 @@ import { accountGliederungAdminCreateProcedure } from './accountGliederungAdminC
 import { accountPasswordResetProcedure } from './accountPasswordReset.js'
 import { accountVerwaltungCreateProcedure } from './accountVerwaltungCreate.js'
 import { accountVerwaltungGetProcedure } from './accountVerwaltungGet.js'
-import { accountVerwaltungCountProcedure, accountVerwaltungListProcedure } from './accountVerwaltungList.js'
+import { accountVerwaltungListProcedure } from './accountVerwaltungList.js'
 import { accountVerwaltungPatchProcedure } from './accountVerwaltungPatch.js'
 import { accountVerwaltungRemoveProcedure } from './accountVerwaltungRemove.js'
 // Import Routes here - do not delete this line
@@ -21,7 +21,6 @@ export const accountRouter = mergeRouters(
   accountVerwaltungCreateProcedure,
   accountVerwaltungGetProcedure,
   accountVerwaltungListProcedure,
-  accountVerwaltungCountProcedure,
   accountVerwaltungPatchProcedure,
   accountEmailConfirmRequestProcedure,
   accountEmailConfirmProcedure,

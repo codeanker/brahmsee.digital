@@ -20,7 +20,7 @@ import {
   type PaginationState,
   type RowData,
 } from '@tanstack/vue-table'
-import { computed, ref, unref, useTemplateRef, type Ref } from 'vue'
+import { computed, ref, unref, useTemplateRef, watch, type Ref } from 'vue'
 import LoadingBar from '../LoadingBar.vue'
 import Button from '../UIComponents/Button.vue'
 import Filter from './Filter.vue'
@@ -89,6 +89,11 @@ const table = useVueTable({
       return columnFilters.value
     },
   },
+})
+
+// reset pagination when filter change
+watch(columnFilters, () => {
+  table.setPageIndex(0)
 })
 
 defineExpose({
