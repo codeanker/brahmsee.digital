@@ -126,8 +126,8 @@ importers:
         specifier: ^7.0.1
         version: 7.0.1
       axios:
-        specifier: ^1.8.2
-        version: 1.8.2
+        specifier: ^1.9.0
+        version: 1.9.0
       config:
         specifier: ^3.3.9
         version: 3.3.12
@@ -254,7 +254,7 @@ importers:
     dependencies:
       vitepress:
         specifier: ^1.0.0-rc.31
-        version: 1.6.3(@algolia/client-search@5.20.1)(@types/node@22.10.2)(axios@1.8.2)(postcss@8.5.3)(sass@1.83.0)(search-insights@2.17.3)(sortablejs@1.14.0)(typescript@5.7.2)
+        version: 1.6.3(@algolia/client-search@5.20.1)(@types/node@22.10.2)(axios@1.9.0)(postcss@8.5.3)(sass@1.83.0)(search-insights@2.17.3)(sortablejs@1.14.0)(typescript@5.7.2)
     optionalDependencies:
       '@rollup/rollup-linux-arm64-gnu':
         specifier: ^4.8.0
@@ -2668,8 +2668,8 @@ packages:
     peerDependencies:
       postcss: ^8.1.0
 
-  axios@1.8.2:
-    resolution: {integrity: sha512-ls4GYBm5aig9vWx8AWDSGLpnpDQRtWAfrjU+EuytuODrFBkqesN2RkOQCBzrA1RQNHw1SmRMSDDDSwzNAYQ6Rg==}
+  axios@1.9.0:
+    resolution: {integrity: sha512-re4CqKTJaURpzbLHtIi6XpDv20/CnpXOtjRY5/CU32L8gU8ek9UIivcfvSWvmKEngmVbrUtPpdDwWDWL7DNHvg==}
 
   b4a@1.6.7:
     resolution: {integrity: sha512-OnAYlL5b7LEkALw87fUVafQw5rVR9RjwGd4KUwNQ6DrrNmaVaUCgLipfVlzrPQ4tWOR9P0IXGNOx50jYCCdSJg==}
@@ -3344,6 +3344,7 @@ packages:
 
   formidable@2.1.2:
     resolution: {integrity: sha512-CM3GuJ57US06mlpQ47YcunuUZ9jpm8Vx+P2CGt2j7HpgkKZO/DJYQ0Bobim8G6PFQmK5lOqOOdUXboU+h73A4g==}
+    deprecated: 'ACTION REQUIRED: SWITCH TO v3 - v1 and v2 are VULNERABLE! v1 is DEPRECATED FOR OVER 2 YEARS! Use formidable@latest or try formidable-mini for fresh projects'
 
   frac@1.1.2:
     resolution: {integrity: sha512-w/XBfkibaTl3YDqASwfDUqkna4Z2p9cFSr1aHDt0WoMTECnRfBOv2WArlZILlqgWlmdIlALXGpM2AOhEk5W3IA==}
@@ -6333,7 +6334,7 @@ snapshots:
   '@sendgrid/client@8.1.4':
     dependencies:
       '@sendgrid/helpers': 8.0.0
-      axios: 1.8.2
+      axios: 1.9.0
     transitivePeerDependencies:
       - debug
 
@@ -7022,13 +7023,13 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  '@vueuse/integrations@12.5.0(axios@1.8.2)(focus-trap@7.6.4)(sortablejs@1.14.0)(typescript@5.7.2)':
+  '@vueuse/integrations@12.5.0(axios@1.9.0)(focus-trap@7.6.4)(sortablejs@1.14.0)(typescript@5.7.2)':
     dependencies:
       '@vueuse/core': 12.5.0(typescript@5.7.2)
       '@vueuse/shared': 12.5.0(typescript@5.7.2)
       vue: 3.5.13(typescript@5.7.2)
     optionalDependencies:
-      axios: 1.8.2
+      axios: 1.9.0
       focus-trap: 7.6.4
       sortablejs: 1.14.0
     transitivePeerDependencies:
@@ -7191,7 +7192,7 @@ snapshots:
       postcss: 8.5.1
       postcss-value-parser: 4.2.0
 
-  axios@1.8.2:
+  axios@1.9.0:
     dependencies:
       follow-redirects: 1.15.9
       form-data: 4.0.2
@@ -7377,7 +7378,7 @@ snapshots:
 
   codeanker-sms-service@file:vendor/codeanker-service-sms-0.0.2.tar.gz:
     dependencies:
-      axios: 1.8.2
+      axios: 1.9.0
     transitivePeerDependencies:
       - debug
 
@@ -9951,7 +9952,7 @@ snapshots:
       tsx: 4.19.2
       yaml: 2.7.0
 
-  vitepress@1.6.3(@algolia/client-search@5.20.1)(@types/node@22.10.2)(axios@1.8.2)(postcss@8.5.3)(sass@1.83.0)(search-insights@2.17.3)(sortablejs@1.14.0)(typescript@5.7.2):
+  vitepress@1.6.3(@algolia/client-search@5.20.1)(@types/node@22.10.2)(axios@1.9.0)(postcss@8.5.3)(sass@1.83.0)(search-insights@2.17.3)(sortablejs@1.14.0)(typescript@5.7.2):
     dependencies:
       '@docsearch/css': 3.8.2
       '@docsearch/js': 3.8.2(@algolia/client-search@5.20.1)(search-insights@2.17.3)
@@ -9964,7 +9965,7 @@ snapshots:
       '@vue/devtools-api': 7.7.1
       '@vue/shared': 3.5.13
       '@vueuse/core': 12.5.0(typescript@5.7.2)
-      '@vueuse/integrations': 12.5.0(axios@1.8.2)(focus-trap@7.6.4)(sortablejs@1.14.0)(typescript@5.7.2)
+      '@vueuse/integrations': 12.5.0(axios@1.9.0)(focus-trap@7.6.4)(sortablejs@1.14.0)(typescript@5.7.2)
       focus-trap: 7.6.4
       mark.js: 8.11.1
       minisearch: 7.1.1
