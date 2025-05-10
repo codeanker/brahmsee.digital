@@ -28,6 +28,7 @@ import { h } from 'vue'
 import BasicSwitch from '../BasicInputs/BasicSwitch.vue'
 import DataTable, { type Query } from '../Table/DataTable.vue'
 import UserLogo from '../UIComponents/UserLogo.vue'
+import { ArrowTopRightOnSquareIcon } from '@heroicons/vue/24/solid'
 
 type Props = {
   filter: Exclude<RouterInput['anmeldung']['list']['filter'], undefined>['scope']
@@ -349,6 +350,25 @@ const query: Query<Anmeldung> = (pagination, filter) =>
                   <dt class="text-gray-500 dark:text-gray-300 sm:w-40 sm:flex-shrink-0 lg:w-48">Veranstaltung</dt>
                   <dd class="mt-1 text-gray-900 dark:text-gray-100 sm:col-span-2 sm:ml-6 sm:mt-0 whitespace-pre-line">
                     {{ currentAnmeldung?.unterveranstaltung.veranstaltung.name }}
+                  </dd>
+                </div>
+                <div class="sm:flex sm:px-6 sm:py-5">
+                  <dt class="text-gray-500 dark:text-gray-300 sm:w-40 sm:flex-shrink-0 lg:w-48">Unterveranstaltung</dt>
+                  <dd class="mt-1 text-gray-900 dark:text-gray-100 sm:col-span-2 sm:ml-6 sm:mt-0 whitespace-pre-line">
+                    <div class="flex space-x-1 items-center">
+                      <span>{{ currentAnmeldung?.unterveranstaltung.beschreibung }}</span>
+                      <RouterLink
+                        target="_blank"
+                        class="text-primary-600 hover:text-primary-700"
+                        :to="{
+                          name: 'UnterveranstaltungDetail',
+                          params: { unterveranstaltungId: currentAnmeldung?.unterveranstaltung.id },
+                        }"
+                      >
+                        <ArrowTopRightOnSquareIcon class="h-4 w-4" />
+                      </RouterLink>
+                      <span class="text-gray-500">({{ currentAnmeldung?.unterveranstaltung.gliederung.name }})</span>
+                    </div>
                   </dd>
                 </div>
                 <div class="sm:flex sm:px-6 sm:py-5">

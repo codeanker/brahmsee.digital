@@ -1,0 +1,12 @@
+model ProgrammPunkt {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  startingAt  DateTime
+  endingAt    DateTime
+  location    String
+  responsible String
+
+  veranstaltungId Int
+  veranstaltung   Veranstaltung @relation(fields: [veranstaltungId], references: [id])
+}

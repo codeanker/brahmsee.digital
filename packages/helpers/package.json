@@ -19,6 +19,7 @@
     "@codeanker/eslint-config": "workspace:*",
     "@types/node": "catalog:",
     "typescript": "catalog:",
-    "eslint": "catalog:"
+    "eslint": "catalog:",
+    "vitest": "catalog:"
   }
 }

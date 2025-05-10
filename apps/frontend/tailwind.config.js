@@ -3,6 +3,7 @@ const colors = require('tailwindcss/colors')
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: 'class',
+  important: true,
   content: [
     './index.html',
     './public/**/*.html',
@@ -86,6 +87,7 @@ module.exports = {
     { pattern: /text-(info|success|danger|warning|primary|muted)-(600|700)/ },
     { pattern: /bg-white/ },
     { pattern: /(w|h)-(6|12|24)/ },
+    { pattern: /max-w-(lg|xl|2xl)/ },
   ],
   plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
   corePlugins: {

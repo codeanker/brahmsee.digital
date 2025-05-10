@@ -8,7 +8,7 @@ import { useRouteTitle } from '@/composables/useRouteTitle'
 import { type RouterOutput } from '@codeanker/api'
 import { keepPreviousData, useQuery } from '@tanstack/vue-query'
 import { createColumnHelper } from '@tanstack/vue-table'
-import { dayjs, formatDateWith } from '@codeanker/helpers'
+import { dayjs, formatCurrency, formatDateWith } from '@codeanker/helpers'
 import { useRouter } from 'vue-router'
 import { h } from 'vue'
 
@@ -54,15 +54,13 @@ const columns = [
     },
   }),
   column.accessor('teilnahmegebuehr', {
-    header: 'Teilnahmegebühr',
-    cell({ getValue }) {
-      const value = getValue<number>()
-      return value + ' €'
-    },
+    header: 'Gebühr',
+    cell: ({ getValue }) => formatCurrency(getValue<number>()),
     enableColumnFilter: false,
   }),
   column.accessor('maxTeilnehmende', {
-    header: 'Max. TN',
+    header: 'Anm. / Max',
+    cell: ({ row }) => `${row.original.anzahlAnmeldungen} / ${row.original.maxTeilnehmende}`,
     enableColumnFilter: false,
   }),
 ]

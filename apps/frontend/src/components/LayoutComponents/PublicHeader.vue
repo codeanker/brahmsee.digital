@@ -18,7 +18,7 @@ const unterveranstaltung = injectUnterveranstaltung()
           href="#"
           class="-m-1.5 p-1.5"
         >
-          <GliederungLogo :name="unterveranstaltung?.gliederung?.name ?? ''" />
+          <GliederungLogo :name="unterveranstaltung?.gliederung?.name ?? 'Schleswig-Holstein'" />
         </a>
       </div>
       <div class="lg:flex lg:flex-1 lg:justify-end">

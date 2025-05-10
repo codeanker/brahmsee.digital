@@ -7,7 +7,6 @@ import PublicHeader from '@/components/LayoutComponents/PublicHeader.vue'
 import type { RouterOutput } from '@codeanker/api'
 import { useAsyncState } from '@vueuse/core'
 import { computed, inject, provide, ref, type Ref } from 'vue'
-import PublicLayout from './PublicLayout.vue'
 
 const route = useRoute()
 
@@ -35,13 +34,15 @@ export function injectUnterveranstaltung() {
 </script>
 
 <template>
-  <PublicLayout>
+  <div
+    class="flex flex-col bg-white dark:bg-dark-primary min-h-full transition-colors duration-200 justify-between sm:px-6 lg:px-8"
+  >
     <PublicHeader />
     <div class="z-10">
       <router-view />
     </div>
     <PublicFooter />
-  </PublicLayout>
+  </div>
 </template>
 
 <style lang="scss">

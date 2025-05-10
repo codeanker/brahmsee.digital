@@ -17,18 +17,21 @@
           <a
             class="text-primary-600"
             href="mailto:info@schleswig-holstein.dlrg.de"
-            >info@schleswig-holstein.dlrg.de</a
           >
+            info@schleswig-holstein.dlrg.de
+          </a>
           <br />
         </p>
-        <p class="font-medium mt-5">Vertretungsberechtigter Vorstand:</p>
         <p>
-          Präsident Jochen Möller | Vizepräsident/in: André Tschirner, Felix Heymann, Jan Meyer, TL Ausbildung: Henryk
-          Hoppe, TL Einsatz: Hauke von Essen, TL Medizin: Dr. Dirk Holtkamp, Landesjugendvorsitzender: Tom Matzen
-        </p>
-        <p>
+          Rechtsform: eingetragener Verein (e.V.)<br />
           Gericht: Amtsgericht Kiel<br />
           Registernummer: VR 2049<br />
+          USt-IdNr. DE 134 855 058<br />
+        </p>
+        <p class="font-medium mt-5">Vertretungsberechtigt gemäß § 26 BGB</p>
+        <p>
+          Präsident André Tschirner | Vizepräsidentin: Judith Ertner | Vizepräsidenten: Henryk Hoppe, Dr. Dirk Holtkamp,
+          Daniel Swiatek | Schatzmeister: Michael Wagner
         </p>
         <p class="font-medium mt-5">Beschwerden/außergerichtliche Streitschlichtung für Verbraucher:</p>
         <p>
@@ -38,8 +41,9 @@
             class="text-primary-600"
             href="https://ec.europa.eu/consumers/odr/"
             target="newTab"
-            >https://ec.europa.eu/consumers/odr/</a
           >
+            https://ec.europa.eu/consumers/odr/
+          </a>
           zu erreichen.
         </p>
       </div>

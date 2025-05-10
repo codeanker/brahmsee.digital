@@ -6,6 +6,7 @@ import {
   DocumentDuplicateIcon,
   DocumentIcon,
   HandRaisedIcon,
+  LinkIcon,
   MegaphoneIcon,
   RocketLaunchIcon,
   SquaresPlusIcon,
@@ -19,10 +20,12 @@ import { useRoute } from 'vue-router'
 import { apiClient } from '@/api'
 import Abbr from '@/components/Abbr.vue'
 import CustomFieldsTable from '@/components/CustomFields/CustomFieldsTable.vue'
+import AnmeldeLinkTable from '@/components/data/AnmeldeLinkTable.vue'
 import AnmeldungenTable from '@/components/data/AnmeldungenTable.vue'
 import FilesExport, { type ExportedFileType } from '@/components/FilesExport.vue'
 import FilesListAndUpload from '@/components/FilesListAndUpload.vue'
 import FormUnterveranstaltungLandingSettings from '@/components/forms/unterveranstaltung/FormUnterveranstaltungLandingSettings.vue'
+import AnmeldeLinkCreateModal from '@/components/UIComponents/AnmeldeLinkCreateModal.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
@@ -98,18 +101,20 @@ const keyInfos = computed<KeyInfo[]>(() => {
 })
 
 const tabs = computed(() => {
+  const isAdmin = loggedInAccount.value?.role === 'ADMIN'
+
   const tabs = [
     { name: 'Ausschreibung', icon: MegaphoneIcon },
     { name: 'Marketing', icon: HandRaisedIcon },
     { name: 'Anmeldungen', icon: UserGroupIcon, count: countAnmeldungen.value?.total },
+    isAdmin && { name: 'Anmeldelinks', icon: LinkIcon },
     { name: 'Dokumente', icon: DocumentIcon },
     { name: 'Felder', icon: SquaresPlusIcon },
     { name: 'FAQ', icon: ChatBubbleLeftRightIcon },
+    isAdmin && { name: 'Entwickler:in', icon: CodeBracketIcon },
   ]
-  if (loggedInAccount.value?.role === 'ADMIN') {
-    tabs.push({ name: 'Entwickler:in', icon: CodeBracketIcon })
-  }
-  return tabs
+
+  return tabs.filter((t) => t !== false)
 })
 
 const publicLink = computed(() => {
@@ -147,15 +152,17 @@ const files: ExportedFileType[] = [
   },
   {
     name: 'Fotos',
-    description: 'Alle Fotos von bestätigten Teilnehmenden',
+    description: 'Alle Fotos von bestätigten Teilnehmenden, gruppiert nach Veranstaltung und Ausschreibung',
     icon: CameraIcon,
     bgColor: 'bg-orange-600',
     hoverColor: 'hover:text-orange-700',
-    href: `/api/export/archive/photos?${exportParams}`,
+    href: `/api/export/archive/photos?${exportParams}&mode=group`,
   },
 ]
 
 const faqList = useTemplateRef('faqList')
+
+const anmeldeLinkCreateModal = useTemplateRef('anmeldeLinkCreateModal')
 </script>
 
 <template>
@@ -272,7 +279,10 @@ const faqList = useTemplateRef('faqList')
           :unterveranstaltung="unterveranstaltung"
         />
       </Tab>
-      <Tab key="anmeldungen">
+      <Tab
+        key="anmeldungen"
+        :full-width="true"
+      >
         <div class="my-10">
           <div class="text-lg font-semibold">Anmeldungen</div>
           <p class="text-sm text-gray-500">Die folgenden Personen haben sich angemeldet</p>
@@ -282,7 +292,46 @@ const faqList = useTemplateRef('faqList')
           :filter="{ type: 'unterveranstaltung', unterveranstaltungId: unterveranstaltung.id }"
         />
       </Tab>
-      <Tab key="dokumente">
+      <Tab
+        v-if="loggedInAccount?.role === 'ADMIN'"
+        key="anmeldelinks"
+        :full-width="true"
+      >
+        <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
+          <div class="max-w-4xl">
+            <div class="text-lg font-semibold">Anmeldelinks</div>
+            <p class="text-sm text-gray-500">
+              Mit einem Anmeldelink können Personen sich auch dann anmelden, wenn der Meldeschluss erreicht oder die
+              maximale Teilnehmendenzahl erreicht ist. Eine Bestätigung der Anmeldung ist dennoch erforderlich.
+            </p>
+          </div>
+          <div class="shrink-0">
+            <Button
+              type="button"
+              @click="anmeldeLinkCreateModal?.open()"
+            >
+              Anmeldelink erstellen
+            </Button>
+          </div>
+        </div>
+
+        <AnmeldeLinkTable
+          v-if="unterveranstaltung"
+          :filter="{ type: 'unterveranstaltung', unterveranstaltungId: unterveranstaltung.id }"
+        />
+
+        <AnmeldeLinkCreateModal
+          v-if="unterveranstaltung"
+          ref="anmeldeLinkCreateModal"
+          :veranstaltung="`${unterveranstaltung.veranstaltung.name} (${unterveranstaltung.gliederung.name})`"
+          :unterveranstaltung-id="unterveranstaltung.id"
+          :url="`${publicLink}/anmeldung`"
+        />
+      </Tab>
+      <Tab
+        key="dokumente"
+        :full-width="true"
+      >
         <div class="grid xl:grid-cols-3 gap-8">
           <div class="col-span-2">
             <FilesListAndUpload
@@ -300,7 +349,10 @@ const faqList = useTemplateRef('faqList')
           </div>
         </div>
       </Tab>
-      <Tab key="felder">
+      <Tab
+        key="felder"
+        :full-width="true"
+      >
         <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
           <div>
             <div class="text-lg font-semibold">Benutzerdefinierte Felder</div>
@@ -324,7 +376,10 @@ const faqList = useTemplateRef('faqList')
           entity="unterveranstaltung"
         />
       </Tab>
-      <Tab key="faq">
+      <Tab
+        key="faq"
+        :full-width="true"
+      >
         <div class="my-10 flex items-center gap-x-4">
           <div>
             <div class="text-lg font-semibold"><Abbr abbr="faq" /></div>

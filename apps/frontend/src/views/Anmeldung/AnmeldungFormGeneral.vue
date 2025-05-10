@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { FaceFrownIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
-import { computed, defineProps, ref, watch, withDefaults } from 'vue'
+import { defineProps, ref, watch, withDefaults } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { apiClient } from '@/api'
@@ -10,41 +10,25 @@ import FormPersonGeneral, { type FormPersonGeneralSubmit } from '@/components/fo
 import Drawer from '@/components/LayoutComponents/Drawer.vue'
 import { injectUnterveranstaltung } from '@/layouts/AnmeldungLayout.vue'
 import { type NahrungsmittelIntoleranz } from '@codeanker/api'
-import { dayjs } from '@codeanker/helpers'
 
 const props = withDefaults(
   defineProps<{
     isPublic: boolean
-
-    /**
-     * Gibt an, ob der Meldeschluss ignoriert werden soll.
-     */
-    ignoreClosingDate?: boolean
+    token?: string
   }>(),
   {
     isPublic: true,
-    ignoreClosingDate: false,
   }
 )
 const router = useRouter()
 
 const unterveranstaltung = injectUnterveranstaltung()
 
-const isClosed = computed(() => dayjs().isAfter(unterveranstaltung?.value?.meldeschluss))
-
-if (!props.ignoreClosingDate && props.isPublic) {
-  watch(isClosed, (value) => {
-    if (value) {
-      router.back()
-    }
-  })
-}
-
 const { state: customFields, execute: loadCustomFields } = useAsyncState(async () => {
   if (!unterveranstaltung) {
     return undefined
   }
-  //@TODO Nur Felder für die Position anzeigen
+  // TODO: Nur Felder für die Position anzeigen
   return apiClient.customFields.list.query({
     entity: 'unterveranstaltung',
     entityId: unterveranstaltung.value.id,
@@ -75,9 +59,8 @@ const {
       })
       .map((entry) => entry[0] as NahrungsmittelIntoleranz)
 
-    const endpoint = props.isPublic ? apiClient.anmeldung.publicCreate : apiClient.anmeldung.verwaltungCreate
-
-    await endpoint.mutate({
+    await apiClient.anmeldung.publicCreate.mutate({
+      token: props.token,
       data: {
         unterveranstaltungId: unterveranstaltung.value.id,
         gliederungId: unterveranstaltung.value.gliederung.id ?? -1,

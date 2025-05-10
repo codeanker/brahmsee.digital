@@ -7,6 +7,7 @@ import { accountEmailConfirmProcedure } from './accountEmailConfirm.js'
 import { accountEmailConfirmRequestProcedure } from './accountEmailConfirmRequest.js'
 import { accountGliederungAdminCreateProcedure } from './accountGliederungAdminCreate.js'
 import { accountPasswordResetProcedure } from './accountPasswordReset.js'
+import { accountTeilnehmerCreateProcedure } from './accountTeilnehmerCreate.js'
 import { accountVerwaltungCreateProcedure } from './accountVerwaltungCreate.js'
 import { accountVerwaltungGetProcedure } from './accountVerwaltungGet.js'
 import { accountVerwaltungListProcedure } from './accountVerwaltungList.js'
@@ -25,6 +26,7 @@ export const accountRouter = mergeRouters(
   accountEmailConfirmRequestProcedure,
   accountEmailConfirmProcedure,
   accountPasswordResetProcedure,
-  accountVerwaltungRemoveProcedure
+  accountVerwaltungRemoveProcedure,
+  accountTeilnehmerCreateProcedure
   // Add Routes here - do not delete this line
 )

@@ -1,0 +1,23 @@
+name: Fehlerbericht
+description: |
+  Nutze dieses Formular, um einen Fehler zu melden.
+  Du kannst es auch benutzen, wenn die ein Verhalten komisch oder ungewollt vorkommt.
+type: Bug
+title: "[Bug] {kurzbeschreibung}"
+labels:
+  - "state:open"
+body:
+  - type: input
+    id: kurzbeschreibung
+    attributes:
+      label: Kurzbeschreibung
+      description: |
+        Eine kurze Beschreibung des Fehlers.
+        Halte es so kurz wie möglich.
+  - type: textarea
+    id: beschreibung
+    attributes:
+      label: Beschreibung
+      description: |
+        Eine detaillierte Beschreibung des Fehlers.
+        Erkläre, was du gemacht hast, was du erwartet hast und was tatsächlich passiert ist.

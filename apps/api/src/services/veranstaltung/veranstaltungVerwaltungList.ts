@@ -32,7 +32,7 @@ export const veranstaltungVerwaltungListProcedure = defineProtectedQueryProcedur
     const total = await prisma.veranstaltung.count({ where })
     const { pageIndex, pageSize, pages } = calculatePagination(total, pagination)
 
-    const orte = await prisma.veranstaltung.findMany({
+    const veranstaltungen = await prisma.veranstaltung.findMany({
       take: pageSize,
       skip: pageSize * pageIndex,
       orderBy: {
@@ -84,6 +84,19 @@ export const veranstaltungVerwaltungListProcedure = defineProtectedQueryProcedur
       },
     })
 
-    return defineQueryResponse({ data: orte, total, pagination: { pageIndex, pageSize, pages } })
+    const withCounts = veranstaltungen.map((veranstaltung) => {
+      const count = veranstaltung.unterveranstaltungen.reduce((acc, unterveranstaltung) => {
+        if (unterveranstaltung._count.Anmeldung) {
+          acc += unterveranstaltung._count.Anmeldung
+        }
+        return acc
+      }, 0)
+      return {
+        ...veranstaltung,
+        anzahlAnmeldungen: count,
+      }
+    })
+
+    return defineQueryResponse({ data: withCounts, total, pagination: { pageIndex, pageSize, pages } })
   },
 })

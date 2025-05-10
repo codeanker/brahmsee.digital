@@ -8,6 +8,7 @@ import createAccount from './account.js'
 import createAnmeldung from './anmeldungen.js'
 import importGliederungen from './gliederungen.js'
 import createVeranstaltung from './veranstaltung.js'
+import createProgramm from './programm.js'
 
 export type Seeder = (prisma: PrismaClient) => Promise<void>
 
@@ -17,7 +18,7 @@ const seeders: Seeder[] = (() => {
     return [importGliederungen]
   }
 
-  return [importGliederungen, createAccount, createVeranstaltung, createAnmeldung]
+  return [importGliederungen, createAccount, createVeranstaltung, createAnmeldung, createProgramm]
 })()
 
 const prisma = new PrismaClient()

@@ -15,6 +15,7 @@ export const accountEmailConfirmProcedure = definePublicMutateProcedure({
       },
       select: {
         id: true,
+        role: true,
         activatedAt: true,
       },
     })
@@ -30,6 +31,7 @@ export const accountEmailConfirmProcedure = definePublicMutateProcedure({
         id: account.id,
       },
       data: {
+        status: account.role === 'USER' ? 'AKTIV' : 'OFFEN',
         activatedAt: new Date(),
         activationToken: null,
       },

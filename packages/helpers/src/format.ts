@@ -1,10 +1,10 @@
 import { dayjs } from './dayjs.js'
 
-export function formatDateWith(date: Date, format: string): string {
+export function formatDateWith(date: dayjs.ConfigType, format: string): string {
   return dayjs(date).format(format)
 }
 
-export function formatDate(date: Date | null): string {
+export function formatDate(date: dayjs.ConfigType): string {
   if (!date) {
     return ''
   }
@@ -12,7 +12,7 @@ export function formatDate(date: Date | null): string {
   return formatDateWith(date, 'DD.MM.YYYY')
 }
 
-export function formatTimestamp(date: Date | null): string {
+export function formatTimestamp(date: dayjs.ConfigType): string {
   if (!date) {
     return ''
   }
