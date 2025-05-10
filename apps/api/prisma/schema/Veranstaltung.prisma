@@ -19,4 +19,5 @@ model Veranstaltung {
   hostnameId                 Int?
   hostname                   Hostname?            @relation(fields: [hostnameId], references: [id])
   customFields               CustomField[]
+  settings                   Json                 @default("{}")
 }
