@@ -9,6 +9,7 @@ import { useRouteTitle } from '@/composables/useRouteTitle'
 import { type RouterOutput } from '@codeanker/api'
 import { keepPreviousData, useQuery } from '@tanstack/vue-query'
 import { createColumnHelper } from '@tanstack/vue-table'
+import { useRouter } from 'vue-router'
 
 const { setTitle } = useRouteTitle()
 setTitle('Orte')
@@ -50,6 +51,12 @@ const query: Query<Ort> = (pagination, filter) =>
     initialData,
     placeholderData: keepPreviousData,
   })
+
+const router = useRouter()
+
+function onClick(ort: Ort) {
+  router.push({ name: 'Verwaltung Ortdetails', params: { ortId: ort.id } })
+}
 </script>
 
 <template>
@@ -68,6 +75,7 @@ const query: Query<Ort> = (pagination, filter) =>
     <DataTable
       :query="query"
       :columns="columns"
+      @dblclick="onClick"
     />
   </div>
 </template>

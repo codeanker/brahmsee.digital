@@ -32,6 +32,7 @@ export const ortListProcedure = defineProtectedQueryProcedure({
       },
       where,
       select: {
+        id: true,
         name: true,
         address: {
           select: {
