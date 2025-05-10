@@ -79,6 +79,13 @@ const columns: TGridColumn<TAnmeldeLinkData, TAnmeldeLinkFilter>[] = [
   },
 ]
 
+if (props.filter?.type === 'veranstaltung') {
+  columns.splice(columns.length - 1, 0, {
+    field: 'unterveranstaltung.gliederung.name',
+    title: 'Unterveranstaltung',
+  })
+}
+
 const defaultOrderBy = {
   createdAt: 'desc',
 } as const

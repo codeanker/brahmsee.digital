@@ -9,6 +9,7 @@ import {
   CameraIcon,
   RocketLaunchIcon,
   DocumentDuplicateIcon,
+  LinkIcon,
 } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 import { computed } from 'vue'
@@ -27,6 +28,7 @@ import { useRouteTitle } from '@/composables/useRouteTitle'
 import { formatDateWith } from '@codeanker/helpers'
 import { PlusIcon } from '@heroicons/vue/24/solid'
 import ProgramList from '../Program/ProgramList.vue'
+import AnmeldeLinkTable from '@/components/data/AnmeldeLinkTable.vue'
 
 const { setTitle } = useRouteTitle()
 
@@ -79,6 +81,7 @@ const tabs = computed(() => {
     { name: 'Bedingungen', icon: ClipboardDocumentListIcon },
     { name: 'Programm', icon: ClipboardDocumentListIcon },
     { name: 'Ausschreibungen', icon: MegaphoneIcon },
+    { name: 'Anmeldelinks', icon: LinkIcon },
     { name: 'Felder', icon: SquaresPlusIcon },
   ]
   return tabs
@@ -295,6 +298,25 @@ function copyProgramLink() {
       <UnterveranstaltungenTable
         v-if="veranstaltung?.id"
         :veranstaltung-id="veranstaltung?.id"
+      />
+    </Tab>
+    <Tab
+      key="anmeldelinks"
+      :full-width="true"
+    >
+      <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
+        <div class="max-w-4xl">
+          <div class="text-lg font-semibold">Anmeldelinks</div>
+          <p class="text-sm text-gray-500">
+            Mit einem Anmeldelink können Personen sich auch dann anmelden, wenn der Meldeschluss erreicht oder die
+            maximale Teilnehmendenzahl erreicht ist. Eine Bestätigung der Anmeldung ist dennoch erforderlich.
+          </p>
+        </div>
+      </div>
+
+      <AnmeldeLinkTable
+        v-if="veranstaltung"
+        :filter="{ type: 'veranstaltung', veranstaltungId: veranstaltung.id }"
       />
     </Tab>
     <Tab
