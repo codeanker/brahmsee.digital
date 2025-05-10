@@ -227,7 +227,7 @@ function copyProgramLink() {
     >
       <div class="my-10 flex items-center justify-between">
         <div>
-          <div class="text-lg font-semibold">Programmpunkte</div>
+          <div class="text-lg font-semibold">Programmpunkte <Badge color="danger">BETA</Badge></div>
           <p class="max-w-2xl text-sm text-gray-500">
             Hier kann eine Übersicht über Programmpunkte der Veranstaltung angelegt werden.
           </p>
