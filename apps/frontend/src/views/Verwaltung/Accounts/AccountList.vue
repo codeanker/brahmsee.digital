@@ -104,7 +104,7 @@ const columns = [
 
 const query: Query<Account> = (pagination, filter) =>
   useQuery({
-    queryKey: ['person', pagination, filter],
+    queryKey: ['account', pagination, filter],
     queryFn: () =>
       apiClient.account.verwaltungList.query({
         pagination: {
