@@ -8,16 +8,25 @@ import createAccount from './account.js'
 import createAnmeldung from './anmeldungen.js'
 import importGliederungen from './gliederungen.js'
 import createVeranstaltung from './veranstaltung.js'
+import createProgramm from './programm.js'
+import importKreditinstitute from './kreditinstitute.js'
 
 export type Seeder = (prisma: PrismaClient) => Promise<void>
 
 const seeders: Seeder[] = (() => {
   // in produktion nur Gliederungen importieren
   if (isProduction() || process.env.DISABLE_SEEDER === '1') {
-    return [importGliederungen]
+    return [importGliederungen, importKreditinstitute]
   }
 
-  return [importGliederungen, createAccount, createVeranstaltung, createAnmeldung]
+  return [
+    importGliederungen,
+    importKreditinstitute,
+    createAccount,
+    createVeranstaltung,
+    createAnmeldung,
+    createProgramm,
+  ]
 })()
 
 const prisma = new PrismaClient()

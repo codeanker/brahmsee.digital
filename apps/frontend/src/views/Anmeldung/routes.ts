@@ -2,6 +2,26 @@ import type { Route } from '@/router'
 
 const routesAusschreibungen: Route[] = [
   {
+    name: 'Veranstaltung',
+    path: '/veranstaltung/:publicReadToken',
+    redirect: (to) => {
+      return { path: `/veranstaltung/${to.params.publicReadToken}/programm` }
+    },
+    component: () => import('@/layouts/AnmeldungLayout.vue'),
+    children: [
+      {
+        name: 'Public Programm',
+        path: 'programm',
+        component: () => import('./PublicProgrammView.vue'),
+        meta: {
+          public: true,
+          hidePublicHeaderBgOnMobile: true,
+          useFullheight: true,
+        },
+      },
+    ],
+  },
+  {
     name: 'Ausschreibung',
     path: '/ausschreibung/:unterveranstaltungId',
     component: () => import('@/layouts/AnmeldungLayout.vue'),

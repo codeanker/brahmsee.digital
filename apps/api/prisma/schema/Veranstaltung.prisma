@@ -20,4 +20,6 @@ model Veranstaltung {
   hostname                   Hostname?            @relation(fields: [hostnameId], references: [id])
   customFields               CustomField[]
   reisekosten                Reisekosten[]
+  programmPunkte             ProgrammPunkt[]
+  publicReadToken            String?              @unique @default(cuid())
 }

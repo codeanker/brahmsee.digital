@@ -159,7 +159,7 @@ function changeTab(index: number) {
         :tabs="tabs"
         @change-tab-index="changeTab"
       >
-        <Tab>
+        <Tab :full-width="true">
           <div class="my-8 flex justify-between">
             <div>
               <p class="max-w-2xl text-sm">
@@ -189,7 +189,7 @@ function changeTab(index: number) {
             />
           </div>
         </Tab>
-        <Tab>
+        <Tab :full-width="true">
           <div class="my-8 flex justify-between">
             <div>
               <p class="max-w-2xl text-sm">
