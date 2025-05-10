@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { apiClient } from '@/api'
 import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
+import BasicEditor from '@/components/BasicInputs/BasicEditor.vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import { dayjs } from '@codeanker/helpers'
@@ -59,69 +60,73 @@ async function submit() {
     <div class="text-lg font-semibold">Programmpunkt erstellen</div>
     <p class="max-w-2xl text-sm text-gray-500">Füll unten die Daten aus</p>
   </div>
-
-  <div class="grid grid-cols-3">
+  <div class="grid lg:grid-cols-2 gap-6">
     <ValidateForm
       ref="form"
-      class="col-span-2 grid grid-cols-2 gap-x-4 gap-y-8"
       :initial-values="initialData"
       @submit="submit"
     >
-      <BasicDatepicker
-        v-model="data.startingAt"
-        label="Startzeit"
-        required
-        enable-time-picker
-        :format="(date) => (date ? dayjs(date).format('dddd, DD. MMMM [um] HH:mm [Uhr]') : '')"
-      />
-      <BasicDatepicker
-        v-model="data.endingAt"
-        label="Endzeit"
-        required
-        enable-time-picker
-        :disabled-dates="{ to: data.startingAt }"
-        :format="(date) => (date ? dayjs(date).format('dddd, DD. MMMM [um] HH:mm [Uhr]') : '')"
-      />
-
-      <BasicInput
-        v-model="data.name"
-        label="Titel"
-        required
-      />
-      <BasicInput
-        v-model="data.description"
-        label="Beschreibung"
-        required
-      />
-      <BasicInput
-        v-model="data.location"
-        label="Ort"
-        required
-      />
-      <BasicInput
-        v-model="data.responsible"
-        label="Verantwortlichkeit"
-        required
-      />
-
-      <div class="col-span-2 grid grid-cols-2 items-start">
-        <div class="space-y-2">
-          <!-- <BasicSwitch
-            v-model="anotherOne"
-            label="Weiteren Programmpunkt erstellen"
+      <div class="grid grid-cols-1 lg:grid-cols-6 gap-6">
+        <div class="lg:col-span-full">
+          <BasicInput
+            v-model="data.name"
+            label="Titel"
+            required
+            class="col-span-full"
           />
-          <p class="text-sm text-gray-500">
-            Wenn ausgewählt, kannst du im Anschluss einen weiteren Programmpunkt erstellen und bleibst auf dieser Seite.
-          </p> -->
+        </div>
+        <div class="lg:col-span-3">
+          <BasicDatepicker
+            v-model="data.startingAt"
+            label="Startzeit"
+            required
+            enable-time-picker
+            format="dd.MM.yyyy"
+          />
+        </div>
+        <div class="lg:col-span-3">
+          <BasicDatepicker
+            v-model="data.endingAt"
+            label="Endzeit"
+            required
+            enable-time-picker
+            :disabled-dates="{ to: data.startingAt }"
+            format="dd.MM.yyyy"
+          />
         </div>
 
-        <Button
-          type="submit"
-          color="primary"
-          class="justify-self-end"
-        >
-          Speichern
-        </Button>
+        <div class="lg:col-span-3">
+          <BasicInput
+            v-model="data.location"
+            label="Ort"
+            required
+          />
+        </div>
+        <div class="lg:col-span-3">
+          <BasicInput
+            v-model="data.responsible"
+            label="Verantwortlichkeit"
+            required
+          />
+        </div>
+
+        <div class="lg:col-span-full">
+          <BasicEditor
+            v-model="data.description"
+            label="Beschreibung"
+            required
+          />
+        </div>
+
+        <div class="mt-8 flex gap-4">
+          <Button
+            type="submit"
+            color="primary"
+            class="justify-self-end"
+          >
+            Speichern
+          </Button>
+        </div>
       </div>
     </ValidateForm>
   </div>

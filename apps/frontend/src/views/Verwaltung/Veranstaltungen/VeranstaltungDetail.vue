@@ -151,6 +151,7 @@ function copyProgramLink() {
     <Tab
       key="Allgemein"
       class="grid grid-col-2"
+      :full-width="true"
     >
       <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
         <div class="text-lg font-semibold">Überblick zur Veranstaltung</div>
@@ -220,7 +221,10 @@ function copyProgramLink() {
         <p class="text-gray-500">Keine Datenschutzhinweise hinterlegt</p>
       </div>
     </Tab>
-    <Tab key="Programm">
+    <Tab
+      key="Programm"
+      :full-width="true"
+    >
       <div class="my-10 flex items-center justify-between">
         <div>
           <div class="text-lg font-semibold">Programmpunkte</div>
@@ -268,7 +272,10 @@ function copyProgramLink() {
         :veranstaltung-id="veranstaltung.id"
       />
     </Tab>
-    <Tab key="Ausschreibungen">
+    <Tab
+      key="Ausschreibungen"
+      :full-width="true"
+    >
       <div class="my-10 flex items-center justify-between">
         <div>
           <div class="text-lg font-semibold">Unterveranstaltungen</div>
@@ -290,7 +297,10 @@ function copyProgramLink() {
         :veranstaltung-id="veranstaltung?.id"
       />
     </Tab>
-    <Tab key="Felder">
+    <Tab
+      key="Felder"
+      :full-width="true"
+    >
       <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
         <div>
           <div class="text-lg font-semibold">Benutzerdefinierte Felder</div>
