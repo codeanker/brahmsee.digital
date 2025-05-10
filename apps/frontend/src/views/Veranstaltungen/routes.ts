@@ -1,5 +1,3 @@
-import anmeldungenRoutes from './Anmeldungen/routes'
-
 import type { Route } from '@/router'
 
 const routesVeranstaltungen: Route[] = [
@@ -39,7 +37,6 @@ const routesVeranstaltungen: Route[] = [
           ],
         },
       },
-      ...anmeldungenRoutes,
     ],
   },
 ]
