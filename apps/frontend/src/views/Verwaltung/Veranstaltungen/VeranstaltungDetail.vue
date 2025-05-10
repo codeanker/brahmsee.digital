@@ -127,7 +127,7 @@ const files: ExportedFileType[] = [
 
 const publicProgramLink = computed(() => {
   if (veranstaltung.value) {
-    return `https://${veranstaltung.value.hostname?.hostname}/veranstaltung/${veranstaltung.value.id}`
+    return `https://${veranstaltung.value.hostname?.hostname}/veranstaltung/${veranstaltung.value.publicReadToken}`
   }
   return ''
 })
@@ -239,9 +239,9 @@ function copyProgramLink() {
       </div>
 
       <div class="p-6 bg-primary-100 dark:bg-primary-900 rounded-md my-8 flex items-top space-x-4">
-        <div><RocketLaunchIcon class="h-10 w-10 text-primary-500" /></div>
-        <div>
-          <div class="font-bold text-lg text-primary-500">Die Programmpunkte sind öffentlich verfügbar</div>
+        <div><RocketLaunchIcon class="h-10 w-10 text-primary-600" /></div>
+        <div class="w-full">
+          <div class="font-bold text-lg text-primary-600">Die Programmpunkte sind öffentlich verfügbar</div>
           <div>Verteile den folgenden Link an die Teilnehmenden</div>
           <div class="flex mt-4">
             <input

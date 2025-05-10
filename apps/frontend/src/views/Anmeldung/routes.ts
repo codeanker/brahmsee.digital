@@ -3,9 +3,9 @@ import type { Route } from '@/router'
 const routesAusschreibungen: Route[] = [
   {
     name: 'Veranstaltung',
-    path: '/veranstaltung/:veranstaltungId',
+    path: '/veranstaltung/:publicReadToken',
     redirect: (to) => {
-      return { path: `/veranstaltung/${to.params.veranstaltungId}/programm` }
+      return { path: `/veranstaltung/${to.params.publicReadToken}/programm` }
     },
     component: () => import('@/layouts/AnmeldungLayout.vue'),
     children: [

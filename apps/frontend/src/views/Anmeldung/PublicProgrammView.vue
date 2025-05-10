@@ -1,40 +1,40 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useRouteParams } from '@vueuse/router'
 import ProgramList from '../Verwaltung/Program/ProgramList.vue'
 import { useAsyncState } from '@vueuse/core'
 import { apiClient } from '@/api'
 import InfoList from '@/components/UIComponents/InfoList.vue'
+import { formatDate } from '@codeanker/helpers'
+import Loading from '@/components/UIComponents/Loading.vue'
 
-const veranstaltungId = useRouteParams('veranstaltungId', '', {
-  transform: (id) => parseInt(id),
-})
+const publicReadToken = useRouteParams('publicReadToken', '')
 
-const { state: veranstaltung } = useAsyncState(
+const { state: veranstaltung, isLoading } = useAsyncState(
   () => {
-    if (!veranstaltungId.value) {
+    if (!publicReadToken.value) {
       return null
     }
 
-    return apiClient.veranstaltung.publicGet.query(veranstaltungId.value)
+    return apiClient.veranstaltung.publicGet.query(publicReadToken.value)
   },
   null,
   { immediate: true }
 )
 
-const keyInfos = [
-  {
-    title: 'Veranstaltungort',
-    value: 123,
-  },
-  {
-    title: 'Veranstaltungsort',
-    value: 'Musterstraße 123, 12345 Musterstadt',
-  },
-  {
-    title: 'Veranstaltungsdatum',
-    value: '01.01.2023 - 02.01.2023',
-  },
-]
+const keyInfos = computed(() => {
+  if (!veranstaltung.value) {
+    return []
+  }
+
+  const infos = [
+    { title: 'Veranstaltungsort', value: veranstaltung.value?.ort?.name },
+    { title: 'Beginn', value: formatDate(veranstaltung.value?.beginn) },
+    { title: 'Ende', value: formatDate(veranstaltung.value?.ende) },
+  ]
+
+  return infos.filter((info) => info.value)
+})
 </script>
 
 <template>
@@ -68,23 +68,44 @@ const keyInfos = [
         "
       />
     </div>
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 mb-16">
-      <div>
-        <h2 class="text-base/7 font-semibold text-indigo-600">{{ veranstaltung?.name }}</h2>
-        <h1 class="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl">Programm</h1>
-        <p class="text-gray-700">
-          Hier findest du die aktuelle Programmübersicht für die Veranstaltung {{ veranstaltung?.name }}
-        </p>
-      </div>
-      <div class="bg-white rounded-lg border p-4 lg:p-8">
-        <p>Veranstaltungsinfos</p>
-        <div class="text-xs lg:text-base">
-          <InfoList :infos="keyInfos" />
+    <template v-if="veranstaltung && !isLoading">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 mb-16">
+        <div>
+          <h2 class="text-base/7 font-semibold text-indigo-600">{{ veranstaltung?.name }}</h2>
+          <h1 class="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl">Programm</h1>
+          <p class="text-gray-700">
+            Hier findest du die aktuelle Programmübersicht für die Veranstaltung {{ veranstaltung?.name }}
+          </p>
+        </div>
+        <div class="bg-white rounded-lg border p-4 lg:p-6">
+          <p>Veranstaltungsinfos</p>
+          <div class="text-xs lg:text-base">
+            <InfoList :infos="keyInfos" />
+          </div>
         </div>
       </div>
-    </div>
-    <div class="bg-white rounded-lg border p-2 overflow-x-auto">
-      <ProgramList :veranstaltung-id="veranstaltungId" />
-    </div>
+      <div class="bg-white rounded-lg border p-2 overflow-x-auto">
+        <ProgramList :veranstaltung-id="veranstaltung?.id" />
+      </div>
+    </template>
+    <template v-else-if="isLoading">
+      <div class="bg-white max-w-2xl mx-auto rounded-lg border p-4 lg:p-6 flex items-center justify-center space-x-4">
+        <Loading
+          color="primary"
+          size="md"
+        />
+        <span> Daten werden geladen... </span>
+      </div>
+    </template>
+    <template v-else>
+      <div class="bg-white max-w-2xl mx-auto rounded-lg border p-4 lg:p-6">
+        <h1 class="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl">
+          Veranstaltung nicht gefunden
+        </h1>
+        <p class="text-gray-700">
+          Die Veranstaltung konnte nicht gefunden werden. Bitte überprüfe den Link oder kontaktiere den Veranstalter.
+        </p>
+      </div>
+    </template>
   </div>
 </template>

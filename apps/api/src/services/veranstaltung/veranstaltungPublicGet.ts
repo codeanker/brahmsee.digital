@@ -5,14 +5,18 @@ import { definePublicQueryProcedure } from '../../types/defineProcedure.js'
 
 export const veranstaltungPublicGetProcedure = definePublicQueryProcedure({
   key: 'publicGet',
-  inputSchema: z.number(),
+  inputSchema: z.string(),
   handler: ({ input }) =>
     prisma.veranstaltung.findUniqueOrThrow({
       where: {
-        id: input,
+        publicReadToken: input,
       },
       select: {
+        id: true,
         name: true,
+        beginn: true,
+        ende: true,
+        ort: true,
       },
     }),
 })
