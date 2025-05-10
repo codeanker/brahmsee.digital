@@ -42,11 +42,11 @@ function onSelect() {
 }
 
 defineExpose<ModalApi>({
-  show(ctx) {
-    modal.value?.show(ctx)
+  show() {
+    modal.value?.show()
   },
-  hide(ctx) {
-    modal.value?.hide(ctx)
+  hide() {
+    modal.value?.hide()
   },
 })
 </script>

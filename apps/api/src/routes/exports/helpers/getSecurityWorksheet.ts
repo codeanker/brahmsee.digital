@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import XLSX from '@e965/xlsx'
+import config from '../../../config.js'
 
 interface exportAccount {
   person: {
@@ -21,6 +22,7 @@ export function getSecurityWorksheet(account: exportAccount, countDataEntries: n
   ])
 
   securityWorksheet['!protect'] = {
+    password: config.export.sheetPassword,
     selectLockedCells: true,
     selectUnlockedCells: true,
     formatCells: true,

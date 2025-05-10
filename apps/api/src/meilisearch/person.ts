@@ -24,6 +24,14 @@ export async function updateMeiliPerson(person: MeiliPerson) {
   }
 }
 
+export async function deleteMeiliPerson(id: number) {
+  try {
+    await meilisearchClient.index(searchIndex).deleteDocument(id)
+  } catch (error) {
+    console.error('deleteMeiliPerson', error, id)
+  }
+}
+
 export async function syncAllPersonsToMeili() {
   await meilisearchClient.index(searchIndex).updateSettings(updateSettings)
   await meilisearchClient.updateIndex(searchIndex, { primaryKey: 'id' })

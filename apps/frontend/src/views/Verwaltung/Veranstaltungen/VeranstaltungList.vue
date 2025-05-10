@@ -7,6 +7,7 @@ import { useRouteTitle } from '@/composables/useRouteTitle'
 import router from '@/router'
 import { type RouterInput, type RouterOutput } from '@codeanker/api'
 import { type TGridColumn } from '@codeanker/datagrid'
+import { formatCurrency } from '@codeanker/helpers'
 
 const { setTitle } = useRouteTitle()
 setTitle('Veranstaltungen')
@@ -51,13 +52,16 @@ const columns: TGridColumn<TData, TFilter>[] = [
   },
   {
     field: 'teilnahmegebuehr',
-    title: 'Teilnahmegebühr',
+    title: 'Gebühr',
+    size: '120px',
     sortable: true,
+    format: (value) => formatCurrency(value),
   },
   {
     field: 'maxTeilnehmende',
-    title: 'TN',
-    sortable: true,
+    title: 'Anm. / Max',
+    size: '150px',
+    format: (value, row) => `${row.anzahlAnmeldungen} / ${value}`,
   },
 ]
 

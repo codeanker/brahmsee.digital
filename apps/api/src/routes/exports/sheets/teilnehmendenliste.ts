@@ -1,6 +1,6 @@
+import XLSX from '@e965/xlsx'
 import dayjs from 'dayjs'
 import type { Context } from 'koa'
-import XLSX from '@e965/xlsx'
 import { AnmeldungStatusMapping, GenderMapping } from '../../../client.js'
 import prisma from '../../../prisma.js'
 import { getSecurityWorksheet } from '../helpers/getSecurityWorksheet.js'
@@ -29,6 +29,7 @@ export async function veranstaltungTeilnehmendenliste(ctx: Context) {
       unterveranstaltung: {
         gliederungId: gliederung?.id,
       },
+      status: 'BESTAETIGT',
     },
     select: {
       id: true,
@@ -42,13 +43,13 @@ export async function veranstaltungTeilnehmendenliste(ctx: Context) {
           email: true,
           telefon: true,
           photoId: true,
-          essgewohnheit: true,
-          gliederung: {
+          photo: {
             select: {
               id: true,
-              name: true,
+              mimetype: true,
             },
           },
+          essgewohnheit: true,
           address: {
             select: {
               zip: true,
@@ -70,8 +71,16 @@ export async function veranstaltungTeilnehmendenliste(ctx: Context) {
       status: true,
       unterveranstaltung: {
         select: {
+          beschreibung: true,
+          type: true,
+          gliederung: {
+            select: {
+              name: true,
+            },
+          },
           veranstaltung: {
             select: {
+              name: true,
               meldeschluss: true,
               beginn: true,
             },
@@ -103,28 +112,36 @@ export async function veranstaltungTeilnehmendenliste(ctx: Context) {
         }
       })
       .reduce((acc, cur) => ({ ...acc, ...cur }), {})
+
+    const age = dayjs(anmeldung.unterveranstaltung.veranstaltung.beginn).diff(anmeldung.person.birthday, 'years')
+
     return {
-      ['id']: anmeldung.id,
-      ['Status']: AnmeldungStatusMapping[anmeldung.status].human,
-      ['Foto']: anmeldung.person.photoId ? 'Ja' : 'Nein',
-      ['Gender']: anmeldung.person.gender ? GenderMapping[anmeldung.person.gender].human : '',
-      ['Vorname']: anmeldung.person.firstname,
-      ['Nachname']: anmeldung.person.lastname,
-      ['Geburtstag']: anmeldung.person.birthday,
-      ['Alter zu Beginn']: dayjs(anmeldung.unterveranstaltung.veranstaltung.beginn).diff(
-        anmeldung.person.birthday,
-        'years'
-      ),
-      ['Gliederung']: anmeldung.person.gliederung?.name,
-      ['Email']: anmeldung.person.email,
-      ['Telefon']: anmeldung.person.telefon,
-      ['Essgewohnheit']: anmeldung.person.essgewohnheit,
-      ['Anmeldedatum']: anmeldung.createdAt,
+      '#': anmeldung.id,
+
+      Veranstaltung: anmeldung.unterveranstaltung.veranstaltung.name,
+      Ausschreibung:
+        anmeldung.unterveranstaltung.beschreibung?.substring(0, 30) || anmeldung.unterveranstaltung.gliederung.name,
+      'Art der Ausschreibung': anmeldung.unterveranstaltung.type,
+
+      Status: AnmeldungStatusMapping[anmeldung.status].human,
+      Anmeldedatum: anmeldung.createdAt,
+      'Foto ID': anmeldung.person.photoId ?? '',
+
+      Geschlecht: anmeldung.person.gender ? GenderMapping[anmeldung.person.gender].human : '',
+      Vorname: anmeldung.person.firstname,
+      Nachname: anmeldung.person.lastname,
+      Geburtstag: anmeldung.person.birthday,
+      'Alter zu Beginn': age,
+      Email: anmeldung.person.email,
+      Telefon: anmeldung.person.telefon,
+      Essgewohnheit: anmeldung.person.essgewohnheit,
+
+      PLZ: anmeldung.person.address?.zip ?? '',
+      Stadt: anmeldung.person.address?.city ?? '',
+      Straße: anmeldung.person.address?.street ?? '',
+
       ...customFields,
 
-      ['PLZ']: anmeldung.person.address?.zip,
-      ['Stadt']: anmeldung.person.address?.city,
-      ['Straße']: anmeldung.person.address?.street,
       ...anmeldung.person.notfallkontakte
         .map((kontakt, index) => ({
           [`NF ${index + 1} Vorname`]: kontakt.firstname,
@@ -137,13 +154,14 @@ export async function veranstaltungTeilnehmendenliste(ctx: Context) {
   })
   const workbook = XLSX.utils.book_new()
   const worksheet = XLSX.utils.json_to_sheet(rows)
+
   XLSX.utils.book_append_sheet(workbook, worksheet, `Teilnehmendenliste`)
 
   /** add Security Worksheet */
   const { securityWorksheet, securityWorksheetName } = getSecurityWorksheet(account, rows.length)
   XLSX.utils.book_append_sheet(workbook, securityWorksheet, securityWorksheetName)
 
-  const filename = `${dayjs().format('YYYYMMDD-hhmm')}-Teilnehmenden.xlsx`
+  const filename = `${dayjs().format('YYYYMMDD-hhmm')}-Teilnehmendenliste.xlsx`
   const buf = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' }) as Buffer
 
   ctx.res.statusCode = 201

@@ -3,6 +3,7 @@ import z from 'zod'
 
 import prisma from '../../prisma.js'
 import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
+import { deleteMeiliPerson } from '../../meilisearch/person.js'
 
 export const personVerwaltungRemoveProcedure = defineProtectedMutateProcedure({
   key: 'verwaltungRemove',
@@ -11,10 +12,13 @@ export const personVerwaltungRemoveProcedure = defineProtectedMutateProcedure({
     id: z.number().int(),
   }),
   async handler(options) {
-    return prisma.person.delete({
+    await prisma.person.delete({
       where: {
         id: options.input.id,
       },
     })
+
+    await deleteMeiliPerson(options.input.id)
+    return options.input.id
   },
 })

@@ -5,6 +5,7 @@ export const routesPublic: Route[] = [
     name: 'Public',
     path: '/public',
     meta: {
+      public: true,
       breadcrumbs: [
         {
           text: 'Public',
@@ -17,6 +18,7 @@ export const routesPublic: Route[] = [
         path: 'datenschutz',
         component: () => import('./Datenschutz.vue'),
         meta: {
+          public: true,
           breadcrumbs: [
             {
               text: 'Datenschutz',
@@ -29,6 +31,7 @@ export const routesPublic: Route[] = [
         path: 'impressum',
         component: () => import('./Impressum.vue'),
         meta: {
+          public: true,
           breadcrumbs: [
             {
               text: 'Impressum',

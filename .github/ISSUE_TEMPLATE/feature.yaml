@@ -1,0 +1,24 @@
+name: Feature Request
+description: |
+  Nutze dieses Formular, um eine neue Funktion zu beantragen.
+  Du kannst es auch benutzen, wenn du eine Idee hast,
+  wie wir das System verbessern können.
+type: Feature
+title: "[Feature] {kurzbeschreibung}"
+labels:
+  - "state:open"
+body:
+  - type: input
+    id: kurzbeschreibung
+    attributes:
+      label: Kurzbeschreibung
+      description: |
+        Eine kurze Beschreibung der Funktion.
+        Halte es so kurz wie möglich.
+  - type: textarea
+    id: beschreibung
+    attributes:
+      label: Beschreibung
+      description: |
+        Eine detaillierte Beschreibung der Funktion.
+        Erkläre, was du dir wünschst und warum es wichtig ist.

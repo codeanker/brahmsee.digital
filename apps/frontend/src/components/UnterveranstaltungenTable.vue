@@ -9,7 +9,8 @@ import { apiClient } from '@/api'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import { UnterveranstaltungTypeMapping, type RouterInput, type RouterOutput } from '@codeanker/api'
 import { type TGridColumn } from '@codeanker/datagrid'
-import TwoRowText from './UIComponents/TwoRowText.vue'
+import DataGridDoubleLineCell from './DataGridDoubleLineCell.vue'
+import { formatCurrency } from '@codeanker/helpers'
 
 const props = defineProps<{
   veranstaltungId?: number
@@ -33,11 +34,13 @@ const columns = computed<TGridColumn<TUnterveranstaltungData, TUnterveranstaltun
     {
       field: 'veranstaltung.name',
       title: 'Veranstaltung',
-      cell: TwoRowText,
-      cellProps: (_, { content }) => ({
-        title: content.veranstaltung.name,
-        subtitle: content.beschreibung.split(' ').slice(0, 5).join(' '),
-      }),
+      cell: DataGridDoubleLineCell,
+      cellProps: (formattedValue, row) => {
+        return {
+          title: row.content.veranstaltung.name,
+          message: row.content.beschreibung.split(' ').slice(0, 5).join(' '),
+        }
+      },
     },
     {
       field: 'gliederung.name',
@@ -62,7 +65,7 @@ const columns = computed<TGridColumn<TUnterveranstaltungData, TUnterveranstaltun
       title: 'Gebühr',
       size: '120px',
       sortable: true,
-      format: (value) => `${value.toFixed(2)} €`,
+      format: (value) => formatCurrency(value),
     },
     {
       field: 'maxTeilnehmende',
@@ -107,7 +110,7 @@ async function fetchCount(filter: TUnterveranstaltungFilter): Promise<number> {
         veranstaltungId: veranstaltungId,
         gliederungName: '',
       }"
-      :default-order-by="[['id', 'asc']]"
+      :default-order-by="[['gliederung.name', 'asc']]"
       no-data-message="Es gibt bisher keine Ausschreibungen."
       show-clickable
       @row-click="

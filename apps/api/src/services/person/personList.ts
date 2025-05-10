@@ -87,7 +87,7 @@ export function getPersonProtectionFilter({
 
   if (account.role === Role.USER) {
     where.anmeldungen = {
-      every: {
+      some: {
         accountId: account.id,
       },
     }

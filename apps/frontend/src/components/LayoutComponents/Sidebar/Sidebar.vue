@@ -3,7 +3,7 @@ import {
   ArrowRightOnRectangleIcon,
   CalendarDaysIcon,
   CubeIcon,
-  FingerPrintIcon,
+  KeyIcon,
   GlobeEuropeAfricaIcon,
   HandThumbUpIcon,
   MapPinIcon,
@@ -19,8 +19,10 @@ import SidebarItems, { type DividerItem, type SidebarItem } from './SidebarItems
 
 import UserLogo from '@/components/UIComponents/UserLogo.vue'
 import { loggedInAccount, logout } from '@/composables/useAuthentication'
+import { useAssets } from '@/composables/useAssets'
 
 const route = useRoute()
+const { logoSmall } = useAssets()
 
 const veranstaltungId = computed(() => {
   if (route.params.veranstaltungId !== undefined && typeof route.params.veranstaltungId === 'string') {
@@ -145,7 +147,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     type: 'SidebarItem',
     name: 'Accounts',
     route: { name: 'Verwaltung Alle Accounts' },
-    icon: FingerPrintIcon,
+    icon: KeyIcon,
     visible: hasPermissionToView(['ADMIN']),
   },
   {
@@ -161,13 +163,6 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     route: { name: 'Verwaltung Alle Veranstaltungen' },
     icon: CalendarDaysIcon,
     visible: hasPermissionToView(['ADMIN']),
-  },
-  {
-    type: 'SidebarItem',
-    name: 'Ausschreibungen',
-    route: { name: 'UnterveranstaltungList', params: { veranstaltungId: veranstaltungId.value } },
-    icon: MegaphoneIcon,
-    visible: hasPermissionToView(['ADMIN', 'GLIEDERUNG_ADMIN']),
   },
   {
     type: 'SidebarItem',
@@ -213,8 +208,13 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
   <div class="h-full flex flex-col text-primary-900 dark:text-gray-200 font-medium">
     <!-- Sidebar Header -->
     <div
-      class="mb-4 p-2 text-white bg-primary-600 dark:bg-primary-800 focus:outline-primary-600 w-full rounded-lg text-center"
+      class="mb-4 px-4 py-2 relative text-white bg-primary-600 dark:bg-primary-600 focus:outline-primary-600 w-full rounded-lg text-right"
     >
+      <img
+        :src="logoSmall"
+        alt="Dilly"
+        class="absolute left-4 h-8"
+      />
       brahmsee.digital
     </div>
     <!-- <SidebarVeranstaltungSwitcher/> -->

@@ -12,6 +12,7 @@ import { fileRouter } from './file/file.router.js'
 import { gliederungRouter } from './gliederung/gliederung.router.js'
 import { ortRouter } from './ort/ort.router.js'
 import { personRouter } from './person/person.router.js'
+import { programRouter } from './program/program.router.js'
 import { searchRouter } from './search/search.router.js'
 import { systemRouter } from './system/system.router.js'
 import { unterveranstaltungRouter } from './unterveranstaltung/unterveranstaltung.router.js'
@@ -34,6 +35,7 @@ export const serviceRouter = router({
   file: fileRouter,
   address: addressRouter,
   faq: faqsRouter,
+  program: programRouter,
   anmeldungLink: anmeldungLinkRouter,
   // Add Routers here - do not delete this line
 })
