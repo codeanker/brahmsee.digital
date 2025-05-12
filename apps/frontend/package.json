@@ -55,7 +55,7 @@
     "@codeanker/eslint-config": "workspace:*",
     "@codeanker/typescript-config": "workspace:*",
     "@types/node": "catalog:",
-    "@vitejs/plugin-basic-ssl": "^1.2.0",
+    "@vitejs/plugin-basic-ssl": "^2.0.0",
     "@vitejs/plugin-vue": "^5.2.1",
     "autoprefixer": "^10.4.16",
     "eslint": "catalog:",
