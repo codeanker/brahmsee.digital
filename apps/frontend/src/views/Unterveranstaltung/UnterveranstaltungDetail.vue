@@ -279,7 +279,10 @@ const anmeldeLinkCreateModal = useTemplateRef('anmeldeLinkCreateModal')
           :unterveranstaltung="unterveranstaltung"
         />
       </Tab>
-      <Tab key="anmeldungen">
+      <Tab
+        key="anmeldungen"
+        :full-width="true"
+      >
         <div class="my-10">
           <div class="text-lg font-semibold">Anmeldungen</div>
           <p class="text-sm text-gray-500">Die folgenden Personen haben sich angemeldet</p>
@@ -292,6 +295,7 @@ const anmeldeLinkCreateModal = useTemplateRef('anmeldeLinkCreateModal')
       <Tab
         v-if="loggedInAccount?.role === 'ADMIN'"
         key="anmeldelinks"
+        :full-width="true"
       >
         <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
           <div class="max-w-4xl">
@@ -324,7 +328,10 @@ const anmeldeLinkCreateModal = useTemplateRef('anmeldeLinkCreateModal')
           :url="`${publicLink}/anmeldung`"
         />
       </Tab>
-      <Tab key="dokumente">
+      <Tab
+        key="dokumente"
+        :full-width="true"
+      >
         <div class="grid xl:grid-cols-3 gap-8">
           <div class="col-span-2">
             <FilesListAndUpload
@@ -342,7 +349,10 @@ const anmeldeLinkCreateModal = useTemplateRef('anmeldeLinkCreateModal')
           </div>
         </div>
       </Tab>
-      <Tab key="felder">
+      <Tab
+        key="felder"
+        :full-width="true"
+      >
         <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
           <div>
             <div class="text-lg font-semibold">Benutzerdefinierte Felder</div>
@@ -366,7 +376,10 @@ const anmeldeLinkCreateModal = useTemplateRef('anmeldeLinkCreateModal')
           entity="unterveranstaltung"
         />
       </Tab>
-      <Tab key="faq">
+      <Tab
+        key="faq"
+        :full-width="true"
+      >
         <div class="my-10 flex items-center gap-x-4">
           <div>
             <div class="text-lg font-semibold"><Abbr abbr="faq" /></div>

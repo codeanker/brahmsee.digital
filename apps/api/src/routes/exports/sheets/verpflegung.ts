@@ -15,50 +15,31 @@ export async function veranstaltungVerpflegung(ctx: Context) {
 
   const { query, account, gliederung } = authorization
 
-  const gliederungen = await prisma.gliederung.findMany({
+  const unterveranstaltungen = await prisma.unterveranstaltung.findMany({
     where: {
-      id: gliederung?.id,
-      unterveranstaltungen: {
-        some: {
-          OR: [
-            {
-              id: query.unterveranstaltungId,
-            },
-            {
-              veranstaltungId: query.veranstaltungId,
-            },
-          ],
-        },
-      },
+      OR: [{ id: query.unterveranstaltungId }, { veranstaltungId: query.veranstaltungId }],
+      gliederungId: gliederung?.id,
     },
     select: {
       id: true,
-      name: true,
-      unterveranstaltungen: {
+      beschreibung: true,
+      gliederung: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      Anmeldung: {
         where: {
-          OR: [
-            {
-              id: query.unterveranstaltungId,
-            },
-            {
-              veranstaltungId: query.veranstaltungId,
-            },
-          ],
+          status: AnmeldungStatus.BESTAETIGT,
         },
         select: {
-          Anmeldung: {
-            where: {
-              status: AnmeldungStatus.BESTAETIGT,
-            },
+          person: {
             select: {
-              person: {
-                select: {
-                  id: true,
-                  essgewohnheit: true,
-                  nahrungsmittelIntoleranzen: true,
-                  weitereIntoleranzen: true,
-                },
-              },
+              id: true,
+              essgewohnheit: true,
+              nahrungsmittelIntoleranzen: true,
+              weitereIntoleranzen: true,
             },
           },
         },
@@ -68,7 +49,10 @@ export async function veranstaltungVerpflegung(ctx: Context) {
 
   const header = [
     'id',
+    'Unterveranstaltung',
     'Gliederung',
+    'Gesamt',
+    '',
     ...Object.values(Essgewohnheit),
     '',
     ...Object.values(NahrungsmittelIntoleranz),
@@ -76,39 +60,36 @@ export async function veranstaltungVerpflegung(ctx: Context) {
     'weitere Intoleranzen',
   ]
 
-  const rows = gliederungen
-    .filter((gliederung) => {
-      return gliederung.unterveranstaltungen.every((unterveranstaltung) => {
-        return unterveranstaltung.Anmeldung.length > 0
-      })
-    }) // Filtere Gliederungen ohne Anmeldungen
-    .map((gliederung) => {
-      const anmeldungen = gliederung.unterveranstaltungen.flatMap((unterveranstaltung) => unterveranstaltung.Anmeldung)
-      const aggregatedEssgewohnheiten = Object.fromEntries(
-        Object.values(Essgewohnheit).map((essgewohnheit) => [
-          essgewohnheit,
-          anmeldungen.filter((anmeldung) => anmeldung.person.essgewohnheit === essgewohnheit).length,
-        ])
-      )
-      const aggregatedNahrungsmittelIntoleranzen = Object.fromEntries(
-        Object.values(NahrungsmittelIntoleranz).map((intoleranz) => [
-          intoleranz,
-          anmeldungen.filter((anmeldung) => anmeldung.person.nahrungsmittelIntoleranzen.includes(intoleranz)).length,
-        ])
-      )
-      const weitereIntoleranzen = Array.from(
-        new Set(anmeldungen.flatMap((anmeldung) => anmeldung.person.weitereIntoleranzen))
-      ).join(', ')
-      return [
-        gliederung.id,
-        gliederung.name,
-        ...Object.values(aggregatedEssgewohnheiten),
-        '',
-        ...Object.values(aggregatedNahrungsmittelIntoleranzen),
-        '',
-        weitereIntoleranzen,
-      ]
-    })
+  const rows = unterveranstaltungen.map((unterveranstaltung) => {
+    const anmeldungen = unterveranstaltung.Anmeldung
+    const aggregatedEssgewohnheiten = Object.fromEntries(
+      Object.values(Essgewohnheit).map((essgewohnheit) => [
+        essgewohnheit,
+        anmeldungen.filter((anmeldung) => anmeldung.person.essgewohnheit === essgewohnheit).length,
+      ])
+    )
+    const aggregatedNahrungsmittelIntoleranzen = Object.fromEntries(
+      Object.values(NahrungsmittelIntoleranz).map((intoleranz) => [
+        intoleranz,
+        anmeldungen.filter((anmeldung) => anmeldung.person.nahrungsmittelIntoleranzen.includes(intoleranz)).length,
+      ])
+    )
+    const weitereIntoleranzen = Array.from(
+      new Set(anmeldungen.flatMap((anmeldung) => anmeldung.person.weitereIntoleranzen))
+    ).join(', ')
+    return [
+      unterveranstaltung.id,
+      unterveranstaltung.beschreibung,
+      unterveranstaltung.gliederung?.name ?? '',
+      anmeldungen.length,
+      '',
+      ...Object.values(aggregatedEssgewohnheiten),
+      '',
+      ...Object.values(aggregatedNahrungsmittelIntoleranzen),
+      '',
+      weitereIntoleranzen,
+    ]
+  })
 
   const workbook = XLSX.utils.book_new()
 
@@ -120,7 +101,7 @@ export async function veranstaltungVerpflegung(ctx: Context) {
     ...defaultWorkbookPros,
   }
 
-  const worksheet = XLSX.utils.json_to_sheet([header, ...rows])
+  const worksheet = XLSX.utils.aoa_to_sheet([header, ...rows])
   worksheet['!cols'] = [{ wch: 6 }, { wch: 40 }]
   XLSX.utils.book_append_sheet(workbook, worksheet, `Verpflegung`)
 

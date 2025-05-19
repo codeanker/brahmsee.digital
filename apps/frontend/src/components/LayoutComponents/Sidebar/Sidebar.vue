@@ -3,7 +3,7 @@ import {
   ArrowRightOnRectangleIcon,
   CalendarDaysIcon,
   CubeIcon,
-  FingerPrintIcon,
+  KeyIcon,
   GlobeEuropeAfricaIcon,
   HandThumbUpIcon,
   MapPinIcon,
@@ -147,7 +147,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     type: 'SidebarItem',
     name: 'Accounts',
     route: { name: 'Verwaltung Alle Accounts' },
-    icon: FingerPrintIcon,
+    icon: KeyIcon,
     visible: hasPermissionToView(['ADMIN']),
   },
   {
