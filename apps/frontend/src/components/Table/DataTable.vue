@@ -1,5 +1,6 @@
 <script setup lang="ts" generic="TData extends RowData">
 import illustrationNoData from '@/assets/illustration/undraw_empty_4zx0.svg'
+import cn from '@/helpers/cn'
 import type { QueryResponse } from '@codeanker/api'
 import { BackspaceIcon, FunnelIcon as FunnelIconOutline } from '@heroicons/vue/24/outline'
 import {
@@ -41,6 +42,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   click: [row: TData]
   dblclick: [row: TData]
+  refresh: []
 }>()
 
 function useUpdater<T>(ref: Ref<T>): OnChangeFn<T> {
@@ -91,6 +93,8 @@ const table = useVueTable({
   },
 })
 
+const hasFilters = computed(() => table._getColumnDefs().some((d) => d.enableColumnFilter !== false))
+
 // reset pagination when filter change
 watch(columnFilters, () => {
   table.setPageIndex(0)
@@ -106,10 +110,18 @@ const filterContainer = useTemplateRef('filterContainer')
 // const paginationButtons = computed(() =>
 //   generatePagination(query.data.value.pagination.pages, query.data.value.pagination.page + 1)
 // )
+
+function refresh() {
+  emit('refresh')
+  query.refetch()
+}
 </script>
 
 <template>
-  <div class="justify-self-start flex flex-col md:flex-row gap-4 md:items-end mb-4">
+  <div
+    v-if="hasFilters"
+    class="justify-self-start flex flex-col md:flex-row gap-4 md:items-end mb-4"
+  >
     <div
       ref="filterContainer"
       class="flex flex-col md:flex-row gap-x-4"
@@ -139,9 +151,9 @@ const filterContainer = useTemplateRef('filterContainer')
           :key="header.id"
         >
           <th
-            v-if="unref(header.column.columnDef.meta?.hidden) !== false"
+            v-if="unref(header.column.columnDef.meta?.hidden) !== true"
             :colSpan="header.colSpan"
-            class="text-left px-2 py-4 border-b-2"
+            :class="cn('text-left px-2 py-4 border-b-2', header.column.columnDef.meta?.class?.header)"
             :style="{ width: `${header.getSize()}px` }"
           >
             <div class="flex flex-row gap-x-4 items-center">
@@ -188,8 +200,8 @@ const filterContainer = useTemplateRef('filterContainer')
           :key="cell.id"
         >
           <td
-            v-if="unref(cell.column.columnDef.meta?.hidden) !== false"
-            class="px-2 py-4"
+            v-if="unref(cell.column.columnDef.meta?.hidden) !== true"
+            :class="cn('px-2 py-4', cell.column.columnDef.meta?.class?.body)"
             :style="{ width: `${cell.column.getSize()}px` }"
           >
             <FlexRender
@@ -224,8 +236,9 @@ const filterContainer = useTemplateRef('filterContainer')
           :key="header.id"
         >
           <th
-            v-if="unref(header.column.columnDef.meta?.hidden) !== false"
+            v-if="unref(header.column.columnDef.meta?.hidden) !== true"
             :colSpan="header.colSpan"
+            :class="cn(header.column.columnDef.meta?.class?.footer)"
             :style="{ width: `${header.getSize()}px` }"
           >
             <FlexRender
@@ -242,7 +255,7 @@ const filterContainer = useTemplateRef('filterContainer')
   <div class="md:justify-self-end space-x-2 mt-4">
     <Button
       color="secondary"
-      @click="query.refetch()"
+      @click="refresh"
     >
       <ArrowPathIcon class="size-4" />
     </Button>

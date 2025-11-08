@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { PlusIcon } from '@heroicons/vue/24/outline'
 
-import UnterveranstaltungenTable from '@/components/UnterveranstaltungenTable.vue'
+import UnterveranstaltungenTable from '@/components/data/UnterveranstaltungenTable.vue'
 import { useRouteTitle } from '@/composables/useRouteTitle'
 
 const { setTitle } = useRouteTitle()

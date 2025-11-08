@@ -14,6 +14,8 @@ const { column, context } = defineProps<{
 
 const type = computed(() => column.columnDef.meta?.filter?.type ?? 'text')
 
+console.log(column.columnDef.meta?.filter)
+
 const options = useAsyncState<Option[]>(
   async () => {
     const undef: Option = {

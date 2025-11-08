@@ -19,6 +19,12 @@ declare module 'vue-router' {
 
 declare module '@tanstack/vue-table' {
   interface ColumnMeta {
+    class?: {
+      header?: string
+      body?: string
+      footer?: string
+    }
+
     hidden?: MaybeRef<boolean>
     filter?:
       | {

@@ -79,3 +79,15 @@ export function defineQueryResponse<T>({
     },
   }
 }
+
+export function defineEmptyQueryResponse() {
+  return defineQueryResponse({
+    data: [],
+    total: 0,
+    pagination: {
+      pageIndex: 0,
+      pages: 0,
+      pageSize: 0,
+    },
+  })
+}

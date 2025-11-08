@@ -28,6 +28,7 @@ module.exports = {
           fontFeatureSettings: '"calt", "ss01", "ss02", "dlig"',
         },
       ],
+      mono: ['"Inconsolate", monospace'],
     },
     extend: {
       colors: {

@@ -84,8 +84,6 @@ defineExpose({ open, close })
           <template v-if="token">
             <p>Der Anmeldelink wurde erfolgreich erstellt.</p>
 
-            <p>Bitte kopieren den Link. Du kannst den Link kein weiteres Mal anschauen.</p>
-
             <div class="p-6 bg-primary-100 dark:bg-primary-900 rounded-md my-8 flex items-top space-x-4">
               <div><RocketLaunchIcon class="h-10 w-10 text-primary-500" /></div>
               <div>

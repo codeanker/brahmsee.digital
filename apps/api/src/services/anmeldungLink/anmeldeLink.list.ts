@@ -1,10 +1,9 @@
+import { Prisma, Role } from '@prisma/client'
 import { z } from 'zod'
-import { defineOrderBy } from '../../types/defineOrderBy.js'
-import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
-import client from '../../prisma.js'
-import { Role, Prisma } from '@prisma/client'
-import { ZPaginationSchema } from '../../types/defineQuery.js'
 import type { Context } from '../../context.js'
+import prisma from '../../prisma.js'
+import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
+import { calculatePagination, defineQueryResponse, defineTableInput } from '../../types/defineTableProcedure.js'
 
 const filterSchema = z.discriminatedUnion('type', [
   z.strictObject({
@@ -38,19 +37,30 @@ export const anmeldungLinkListProcedure = defineProtectedQueryProcedure({
   key: 'list',
   roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN, Role.USER],
   inputSchema: z.strictObject({
-    pagination: ZPaginationSchema,
-    filter: filterSchema,
-    orderBy: defineOrderBy(['usedAt', 'createdBy', 'comment']),
+    section: filterSchema,
+    table: defineTableInput({
+      filter: {
+        status: z.enum(['used', 'unused']),
+      },
+    }),
   }),
   async handler({ ctx, input }) {
-    const { skip, take } = input.pagination
-    const result = await client.anmeldungLink.findMany({
-      skip,
-      take,
-      where: getWhere(ctx, input.filter),
-      orderBy: {
-        createdAt: 'desc',
-      },
+    const where: Prisma.AnmeldungLinkWhereInput = {
+      ...getWhere(ctx, input.section),
+    }
+    if (input.table.filter?.status === 'used') {
+      where.NOT = [{ usedAt: null }]
+    } else if (input.table.filter?.status === 'unused') {
+      where.usedAt = null
+    }
+
+    const total = await prisma.anmeldungLink.count({ where })
+    const { pageIndex, pageSize, pages } = calculatePagination(total, input.table.pagination)
+
+    const result = await prisma.anmeldungLink.findMany({
+      take: pageSize,
+      skip: pageSize * pageIndex,
+      where,
       select: {
         id: true,
         createdAt: true,
@@ -92,19 +102,6 @@ export const anmeldungLinkListProcedure = defineProtectedQueryProcedure({
       },
     })
 
-    return result
-  },
-})
-
-export const anmeldungLinkCountProcedure = defineProtectedQueryProcedure({
-  key: 'count',
-  roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN, Role.USER],
-  inputSchema: z.strictObject({
-    filter: filterSchema,
-  }),
-  handler: ({ ctx, input }) => {
-    return client.anmeldungLink.count({
-      where: getWhere(ctx, input.filter),
-    })
+    return defineQueryResponse({ data: result, total, pagination: { pageIndex, pageSize, pages } })
   },
 })

@@ -20,7 +20,9 @@ export const gliederungListProcedure = defineProtectedQueryProcedure({
         contains: filter?.name,
         mode: 'insensitive',
       },
-      edv: filter?.edv,
+      edv: {
+        contains: filter?.edv,
+      },
     }
 
     const total = await prisma.gliederung.count({ where })
