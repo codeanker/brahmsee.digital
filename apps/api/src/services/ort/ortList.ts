@@ -5,8 +5,33 @@ import prisma from '../../prisma.js'
 import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
 import { calculatePagination, defineQueryResponse, defineTableInput } from '../../types/defineTableProcedure.js'
 
+const select: Prisma.OrtSelect = {
+  id: true,
+  name: true,
+  address: {
+    select: {
+      zip: true,
+      country: true,
+      city: true,
+      street: true,
+      streetNumber: true,
+    },
+  },
+}
+
 export const ortListProcedure = defineProtectedQueryProcedure({
   key: 'list',
+  roleIds: [Role.ADMIN],
+  inputSchema: z.void(),
+  handler() {
+    return prisma.ort.findMany({
+      select,
+    })
+  },
+})
+
+export const ortTableProcedure = defineProtectedQueryProcedure({
+  key: 'table',
   roleIds: [Role.ADMIN],
   inputSchema: defineTableInput({
     filter: {
@@ -30,19 +55,7 @@ export const ortListProcedure = defineProtectedQueryProcedure({
       skip: pageSize * pageIndex,
       where,
       orderBy,
-      select: {
-        id: true,
-        name: true,
-        address: {
-          select: {
-            zip: true,
-            country: true,
-            city: true,
-            street: true,
-            streetNumber: true,
-          },
-        },
-      },
+      select,
     })
 
     return defineQueryResponse({ data: orte, total, pagination: { pageIndex, pageSize, pages } })

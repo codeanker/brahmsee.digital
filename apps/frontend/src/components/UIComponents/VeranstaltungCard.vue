@@ -9,23 +9,18 @@ import Button from './Button.vue'
 import type { RouterOutput } from '@codeanker/api'
 import { formatDateWith } from '@codeanker/helpers'
 
-const { veranstaltung } = defineProps<Props>()
-
-type Veranstaltung = Awaited<
-  RouterOutput['veranstaltung']['verwaltungList'] | RouterOutput['veranstaltung']['gliederungList']
->[number]
+type Veranstaltung = RouterOutput['veranstaltung']['list'][number]
 
 interface Props {
   veranstaltung: Veranstaltung
   hasUnterveranstaltungen?: number
 }
 
-const totalAnmeldungen = computed(() =>
-  veranstaltung.unterveranstaltungen.map((u) => u._count.Anmeldung).reduce((a, b) => a + b, 0)
-)
+const { veranstaltung } = defineProps<Props>()
+
 const keyInfoDateFormat = 'dddd, DD. MMMM YYYY'
 
-const percent = computed(() => (totalAnmeldungen.value / veranstaltung.maxTeilnehmende) * 100)
+const percent = computed(() => (veranstaltung.anzahlAnmeldungen / veranstaltung.maxTeilnehmende) * 100)
 </script>
 
 <template>
@@ -43,7 +38,7 @@ const percent = computed(() => (totalAnmeldungen.value / veranstaltung.maxTeilne
     </p>
 
     <p class="text-sm leading-6">
-      <span class="font-semibold">{{ totalAnmeldungen }}</span> /
+      <span class="font-semibold">{{ veranstaltung.anzahlAnmeldungen }}</span> /
       <span class="font-semibold">{{ veranstaltung.maxTeilnehmende }}</span> Plätze belegt
     </p>
 

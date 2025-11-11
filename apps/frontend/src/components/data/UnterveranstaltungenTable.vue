@@ -40,8 +40,8 @@ const columns = [
       filter: {
         type: 'select',
         async options() {
-          const l = await apiClient.veranstaltung.verwaltungList.query({})
-          return l.data.map<Option>((i) => {
+          const l = await apiClient.veranstaltung.list.query()
+          return l.map<Option>((i) => {
             return {
               value: i.id,
               label: i.name,

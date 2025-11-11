@@ -42,30 +42,7 @@ const unterveranstaltungCopy = ref({
 if (props.mode === 'create') {
   unterveranstaltungCopy.value.veranstaltungId = props?.veranstaltungId
 }
-
-function useVeranstaltungList(isAdmin: boolean) {
-  if (isAdmin) {
-    const { state } = useAsyncState(async () => {
-      return apiClient.veranstaltung.verwaltungList.query({
-        filter: {},
-        orderBy: [],
-        pagination: { take: 100, skip: 0 },
-      })
-    }, [])
-    return state
-  } else {
-    const { state } = useAsyncState(async () => {
-      return apiClient.veranstaltung.gliederungList.query({
-        filter: {},
-        orderBy: [],
-        pagination: { take: 100, skip: 0 },
-      })
-    }, [])
-    return state
-  }
-}
-
-const veranstaltungen = useVeranstaltungList(loggedInAccount.value?.role === 'ADMIN')
+const { state: veranstaltungen } = useAsyncState(() => apiClient.veranstaltung.list.query(), [])
 
 const {
   execute: createUnterveranstaltung,

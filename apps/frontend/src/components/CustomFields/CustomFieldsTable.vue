@@ -21,7 +21,7 @@ import { loggedInAccount } from '@/composables/useAuthentication'
 import { useRouter } from 'vue-router'
 
 type Filter = RouterInput['customFields']['list']
-type CustomField = RouterOutput['customFields']['list']['data'][number]
+type CustomField = RouterOutput['customFields']['table']['data'][number]
 
 const props = defineProps<{
   entity: Filter['entity']
@@ -116,7 +116,7 @@ const query: Query<CustomField> = (pagination, filter, orderBy) =>
   useQuery({
     queryKey: ['custom-fields', pagination, filter, orderBy],
     queryFn: () =>
-      apiClient.customFields.list.query({
+      apiClient.customFields.table.query({
         entity: props.entity,
         entityId: props.id,
         table: {

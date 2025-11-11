@@ -10,7 +10,7 @@ import Button from '@/components/UIComponents/Button.vue'
 import type { RouterOutput } from '@codeanker/api'
 import { ValidateForm } from '@codeanker/validation'
 
-type Field = Awaited<RouterOutput['customFields']['list']>[number]
+type Field = RouterOutput['customFields']['list'][number]
 type Value = Awaited<RouterOutput['anmeldung']['get']>[number]['customFieldValues'][number]
 
 const props = defineProps<{

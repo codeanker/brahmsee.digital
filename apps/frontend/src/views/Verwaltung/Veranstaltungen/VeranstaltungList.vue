@@ -17,7 +17,7 @@ const router = useRouter()
 const { setTitle } = useRouteTitle()
 setTitle('Veranstaltungen')
 
-type Veranstaltung = RouterOutput['veranstaltung']['verwaltungList']['data'][number]
+type Veranstaltung = RouterOutput['veranstaltung']['table']['data'][number]
 
 const keyInfoDateFormat = 'dddd, DD. MMMM YYYY'
 const column = createColumnHelper<Veranstaltung>()
@@ -79,7 +79,7 @@ const query: Query<Veranstaltung> = (pagination, filter, orderBy) =>
   useQuery({
     queryKey: ['veranstaltung', pagination, filter, orderBy],
     queryFn: () =>
-      apiClient.veranstaltung.verwaltungList.query({
+      apiClient.veranstaltung.table.query({
         pagination: {
           pageIndex: pagination.value.pageIndex,
           pageSize: pagination.value.pageSize,

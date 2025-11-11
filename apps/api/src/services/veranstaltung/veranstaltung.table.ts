@@ -1,14 +1,13 @@
-import { Prisma, Role } from '@prisma/client'
-import z from 'zod'
-
 import { dayjs } from '@codeanker/helpers'
-import prisma from '../../prisma.js'
+import { Prisma, Role } from '@prisma/client'
+import { z } from 'zod'
+import client from '../../prisma.js'
 import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
 import { calculatePagination, defineQueryResponse, defineTableInput } from '../../types/defineTableProcedure.js'
 
-export const veranstaltungVerwaltungListProcedure = defineProtectedQueryProcedure({
-  key: 'verwaltungList',
-  roleIds: [Role.ADMIN],
+export const veranstaltungTableProcedure = defineProtectedQueryProcedure({
+  key: 'table',
+  roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
   inputSchema: defineTableInput({
     filter: {
       name: z.string(),
@@ -48,10 +47,10 @@ export const veranstaltungVerwaltungListProcedure = defineProtectedQueryProcedur
             ],
     }
 
-    const total = await prisma.veranstaltung.count({ where })
+    const total = await client.veranstaltung.count({ where })
     const { pageIndex, pageSize, pages } = calculatePagination(total, pagination)
 
-    const veranstaltungen = await prisma.veranstaltung.findMany({
+    const data = await client.veranstaltung.findMany({
       take: pageSize,
       skip: pageSize * pageIndex,
       where,
@@ -64,7 +63,6 @@ export const veranstaltungVerwaltungListProcedure = defineProtectedQueryProcedur
         ort: {
           select: {
             name: true,
-            id: true,
           },
         },
         meldebeginn: true,
@@ -73,47 +71,28 @@ export const veranstaltungVerwaltungListProcedure = defineProtectedQueryProcedur
         teilnahmegebuehr: true,
         unterveranstaltungen: {
           select: {
-            id: true,
-            maxTeilnehmende: true,
-            teilnahmegebuehr: true,
-            meldebeginn: true,
-            meldeschluss: true,
-            gliederungId: true,
             _count: {
               select: {
                 Anmeldung: {
                   where: {
-                    status: {
-                      equals: 'BESTAETIGT',
-                    },
+                    status: 'BESTAETIGT',
                   },
                 },
               },
             },
           },
         },
-        hostname: {
-          select: {
-            id: true,
-            hostname: true,
-          },
-        },
       },
     })
 
-    const withCounts = veranstaltungen.map((veranstaltung) => {
-      const count = veranstaltung.unterveranstaltungen.reduce((acc, unterveranstaltung) => {
-        if (unterveranstaltung._count.Anmeldung) {
-          acc += unterveranstaltung._count.Anmeldung
-        }
-        return acc
-      }, 0)
+    const mapped = data.map((v) => {
       return {
-        ...veranstaltung,
-        anzahlAnmeldungen: count,
+        ...v,
+        unterveranstaltungen: undefined,
+        anzahlAnmeldungen: v.unterveranstaltungen.reduce((a, b) => a + b._count.Anmeldung, 0),
       }
     })
 
-    return defineQueryResponse({ data: withCounts, total, pagination: { pageIndex, pageSize, pages } })
+    return defineQueryResponse({ data: mapped, total, pagination: { pageIndex, pageSize, pages } })
   },
 })

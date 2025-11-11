@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
+import { CustomFieldPosition, CustomFieldType, Prisma } from '@prisma/client'
 import prisma from '../../prisma.js'
 import { definePublicQueryProcedure } from '../../types/defineProcedure.js'
-import { CustomFieldPosition, CustomFieldType, Prisma } from '@prisma/client'
 import {
   calculatePagination,
   defineEmptyQueryResponse,
@@ -11,11 +11,56 @@ import {
 } from '../../types/defineTableProcedure.js'
 import { boolish } from '../../util/zod.js'
 
-export const customFieldsList = definePublicQueryProcedure({
+const baseFilter = z.strictObject({
+  entity: z.enum(['veranstaltung', 'unterveranstaltung']),
+  entityId: z.number(),
+  position: z.nativeEnum(CustomFieldPosition).optional(),
+})
+
+export const customFieldsTable = definePublicQueryProcedure({
   key: 'list',
-  inputSchema: z.strictObject({
-    entity: z.enum(['veranstaltung', 'unterveranstaltung']),
-    entityId: z.number(),
+  inputSchema: baseFilter,
+  async handler({ input: { entity, entityId, position } }) {
+    if (entity === 'veranstaltung') {
+      return await prisma.customField.findMany({
+        where: {
+          veranstaltungId: entityId,
+          positions: {
+            has: position,
+          },
+        },
+      })
+    } else if (entity === 'unterveranstaltung') {
+      return await prisma.customField.findMany({
+        where: {
+          positions: {
+            has: position,
+          },
+          OR: [
+            {
+              unterveranstaltungId: entityId,
+            },
+            {
+              veranstaltung: {
+                unterveranstaltungen: {
+                  some: {
+                    id: entityId,
+                  },
+                },
+              },
+            },
+          ],
+        },
+      })
+    }
+
+    return []
+  },
+})
+
+export const customFieldsList = definePublicQueryProcedure({
+  key: 'table',
+  inputSchema: baseFilter.extend({
     table: defineTableInput({
       filter: {
         name: z.string(),
@@ -29,13 +74,13 @@ export const customFieldsList = definePublicQueryProcedure({
   async handler({ input }) {
     const where: Prisma.CustomFieldWhereInput = {
       name: {
-        contains: input.table.filter?.name,
+        contains: input.table?.filter?.name,
         mode: 'insensitive',
       },
-      type: input.table.filter?.type,
-      required: input.table.filter?.required,
+      type: input.table?.filter?.type,
+      required: input.table?.filter?.required,
       positions:
-        input.table.filter?.position === undefined
+        input.table?.filter?.position === undefined
           ? undefined
           : {
               hasSome: [input.table.filter.position],
@@ -43,7 +88,7 @@ export const customFieldsList = definePublicQueryProcedure({
     }
 
     const total = await prisma.customField.count({ where })
-    const { pageIndex, pageSize, pages } = calculatePagination(total, input.table.pagination)
+    const { pageIndex, pageSize, pages } = calculatePagination(total, input.table?.pagination)
 
     if (input.entity === 'veranstaltung') {
       const customFields = await prisma.customField.findMany({
@@ -53,7 +98,7 @@ export const customFieldsList = definePublicQueryProcedure({
           ...where,
           veranstaltungId: input.entityId,
         },
-        orderBy: input.table.orderBy,
+        orderBy: input.table?.orderBy,
         select: {
           id: true,
           name: true,

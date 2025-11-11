@@ -14,7 +14,7 @@ import { useRouter } from 'vue-router'
 const { setTitle } = useRouteTitle()
 setTitle('Orte')
 
-type Ort = RouterOutput['ort']['list']['data'][number]
+type Ort = RouterOutput['ort']['table']['data'][number]
 type Address = Ort['address']
 
 const column = createColumnHelper<Ort>()
@@ -37,7 +37,7 @@ const query: Query<Ort> = (pagination, filter, orderBy) =>
   useQuery({
     queryKey: ['ort', pagination, filter, orderBy],
     queryFn: () =>
-      apiClient.ort.list.query({
+      apiClient.ort.table.query({
         pagination: {
           pageIndex: pagination.value.pageIndex,
           pageSize: pagination.value.pageSize,

@@ -1,16 +1,13 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-
-import Gliederung from './Gliederung.vue'
-import Verwaltung from './Verwaltung.vue'
-
-import { loggedInAccount } from '@/composables/useAuthentication'
+import { apiClient } from '@/api'
+import VeranstaltungCard from '@/components/UIComponents/VeranstaltungCard.vue'
 import { useRouteTitle } from '@/composables/useRouteTitle'
-
-const role = computed(() => loggedInAccount.value?.role)
+import { useAsyncState } from '@vueuse/core'
 
 const { setTitle } = useRouteTitle()
 setTitle('Aktuelle Veranstaltungen')
+
+const { state: veranstaltungen } = useAsyncState(() => apiClient.veranstaltung.list.query(), [])
 </script>
 
 <template>
@@ -18,8 +15,12 @@ setTitle('Aktuelle Veranstaltungen')
     <div class="mx-auto">
       <div class="isolate grid grid-cols-1 md:grid-cols-12 gap-8">
         <div class="col-span-8 flex flex-col gap-y-4">
-          <Verwaltung v-if="role === 'ADMIN'" />
-          <Gliederung v-if="role === 'GLIEDERUNG_ADMIN'" />
+          <VeranstaltungCard
+            v-for="veranstaltung in veranstaltungen"
+            :key="veranstaltung.id"
+            :veranstaltung="veranstaltung"
+            :has-unterveranstaltungen="veranstaltung.unterveranstaltungen.length"
+          />
         </div>
 
         <div class="col-span-4">
