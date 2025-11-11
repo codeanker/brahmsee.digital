@@ -1,0 +1,8 @@
+model Kreditinstitute {
+  id        Int    @id @default(autoincrement())
+  name      String
+  shortName String
+  blz       Int
+  bic       String
+  pan       String
+}
