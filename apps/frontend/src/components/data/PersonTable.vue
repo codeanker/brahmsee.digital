@@ -24,7 +24,6 @@ const columns = [
   column.accessor('photoId', {
     size: 10,
     header: 'Foto',
-    enableColumnFilter: false,
     cell({ getValue, row }) {
       const id = getValue<string>()
       return h(UserLogo, {
@@ -38,20 +37,31 @@ const columns = [
   column.accessor('id', {
     id: 'name',
     header: 'Name',
+    enableColumnFilter: true,
     cell({ row }) {
       return `${row.original.firstname} ${row.original.lastname}`
     },
   }),
   column.accessor('birthday', {
     header: 'Alter',
-    enableColumnFilter: false,
+    enableColumnFilter: true,
+    enableSorting: true,
+    sortDescFirst: true,
+    invertSorting: true,
     cell({ getValue }) {
       const value = getValue<Date>()
       return dayjs().diff(value, 'year') + ' Jahre'
     },
+    meta: {
+      filter: {
+        label: 'Geburtstag',
+        type: 'date-range',
+      },
+    },
   }),
   column.accessor('gliederung.name', {
     header: 'Gliederung',
+    enableColumnFilter: true,
     // meta: {
     //   filter: {
     //     type: 'select',
@@ -71,16 +81,16 @@ const columns = [
   }),
   column.accessor('anmeldungen._count', {
     header: 'Anmeldungen',
-    enableColumnFilter: false,
+    enableSorting: true,
     cell({ getValue }) {
       return getValue<number>() ?? 0
     },
   }),
 ]
 
-const query: Query<Person> = (pagination, filter) =>
+const query: Query<Person> = (pagination, filter, orderBy) =>
   useQuery({
-    queryKey: ['person', pagination, filter],
+    queryKey: ['person', pagination, filter, orderBy],
     queryFn: () =>
       apiClient.person.list.query({
         pagination: {
@@ -93,6 +103,7 @@ const query: Query<Person> = (pagination, filter) =>
             [curr.id]: curr.value,
           }
         }, {}),
+        orderBy: orderBy.value,
       }),
     initialData,
     placeholderData: keepPreviousData,

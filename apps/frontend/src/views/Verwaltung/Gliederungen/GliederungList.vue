@@ -19,15 +19,19 @@ const column = createColumnHelper<Gliederung>()
 const columns = [
   column.accessor('name', {
     header: 'Name',
+    enableColumnFilter: true,
+    enableSorting: true,
   }),
   column.accessor('edv', {
     header: 'EDV Nummer',
+    enableColumnFilter: true,
+    enableSorting: true,
   }),
 ]
 
-const query: Query<Gliederung> = (pagination, filter) =>
+const query: Query<Gliederung> = (pagination, filter, orderBy) =>
   useQuery({
-    queryKey: ['gliederung', pagination, filter],
+    queryKey: ['gliederung', pagination, filter, orderBy],
     queryFn: () =>
       apiClient.gliederung.list.query({
         pagination: {
@@ -40,6 +44,7 @@ const query: Query<Gliederung> = (pagination, filter) =>
             [curr.id]: curr.value,
           }
         }, {}),
+        orderBy: orderBy.value,
       }),
     initialData,
     placeholderData: keepPreviousData,
@@ -62,6 +67,7 @@ const query: Query<Gliederung> = (pagination, filter) =>
     <DataTable
       :query="query"
       :columns="columns"
+      :initial-sort="[{ id: 'name', desc: false }]"
     />
   </div>
 </template>

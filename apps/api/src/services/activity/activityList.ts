@@ -17,8 +17,9 @@ export const activityListProcedure = defineProtectedQueryProcedure({
       type: z.nativeEnum(ActivityType),
       subjectType: z.string(),
     },
+    orderBy: ['createdAt'],
   }),
-  handler: async ({ input: { pagination, filter } }) => {
+  handler: async ({ input: { pagination, filter, orderBy } }) => {
     const where: Prisma.ActivityWhereInput = {
       createdAt: filter?.createdAt
         ? {
@@ -36,10 +37,8 @@ export const activityListProcedure = defineProtectedQueryProcedure({
     const activities = await prisma.activity.findMany({
       take: pageSize,
       skip: pageSize * pageIndex,
-      orderBy: {
-        createdAt: 'desc',
-      },
       where,
+      orderBy,
       include: {
         causer: {
           select: {

@@ -72,12 +72,10 @@ const columns = [
     },
   }),
   column.accessor('unterveranstaltung.gliederung.name', {
-    header: 'Unterveranstaltung',
-    enableColumnFilter: false,
+    header: 'Gliederung',
   }),
   column.display({
     header: 'Erstellt von',
-    enableColumnFilter: false,
     cell({ row }) {
       return h(DataGridDoubleLineCell, {
         title: `${row.original.createdBy.person.firstname} ${row.original.createdBy.person.lastname}`,

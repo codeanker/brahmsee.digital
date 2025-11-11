@@ -12,8 +12,9 @@ export const ortListProcedure = defineProtectedQueryProcedure({
     filter: {
       name: z.string().optional(),
     },
+    orderBy: ['name'],
   }),
-  async handler({ input: { pagination, filter } }) {
+  async handler({ input: { pagination, filter, orderBy } }) {
     const where: Prisma.OrtWhereInput = {
       name: {
         contains: filter?.name,
@@ -27,10 +28,8 @@ export const ortListProcedure = defineProtectedQueryProcedure({
     const orte = await prisma.ort.findMany({
       take: pageSize,
       skip: pageSize * pageIndex,
-      orderBy: {
-        name: 'asc',
-      },
       where,
+      orderBy,
       select: {
         id: true,
         name: true,

@@ -18,6 +18,24 @@ declare module 'vue-router' {
 }
 
 declare module '@tanstack/vue-table' {
+  type ColumnFilters =
+    | {
+        type: 'select' | 'multi-select'
+        options: Option[] | (() => Promise<Option[]>)
+      }
+    | {
+        type: 'text'
+      }
+    | {
+        type: 'date'
+      }
+    | {
+        type: 'date-range'
+      }
+    | {
+        type: 'number'
+      }
+
   interface ColumnMeta {
     class?: {
       header?: string
@@ -26,22 +44,8 @@ declare module '@tanstack/vue-table' {
     }
 
     hidden?: MaybeRef<boolean>
-    filter?:
-      | {
-          type: 'select' | 'multi-select'
-          options: Option[] | (() => Promise<Option[]>)
-        }
-      | {
-          type: 'text'
-        }
-      | {
-          type: 'date'
-        }
-      | {
-          type: 'date-range'
-        }
-      | {
-          type: 'number'
-        }
+    filter?: {
+      label?: string
+    } & ColumnFilters
   }
 }

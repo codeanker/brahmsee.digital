@@ -15,8 +15,9 @@ export const accountVerwaltungListProcedure = defineProtectedQueryProcedure({
       status: z.nativeEnum(AccountStatus),
       role: z.nativeEnum(Role),
     },
+    orderBy: ['email', 'activatedAt'],
   }),
-  handler: async ({ input: { filter, pagination } }) => {
+  handler: async ({ input: { filter, pagination, orderBy } }) => {
     const where: Prisma.AccountWhereInput = {
       email: filter?.email
         ? {
@@ -41,11 +42,7 @@ export const accountVerwaltungListProcedure = defineProtectedQueryProcedure({
       take: pageSize,
       skip: pageSize * pageIndex,
       where,
-      orderBy: {
-        person: {
-          lastname: 'asc',
-        },
-      },
+      orderBy,
       select: {
         id: true,
         email: true,

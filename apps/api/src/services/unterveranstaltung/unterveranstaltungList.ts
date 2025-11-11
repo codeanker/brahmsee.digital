@@ -5,20 +5,31 @@ import prisma from '../../prisma.js'
 import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
 import { calculatePagination, defineQueryResponse, defineTableInput } from '../../types/defineTableProcedure.js'
 import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
+import { dayjs } from '@codeanker/helpers'
 
 export const unterveranstaltungListProcedure = defineProtectedQueryProcedure({
   key: 'list',
   roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
-  inputSchema: defineTableInput({
-    filter: {
-      veranstaltungId: z.number().optional(),
-      gliederungName: z.string().optional(),
-      type: z.nativeEnum(UnterveranstaltungType).optional(),
-    },
+  inputSchema: z.strictObject({
+    veranstaltungId: z.number().optional(),
+    table: defineTableInput({
+      filter: {
+        gliederungName: z.string().optional(),
+        type: z.nativeEnum(UnterveranstaltungType).optional(),
+        meldeschluss: z.tuple([z.date(), z.date()]),
+      },
+      orderBy: ['meldeschluss', 'teilnahmegebuehr'],
+    }),
   }),
-  async handler({ ctx: { account }, input: { filter, pagination } }) {
+  async handler({
+    ctx: { account },
+    input: {
+      veranstaltungId,
+      table: { filter, pagination },
+    },
+  }) {
     const where: Prisma.UnterveranstaltungWhereInput = {
-      veranstaltungId: filter?.veranstaltungId,
+      veranstaltungId,
       gliederung: {
         name: {
           contains: filter?.gliederungName,
@@ -26,6 +37,13 @@ export const unterveranstaltungListProcedure = defineProtectedQueryProcedure({
         },
       },
       type: filter?.type,
+      meldeschluss:
+        filter?.meldeschluss === undefined
+          ? undefined
+          : {
+              gte: dayjs(filter.meldeschluss[0]).startOf('day').toDate(),
+              lte: dayjs(filter.meldeschluss[1]).endOf('day').toDate(),
+            },
     }
 
     // Role-based Filter

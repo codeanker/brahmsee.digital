@@ -39,6 +39,10 @@ const options = useAsyncState<Option[]>(
 )
 
 const label = computed<string>(() => {
+  if (column.columnDef.meta?.filter?.label) {
+    return column.columnDef.meta?.filter?.label
+  }
+
   if (!column.columnDef.header) {
     return column.columnDef.id ?? ''
   }

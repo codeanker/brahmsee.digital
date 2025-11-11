@@ -3,16 +3,16 @@ import { useRouter } from 'vue-router'
 
 import { apiClient } from '@/api'
 import { useRouteTitle } from '@/composables/useRouteTitle'
-import { type UnterveranstaltungType, UnterveranstaltungTypeMapping, type RouterOutput } from '@codeanker/api'
+import type { StatusColors } from '@/helpers/getAccountStatusColors'
+import { UnterveranstaltungTypeMapping, type RouterOutput, type UnterveranstaltungType } from '@codeanker/api'
+import { dayjs, formatCurrency } from '@codeanker/helpers'
 import { keepPreviousData, useQuery } from '@tanstack/vue-query'
 import { createColumnHelper } from '@tanstack/vue-table'
+import { h } from 'vue'
+import type { Option } from '../BasicInputs/BasicSelect.vue'
 import DataTable, { type Query } from '../Table/DataTable.vue'
 import initialData from '../Table/initialData'
-import { h } from 'vue'
 import Badge from '../UIComponents/Badge.vue'
-import type { StatusColors } from '@/helpers/getAccountStatusColors'
-import { dayjs, formatCurrency } from '@codeanker/helpers'
-import type { Option } from '../BasicInputs/BasicSelect.vue'
 
 const props = defineProps<{
   veranstaltungId?: number
@@ -54,6 +54,7 @@ const columns = [
   column.accessor('gliederung.name', {
     id: 'gliederungName',
     header: 'Gliederung',
+    enableColumnFilter: true,
     meta: {
       filter: {
         type: 'text',
@@ -63,6 +64,7 @@ const columns = [
   column.accessor('type', {
     id: 'type',
     header: 'Typ',
+    enableColumnFilter: true,
     cell({ getValue }) {
       const type = getValue<UnterveranstaltungType>()
       return h(Badge, {
@@ -83,16 +85,22 @@ const columns = [
   column.accessor('meldeschluss', {
     id: 'meldeschluss',
     header: 'Meldeschluss',
-    enableColumnFilter: false,
+    enableColumnFilter: true,
+    enableSorting: true,
     cell({ getValue }) {
       const date = getValue<Date>()
       return dayjs(date).format('dddd, DD. MMMM YYYY')
+    },
+    meta: {
+      filter: {
+        type: 'date-range',
+      },
     },
   }),
   column.accessor('teilnahmegebuehr', {
     id: 'cost',
     header: 'Gebühr',
-    enableColumnFilter: false,
+    enableSorting: true,
     cell({ getValue }) {
       const cost = getValue<number>()
       return formatCurrency(cost)
@@ -112,19 +120,19 @@ const query: Query<Unterveranstaltung> = (pagination, filter) =>
     queryKey: ['unterveranstaltung', pagination, filter],
     queryFn: () =>
       apiClient.unterveranstaltung.list.query({
-        pagination: {
-          pageIndex: pagination.value.pageIndex,
-          pageSize: pagination.value.pageSize,
-        },
-        filter: filter.value.reduce(
-          (prev, curr) => {
+        veranstaltungId: props.veranstaltungId,
+        table: {
+          pagination: {
+            pageIndex: pagination.value.pageIndex,
+            pageSize: pagination.value.pageSize,
+          },
+          filter: filter.value.reduce((prev, curr) => {
             return {
               ...prev,
               [curr.id]: curr.value,
             }
-          },
-          { veranstaltungId: props.veranstaltungId }
-        ),
+          }, {}),
+        },
       }),
     initialData,
     placeholderData: keepPreviousData,

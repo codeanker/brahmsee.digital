@@ -62,7 +62,7 @@ function toggleHighlight(name: string) {
           v-for="(list, timestamp) in programmGroups"
           :key="timestamp"
         >
-          <tr class="text-xl font-bold bg-slate-50 border-t-2">
+          <tr class="text-xl font-bold bg-slate-50 dark:bg-slate-900/90 border-t-2">
             <td
               colspan="5"
               class="p-4"
@@ -75,8 +75,10 @@ function toggleHighlight(name: string) {
             :key="index"
             :class="
               cn(
-                '*:p-2 transition-colors hover:bg-slate-200 cursor-pointer',
-                highlighted.includes(row.name) ? 'odd:bg-primary-600 bg-primary-500' : 'odd:bg-slate-100'
+                '*:p-2 transition-colors hover:bg-slate-200 dark:hover:bg-slate-800/90 cursor-pointer',
+                highlighted.includes(row.name)
+                  ? 'odd:bg-primary-600 bg-primary-500'
+                  : 'odd:bg-slate-100 dark:odd:bg-slate-800'
               )
             "
             @click="() => toggleHighlight(row.name)"

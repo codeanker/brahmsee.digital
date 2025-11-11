@@ -1,10 +1,10 @@
 import { Prisma, Role } from '@prisma/client'
 import z from 'zod'
 
+import { dayjs } from '@codeanker/helpers'
 import prisma from '../../prisma.js'
 import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
 import { calculatePagination, defineQueryResponse, defineTableInput } from '../../types/defineTableProcedure.js'
-import { dayjs } from '@codeanker/helpers'
 
 export const veranstaltungVerwaltungListProcedure = defineProtectedQueryProcedure({
   key: 'verwaltungList',
@@ -12,10 +12,12 @@ export const veranstaltungVerwaltungListProcedure = defineProtectedQueryProcedur
   inputSchema: defineTableInput({
     filter: {
       name: z.string(),
+      zeitraum: z.tuple([z.date(), z.date()]),
       meldeschluss: z.tuple([z.date(), z.date()]),
     },
+    orderBy: ['name', 'teilnahmegebuehr'],
   }),
-  async handler({ input: { pagination, filter } }) {
+  async handler({ input: { pagination, filter, orderBy } }) {
     const where: Prisma.VeranstaltungWhereInput = {
       name: {
         contains: filter?.name,
@@ -27,6 +29,23 @@ export const veranstaltungVerwaltungListProcedure = defineProtectedQueryProcedur
             lte: dayjs(filter.meldeschluss[1]).endOf('day').toDate(),
           }
         : undefined,
+      OR:
+        filter?.zeitraum === undefined
+          ? undefined
+          : [
+              {
+                beginn: {
+                  gte: filter.zeitraum[0],
+                  lte: filter.zeitraum[1],
+                },
+              },
+              {
+                ende: {
+                  gte: filter.zeitraum[0],
+                  lte: filter.zeitraum[1],
+                },
+              },
+            ],
     }
 
     const total = await prisma.veranstaltung.count({ where })
@@ -35,10 +54,8 @@ export const veranstaltungVerwaltungListProcedure = defineProtectedQueryProcedur
     const veranstaltungen = await prisma.veranstaltung.findMany({
       take: pageSize,
       skip: pageSize * pageIndex,
-      orderBy: {
-        name: 'asc',
-      },
       where,
+      orderBy,
       select: {
         id: true,
         name: true,

@@ -24,16 +24,25 @@ const column = createColumnHelper<Veranstaltung>()
 const columns = [
   column.accessor('name', {
     header: 'Name',
+    enableColumnFilter: true,
+    enableSorting: true,
   }),
   column.display({
+    id: 'zeitraum',
     header: 'Zeitraum',
+    enableColumnFilter: true,
     cell({ row }) {
       return `${formatDateWith(row.original.beginn, keyInfoDateFormat)} - ${formatDateWith(row.original.ende, keyInfoDateFormat)}`
     },
-    enableColumnFilter: false,
+    meta: {
+      filter: {
+        type: 'date-range',
+      },
+    },
   }),
   column.accessor('meldeschluss', {
     header: 'Meldeschluss',
+    enableColumnFilter: true,
     cell({ getValue }) {
       const value = getValue<Date>()
       const isMeldeschlussErreicht = dayjs().isAfter(value)
@@ -55,8 +64,9 @@ const columns = [
   }),
   column.accessor('teilnahmegebuehr', {
     header: 'Gebühr',
-    cell: ({ getValue }) => formatCurrency(getValue<number>()),
     enableColumnFilter: false,
+    enableSorting: true,
+    cell: ({ getValue }) => formatCurrency(getValue<number>()),
   }),
   column.accessor('maxTeilnehmende', {
     header: 'Anm. / Max',
@@ -65,9 +75,9 @@ const columns = [
   }),
 ]
 
-const query: Query<Veranstaltung> = (pagination, filter) =>
+const query: Query<Veranstaltung> = (pagination, filter, orderBy) =>
   useQuery({
-    queryKey: ['veranstaltung', pagination, filter],
+    queryKey: ['veranstaltung', pagination, filter, orderBy],
     queryFn: () =>
       apiClient.veranstaltung.verwaltungList.query({
         pagination: {
@@ -80,6 +90,7 @@ const query: Query<Veranstaltung> = (pagination, filter) =>
             [curr.id]: curr.value,
           }
         }, {}),
+        orderBy: orderBy.value,
       }),
     initialData,
     placeholderData: keepPreviousData,
@@ -108,6 +119,7 @@ function onClick(veranstaltung: Veranstaltung) {
     <DataTable
       :query="query"
       :columns="columns"
+      :initial-sort="[{ id: 'name', desc: false }]"
       @dblclick="onClick"
     />
   </div>

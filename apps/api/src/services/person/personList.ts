@@ -13,12 +13,14 @@ export const personListProcedure = defineProtectedQueryProcedure({
   inputSchema: defineTableInput({
     filter: {
       name: z.string(),
+      birthday: z.array(z.date()).min(2).max(2),
       gliederung_name: z.string(),
       // gliederungId: z.number().int(),
       // veranstaltungId: z.number().int(),
     },
+    orderBy: ['birthday', 'anmeldungen__count'],
   }),
-  handler: async ({ ctx, input: { filter, pagination } }) => {
+  handler: async ({ ctx, input: { filter, orderBy, pagination } }) => {
     const protection = await getPersonProtectionFilter(ctx)
     const where: Prisma.PersonWhereInput = {
       OR: filter?.name
@@ -38,21 +40,31 @@ export const personListProcedure = defineProtectedQueryProcedure({
           ]
         : undefined,
       gliederung: {
-        name: filter?.gliederung_name,
+        name: {
+          contains: filter?.gliederung_name,
+          mode: 'insensitive',
+        },
       },
+      birthday:
+        filter?.birthday === undefined
+          ? undefined
+          : {
+              gte: filter.birthday[0],
+              lte: filter.birthday[1],
+            },
       ...protection,
     }
 
     const total = await prisma.person.count({ where })
     const { pageIndex, pageSize, pages } = calculatePagination(total, pagination)
 
+    console.log(orderBy)
+
     const persons = await prisma.person.findMany({
       take: pageSize,
       skip: pageSize * pageIndex,
-      orderBy: {
-        lastname: 'asc',
-      },
       where,
+      orderBy,
       select: {
         id: true,
         firstname: true,

@@ -21,6 +21,8 @@ const column = createColumnHelper<Ort>()
 const columns = [
   column.accessor('name', {
     header: 'Name',
+    enableColumnFilter: true,
+    enableSorting: true,
   }),
   column.accessor('address', {
     header: 'Adresse',
@@ -28,13 +30,12 @@ const columns = [
       const value = getValue<Address>()
       return value ? `${value.street} ${value.streetNumber}, ${value.zip} ${value.city}` : 'Keine Adresse angegeben'
     },
-    enableColumnFilter: false,
   }),
 ]
 
-const query: Query<Ort> = (pagination, filter) =>
+const query: Query<Ort> = (pagination, filter, orderBy) =>
   useQuery({
-    queryKey: ['ort', pagination, filter],
+    queryKey: ['ort', pagination, filter, orderBy],
     queryFn: () =>
       apiClient.ort.list.query({
         pagination: {
@@ -47,6 +48,7 @@ const query: Query<Ort> = (pagination, filter) =>
             [curr.id]: curr.value,
           }
         }, {}),
+        orderBy: orderBy.value,
       }),
     initialData,
     placeholderData: keepPreviousData,
@@ -75,6 +77,7 @@ function onClick(ort: Ort) {
     <DataTable
       :query="query"
       :columns="columns"
+      :initial-sort="[{ id: 'name', desc: false }]"
       @dblclick="onClick"
     />
   </div>

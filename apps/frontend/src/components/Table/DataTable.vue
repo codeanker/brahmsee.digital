@@ -7,8 +7,11 @@ import {
   ArrowPathIcon,
   ChevronDoubleLeftIcon,
   ChevronDoubleRightIcon,
+  ChevronDownIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  ChevronUpDownIcon,
+  ChevronUpIcon,
   FunnelIcon as FunnelIconSolid,
 } from '@heroicons/vue/24/solid'
 import { type UseQueryDefinedReturnType } from '@tanstack/vue-query'
@@ -17,11 +20,15 @@ import {
   getCoreRowModel,
   getFacetedRowModel,
   useVueTable,
+  type Column,
   type ColumnDef,
   type ColumnFiltersState,
+  type Header,
   type OnChangeFn,
   type PaginationState,
   type RowData,
+  type SortDirection,
+  type SortingState,
 } from '@tanstack/vue-table'
 import { computed, ref, unref, useTemplateRef, watch, type Ref } from 'vue'
 import LoadingBar from '../LoadingBar.vue'
@@ -30,13 +37,15 @@ import Filter from './Filter.vue'
 
 export type Query<T> = (
   pagination: Ref<PaginationState>,
-  filter: Ref<ColumnFiltersState>
+  filter: Ref<ColumnFiltersState>,
+  orderBy: Ref<SortingState>
 ) => UseQueryDefinedReturnType<QueryResponse<T>, any>
 
 const props = defineProps<{
   columns: ColumnDef<TData, any>[]
   query: Query<TData>
   initialPagination?: PaginationState
+  initialSort?: SortingState
 }>()
 
 const emit = defineEmits<{
@@ -63,8 +72,9 @@ const pagination = ref<PaginationState>(
   }
 )
 const columnFilters = ref<ColumnFiltersState>([])
+const columnSorting = ref<SortingState>(props.initialSort ?? [])
 
-const query = props.query(pagination, columnFilters)
+const query = props.query(pagination, columnFilters, columnSorting)
 const data = computed(() => query.data.value.data)
 
 const table = useVueTable({
@@ -83,6 +93,8 @@ const table = useVueTable({
   manualSorting: true,
   onPaginationChange: useUpdater(pagination),
   onColumnFiltersChange: useUpdater(columnFilters),
+  onSortingChange: useUpdater(columnSorting),
+  sortDescFirst: false,
   state: {
     get pagination() {
       return pagination.value
@@ -90,10 +102,13 @@ const table = useVueTable({
     get columnFilters() {
       return columnFilters.value
     },
+    get sorting() {
+      return columnSorting.value
+    },
   },
 })
 
-const hasFilters = computed(() => table._getColumnDefs().some((d) => d.enableColumnFilter !== false))
+const hasFilters = computed(() => table._getColumnDefs().some((d) => d.enableColumnFilter === true))
 
 // reset pagination when filter change
 watch(columnFilters, () => {
@@ -114,6 +129,43 @@ const filterContainer = useTemplateRef('filterContainer')
 function refresh() {
   emit('refresh')
   query.refetch()
+}
+
+function isFilterEnabled({ isPlaceholder, column }: Header<TData, unknown>): boolean {
+  return !isPlaceholder && column.columnDef.enableColumnFilter === true
+}
+
+function isSortingEnabled({ column }: Header<TData, unknown>): boolean {
+  return column.columnDef.enableSorting === true
+}
+
+function toggleSorting(column: Column<TData>): void {
+  if (column.columnDef.enableSorting === true) {
+    column.toggleSorting()
+  }
+}
+
+function isShowSortIcon(column: Column<TData>, wanted?: SortDirection): boolean {
+  const state = column.getIsSorted()
+
+  if (wanted === undefined) {
+    return state === false
+  } else if (state !== false) {
+    const isInverted = column.columnDef.invertSorting ?? false
+
+    // asc === asc
+    // desc === desc
+    // asc === isInverted && desc
+    // desc === isInverted && asc
+
+    if (isInverted) {
+      return state !== wanted
+    } else {
+      return state === wanted
+    }
+  }
+
+  return false
 }
 </script>
 
@@ -156,13 +208,16 @@ function refresh() {
             :class="cn('text-left px-2 py-4 border-b-2', header.column.columnDef.meta?.class?.header)"
             :style="{ width: `${header.getSize()}px` }"
           >
-            <div class="flex flex-row gap-x-4 items-center">
+            <div
+              :class="cn('flex flex-row gap-x-2 items-center', { 'cursor-pointer': isSortingEnabled(header) })"
+              @click="() => toggleSorting(header.column)"
+            >
               <FlexRender
                 v-if="!header.isPlaceholder"
                 :render="header.column.columnDef.header"
                 :props="header.getContext()"
               />
-              <template v-if="!header.isPlaceholder && header.column.getCanFilter()">
+              <template v-if="isFilterEnabled(header)">
                 <FunnelIconSolid
                   v-if="header.column.getIsFiltered()"
                   class="size-4"
@@ -171,7 +226,6 @@ function refresh() {
                   v-if="!header.column.getIsFiltered()"
                   class="size-4"
                 />
-
                 <Teleport
                   v-if="filterContainer"
                   :to="filterContainer"
@@ -182,6 +236,20 @@ function refresh() {
                   />
                 </Teleport>
               </template>
+              <template v-if="isSortingEnabled(header)">
+                <ChevronUpDownIcon
+                  v-if="isShowSortIcon(header.column)"
+                  class="size-6"
+                />
+                <ChevronUpIcon
+                  v-if="isShowSortIcon(header.column, 'asc')"
+                  class="size-4"
+                />
+                <ChevronDownIcon
+                  v-if="isShowSortIcon(header.column, 'desc')"
+                  class="size-4"
+                />
+              </template>
             </div>
           </th>
         </template>
@@ -191,7 +259,7 @@ function refresh() {
       <tr
         v-for="row in table.getRowModel().rows"
         :key="row.id"
-        class="even:bg-slate-50 transition-colors hover:bg-slate-200 cursor-pointer"
+        class="even:bg-slate-50 transition-colors hover:bg-slate-200 cursor-pointer dark:even:bg-slate-800 dark:hover:bg-slate-700"
         @click="emit('click', row.original)"
         @dblclick="emit('dblclick', row.original)"
       >
@@ -252,7 +320,8 @@ function refresh() {
     </tfoot>
   </table>
 
-  <div class="md:justify-self-end space-x-2 mt-4">
+  <!-- md:justify-self-end -->
+  <div class="space-x-2 mt-4">
     <Button
       color="secondary"
       @click="refresh"
@@ -299,6 +368,11 @@ function refresh() {
     >
       <ChevronDoubleRightIcon class="size-4" />
     </Button>
-    <span> Seite {{ table.getState().pagination.pageIndex + 1 }} von {{ table.getPageCount() }} </span>
+    <div class="space-x-8 inline">
+      <span> Seite {{ table.getState().pagination.pageIndex + 1 }} von {{ table.getPageCount() }} </span>
+      <span class="text-sm"
+        >Insgesamt <u>{{ query.data.value.total }}</u> Ergebnisse</span
+      >
+    </div>
   </div>
 </template>

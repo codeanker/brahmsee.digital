@@ -14,4 +14,4 @@ export type RouterOutput = inferRouterOutputs<AppRouter>
 export * from './types/enums/index.js'
 export * from './types/enums/mappings/index.js'
 
-export type { QueryResponse } from './types/defineTableProcedure.js'
+export type * from './types/defineTableProcedure.js'

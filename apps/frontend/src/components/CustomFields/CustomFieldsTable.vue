@@ -34,9 +34,12 @@ const column = createColumnHelper<CustomField>()
 const columns = [
   column.accessor('name', {
     header: 'Name',
+    enableColumnFilter: true,
+    enableSorting: true,
   }),
   column.accessor('type', {
     header: 'Typ',
+    enableColumnFilter: true,
     cell({ getValue }) {
       const type = getValue<CustomFieldType>()
       const { human, description } = CustomFieldTypeMapping[type]
@@ -66,6 +69,7 @@ const columns = [
   }),
   column.accessor('required', {
     header: 'Erforderlich?',
+    enableColumnFilter: true,
     cell({ getValue }) {
       const required = getValue<boolean>()
       if (required) {
@@ -91,6 +95,7 @@ const columns = [
   column.accessor('positions', {
     id: 'position',
     header: 'Positionen',
+    enableColumnFilter: true,
     cell({ getValue }) {
       const positions = getValue<CustomFieldPosition[]>()
       return getEnumOptions(CustomFieldPositionMapping)
@@ -107,9 +112,9 @@ const columns = [
   }),
 ]
 
-const query: Query<CustomField> = (pagination, filter) =>
+const query: Query<CustomField> = (pagination, filter, orderBy) =>
   useQuery({
-    queryKey: ['custom-fields', pagination, filter],
+    queryKey: ['custom-fields', pagination, filter, orderBy],
     queryFn: () =>
       apiClient.customFields.list.query({
         entity: props.entity,
@@ -125,6 +130,7 @@ const query: Query<CustomField> = (pagination, filter) =>
               [curr.id]: curr.value,
             }
           }, {}),
+          orderBy: orderBy.value,
         },
       }),
     initialData,

@@ -23,6 +23,7 @@ export const customFieldsList = definePublicQueryProcedure({
         required: boolish,
         position: z.nativeEnum(CustomFieldPosition),
       },
+      orderBy: ['name'],
     }),
   }),
   async handler({ input }) {
@@ -52,6 +53,7 @@ export const customFieldsList = definePublicQueryProcedure({
           ...where,
           veranstaltungId: input.entityId,
         },
+        orderBy: input.table.orderBy,
         select: {
           id: true,
           name: true,

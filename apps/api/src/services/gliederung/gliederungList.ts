@@ -13,8 +13,9 @@ export const gliederungListProcedure = defineProtectedQueryProcedure({
       name: z.string().optional(),
       edv: z.string().optional(),
     },
+    orderBy: ['name', 'edv'],
   }),
-  async handler({ input: { pagination, filter } }) {
+  async handler({ input: { pagination, filter, orderBy } }) {
     const where: Prisma.GliederungWhereInput = {
       name: {
         contains: filter?.name,
@@ -31,10 +32,8 @@ export const gliederungListProcedure = defineProtectedQueryProcedure({
     const orte = await prisma.gliederung.findMany({
       take: pageSize,
       skip: pageSize * pageIndex,
-      orderBy: {
-        name: 'asc',
-      },
       where,
+      orderBy,
       select: {
         name: true,
         edv: true,

@@ -1,3 +1,4 @@
+import type { Prisma } from '@prisma/client'
 import { z } from 'zod'
 
 export type QueryResponse<T> = {
@@ -18,7 +19,10 @@ const zPagination = z
   })
   .optional()
 
-type Pagination = z.infer<typeof zPagination>
+export type Pagination = z.infer<typeof zPagination>
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface OrderBy extends Record<string, Prisma.SortOrder | OrderBy> {}
 
 /**
  * Calculates pagination data based on total items and requested pagination.
@@ -40,19 +44,64 @@ export function calculatePagination(total: number, pagination: Pagination) {
  *
  * @returns A zod object depicting the target input schema.
  */
-export function defineTableInput<TFilter extends z.ZodRawShape>({
+export function defineTableInput<TFilter extends z.ZodRawShape, TOrderBy extends [string, ...string[]]>({
   filter,
+  orderBy,
 }: {
   /**
    * An object representing all the supported values which can be filtered by.
    */
   filter: TFilter
+
+  /**
+   * A list of attributes which can be ordered by.
+   */
+  orderBy?: TOrderBy
 }) {
   return z.strictObject({
     pagination: zPagination,
     filter: z.strictObject(filter).partial().optional(),
+    orderBy:
+      orderBy === undefined
+        ? z.undefined().optional()
+        : z
+            .array(
+              z.strictObject({
+                id: z.enum(orderBy),
+                desc: z.boolean(),
+              })
+            )
+            .optional()
+            .transform<OrderBy[]>((list, ctx) => {
+              if (list === undefined) {
+                return []
+              }
+
+              return list.map<OrderBy>(({ id, desc }, index) => {
+                if (id === undefined) {
+                  ctx.addIssue({
+                    code: 'custom',
+                    path: [...ctx.path, index],
+                    fatal: true,
+                    message: `encountered undefined id for orderBy operation`,
+                  })
+                  return {}
+                }
+
+                // the regex makes sure queries like 'anmeldungen__count' are not split into
+                //     'anmeldungen', '', 'count'
+                // but
+                //     'anmeldungen', '_count'
+                const keys = id.split(/_(?=_)/g)
+                const direction: Prisma.SortOrder = desc ? 'desc' : 'asc'
+
+                return keys.reduceRight<OrderBy>((acc, key) => ({ [key]: acc }), direction as unknown as OrderBy)
+              })
+            }),
   })
 }
+
+export type TableInput = z.infer<ReturnType<typeof defineTableInput>>
 
 /**
  * Defines a generic query response for consumption with the `DataTable` component.

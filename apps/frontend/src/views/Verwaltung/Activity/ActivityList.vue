@@ -47,6 +47,8 @@ const column = createColumnHelper<Activity>()
 const columns = [
   column.accessor('createdAt', {
     header: 'Zeitstempel',
+    enableColumnFilter: true,
+    enableSorting: true,
     meta: {
       filter: {
         type: 'date-range',
@@ -63,6 +65,7 @@ const columns = [
   }),
   column.accessor('type', {
     header: 'Typ',
+    enableColumnFilter: true,
     meta: {
       filter: {
         type: 'select',
@@ -85,6 +88,7 @@ const columns = [
   }),
   column.accessor('subjectType', {
     header: 'Betroffen',
+    enableColumnFilter: true,
     meta: {
       filter: {
         type: 'select',
@@ -101,9 +105,9 @@ const columns = [
   }),
 ]
 
-const query: Query<Activity> = (pagination, filter) =>
+const query: Query<Activity> = (pagination, filter, orderBy) =>
   useQuery({
-    queryKey: ['activity', pagination, filter],
+    queryKey: ['activity', pagination, filter, orderBy],
     queryFn: () =>
       apiClient.activity.list.query({
         pagination: {
@@ -116,6 +120,7 @@ const query: Query<Activity> = (pagination, filter) =>
             [curr.id]: curr.value,
           }
         }, {}),
+        orderBy: orderBy.value,
       }),
     initialData,
     placeholderData: keepPreviousData,
@@ -130,6 +135,7 @@ const query: Query<Activity> = (pagination, filter) =>
   <DataTable
     :query="query"
     :columns="columns"
+    :initial-sort="[{ id: 'createdAt', desc: true }]"
     @click="onClick"
   />
 </template>

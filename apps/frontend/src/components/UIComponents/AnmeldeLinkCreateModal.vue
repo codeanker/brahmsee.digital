@@ -6,6 +6,7 @@ import Modal from './Modal.vue'
 import Button from './Button.vue'
 import { apiClient } from '@/api'
 import { DocumentDuplicateIcon, RocketLaunchIcon } from '@heroicons/vue/24/outline'
+import { useQueryClient } from '@tanstack/vue-query'
 
 const props = defineProps<{
   veranstaltung: string
@@ -42,6 +43,8 @@ const comment = ref('')
 const token = ref('')
 const locked = ref(true)
 
+const queryClient = useQueryClient()
+
 async function create() {
   if (state.value !== 'idle') {
     return
@@ -54,6 +57,8 @@ async function create() {
     })
 
     state.value = 'success'
+
+    queryClient.invalidateQueries({ queryKey: ['anmeldeLink'] })
     emit('success')
   } catch (e: unknown) {
     state.value = 'error'

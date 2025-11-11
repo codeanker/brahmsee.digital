@@ -47,7 +47,7 @@ const columns = [
       })
     },
   }),
-  column.accessor('personId', {
+  column.accessor('person', {
     id: 'name',
     header: 'Name',
     cell({ row }) {
@@ -56,14 +56,17 @@ const columns = [
   }),
   column.accessor('email', {
     header: 'E-Mail Adresse',
+    enableColumnFilter: true,
+    enableSorting: true,
   }),
   column.accessor('activatedAt', {
     header: 'Aktiviert am',
+    enableSorting: true,
     cell: ({ getValue }) => formatTimestamp(getValue<Date>()),
-    enableColumnFilter: false,
   }),
   column.accessor('role', {
     header: 'Rolle',
+    enableColumnFilter: true,
     cell({ getValue }) {
       const role = getValue<Role>()
       return h(Badge, {
@@ -83,6 +86,7 @@ const columns = [
   }),
   column.accessor('status', {
     header: 'Status',
+    enableColumnFilter: true,
     cell({ getValue }) {
       const status = getValue<AccountStatus>()
       return h(Badge, {
@@ -102,9 +106,9 @@ const columns = [
   }),
 ]
 
-const query: Query<Account> = (pagination, filter) =>
+const query: Query<Account> = (pagination, filter, orderBy) =>
   useQuery({
-    queryKey: ['account', pagination, filter],
+    queryKey: ['account', pagination, filter, orderBy],
     queryFn: () =>
       apiClient.account.verwaltungList.query({
         pagination: {
@@ -117,6 +121,7 @@ const query: Query<Account> = (pagination, filter) =>
             [curr.id]: curr.value,
           }
         }, {}),
+        orderBy: orderBy.value,
       }),
     initialData,
     placeholderData: keepPreviousData,
