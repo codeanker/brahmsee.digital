@@ -10,7 +10,7 @@ export const accountVerwaltungListProcedure = defineProtectedQueryProcedure({
   roleIds: [Role.ADMIN],
   inputSchema: defineTableInput({
     filter: {
-      name: z.string(),
+      person: z.string(),
       email: z.string(),
       status: z.nativeEnum(AccountStatus),
       role: z.nativeEnum(Role),
@@ -27,10 +27,10 @@ export const accountVerwaltungListProcedure = defineProtectedQueryProcedure({
         : undefined,
       status: filter?.status,
       role: filter?.role,
-      OR: filter?.name
+      OR: filter?.person
         ? [
-            { person: { firstname: { contains: filter.name, mode: 'insensitive' } } },
-            { person: { lastname: { contains: filter.name, mode: 'insensitive' } } },
+            { person: { firstname: { contains: filter.person, mode: 'insensitive' } } },
+            { person: { lastname: { contains: filter.person, mode: 'insensitive' } } },
           ]
         : undefined,
     }

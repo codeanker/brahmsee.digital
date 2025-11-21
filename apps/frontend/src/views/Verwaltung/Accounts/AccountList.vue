@@ -48,8 +48,9 @@ const columns = [
     },
   }),
   column.accessor('person', {
-    id: 'name',
-    header: 'Name',
+    id: 'person',
+    header: 'Person',
+    enableColumnFilter: true,
     cell({ row }) {
       return `${row.original.person.firstname} ${row.original.person.lastname}`
     },

@@ -39,7 +39,7 @@ export const activityListProcedure = defineProtectedQueryProcedure({
       skip: pageSize * pageIndex,
       where,
       orderBy,
-      include: {
+      select: {
         causer: {
           select: {
             person: {
@@ -50,6 +50,11 @@ export const activityListProcedure = defineProtectedQueryProcedure({
             },
           },
         },
+        subjectId: true,
+        subjectType: true,
+        createdAt: true,
+        type: true,
+        description: true,
       },
     })
 

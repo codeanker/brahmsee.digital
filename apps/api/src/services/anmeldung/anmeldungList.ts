@@ -47,6 +47,7 @@ export const anmeldungListProcedure = defineProtectedQueryProcedure({
     filter: {
       scope: scopeSchema,
       person: z.string(),
+      gliederung: z.string(),
       status: z.nativeEnum(AnmeldungStatus),
       withoutPhoto: z.boolean(),
     },
@@ -76,6 +77,12 @@ export const anmeldungListProcedure = defineProtectedQueryProcedure({
               equals: null,
             }
           : undefined,
+        gliederung: {
+          name: {
+            contains: filter?.gliederung,
+            mode: 'insensitive',
+          },
+        },
       },
       status: filter?.status,
     }

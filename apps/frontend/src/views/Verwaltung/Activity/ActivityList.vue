@@ -6,11 +6,13 @@ import Badge from '@/components/UIComponents/Badge.vue'
 import { useRouteTitle } from '@/composables/useRouteTitle'
 import type { StatusColors } from '@/helpers/getAnmeldungStatusColors'
 import router from '@/router'
-import { type Activity, type ActivityType } from '@codeanker/api'
+import { type ActivityType, type RouterOutput } from '@codeanker/api'
 import { formatDateWith } from '@codeanker/helpers'
 import { keepPreviousData, useQuery } from '@tanstack/vue-query'
 import { createColumnHelper } from '@tanstack/vue-table'
 import { h } from 'vue'
+
+type Activity = RouterOutput['activity']['list']['data'][number]
 
 const { setTitle } = useRouteTitle()
 setTitle('Aufgezeichnete Aktivitäten')
@@ -62,6 +64,7 @@ const columns = [
   column.accessor('description', {
     header: 'Beschreibung',
     enableColumnFilter: false,
+    cell: ({ getValue }) => getValue<string>() ?? '-',
   }),
   column.accessor('type', {
     header: 'Typ',
@@ -99,9 +102,16 @@ const columns = [
       },
     },
   }),
-  column.accessor('causerId', {
+  column.display({
     header: 'Akteur',
     enableColumnFilter: false,
+    cell: ({ row }) => {
+      if (!row.original.causer) {
+        return '-'
+      }
+
+      return `${row.original.causer?.person.firstname} ${row.original.causer?.person.lastname}`
+    },
   }),
 ]
 

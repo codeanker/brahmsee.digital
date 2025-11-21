@@ -129,14 +129,16 @@ const files: ExportedFileType[] = [
 ]
 
 const publicProgramLink = computed(() => {
-  if (veranstaltung.value) {
-    return `https://${veranstaltung.value.hostname?.hostname}/veranstaltung/${veranstaltung.value.publicReadToken}`
+  if (!veranstaltung.value || !veranstaltung.value.publicReadToken) {
+    return null
   }
-  return ''
+  return `https://${veranstaltung.value.hostname?.hostname}/veranstaltung/${veranstaltung.value.publicReadToken}`
 })
 
 function copyProgramLink() {
-  navigator.clipboard.writeText(publicProgramLink.value)
+  if (publicProgramLink.value) {
+    navigator.clipboard.writeText(publicProgramLink.value)
+  }
 }
 </script>
 
@@ -245,7 +247,10 @@ function copyProgramLink() {
         </RouterLink>
       </div>
 
-      <div class="p-6 bg-primary-100 dark:bg-primary-900 rounded-md my-8 flex items-top space-x-4">
+      <div
+        v-if="publicProgramLink"
+        class="p-6 bg-primary-100 dark:bg-primary-900 rounded-md my-8 flex items-top space-x-4"
+      >
         <div><RocketLaunchIcon class="h-10 w-10 text-primary-600" /></div>
         <div class="w-full">
           <div class="font-bold text-lg text-primary-600">Die Programmpunkte sind öffentlich verfügbar</div>

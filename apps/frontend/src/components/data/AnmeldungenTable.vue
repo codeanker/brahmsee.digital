@@ -181,33 +181,34 @@ const columns = [
   column.accessor('person.photoId', {
     size: 10,
     header: 'Foto',
-    enableColumnFilter: false,
-    cell({ getValue, row }) {
-      const id = getValue<string>()
+    cell({ row }) {
       return h(UserLogo, {
         firstname: row.original.person.firstname,
         lastname: row.original.person.lastname,
-        photoId: id,
+        photoId: row.original.person.photoId,
+        personId: row.original.person.id,
         cssClasses: 'h-10 w-10',
       })
     },
   }),
   column.accessor('person', {
-    header: 'Name',
+    header: 'Person',
+    enableColumnFilter: true,
     cell({ row }) {
       return `${row.original.person.firstname} ${row.original.person.lastname}`
     },
   }),
   column.accessor('person.birthday', {
     header: 'Alter',
-    enableColumnFilter: false,
     cell({ getValue }) {
       const value = getValue<Date>()
       return dayjs().diff(value, 'year') + ' Jahre'
     },
   }),
   column.accessor('person.gliederung.name', {
+    id: 'gliederung',
     header: 'Gliederung',
+    enableColumnFilter: true,
     meta: {
       hidden: computed(() => loggedInAccount.value?.role === 'ADMIN'),
     },
@@ -215,6 +216,7 @@ const columns = [
   column.accessor('status', {
     header: 'Status',
     size: 150,
+    enableColumnFilter: true,
     meta: {
       filter: {
         type: 'select',
