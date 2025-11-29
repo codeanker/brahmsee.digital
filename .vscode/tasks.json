@@ -32,6 +32,9 @@
       "options": {
         "statusbar": {
           "hide": true
+        },
+        "env": {
+          "NODE_ENV": "development"
         }
       }
     },
