@@ -29,7 +29,6 @@
   "dependencies": {
     "@azure/storage-blob": "^12.17.0",
     "@codeanker/authentication": "workspace:*",
-    "@codeanker/datagrid": "file:../../vendor/codeanker-datagrid-2.7.1-trimmed.tgz",
     "@codeanker/helpers": "workspace:*",
     "@codeanker/service-sms": "file:../../vendor/codeanker-service-sms-0.0.2.tar.gz",
     "@e965/xlsx": "^0.20.3",

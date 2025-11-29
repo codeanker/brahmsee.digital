@@ -14,7 +14,6 @@
     "@azure/storage-blob": "^12.17.0",
     "@codeanker/api": "workspace:*",
     "@codeanker/cookies": "workspace:*",
-    "@codeanker/datagrid": "file:../../vendor/codeanker-datagrid-2.7.1-trimmed.tgz",
     "@codeanker/helpers": "workspace:*",
     "@codeanker/interfaces": "workspace:*",
     "@codeanker/validation": "workspace:*",
