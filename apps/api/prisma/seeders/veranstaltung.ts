@@ -5,7 +5,6 @@ import logActivity from '../../src/util/activity.js'
 
 import type { Seeder } from './index.js'
 import { dayjs } from '@codeanker/helpers'
-import { randomUUID } from 'node:crypto'
 
 const createVeranstaltung: Seeder = async (prisma: PrismaClient) => {
   const beginn = dayjs().add(1, 'month')
@@ -24,7 +23,6 @@ const createVeranstaltung: Seeder = async (prisma: PrismaClient) => {
       teilnahmeBedingungen: faker.lorem.text(),
       teilnahmeBedingungenPublic: faker.lorem.text(),
       zielgruppe: faker.lorem.text(),
-      publicReadToken: randomUUID(),
       hostname: {
         create: {
           hostname: 'localhost:8080',

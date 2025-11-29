@@ -35,7 +35,7 @@ model AnmeldungLink {
   createdAt   DateTime  @default(now())
   usedAt      DateTime?
   comment     String?
-  accessToken String?   @db.Uuid
+  accessToken String    @db.Uuid
 
   unterveranstaltungId Int
   unterveranstaltung   Unterveranstaltung @relation(fields: [unterveranstaltungId], references: [id], onDelete: Cascade)
