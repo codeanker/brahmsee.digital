@@ -179,6 +179,15 @@ export const anmeldungPublicCreateProcedure = definePublicMutateProcedure({
     }
 
     await Promise.all([
+      prisma.anmeldungLink.updateMany({
+        where: {
+          accessToken: input.token,
+          unterveranstaltungId: unterveranstaltung.id,
+        },
+        data: {
+          accessToken: null,
+        },
+      }),
       logActivity({
         type: 'CREATE',
         description: 'person created via public registration',

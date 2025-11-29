@@ -1,4 +1,4 @@
-import type { ZodError, ZodSchema } from 'zod'
+import { z, type ZodError, type ZodSchema } from 'zod'
 
 type ZodSafeResult<O> = [true, O] | [false, ZodError<O>]
 
@@ -18,3 +18,5 @@ export async function zodSafe<I, O>(schema: ZodSchema<O>, payload: I): Promise<Z
 
   return [false, error]
 }
+
+export const boolish = z.enum(['true', 'false']).transform((v) => v === 'true')

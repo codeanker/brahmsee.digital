@@ -1,39 +1,143 @@
 <script setup lang="ts">
-import { CheckIcon, CubeTransparentIcon, XMarkIcon } from '@heroicons/vue/24/outline'
-import { useAsyncState } from '@vueuse/core'
-import { computed } from 'vue'
+import { apiClient } from '@/api'
+import {
+  type CustomFieldPosition,
+  CustomFieldPositionMapping,
+  type CustomFieldType,
+  CustomFieldTypeMapping,
+  getEnumOptions,
+  type RouterInput,
+  type RouterOutput,
+} from '@codeanker/api'
+import { CheckIcon, XMarkIcon } from '@heroicons/vue/24/solid'
+import { keepPreviousData, useQuery } from '@tanstack/vue-query'
+import { createColumnHelper } from '@tanstack/vue-table'
+import { h } from 'vue'
+import DataGridDoubleLineCell from '../DataGridDoubleLineCell.vue'
+import type { Query } from '../Table/DataTable.vue'
+import DataTable from '../Table/DataTable.vue'
+import initialData from '../Table/initialData'
+import { loggedInAccount } from '@/composables/useAuthentication'
 import { useRouter } from 'vue-router'
 
-import Loading from '../UIComponents/Loading.vue'
-
-import { apiClient } from '@/api'
-import { loggedInAccount } from '@/composables/useAuthentication'
-import { CustomFieldPositionMapping, CustomFieldTypeMapping, getEnumOptions, type RouterInput } from '@codeanker/api'
-
-type Query = RouterInput['customFields']['list']
+type Filter = RouterInput['customFields']['list']
+type CustomField = RouterOutput['customFields']['table']['data'][number]
 
 const props = defineProps<{
-  entity: Query['entity']
+  entity: Filter['entity']
   id: number
-  // columns?: string[]
 }>()
-
-const { state: fields, isLoading } = useAsyncState(async () => {
-  return apiClient.customFields.list.query({
-    // filter: {
-    //   veranstaltungId: props.veranstaltungId,
-    // },
-    // pagination: { take: 100, skip: 0 },
-    entity: props.entity,
-    entityId: props.id,
-  })
-}, [])
 
 const router = useRouter()
 
-type Field = (typeof fields.value)[number]
+const column = createColumnHelper<CustomField>()
+const columns = [
+  column.accessor('name', {
+    header: 'Name',
+    enableColumnFilter: true,
+    enableSorting: true,
+  }),
+  column.accessor('type', {
+    header: 'Typ',
+    enableColumnFilter: true,
+    cell({ getValue }) {
+      const type = getValue<CustomFieldType>()
+      const { human, description } = CustomFieldTypeMapping[type]
+      return h(DataGridDoubleLineCell, {
+        title: human,
+        message: description ?? '',
+      })
+    },
+    meta: {
+      filter: {
+        type: 'select',
+        options: getEnumOptions(CustomFieldTypeMapping),
+      },
+    },
+  }),
+  column.display({
+    id: 'source',
+    header: 'Quelle',
+    cell({ row }) {
+      if (row.original.veranstaltungId) {
+        return 'Veranstaltung'
+      } else if (row.original.unterveranstaltungId) {
+        return 'Ausschreibung'
+      }
+      return '-'
+    },
+  }),
+  column.accessor('required', {
+    header: 'Erforderlich?',
+    enableColumnFilter: true,
+    cell({ getValue }) {
+      const required = getValue<boolean>()
+      if (required) {
+        return h(CheckIcon, {
+          class: 'text-primary-600 size-5',
+        })
+      } else {
+        return h(XMarkIcon, {
+          class: 'text-red-600 size-5',
+        })
+      }
+    },
+    meta: {
+      filter: {
+        type: 'select',
+        options: [
+          { label: 'Ja', value: 'true' },
+          { label: 'Nein', value: 'false' },
+        ],
+      },
+    },
+  }),
+  column.accessor('positions', {
+    id: 'position',
+    header: 'Positionen',
+    enableColumnFilter: true,
+    cell({ getValue }) {
+      const positions = getValue<CustomFieldPosition[]>()
+      return getEnumOptions(CustomFieldPositionMapping)
+        .filter((o) => positions.includes(o.value))
+        .map((o) => o.label)
+        .join(', ')
+    },
+    meta: {
+      filter: {
+        type: 'select',
+        options: getEnumOptions(CustomFieldPositionMapping),
+      },
+    },
+  }),
+]
 
-function canEdit(field: Field) {
+const query: Query<CustomField> = (pagination, filter, orderBy) =>
+  useQuery({
+    queryKey: ['custom-fields', pagination, filter, orderBy],
+    queryFn: () =>
+      apiClient.customFields.table.query({
+        entity: props.entity,
+        entityId: props.id,
+        table: {
+          pagination: {
+            pageIndex: pagination.value.pageIndex,
+            pageSize: pagination.value.pageSize,
+          },
+          filter: filter.value.reduce((prev, curr) => {
+            return {
+              ...prev,
+              [curr.id]: curr.value,
+            }
+          }, {}),
+          orderBy: orderBy.value,
+        },
+      }),
+    initialData,
+    placeholderData: keepPreviousData,
+  })
+
+function canEdit(field: CustomField) {
   if (field.veranstaltungId !== null && loggedInAccount.value?.role === 'ADMIN') {
     return true
   }
@@ -45,7 +149,7 @@ function canEdit(field: Field) {
   return false
 }
 
-function onClickRow(field: Field) {
+function onClick(field: CustomField) {
   if (!canEdit(field)) {
     return
   }
@@ -64,121 +168,12 @@ function onClickRow(field: Field) {
     })
   }
 }
-
-const getFieldTypeHuman = computed(() => (field: Field) => {
-  return getEnumOptions(CustomFieldTypeMapping).find((m) => m.value === field.type)?.label
-})
-
-function formatPositions(field: Field) {
-  return getEnumOptions(CustomFieldPositionMapping)
-    .filter((o) => field.positions.includes(o.value))
-    .map((o) => o.label)
-    .join(', ')
-}
 </script>
 
 <template>
-  <div>
-    <table
-      v-if="fields"
-      class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
-    >
-      <thead>
-        <tr>
-          <th
-            scope="col"
-            class="px-3 py-3.5 text-left bg-background text-gray-500 border-b px-4 select-none font-normal"
-          >
-            Name
-          </th>
-          <th
-            scope="col"
-            class="px-3 py-3.5 text-left bg-background text-gray-500 border-b px-4 select-none font-normal"
-          >
-            Typ
-          </th>
-          <th
-            scope="col"
-            class="px-3 py-3.5 text-left bg-background text-gray-500 border-b px-4 select-none font-normal"
-          >
-            Quelle
-          </th>
-          <th
-            scope="col"
-            class="px-3 py-3.5 text-left bg-background text-gray-500 border-b px-4 select-none font-normal"
-          >
-            Erforderlich?
-          </th>
-          <th
-            scope="col"
-            class="px-3 py-3.5 text-left bg-background text-gray-500 border-b px-4 select-none font-normal"
-          >
-            Positionen
-          </th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-dark-primary">
-        <tr
-          v-for="field in fields"
-          :key="field.id"
-          :class="{
-            'even:bg-gray-50 dark:even:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800': true,
-            'cursor-pointer': canEdit(field),
-            'cursor-not-allowed': !canEdit(field),
-          }"
-          :title="canEdit(field) ? 'Bearbeiten' : 'Dieses Feld darfst du nicht bearbeiten'"
-          @click="() => onClickRow(field)"
-        >
-          <td class="whitespace-nowrap py-5 pl-4 pr-3">
-            <div>{{ field.name }}</div>
-            <div
-              v-if="field.description"
-              class="text-sm text-gray-500"
-            >
-              {{ field.description }}
-            </div>
-          </td>
-          <td class="whitespace-nowrap py-5 pl-4 pr-3">
-            <div>{{ getFieldTypeHuman(field) }}</div>
-          </td>
-          <td class="whitespace-nowrap py-5 pl-4 pr-3">
-            <span v-if="field.veranstaltungId !== null">Veranstaltung</span>
-            <span v-if="field.unterveranstaltungId !== null">Ausschreibung</span>
-          </td>
-          <td class="whitespace-nowrap py-5 pl-4 pr-3">
-            <CheckIcon
-              v-if="field.required"
-              class="text-primary-600 size-5"
-            />
-            <XMarkIcon
-              v-else
-              class="text-red-600 size-5"
-            />
-          </td>
-          <td class="py-5 pl-4 pr-3">
-            <div>{{ formatPositions(field) }}</div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div v-if="isLoading">
-      <Loading />
-    </div>
-    <div
-      v-else-if="fields.length <= 0"
-      class="rounded-md bg-blue-50 dark:bg-blue-950 p-4 text-blue-500"
-    >
-      <div class="flex">
-        <div class="flex-shrink-0">
-          <CubeTransparentIcon
-            class="h-5 w-5"
-            aria-hidden="true"
-          />
-        </div>
-        <div class="ml-3 flex-1 md:flex md:justify-between">
-          <p class="text-sm mb-0">Es wurden keine benutzerdefinierten Felder angelegt.</p>
-        </div>
-      </div>
-    </div>
-  </div>
+  <DataTable
+    :query="query"
+    :columns="columns"
+    @dblclick="onClick"
+  />
 </template>

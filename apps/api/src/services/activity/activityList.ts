@@ -1,34 +1,45 @@
-import { type Prisma, Role } from '@prisma/client'
+import { ActivityType, Prisma, Role } from '@prisma/client'
 import z from 'zod'
 
+import dayjs from 'dayjs'
 import prisma from '../../prisma.js'
 import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
-import { defineQuery, getOrderBy } from '../../types/defineQuery.js'
-
-const inputSchema = defineQuery({
-  filter: z.strictObject({
-    veranstaltungId: z.string().optional(),
-  }),
-  orderBy: z.array(
-    z.tuple([z.union([z.literal('id'), z.literal('createdAt')]), z.union([z.literal('asc'), z.literal('desc')])])
-  ),
-})
-
-type Input = z.infer<typeof inputSchema>
+import { calculatePagination, defineQueryResponse, defineTableInput } from '../../types/defineTableProcedure.js'
 
 export const activityListProcedure = defineProtectedQueryProcedure({
   key: 'list',
   roleIds: [Role.ADMIN],
-  inputSchema,
-  async handler({ input, ctx }) {
-    const { skip, take } = input.pagination
+  inputSchema: defineTableInput({
+    filter: {
+      createdAt: z
+        .tuple([z.date(), z.date()])
+        .transform(([from, to]) => [dayjs(from).startOf('day').toDate(), dayjs(to).endOf('day').toDate()]),
+      type: z.nativeEnum(ActivityType),
+      subjectType: z.string(),
+    },
+    orderBy: ['createdAt'],
+  }),
+  handler: async ({ input: { pagination, filter, orderBy } }) => {
+    const where: Prisma.ActivityWhereInput = {
+      createdAt: filter?.createdAt
+        ? {
+            gte: filter.createdAt[0],
+            lte: filter.createdAt[1],
+          }
+        : undefined,
+      type: filter?.type,
+      subjectType: filter?.subjectType,
+    }
+
+    const total = await prisma.activity.count({ where })
+    const { pageIndex, pageSize, pages } = calculatePagination(total, pagination)
 
     const activities = await prisma.activity.findMany({
-      skip,
-      take,
-      orderBy: getOrderBy(input.orderBy),
-      where: await getWhere(input.filter, ctx.account),
-      include: {
+      take: pageSize,
+      skip: pageSize * pageIndex,
+      where,
+      orderBy,
+      select: {
         causer: {
           select: {
             person: {
@@ -39,35 +50,30 @@ export const activityListProcedure = defineProtectedQueryProcedure({
             },
           },
         },
+        subjectId: true,
+        subjectType: true,
+        createdAt: true,
+        type: true,
+        description: true,
       },
     })
 
-    return activities
+    return defineQueryResponse({ data: activities, total, pagination: { pageIndex, pageSize, pages } })
   },
 })
 
-export const activityCountProcedure = defineProtectedQueryProcedure({
-  key: 'count',
+export const activityCompleteSubjectsProcedure = defineProtectedQueryProcedure({
+  key: 'listSubjectTypes',
+  inputSchema: z.void(),
   roleIds: [Role.ADMIN],
-  inputSchema: inputSchema.pick({ filter: true }),
-  async handler({ input, ctx }) {
-    const activities = await prisma.activity.count({
-      where: await getWhere(input.filter, ctx.account),
+  handler: async () => {
+    const result = await prisma.activity.findMany({
+      distinct: ['subjectType'],
+      select: {
+        subjectType: true,
+      },
     })
 
-    return activities
+    return result.map((r) => r.subjectType)
   },
 })
-
-// eslint-disable-next-line @typescript-eslint/require-await
-async function getWhere(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  filter: Input['filter'],
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  account: {
-    id: number
-    role: Role
-  }
-): Promise<Prisma.ActivityWhereInput> {
-  return {}
-}

@@ -2,88 +2,102 @@
 import { PlusIcon } from '@heroicons/vue/24/outline'
 
 import { apiClient } from '@/api'
-import GenericDataGrid from '@/components/GenericDataGrid.vue'
+import DataTable, { type Query } from '@/components/Table/DataTable.vue'
+import initialData from '@/components/Table/initialData'
 import { useRouteTitle } from '@/composables/useRouteTitle'
-import router from '@/router'
-import { type RouterInput, type RouterOutput } from '@codeanker/api'
-import { type TGridColumn } from '@codeanker/datagrid'
-import { formatCurrency } from '@codeanker/helpers'
+import { type RouterOutput } from '@codeanker/api'
+import { keepPreviousData, useQuery } from '@tanstack/vue-query'
+import { createColumnHelper } from '@tanstack/vue-table'
+import { dayjs, formatCurrency, formatDateWith } from '@codeanker/helpers'
+import { useRouter } from 'vue-router'
+import { h } from 'vue'
+
+const router = useRouter()
 
 const { setTitle } = useRouteTitle()
 setTitle('Veranstaltungen')
 
-function formatDate(indate) {
-  const date = new Date(indate)
-  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit' }
-  return date.toLocaleDateString('de-DE', options)
-}
+type Veranstaltung = RouterOutput['veranstaltung']['table']['data'][number]
 
-/// Typen von den Daten, Filter und Sortierung
-type TData = Awaited<RouterOutput['veranstaltung']['verwaltungList']>[number]
-type TFilter = RouterInput['veranstaltung']['verwaltungList']['filter']
-type TOrderBy = RouterInput['veranstaltung']['verwaltungList']['orderBy']
-
-const columns: TGridColumn<TData, TFilter>[] = [
-  {
-    field: 'id',
-    title: 'Id',
-    sortable: true,
-  },
-  {
-    field: 'name',
-    title: 'Name',
-    sortable: true,
-  },
-  {
-    field: 'beginn',
-    title: 'Zeitraum',
-    format: (value, row) => {
-      const beginn = formatDate(value)
-      const ende = formatDate(row.ende)
-      return `${beginn} - ${ende}`
+const keyInfoDateFormat = 'dddd, DD. MMMM YYYY'
+const column = createColumnHelper<Veranstaltung>()
+const columns = [
+  column.accessor('name', {
+    header: 'Name',
+    enableColumnFilter: true,
+    enableSorting: true,
+  }),
+  column.display({
+    id: 'zeitraum',
+    header: 'Zeitraum',
+    enableColumnFilter: true,
+    cell({ row }) {
+      return `${formatDateWith(row.original.beginn, keyInfoDateFormat)} - ${formatDateWith(row.original.ende, keyInfoDateFormat)}`
     },
-    sortable: true,
-  },
-  {
-    field: 'meldeschluss',
-    title: 'Meldeschluss',
-    preset: 'date',
-    sortable: true,
-  },
-  {
-    field: 'teilnahmegebuehr',
-    title: 'Gebühr',
-    size: '120px',
-    sortable: true,
-    format: (value) => formatCurrency(value),
-  },
-  {
-    field: 'maxTeilnehmende',
-    title: 'Anm. / Max',
-    size: '150px',
-    format: (value, row) => `${row.anzahlAnmeldungen} / ${value}`,
-  },
+    meta: {
+      filter: {
+        type: 'date-range',
+      },
+    },
+  }),
+  column.accessor('meldeschluss', {
+    header: 'Meldeschluss',
+    enableColumnFilter: true,
+    cell({ getValue }) {
+      const value = getValue<Date>()
+      const isMeldeschlussErreicht = dayjs().isAfter(value)
+      return h(
+        'span',
+        isMeldeschlussErreicht
+          ? {
+              class: 'text-red-500',
+            }
+          : null,
+        formatDateWith(value, keyInfoDateFormat)
+      )
+    },
+    meta: {
+      filter: {
+        type: 'date-range',
+      },
+    },
+  }),
+  column.accessor('teilnahmegebuehr', {
+    header: 'Gebühr',
+    enableColumnFilter: false,
+    enableSorting: true,
+    cell: ({ getValue }) => formatCurrency(getValue<number>()),
+  }),
+  column.accessor('maxTeilnehmende', {
+    header: 'Anm. / Max',
+    cell: ({ row }) => `${row.original.anzahlAnmeldungen} / ${row.original.maxTeilnehmende}`,
+    enableColumnFilter: false,
+  }),
 ]
 
-async function fetchPage(
-  pagination: {
-    take: number
-    skip: number
-  },
-  filter: TFilter,
-  orderBy: TOrderBy
-): Promise<TData[]> {
-  return apiClient.veranstaltung.verwaltungList.query({
-    filter: filter,
-    orderBy: orderBy,
-    pagination: pagination,
+const query: Query<Veranstaltung> = (pagination, filter, orderBy) =>
+  useQuery({
+    queryKey: ['veranstaltung', pagination, filter, orderBy],
+    queryFn: () =>
+      apiClient.veranstaltung.table.query({
+        pagination: {
+          pageIndex: pagination.value.pageIndex,
+          pageSize: pagination.value.pageSize,
+        },
+        filter: filter.value.reduce((prev, curr) => {
+          return {
+            ...prev,
+            [curr.id]: curr.value,
+          }
+        }, {}),
+        orderBy: orderBy.value,
+      }),
+    initialData,
+    placeholderData: keepPreviousData,
   })
-}
 
-async function fetchCount(filter: TFilter): Promise<number> {
-  return apiClient.veranstaltung.verwaltungCount.query({
-    filter: filter,
-  })
+function onClick(veranstaltung: Veranstaltung) {
+  router.push({ name: 'Verwaltung Veranstaltungsdetails', params: { veranstaltungId: veranstaltung.id } })
 }
 </script>
 
@@ -101,22 +115,12 @@ async function fetchCount(filter: TFilter): Promise<number> {
         Veranstaltung erstellen
       </RouterLink>
     </div>
-    <div class="flow-root">
-      <div class="grid-rows[1fr, 50px] grid flex-grow">
-        <GenericDataGrid
-          :columns="columns"
-          :fetch-page="fetchPage"
-          :fetch-count="fetchCount"
-          :default-filter="{}"
-          :default-order-by="[['id', 'asc']]"
-          no-data-message="Es gibt bisher keine Veranstaltungen."
-          show-clickable
-          @row-click="
-            (veranstaltung) =>
-              router.push({ name: 'Verwaltung Veranstaltungsdetails', params: { veranstaltungId: veranstaltung.id } })
-          "
-        />
-      </div>
-    </div>
+
+    <DataTable
+      :query="query"
+      :columns="columns"
+      :initial-sort="[{ id: 'name', desc: false }]"
+      @dblclick="onClick"
+    />
   </div>
 </template>

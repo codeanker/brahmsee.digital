@@ -2,57 +2,53 @@
 import { PlusIcon } from '@heroicons/vue/24/outline'
 
 import { apiClient } from '@/api'
-import BasicInput from '@/components/BasicInputs/BasicInput.vue'
-import GenericDataGrid from '@/components/GenericDataGrid.vue'
+import type { Query } from '@/components/Table/DataTable.vue'
+import DataTable from '@/components/Table/DataTable.vue'
+import initialData from '@/components/Table/initialData'
 import { useRouteTitle } from '@/composables/useRouteTitle'
-import router from '@/router'
-import { type RouterInput, type RouterOutput } from '@codeanker/api'
-import { type TGridColumn } from '@codeanker/datagrid'
+import { type RouterOutput } from '@codeanker/api'
+import { keepPreviousData, useQuery } from '@tanstack/vue-query'
+import { createColumnHelper } from '@tanstack/vue-table'
 
 const { setTitle } = useRouteTitle()
 setTitle('Gliederungen')
 
-/// Typen von den Daten, Filter und Sortierung
-type TData = Awaited<RouterOutput['gliederung']['list']>[number]
-type TFilter = RouterInput['gliederung']['list']['filter']
-type TOrderBy = RouterInput['gliederung']['list']['orderBy']
+type Gliederung = RouterOutput['gliederung']['list']['data'][number]
 
-const columns: TGridColumn<TData, TFilter>[] = [
-  {
-    field: 'edv',
-    title: 'EDV',
-    filter: { component: BasicInput, key: 'name' },
-    sortable: true,
-  },
-  {
-    field: 'name',
-    title: 'Gliederung',
-    filter: { component: BasicInput, key: 'name' },
-    sortable: true,
-  },
+const column = createColumnHelper<Gliederung>()
+const columns = [
+  column.accessor('name', {
+    header: 'Name',
+    enableColumnFilter: true,
+    enableSorting: true,
+  }),
+  column.accessor('edv', {
+    header: 'EDV Nummer',
+    enableColumnFilter: true,
+    enableSorting: true,
+  }),
 ]
 
-/// useGrid und useFeathersGrid composable zum fetchen
-async function fetchPage(
-  pagination: {
-    take: number
-    skip: number
-  },
-  filter: TFilter,
-
-  orderBy: TOrderBy
-): Promise<TData[]> {
-  return apiClient.gliederung.list.query({
-    filter: filter,
-    orderBy: orderBy,
-    pagination: pagination,
+const query: Query<Gliederung> = (pagination, filter, orderBy) =>
+  useQuery({
+    queryKey: ['gliederung', pagination, filter, orderBy],
+    queryFn: () =>
+      apiClient.gliederung.list.query({
+        pagination: {
+          pageIndex: pagination.value.pageIndex,
+          pageSize: pagination.value.pageSize,
+        },
+        filter: filter.value.reduce((prev, curr) => {
+          return {
+            ...prev,
+            [curr.id]: curr.value,
+          }
+        }, {}),
+        orderBy: orderBy.value,
+      }),
+    initialData,
+    placeholderData: keepPreviousData,
   })
-}
-async function fetchCount(filter: TFilter): Promise<number> {
-  return apiClient.gliederung.count.query({
-    filter: filter,
-  })
-}
 </script>
 
 <template>
@@ -67,25 +63,11 @@ async function fetchCount(filter: TFilter): Promise<number> {
         Gliederung erstellen
       </RouterLink>
     </div>
-    <div class="flow-root">
-      <div class="grid-rows[1fr, 50px] grid flex-grow">
-        <GenericDataGrid
-          :columns="columns"
-          :fetch-page="fetchPage"
-          :fetch-count="fetchCount"
-          :default-filter="{
-            edv: '',
-            name: '',
-          }"
-          :default-order-by="[['name', 'asc']]"
-          no-data-message="Es gibt bisher keine Anmeldungen."
-          show-clickable
-          @row-click="
-            (gliederung) =>
-              router.push({ name: 'Verwaltung Gliederungsdetails', params: { gliederungId: gliederung.id } })
-          "
-        />
-      </div>
-    </div>
+
+    <DataTable
+      :query="query"
+      :columns="columns"
+      :initial-sort="[{ id: 'name', desc: false }]"
+    />
   </div>
 </template>

@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import { CodeBracketIcon, SquaresPlusIcon, TicketIcon, UserIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
-import { computed, ref, onMounted, defineAsyncComponent } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { computed, ref, useTemplateRef } from 'vue'
 
 import { apiClient } from '@/api'
 import AnmeldungStatusSelect from '@/components/AnmeldungStatusSelect.vue'
 import CustomFieldsFormUser from '@/components/CustomFields/CustomFieldsFormUser.vue'
-import DataGridVirtualList from '@/components/DataGrid/DataGridVirtualList.vue'
 import FormPersonGeneral, { type FormPersonGeneralSubmit } from '@/components/forms/person/FormPersonGeneral.vue'
 import Drawer from '@/components/LayoutComponents/Drawer.vue'
 import Notification from '@/components/LayoutComponents/Notifications.vue'
+import initialData from '@/components/Table/initialData'
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
@@ -22,13 +21,17 @@ import {
   type RouterInput,
   type RouterOutput,
 } from '@codeanker/api'
-import { useDataGridFilter, useDataGridOrderBy, useGrid, type TGridColumn } from '@codeanker/datagrid'
 import { dayjs } from '@codeanker/helpers'
+import { keepPreviousData, useQuery } from '@tanstack/vue-query'
+import { createColumnHelper } from '@tanstack/vue-table'
+import { h } from 'vue'
+import BasicSwitch from '../BasicInputs/BasicSwitch.vue'
+import DataTable, { type Query } from '../Table/DataTable.vue'
 import UserLogo from '../UIComponents/UserLogo.vue'
 import { ArrowTopRightOnSquareIcon } from '@heroicons/vue/24/solid'
 
 type Props = {
-  filter: RouterInput['anmeldung']['list']['filter']
+  filter: Exclude<RouterInput['anmeldung']['list']['filter'], undefined>['scope']
   showStats?: boolean
 }
 
@@ -49,7 +52,7 @@ const showNotification = ref(false)
 const { state: countAnmeldungen } = useAsyncState(
   () =>
     apiClient.anmeldung.count.query({
-      filter: props.filter,
+      filter: props.filter ?? { type: 'own' },
     }),
   { OFFEN: 0, BESTAETIGT: 0, STORNIERT: 0, ABGELEHNT: 0, total: 0 }
 )
@@ -72,8 +75,8 @@ const stats = computed<
 const selectedAnmeldungId = ref()
 const showDrawer = ref(false)
 
-async function toggleDrawer($event) {
-  selectedAnmeldungId.value = $event.content.id
+async function toggleDrawer(anmeldung: Anmeldung) {
+  selectedAnmeldungId.value = anmeldung.id
   showDrawer.value = true
   await getSingleAnmeldung()
   await loadCustomFields()
@@ -111,6 +114,8 @@ const {
   null,
   { immediate: false }
 )
+
+const dataTable = useTemplateRef('data-table')
 
 const { execute: updateAnmeldung } = useAsyncState(
   async (anmeldung: FormPersonGeneralSubmit) => {
@@ -159,8 +164,9 @@ const { execute: updateAnmeldung } = useAsyncState(
         })
       }
       showNotification.value = true
+
       await getSingleAnmeldung()
-      await fetchVisiblePages()
+      await dataTable.value?.query.refetch()
     }
   },
   null,
@@ -168,120 +174,95 @@ const { execute: updateAnmeldung } = useAsyncState(
     immediate: false,
   }
 )
+type Anmeldung = RouterOutput['anmeldung']['list']['data'][number]
 
-const route = useRoute()
-const router = useRouter()
-
-/// Typen von den Daten, Filter und Sortierung
-type TAnmeldungData = Awaited<RouterOutput['anmeldung']['list']>[number]
-type TAnmeldungFilter = RouterInput['anmeldung']['list']['filter']
-type TAnmeldungOrderBy = RouterInput['anmeldung']['list']['orderBy']
-
-/// Definieren der columns
-let columns: TGridColumn<TAnmeldungData, TAnmeldungFilter>[] = [
-  {
-    field: 'person.photoId',
-    title: ' ',
-    size: '78px',
-    cell: defineAsyncComponent(() => import('@/components/UIComponents/UserLogo.vue')),
-    cellProps: (formattedValue, row) => {
-      return {
-        firstname: row.content.person.firstname,
-        lastname: row.content.person.lastname,
-        photoId: row.content.person.photoId,
+const column = createColumnHelper<Anmeldung>()
+const columns = [
+  column.accessor('person.photoId', {
+    size: 10,
+    header: 'Foto',
+    cell({ row }) {
+      return h(UserLogo, {
+        firstname: row.original.person.firstname,
+        lastname: row.original.person.lastname,
+        photoId: row.original.person.photoId,
+        personId: row.original.person.id,
         cssClasses: 'h-10 w-10',
-      }
+      })
     },
-  },
-  {
-    field: 'person',
-    title: 'Name',
-    format: (value) => `${value.firstname} ${value.lastname}`,
-  },
-  {
-    field: 'person.gliederung',
-    title: 'Gliederung',
-    format: (value) => value.name,
-  },
-  {
-    field: 'person.birthday',
-    format: (value) => dayjs().diff(value, 'year') + ' Jahre',
-    title: 'Alter',
-  },
-  {
-    field: 'status',
-    title: 'Status',
-    size: '300px',
-    cell: AnmeldungStatusSelect,
-    cellProps: (formattedValue, row) => {
-      return {
-        id: row.content.id,
-        status: row.content.status,
-        meldeschluss: row.content.unterveranstaltung.veranstaltung.meldeschluss,
-      }
+  }),
+  column.accessor('person', {
+    header: 'Person',
+    enableColumnFilter: true,
+    cell({ row }) {
+      return `${row.original.person.firstname} ${row.original.person.lastname}`
     },
-    cellEmits: {
-      changed: () => {
-        fetchVisiblePages()
+  }),
+  column.accessor('person.birthday', {
+    header: 'Alter',
+    cell({ getValue }) {
+      const value = getValue<Date>()
+      return dayjs().diff(value, 'year') + ' Jahre'
+    },
+  }),
+  column.accessor('person.gliederung.name', {
+    id: 'gliederung',
+    header: 'Gliederung',
+    enableColumnFilter: true,
+    meta: {
+      hidden: computed(() => loggedInAccount.value?.role === 'ADMIN'),
+    },
+  }),
+  column.accessor('status', {
+    header: 'Status',
+    size: 150,
+    enableColumnFilter: true,
+    meta: {
+      filter: {
+        type: 'select',
+        options: [
+          { label: 'Abgelehnt', value: 'ABGELEHNT' },
+          { label: 'Bestätigt', value: 'BESTAETIGT' },
+          { label: 'Offen', value: 'OFFEN' },
+          { label: 'Storniert', value: 'STORNIERT' },
+        ] satisfies { label: string; value: AnmeldungStatus }[],
       },
     },
-  },
+    cell({ row }) {
+      return h(AnmeldungStatusSelect, {
+        id: row.original.id,
+        status: row.original.status,
+        meldeschluss: row.original.unterveranstaltung.veranstaltung.meldeschluss,
+      })
+    },
+  }),
 ]
 
-if (loggedInAccount.value?.role === 'ADMIN') {
-  columns = columns.filter((column) => column.field !== 'person.gliederung')
-}
+const ohneFoto = ref(false)
 
-/// Filter via Route laden
-const defaultOrderBy = {
-  createdAt: 'desc',
-} as const
-
-const { filter, setFilter } = useDataGridFilter(props.filter, router, route)
-const { orderBy, setOrderBy } = useDataGridOrderBy(columns, defaultOrderBy, router, route)
-
-/// Bauen der Query
-type Query = {
-  filter: TAnmeldungFilter
-  orderBy: TAnmeldungOrderBy
-}
-const query = computed<Query>(() => {
-  return {
-    filter: filter.value,
-    orderBy: orderBy.value as NonNullable<TAnmeldungOrderBy>,
-  }
-})
-
-/// useGrid und useFeathersGrid composable zum fetchen
-function fetchPage(
-  pagination: {
-    take: number
-    skip: number
-  },
-  filter: TAnmeldungFilter,
-  orderBy: TAnmeldungOrderBy
-) {
-  return apiClient.anmeldung.list.query({ filter, orderBy, pagination })
-}
-async function fetchCount(filter: TAnmeldungFilter) {
-  const { total } = await apiClient.anmeldung.count.query({
-    filter: filter,
+const query: Query<Anmeldung> = (pagination, filter) =>
+  useQuery({
+    queryKey: ['anmeldung', pagination, filter, ohneFoto],
+    queryFn: () =>
+      apiClient.anmeldung.list.query({
+        pagination: {
+          pageIndex: pagination.value.pageIndex,
+          pageSize: pagination.value.pageSize,
+        },
+        filter: {
+          scope: props.filter,
+          withoutPhoto: ohneFoto.value,
+          ...filter.value.reduce((prev, curr) => {
+            return {
+              ...prev,
+              [curr.id]: curr.value,
+            }
+          }, {}),
+        },
+      }),
+    initialData,
+    placeholderData: keepPreviousData,
   })
-
-  return total
-}
-
-const { grid, fetchVisiblePages, pageChange, page } = useGrid<Query, TAnmeldungData>({
-  query,
-  fetchPage: fetchPage,
-  fetchCount: fetchCount,
-  idField: 'id',
-  route,
-  router,
-})
-onMounted(() => {
-  fetchVisiblePages()
-})
 </script>
 
 <template>
@@ -311,19 +292,20 @@ onMounted(() => {
     </div>
   </div>
   <div class="grid-rows[1fr, 50px] grid flex-grow">
-    <DataGridVirtualList
-      :grid="grid"
+    <DataTable
+      ref="data-table"
+      :query="query"
       :columns="columns"
-      :page="page"
-      :filter="filter"
-      :order-by="orderBy"
-      no-data-message="Es gibt bisher keine Anmeldungen."
-      show-clickable
-      @update:page="pageChange"
-      @set-order-by="setOrderBy"
-      @set-filter="setFilter"
-      @row-click="toggleDrawer"
-    />
+      @dblclick="toggleDrawer"
+    >
+      <template #filter>
+        <BasicSwitch
+          v-model="ohneFoto"
+          label="Ohne Foto"
+          class="grid-rows-2"
+        />
+      </template>
+    </DataTable>
   </div>
   <Drawer
     v-if="showDrawer"

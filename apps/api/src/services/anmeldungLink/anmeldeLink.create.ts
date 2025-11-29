@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto'
 import { z } from 'zod'
 import client from '../../prisma.js'
 import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
+import { TRPCError } from '@trpc/server'
 
 export const anmeldungLinkCreateProcedure = defineProtectedMutateProcedure({
   key: 'create',
@@ -11,7 +12,7 @@ export const anmeldungLinkCreateProcedure = defineProtectedMutateProcedure({
     comment: z.string().optional(),
   }),
   handler: async ({ ctx, input: { unterveranstaltungId, comment } }) => {
-    const result = await client.anmeldungLink.create({
+    const { accessToken } = await client.anmeldungLink.create({
       data: {
         unterveranstaltungId,
         comment,
@@ -23,6 +24,13 @@ export const anmeldungLinkCreateProcedure = defineProtectedMutateProcedure({
       },
     })
 
-    return result.accessToken
+    if (accessToken === null) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'failed to generate access token',
+      })
+    }
+
+    return accessToken
   },
 })

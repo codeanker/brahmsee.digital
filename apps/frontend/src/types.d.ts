@@ -1,4 +1,7 @@
+import '@tanstack/vue-table'
 import type { RouteLocationNormalizedLoadedGeneric, RouteLocationRaw } from 'vue-router'
+import type { Option } from './components/BasicInputs/BasicSelect.vue'
+import type { MaybeRef } from 'vue'
 
 type Breadcrumb = {
   text: string
@@ -11,5 +14,38 @@ declare module 'vue-router' {
   interface RouteMeta {
     public?: boolean
     breadcrumbs?: BreadcrumbDefinition[]
+  }
+}
+
+declare module '@tanstack/vue-table' {
+  type ColumnFilters =
+    | {
+        type: 'select' | 'multi-select'
+        options: Option[] | (() => Promise<Option[]>)
+      }
+    | {
+        type: 'text'
+      }
+    | {
+        type: 'date'
+      }
+    | {
+        type: 'date-range'
+      }
+    | {
+        type: 'number'
+      }
+
+  interface ColumnMeta {
+    class?: {
+      header?: string
+      body?: string
+      footer?: string
+    }
+
+    hidden?: MaybeRef<boolean>
+    filter?: {
+      label?: string
+    } & ColumnFilters
   }
 }

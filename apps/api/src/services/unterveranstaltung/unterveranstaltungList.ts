@@ -1,45 +1,76 @@
-import { Role, type Prisma } from '@prisma/client'
+import { Role, UnterveranstaltungType, type Prisma } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma.js'
 import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
-import { defineQuery, getOrderBy } from '../../types/defineQuery.js'
+import { calculatePagination, defineQueryResponse, defineTableInput } from '../../types/defineTableProcedure.js'
 import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
-
-const inputSchema = defineQuery({
-  filter: z.strictObject({
-    veranstaltungId: z.number().optional(),
-    gliederungId: z.number().optional(),
-    gliederungName: z.string().optional(),
-  }),
-  orderBy: z.array(
-    z.tuple([
-      z.union([
-        z.literal('id'),
-        z.literal('veranstaltung.name'),
-        z.literal('gliederung.name'),
-        z.literal('meldeschluss'),
-        z.literal('teilnahmegebuehr'),
-        z.literal('type'),
-      ]),
-      z.union([z.literal('asc'), z.literal('desc')]),
-    ])
-  ),
-})
-
-type Input = z.infer<typeof inputSchema>
+import { dayjs } from '@codeanker/helpers'
 
 export const unterveranstaltungListProcedure = defineProtectedQueryProcedure({
   key: 'list',
   roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
-  inputSchema: inputSchema,
-  async handler(options) {
-    const { skip, take } = options.input.pagination
+  inputSchema: z.strictObject({
+    veranstaltungId: z.number().optional(),
+    table: defineTableInput({
+      filter: {
+        gliederungName: z.string().optional(),
+        type: z.nativeEnum(UnterveranstaltungType).optional(),
+        meldeschluss: z.tuple([z.date(), z.date()]),
+      },
+      orderBy: ['meldeschluss', 'teilnahmegebuehr'],
+    }),
+  }),
+  async handler({
+    ctx: { account },
+    input: {
+      veranstaltungId,
+      table: { filter, pagination },
+    },
+  }) {
+    const where: Prisma.UnterveranstaltungWhereInput = {
+      veranstaltungId,
+      gliederung: {
+        name: {
+          contains: filter?.gliederungName,
+          mode: 'insensitive',
+        },
+      },
+      type: filter?.type,
+      meldeschluss:
+        filter?.meldeschluss === undefined
+          ? undefined
+          : {
+              gte: dayjs(filter.meldeschluss[0]).startOf('day').toDate(),
+              lte: dayjs(filter.meldeschluss[1]).endOf('day').toDate(),
+            },
+    }
+
+    // Role-based Filter
+    if (account.role !== Role.ADMIN) {
+      const gliederung = await getGliederungRequireAdmin(account.id)
+      where.gliederungId = gliederung.id
+    }
+
+    const total = await prisma.unterveranstaltung.count({ where })
+    const { pageIndex, pageSize, pages } = calculatePagination(total, pagination)
+
     const veranstaltungen = await prisma.unterveranstaltung.findMany({
-      skip,
-      take,
-      where: await getWhere(options.input.filter, options.ctx.account),
-      orderBy: getOrderBy(options.input.orderBy),
+      take: pageSize,
+      skip: pageSize * pageIndex,
+      orderBy: [
+        {
+          veranstaltung: {
+            name: 'asc',
+          },
+        },
+        {
+          gliederung: {
+            name: 'asc',
+          },
+        },
+      ],
+      where,
       select: {
         id: true,
         type: true,
@@ -73,47 +104,6 @@ export const unterveranstaltungListProcedure = defineProtectedQueryProcedure({
       },
     })
 
-    return veranstaltungen
+    return defineQueryResponse({ data: veranstaltungen, total, pagination: { pageIndex, pageSize, pages } })
   },
 })
-
-export const unterveranstaltungCountProcedure = defineProtectedQueryProcedure({
-  key: 'count',
-  roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
-  inputSchema: inputSchema.pick({ filter: true }),
-  async handler(options) {
-    const unterveranstaltungenCount = await prisma.unterveranstaltung.count({
-      where: await getWhere(options.input.filter, options.ctx.account),
-    })
-
-    return unterveranstaltungenCount
-  },
-})
-
-async function getWhere(
-  filter: Input['filter'],
-  account: {
-    id: number
-    role: Role
-  }
-): Promise<Prisma.UnterveranstaltungWhereInput> {
-  const where: Prisma.UnterveranstaltungWhereInput = {}
-
-  // Input-Filter
-  if (filter.gliederungId !== undefined) where.gliederungId = filter.gliederungId
-  if (filter.veranstaltungId !== undefined) where.veranstaltungId = filter.veranstaltungId
-  if (filter.gliederungName !== undefined)
-    where.gliederung = {
-      name: {
-        contains: filter.gliederungName,
-      },
-    }
-
-  // Role-based Filter
-  if (account.role !== Role.ADMIN) {
-    const gliederung = await getGliederungRequireAdmin(account.id)
-    where.gliederungId = gliederung.id
-  }
-
-  return where
-}

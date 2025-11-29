@@ -6,6 +6,7 @@ import Modal from './Modal.vue'
 import Button from './Button.vue'
 import { apiClient } from '@/api'
 import { DocumentDuplicateIcon, RocketLaunchIcon } from '@heroicons/vue/24/outline'
+import { useQueryClient } from '@tanstack/vue-query'
 
 const props = defineProps<{
   veranstaltung: string
@@ -42,6 +43,8 @@ const comment = ref('')
 const token = ref('')
 const locked = ref(true)
 
+const queryClient = useQueryClient()
+
 async function create() {
   if (state.value !== 'idle') {
     return
@@ -54,6 +57,8 @@ async function create() {
     })
 
     state.value = 'success'
+
+    queryClient.invalidateQueries({ queryKey: ['anmeldeLink'] })
     emit('success')
   } catch (e: unknown) {
     state.value = 'error'
@@ -83,8 +88,6 @@ defineExpose({ open, close })
 
           <template v-if="token">
             <p>Der Anmeldelink wurde erfolgreich erstellt.</p>
-
-            <p>Bitte kopieren den Link. Du kannst den Link kein weiteres Mal anschauen.</p>
 
             <div class="p-6 bg-primary-100 dark:bg-primary-900 rounded-md my-8 flex items-top space-x-4">
               <div><RocketLaunchIcon class="h-10 w-10 text-primary-500" /></div>
