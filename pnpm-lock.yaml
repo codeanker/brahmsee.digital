@@ -6,9 +6,6 @@ settings:
 
 catalogs:
   default:
-    '@eslint/js':
-      specifier: ^9.17.0
-      version: 9.19.0
     '@tiptap/extension-document':
       specifier: ^2.11.0
       version: 2.11.5
@@ -36,9 +33,6 @@ catalogs:
     '@trpc/client':
       specifier: 11.0.0-rc.682
       version: 11.0.0-rc.682
-    '@trpc/server':
-      specifier: 11.0.0-rc.682
-      version: 11.0.0-rc.682
     '@types/node':
       specifier: ^22.10.2
       version: 22.10.2
@@ -51,12 +45,6 @@ catalogs:
     typescript:
       specifier: ^5.7.2
       version: 5.7.2
-    typescript-eslint:
-      specifier: ^8.27.0
-      version: 8.32.0
-    vitest:
-      specifier: ^3.1.1
-      version: 3.1.1
     vue:
       specifier: ^3.5.13
       version: 3.5.13
@@ -307,9 +295,6 @@ importers:
       '@tanstack/vue-table':
         specifier: ^8.21.2
         version: 8.21.2(vue@3.5.13(typescript@5.7.2))
-      '@tanstack/vue-virtual':
-        specifier: ^3.13.6
-        version: 3.13.6(vue@3.5.13(typescript@5.7.2))
       '@tiptap/extension-document':
         specifier: 'catalog:'
         version: 2.11.5(@tiptap/core@2.11.5(@tiptap/pm@2.11.5))

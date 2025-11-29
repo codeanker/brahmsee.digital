@@ -26,7 +26,6 @@
     "@tanstack/vue-query": "^5.72.0",
     "@tanstack/vue-query-devtools": "^5.72.2",
     "@tanstack/vue-table": "^8.21.2",
-    "@tanstack/vue-virtual": "^3.13.6",
     "@tiptap/extension-document": "catalog:",
     "@tiptap/extension-highlight": "catalog:",
     "@tiptap/extension-link": "catalog:",
