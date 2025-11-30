@@ -1,88 +1,90 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-import cors from '@koa/cors'
-import grant from 'grant'
-import Koa from 'koa'
-import { koaBody } from 'koa-body'
-import helmet from 'koa-helmet'
-import session from 'koa-session'
-import serve from 'koa-static'
-import { createKoaMiddleware } from 'trpc-koa-adapter'
-
+import { serve } from '@hono/node-server'
+import { serveStatic } from '@hono/node-server/serve-static'
+import { trpcServer } from '@hono/trpc-server'
+import { cache } from 'hono/cache'
+import { cors } from 'hono/cors'
+import { logger } from 'hono/logger'
+import { requestId } from 'hono/request-id'
+import { secureHeaders } from 'hono/secure-headers'
+import { resolve } from 'node:path'
 import config from './config.js'
 import { createContext } from './context.js'
-import { logger } from './logger.js'
-import cacheControl from './middleware/cache-control.js'
-import router from './routes/index.js'
-
 import { appRouter } from './index.js'
+import { logger as appLogger } from './logger.js'
+import { makeApp } from './util/make-app.js'
+import { exportRouter, fileRouter, oidcRouter } from './routes/index.js'
 
-export const app = new Koa()
+const app = makeApp()
 
+app.use(logger(appLogger.debug))
+app.use(requestId())
 app.use(
-  helmet({
+  secureHeaders({
     contentSecurityPolicy: {
-      directives: {
-        'img-src': [
-          "'self'",
-          '*.githubusercontent.com',
-          'blob:',
-          'data:',
-          'dlrgbrahmseedigitalprod.blob.core.windows.net',
-        ],
-        'connect-src': ["'self'", 'dlrgbrahmseedigitalprod.blob.core.windows.net'],
-      },
+      connectSrc: ["'self'", 'dlrgbrahmseedigitalprod.blob.core.windows.net'],
+      imgSrc: ["'self'", '*.githubusercontent.com', 'blob:', 'data:', 'dlrgbrahmseedigitalprod.blob.core.windows.net'],
     },
   })
 )
 app.use(cors({ origin: '*' }))
-app.use(serve('./static', { defer: false }))
-app.use(cacheControl)
-
-// koa-session is required by grant
-app.keys = ['grant']
-app.use(session({}, app))
-
-// grant is used for oauth
 app.use(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
-  (grant as any).koa()({
-    defaults: {
-      origin: `${config.clientUrl}/api`,
-      transport: 'session',
-    },
-    dlrg: {
-      dynamic: ['mode', 'origin'],
-      transport: 'session',
-      oauth: 2,
-      response: ['token', 'profile'],
-      authorize_url: 'https://iam.dlrg.net/auth/realms/master/protocol/openid-connect/auth',
-      access_url: 'https://iam.dlrg.net/auth/realms/master/protocol/openid-connect/token',
-      key: config.authentication.dlrg.client_id,
-      scope: ['profile'],
-      profile_url: 'https://iam.dlrg.net/auth/realms/master/protocol/openid-connect/userinfo',
-      pkce: true,
-    },
+  cache({
+    cacheName: 'brahmsee.digital',
+    cacheControl: 'max-age: 31536000, immutable',
+    wait: true,
   })
 )
-// initialize trpc middleware
+
+// TODO: Figure out OIDC
+// app.use(initOidcAuthMiddleware({
+//   OIDC_ISSUER: '',
+//   OIDC_REDIRECT_URI: '',
+//   OIDC_CLIENT_ID: '',
+//   OIDC_CLIENT_SECRET: '',
+//   OIDC_AUDIENCE: '',
+//   OIDC_SCOPES: 'profile',
+//   OIDC_AUTH_SECRET: '',
+// }))
+
+app.route('/export', exportRouter)
+app.route('/file', fileRouter)
+app.route('/oidc', oidcRouter)
+
 app.use(
-  createKoaMiddleware({
-    prefix: '/api/trpc',
+  '/api/trpc/*',
+  trpcServer({
     router: appRouter,
+    endpoint: '/api/trpc',
     createContext,
   })
 )
 
-app.use(koaBody({ multipart: true }))
-app.use(router.routes())
-app.use(router.allowedMethods())
+app.use(
+  serveStatic({
+    root: resolve('./static'),
+    rewriteRequestPath: (p) => p.replace(/^\/static/, '/'),
+  })
+)
 
-app.use(async (ctx, next) => {
-  // serve index.html as catch all
-  ctx.url = '/'
-  await serve('./static')(ctx, next)
+const server = serve({
+  fetch: app.fetch,
+  hostname: config.server.host,
+  port: config.server.port,
 })
 
-app.listen(config.server.port, config.server.host)
-logger.info(`app listening on http://${config.server.host}:${config.server.port}`)
+appLogger.info(`app listening on http://${config.server.host}:${config.server.port}`)
+
+// graceful shutdown
+process.on('SIGINT', () => {
+  server.close()
+  process.exit(0)
+})
+process.on('SIGTERM', () => {
+  server.close((err) => {
+    if (err) {
+      console.error(err)
+      process.exit(1)
+    }
+    process.exit(0)
+  })
+})

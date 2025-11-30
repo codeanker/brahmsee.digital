@@ -3,20 +3,20 @@ import XLSX from '@e965/xlsx'
 import type { Gliederung } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
 import archiver from 'archiver'
-import type { Context } from 'koa'
 import mime from 'mime'
 import { z } from 'zod'
-import prisma from '../../../prisma.js'
-import { openFileStream } from '../../../services/file/helpers/getFileUrl.js'
-import { getSecurityWorksheet } from '../helpers/getSecurityWorksheet.js'
-import { sheetAuthorize, type SheetQuery } from '../sheets/sheets.schema.js'
+import client from '../../prisma.js'
+import { openFileStream } from '../../services/file/helpers/getFileUrl.js'
+import type { AppContext } from '../../util/make-app.js'
+import { getSecurityWorksheet } from './helpers/getSecurityWorksheet.js'
+import { sheetAuthorize, type SheetQuery } from './sheets.schema.js'
 
 const querySchema = z.object({
   mode: z.enum(['group', 'flat']),
 })
 
 function queryAnmeldungen(query: SheetQuery, gliederung?: Gliederung) {
-  return prisma.anmeldung.findMany({
+  return client.anmeldung.findMany({
     where: {
       OR: [
         {
@@ -100,14 +100,14 @@ function buildSheet(
   return XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' }) as Buffer
 }
 
-export async function veranstaltungPhotoArchive(ctx: Context) {
+export async function veranstaltungPhotoArchive(ctx: AppContext) {
   const authorization = await sheetAuthorize(ctx)
   if (!authorization) {
     return
   }
 
   const { query, gliederung, account } = authorization
-  const { mode } = querySchema.parse(ctx.query)
+  const { mode } = querySchema.parse(ctx.req.query())
 
   if (mode === 'flat' && account.role !== 'ADMIN') {
     throw new TRPCError({
@@ -118,6 +118,8 @@ export async function veranstaltungPhotoArchive(ctx: Context) {
   const anmeldungen = await queryAnmeldungen(query, gliederung)
 
   const zip = archiver('zip')
+
+  zip.pipe(ctx.env.outgoing)
 
   zip.on('warning', function (err) {
     if (err.code === 'ENOENT') {
@@ -132,17 +134,13 @@ export async function veranstaltungPhotoArchive(ctx: Context) {
     throw err
   })
 
-  ctx.res.statusCode = 201
-  ctx.res.setHeader('Content-Type', 'application/zip')
-  ctx.res.setHeader(
-    'Content-Disposition',
-    `attachment; filename="${mode === 'flat' ? 'FotosForAutomation' : 'Fotos'}.zip"`
-  )
-  zip.pipe(ctx.res)
+  ctx.status(201)
+  ctx.header('Content-Type', 'application/zip')
+  ctx.header('Content-Disposition', `attachment; filename="${mode === 'flat' ? 'FotosForAutomation' : 'Fotos'}.zip"`)
 
   for (const { person, unterveranstaltung } of anmeldungen) {
     if (!person.photo) {
-      return
+      continue
     }
 
     const stream = await openFileStream(person.photo)
@@ -165,6 +163,4 @@ export async function veranstaltungPhotoArchive(ctx: Context) {
   }
 
   await zip.finalize()
-
-  ctx.res.end()
 }

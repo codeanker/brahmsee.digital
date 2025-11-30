@@ -1,10 +1,10 @@
 import XLSX from '@e965/xlsx'
 import dayjs from 'dayjs'
-import type { Context } from 'koa'
 import { AnmeldungStatusMapping, GenderMapping } from '../../../client.js'
 import prisma from '../../../prisma.js'
 import { getSecurityWorksheet } from '../helpers/getSecurityWorksheet.js'
 import { sheetAuthorize } from './sheets.schema.js'
+import type { Context } from 'hono'
 
 export async function veranstaltungTeilnehmendenliste(ctx: Context) {
   const authorization = await sheetAuthorize(ctx)
@@ -162,10 +162,9 @@ export async function veranstaltungTeilnehmendenliste(ctx: Context) {
   XLSX.utils.book_append_sheet(workbook, securityWorksheet, securityWorksheetName)
 
   const filename = `${dayjs().format('YYYYMMDD-hhmm')}-Teilnehmendenliste.xlsx`
-  const buf = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' }) as Buffer
+  const buf = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' }) as ArrayBuffer
 
-  ctx.res.statusCode = 201
-  ctx.res.setHeader('Content-Disposition', `attachment; filename="${filename}"`)
-  ctx.res.setHeader('Content-Type', 'application/vnd.ms-excel')
-  ctx.res.end(buf)
+  ctx.header('Content-Disposition', `attachment; filename="${filename}"`)
+  ctx.header('Content-Type', 'application/vnd.ms-excel')
+  ctx.body(buf, 201)
 }

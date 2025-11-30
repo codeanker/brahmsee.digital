@@ -1,10 +1,10 @@
 import { Role, type Gliederung } from '@prisma/client'
-import type { Context } from 'koa'
+import type { Context } from 'hono'
 import { z } from 'zod'
-import { getEntityIdFromHeader } from '../../../authentication.js'
-import prisma from '../../../prisma.js'
-import { getGliederungRequireAdmin } from '../../../util/getGliederungRequireAdmin.js'
-import { zodSafe } from '../../../util/zod.js'
+import { getEntityIdFromHeader } from '../../authentication.js'
+import prisma from '../../prisma.js'
+import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
+import { zodSafe } from '../../util/zod.js'
 
 export const sheetQuerySchema = z
   .object({
@@ -19,15 +19,15 @@ export const sheetQuerySchema = z
 export type SheetQuery = z.infer<typeof sheetQuerySchema>
 
 export async function sheetAuthorize(ctx: Context) {
-  const [success, query] = await zodSafe(sheetQuerySchema, ctx.query)
+  const [success, query] = await zodSafe(sheetQuerySchema, ctx.req.query())
   if (!success) {
-    ctx.response.status = 400
+    ctx.status(400)
     return false
   }
 
   const accountId = getEntityIdFromHeader(`Bearer ${query.jwt}`)
   if (typeof accountId !== 'string') {
-    ctx.response.status = 401
+    ctx.status(401)
     return false
   }
 
@@ -49,7 +49,7 @@ export async function sheetAuthorize(ctx: Context) {
   })
 
   if (account == null) {
-    ctx.res.statusCode = 401
+    ctx.status(401)
     return false
   }
 
@@ -59,7 +59,7 @@ export async function sheetAuthorize(ctx: Context) {
       gliederung = await getGliederungRequireAdmin(accountIdNumber)
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      ctx.res.statusCode = 401
+      ctx.status(401)
       return false
     }
   }
