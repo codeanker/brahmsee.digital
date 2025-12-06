@@ -27,12 +27,12 @@
     "seed": "tsx prisma/seeders/index.ts"
   },
   "dependencies": {
-    "@azure/storage-blob": "^12.17.0",
+    "@azure/storage-blob": "catalog:",
     "@codeanker/authentication": "workspace:*",
     "@codeanker/helpers": "workspace:*",
     "@codeanker/service-sms": "file:../../vendor/codeanker-service-sms-0.0.2.tar.gz",
     "@e965/xlsx": "^0.20.3",
-    "@faker-js/faker": "^9.4.0",
+    "@faker-js/faker": "catalog:",
     "@koa/cors": "^5.0.0",
     "@koa/router": "^12.0.1",
     "@prisma/client": "^5.19.1",
@@ -58,7 +58,7 @@
     "mjml": "^4.15.3",
     "prom-client": "^15.0.0",
     "superjson": "catalog:",
-    "trpc-koa-adapter": "^1.1.3",
+    "trpc-koa-adapter": "^1.2.2",
     "uuid": "^11.0.5",
     "winston": "^3.11.0",
     "zod": "^3.22.4"
@@ -69,7 +69,6 @@
     "@inquirer/prompts": "^7.1.0",
     "@types/archiver": "^6.0.3",
     "@types/config": "^3.3.3",
-    "@types/http-status-codes": "^1.2.0",
     "@types/jsonwebtoken": "^9.0.8",
     "@types/koa": "^2.14.0",
     "@types/koa-bodyparser": "^4.3.12",

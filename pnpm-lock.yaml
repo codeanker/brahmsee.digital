@@ -6,9 +6,15 @@ settings:
 
 catalogs:
   default:
+    '@azure/storage-blob':
+      specifier: ^12.17.0
+      version: 12.26.0
     '@eslint/js':
       specifier: ^9.17.0
       version: 9.19.0
+    '@faker-js/faker':
+      specifier: ^10.1.0
+      version: 10.1.0
     '@tiptap/extension-document':
       specifier: ^2.11.0
       version: 2.11.5
@@ -34,11 +40,11 @@ catalogs:
       specifier: ^2.11.0
       version: 2.11.5
     '@trpc/client':
-      specifier: 11.0.0-rc.682
-      version: 11.0.0-rc.682
+      specifier: ^11.7.0
+      version: 11.7.2
     '@trpc/server':
-      specifier: 11.0.0-rc.682
-      version: 11.0.0-rc.682
+      specifier: ^11.7.0
+      version: 11.7.2
     '@types/node':
       specifier: ^22.10.2
       version: 22.10.2
@@ -84,7 +90,7 @@ importers:
   apps/api:
     dependencies:
       '@azure/storage-blob':
-        specifier: ^12.17.0
+        specifier: 'catalog:'
         version: 12.26.0
       '@codeanker/authentication':
         specifier: workspace:*
@@ -99,8 +105,8 @@ importers:
         specifier: ^0.20.3
         version: 0.20.3
       '@faker-js/faker':
-        specifier: ^9.4.0
-        version: 9.4.0
+        specifier: 'catalog:'
+        version: 10.1.0
       '@koa/cors':
         specifier: ^5.0.0
         version: 5.0.0
@@ -118,7 +124,7 @@ importers:
         version: 8.1.4
       '@trpc/server':
         specifier: 'catalog:'
-        version: 11.0.0-rc.682(typescript@5.7.2)
+        version: 11.7.2(typescript@5.7.2)
       archiver:
         specifier: ^7.0.1
         version: 7.0.1
@@ -177,8 +183,8 @@ importers:
         specifier: 'catalog:'
         version: 2.2.2
       trpc-koa-adapter:
-        specifier: ^1.1.3
-        version: 1.2.2(@trpc/server@11.0.0-rc.682(typescript@5.7.2))(koa@2.16.1)
+        specifier: ^1.2.2
+        version: 1.2.2(@trpc/server@11.7.2(typescript@5.7.2))(koa@2.16.1)
       uuid:
         specifier: ^11.0.5
         version: 11.0.5
@@ -257,7 +263,7 @@ importers:
   apps/frontend:
     dependencies:
       '@azure/storage-blob':
-        specifier: ^12.17.0
+        specifier: 'catalog:'
         version: 12.26.0
       '@codeanker/api':
         specifier: workspace:*
@@ -275,8 +281,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/validation
       '@faker-js/faker':
-        specifier: ^9.4.0
-        version: 9.4.0
+        specifier: 'catalog:'
+        version: 10.1.0
       '@headlessui/vue':
         specifier: ^1.7.16
         version: 1.7.23(vue@3.5.13(typescript@5.7.2))
@@ -324,7 +330,7 @@ importers:
         version: 2.11.5(@tiptap/core@2.11.5(@tiptap/pm@2.11.5))(@tiptap/pm@2.11.5)(vue@3.5.13(typescript@5.7.2))
       '@trpc/client':
         specifier: 'catalog:'
-        version: 11.0.0-rc.682(@trpc/server@11.0.0-rc.682(typescript@5.7.2))(typescript@5.7.2)
+        version: 11.7.2(@trpc/server@11.7.2(typescript@5.7.2))(typescript@5.7.2)
       '@vuepic/vue-datepicker':
         specifier: ^11.0.2
         version: 11.0.2(vue@3.5.13(typescript@5.7.2))
@@ -337,9 +343,6 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
-      http2-proxy:
-        specifier: ^5.0.53
-        version: 5.0.53
       human-filetypes:
         specifier: ^1.1.3
         version: 1.1.3
@@ -401,6 +404,9 @@ importers:
       eslint:
         specifier: 'catalog:'
         version: 9.19.0(jiti@1.21.7)
+      http2-proxy:
+        specifier: ^5.0.53
+        version: 5.0.53
       postcss:
         specifier: ^8.4.31
         version: 8.5.1
@@ -1391,10 +1397,9 @@ packages:
     resolution: {integrity: sha512-lB05FkqEdUg2AA0xEbUz0SnkXT1LcCTa438W4IWTUh4hdOnVbQyOJ81OrDXsJk/LSiJHubgGEFoR5EHq1NsH1A==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@faker-js/faker@9.4.0':
-    resolution: {integrity: sha512-85+k0AxaZSTowL0gXp8zYWDIrWclTbRPg/pm/V0dSFZ6W6D4lhcG3uuZl4zLsEKfEvs69xDbLN2cHQudwp95JA==}
-    engines: {node: '>=18.0.0', npm: '>=9.0.0'}
-    deprecated: Please update to a newer version
+  '@faker-js/faker@10.1.0':
+    resolution: {integrity: sha512-C3mrr3b5dRVlKPJdfrAXS8+dq+rq8Qm5SNRazca0JKgw1HQERFmrVb0towvMmw5uu8hHKNiQasMaR/tydf3Zsg==}
+    engines: {node: ^20.19.0 || ^22.13.0 || ^23.5.0 || >=24.0.0, npm: '>=10'}
 
   '@fast-csv/format@5.0.2':
     resolution: {integrity: sha512-fRYcWvI8vs0Zxa/8fXd/QlmQYWWkJqKZPAXM+vksnplb3owQFKTPPh9JqOtD0L3flQw/AZjjXdPkD7Kp/uHm8g==}
@@ -2326,17 +2331,17 @@ packages:
       '@tiptap/pm': ^2.7.0
       vue: ^3.0.0
 
-  '@trpc/client@11.0.0-rc.682':
-    resolution: {integrity: sha512-zfM6t4tkbQPm/FHK85jcJjJle7FJTj9U8t/ieDzIe3X6DNo66sg6KqQpjkeTJcaj5u2hga1lmv3rc4uob/7D0g==}
+  '@trpc/client@11.7.2':
+    resolution: {integrity: sha512-OQxqUMfpDvjcszo9dbnqWQXnW2L5IbrKSz2H7l8s+mVM3EvYw7ztQ/gjFIN3iy0NcamiQfd4eE6qjcb9Lm+63A==}
     peerDependencies:
-      '@trpc/server': 11.0.0-rc.682+8650a22e8
+      '@trpc/server': 11.7.2
       typescript: '>=5.7.2'
 
   '@trpc/server@10.45.2':
     resolution: {integrity: sha512-wOrSThNNE4HUnuhJG6PfDRp4L2009KDVxsd+2VYH8ro6o/7/jwYZ8Uu5j+VaW+mOmc8EHerHzGcdbGNQSAUPgg==}
 
-  '@trpc/server@11.0.0-rc.682':
-    resolution: {integrity: sha512-y8FhLW/UJ8SOyHByvSQW7WvCnbvYioOYhviWD+sRvqkB9f0O8/sEBPJt1mBadWaO/0tygOghkeNC9o1wAsJ8cg==}
+  '@trpc/server@11.7.2':
+    resolution: {integrity: sha512-AgB26PXY69sckherIhCacKLY49rxE2XP5h38vr/KMZTbLCL1p8IuIoKPjALTcugC2kbyQ7Lbqo2JDVfRSmPmfQ==}
     peerDependencies:
       typescript: '>=5.7.2'
 
@@ -6274,7 +6279,7 @@ snapshots:
       '@eslint/core': 0.10.0
       levn: 0.4.1
 
-  '@faker-js/faker@9.4.0': {}
+  '@faker-js/faker@10.1.0': {}
 
   '@fast-csv/format@5.0.2':
     dependencies:
@@ -7114,14 +7119,14 @@ snapshots:
       '@tiptap/pm': 2.11.5
       vue: 3.5.13(typescript@5.7.2)
 
-  '@trpc/client@11.0.0-rc.682(@trpc/server@11.0.0-rc.682(typescript@5.7.2))(typescript@5.7.2)':
+  '@trpc/client@11.7.2(@trpc/server@11.7.2(typescript@5.7.2))(typescript@5.7.2)':
     dependencies:
-      '@trpc/server': 11.0.0-rc.682(typescript@5.7.2)
+      '@trpc/server': 11.7.2(typescript@5.7.2)
       typescript: 5.7.2
 
   '@trpc/server@10.45.2': {}
 
-  '@trpc/server@11.0.0-rc.682(typescript@5.7.2)':
+  '@trpc/server@11.7.2(typescript@5.7.2)':
     dependencies:
       typescript: 5.7.2
 
@@ -8779,7 +8784,7 @@ snapshots:
   http-proxy-agent@7.0.2:
     dependencies:
       agent-base: 7.1.3
-      debug: 4.4.0
+      debug: 4.4.3
     transitivePeerDependencies:
       - supports-color
 
@@ -8790,7 +8795,7 @@ snapshots:
   https-proxy-agent@7.0.6:
     dependencies:
       agent-base: 7.1.3
-      debug: 4.4.0
+      debug: 4.4.3
     transitivePeerDependencies:
       - supports-color
 
@@ -10428,9 +10433,9 @@ snapshots:
 
   triple-beam@1.4.1: {}
 
-  trpc-koa-adapter@1.2.2(@trpc/server@11.0.0-rc.682(typescript@5.7.2))(koa@2.16.1):
+  trpc-koa-adapter@1.2.2(@trpc/server@11.7.2(typescript@5.7.2))(koa@2.16.1):
     dependencies:
-      '@trpc/server': 11.0.0-rc.682(typescript@5.7.2)
+      '@trpc/server': 11.7.2(typescript@5.7.2)
       koa: 2.16.1
 
   ts-api-utils@2.1.0(typescript@5.7.2):
