@@ -40,11 +40,11 @@ catalogs:
       specifier: ^2.11.0
       version: 2.11.5
     '@trpc/client':
-      specifier: ^11.7.0
-      version: 11.7.2
+      specifier: 11.0.0-rc.682
+      version: 11.0.0-rc.682
     '@trpc/server':
-      specifier: ^11.7.0
-      version: 11.7.2
+      specifier: 11.0.0-rc.682
+      version: 11.0.0-rc.682
     '@types/node':
       specifier: ^22.10.2
       version: 22.10.2
@@ -124,7 +124,7 @@ importers:
         version: 8.1.4
       '@trpc/server':
         specifier: 'catalog:'
-        version: 11.7.2(typescript@5.7.2)
+        version: 11.0.0-rc.682(typescript@5.7.2)
       archiver:
         specifier: ^7.0.1
         version: 7.0.1
@@ -184,7 +184,7 @@ importers:
         version: 2.2.2
       trpc-koa-adapter:
         specifier: ^1.2.2
-        version: 1.2.2(@trpc/server@11.7.2(typescript@5.7.2))(koa@2.16.1)
+        version: 1.2.2(@trpc/server@11.0.0-rc.682(typescript@5.7.2))(koa@2.16.1)
       uuid:
         specifier: ^11.0.5
         version: 11.0.5
@@ -327,7 +327,7 @@ importers:
         version: 2.11.5(@tiptap/core@2.11.5(@tiptap/pm@2.11.5))(@tiptap/pm@2.11.5)(vue@3.5.13(typescript@5.7.2))
       '@trpc/client':
         specifier: 'catalog:'
-        version: 11.7.2(@trpc/server@11.7.2(typescript@5.7.2))(typescript@5.7.2)
+        version: 11.0.0-rc.682(@trpc/server@11.7.2(typescript@5.7.2))(typescript@5.7.2)
       '@vuepic/vue-datepicker':
         specifier: ^11.0.2
         version: 11.0.2(vue@3.5.13(typescript@5.7.2))
@@ -2328,14 +2328,19 @@ packages:
       '@tiptap/pm': ^2.7.0
       vue: ^3.0.0
 
-  '@trpc/client@11.7.2':
-    resolution: {integrity: sha512-OQxqUMfpDvjcszo9dbnqWQXnW2L5IbrKSz2H7l8s+mVM3EvYw7ztQ/gjFIN3iy0NcamiQfd4eE6qjcb9Lm+63A==}
+  '@trpc/client@11.0.0-rc.682':
+    resolution: {integrity: sha512-zfM6t4tkbQPm/FHK85jcJjJle7FJTj9U8t/ieDzIe3X6DNo66sg6KqQpjkeTJcaj5u2hga1lmv3rc4uob/7D0g==}
     peerDependencies:
-      '@trpc/server': 11.7.2
+      '@trpc/server': 11.0.0-rc.682+8650a22e8
       typescript: '>=5.7.2'
 
   '@trpc/server@10.45.2':
     resolution: {integrity: sha512-wOrSThNNE4HUnuhJG6PfDRp4L2009KDVxsd+2VYH8ro6o/7/jwYZ8Uu5j+VaW+mOmc8EHerHzGcdbGNQSAUPgg==}
+
+  '@trpc/server@11.0.0-rc.682':
+    resolution: {integrity: sha512-y8FhLW/UJ8SOyHByvSQW7WvCnbvYioOYhviWD+sRvqkB9f0O8/sEBPJt1mBadWaO/0tygOghkeNC9o1wAsJ8cg==}
+    peerDependencies:
+      typescript: '>=5.7.2'
 
   '@trpc/server@11.7.2':
     resolution: {integrity: sha512-AgB26PXY69sckherIhCacKLY49rxE2XP5h38vr/KMZTbLCL1p8IuIoKPjALTcugC2kbyQ7Lbqo2JDVfRSmPmfQ==}
@@ -7109,12 +7114,16 @@ snapshots:
       '@tiptap/pm': 2.11.5
       vue: 3.5.13(typescript@5.7.2)
 
-  '@trpc/client@11.7.2(@trpc/server@11.7.2(typescript@5.7.2))(typescript@5.7.2)':
+  '@trpc/client@11.0.0-rc.682(@trpc/server@11.7.2(typescript@5.7.2))(typescript@5.7.2)':
     dependencies:
       '@trpc/server': 11.7.2(typescript@5.7.2)
       typescript: 5.7.2
 
   '@trpc/server@10.45.2': {}
+
+  '@trpc/server@11.0.0-rc.682(typescript@5.7.2)':
+    dependencies:
+      typescript: 5.7.2
 
   '@trpc/server@11.7.2(typescript@5.7.2)':
     dependencies:
@@ -10417,9 +10426,9 @@ snapshots:
 
   triple-beam@1.4.1: {}
 
-  trpc-koa-adapter@1.2.2(@trpc/server@11.7.2(typescript@5.7.2))(koa@2.16.1):
+  trpc-koa-adapter@1.2.2(@trpc/server@11.0.0-rc.682(typescript@5.7.2))(koa@2.16.1):
     dependencies:
-      '@trpc/server': 11.7.2(typescript@5.7.2)
+      '@trpc/server': 11.0.0-rc.682(typescript@5.7.2)
       koa: 2.16.1
 
   ts-api-utils@2.1.0(typescript@5.7.2):
