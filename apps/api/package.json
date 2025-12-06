@@ -78,7 +78,7 @@
     "commander": "^13.0.0",
     "eslint": "catalog:",
     "inquirer": "^12.3.0",
-    "prisma": "^5.19.1",
+    "prisma": "^7.1.0",
     "tsx": "^4.2.0",
     "typescript": "catalog:"
   }
