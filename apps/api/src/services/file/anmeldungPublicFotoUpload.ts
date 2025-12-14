@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { definePublicMutateProcedure } from '../../types/defineProcedure.js'
 import { fileCreateSchema, handleFileUpload } from './fileCreate.js'
-import client from '../../prisma.js'
+import prisma from '../../prisma.js'
 import { TRPCError } from '@trpc/server'
 
 export const anmeldungPublicFotoUploadProcedure = definePublicMutateProcedure({
@@ -12,7 +12,7 @@ export const anmeldungPublicFotoUploadProcedure = definePublicMutateProcedure({
     accessToken: z.string().uuid(),
   }),
   handler: async ({ input: { unterveranstaltungId, anmeldungId, accessToken, mimetype } }) => {
-    const anmeldung = await client.anmeldung.findFirst({
+    const anmeldung = await prisma.anmeldung.findFirst({
       where: {
         unterveranstaltungId,
         id: anmeldungId,

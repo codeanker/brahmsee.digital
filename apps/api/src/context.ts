@@ -3,7 +3,7 @@ import type { CreateTrpcKoaContextOptions } from 'trpc-koa-adapter'
 
 import { getEntityIdFromHeader } from './authentication.js'
 import { logger } from './logger.js'
-import client from './prisma.js'
+import prisma from './prisma.js'
 import type { Account } from '@prisma/client'
 
 function getAuthorizationHeader(
@@ -33,7 +33,7 @@ export async function createContext({
     }
 
     const accountId = parseInt(accountIdFromHeader)
-    const account = await client.account.findFirstOrThrow({
+    const account = await prisma.account.findFirstOrThrow({
       where: {
         id: accountId,
       },
