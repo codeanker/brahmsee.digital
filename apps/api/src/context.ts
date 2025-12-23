@@ -4,6 +4,7 @@ import type { Account } from '@prisma/client'
 import { getEntityIdFromHeader } from './authentication.js'
 import { logger } from './logger.js'
 import prisma from './prisma.js'
+import type { Account } from '@prisma/client'
 
 function getAuthorizationHeader(headers: FetchCreateContextFnOptions['req']['headers']) {
   if ('authorization' in headers && typeof headers['authorization'] === 'string') {

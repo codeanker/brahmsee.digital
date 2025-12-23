@@ -1,6 +1,6 @@
 import { Prisma, Role } from '@prisma/client'
 import { z } from 'zod'
-import client from '../../prisma.js'
+import prisma from '../../prisma.js'
 import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
 import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
 
@@ -55,7 +55,7 @@ export const veranstaltungListProcedure = defineProtectedQueryProcedure({
     const gliederung =
       ctx.account.role === Role.GLIEDERUNG_ADMIN ? await getGliederungRequireAdmin(ctx.accountId) : undefined
 
-    const data = await client.veranstaltung.findMany({
+    const data = await prisma.veranstaltung.findMany({
       select: {
         ...veranstaltungSelect,
         unterveranstaltungen: {

@@ -1,7 +1,7 @@
 import { dayjs } from '@codeanker/helpers'
 import { Prisma, Role } from '@prisma/client'
 import { z } from 'zod'
-import client from '../../prisma.js'
+import prisma from '../../prisma.js'
 import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
 import { calculatePagination, defineQueryResponse, defineTableInput } from '../../types/defineTableProcedure.js'
 
@@ -47,10 +47,10 @@ export const veranstaltungTableProcedure = defineProtectedQueryProcedure({
             ],
     }
 
-    const total = await client.veranstaltung.count({ where })
+    const total = await prisma.veranstaltung.count({ where })
     const { pageIndex, pageSize, pages } = calculatePagination(total, pagination)
 
-    const data = await client.veranstaltung.findMany({
+    const data = await prisma.veranstaltung.findMany({
       take: pageSize,
       skip: pageSize * pageIndex,
       where,

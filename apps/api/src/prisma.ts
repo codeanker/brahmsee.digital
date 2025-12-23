@@ -10,7 +10,7 @@ import { logger } from './logger.js'
 
 const log = logger.child({ label: 'db' })
 
-const client = new PrismaClient({
+const prisma = new PrismaClient({
   log: [
     {
       emit: 'event',
@@ -25,9 +25,9 @@ const client = new PrismaClient({
 })
 
 if (config.loggingLevel === 'debug') {
-  client.$on('query', (e) => {
+  prisma.$on('query', (e) => {
     log.debug(e.query)
   })
 }
 
-export default client
+export default prisma
