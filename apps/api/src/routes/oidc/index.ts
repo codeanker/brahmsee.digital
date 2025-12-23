@@ -1,12 +1,11 @@
-import type { TypedResponse } from 'hono'
 import { deleteCookie, getCookie, setCookie } from 'hono/cookie'
 import { HTTPException } from 'hono/http-exception'
 import * as oauth from 'oauth4webapi'
 import { z } from 'zod'
-import { makeApp } from '../../util/make-app.js'
-import prisma from '../../prisma.js'
 import { sign } from '../../authentication.js'
 import config from '../../config.js'
+import prisma from '../../prisma.js'
+import { makeApp } from '../../util/make-app.js'
 
 export const oidcRouter = makeApp()
 
@@ -126,7 +125,7 @@ oidcRouter.get('/dlrg/callback', async (c) => {
   }
 })
 
-oidcRouter.get('/dlrg/login', async (c): Promise<Response & TypedResponse<undefined, 302, 'redirect'>> => {
+oidcRouter.get('/dlrg/login', async (c) => {
   const issuer = new URL(config.authentication.dlrg.issuer)
   const code_challenge_method = 'S256'
   const code_verifier = oauth.generateRandomCodeVerifier()
