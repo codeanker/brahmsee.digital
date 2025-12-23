@@ -60,6 +60,9 @@ const app = makeApp()
       rewriteRequestPath: (p) => p.replace(/^\/static/, '/'),
     })
   )
+  .route('/export', routes.exportRouter)
+  .route('/import', routes.importRouter)
+  .route('/file', routes.fileRouter)
   .route('/oidc', routes.oidcRouter)
 
 const server = serve({

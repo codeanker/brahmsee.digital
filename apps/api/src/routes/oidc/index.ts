@@ -6,6 +6,7 @@ import { sign } from '../../authentication.js'
 import config from '../../config.js'
 import prisma from '../../prisma.js'
 import { makeApp } from '../../util/make-app.js'
+import type { Account } from '@prisma/client'
 
 export const oidcRouter = makeApp()
 
@@ -70,18 +71,19 @@ oidcRouter.get('/dlrg/callback', async (c) => {
     where: {
       dlrgOauthId: profile.sub,
     },
-    select: {
-      id: true,
-    },
   })
+
+  let registerAsGliederung = false
+  const registerAs = c.req.query('as')?.trim()
+  if (registerAs !== undefined && registerAs?.length > 0) {
+    registerAsGliederung = true
+  }
+
+  let account: Account
 
   // if user exists, return jwt
   if (existingUser) {
-    const jwt = sign({
-      sub: existingUser.id.toString(),
-    })
-
-    await prisma.account.update({
+    account = await prisma.account.update({
       where: {
         id: existingUser.id,
       },
@@ -94,17 +96,14 @@ oidcRouter.get('/dlrg/callback', async (c) => {
         },
       },
     })
-
-    // important to redirect with hash, so the jwt is not sent to the server
-    return c.redirect(`${config.clientUrl}/login#jwt=${jwt}`)
   } else {
-    const newUser = await prisma.account.create({
+    account = await prisma.account.create({
       data: {
         dlrgOauthId: profile.sub,
         email: profile.email,
         password: '',
-        role: 'USER',
-        status: 'AKTIV',
+        role: registerAsGliederung ? 'GLIEDERUNG_ADMIN' : 'USER',
+        status: registerAsGliederung ? 'OFFEN' : 'AKTIV',
         person: {
           create: {
             firstname: profile.given_name,
@@ -114,15 +113,18 @@ oidcRouter.get('/dlrg/callback', async (c) => {
           },
         },
       },
-      select: {
-        id: true,
-      },
     })
-    const jwt = sign({
-      sub: newUser.id.toString(),
-    })
-    return c.redirect(`${config.clientUrl}/login#jwt=${jwt}`)
   }
+
+  // TODO: Implement onboarding
+  const redirectUri = new URL(registerAsGliederung ? '/onboarding' : '/login', config.clientUrl)
+
+  const jwt = sign({
+    sub: account.id.toString(),
+  })
+  redirectUri.searchParams.set('jwt', jwt)
+
+  return c.redirect(redirectUri)
 })
 
 oidcRouter.get('/dlrg/login', async (c) => {
@@ -137,8 +139,15 @@ oidcRouter.get('/dlrg/login', async (c) => {
   })
   const as = await oauth.processDiscoveryResponse(issuer, discoveryRequestResponse)
   const authorizationUrl = new URL(as.authorization_endpoint!)
+
+  const redirectUri = new URL('/api/oidc/dlrg/callback', config.clientUrl)
+  const registerAs = c.req.query('as')?.trim()
+  if (registerAs !== undefined && registerAs?.length > 0) {
+    redirectUri.searchParams.set('as', registerAs)
+  }
+
   authorizationUrl.searchParams.set('client_id', config.authentication.dlrg.clientId)
-  authorizationUrl.searchParams.set('redirect_uri', `${config.clientUrl}/api/oidc/dlrg/callback`)
+  authorizationUrl.searchParams.set('redirect_uri', redirectUri.toString())
   authorizationUrl.searchParams.set('response_type', 'code')
   authorizationUrl.searchParams.set('scope', 'openid profile email')
   authorizationUrl.searchParams.set('code_challenge', code_challenge)
