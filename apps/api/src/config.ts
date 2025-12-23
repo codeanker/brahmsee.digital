@@ -35,7 +35,10 @@ export const configSchema = z.strictObject({
     secret: z.string(),
     expiresIn: zMsUnit,
     dlrg: z.strictObject({
-      client_id: z.string(),
+      issuer: z.string().url(),
+      clientId: z.string(),
+      clientSecret: z.string(),
+      allowInsecure: z.boolean(),
     }),
   }),
 

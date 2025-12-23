@@ -2,9 +2,9 @@ import { AnmeldungStatus, Essgewohnheit, NahrungsmittelIntoleranz } from '@prism
 import dayjs from 'dayjs'
 import type { Context } from 'hono'
 import XLSX from '@e965/xlsx'
-import prisma from '../../../prisma.js'
-import { getSecurityWorksheet } from '../helpers/getSecurityWorksheet.js'
-import { getWorkbookDefaultProps } from '../helpers/getWorkbookDefaultProps.js'
+import prisma from '../../prisma.js'
+import { getSecurityWorksheet } from './helpers/getSecurityWorksheet.js'
+import { getWorkbookDefaultProps } from './helpers/getWorkbookDefaultProps.js'
 import { sheetAuthorize } from './sheets.schema.js'
 
 export async function veranstaltungVerpflegung(ctx: Context) {

@@ -51,5 +51,10 @@
   "onCreateCommand": {
     // "dependencies": "pnpm install",
     "environment": "cp -n apps/api/.env.example apps/api/.env"
-  }
+  },
+  "forwardPorts": [
+    3030,
+    8080,
+    "keycloak:6060"
+  ]
 }

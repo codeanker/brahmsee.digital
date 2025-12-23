@@ -104,9 +104,6 @@ importers:
       '@hono/node-server':
         specifier: ^1.19.6
         version: 1.19.6(hono@4.10.7)
-      '@hono/oidc-auth':
-        specifier: ^1.7.1
-        version: 1.7.1(hono@4.10.7)
       '@hono/trpc-server':
         specifier: ^0.4.0
         version: 0.4.0(@trpc/server@11.0.0-rc.682(typescript@5.7.2))(hono@4.10.7)
@@ -158,6 +155,9 @@ importers:
       mjml:
         specifier: ^4.15.3
         version: 4.15.3
+      oauth4webapi:
+        specifier: ^3.8.3
+        version: 3.8.3
       prom-client:
         specifier: ^15.0.0
         version: 15.1.3
@@ -1266,12 +1266,6 @@ packages:
     engines: {node: '>=18.14.1'}
     peerDependencies:
       hono: ^4
-
-  '@hono/oidc-auth@1.7.1':
-    resolution: {integrity: sha512-prlPqD6Y+VmWZyhlphBSn1Rqvz10cGn3maONJFGTjhohYCnhYjjZWyj6AaDL1incFf1wu+1KqL4vFEitiAkOyg==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      hono: '>=3.0.0'
 
   '@hono/trpc-server@0.4.0':
     resolution: {integrity: sha512-LGlJfCmNIGMwcknZEIYdujVMs9OkNVazhpOhaz3kTWOXvNL660VOHpvvktosCiJrajyBY1RtIJKQ+IKaQvNuSg==}
@@ -3741,8 +3735,8 @@ packages:
   nth-check@2.1.1:
     resolution: {integrity: sha512-lqjrjmaOoAnWfMmBPL+XNnynZh2+swxiX3WUE0s4yEHI6m+AwrK2UZOimIRl3X/4QctVqS8AiZjFqyOGrMXb/w==}
 
-  oauth4webapi@2.17.0:
-    resolution: {integrity: sha512-lbC0Z7uzAFNFyzEYRIC+pkSVvDHJTbEW+dYlSBAlCYDe6RxUkJ26bClhk8ocBZip1wfI9uKTe0fm4Ib4RHn6uQ==}
+  oauth4webapi@3.8.3:
+    resolution: {integrity: sha512-pQ5BsX3QRTgnt5HxgHwgunIRaDXBdkT23tf8dfzmtTIL2LTpdmxgbpbBm0VgFWAIDlezQvQCTgnVIUmHupXHxw==}
 
   object-assign@4.1.1:
     resolution: {integrity: sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==}
@@ -5337,11 +5331,6 @@ snapshots:
   '@hono/node-server@1.19.6(hono@4.10.7)':
     dependencies:
       hono: 4.10.7
-
-  '@hono/oidc-auth@1.7.1(hono@4.10.7)':
-    dependencies:
-      hono: 4.10.7
-      oauth4webapi: 2.17.0
 
   '@hono/trpc-server@0.4.0(@trpc/server@11.0.0-rc.682(typescript@5.7.2))(hono@4.10.7)':
     dependencies:
@@ -8029,7 +8018,7 @@ snapshots:
     dependencies:
       boolbase: 1.0.0
 
-  oauth4webapi@2.17.0: {}
+  oauth4webapi@3.8.3: {}
 
   object-assign@4.1.1: {}
 

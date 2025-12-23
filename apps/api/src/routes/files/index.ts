@@ -1,6 +1,6 @@
 import type { File as Entity } from '@prisma/client'
 import { createMiddleware } from 'hono/factory'
-import client from '../../prisma.js'
+import prisma from '../../prisma.js'
 import { makeApp } from '../../util/make-app.js'
 import { downloadFileLocal } from '../files/downloadFileLocal.js'
 import { uploadFileLocal } from '../files/uploadFileLocal.js'
@@ -23,7 +23,7 @@ const entity = createMiddleware<{
 }>(async (ctx, next) => {
   const fileId = ctx.req.param('id')
 
-  const file = await client.file.findFirst({
+  const file = await prisma.file.findFirst({
     where: {
       id: fileId,
     },

@@ -5,7 +5,7 @@ import { TRPCError } from '@trpc/server'
 import archiver from 'archiver'
 import mime from 'mime'
 import { z } from 'zod'
-import client from '../../prisma.js'
+import prisma from '../../prisma.js'
 import { openFileStream } from '../../services/file/helpers/getFileUrl.js'
 import type { AppContext } from '../../util/make-app.js'
 import { getSecurityWorksheet } from './helpers/getSecurityWorksheet.js'
@@ -16,7 +16,7 @@ const querySchema = z.object({
 })
 
 function queryAnmeldungen(query: SheetQuery, gliederung?: Gliederung) {
-  return client.anmeldung.findMany({
+  return prisma.anmeldung.findMany({
     where: {
       OR: [
         {

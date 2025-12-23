@@ -11,60 +11,58 @@ import config from './config.js'
 import { createContext } from './context.js'
 import { appRouter } from './index.js'
 import { logger as appLogger } from './logger.js'
+import * as routes from './routes/index.js'
 import { makeApp } from './util/make-app.js'
-import { exportRouter, fileRouter, oidcRouter } from './routes/index.js'
 
 const app = makeApp()
-
-app.use(logger(appLogger.debug))
-app.use(requestId())
-app.use(
-  secureHeaders({
-    contentSecurityPolicy: {
-      connectSrc: ["'self'", 'dlrgbrahmseedigitalprod.blob.core.windows.net'],
-      imgSrc: ["'self'", '*.githubusercontent.com', 'blob:', 'data:', 'dlrgbrahmseedigitalprod.blob.core.windows.net'],
-    },
+  .use(async (c, next) => {
+    await next()
+    if (c.error) {
+      console.error(c.error)
+    }
   })
-)
-app.use(cors({ origin: '*' }))
-app.use(
-  cache({
-    cacheName: 'brahmsee.digital',
-    cacheControl: 'max-age: 31536000, immutable',
-    wait: true,
-  })
-)
-
-// TODO: Figure out OIDC
-// app.use(initOidcAuthMiddleware({
-//   OIDC_ISSUER: '',
-//   OIDC_REDIRECT_URI: '',
-//   OIDC_CLIENT_ID: '',
-//   OIDC_CLIENT_SECRET: '',
-//   OIDC_AUDIENCE: '',
-//   OIDC_SCOPES: 'profile',
-//   OIDC_AUTH_SECRET: '',
-// }))
-
-app.route('/export', exportRouter)
-app.route('/file', fileRouter)
-app.route('/oidc', oidcRouter)
-
-app.use(
-  '/api/trpc/*',
-  trpcServer({
-    router: appRouter,
-    endpoint: '/api/trpc',
-    createContext,
-  })
-)
-
-app.use(
-  serveStatic({
-    root: resolve('./static'),
-    rewriteRequestPath: (p) => p.replace(/^\/static/, '/'),
-  })
-)
+  .use(logger(appLogger.debug))
+  .use(requestId())
+  .use(
+    secureHeaders({
+      contentSecurityPolicy: {
+        connectSrc: ["'self'", 'dlrgbrahmseedigitalprod.blob.core.windows.net'],
+        imgSrc: [
+          "'self'",
+          '*.githubusercontent.com',
+          'blob:',
+          'data:',
+          'dlrgbrahmseedigitalprod.blob.core.windows.net',
+        ],
+      },
+    })
+  )
+  .use(cors({ origin: '*' }))
+  .use(
+    cache({
+      cacheName: 'brahmsee.digital',
+      cacheControl: 'max-age: 31536000, immutable',
+      wait: true,
+    })
+  )
+  .use(
+    '/api/trpc/*',
+    trpcServer({
+      router: appRouter,
+      endpoint: '/api/trpc',
+      createContext,
+    })
+  )
+  .use(
+    serveStatic({
+      root: resolve('./static'),
+      rewriteRequestPath: (p) => p.replace(/^\/static/, '/'),
+    })
+  )
+  .route('/export', routes.exportRouter)
+  .route('/import', routes.importRouter)
+  .route('/file', routes.fileRouter)
+  .route('/oidc', routes.oidcRouter)
 
 const server = serve({
   fetch: app.fetch,

@@ -5,8 +5,6 @@ services:
     image: postgres:15.3-alpine3.18
     container_name: postgres
     hostname: postgres
-    ports:
-      - 127.0.0.1:5432:5432
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -16,13 +14,20 @@ services:
       - postgres-data:/var/lib/postgresql/data
   meilisearch:
     image: getmeili/meilisearch:v1.6
-    ports:
-      - 7700:7700
     environment:
       - MEILI_MASTER_KEY=xbAPupQKhkKvF176vE2JxAdPGpmWVu251Hldn6K4Z6Y
     volumes:
       - meilisearch-data:/data.ms
     restart: unless-stopped
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.4.7
+    command: start-dev
+    environment:
+      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
+      - KC_HTTP_PORT=6060
+
 volumes:
   postgres-data:
   admin-data:

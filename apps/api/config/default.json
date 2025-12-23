@@ -7,10 +7,10 @@
   "clientUrl": "https://localhost:8080",
 
   "authentication": {
-    "secret": "secret",
+    "secret": "7f5d44e00c31ead7f29b02a5cb9d3005",
     "expiresIn": "1d",
     "dlrg": {
-      "client_id": "1200000-0"
+      "allowInsecure": false
     }
   },
 

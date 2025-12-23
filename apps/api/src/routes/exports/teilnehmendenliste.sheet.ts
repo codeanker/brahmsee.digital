@@ -1,8 +1,8 @@
 import XLSX from '@e965/xlsx'
 import dayjs from 'dayjs'
-import { AnmeldungStatusMapping, GenderMapping } from '../../../client.js'
-import prisma from '../../../prisma.js'
-import { getSecurityWorksheet } from '../helpers/getSecurityWorksheet.js'
+import { AnmeldungStatusMapping, GenderMapping } from '../../client.js'
+import prisma from '../../prisma.js'
+import { getSecurityWorksheet } from './helpers/getSecurityWorksheet.js'
 import { sheetAuthorize } from './sheets.schema.js'
 import type { Context } from 'hono'
 

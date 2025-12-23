@@ -54,8 +54,7 @@ const formatLoginError = computed(() => {
 
 const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.env.VITE_APP_COMMIT_HASH || 'unknown'}`
 
-const origin = `${location.href}/api`
-const oauthHref = `/api/connect/dlrg?mode=login&origin=${encodeURIComponent(origin)}`
+const oauthHref = `/api/oidc/dlrg/login`
 </script>
 
 <template>
