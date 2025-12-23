@@ -9,8 +9,7 @@ import { z } from 'zod'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-const baseConfig = config.util.loadFileConfigs(path.join(__dirname, '..', 'config'))
+const baseConfig = config.util.loadFileConfigs(path.join(__dirname, '..', 'config')) as object
 
 const zMsUnit = z
   .string()
@@ -18,7 +17,6 @@ const zMsUnit = z
     /^\d+\s?\w*$/g,
     'Value must be a valid duration as specified by vercel/ms: https://github.com/vercel/ms?tab=readme-ov-file#examples'
   )
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   .transform((arg) => arg as StringValue)
 
 export const configSchema = z.strictObject({
@@ -37,7 +35,10 @@ export const configSchema = z.strictObject({
     secret: z.string(),
     expiresIn: zMsUnit,
     dlrg: z.strictObject({
-      client_id: z.string(),
+      issuer: z.string().url(),
+      clientId: z.string(),
+      clientSecret: z.string(),
+      allowInsecure: z.boolean(),
     }),
   }),
 
