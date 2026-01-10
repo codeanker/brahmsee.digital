@@ -20,9 +20,8 @@ const email = ref('')
 const password = ref('')
 
 // read "jwt" from url hashbang
-if (location.hash) {
-  const hash = location.hash.substr(1)
-  const hashParams = new URLSearchParams(hash)
+if (location.search) {
+  const hashParams = new URLSearchParams(location.search)
   const jwt = hashParams.get('jwt')
   if (jwt) {
     localStorage.setItem('jwt', jwt)
