@@ -1,33 +1,37 @@
 import { Gender } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
 import z from 'zod'
-
 import prisma from '../../prisma.js'
-import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
-
+import { definePublicMutateProcedure } from '../../types/defineProcedure.js'
 import { sendMailConfirmEmailRequest } from './helpers/sendMailConfirmEmailRequest.js'
 import { getAccountCreateData } from './schema/account.schema.js'
-// import { ZOauthRegisterJwtPayloadSchema } from '../../routes/oidc/connect.js'
 
-export const accountTeilnehmerCreateProcedure = defineProtectedMutateProcedure({
+export const accountTeilnehmerCreateProcedure = definePublicMutateProcedure({
   key: 'teilnehmerCreate',
-  roleIds: ['ADMIN'],
   inputSchema: z.strictObject({
     firstname: z.string(),
     lastname: z.string(),
     gender: z.nativeEnum(Gender),
     birthday: z.date(),
-    email: z.string().email().optional(), // email is required, because oauth login does not have an email
-    password: z.string().optional(), // optional, because oauth login does not have a password
-    gliederungId: z.number().int(),
+    email: z.string().email(),
+    password: z.string(),
   }),
   handler: async ({ input }) => {
-    if (!input.email) {
+    const existing = await prisma.account.findFirst({
+      where: {
+        email: input.email,
+      },
+      select: {
+        id: true,
+      },
+    })
+    if (existing !== null) {
       throw new TRPCError({
         code: 'BAD_REQUEST',
-        message: 'Email muss angegeben werden',
+        message: 'Email is already registered',
       })
     }
+
     const accountData = await getAccountCreateData({
       email: input.email,
       firstname: input.firstname,
@@ -37,7 +41,6 @@ export const accountTeilnehmerCreateProcedure = defineProtectedMutateProcedure({
       gender: input.gender,
       roleId: 'USER',
       isActiv: false,
-      gliederungId: input.gliederungId,
     })
 
     const res = await prisma.account.create({

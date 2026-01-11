@@ -14,7 +14,7 @@ export const accountSchema = z.strictObject({
   roleId: z.nativeEnum(Role),
   isActiv: z.boolean().optional(),
   status: z.nativeEnum(AccountStatus).optional(),
-  gliederungId: z.number().int(),
+  gliederungId: z.number().int().optional(),
   adminInGliederungId: z.number().int().optional(),
   activationToken: z.string().optional(),
   passwordResetToken: z.string().optional(),
@@ -42,11 +42,14 @@ export async function getAccountCreateData(data: TGetAccountCreateDataSchema): P
         birthday: data.birthday,
         email: data.email,
         telefon: '',
-        gliederung: {
-          connect: {
-            id: data.gliederungId,
-          },
-        },
+        gliederung:
+          data.gliederungId === undefined
+            ? undefined
+            : {
+                connect: {
+                  id: data.gliederungId,
+                },
+              },
       },
     },
     activatedAt: data.isActiv ? new Date() : null,

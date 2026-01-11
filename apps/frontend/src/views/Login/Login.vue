@@ -25,7 +25,8 @@ if (location.search) {
   const jwt = hashParams.get('jwt')
   if (jwt) {
     localStorage.setItem('jwt', jwt)
-    location.hash = ''
+    location.search = ''
+    router.push({ name: 'Dashboard' })
   }
   const error = hashParams.get('error')
   if (error) {
