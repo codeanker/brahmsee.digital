@@ -1,10 +1,9 @@
+import type { File as Entity } from '@prisma/client'
 import { createWriteStream } from 'node:fs'
 import { mkdir, stat } from 'node:fs/promises'
 import { Readable } from 'node:stream'
 import prisma from '../../prisma.js'
 import { uploadDir } from '../../services/file/helpers/getFileUrl.js'
-import type { File as Entity } from '@prisma/client'
-import { getExtension } from 'hono/utils/mime'
 
 export async function uploadFileLocal(entity: Entity, multipart: File) {
   try {
@@ -17,8 +16,7 @@ export async function uploadFileLocal(entity: Entity, multipart: File) {
     await mkdir(uploadDir, { recursive: true })
   }
 
-  const ext = getExtension(entity.mimetype ?? '')
-  const ws = createWriteStream(`${uploadDir}/${entity.key}${ext}`)
+  const ws = createWriteStream(`${uploadDir}/${entity.key}`)
   const rs = Readable.fromWeb(multipart.stream())
 
   rs.pipe(ws)
