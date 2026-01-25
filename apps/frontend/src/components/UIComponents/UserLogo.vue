@@ -2,7 +2,7 @@
 import { apiClient } from '@/api'
 import { PencilSquareIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
-import { computed, ref, watch, withDefaults } from 'vue'
+import { computed, ref, watch } from 'vue'
 import AvatarEditModal from './AvatarEditModal.vue'
 import Loading from './Loading.vue'
 
@@ -29,12 +29,6 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits<{
-  triggerRefresh: []
-}>()
-
-const photoId = ref(props.photoId)
-
 const getName = computed(() => {
   let name
   if (props.name) {
@@ -57,9 +51,9 @@ const {
   execute: loadPhotoUrl,
 } = useAsyncState(
   async () => {
-    if (photoId.value) {
+    if (props.photoId) {
       return await apiClient.file.fileGetUrl.query({
-        id: photoId.value,
+        id: props.photoId,
         personId: props.personId,
       })
     }
@@ -69,12 +63,6 @@ const {
     immediate: true,
   }
 )
-
-const updated = (id?: string) => {
-  if (id) photoId.value = id
-  loadPhotoUrl()
-  emit('triggerRefresh')
-}
 
 watch(
   () => props.photoId,
@@ -142,7 +130,5 @@ const openAvatarEditModal = () => {
     ref="refAvatarEditModal"
     :person-id="props.personId"
     :show-remove="!!photoUrl"
-    @trigger-refresh="updated"
-    @uploaded="(id) => updated(id)"
   />
 </template>

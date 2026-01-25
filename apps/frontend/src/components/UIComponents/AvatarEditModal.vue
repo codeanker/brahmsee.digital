@@ -15,7 +15,6 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  triggerRefresh: []
   deleted: []
   uploaded: [photoId: string]
 }>()
@@ -31,7 +30,6 @@ const open = () => {
 const close = () => {
   if (modal.value) {
     modal.value.hide()
-    emit('triggerRefresh')
   }
 }
 
