@@ -166,5 +166,5 @@ export async function veranstaltungTeilnehmendenliste(ctx: Context) {
 
   ctx.header('Content-Disposition', `attachment; filename="${filename}"`)
   ctx.header('Content-Type', 'application/vnd.ms-excel')
-  ctx.body(buf, 201)
+  return ctx.body(buf, 201)
 }
