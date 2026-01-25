@@ -4,14 +4,21 @@ import { Readable } from 'node:stream'
 import prisma from '../../prisma.js'
 import { uploadDir } from '../../services/file/helpers/getFileUrl.js'
 import type { File as Entity } from '@prisma/client'
+import { getExtension } from 'hono/utils/mime'
 
 export async function uploadFileLocal(entity: Entity, multipart: File) {
-  const stats = await stat(uploadDir)
-  if (!stats.isDirectory()) {
+  try {
+    const stats = await stat(uploadDir)
+    if (!stats.isDirectory()) {
+      await mkdir(uploadDir, { recursive: true })
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (_) {
     await mkdir(uploadDir, { recursive: true })
   }
 
-  const ws = createWriteStream(`${uploadDir}/${entity.key}`)
+  const ext = getExtension(entity.mimetype ?? '')
+  const ws = createWriteStream(`${uploadDir}/${entity.key}${ext}`)
   const rs = Readable.fromWeb(multipart.stream())
 
   rs.pipe(ws)
