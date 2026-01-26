@@ -27,7 +27,10 @@ oidcRouter.get('/dlrg/callback', async (c) => {
   })
   const as = await oauth.processDiscoveryResponse(issuer, discoveryRequestResponse)
   const client: oauth.Client = { client_id: config.authentication.dlrg.clientId }
-  const clientAuth = oauth.ClientSecretPost(config.authentication.dlrg.clientSecret)
+  const clientAuth =
+    config.authentication.dlrg.clientSecret === undefined
+      ? oauth.None()
+      : oauth.ClientSecretPost(config.authentication.dlrg.clientSecret)
   const redirect_uri = `${config.clientUrl}/api/oidc/dlrg/callback`
   const currentUrl: URL = new URL(c.req.url, config.clientUrl)
   const params = oauth.validateAuthResponse(as, client, currentUrl)

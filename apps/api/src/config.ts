@@ -37,7 +37,7 @@ export const configSchema = z.strictObject({
     dlrg: z.strictObject({
       issuer: z.string().url(),
       clientId: z.string(),
-      clientSecret: z.string(),
+      clientSecret: z.string().optional(),
       allowInsecure: z.boolean(),
     }),
   }),
