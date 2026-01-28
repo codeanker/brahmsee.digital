@@ -1,7 +1,6 @@
 import { serve } from '@hono/node-server'
 import { serveStatic } from '@hono/node-server/serve-static'
 import { trpcServer } from '@hono/trpc-server'
-import { cache } from 'hono/cache'
 import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
 import { requestId } from 'hono/request-id'
@@ -39,13 +38,6 @@ const app = makeApp()
     })
   )
   .use(cors({ origin: '*' }))
-  .use(
-    cache({
-      cacheName: 'brahmsee.digital',
-      cacheControl: 'max-age: 31536000, immutable',
-      wait: true,
-    })
-  )
   .use(
     '/api/trpc/*',
     trpcServer({
