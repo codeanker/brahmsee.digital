@@ -3,8 +3,6 @@ version: '3.9'
 services:
   postgres:
     image: postgres:15.3-alpine3.18
-    ports:
-      - 127.0.0.1:5432:5432
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -15,8 +13,6 @@ services:
 
   meilisearch:
     image: getmeili/meilisearch:v1.6
-    ports:
-      - 7700:7700
     environment:
       - MEILI_MASTER_KEY=xbAPupQKhkKvF176vE2JxAdPGpmWVu251Hldn6K4Z6Y
     volumes:
