@@ -107,6 +107,7 @@ oidcRouter.get('/dlrg/callback', async (c) => {
         password: '',
         role: registerAsGliederung ? 'GLIEDERUNG_ADMIN' : 'USER',
         status: registerAsGliederung ? 'OFFEN' : 'AKTIV',
+        activatedAt: new Date(),
         person: {
           create: {
             firstname: profile.given_name,
