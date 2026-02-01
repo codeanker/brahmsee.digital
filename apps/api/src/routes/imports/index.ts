@@ -23,7 +23,7 @@ importRouter.post('/anmeldungen/:unterveranstaltungId', async (ctx) => {
 
   const account = await prisma.account.findUnique({
     where: {
-      id: parseInt(accountId),
+      id: accountId,
     },
     select: {
       role: true,
@@ -51,7 +51,7 @@ importRouter.post('/anmeldungen/:unterveranstaltungId', async (ctx) => {
     }
   }
 
-  const unterveranstaltung = await findUnterveranstaltung(parseInt(ctx.req.param('unterveranstaltungId')))
+  const unterveranstaltung = await findUnterveranstaltung(ctx.req.param('unterveranstaltungId'))
   if (!unterveranstaltung) {
     return ctx.json({ error: 'Unterveranstaltung not found' }, 404)
   }
@@ -78,7 +78,7 @@ export { importRouter }
  * @param unterveranstaltungId
  * @returns
  */
-async function findUnterveranstaltung(unterveranstaltungId: number) {
+async function findUnterveranstaltung(unterveranstaltungId: string) {
   return await prisma.unterveranstaltung.findUnique({
     where: {
       id: unterveranstaltungId,

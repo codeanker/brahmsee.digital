@@ -29,7 +29,7 @@ export async function findAddress(input: z.infer<typeof addressSchema>) {
   })
 }
 
-export async function createOrUpdateAddress(input: z.infer<typeof addressSchema>): Promise<number | undefined> {
+export async function createOrUpdateAddress(input: z.infer<typeof addressSchema>): Promise<string | undefined> {
   if (isAllUndefined(input)) {
     return undefined
   }

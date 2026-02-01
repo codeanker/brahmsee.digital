@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const unterveranstaltungCreateSchema = z.strictObject({
-  veranstaltungId: z.number().int(),
+  veranstaltungId: z.string().uuid(),
   maxTeilnehmende: z.number().int(),
   teilnahmegebuehr: z.number({ description: 'In Cent' }).int(),
   meldebeginn: z.date(),
@@ -23,8 +23,8 @@ export const unterveranstaltungLandingSchema = z.strictObject({
       })
     )
     .optional(),
-  updateHeroImages: z.array(z.strictObject({ id: z.number().int(), name: z.string() })).optional(),
-  deleteHeroImageIds: z.array(z.number().int()).optional(),
+  updateHeroImages: z.array(z.strictObject({ id: z.string().uuid(), name: z.string() })).optional(),
+  deleteHeroImageIds: z.array(z.string().uuid()).optional(),
 
   eventDetailsTitle: z.string(),
   eventDetailsContent: z.string(),
@@ -42,9 +42,9 @@ export const unterveranstaltungLandingSchema = z.strictObject({
     )
     .optional(),
   updateMiscellaneousItems: z
-    .array(z.strictObject({ id: z.number().int(), title: z.string(), content: z.string() }))
+    .array(z.strictObject({ id: z.string().uuid(), title: z.string(), content: z.string() }))
     .optional(),
-  deleteMiscellaneousItemIds: z.array(z.number().int()).optional(),
+  deleteMiscellaneousItemIds: z.array(z.string().uuid()).optional(),
 
   faqVisible: z.boolean().optional(),
   faqEmail: z.string().optional(),
@@ -65,8 +65,8 @@ export const unterveranstaltungUpdateSchema = unterveranstaltungCreateSchema.omi
       })
     )
     .optional(),
-  updateDocuments: z.array(z.strictObject({ id: z.number().int(), name: z.string() })).optional(),
-  deleteDocumentIds: z.array(z.number().int()).optional(),
+  updateDocuments: z.array(z.strictObject({ id: z.string().uuid(), name: z.string() })).optional(),
+  deleteDocumentIds: z.array(z.string().uuid()).optional(),
 })
 
 export type TUnterveranstaltungLandingSchema = z.infer<typeof unterveranstaltungLandingSchema>

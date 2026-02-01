@@ -21,7 +21,7 @@ async function createUser() {
     }),
   })
 
-  async function selectGliederung(): Promise<number> {
+  async function selectGliederung(): Promise<string> {
     return await search({
       message: 'Deine Gliederung',
       source: async (term) => {

@@ -9,7 +9,7 @@ export const personGetProcedure = defineProtectedQueryProcedure({
   key: 'get',
   roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN, Role.USER],
   inputSchema: z.strictObject({
-    id: z.number().int(),
+    id: z.string().uuid(),
   }),
   handler: async ({ ctx, input }) => {
     const protection = await getPersonProtectionFilter(ctx)

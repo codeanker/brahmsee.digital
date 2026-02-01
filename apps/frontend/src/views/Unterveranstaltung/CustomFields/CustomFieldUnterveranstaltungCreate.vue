@@ -2,9 +2,10 @@
 import { computed } from 'vue'
 
 import CustomFieldsFormCreate from '@/components/CustomFields/CustomFieldsFormCreate.vue'
-import { paramInt } from '@/helpers/params'
+import { useRoute } from 'vue-router'
 
-const unterveranstaltungId = computed(() => paramInt('unterveranstaltungId'))
+const route = useRoute()
+const unterveranstaltungId = computed(() => route.params.unterveranstaltungId as string)
 </script>
 
 <template>

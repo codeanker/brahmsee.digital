@@ -79,7 +79,7 @@ const columns = [
     //   },
     // },
   }),
-  column.accessor('anmeldungen._count', {
+  column.accessor('_count.anmeldungen', {
     header: 'Anmeldungen',
     enableSorting: true,
     cell({ getValue }) {

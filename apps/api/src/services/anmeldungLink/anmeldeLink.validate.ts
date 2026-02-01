@@ -5,7 +5,7 @@ import prisma from '../../prisma.js'
 export const anmeldungLinkAuthorizeProcedure = definePublicQueryProcedure({
   key: 'authorize',
   inputSchema: z.strictObject({
-    unterveranstaltungId: z.number().int(),
+    unterveranstaltungId: z.string().uuid(),
     accessToken: z.string().uuid(),
   }),
   handler: async ({ input: { unterveranstaltungId, accessToken } }) => {

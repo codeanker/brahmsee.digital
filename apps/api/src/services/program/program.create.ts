@@ -8,7 +8,7 @@ export const programCreateProcedure = defineProtectedMutateProcedure({
   key: 'create',
   roleIds: ['ADMIN'],
   inputSchema: z.strictObject({
-    veranstaltungId: z.number().int(),
+    veranstaltungId: z.string().uuid(),
     name: z.string(),
     description: z.string(),
     location: z.string(),

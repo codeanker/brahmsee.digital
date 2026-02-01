@@ -14,12 +14,12 @@ export const customFieldsVeranstaltungCreate = defineProtectedMutateProcedure({
   inputSchema: z.discriminatedUnion('type', [
     z.strictObject({
       type: z.literal('new'),
-      veranstaltungId: z.number(),
+      veranstaltungId: z.string().uuid(),
       data: customFieldSchema,
     }),
     z.strictObject({
       type: z.literal('fromTemplate'),
-      veranstaltungId: z.number(),
+      veranstaltungId: z.string().uuid(),
       template: z.string(),
     }),
   ]),

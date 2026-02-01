@@ -1,5 +1,5 @@
 model Address {
-  id           Int      @id @default(autoincrement())
+  id           String   @id @default(uuid(7))
   street       String
   streetNumber String
   zip          String
@@ -13,9 +13,9 @@ model Address {
 }
 
 model Ort {
-  id            Int             @id @default(autoincrement())
+  id            String          @id @default(uuid(7))
   name          String
-  addressId     Int?
+  addressId     String?
   address       Address?        @relation(fields: [addressId], references: [id], onDelete: SetNull)
   Veranstaltung Veranstaltung[]
 }

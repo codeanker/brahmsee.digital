@@ -12,7 +12,7 @@ export const veranstaltungVerwaltungCreateProcedure = defineProtectedMutateProce
       name: z.string(),
       beginn: z.date(),
       ende: z.date(),
-      ortId: z.number().int(),
+      ortId: z.string().uuid(),
       meldebeginn: z.date(),
       meldeschluss: z.date(),
       maxTeilnehmende: z.number().int(),
@@ -22,7 +22,7 @@ export const veranstaltungVerwaltungCreateProcedure = defineProtectedMutateProce
       teilnahmeBedingungen: z.string().optional(),
       teilnahmeBedingungenPublic: z.string().optional(),
       zielgruppe: z.string().optional(),
-      hostnameId: z.number().int().optional(),
+      hostnameId: z.string().uuid().optional(),
     }),
   }),
   async handler(options) {

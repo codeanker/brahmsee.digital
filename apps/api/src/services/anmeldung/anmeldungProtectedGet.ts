@@ -5,8 +5,8 @@ import prisma from '../../prisma.js'
 import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
 
 const inputSchema = z.strictObject({
-  anmeldungId: z.number().optional(),
-  personId: z.number().optional(),
+  anmeldungId: z.string().uuid().optional(),
+  personId: z.string().uuid().optional(),
 })
 
 export type AnmeldungProtectedGetSchema = z.infer<typeof inputSchema>

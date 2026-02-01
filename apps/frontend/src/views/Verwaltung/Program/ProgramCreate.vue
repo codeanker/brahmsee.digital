@@ -12,9 +12,7 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
-const veranstaltungId = useRouteParams('veranstaltungId', '', {
-  transform: (id) => parseInt(id),
-})
+const veranstaltungId = useRouteParams<string>('veranstaltungId')
 
 // const anotherOne = ref(false)
 
@@ -31,10 +29,6 @@ const initialData = {
 const data = ref(initialData)
 
 async function submit() {
-  if (isNaN(veranstaltungId.value)) {
-    return
-  }
-
   await apiClient.program.create.mutate({
     veranstaltungId: veranstaltungId.value,
     ...data.value,

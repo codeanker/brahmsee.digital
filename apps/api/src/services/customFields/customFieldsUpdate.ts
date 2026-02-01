@@ -11,7 +11,7 @@ export const customFieldsUpdate = defineProtectedMutateProcedure({
   key: 'update',
   roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
   inputSchema: z.strictObject({
-    fieldId: z.number(),
+    fieldId: z.string().uuid(),
     data: customFieldSchema,
   }),
   async handler({ ctx, input }) {

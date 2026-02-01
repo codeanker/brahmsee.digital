@@ -1,5 +1,5 @@
 model ProgrammPunkt {
-  id          Int      @id @default(autoincrement())
+  id          String   @id @default(uuid(7))
   name        String
   description String?
   startingAt  DateTime
@@ -7,6 +7,6 @@ model ProgrammPunkt {
   location    String
   responsible String
 
-  veranstaltungId Int
+  veranstaltungId String
   veranstaltung   Veranstaltung @relation(fields: [veranstaltungId], references: [id])
 }

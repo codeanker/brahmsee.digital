@@ -15,7 +15,7 @@ import initialData from '../Table/initialData'
 import Badge from '../UIComponents/Badge.vue'
 
 const props = defineProps<{
-  veranstaltungId?: number
+  veranstaltungId?: string
 }>()
 
 type Unterveranstaltung = RouterOutput['unterveranstaltung']['list']['data'][number]

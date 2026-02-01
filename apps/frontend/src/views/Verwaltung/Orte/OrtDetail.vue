@@ -11,7 +11,7 @@ const { setTitle } = useRouteTitle()
 const route = useRoute()
 const { state: ort, execute: fetchOrt } = useAsyncState(async () => {
   const ortId = route.params.ortId as string
-  const result = await apiClient.ort.verwaltungGet.query({ id: parseInt(ortId) })
+  const result = await apiClient.ort.verwaltungGet.query({ id: ortId })
   setTitle('Ort: ' + result.name)
   return result
 }, null)

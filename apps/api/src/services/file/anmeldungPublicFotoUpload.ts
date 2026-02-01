@@ -7,8 +7,8 @@ import { TRPCError } from '@trpc/server'
 export const anmeldungPublicFotoUploadProcedure = definePublicMutateProcedure({
   key: 'anmeldungPublicFotoUpload',
   inputSchema: fileCreateSchema.extend({
-    unterveranstaltungId: z.number().int(),
-    anmeldungId: z.number().int(),
+    unterveranstaltungId: z.string().uuid(),
+    anmeldungId: z.string().uuid(),
     accessToken: z.string().uuid(),
   }),
   handler: async ({ input: { unterveranstaltungId, anmeldungId, accessToken, mimetype } }) => {

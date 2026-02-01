@@ -14,8 +14,8 @@ import { updateMeiliPerson } from '../../meilisearch/person.js'
 export const inputSchema = z.strictObject({
   token: z.string().optional(),
   data: personSchema.extend({
-    unterveranstaltungId: z.number().int(),
-    mahlzeitenIds: z.array(z.number().int()).optional(),
+    unterveranstaltungId: z.string().uuid(),
+    mahlzeitenIds: z.array(z.string().uuid()).optional(),
     uebernachtungsTage: z.array(z.date()).optional(),
     tshirtBestellt: z.boolean().optional(),
     email: z.string().email(),

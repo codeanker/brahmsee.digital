@@ -8,7 +8,7 @@ import { apiClient } from '@/api'
 
 type Props = {
   entity: 'veranstaltung' | 'unterveranstaltung'
-  entityId: number
+  entityId: string
   field: RouterOutput['customFields']['get']
 }
 

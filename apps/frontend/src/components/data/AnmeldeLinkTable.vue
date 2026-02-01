@@ -11,6 +11,7 @@ import DataGridDoubleLineCell from '../DataGridDoubleLineCell.vue'
 import DataTable, { type Query } from '../Table/DataTable.vue'
 import initialData from '../Table/initialData'
 import Badge from '../UIComponents/Badge.vue'
+// import Button from '../UIComponents/Button.vue'
 
 type AnmeldeLink = RouterOutput['anmeldungLink']['list']['data'][number]
 
@@ -25,19 +26,8 @@ setTitle('Anmeldelinks')
 
 const column = createColumnHelper<AnmeldeLink>()
 const columns = [
-  column.display({
-    header: 'Token',
-    cell({ row }) {
-      return h(DataGridDoubleLineCell, {
-        title: row.original.accessToken ?? '-',
-        message: row.original.comment ?? '',
-      })
-    },
-    meta: {
-      class: {
-        body: 'font-mono',
-      },
-    },
+  column.accessor('comment', {
+    header: 'Bemerkung',
   }),
   column.accessor('usedAt', {
     id: 'status',
@@ -83,6 +73,13 @@ const columns = [
       })
     },
   }),
+  // column.display({
+  //   header: ' ',
+  //   cell({ row }) {
+  //     const link = `?token=${row.original.token}`
+  //     return h(Button, {}, ['Link kopieren'])
+  //   },
+  // }),
 ]
 
 const query: Query<AnmeldeLink> = (pagination, filter) =>

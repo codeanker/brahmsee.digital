@@ -8,8 +8,8 @@ import { definePublicMutateProcedure } from '../../types/defineProcedure.js'
 export const anmeldungFotoUploadProcedure = definePublicMutateProcedure({
   key: 'anmeldungFotoUpload',
   inputSchema: z.strictObject({
-    unterveranstaltungId: z.number().int(),
-    anmeldungId: z.number().int(),
+    unterveranstaltungId: z.string().uuid(),
+    anmeldungId: z.string().uuid(),
     accessToken: z.string().uuid(),
     fileId: z.string(),
   }),

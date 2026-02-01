@@ -84,7 +84,7 @@ const {
         comment: anmeldung.comment,
       },
       customFieldValues: Object.entries(customFieldValues.value).map((entry) => ({
-        fieldId: parseInt(entry[0]),
+        fieldId: entry[0],
         value: entry[1],
       })),
     })

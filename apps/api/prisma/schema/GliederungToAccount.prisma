@@ -6,9 +6,9 @@ enum GliederungAccountRole {
 
 model GliederungToAccount {
   id           Int                   @id @default(autoincrement())
-  gliederungId Int
+  gliederungId String
   gliederung   Gliederung            @relation(fields: [gliederungId], references: [id], onDelete: Cascade)
-  accountId    Int
+  accountId    String
   account      Account               @relation(fields: [accountId], references: [id], onDelete: Cascade)
   role         GliederungAccountRole
 

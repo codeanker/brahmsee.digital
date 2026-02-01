@@ -10,7 +10,7 @@ import { useQueryClient } from '@tanstack/vue-query'
 
 const props = defineProps<{
   veranstaltung: string
-  unterveranstaltungId: number
+  unterveranstaltungId: string
   url: string
 }>()
 

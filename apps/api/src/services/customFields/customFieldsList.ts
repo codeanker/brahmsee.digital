@@ -13,7 +13,7 @@ import { boolish } from '../../util/zod.js'
 
 const baseFilter = z.strictObject({
   entity: z.enum(['veranstaltung', 'unterveranstaltung']),
-  entityId: z.number(),
+  entityId: z.string().uuid(),
   position: z.nativeEnum(CustomFieldPosition).optional(),
 })
 

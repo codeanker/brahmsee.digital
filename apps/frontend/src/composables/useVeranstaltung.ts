@@ -21,7 +21,7 @@ export function useVeranstaltung() {
     execute,
     isLoading,
   } = useAsyncState(async () => {
-    return apiClient.veranstaltung.verwaltungGet.query({ id: parseInt(route.params.veranstaltungId as string) })
+    return apiClient.veranstaltung.verwaltungGet.query({ id: route.params.veranstaltungId as string })
   }, null)
   return {
     veranstaltung,

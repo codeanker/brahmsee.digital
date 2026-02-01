@@ -43,11 +43,11 @@ const { state: unterveranstaltung } = useAsyncState(async () => {
   let result
   if (loggedInAccount.value?.role === 'ADMIN') {
     result = await apiClient.unterveranstaltung.verwaltungGet.query({
-      id: parseInt(route.params.unterveranstaltungId as string),
+      id: route.params.unterveranstaltungId as string,
     })
   } else {
     result = await apiClient.unterveranstaltung.gliederungGet.query({
-      id: parseInt(route.params.unterveranstaltungId as string),
+      id: route.params.unterveranstaltungId as string,
     })
   }
   setTitle(`Ausschreibung für ${result.veranstaltung.name} (${result.gliederung.name})`)
@@ -58,7 +58,7 @@ const { state: countAnmeldungen } = useAsyncState(async () => {
   return apiClient.anmeldung.count.query({
     filter: {
       type: 'unterveranstaltung',
-      unterveranstaltungId: parseInt(route.params.unterveranstaltungId as string),
+      unterveranstaltungId: route.params.unterveranstaltungId as string,
     },
   })
 }, undefined)

@@ -9,8 +9,8 @@ import { zodSafe } from '../../util/zod.js'
 export const sheetQuerySchema = z
   .object({
     jwt: z.string(),
-    veranstaltungId: z.coerce.number().min(0).optional(),
-    unterveranstaltungId: z.coerce.number().min(0).optional(),
+    veranstaltungId: z.string().uuid().optional(),
+    unterveranstaltungId: z.string().uuid().optional(),
   })
   .refine((data) => !!data.veranstaltungId || !!data.unterveranstaltungId, {
     message: 'Exactly one of veranstaltungId or unterveranstaltungId must be provided',
@@ -31,11 +31,9 @@ export async function sheetAuthorize(ctx: Context) {
     return false
   }
 
-  const accountIdNumber = parseInt(accountId)
-
   const account = await prisma.account.findUnique({
     where: {
-      id: accountIdNumber,
+      id: accountId,
     },
     select: {
       role: true,
@@ -56,7 +54,7 @@ export async function sheetAuthorize(ctx: Context) {
   let gliederung: Gliederung | undefined = undefined
   if (account.role == Role.GLIEDERUNG_ADMIN) {
     try {
-      gliederung = await getGliederungRequireAdmin(accountIdNumber)
+      gliederung = await getGliederungRequireAdmin(accountId)
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       ctx.status(401)

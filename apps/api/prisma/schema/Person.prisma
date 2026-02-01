@@ -22,7 +22,7 @@ enum NahrungsmittelIntoleranz {
 //endregion
 
 model Person {
-  id                         Int                        @id @default(autoincrement())
+  id                         String                     @id @default(uuid(7))
   firstname                  String
   lastname                   String
   birthday                   DateTime?                  @db.Date
@@ -30,7 +30,7 @@ model Person {
   email                      String
   telefon                    String
   anmeldungen                Anmeldung[]
-  gliederungId               Int?
+  gliederungId               String?
   gliederung                 Gliederung?                @relation(fields: [gliederungId], references: [id], onDelete: SetNull)
   account                    Account?
   essgewohnheit              Essgewohnheit?
@@ -38,18 +38,18 @@ model Person {
   weitereIntoleranzen        String[]
   notfallkontaktIds          Int[]
   notfallkontakte            Notfallkontakt[]
-  addressId                  Int?
+  addressId                  String?
   address                    Address?                   @relation(fields: [addressId], references: [id], onDelete: Cascade)
   photoId                    String?
   photo                      File?                      @relation(fields: [photoId], references: [id])
 }
 
 model Notfallkontakt {
-  id                      Int     @id @default(autoincrement())
+  id                      String  @id @default(uuid(7))
   firstname               String
   lastname                String
   telefon                 String
   istErziehungsberechtigt Boolean @default(false)
-  personId                Int
+  personId                String
   person                  Person  @relation(fields: [personId], references: [id], onDelete: Cascade)
 }

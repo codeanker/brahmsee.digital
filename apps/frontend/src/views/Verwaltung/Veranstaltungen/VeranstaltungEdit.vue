@@ -7,7 +7,7 @@ import FormVeranstaltungGeneral from '@/components/forms/veranstaltung/FormVeran
 
 const route = useRoute()
 const { state: veranstaltung, execute: fetchVeranstaltung } = useAsyncState(async () => {
-  return apiClient.veranstaltung.verwaltungGet.query({ id: parseInt(route.params.veranstaltungId as string) })
+  return apiClient.veranstaltung.verwaltungGet.query({ id: route.params.veranstaltungId as string })
 }, null)
 </script>
 

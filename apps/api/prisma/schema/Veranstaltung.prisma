@@ -1,11 +1,11 @@
 model Veranstaltung {
-  id                         Int                  @id @default(autoincrement())
+  id                         String               @id @default(uuid(7))
   name                       String
   beginn                     DateTime             @db.Date
   ende                       DateTime             @db.Date
   meldebeginn                DateTime
   meldeschluss               DateTime
-  ortId                      Int?
+  ortId                      String?
   ort                        Ort?                 @relation(fields: [ortId], references: [id], onDelete: SetNull)
   maxTeilnehmende            Int
   teilnahmegebuehr           Int
@@ -16,7 +16,7 @@ model Veranstaltung {
   teilnahmeBedingungen       String?
   teilnahmeBedingungenPublic String?
   zielgruppe                 String?
-  hostnameId                 Int?
+  hostnameId                 String?
   hostname                   Hostname?            @relation(fields: [hostnameId], references: [id])
   customFields               CustomField[]
   programmPunkte             ProgrammPunkt[]

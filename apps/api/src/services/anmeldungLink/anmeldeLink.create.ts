@@ -8,7 +8,7 @@ export const anmeldungLinkCreateProcedure = defineProtectedMutateProcedure({
   key: 'create',
   roleIds: ['ADMIN'],
   inputSchema: z.strictObject({
-    unterveranstaltungId: z.number().int(),
+    unterveranstaltungId: z.string().uuid(),
     comment: z.string().optional(),
   }),
   handler: async ({ ctx, input: { unterveranstaltungId, comment } }) => {

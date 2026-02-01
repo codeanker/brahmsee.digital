@@ -6,7 +6,7 @@ import { definePublicQueryProcedure } from '../../types/defineProcedure.js'
 export const gliederungPublicGetProcedure = definePublicQueryProcedure({
   key: 'publicGet',
   inputSchema: z.strictObject({
-    gliederungId: z.number().int(),
+    gliederungId: z.string().uuid(),
   }),
   async handler(options) {
     return prisma.gliederung.findUniqueOrThrow({

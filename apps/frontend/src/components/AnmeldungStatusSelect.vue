@@ -12,7 +12,7 @@ import { type AnmeldungStatus, AnmeldungStatusMapping, getEnumOptions } from '@c
 const props = withDefaults(
   defineProps<{
     status: AnmeldungStatus
-    id: number
+    id: string
     meldeschluss: Date
   }>(),
   {}

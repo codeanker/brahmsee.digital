@@ -9,7 +9,7 @@ export const ortVerwaltungPatchProcedure = defineProtectedMutateProcedure({
   key: 'verwaltungPatch',
   roleIds: [Role.ADMIN],
   inputSchema: z.strictObject({
-    id: z.number().int(),
+    id: z.string().uuid(),
     data: z.strictObject({
       name: z.string(),
       address: addressSchema,

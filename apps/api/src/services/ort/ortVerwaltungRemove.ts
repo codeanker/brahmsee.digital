@@ -8,7 +8,7 @@ export const ortVerwaltungRemoveProcedure = defineProtectedMutateProcedure({
   key: 'verwaltungRemove',
   roleIds: [Role.ADMIN],
   inputSchema: z.strictObject({
-    id: z.number().int(),
+    id: z.string().uuid(),
   }),
   async handler({ input }) {
     return prisma.ort.delete({

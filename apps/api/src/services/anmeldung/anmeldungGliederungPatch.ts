@@ -8,7 +8,7 @@ export const anmeldungGliederungPatchProcedure = defineProtectedMutateProcedure(
   key: 'gliederungPatch',
   roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
   inputSchema: z.strictObject({
-    id: z.number().int(),
+    id: z.string().uuid(),
     data: z.strictObject({
       comment: z.string().optional(),
     }),
