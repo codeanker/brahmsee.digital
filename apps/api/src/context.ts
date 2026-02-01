@@ -27,11 +27,19 @@ export async function createContext({ req }: FetchCreateContextFnOptions): Promi
     }
 
     const accountId = parseInt(accountIdFromHeader)
-    const account = await prisma.account.findFirstOrThrow({
+    const account = await prisma.account.findFirst({
       where: {
         id: accountId,
       },
     })
+
+    if (account === null) {
+      return {
+        authenticated: false,
+        accountId: undefined,
+        account: undefined,
+      }
+    }
 
     return {
       authenticated: true,
