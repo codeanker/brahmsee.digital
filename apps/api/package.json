@@ -35,8 +35,6 @@
     "@faker-js/faker": "catalog:",
     "@hono/node-server": "^1.19.6",
     "@hono/trpc-server": "^0.4.0",
-    "@koa/cors": "^5.0.0",
-    "@koa/router": "^12.0.1",
     "@prisma/client": "^5.19.1",
     "@prisma/extension-accelerate": "^1.1.0",
     "@sendgrid/mail": "^8.1.0",
@@ -58,7 +56,7 @@
     "superjson": "catalog:",
     "uuid": "^11.0.5",
     "winston": "^3.11.0",
-    "zod": "^3.22.4"
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@codeanker/eslint-config": "workspace:*",

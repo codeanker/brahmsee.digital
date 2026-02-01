@@ -5,6 +5,8 @@ catalog:
   "@azure/storage-blob": "^12.17.0"
   "@eslint/js": ^9.17.0
   "@faker-js/faker": "^10.1.0"
+  "@headlessui/vue": ^1.7.16
+  "@heroicons/vue": ^2.0.18
   "@tiptap/extension-document": ^2.11.0
   "@tiptap/extension-highlight": ^2.11.0
   "@tiptap/extension-link": ^2.11.0
@@ -23,3 +25,4 @@ catalog:
   "vitest": ^3.1.1
   "vue-tsc": ^2.2.0
   "vue": ^3.5.13
+  "zod": ^3.22.4
