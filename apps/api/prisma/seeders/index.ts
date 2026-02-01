@@ -10,16 +10,21 @@ import importGliederungen from './gliederungen.js'
 import createVeranstaltung from './veranstaltung.js'
 import createProgramm from './programm.js'
 import importKreditinstitute from './kreditinstitute.js'
+import { importHostnames } from './hostname.js'
 
 export type Seeder = (prisma: PrismaClient) => Promise<void>
 
 const seeders: Seeder[] = (() => {
   // in produktion nur Gliederungen importieren
   if (isProduction() || process.env.DISABLE_SEEDER === '1') {
-    return [importGliederungen, importKreditinstitute]
+    logger.info('running production seeders')
+    return [importHostnames, importGliederungen, importKreditinstitute]
   }
 
+  logger.info('running development seeders')
+
   return [
+    importHostnames,
     importGliederungen,
     importKreditinstitute,
     createAccount,
