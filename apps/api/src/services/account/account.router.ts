@@ -6,6 +6,8 @@ import { accountChangePasswordProcedure } from './accountChangePassword.js'
 import { accountEmailConfirmProcedure } from './accountEmailConfirm.js'
 import { accountEmailConfirmRequestProcedure } from './accountEmailConfirmRequest.js'
 import { accountPasswordResetProcedure } from './accountPasswordReset.js'
+import { accountPasswordResetRequestProcedure } from './accountPasswordResetRequest.js'
+import { accountPasswordResetValidateProcedure } from './accountPasswordResetToken.js'
 import { accountTeilnehmerCreateProcedure } from './accountTeilnehmerCreate.js'
 import { accountVerwaltungCreateProcedure } from './accountVerwaltungCreate.js'
 import { accountVerwaltungGetProcedure } from './accountVerwaltungGet.js'
@@ -23,6 +25,8 @@ export const accountRouter = mergeRouters(
   accountVerwaltungPatchProcedure,
   accountEmailConfirmRequestProcedure,
   accountEmailConfirmProcedure,
+  accountPasswordResetRequestProcedure,
+  accountPasswordResetValidateProcedure,
   accountPasswordResetProcedure,
   accountVerwaltungRemoveProcedure,
   accountTeilnehmerCreateProcedure
