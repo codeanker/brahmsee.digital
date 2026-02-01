@@ -3,13 +3,15 @@ import XLSX from '@e965/xlsx'
 import type { Gliederung } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
 import archiver from 'archiver'
-import type { Context } from 'koa'
+import { stream } from 'hono/streaming'
 import mime from 'mime'
+import { Readable } from 'node:stream'
 import { z } from 'zod'
-import prisma from '../../../prisma.js'
-import { openFileStream } from '../../../services/file/helpers/getFileUrl.js'
-import { getSecurityWorksheet } from '../helpers/getSecurityWorksheet.js'
-import { sheetAuthorize, type SheetQuery } from '../sheets/sheets.schema.js'
+import prisma from '../../prisma.js'
+import { openFileStream } from '../../services/file/helpers/getFileUrl.js'
+import type { AppContext } from '../../util/make-app.js'
+import { getSecurityWorksheet } from './helpers/getSecurityWorksheet.js'
+import { sheetAuthorize, type SheetQuery } from './sheets.schema.js'
 
 const querySchema = z.object({
   mode: z.enum(['group', 'flat']),
@@ -100,14 +102,16 @@ function buildSheet(
   return XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' }) as Buffer
 }
 
-export async function veranstaltungPhotoArchive(ctx: Context) {
+const baseDirectory = 'Fotos'
+
+export async function veranstaltungPhotoArchive(ctx: AppContext) {
   const authorization = await sheetAuthorize(ctx)
   if (!authorization) {
     return
   }
 
   const { query, gliederung, account } = authorization
-  const { mode } = querySchema.parse(ctx.query)
+  const { mode } = querySchema.parse(ctx.req.query())
 
   if (mode === 'flat' && account.role !== 'ADMIN') {
     throw new TRPCError({
@@ -127,32 +131,32 @@ export async function veranstaltungPhotoArchive(ctx: Context) {
     }
   })
 
-  // good practice to catch this error explicitly
   zip.on('error', function (err) {
     throw err
   })
 
-  ctx.res.statusCode = 201
-  ctx.res.setHeader('Content-Type', 'application/zip')
-  ctx.res.setHeader(
-    'Content-Disposition',
-    `attachment; filename="${mode === 'flat' ? 'FotosForAutomation' : 'Fotos'}.zip"`
-  )
-  zip.pipe(ctx.res)
+  ctx.status(201)
+  ctx.header('Content-Type', 'application/zip')
+  ctx.header('Content-Disposition', `attachment; filename="${mode === 'flat' ? 'FotosForAutomation' : 'Fotos'}.zip"`)
+
+  zip.append(`Gesamtzahl Fotos: ${anmeldungen.length}`, { name: `${baseDirectory}/README.txt` })
 
   for (const { person, unterveranstaltung } of anmeldungen) {
     if (!person.photo) {
-      return
+      continue
     }
 
     const stream = await openFileStream(person.photo)
 
-    const directory = `Fotos Teilnehmende ${unterveranstaltung.veranstaltung.name}/${unterveranstaltung.gliederung.name}`
+    const directory = `${unterveranstaltung.veranstaltung.name}/${unterveranstaltung.gliederung.name}`
     const basename = mode === 'group' ? `${person.firstname} ${person.lastname}` : person.id
     const extension = mime.getExtension(person.photo.mimetype ?? 'text/plain')
 
     zip.append(stream, {
-      name: mode === 'group' ? `${directory}/${basename}.${extension}` : `Fotos/${person.photo.id}.${extension}`,
+      name:
+        mode === 'group'
+          ? `${baseDirectory}/${directory}/${basename}.${extension}`
+          : `Fotos/${person.photo.id}.${extension}`,
       date: person.photo.createdAt,
     })
   }
@@ -166,5 +170,7 @@ export async function veranstaltungPhotoArchive(ctx: Context) {
 
   await zip.finalize()
 
-  ctx.res.end()
+  return stream(ctx, async (s) => {
+    await s.pipe(Readable.toWeb(zip))
+  })
 }

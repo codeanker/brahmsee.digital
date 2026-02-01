@@ -1,10 +1,10 @@
 import { AnmeldungStatus, Essgewohnheit, NahrungsmittelIntoleranz } from '@prisma/client'
 import dayjs from 'dayjs'
-import type { Context } from 'koa'
+import type { Context } from 'hono'
 import XLSX from '@e965/xlsx'
-import prisma from '../../../prisma.js'
-import { getSecurityWorksheet } from '../helpers/getSecurityWorksheet.js'
-import { getWorkbookDefaultProps } from '../helpers/getWorkbookDefaultProps.js'
+import prisma from '../../prisma.js'
+import { getSecurityWorksheet } from './helpers/getSecurityWorksheet.js'
+import { getWorkbookDefaultProps } from './helpers/getWorkbookDefaultProps.js'
 import { sheetAuthorize } from './sheets.schema.js'
 
 export async function veranstaltungVerpflegung(ctx: Context) {
@@ -109,10 +109,9 @@ export async function veranstaltungVerpflegung(ctx: Context) {
   XLSX.utils.book_append_sheet(workbook, securityWorksheet, securityWorksheetName)
 
   const filename = `${dayjs().format('YYYYMMDD-hhmm')}-Verpflegung.xlsx`
-  const buffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' }) as Buffer
+  const buffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' }) as ArrayBuffer
 
-  ctx.res.statusCode = 201
-  ctx.res.setHeader('Content-Disposition', `attachment; filename="${filename}"`)
-  ctx.res.setHeader('Content-Type', 'application/vnd.ms-excel')
-  ctx.res.end(buffer)
+  ctx.header('Content-Disposition', `attachment; filename="${filename}"`)
+  ctx.header('Content-Type', 'application/vnd.ms-excel')
+  return ctx.body(buffer, 201)
 }

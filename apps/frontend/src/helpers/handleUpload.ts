@@ -46,7 +46,7 @@ async function uploadFile(file: File, dbFile: dbFile): Promise<uploadedFile> {
   formData.append('file', file)
 
   if (dbFile.provider === 'LOCAL') {
-    const response = await fetch(`/api/upload/file/LOCAL/${dbFile.id}`, {
+    const response = await fetch(`/api/file/upload/LOCAL/${dbFile.id}`, {
       method: 'POST',
       body: formData,
     })

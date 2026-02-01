@@ -25,17 +25,23 @@ export const customFieldsTable = definePublicQueryProcedure({
       return await prisma.customField.findMany({
         where: {
           veranstaltungId: entityId,
-          positions: {
-            has: position,
-          },
+          positions:
+            position === undefined
+              ? undefined
+              : {
+                  has: position,
+                },
         },
       })
     } else if (entity === 'unterveranstaltung') {
       return await prisma.customField.findMany({
         where: {
-          positions: {
-            has: position,
-          },
+          positions:
+            position === undefined
+              ? undefined
+              : {
+                  has: position,
+                },
           OR: [
             {
               unterveranstaltungId: entityId,

@@ -1,14 +1,73 @@
 <script setup lang="ts">
-import { UserGroupIcon, ChevronLeftIcon, UserIcon } from '@heroicons/vue/24/outline'
-import ButtonCard from '@/components/UIComponents/ButtonCard.vue'
+import { apiClient } from '@/api'
+import BasicInput from '@/components/BasicInputs/BasicInput.vue'
+import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
+import type { IStammdaten } from '@/components/forms/anmeldung/Stammdaten.vue'
+import Stammdaten from '@/components/forms/anmeldung/Stammdaten.vue'
+import PublicFooter from '@/components/LayoutComponents/PublicFooter.vue'
+import PublicHeader from '@/components/LayoutComponents/PublicHeader.vue'
+import Button from '@/components/UIComponents/Button.vue'
 import { useAssets } from '@/composables/useAssets'
+import { ValidateForm } from '@codeanker/validation'
+import { ChevronLeftIcon } from '@heroicons/vue/24/outline'
+import { ref } from 'vue'
+import { toast } from 'vue-sonner'
 
 const { logo } = useAssets()
+
+interface IRegistrationForm {
+  dataprivacy: boolean
+  email: string
+  password: string
+}
+
+const registrationForm = ref<IRegistrationForm>({
+  email: '',
+  password: '',
+  dataprivacy: false,
+})
+
+const stammdatenForm = ref<IStammdaten>({
+  firstname: '',
+  lastname: '',
+  gender: 'MALE',
+  birthday: null,
+})
+
+const isSuccess = ref(false)
+
+async function register() {
+  try {
+    await apiClient.account.teilnehmerCreate.mutate({
+      firstname: stammdatenForm.value.firstname,
+      lastname: stammdatenForm.value.lastname,
+      gender: stammdatenForm.value.gender,
+      birthday: stammdatenForm.value.birthday ?? new Date(),
+      email: registrationForm.value.email,
+      password: registrationForm.value.password,
+    })
+    isSuccess.value = true
+  } catch (e) {
+    console.error(e)
+    if (e instanceof Error) {
+      toast.error(e.message, {
+        duration: 5000,
+      })
+    } else {
+      toast.error('Es ist ein Fehler aufgetreten. Bitte versuche es erneut.', {
+        duration: 5000,
+      })
+    }
+  }
+}
 </script>
 
 <template>
-  <div class="h-svh flex flex-col items-center w-full p-6 lg:p-0">
-    <div class="flex h-full flex-col lg:justify-center w-full lg:max-w-xl space-y-12">
+  <div class="lg:py-10 lg:px-20 xl:px-28 2xl:px-40 flex flex-col h-full grow">
+    <!-- Header -->
+    <PublicHeader />
+
+    <div class="grow">
       <div class="flex">
         <RouterLink
           :to="{ name: 'Login' }"
@@ -27,23 +86,57 @@ const { logo } = useAssets()
           class="size-28"
         />
         <h2 class="text-center text-4xl text-primary-700">Registrierung</h2>
-        <p class="text-center">Wie möchtest Du dich registrieren?</p>
+        <p class="text-center">Registriere dich mit deiner E-Mail Adresse und einem Passwort</p>
       </div>
 
-      <div class="space-y-4">
-        <ButtonCard
-          to="TeilnehmerRegistrierung"
-          :icon="UserIcon"
-          title="Teilnehmer"
-          description="Eigene Daten und Anmeldungen verwalten."
-        />
-        <ButtonCard
-          to="GliederungRegistrierung"
-          :icon="UserGroupIcon"
-          title="Gliederung"
-          description="Erstellen, Versenden und Verwalten von Ausschreibungen."
-        />
+      <ValidateForm
+        v-if="!isSuccess"
+        class="space-y-4"
+        @submit="register"
+      >
+        <Stammdaten v-model="stammdatenForm" />
+        <hr class="my-5" />
+        <div class="grid grid-flow-row lg:grid-cols-2 gap-5">
+          <BasicInput
+            v-model="registrationForm.email"
+            label="E-Mail Adresse"
+            class="col-span-2"
+            type="email"
+            required
+            placeholder="E-Mail Adresse eingeben"
+          />
+          <BasicPassword
+            v-model="registrationForm.password"
+            label="Passwort"
+            class="col-span-2"
+            required
+            placeholder=""
+          />
+        </div>
+        <hr class="my-5" />
+        <Button
+          type="submit"
+          color="primary"
+          full
+        >
+          Anmelden
+        </Button>
+      </ValidateForm>
+
+      <div
+        v-else
+        class="space-y-4 text-center text-primary-600 font-bold"
+      >
+        <p>Die Registrierung war erfolgreich.</p>
+        <p>
+          Bitte prüfe dein E-Mail Postfach und bestätige deinen Account. Ohne Aktivierung kannst du den Account nicht
+          verwenden.
+        </p>
       </div>
+    </div>
+
+    <div class="flex flex-col">
+      <PublicFooter />
     </div>
   </div>
 </template>

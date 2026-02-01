@@ -1,24 +1,18 @@
+import type { Account } from '@prisma/client'
 import type { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch'
-import type { CreateTrpcKoaContextOptions } from 'trpc-koa-adapter'
-
 import { getEntityIdFromHeader } from './authentication.js'
 import { logger } from './logger.js'
 import prisma from './prisma.js'
-import type { Account } from '@prisma/client'
 
-function getAuthorizationHeader(
-  headers: CreateTrpcKoaContextOptions['req']['headers'] | FetchCreateContextFnOptions['req']['headers']
-) {
+function getAuthorizationHeader(headers: FetchCreateContextFnOptions['req']['headers']) {
   if ('authorization' in headers && typeof headers['authorization'] === 'string') {
     return headers['authorization']
   } else {
-    return (headers as FetchCreateContextFnOptions['req']['headers']).get('authorization')
+    return headers.get('authorization')
   }
 }
 
-export async function createContext({
-  req,
-}: CreateTrpcKoaContextOptions | FetchCreateContextFnOptions): Promise<Context> {
+export async function createContext({ req }: FetchCreateContextFnOptions): Promise<Context> {
   try {
     const authorization = getAuthorizationHeader(req.headers)
     if (authorization === null) throw new Error('No authorization header found.')

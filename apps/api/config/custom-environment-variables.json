@@ -1,28 +1,38 @@
 {
+  "clientUrl": "CLIENT_URL",
+
   "server": {
     "host": "SERVER_HOST",
     "port": "SERVER_PORT"
   },
-
-  "loggingLevel": "LOGGING_LEVEL",
-
-  "clientUrl": "CLIENT_URL",
 
   "db": {
     "url": "DATABASE_URL"
   },
 
   "authentication": {
-    "secret": "AUTHENTICATION_SECRET"
+    "secret": "AUTHENTICATION_SECRET",
+    "expiresIn": "AUTHENTICATION_EXPIRES_IN",
+    "dlrg": {
+      "issuer": "AUTHENTICATION_DLRG_ISSUER",
+      "clientId": "AUTHENTICATION_DLRG_CLIENTID",
+      "clientSecret": "AUTHENTICATION_DLRG_CLIENTSECRET",
+      "allowInsecure": "AUTHENTICATION_DLRG_ALLOWINSECURE"
+    }
   },
+
   "mail": {
     "sendMails": "MAIL_SENDMAILS",
     "sendgridApiKey": "MAIL_SENDGRID_APIKEY"
   },
+
+  "loggingLevel": "LOGGING_LEVEL",
+
   "meilisearch": {
     "host": "MEILISEARCH_HOST",
     "apiKey": "MEILISEARCH_KEY"
   },
+
   "fileDefaultProvider": "FILE_DEFAULT_PROVIDER",
   "fileProviders": {
     "LOCAL": {
@@ -35,9 +45,11 @@
       "folder": "FILE_PROVIDER_AZURE_FOLDER"
     }
   },
+
   "tomtom": {
     "apiKey": "TOMTOM_APIKEY"
   },
+
   "public": {
     "legal": {
       "imprint": "PUBLIC_LEGAL_IMPRINT",

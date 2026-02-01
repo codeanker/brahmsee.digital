@@ -1,5 +1,9 @@
 FROM mcr.microsoft.com/vscode/devcontainers/javascript-node:22-bullseye
 
+RUN apt-get update && \
+  apt-get install -y \
+  socat
+
 # pnpm
 ENV PNPM_HOME=/workspaces/pnpm
 ENV PATH="$PNPM_HOME:$PATH"

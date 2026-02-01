@@ -10,7 +10,7 @@
     "secret": "secret",
     "expiresIn": "1d",
     "dlrg": {
-      "client_id": "1200000-0"
+      "allowInsecure": false
     }
   },
 
