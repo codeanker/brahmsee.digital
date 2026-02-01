@@ -205,6 +205,13 @@ const columns = [
       return dayjs().diff(value, 'year') + ' Jahre'
     },
   }),
+  column.accessor('createdAt', {
+    header: 'Anmeldedatum',
+    cell({ getValue }) {
+      const value = getValue<Date>()
+      return dayjs(value).format('dddd, DD. MMM YYYY, HH:mm')
+    },
+  }),
   column.accessor('person.gliederung.name', {
     id: 'gliederung',
     header: 'Gliederung',

@@ -99,6 +99,7 @@ export const anmeldungListProcedure = defineProtectedQueryProcedure({
       where,
       select: {
         id: true,
+        createdAt: true,
         person: {
           select: {
             id: true,
