@@ -28,7 +28,7 @@ const {
   isLoading: isLoading,
 } = useAsyncState(async () => {
   const personId = route.params.personId as string
-  const result = await apiClient.person.get.query({ id: parseInt(personId) })
+  const result = await apiClient.person.get.query({ id: personId })
   setTitle(`Person: ${result.firstname} ${result.lastname}`)
   return result
 }, null)

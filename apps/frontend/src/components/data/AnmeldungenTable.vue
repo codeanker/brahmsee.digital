@@ -367,6 +367,7 @@ const query: Query<Anmeldung> = (pagination, filter) =>
                     <div class="flex space-x-1 items-center">
                       <span>{{ currentAnmeldung?.unterveranstaltung.beschreibung }}</span>
                       <RouterLink
+                        v-if="currentAnmeldung?.unterveranstaltung.id && loggedInAccount?.role !== 'USER'"
                         target="_blank"
                         class="text-primary-600 hover:text-primary-700"
                         :to="{

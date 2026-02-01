@@ -15,8 +15,8 @@ export const personListProcedure = defineProtectedQueryProcedure({
       name: z.string(),
       birthday: z.array(z.date()).min(2).max(2),
       gliederung_name: z.string(),
-      // gliederungId: z.number().int(),
-      // veranstaltungId: z.number().int(),
+      // gliederungId: z.string().uuid(),
+      // veranstaltungId: z.string().uuid(),
     },
     orderBy: ['birthday', 'anmeldungen__count'],
   }),
@@ -81,9 +81,13 @@ export const personListProcedure = defineProtectedQueryProcedure({
             id: true,
           },
         },
+        _count: {
+          select: {
+            anmeldungen: true,
+          },
+        },
         anmeldungen: {
           select: {
-            _count: true,
             unterveranstaltung: {
               select: {
                 veranstaltung: {

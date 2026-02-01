@@ -36,7 +36,7 @@ const route = useRoute()
 
 const { state: veranstaltung } = useAsyncState(async () => {
   const result = await apiClient.veranstaltung.verwaltungGet.query({
-    id: parseInt(route.params.veranstaltungId as string),
+    id: route.params.veranstaltungId as string,
   })
   setTitle(`Veranstaltung: ${result.name}`)
   return result

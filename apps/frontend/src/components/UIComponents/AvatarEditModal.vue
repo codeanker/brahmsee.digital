@@ -10,7 +10,7 @@ import { apiClient } from '@/api'
 import { handleUpload } from '@/helpers/handleUpload'
 
 const props = defineProps<{
-  personId: number
+  personId: string
   showRemove?: boolean
 }>()
 

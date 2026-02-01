@@ -11,7 +11,7 @@ export const unterveranstaltungVerwaltungPatchProcedure = defineProtectedMutateP
   key: 'verwaltungPatch',
   roleIds: [Role.ADMIN],
   inputSchema: z.strictObject({
-    id: z.number().int(),
+    id: z.string().uuid(),
     data: unterveranstaltungUpdateSchema.partial().optional(),
     landingSettings: unterveranstaltungLandingSchema.partial().optional(),
   }),

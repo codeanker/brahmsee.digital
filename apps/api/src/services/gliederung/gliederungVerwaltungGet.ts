@@ -8,7 +8,7 @@ export const gliederungVerwaltungGetProcedure = defineProtectedQueryProcedure({
   key: 'verwaltungGet',
   roleIds: [Role.ADMIN],
   inputSchema: z.strictObject({
-    id: z.number(),
+    id: z.string().uuid(),
   }),
   async handler(options) {
     return prisma.gliederung.findUniqueOrThrow({

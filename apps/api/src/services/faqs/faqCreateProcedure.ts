@@ -8,7 +8,7 @@ export const faqCreateProcedure = defineProtectedMutateProcedure({
   key: 'create',
   roleIds: ['ADMIN', 'GLIEDERUNG_ADMIN'],
   inputSchema: z.strictObject({
-    unterveranstaltungId: z.number().int(),
+    unterveranstaltungId: z.string().uuid(),
     faq: faqSchema,
   }),
   handler: async ({ input: { faq, unterveranstaltungId } }) => {

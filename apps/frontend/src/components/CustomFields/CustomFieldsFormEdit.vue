@@ -12,8 +12,8 @@ import CustomFieldDeleteModal from './CustomFieldDeleteModal.vue'
 
 const props = defineProps<{
   entity: 'veranstaltung' | 'unterveranstaltung'
-  entityId: number
-  fieldId: number
+  entityId: string
+  fieldId: string
 }>()
 
 const deleteModal = useTemplateRef('deleteModal')

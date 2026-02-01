@@ -9,8 +9,8 @@ export const customFieldsVeranstaltungDelete = defineProtectedMutateProcedure({
   key: 'veranstaltungDelete',
   roleIds: [Role.ADMIN],
   inputSchema: z.strictObject({
-    veranstaltungId: z.number(),
-    fieldId: z.number(),
+    veranstaltungId: z.string().uuid(),
+    fieldId: z.string().uuid(),
   }),
   async handler({ input }) {
     await prisma.customField.delete({
@@ -26,8 +26,8 @@ export const customFieldsUnterveranstaltungDelete = defineProtectedMutateProcedu
   key: 'unterveranstaltungDelete',
   roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
   inputSchema: z.strictObject({
-    unterveranstaltungId: z.number(),
-    fieldId: z.number(),
+    unterveranstaltungId: z.string().uuid(),
+    fieldId: z.string().uuid(),
   }),
   async handler({ ctx, input }) {
     if (ctx.account.role === Role.GLIEDERUNG_ADMIN) {

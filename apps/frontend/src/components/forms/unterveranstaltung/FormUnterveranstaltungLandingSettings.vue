@@ -19,25 +19,25 @@ type IHeroImages = {
   name: string
   fileId: string
   added: boolean
-  id?: number
+  id?: string
   mimetype: string | null
   createdAt?: Date
 }
 
 type IUpdateHeroImages = {
   name: string
-  id: number
+  id: string
 }
 
 type IMiscellaneousItem = {
-  id?: number
+  id?: string
   title: string
   content: string
   added?: boolean
 }
 
 type IUpdateMiscellaneousItem = {
-  id: number
+  id: string
   title: string
   content: string
 }
@@ -50,10 +50,10 @@ const props = defineProps<{
 const heroImages = ref<IHeroImages[]>(props.unterveranstaltung?.landingSettings?.heroImages ?? [])
 
 const unterveranstaltungId = props.unterveranstaltung?.id
-const deletedHeroImagesIds = ref<number[]>([])
+const deletedHeroImagesIds = ref<string[]>([])
 const fileInput = ref<HTMLInputElement | null>(null)
 const isUploading = ref(false)
-const deletedMiscellaneousItemsIds = ref<number[]>([])
+const deletedMiscellaneousItemsIds = ref<string[]>([])
 const miscellaneousItems = ref<IMiscellaneousItem[]>(
   props.unterveranstaltung?.landingSettings?.miscellaneousItems ?? []
 )

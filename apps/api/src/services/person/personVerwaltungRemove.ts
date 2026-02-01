@@ -9,7 +9,7 @@ export const personVerwaltungRemoveProcedure = defineProtectedMutateProcedure({
   key: 'verwaltungRemove',
   roleIds: [Role.ADMIN],
   inputSchema: z.strictObject({
-    id: z.number().int(),
+    id: z.string().uuid(),
   }),
   async handler(options) {
     await prisma.person.delete({

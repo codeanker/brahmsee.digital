@@ -11,7 +11,7 @@ export const unterveranstaltungListProcedure = defineProtectedQueryProcedure({
   key: 'list',
   roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
   inputSchema: z.strictObject({
-    veranstaltungId: z.number().optional(),
+    veranstaltungId: z.string().uuid().optional(),
     table: defineTableInput({
       filter: {
         gliederungName: z.string().optional(),

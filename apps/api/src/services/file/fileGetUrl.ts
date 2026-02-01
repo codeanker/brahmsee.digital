@@ -8,7 +8,7 @@ export const fileGetUrlActionProcedure = definePublicQueryProcedure({
   key: 'fileGetUrl',
   inputSchema: z.strictObject({
     id: z.string().uuid().nullable(),
-    personId: z.number().int().optional(),
+    personId: z.string().uuid().optional(),
   }),
   async handler({ input }) {
     if (typeof input.id !== 'string') {

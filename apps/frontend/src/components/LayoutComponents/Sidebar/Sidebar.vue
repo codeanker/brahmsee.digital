@@ -26,11 +26,11 @@ const { logoSmall } = useAssets()
 
 const veranstaltungId = computed(() => {
   if (route.params.veranstaltungId !== undefined && typeof route.params.veranstaltungId === 'string') {
-    return parseInt(route.params.veranstaltungId)
+    return route.params.veranstaltungId
   }
   const letzteVeranstaltung = localStorage.getItem('letzteVeranstaltung')
   if (letzteVeranstaltung !== null) {
-    return parseInt(letzteVeranstaltung)
+    return letzteVeranstaltung
   }
   return undefined
 })

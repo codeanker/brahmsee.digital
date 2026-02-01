@@ -4,14 +4,14 @@ enum UnterveranstaltungType {
 }
 
 model Unterveranstaltung {
-  id               Int                          @id @default(autoincrement())
+  id               String                       @id @default(uuid(7))
   maxTeilnehmende  Int
   teilnahmegebuehr Int
   meldebeginn      DateTime
   meldeschluss     DateTime
-  veranstaltungId  Int
+  veranstaltungId  String
   veranstaltung    Veranstaltung                @relation(fields: [veranstaltungId], references: [id], onDelete: Cascade)
-  gliederungId     Int
+  gliederungId     String
   gliederung       Gliederung                   @relation(fields: [gliederungId], references: [id], onDelete: Cascade)
   Anmeldung        Anmeldung[]
   beschreibung     String?
@@ -23,16 +23,15 @@ model Unterveranstaltung {
   faqs          Faq[]
   faqCategories FaqCategory[]
 
-  landingSettings   UnterveranstaltungLandingSettings? @relation(fields: [landingSettingsId], references: [unterveranstaltungId], onDelete: Cascade)
-  landingSettingsId Int?                               @unique
-  AnmeldungLink     AnmeldungLink[]
+  landingSettings UnterveranstaltungLandingSettings?
+  AnmeldungLink   AnmeldungLink[]
 }
 
 model UnterveranstaltungDocument {
-  id                   Int                 @id @default(autoincrement())
+  id                   String              @id @default(uuid(7))
   name                 String
   description          String?
-  unterveranstaltungId Int
+  unterveranstaltungId String
   unterveranstaltung   Unterveranstaltung? @relation(fields: [unterveranstaltungId], references: [id], onDelete: Cascade)
   file                 File                @relation(fields: [fileId], references: [id])
   fileId               String              @unique

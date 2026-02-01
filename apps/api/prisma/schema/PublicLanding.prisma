@@ -1,6 +1,6 @@
 model UnterveranstaltungLandingSettings {
-  unterveranstaltungId Int                 @id @default(autoincrement())
-  unterveranstaltung   Unterveranstaltung?
+  unterveranstaltungId String              @id
+  unterveranstaltung   Unterveranstaltung? @relation(fields: [unterveranstaltungId], references: [id], onDelete: Cascade)
 
   heroTitle    String
   heroSubtitle String
@@ -25,22 +25,22 @@ model UnterveranstaltungLandingSettings {
 }
 
 model UnterveranstaltungLandingImages {
-  id   Int     @id @default(autoincrement())
+  id   String  @id @default(uuid(7))
   name String?
 
   UnterveranstaltungLandingSettings   UnterveranstaltungLandingSettings? @relation(fields: [unterveranstaltungLandingSettingsId], references: [unterveranstaltungId])
-  unterveranstaltungLandingSettingsId Int?
+  unterveranstaltungLandingSettingsId String?
 
   file   File   @relation(fields: [fileId], references: [id])
   fileId String @unique
 }
 
 model UnterveranstaltungLandingMiscellaneous {
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid(7))
 
   title   String
   content String
 
   UnterveranstaltungLandingSettings   UnterveranstaltungLandingSettings? @relation(fields: [unterveranstaltungLandingSettingsId], references: [unterveranstaltungId])
-  unterveranstaltungLandingSettingsId Int?
+  unterveranstaltungLandingSettingsId String?
 }

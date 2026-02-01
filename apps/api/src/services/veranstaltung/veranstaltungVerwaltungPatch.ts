@@ -8,12 +8,12 @@ export const veranstaltungVerwaltungPatchProcedure = defineProtectedMutateProced
   key: 'verwaltungPatch',
   roleIds: [Role.ADMIN],
   inputSchema: z.strictObject({
-    id: z.number(),
+    id: z.string().uuid(),
     data: z.strictObject({
       name: z.string().optional(),
       beginn: z.date().optional(),
       ende: z.date().optional(),
-      ortId: z.number().int().optional(),
+      ortId: z.string().uuid().optional(),
       meldebeginn: z.date().optional(),
       meldeschluss: z.date().optional(),
       maxTeilnehmende: z.number().int().optional(),
@@ -23,7 +23,7 @@ export const veranstaltungVerwaltungPatchProcedure = defineProtectedMutateProced
       teilnahmeBedingungen: z.string().optional(),
       teilnahmeBedingungenPublic: z.string().optional(),
       zielgruppe: z.string().optional(),
-      hostnameId: z.number().int().optional(),
+      hostnameId: z.string().uuid().optional(),
     }),
   }),
   async handler(options) {

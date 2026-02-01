@@ -25,7 +25,7 @@ type CustomField = RouterOutput['customFields']['table']['data'][number]
 
 const props = defineProps<{
   entity: Filter['entity']
-  id: number
+  id: string
 }>()
 
 const router = useRouter()

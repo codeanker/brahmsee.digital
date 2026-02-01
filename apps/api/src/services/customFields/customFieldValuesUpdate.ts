@@ -12,11 +12,11 @@ export const customFieldValuesUpdate = defineProtectedMutateProcedure({
   inputSchema: z.strictObject({
     data: z.array(
       z.strictObject({
-        id: z.number().int(),
+        id: z.string().uuid(),
         value: z.union([z.string(), z.boolean(), z.undefined()]),
       })
     ),
-    anmeldungId: z.number().int(),
+    anmeldungId: z.string().uuid(),
   }),
   async handler({ ctx: { account, accountId }, input }) {
     type AnmeldungWhereUniqueInput = Parameters<typeof prisma.anmeldung.update>[0]['where']

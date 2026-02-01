@@ -10,7 +10,7 @@ export const customFieldsUnterveranstaltungCreate = defineProtectedMutateProcedu
   key: 'unterveranstaltungCreate',
   roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
   inputSchema: z.strictObject({
-    unterveranstaltungId: z.number(),
+    unterveranstaltungId: z.string().uuid(),
     data: customFieldSchema,
   }),
   handler: ({ input }) =>

@@ -31,7 +31,7 @@ const rowSchema = z.object({
  * @param row
  * @param unterveranstaltungId
  */
-export async function createAnmeldung(payload: unknown, unterveranstaltung: { id: number; gliederungId: number }) {
+export async function createAnmeldung(payload: unknown, unterveranstaltung: { id: string; gliederungId: string }) {
   try {
     const row = rowSchema.parse(payload)
     const mappedRow = {
@@ -96,12 +96,12 @@ function formatNahrungsmittelIntoleranzen(nahrungsmittelIntoleranzen: string) {
 }
 
 function mapCustomFields(obj: Record<string, string>) {
-  const customFields: { fieldId: number; value: string | boolean }[] = []
+  const customFields: { fieldId: string; value: string | boolean }[] = []
   for (const key in obj) {
     if (key.startsWith('customFieldId_')) {
       if (!obj[key]) continue
       customFields.push({
-        fieldId: parseInt(key.replace('customFieldId_', '')),
+        fieldId: key.replace('customFieldId_', ''),
         value: parseValue(obj[key]),
       })
     }

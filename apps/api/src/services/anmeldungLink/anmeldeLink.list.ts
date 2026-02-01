@@ -8,11 +8,11 @@ import { calculatePagination, defineQueryResponse, defineTableInput } from '../.
 const filterSchema = z.discriminatedUnion('type', [
   z.strictObject({
     type: z.literal('veranstaltung'),
-    veranstaltungId: z.number(),
+    veranstaltungId: z.string().uuid(),
   }),
   z.strictObject({
     type: z.literal('unterveranstaltung'),
-    unterveranstaltungId: z.number(),
+    unterveranstaltungId: z.string().uuid(),
   }),
 ])
 

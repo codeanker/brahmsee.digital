@@ -13,7 +13,7 @@ export const accountChangePasswordProcedure = defineProtectedMutateProcedure({
   key: 'changePassword',
   roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
   inputSchema: z.strictObject({
-    id: z.number().int(),
+    id: z.string().uuid(),
     password_old: z.string(),
     password: z.string(),
     password_confirm: z.string(),

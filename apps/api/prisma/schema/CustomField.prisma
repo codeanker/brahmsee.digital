@@ -16,7 +16,7 @@ enum CustomFieldPosition {
 }
 
 model CustomField {
-  id                   Int                   @id @default(autoincrement())
+  id                   String                @id @default(uuid(7))
   name                 String
   description          String?
   type                 CustomFieldType
@@ -25,17 +25,17 @@ model CustomField {
   role                 Role[]
   values               CustomFieldValue[]
   positions            CustomFieldPosition[]
-  veranstaltungId      Int?
-  unterveranstaltungId Int?
+  veranstaltungId      String?
+  unterveranstaltungId String?
   veranstaltung        Veranstaltung?        @relation(fields: [veranstaltungId], references: [id], onDelete: Cascade)
   unterveranstaltung   Unterveranstaltung?   @relation(fields: [unterveranstaltungId], references: [id], onDelete: Cascade)
 }
 
 model CustomFieldValue {
-  id          Int         @id @default(autoincrement())
+  id          String      @id @default(uuid(7))
   value       Json        @default("{}")
-  fieldId     Int
+  fieldId     String
   field       CustomField @relation(fields: [fieldId], references: [id], onDelete: Cascade)
-  anmeldungId Int?
+  anmeldungId String?
   anmeldung   Anmeldung?  @relation(fields: [anmeldungId], references: [id], onDelete: Cascade)
 }

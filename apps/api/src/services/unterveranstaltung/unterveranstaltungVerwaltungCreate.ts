@@ -7,7 +7,7 @@ import { unterveranstaltungCreateSchema } from './schema/unterveranstaltung.sche
 import { TRPCError } from '@trpc/server'
 
 const unterveranstaltungVerwaltungCreateSchema = unterveranstaltungCreateSchema.extend({
-  gliederungId: z.number().int(),
+  gliederungId: z.string().uuid(),
   type: z.nativeEnum(UnterveranstaltungType),
 })
 

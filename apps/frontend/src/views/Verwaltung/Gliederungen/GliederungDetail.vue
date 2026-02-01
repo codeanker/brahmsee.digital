@@ -13,7 +13,7 @@ const route = useRoute()
 const { setTitle } = useRouteTitle()
 
 const { state: gliederung, execute: fetchGliederung } = useAsyncState(async () => {
-  const result = await apiClient.gliederung.verwaltungGet.query({ id: parseInt(route.params.gliederungId as string) })
+  const result = await apiClient.gliederung.verwaltungGet.query({ id: route.params.gliederungId as string })
   setTitle('Gliederung: ' + result.name)
   return result
 }, null)

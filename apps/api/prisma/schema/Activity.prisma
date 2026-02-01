@@ -7,13 +7,13 @@ enum ActivityType {
 }
 
 model Activity {
-  id          Int          @id @default(autoincrement())
+  id          String       @id @default(uuid(7))
   createdAt   DateTime     @default(now())
   type        ActivityType
   description String?
   subjectType String
   subjectId   String?
-  causerId    Int?
+  causerId    String?
   causer      Account?     @relation(fields: [causerId], references: [id], onDelete: SetNull)
   metadata    Json         @default("{}")
 }

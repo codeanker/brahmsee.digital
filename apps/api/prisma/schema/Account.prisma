@@ -11,12 +11,12 @@ enum AccountStatus {
 }
 
 model Account {
-  id                  Int                   @id @default(autoincrement())
+  id                  String                @id @default(uuid(7))
   email               String                @unique
   dlrgOauthId         String?               @unique
   password            String?
   role                Role
-  personId            Int                   @unique
+  personId            String                @unique
   person              Person                @relation(fields: [personId], references: [id], onDelete: Cascade)
   activatedAt         DateTime?
   GliederungToAccount GliederungToAccount[]

@@ -5,10 +5,10 @@ enum MahlzeitType {
 }
 
 model Mahlzeit {
-  id              Int           @id @default(autoincrement())
+  id              String        @id @default(uuid(7))
   type            MahlzeitType
   date            DateTime      @db.Date
-  veranstaltungId Int
+  veranstaltungId String
   veranstaltung   Veranstaltung @relation(fields: [veranstaltungId], references: [id], onDelete: Cascade)
   anmeldung       Anmeldung[]
 }

@@ -1,5 +1,5 @@
 model Gliederung {
-  id                   Int                   @id @default(autoincrement())
+  id                   String                @id @default(uuid(7))
   name                 String
   edv                  String                @unique
   unterveranstaltungen Unterveranstaltung[]

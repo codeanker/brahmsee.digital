@@ -14,8 +14,8 @@ export const accountSchema = z.strictObject({
   roleId: z.nativeEnum(Role),
   isActiv: z.boolean().optional(),
   status: z.nativeEnum(AccountStatus).optional(),
-  gliederungId: z.number().int().optional(),
-  adminInGliederungId: z.number().int().optional(),
+  gliederungId: z.string().uuid().optional(),
+  adminInGliederungId: z.string().uuid().optional(),
   activationToken: z.string().optional(),
   passwordResetToken: z.string().optional(),
 })

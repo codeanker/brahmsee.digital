@@ -6,8 +6,8 @@ import { definePublicQueryProcedure } from '../../types/defineProcedure.js'
 export const anmeldungAccessTokenValidateProcedure = definePublicQueryProcedure({
   key: 'accessTokenValidate',
   inputSchema: z.strictObject({
-    unterveranstaltungId: z.number().int(),
-    anmeldungId: z.number().int(),
+    unterveranstaltungId: z.string().uuid(),
+    anmeldungId: z.string().uuid(),
     accessToken: z.string().uuid(),
   }),
   handler: ({ input: { unterveranstaltungId, anmeldungId, accessToken } }) => {

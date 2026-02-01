@@ -11,7 +11,7 @@ import { computed, inject, provide, ref, type Ref } from 'vue'
 const route = useRoute()
 
 const unterveranstaltungId = computed(() => {
-  return parseInt(route.params.unterveranstaltungId as string)
+  return route.params.unterveranstaltungId as string
 })
 
 const { state: unterveranstaltung } = useAsyncState(async () => {

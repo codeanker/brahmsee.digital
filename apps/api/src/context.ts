@@ -17,8 +17,8 @@ export async function createContext({ req }: FetchCreateContextFnOptions): Promi
     const authorization = getAuthorizationHeader(req.headers)
     if (authorization === null) throw new Error('No authorization header found.')
 
-    const accountIdFromHeader = getEntityIdFromHeader(authorization)
-    if (accountIdFromHeader === undefined) {
+    const accountId = getEntityIdFromHeader(authorization)
+    if (accountId === undefined) {
       return {
         authenticated: false,
         account: undefined,
@@ -26,7 +26,6 @@ export async function createContext({ req }: FetchCreateContextFnOptions): Promi
       }
     }
 
-    const accountId = parseInt(accountIdFromHeader)
     const account = await prisma.account.findFirst({
       where: {
         id: accountId,
@@ -64,7 +63,7 @@ type AuthContext =
     }
   | {
       authenticated: true
-      accountId: number
+      accountId: string
       account: Account
     }
 

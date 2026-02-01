@@ -8,7 +8,7 @@ import Loading from './Loading.vue'
 
 const props = withDefaults(
   defineProps<{
-    personId?: number
+    personId?: string
     photoId?: string | null
     name?: any
     firstname?: string

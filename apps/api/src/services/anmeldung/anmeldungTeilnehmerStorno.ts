@@ -10,7 +10,7 @@ export const anmeldungTeilnehmerStornoProcedure = defineProtectedMutateProcedure
   roleIds: [Role.GLIEDERUNG_ADMIN],
   inputSchema: z.strictObject({
     data: z.strictObject({
-      anmeldungId: z.number().int(),
+      anmeldungId: z.string().uuid(),
     }),
   }),
   async handler(options) {

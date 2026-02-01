@@ -6,7 +6,7 @@ import { computed, ref, useTemplateRef } from 'vue'
 import FAQFormModal, { type FAQ } from './FAQFormModal.vue'
 
 type Props = {
-  unterveranstaltungId: number
+  unterveranstaltungId: string
 }
 
 const { unterveranstaltungId } = defineProps<Props>()

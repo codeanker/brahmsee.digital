@@ -9,7 +9,7 @@ import { computed } from 'vue'
 type ProgrammPunkte = RouterOutput['program']['list']
 
 const props = defineProps<{
-  veranstaltungId: number
+  veranstaltungId: string
   programm?: ProgrammPunkte
 }>()
 

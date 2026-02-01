@@ -8,7 +8,7 @@ export const accountVerwaltungGetProcedure = defineProtectedQueryProcedure({
   key: 'verwaltungGet',
   roleIds: [Role.ADMIN],
   inputSchema: z.strictObject({
-    id: z.number().int(),
+    id: z.string().uuid(),
   }),
   async handler(options) {
     const res = await prisma.account.findUniqueOrThrow({
