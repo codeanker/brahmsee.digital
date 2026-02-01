@@ -71,7 +71,7 @@
     "@types/node": "catalog:",
     "commander": "^13.0.0",
     "eslint": "catalog:",
-    "inquirer": "^12.3.0",
+    "inquirer": "^13.2.2",
     "prisma": "^5.19.1",
     "tsx": "^4.2.0",
     "typescript": "catalog:"
