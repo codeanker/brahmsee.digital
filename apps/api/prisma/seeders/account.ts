@@ -1,8 +1,7 @@
-import { PrismaClient, AccountStatus, Role } from '@prisma/client'
+import { AccountStatus, PrismaClient, Role } from '@prisma/client'
 
 import { logger } from '../../src/logger.js'
 import logActivity from '../../src/util/activity.js'
-import { isProduction } from '../../src/util/is-production.js'
 
 import type { Seeder } from './index.js'
 
@@ -10,11 +9,6 @@ import { hashPassword } from '@codeanker/authentication'
 import { faker } from '@faker-js/faker'
 
 const createAccount: Seeder = async (prisma: PrismaClient) => {
-  // create default user in development
-  if (isProduction()) {
-    return
-  }
-
   const email = 'admin@example.org'
   const password = 'admin'
 
