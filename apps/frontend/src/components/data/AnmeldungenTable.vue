@@ -303,7 +303,7 @@ const query: Query<Anmeldung> = (pagination, filter) =>
       ref="data-table"
       :query="query"
       :columns="columns"
-      @dblclick="toggleDrawer"
+      @click="toggleDrawer"
     >
       <template #filter>
         <BasicSwitch

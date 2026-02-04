@@ -118,6 +118,6 @@ function onClick(person: Person) {
   <DataTable
     :query="query"
     :columns="columns"
-    @dblclick="onClick"
+    @click="onClick"
   />
 </template>

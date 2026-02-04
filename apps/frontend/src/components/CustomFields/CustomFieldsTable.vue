@@ -174,6 +174,6 @@ function onClick(field: CustomField) {
   <DataTable
     :query="query"
     :columns="columns"
-    @dblclick="onClick"
+    @click="onClick"
   />
 </template>

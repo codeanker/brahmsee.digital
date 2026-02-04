@@ -136,9 +136,9 @@ function onClick(account: Account) {
 </script>
 
 <template>
-  <div class="my-4 flex justify-between">
+  <div class="flex items-center justify-between mb-6">
     <div>
-      <p class="max-w-2xl text-sm">Hier findest Du alle Personen die sich zu Veranstaltungen angemeldet haben.</p>
+      <p class="text-sm"><b>Tipp</b>: Hier findest Du alle Personen die sich zu Veranstaltungen angemeldet haben.</p>
     </div>
     <RouterLink
       class="text-primary-500 flex items-center"
@@ -152,6 +152,6 @@ function onClick(account: Account) {
   <DataTable
     :query="query"
     :columns="columns"
-    @dblclick="onClick"
+    @click="onClick"
   />
 </template>

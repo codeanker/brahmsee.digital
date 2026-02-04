@@ -147,6 +147,6 @@ function onClick(unterveranstaltung: Unterveranstaltung) {
   <DataTable
     :query="query"
     :columns="columns"
-    @dblclick="onClick"
+    @click="onClick"
   />
 </template>

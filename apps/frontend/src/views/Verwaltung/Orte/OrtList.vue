@@ -78,7 +78,7 @@ function onClick(ort: Ort) {
       :query="query"
       :columns="columns"
       :initial-sort="[{ id: 'name', desc: false }]"
-      @dblclick="onClick"
+      @click="onClick"
     />
   </div>
 </template>

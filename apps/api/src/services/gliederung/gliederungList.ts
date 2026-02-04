@@ -37,6 +37,7 @@ export const gliederungListProcedure = defineProtectedQueryProcedure({
       select: {
         name: true,
         edv: true,
+        id: true,
       },
     })
 

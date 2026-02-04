@@ -6,12 +6,15 @@ import type { Query } from '@/components/Table/DataTable.vue'
 import DataTable from '@/components/Table/DataTable.vue'
 import initialData from '@/components/Table/initialData'
 import { useRouteTitle } from '@/composables/useRouteTitle'
+import { useRouter } from 'vue-router'
 import { type RouterOutput } from '@codeanker/api'
 import { keepPreviousData, useQuery } from '@tanstack/vue-query'
 import { createColumnHelper } from '@tanstack/vue-table'
 
 const { setTitle } = useRouteTitle()
 setTitle('Gliederungen')
+
+const router = useRouter()
 
 type Gliederung = RouterOutput['gliederung']['list']['data'][number]
 
@@ -49,6 +52,15 @@ const query: Query<Gliederung> = (pagination, filter, orderBy) =>
     initialData,
     placeholderData: keepPreviousData,
   })
+
+function onClick(gliederung: Gliederung) {
+  router.push({
+    name: 'Verwaltung Gliederungsdetails',
+    params: {
+      gliederungId: gliederung.id,
+    },
+  })
+}
 </script>
 
 <template>
@@ -68,6 +80,7 @@ const query: Query<Gliederung> = (pagination, filter, orderBy) =>
       :query="query"
       :columns="columns"
       :initial-sort="[{ id: 'name', desc: false }]"
+      @click="onClick"
     />
   </div>
 </template>
