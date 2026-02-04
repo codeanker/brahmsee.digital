@@ -56,9 +56,9 @@ const logActivityMiddleware = middleware(async (opts) => {
 
     if (type !== undefined) {
       // const rawInput = opts.getRawInput() as { id: number }
-      const resultData = result.data as { id?: number }
+      const resultData = result.data as { id?: string }
       logger.verbose(`Recording activity ${opts.path} of type ${type}`)
-      const subjectId = type === 'CREATE' ? resultData?.id : 9999
+      const subjectId = type === 'CREATE' ? resultData?.id : '9999'
       if (!subjectId) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'No subjectId found' })
       await logActivity({
         subjectId,

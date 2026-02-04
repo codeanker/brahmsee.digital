@@ -10,7 +10,7 @@ export const personSchema = z.strictObject({
   lastname: z.string(),
   birthday: z.date(),
   gender: z.nativeEnum(Gender),
-  gliederungId: z.number(),
+  gliederungId: z.string().uuid(),
   email: z.string(),
   telefon: z.string(),
   address: addressSchema,
@@ -27,7 +27,7 @@ export const personSchemaOptional = personSchema.partial()
 export async function getPersonCreateData(
   input: z.infer<typeof personSchemaOptional>
 ): Promise<Prisma.PersonCreateArgs['data']> {
-  let addressId: number | undefined = undefined
+  let addressId: string | undefined = undefined
   if (input.address) {
     addressId = await createOrUpdateAddress(input.address)
   }

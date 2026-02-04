@@ -1,7 +1,7 @@
 {
   "name": "codeanker-project",
   "author": "CODEANKER GmbH",
-  "version": "2.6.0",
+  "version": "2.7.0",
   "description": "",
   "license": "CC-BY-3.0-DE",
   "workspaces": [
@@ -11,7 +11,7 @@
   "engines": {
     "node": ">=20"
   },
-  "packageManager": "pnpm@9.15.2",
+  "packageManager": "pnpm@10.24.0",
   "scripts": {
     "turbo-checks": "turbo typecheck lint --concurrency 100%",
     "start:services": "docker-compose -f docker-compose-services.yml up --build",

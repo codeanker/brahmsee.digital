@@ -9,7 +9,6 @@ import router from '@/router'
 import type { RouterInput } from '@codeanker/api'
 
 const props = defineProps<{
-   
   gliederung?: any
   mode: 'create' | 'update'
   onUpdate?: () => void
@@ -22,7 +21,7 @@ const fill = (gliederung) => {
   }
 }
 
-const gliederungId = parseInt(props.gliederung?.id as string)
+const gliederungId = props.gliederung?.id
 const gliederungCopy = ref(fill(props.gliederung))
 
 const {

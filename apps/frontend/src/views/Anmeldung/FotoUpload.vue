@@ -26,7 +26,7 @@ const { state, execute, error } = useAsyncState(
   () =>
     apiClient.anmeldung.accessTokenValidate.query({
       unterveranstaltungId: unterveranstaltung.value.id,
-      anmeldungId: parseInt(anmeldungId),
+      anmeldungId,
       accessToken,
     }),
   undefined,
@@ -64,12 +64,12 @@ async function upload(toUploadFile: File) {
   try {
     const res = await handlePublicPhotoUpload(toUploadFile, {
       unterveranstaltungId: unterveranstaltung.value.id,
-      anmeldungId: parseInt(anmeldungId),
+      anmeldungId,
       accessToken,
     })
     await apiClient.anmeldung.anmeldungFotoUpload.mutate({
       unterveranstaltungId: unterveranstaltung.value.id,
-      anmeldungId: parseInt(anmeldungId),
+      anmeldungId,
       accessToken,
       fileId: res.id,
     })

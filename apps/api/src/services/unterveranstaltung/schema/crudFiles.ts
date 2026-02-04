@@ -6,14 +6,14 @@
  */
 export function crudFiles(
   addFiles?: { name: string; fileId: string }[],
-  updateFiles?: { id: number; name: string }[],
-  deleteFilesIds?: number[]
+  updateFiles?: { id: string; name: string }[],
+  deleteFilesIds?: string[]
 ) {
   // Documents create, update, delete
   const files: {
     createMany?: { data: { name: string; fileId: string }[] }
-    updateMany?: { where: { id: number }; data: { name: string } }[]
-    deleteMany?: { id: number }[]
+    updateMany?: { where: { id: string }; data: { name: string } }[]
+    deleteMany?: { id: string }[]
   } = {}
   if (addFiles) {
     files.createMany = {

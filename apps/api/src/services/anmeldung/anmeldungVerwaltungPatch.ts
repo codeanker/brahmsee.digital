@@ -8,7 +8,7 @@ export const anmeldungVerwaltungPatchProcedure = defineProtectedMutateProcedure(
   key: 'verwaltungPatch',
   roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
   inputSchema: z.strictObject({
-    id: z.number().int(),
+    id: z.string().uuid(),
     data: z.strictObject({
       tshirtBestellt: z.boolean().optional(),
       comment: z.string().optional(),

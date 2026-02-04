@@ -10,12 +10,11 @@ import { apiClient } from '@/api'
 import { handleUpload } from '@/helpers/handleUpload'
 
 const props = defineProps<{
-  personId: number
+  personId: string
   showRemove?: boolean
 }>()
 
 const emit = defineEmits<{
-  triggerRefresh: []
   deleted: []
   uploaded: [photoId: string]
 }>()
@@ -31,7 +30,6 @@ const open = () => {
 const close = () => {
   if (modal.value) {
     modal.value.hide()
-    emit('triggerRefresh')
   }
 }
 

@@ -15,8 +15,8 @@ app:
       memory: 256Mi
   jwt_secret: ""
   meilisearch:
-    key: 'defaultKey'
-  fileDefaultProvider: 'LOCAL'
+    key: "defaultKey"
+  fileDefaultProvider: "LOCAL"
   fileProviders:
     LOCAL:
       path: /tmp
@@ -25,6 +25,11 @@ app:
       accountKey: ""
       container: ""
       folder: ""
+  oidc:
+    issuer: ""
+    clientId: ""
+    clientSecret: ""
+    allowInsecure: false
 
 postgres:
   enabled: true

@@ -7,11 +7,11 @@ import { ZPaginationSchema } from '../../types/defineQuery.js'
 import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
 
 const filter = z.strictObject({
-  veranstaltungId: z.number().optional(),
-  unterveranstaltungId: z.number().optional(),
+  veranstaltungId: z.string().uuid().optional(),
+  unterveranstaltungId: z.string().uuid().optional(),
 })
 
-const where = (filter: { gliederungId: number; unterveranstaltungId?: number; veranstaltungId?: number }) => {
+const where = (filter: { gliederungId: string; unterveranstaltungId?: string; veranstaltungId?: string }) => {
   return {
     OR: [
       {

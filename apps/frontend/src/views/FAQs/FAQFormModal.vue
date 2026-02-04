@@ -2,7 +2,7 @@
 export type FAQ = RouterOutput['faq']['list'][string][number]
 
 export type Props = {
-  unterveranstaltungId: number
+  unterveranstaltungId: string
   faq?: FAQ
 }
 

@@ -8,7 +8,7 @@ import prisma from '../prisma.js'
  * @returns the gliederung or
  * @throws exception if the user identified by `accountId` is not an admin
  */
-export async function getGliederungRequireAdmin(accountId: number) {
+export async function getGliederungRequireAdmin(accountId: string) {
   return prisma.gliederung.findFirstOrThrow({
     where: {
       GliederungToAccount: {

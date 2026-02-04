@@ -11,11 +11,11 @@ const { state: unterveranstaltung, execute: fetchUnterveranstaltung } = useAsync
   const unterveranstaltungId = route.params.unterveranstaltungId as string
   if (loggedInAccount.value?.role === 'ADMIN') {
     return apiClient.unterveranstaltung.verwaltungGet.query({
-      id: parseInt(unterveranstaltungId),
+      id: unterveranstaltungId,
     })
   } else {
     return apiClient.unterveranstaltung.gliederungGet.query({
-      id: parseInt(unterveranstaltungId),
+      id: unterveranstaltungId,
     })
   }
 }, null)

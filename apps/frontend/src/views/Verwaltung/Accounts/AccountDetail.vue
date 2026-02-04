@@ -15,7 +15,7 @@ const { setTitle } = useRouteTitle()
 const route = useRoute()
 const { state: account, execute: refetch } = useAsyncState(async () => {
   const accountId = route.params.accountId as string
-  const result = await apiClient.account.verwaltungGet.query({ id: parseInt(accountId) })
+  const result = await apiClient.account.verwaltungGet.query({ id: accountId })
   isSelf.value = result?.id === loggedInAccount.value?.person.id
   setTitle(`Account: ${result?.email}`)
   return result

@@ -10,9 +10,9 @@ import { updateMeiliPerson } from '../../meilisearch/person.js'
 
 export const personVerwaltungPatchProcedure = defineProtectedMutateProcedure({
   key: 'patch',
-  roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
+  roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN, Role.USER],
   inputSchema: z.strictObject({
-    id: z.number().int(),
+    id: z.string().uuid(),
     data: personSchemaOptional,
   }),
   async handler({ ctx, input }) {
@@ -37,6 +37,24 @@ export const personVerwaltungPatchProcedure = defineProtectedMutateProcedure({
       })
 
       if (gliederungIdTarget !== gliederungIdActor) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+        })
+      }
+    } else if (ctx.account.role === 'USER') {
+      const ownIds = await prisma.person.findMany({
+        where: {
+          anmeldungen: {
+            some: {
+              accountId: ctx.accountId,
+            },
+          },
+        },
+        select: {
+          id: true,
+        },
+      })
+      if (ownIds.findIndex((v) => v.id === input.id) === -1) {
         throw new TRPCError({
           code: 'NOT_FOUND',
         })

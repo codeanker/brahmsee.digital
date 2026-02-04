@@ -32,6 +32,9 @@
       "options": {
         "statusbar": {
           "hide": true
+        },
+        "env": {
+          "NODE_ENV": "development"
         }
       }
     },
@@ -87,19 +90,33 @@
       }
     },
     {
+      "type": "shell",
+      "command": "socat TCP-LISTEN:6060,fork TCP:keycloak:6060",
+      "label": "proxy:keycloak",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent"
+      },
+      "options": {
+        "statusbar": {
+          "hide": true
+        }
+      }
+    },
+    {
       "label": "start:apps",
       "dependsOn": [
         "start:api",
-        "start:frontend"
+        "start:frontend",
+        "proxy:keycloak"
       ],
       "problemMatcher": []
     },
     {
       "label": "start:apps and services",
       "dependsOn": [
-        "start:api",
-        "start:frontend",
-        "start:services"
+        "start:apps",
+        "start:services",
       ],
       "problemMatcher": [],
       "options": {

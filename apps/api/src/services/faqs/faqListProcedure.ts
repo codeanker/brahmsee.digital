@@ -4,7 +4,7 @@ import { groupBy } from '@codeanker/helpers'
 import prisma from '../../prisma.js'
 import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
 
-export async function listFaqs(unterveranstaltungId: number) {
+export async function listFaqs(unterveranstaltungId: string) {
   const list = await prisma.faq.findMany({
     where: {
       unterveranstaltung: {
@@ -37,7 +37,7 @@ export const faqListProcedure = defineProtectedQueryProcedure({
   key: 'list',
   roleIds: ['ADMIN', 'GLIEDERUNG_ADMIN'],
   inputSchema: z.strictObject({
-    unterveranstaltungId: z.number().int(),
+    unterveranstaltungId: z.string().uuid(),
   }),
   handler: ({ input }) => listFaqs(input.unterveranstaltungId),
 })

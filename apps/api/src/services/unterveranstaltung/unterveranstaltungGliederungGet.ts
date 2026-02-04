@@ -8,7 +8,7 @@ export const unterveranstaltungGliederungGetProcedure = defineProtectedQueryProc
   key: 'gliederungGet',
   roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
   inputSchema: z.strictObject({
-    id: z.number().int(),
+    id: z.string().uuid(),
   }),
   handler: (options) =>
     prisma.unterveranstaltung.findUniqueOrThrow({

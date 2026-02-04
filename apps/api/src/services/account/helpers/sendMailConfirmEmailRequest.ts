@@ -1,11 +1,11 @@
 import config from '../../../config.js'
-import client from '../../../prisma.js'
+import prisma from '../../../prisma.js'
 import { sendMail } from '../../../util/mail.js'
 
 export async function sendMailConfirmEmailRequest(email: string, activationToken: string) {
   const activationUrl = `${config.clientUrl}/registrierung/confirm/${activationToken}`
 
-  const account = await client.account.findUniqueOrThrow({
+  const account = await prisma.account.findUniqueOrThrow({
     where: {
       email,
     },
@@ -31,7 +31,7 @@ export async function sendMailConfirmEmailRequest(email: string, activationToken
     template: 'account-email-confirm',
     variables: {
       name: `${account.person.firstname} ${account.person.lastname}`,
-      gliederung: account.person.gliederung!.name,
+      gliederung: account.person.gliederung?.name,
       hostname: 'brahmsee.digital',
       veranstaltung: 'brahmsee.digital',
       activationUrl,

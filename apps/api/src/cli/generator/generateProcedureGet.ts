@@ -49,7 +49,7 @@ export const ${procedureFileName}Procedure = ${procedureFunction}({
   ${roleIds}
   protection: ${protectionContent},
   inputSchema: z.strictObject({
-    id: z.number().int(),
+    id: z.string().uuid(),
   }),
   async handler(options) {
     return prisma.${procedure.service}.findUniqueOrThrow({

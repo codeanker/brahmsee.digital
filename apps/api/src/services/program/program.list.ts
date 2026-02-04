@@ -6,7 +6,7 @@ export const programListProcedure = defineProtectedQueryProcedure({
   key: 'list',
   roleIds: ['ADMIN'],
   inputSchema: z.strictObject({
-    veranstaltungId: z.number().int(),
+    veranstaltungId: z.string().uuid(),
   }),
   handler: ({ input }) =>
     prisma.programmPunkt.findMany({

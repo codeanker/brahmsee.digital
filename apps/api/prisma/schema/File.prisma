@@ -4,7 +4,7 @@ enum FileProvider {
 }
 
 model File {
-  id                              String                            @id @unique @default(uuid())
+  id                              String                            @id @default(uuid(7))
   createdAt                       DateTime                          @default(now())
   uploaded                        Boolean                           @default(false)
   uploadedAt                      DateTime?

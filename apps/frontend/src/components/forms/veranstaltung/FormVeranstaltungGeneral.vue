@@ -87,11 +87,11 @@ const handle = async () => {
   }
 }
 
-const { state: orte } = useAsyncState(async () => {
-  return apiClient.ort.list.query({ filter: {}, orderBy: [], pagination: { take: 100, skip: 0 } })
+const { state: orte } = useAsyncState(() => {
+  return apiClient.ort.list.query()
 }, [])
 
-const { state: hostnames } = useAsyncState(async () => {
+const { state: hostnames } = useAsyncState(() => {
   return apiClient.system.hostnamesGet.query({})
 }, [])
 </script>

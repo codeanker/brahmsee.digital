@@ -6,10 +6,10 @@ import prisma from '../prisma.js'
 interface Opts {
   type: ActivityType
   description?: string
-  causerId?: number
+  causerId?: string
   metadata?: unknown
   subjectType: string
-  subjectId?: number | string
+  subjectId?: string
 }
 
 export default async function logActivity(opts: Opts) {
@@ -17,7 +17,7 @@ export default async function logActivity(opts: Opts) {
     await prisma.activity.create({
       data: {
         ...opts,
-        subjectId: opts.subjectId?.toString(),
+        subjectId: opts.subjectId,
         metadata: opts.metadata ?? {},
       },
     })

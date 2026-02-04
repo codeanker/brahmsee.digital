@@ -11,7 +11,7 @@ export const anmeldungVerwaltungAblehnenProcedure = defineProtectedMutateProcedu
   key: 'verwaltungAblehnen',
   roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
   inputSchema: z.strictObject({
-    anmeldungId: z.number().int(),
+    anmeldungId: z.string().uuid(),
   }),
   async handler(options) {
     type AnmeldungWhereUniqueInput = Parameters<typeof prisma.anmeldung.update>[0]['where']

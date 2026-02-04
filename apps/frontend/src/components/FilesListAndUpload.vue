@@ -17,25 +17,25 @@ type Document = {
   name: string
   fileId: string
   added: boolean
-  id?: number
+  id?: string
   mimetype: string | null
   createdAt?: Date
 }
 
 type UpdateDocument = {
   name: string
-  id: number
+  id: string
 }
 
 type EntityType = 'unterveranstaltung'
 
 const props = defineProps<{
-  entityId: number
+  entityId: string
   entityType: EntityType
 }>()
 
 const documents = ref<Document[]>([])
-const deletedDocumentIds = ref<number[]>([])
+const deletedDocumentIds = ref<string[]>([])
 const fileInput = ref<HTMLInputElement | null>(null)
 
 const showNotification = ref(false)

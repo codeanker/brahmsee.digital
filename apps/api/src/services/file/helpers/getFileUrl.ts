@@ -14,7 +14,7 @@ export const uploadDir = join(cwd(), config.fileProviders.LOCAL.path)
 export async function getFileUrl(file: File) {
   if (file.provider === 'LOCAL') {
     if (!file.uploaded) throw new Error('File is not uploaded')
-    return new URL(`/api/download/file/${file.provider}/${file.id}`, config.clientUrl).href
+    return new URL(`/api/file/download/${file.provider}/${file.id}`, config.clientUrl).href
   }
 
   if (file.provider === 'AZURE' && azureStorage !== null) {

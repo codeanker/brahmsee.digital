@@ -20,13 +20,13 @@ const email = ref('')
 const password = ref('')
 
 // read "jwt" from url hashbang
-if (location.hash) {
-  const hash = location.hash.substr(1)
-  const hashParams = new URLSearchParams(hash)
+if (location.search) {
+  const hashParams = new URLSearchParams(location.search)
   const jwt = hashParams.get('jwt')
   if (jwt) {
     localStorage.setItem('jwt', jwt)
-    location.hash = ''
+    location.search = ''
+    router.push({ name: 'Dashboard' })
   }
   const error = hashParams.get('error')
   if (error) {
@@ -54,8 +54,7 @@ const formatLoginError = computed(() => {
 
 const version = `${import.meta.env.VITE_APP_VERSION || 'unknown'}-${import.meta.env.VITE_APP_COMMIT_HASH || 'unknown'}`
 
-const origin = `${location.href}/api`
-const oauthHref = `/api/connect/dlrg?mode=login&origin=${encodeURIComponent(origin)}`
+const oauthHref = `/api/oidc/dlrg/login`
 </script>
 
 <template>

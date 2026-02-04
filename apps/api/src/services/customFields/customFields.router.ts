@@ -2,7 +2,7 @@
 import { mergeRouters } from '../../trpc.js'
 
 import { customFieldsGet } from './customFieldsGet.js'
-import { customFieldsList } from './customFieldsList.js'
+import { customFieldsList, customFieldsTable } from './customFieldsList.js'
 import { customFieldsTemplates } from './customFieldsTemplates.js'
 import { customFieldsUnterveranstaltungCreate } from './customFieldsUnterveranstaltungCreate.js'
 import { customFieldsVeranstaltungCreate } from './customFieldsVeranstaltungCreate.js'
@@ -13,6 +13,7 @@ import { customFieldValuesUpdate } from './customFieldValuesUpdate.js'
 
 export const customFieldsRouter = mergeRouters(
   customFieldsList,
+  customFieldsTable,
   customFieldsGet,
   customFieldsVeranstaltungCreate,
   customFieldsUpdate,

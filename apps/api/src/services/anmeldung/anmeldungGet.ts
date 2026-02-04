@@ -66,8 +66,8 @@ const select = {
 } satisfies Prisma.AnmeldungSelect
 
 const inputSchema = z.strictObject({
-  anmeldungId: z.number().optional(),
-  personId: z.number().optional(),
+  anmeldungId: z.string().uuid().optional(),
+  personId: z.string().uuid().optional(),
 })
 
 type InputSchema = z.infer<typeof inputSchema>

@@ -1,37 +1,35 @@
 import { AnmeldungStatus, Prisma, Role } from '@prisma/client'
 import z from 'zod'
 
-import prisma from '../../prisma.js'
-import { defineOrderBy } from '../../types/defineOrderBy.js'
-import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
-import { ZPaginationSchema } from '../../types/defineQuery.js'
 import type { Context } from '../../context.js'
+import prisma from '../../prisma.js'
+import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
+import { calculatePagination, defineQueryResponse, defineTableInput } from '../../types/defineTableProcedure.js'
 
-const filterSchema = z.discriminatedUnion('type', [
+const scopeSchema = z.discriminatedUnion('type', [
   z.strictObject({
     type: z.literal('veranstaltung'),
-    veranstaltungId: z.number(),
+    veranstaltungId: z.string().uuid(),
   }),
   z.strictObject({
     type: z.literal('unterveranstaltung'),
-    unterveranstaltungId: z.number(),
+    unterveranstaltungId: z.string().uuid(),
   }),
   z.strictObject({
     type: z.literal('own'),
-  })
+  }),
 ])
 
-type FilterSchema = z.infer<typeof filterSchema>
+type ScopeSchema = z.infer<typeof scopeSchema>
 
-function getWhere(ctx: Context, filter: FilterSchema): Prisma.AnmeldungWhereInput {
+function getScope(ctx: Context, filter: ScopeSchema): Prisma.AnmeldungWhereInput {
   if (filter.type === 'veranstaltung') {
     return {
       unterveranstaltung: {
         veranstaltungId: filter.veranstaltungId,
       },
     }
-  }
-  else if (filter.type === 'unterveranstaltung') {
+  } else if (filter.type === 'unterveranstaltung') {
     return {
       unterveranstaltungId: filter.unterveranstaltungId,
     }
@@ -45,19 +43,63 @@ function getWhere(ctx: Context, filter: FilterSchema): Prisma.AnmeldungWhereInpu
 export const anmeldungListProcedure = defineProtectedQueryProcedure({
   key: 'list',
   roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN, Role.USER],
-  inputSchema: z.strictObject({
-    pagination: ZPaginationSchema,
-    filter: filterSchema,
-    orderBy: defineOrderBy(['status', 'createdBy']),
+  inputSchema: defineTableInput({
+    filter: {
+      scope: scopeSchema,
+      person: z.string(),
+      gliederung: z.string(),
+      status: z.nativeEnum(AnmeldungStatus),
+      withoutPhoto: z.boolean(),
+    },
   }),
-  async handler({ ctx, input }) {
-    const { skip, take } = input.pagination
+  async handler({ ctx, input: { filter, pagination } }) {
+    const where: Prisma.AnmeldungWhereInput = {
+      ...getScope(ctx, filter?.scope ?? { type: 'own' }),
+      person: {
+        OR: filter?.person
+          ? [
+              {
+                firstname: {
+                  contains: filter?.person,
+                  mode: 'insensitive',
+                },
+              },
+              {
+                lastname: {
+                  contains: filter?.person,
+                  mode: 'insensitive',
+                },
+              },
+            ]
+          : undefined,
+        photoId: filter?.withoutPhoto
+          ? {
+              equals: null,
+            }
+          : undefined,
+        gliederung: {
+          name: {
+            contains: filter?.gliederung,
+            mode: 'insensitive',
+          },
+        },
+      },
+      status: filter?.status,
+    }
+
+    const total = await prisma.anmeldung.count({ where })
+    const { pageIndex, pageSize, pages } = calculatePagination(total, pagination)
+
     const anmeldungen = await prisma.anmeldung.findMany({
-      skip,
-      take,
-      where: getWhere(ctx, input.filter),
+      take: pageSize,
+      skip: pageSize * pageIndex,
+      orderBy: {
+        createdAt: 'desc',
+      },
+      where,
       select: {
         id: true,
+        createdAt: true,
         person: {
           select: {
             id: true,
@@ -84,12 +126,9 @@ export const anmeldungListProcedure = defineProtectedQueryProcedure({
           },
         },
       },
-      orderBy: {
-        createdAt: 'desc',
-      },
     })
 
-    return anmeldungen
+    return defineQueryResponse({ data: anmeldungen, total, pagination: { pageIndex, pageSize, pages } })
   },
 })
 
@@ -97,7 +136,7 @@ export const anmeldungCountProcedure = defineProtectedQueryProcedure({
   key: 'count',
   roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN, Role.USER],
   inputSchema: z.strictObject({
-    filter: filterSchema,
+    filter: scopeSchema,
   }),
   async handler({ ctx, input }) {
     const countEntries = await Promise.all(
@@ -106,7 +145,7 @@ export const anmeldungCountProcedure = defineProtectedQueryProcedure({
           status,
           await prisma.anmeldung.count({
             where: {
-              ...getWhere(ctx, input.filter),
+              ...getScope(ctx, input.filter),
               status: status,
             },
           }),

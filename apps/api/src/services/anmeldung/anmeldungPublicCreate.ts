@@ -14,8 +14,8 @@ import { updateMeiliPerson } from '../../meilisearch/person.js'
 export const inputSchema = z.strictObject({
   token: z.string().optional(),
   data: personSchema.extend({
-    unterveranstaltungId: z.number().int(),
-    mahlzeitenIds: z.array(z.number().int()).optional(),
+    unterveranstaltungId: z.string().uuid(),
+    mahlzeitenIds: z.array(z.string().uuid()).optional(),
     uebernachtungsTage: z.array(z.date()).optional(),
     tshirtBestellt: z.boolean().optional(),
     email: z.string().email(),
@@ -178,20 +178,27 @@ export const anmeldungPublicCreateProcedure = definePublicMutateProcedure({
       })
     }
 
-    await Promise.all([
-      logActivity({
-        type: 'CREATE',
-        description: 'person created via public registration',
-        subjectType: 'person',
-        subjectId: person.id,
-      }),
-      logActivity({
-        type: 'CREATE',
-        description: 'new public registration',
-        subjectType: 'anmeldung',
-        subjectId: anmeldung.id,
-      }),
-    ])
+    await prisma.anmeldungLink.updateMany({
+      where: {
+        accessToken: input.token,
+        unterveranstaltungId: unterveranstaltung.id,
+      },
+      data: {
+        accessToken: null,
+      },
+    })
+    await logActivity({
+      type: 'CREATE',
+      description: 'person created via public registration',
+      subjectType: 'person',
+      subjectId: person.id,
+    })
+    await logActivity({
+      type: 'CREATE',
+      description: 'new public registration',
+      subjectType: 'anmeldung',
+      subjectId: anmeldung.id,
+    })
 
     await sendMail({
       to: input.data.email,

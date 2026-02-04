@@ -11,7 +11,7 @@ export const accountEmailConfirmRequestProcedure = defineProtectedQueryProcedure
   key: 'emailConfirmRequest',
   roleIds: [Role.ADMIN],
   inputSchema: z.strictObject({
-    accountId: z.number().int(),
+    accountId: z.string().uuid(),
   }),
   async handler(options) {
     const account = await prisma.account.findUnique({

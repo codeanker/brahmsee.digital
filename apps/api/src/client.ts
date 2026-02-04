@@ -2,7 +2,7 @@ import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
 
 import type { appRouter } from './index.js'
 
-export * from '@prisma/client'
+export type * from '@prisma/client'
 
 export type AppRouter = typeof appRouter
 export type { TKontaktSchema } from './services/kontakt/schema/kontakt.schema.js'
@@ -13,3 +13,5 @@ export type RouterOutput = inferRouterOutputs<AppRouter>
 
 export * from './types/enums/index.js'
 export * from './types/enums/mappings/index.js'
+
+export type * from './types/defineTableProcedure.js'

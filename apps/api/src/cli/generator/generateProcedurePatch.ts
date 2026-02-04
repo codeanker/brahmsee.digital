@@ -50,7 +50,7 @@ export const ${procedureFileName}Procedure = ${procedureFunction}({
   ${roleIds}
   protection: ${protectionContent},
   inputSchema: z.strictObject({
-    id: z.number().int(),
+    id: z.string().uuid(),
     data: z.strictObject({}),
   }),
   async handler(options) {

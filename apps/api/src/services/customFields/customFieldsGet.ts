@@ -9,7 +9,7 @@ export const customFieldsGet = defineProtectedQueryProcedure({
   key: 'get',
   roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
   inputSchema: z.strictObject({
-    id: z.number(),
+    id: z.string().uuid(),
   }),
   async handler({ input }) {
     const field = await prisma.customField.findUnique({

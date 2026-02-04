@@ -1,14 +1,14 @@
 import { TRPCError } from '@trpc/server'
 import dayjs from 'dayjs'
 import { z } from 'zod'
-import client from '../../prisma.js'
+import prisma from '../../prisma.js'
 import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
 
 export const programCreateProcedure = defineProtectedMutateProcedure({
   key: 'create',
   roleIds: ['ADMIN'],
   inputSchema: z.strictObject({
-    veranstaltungId: z.number().int(),
+    veranstaltungId: z.string().uuid(),
     name: z.string(),
     description: z.string(),
     location: z.string(),
@@ -24,7 +24,7 @@ export const programCreateProcedure = defineProtectedMutateProcedure({
       })
     }
 
-    await client.programmPunkt.create({
+    await prisma.programmPunkt.create({
       data: input,
     })
   },

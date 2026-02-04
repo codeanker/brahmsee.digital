@@ -6,7 +6,7 @@ import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
 export const faqDeleteProcedure = defineProtectedMutateProcedure({
   key: 'delete',
   roleIds: ['ADMIN', 'GLIEDERUNG_ADMIN'],
-  inputSchema: z.number().int(),
+  inputSchema: z.string().uuid(),
   handler: async ({ input }) => {
     await prisma.faq.delete({
       where: {

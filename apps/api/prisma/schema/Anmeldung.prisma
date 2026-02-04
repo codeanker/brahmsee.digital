@@ -6,23 +6,23 @@ enum AnmeldungStatus {
 }
 
 model Anmeldung {
-  id             Int             @id @default(autoincrement())
+  id             String          @id @default(uuid(7))
   createdAt      DateTime        @default(now())
   status         AnmeldungStatus @default(OFFEN)
   comment        String?
   accessToken    String?         @db.Uuid
   assignmentCode String?         @db.Uuid
 
-  unterveranstaltungId Int
+  unterveranstaltungId String
   unterveranstaltung   Unterveranstaltung @relation(fields: [unterveranstaltungId], references: [id], onDelete: Cascade)
 
-  personId Int
+  personId String
   person   Person @relation(fields: [personId], references: [id], onDelete: Cascade)
 
-  accountId Int?
+  accountId String?
   account   Account? @relation(fields: [accountId], references: [id], onDelete: Cascade)
 
-  mahlzeitenIds      Int[]
+  mahlzeitenIds      String[]
   mahlzeiten         Mahlzeit[]
   uebernachtungsTage DateTime[]         @db.Date
   customFieldValues  CustomFieldValue[]
@@ -31,18 +31,18 @@ model Anmeldung {
 }
 
 model AnmeldungLink {
-  id          Int       @id @default(autoincrement())
+  id          String    @id @default(uuid(7))
   createdAt   DateTime  @default(now())
   usedAt      DateTime?
   comment     String?
-  accessToken String    @db.Uuid
+  accessToken String?   @db.Uuid
 
-  unterveranstaltungId Int
+  unterveranstaltungId String
   unterveranstaltung   Unterveranstaltung @relation(fields: [unterveranstaltungId], references: [id], onDelete: Cascade)
 
-  createdById Int
+  createdById String
   createdBy   Account @relation(fields: [createdById], references: [id])
 
-  anmeldungId Int?       @unique
+  anmeldungId String?    @unique
   anmeldung   Anmeldung? @relation(fields: [anmeldungId], references: [id])
 }

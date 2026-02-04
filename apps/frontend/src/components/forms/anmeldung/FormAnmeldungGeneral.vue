@@ -5,10 +5,11 @@ import { useAsyncState } from '@vueuse/core'
 import { apiClient } from '@/api'
 import AnmeldungStatusSelect from '@/components/AnmeldungStatusSelect.vue'
 import { dayjs } from '@codeanker/helpers'
+import { loggedInAccount } from '@/composables/useAuthentication'
 
 const props = withDefaults(
   defineProps<{
-    personId: number
+    personId: string
   }>(),
   {}
 )
@@ -33,6 +34,7 @@ const { state: anmeldungenPerson } = useAsyncState(
         <div class="flex space-x-1 items-center">
           <span>{{ anmeldung.unterveranstaltung.veranstaltung.name }}</span>
           <RouterLink
+            v-if="loggedInAccount?.role !== 'USER'"
             target="_blank"
             class="text-primary-600 hover:text-primary-700"
             :to="{

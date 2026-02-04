@@ -1,0 +1,12 @@
+{
+  "loggingLevel": "debug",
+
+  "authentication": {
+    "dlrg": {
+      "issuer": "http://localhost:6060/realms/dlrg",
+      "clientId": "brahmsee.digital",
+      "clientSecret": "",
+      "allowInsecure": true
+    }
+  }
+}

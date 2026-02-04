@@ -10,13 +10,13 @@ import Button from '@/components/UIComponents/Button.vue'
 import type { RouterOutput } from '@codeanker/api'
 import { ValidateForm } from '@codeanker/validation'
 
-type Field = Awaited<RouterOutput['customFields']['list']>[number]
+type Field = RouterOutput['customFields']['list'][number]
 type Value = Awaited<RouterOutput['anmeldung']['get']>[number]['customFieldValues'][number]
 
 const props = defineProps<{
   customFields: Array<Field>
   customFieldValues: Array<Value>
-  entryId: number
+  entryId: string
 }>()
 
 const emit = defineEmits<{
@@ -40,10 +40,10 @@ const { execute: submit, isLoading: isLoading } = useAsyncState(async () => {
     isLoading.value = true
     await apiClient.customFields.valuesUpdate.mutate({
       data: Object.entries(bindings.value).map(([id, value]) => ({
-        id: parseInt(id) as number,
+        id: id,
         value: String(value),
       })),
-      anmeldungId: props.entryId as number,
+      anmeldungId: props.entryId,
     })
     emit('update:success')
   }

@@ -8,7 +8,7 @@ import { getFileUrl } from '../file/helpers/getFileUrl.js'
 export const unterveranstaltungPublicGetProcedure = definePublicQueryProcedure({
   key: 'publicGet',
   inputSchema: z.strictObject({
-    id: z.number(),
+    id: z.string().uuid(),
   }),
   async handler({ input }) {
     const unterveranstaltung = await prisma.unterveranstaltung.findUniqueOrThrow({

@@ -9,7 +9,7 @@ defineProps<{
 <template>
   <TabPanel>
     <div
-      :class="fullWidth ? 'grid-cols-1' : 'grid-cols-1 2xl:grid-cols-2'"
+      :class="fullWidth ? 'grid-cols-1' : 'grid-cols-1'"
       class="grid"
     >
       <div><slot /></div>

@@ -5,13 +5,13 @@ import { meilisearchClient, updateSettings } from './index.js'
 const searchIndex = 'person'
 
 type MeiliPerson = {
-  id: number
+  id: string
   firstname: string
   lastname: string
   birthday: Date | null
   email: string
   gliederung: {
-    id: number
+    id: string
     name: string
   } | null
 }
@@ -24,7 +24,7 @@ export async function updateMeiliPerson(person: MeiliPerson) {
   }
 }
 
-export async function deleteMeiliPerson(id: number) {
+export async function deleteMeiliPerson(id: string) {
   try {
     await meilisearchClient.index(searchIndex).deleteDocument(id)
   } catch (error) {
@@ -36,11 +36,11 @@ export async function syncAllPersonsToMeili() {
   await meilisearchClient.index(searchIndex).updateSettings(updateSettings)
   await meilisearchClient.updateIndex(searchIndex, { primaryKey: 'id' })
 
-  let cursorValue: number | undefined
+  let cursorValue: string | undefined
   const batchSize = 1000
   do {
     const skip: number = cursorValue ? 1 : 0
-    const cursor: { id: number } | undefined = cursorValue ? { id: cursorValue } : undefined
+    const cursor: { id: string } | undefined = cursorValue ? { id: cursorValue } : undefined
     const persons = await prisma.person.findMany({
       take: batchSize,
       skip,

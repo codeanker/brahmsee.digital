@@ -12,7 +12,7 @@ export const unterveranstaltungGliederungPatchProcedure = defineProtectedMutateP
   key: 'gliederungPatch',
   roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
   inputSchema: z.strictObject({
-    id: z.number().int(),
+    id: z.string().uuid(),
     data: unterveranstaltungUpdateSchema.partial().optional(),
     landingSettings: unterveranstaltungLandingSchema.partial().optional(),
   }),

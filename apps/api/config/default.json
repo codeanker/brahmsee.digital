@@ -10,7 +10,7 @@
     "secret": "secret",
     "expiresIn": "1d",
     "dlrg": {
-      "client_id": "1200000-0"
+      "allowInsecure": false
     }
   },
 
@@ -48,8 +48,8 @@
   },
   "public": {
     "legal": {
-      "imprint": "https://localhost:8080",
-      "privacy": "https://localhost:8080"
+      "imprint": "https://sh.dlrg.de/index.php?id=457933&L=0",
+      "privacy": "https://sh.dlrg.de/impressum-und-datenschutz/"
     }
   },
 

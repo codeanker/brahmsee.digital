@@ -1,91 +1,39 @@
-import * as fs from 'fs/promises'
-import * as path from 'path'
-
-import type { Middleware } from 'koa'
-
-import config from '../../config.js'
+import type { File as Entity } from '@prisma/client'
+import { createWriteStream } from 'node:fs'
+import { mkdir, stat } from 'node:fs/promises'
+import { Readable } from 'node:stream'
 import prisma from '../../prisma.js'
+import { uploadDir } from '../../services/file/helpers/getFileUrl.js'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const uploadFileLocal: Middleware = async function (ctx, next) {
-  const params = ctx.params as { id: string }
-  const fileId = params.id
-  const file = await prisma.file.findFirst({
-    where: {
-      id: fileId,
-    },
+export async function uploadFileLocal(entity: Entity, multipart: File) {
+  try {
+    const stats = await stat(uploadDir)
+    if (!stats.isDirectory()) {
+      await mkdir(uploadDir, { recursive: true })
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (_) {
+    await mkdir(uploadDir, { recursive: true })
+  }
+
+  const ws = createWriteStream(`${uploadDir}/${entity.key}`)
+  const rs = Readable.fromWeb(multipart.stream())
+
+  rs.pipe(ws)
+
+  await new Promise((resolve, reject) => {
+    rs.once('close', resolve)
+    rs.once('error', reject)
   })
-  if (file === null) {
-    ctx.response.status = 400
-    ctx.response.body = { error: `File with id '${fileId}' not found` }
-    return
-  }
-
-  if (file.uploaded) {
-    ctx.response.status = 400
-    ctx.response.body = { error: `File with id '${fileId}' already uploaded` }
-    return
-  }
-
-  if (file.provider !== 'LOCAL') {
-    ctx.response.status = 400
-    ctx.response.body = { error: `File provider is '${file.provider}'. This endpoint is for LOCAL` }
-    return
-  }
-
-  const uploadDir = path.join(process.cwd(), config.fileProviders.LOCAL.path)
-  try {
-    await checkLocalUploadFolder(uploadDir)
-  } catch (e) {
-    console.error('Error while creating upload-directory\n', e)
-    ctx.response.status = 500
-    ctx.response.body = {
-      error: 'Something went wrong during creation of upload-directory',
-    }
-    return
-  }
-
-  const fileData = ctx.request.files?.file
-  if (!fileData || Array.isArray(fileData)) {
-    ctx.response.status = 400
-    ctx.response.body = {
-      error: 'No or Invalid File provided',
-    }
-    return
-  }
-
-  try {
-    await fs.copyFile(fileData.filepath, uploadDir + '/' + file.key)
-  } catch (e) {
-    console.error('Error while copy to upload-directory\n', e)
-    ctx.response.status = 500
-    ctx.response.body = {
-      error: 'Something went wrong during copy to upload-directory',
-    }
-    return
-  }
 
   await prisma.file.update({
-    where: { id: fileId },
+    where: { id: entity.id },
     data: {
-      mimetype: fileData.mimetype ?? 'application/octet-stream',
-      filename: fileData.originalFilename ?? undefined,
+      mimetype: multipart.type ?? 'application/octet-stream',
+      filename: multipart.name,
       uploaded: true,
       uploadedAt: new Date(),
+      provider: 'LOCAL',
     },
   })
-
-  ctx.response.status = 201
-  ctx.response.body = { uploaded: true }
-}
-
-async function checkLocalUploadFolder(uploadDir: string) {
-  try {
-    await fs.stat(uploadDir)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (e: any) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    if (e.code === 'ENOENT') await fs.mkdir(uploadDir, { recursive: true })
-    else throw e
-  }
 }

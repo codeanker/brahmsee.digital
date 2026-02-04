@@ -1,108 +1,123 @@
 <script setup lang="ts">
-import { getAccountStatusColor } from '@/helpers/getAccountStatusColors'
-import type { RouterInput, RouterOutput } from '@codeanker/api'
-import type { TGridColumn } from '@codeanker/datagrid'
-import { dayjs } from '@codeanker/helpers'
-import { useRouter } from 'vue-router'
-import DataGridDoubleLineCell from '../DataGridDoubleLineCell.vue'
-import GenericDataGrid, {
-  type FetchCountFunction,
-  type FetchPageFunction,
-  type GenericGridProps,
-} from '../GenericDataGrid.vue'
-import Badge from '../UIComponents/Badge.vue'
 import { apiClient } from '@/api'
-import { defineAsyncComponent } from 'vue'
+import { useRouteTitle } from '@/composables/useRouteTitle'
+import type { RouterOutput } from '@codeanker/api'
+import { keepPreviousData, useQuery } from '@tanstack/vue-query'
+import { createColumnHelper } from '@tanstack/vue-table'
+import { h } from 'vue'
+import { useRouter } from 'vue-router'
+import type { Query } from '../Table/DataTable.vue'
+import initialData from '../Table/initialData'
+import UserLogo from '../UIComponents/UserLogo.vue'
+import DataTable from '../Table/DataTable.vue'
+import { dayjs } from '@codeanker/helpers'
 
-export type TData = RouterOutput['person']['list'][number]
-export type TFilter = RouterInput['person']['list']['filter']
-export type TOrderBy = RouterInput['person']['list']['orderBy']
-export type GridProps = GenericGridProps<TData, TFilter, TOrderBy>
+type Person = RouterOutput['person']['list']['data'][number]
 
-export type FetchPersonCountFunction = FetchCountFunction<TFilter>
-export type FetchPersonPageFunction = FetchPageFunction<TData, TFilter, TOrderBy>
+const { setTitle } = useRouteTitle()
+setTitle('Personen')
 
 const router = useRouter()
 
-const columns: TGridColumn<TData, TFilter>[] = [
-  {
-    field: 'photoId',
-    title: ' ',
-    size: '78px',
-    cell: defineAsyncComponent(() => import('@/components/UIComponents/UserLogo.vue')),
-    cellProps: (formattedValue, row) => {
-      return {
-        firstname: row.content.firstname,
-        lastname: row.content.lastname,
-        photoId: row.content.photoId,
+const column = createColumnHelper<Person>()
+const columns = [
+  column.accessor('photoId', {
+    size: 10,
+    header: 'Foto',
+    cell({ getValue, row }) {
+      const id = getValue<string>()
+      return h(UserLogo, {
+        firstname: row.original.firstname,
+        lastname: row.original.lastname,
+        photoId: id,
         cssClasses: 'h-10 w-10',
-      }
+      })
     },
-  },
-  {
-    field: 'firstname',
-    title: 'Name',
-    sortable: true,
-    format: (_, row) => `${row.firstname} ${row.lastname}`,
-  },
-  {
-    field: 'birthday',
-    title: 'Alter',
-    preset: 'date',
-    cell: DataGridDoubleLineCell,
-    cellProps: (formattedValue, row) => {
-      return {
-        title: `${dayjs().diff(row.content.birthday, 'year')} Jahre`,
-        message: formattedValue.value,
-      }
+  }),
+  column.accessor('id', {
+    id: 'name',
+    header: 'Name',
+    enableColumnFilter: true,
+    cell({ row }) {
+      return `${row.original.firstname} ${row.original.lastname}`
     },
-    sortable: true,
-  },
-  {
-    field: 'gliederung.name',
-    title: 'Gliederung',
-    sortable: true,
-  },
-  {
-    field: 'account.activatedAt',
-    title: 'Account',
-    cell: Badge,
-    preset: 'date',
-    cellProps: (formattedValue, row) => {
-      return {
-        color: getAccountStatusColor(row.content.account?.status),
-        title: formattedValue.value,
-        text: row.content.account?.status,
-      }
+  }),
+  column.accessor('birthday', {
+    header: 'Alter',
+    enableColumnFilter: true,
+    enableSorting: true,
+    sortDescFirst: true,
+    invertSorting: true,
+    cell({ getValue }) {
+      const value = getValue<Date>()
+      return dayjs().diff(value, 'year') + ' Jahre'
     },
-  },
+    meta: {
+      filter: {
+        label: 'Geburtstag',
+        type: 'date-range',
+      },
+    },
+  }),
+  column.accessor('gliederung.name', {
+    header: 'Gliederung',
+    enableColumnFilter: true,
+    // meta: {
+    //   filter: {
+    //     type: 'select',
+    //     options: async () => {
+    //       const values = await apiClient.gliederung.publicList.query({
+    //         filter: {},
+    //         pagination: {
+    //           take: 1000,
+    //           skip: 0,
+    //         },
+    //         orderBy: [['name', 'asc']],
+    //       })
+    //       return values.map((v) => ({ value: v.id, label: v.name }))
+    //     },
+    //   },
+    // },
+  }),
+  column.accessor('_count.anmeldungen', {
+    header: 'Anmeldungen',
+    enableSorting: true,
+    cell({ getValue }) {
+      return getValue<number>() ?? 0
+    },
+  }),
 ]
 
-const fetchPage: FetchPersonPageFunction = (pagination, filter, orderBy) =>
-  apiClient.person.list.query({
-    filter: filter,
-    orderBy: orderBy,
-    pagination: pagination,
+const query: Query<Person> = (pagination, filter, orderBy) =>
+  useQuery({
+    queryKey: ['person', pagination, filter, orderBy],
+    queryFn: () =>
+      apiClient.person.list.query({
+        pagination: {
+          pageIndex: pagination.value.pageIndex,
+          pageSize: pagination.value.pageSize,
+        },
+        filter: filter.value.reduce((prev, curr) => {
+          return {
+            ...prev,
+            [curr.id]: curr.value,
+          }
+        }, {}),
+        orderBy: orderBy.value,
+      }),
+    initialData,
+    placeholderData: keepPreviousData,
   })
 
-const fetchCount: FetchPersonCountFunction = (filter) =>
-  apiClient.person.count.query({
-    filter: filter,
-  })
+function onClick(person: Person) {
+  router.push({ name: 'Verwaltung Persondetails', params: { personId: person.id } })
+}
 </script>
 
 <template>
-  <GenericDataGrid
+  <DataTable
+    :query="query"
     :columns="columns"
-    :fetch-page="fetchPage"
-    :fetch-count="fetchCount"
-    :default-filter="{
-      name: '',
-      gliederungName: '',
-    }"
-    :default-order-by="[]"
-    no-data-message="Es gibt bisher keine Personen."
-    show-clickable
-    @row-click="(person) => router.push({ name: 'Verwaltung Persondetails', params: { personId: person.id } })"
+    @click="onClick"
   />
 </template>

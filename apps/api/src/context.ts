@@ -1,30 +1,24 @@
+import type { Account } from '@prisma/client'
 import type { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch'
-import type { CreateTrpcKoaContextOptions } from 'trpc-koa-adapter'
-
 import { getEntityIdFromHeader } from './authentication.js'
 import { logger } from './logger.js'
-import client from './prisma.js'
-import type { Account } from '@prisma/client'
+import prisma from './prisma.js'
 
-function getAuthorizationHeader(
-  headers: CreateTrpcKoaContextOptions['req']['headers'] | FetchCreateContextFnOptions['req']['headers']
-) {
+function getAuthorizationHeader(headers: FetchCreateContextFnOptions['req']['headers']) {
   if ('authorization' in headers && typeof headers['authorization'] === 'string') {
     return headers['authorization']
   } else {
-    return (headers as FetchCreateContextFnOptions['req']['headers']).get('authorization')
+    return headers.get('authorization')
   }
 }
 
-export async function createContext({
-  req,
-}: CreateTrpcKoaContextOptions | FetchCreateContextFnOptions): Promise<Context> {
+export async function createContext({ req }: FetchCreateContextFnOptions): Promise<Context> {
   try {
     const authorization = getAuthorizationHeader(req.headers)
     if (authorization === null) throw new Error('No authorization header found.')
 
-    const accountIdFromHeader = getEntityIdFromHeader(authorization)
-    if (accountIdFromHeader === undefined) {
+    const accountId = getEntityIdFromHeader(authorization)
+    if (accountId === undefined) {
       return {
         authenticated: false,
         account: undefined,
@@ -32,12 +26,19 @@ export async function createContext({
       }
     }
 
-    const accountId = parseInt(accountIdFromHeader)
-    const account = await client.account.findFirstOrThrow({
+    const account = await prisma.account.findFirst({
       where: {
         id: accountId,
       },
     })
+
+    if (account === null) {
+      return {
+        authenticated: false,
+        accountId: undefined,
+        account: undefined,
+      }
+    }
 
     return {
       authenticated: true,
@@ -62,7 +63,7 @@ type AuthContext =
     }
   | {
       authenticated: true
-      accountId: number
+      accountId: string
       account: Account
     }
 
