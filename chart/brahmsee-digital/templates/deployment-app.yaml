@@ -43,6 +43,26 @@ spec:
                 secretKeyRef:
                   name: authentication
                   key: secret
+            - name: AUTHENTICATION_DLRG_ISSUER
+              valueFrom:
+                secretKeyRef:
+                  name: authentication
+                  key: oidc_issuer
+            - name: AUTHENTICATION_DLRG_CLIENTID
+              valueFrom:
+                secretKeyRef:
+                  name: authentication
+                  key: oidc_clientId
+            - name: AUTHENTICATION_DLRG_CLIENTSECRET
+              valueFrom:
+                secretKeyRef:
+                  name: authentication
+                  key: oidc_clientSecret
+            - name: AUTHENTICATION_DLRG_ALLOWINSECURE
+              valueFrom:
+                secretKeyRef:
+                  name: authentication
+                  key: oidc_allowInsecure
 
 
             # Postgres
