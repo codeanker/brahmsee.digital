@@ -45,12 +45,12 @@ jobs:
           sed -i "s/commit: .*/commit: ${{ needs.prepare.outputs.commit }}/g" chart/brahmsee-digital/values.yaml
 
       - name: Chart | Push brahmsee-digital
-        uses: appany/helm-oci-chart-releaser@v0.4.2
+        uses: appany/helm-oci-chart-releaser@v0.3.0
         with:
           name: brahmsee-digital
-          repository: codeanker
+          repository: codeanker/brahmsee.digital
           tag: ${{needs.prepare.outputs.version}}-${{needs.prepare.outputs.commit}}
           path: chart/brahmsee-digital
-          registry: docker.io
-          registry_username: ${{ secrets.DOCKERHUB_USERNAME }}
-          registry_password: ${{ secrets.DOCKERHUB_TOKEN }}
+          registry: ghcr.io
+          registry_username: ${{ github.actor }}
+          registry_password: ${{ secrets.GITHUB_TOKEN }}
