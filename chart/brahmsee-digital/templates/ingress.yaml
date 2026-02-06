@@ -23,30 +23,16 @@ spec:
     certResolver: default
   routes:
   {{- range .Values.global.ingress.hosts }}
+    - match:  Host(`{{ . }}`) && PathPrefix(`/api`)
+      kind: Rule
+      services:
+        - name: {{ $.Chart.Name }}-app-svc
+          port: 80
+      middlewares:
+        - name: stripapiprefix
     - match:  Host(`{{ . }}`) && PathPrefix(`/`)
       kind: Rule
       services:
         - name: {{ $.Chart.Name }}-app-svc
           port: 80
-    - match:  Host(`{{ . }}`) && PathPrefix(`/api/connect`)
-      kind: Rule
-      services:
-        - name: {{ $.Chart.Name }}-app-svc
-          port: 80
-      middlewares:
-        - name: stripapiprefix
-    - match:  Host(`{{ . }}`) && PathPrefix(`/api/export`)
-      kind: Rule
-      services:
-        - name: {{ $.Chart.Name }}-app-svc
-          port: 80
-      middlewares:
-        - name: stripapiprefix
-    - match:  Host(`{{ . }}`) && PathPrefix(`/api/upload`)
-      kind: Rule
-      services:
-        - name: {{ $.Chart.Name }}-app-svc
-          port: 80
-      middlewares:
-        - name: stripapiprefix
   {{- end }}
