@@ -1,18 +1,8 @@
-apiVersion: traefik.containo.us/v1alpha1
-kind: Middleware
-metadata:
-  name: stripapiprefix
-  labels:
-    {{- include "codeanker.label" . | indent 4 }}
-spec:
-  stripPrefix:
-    prefixes:
-      - /api
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: ingressroutestripprefix
+  name: {{ .Chart.Name }}-ingress
   labels:
     {{- include "codeanker.label" . | indent 4 }}
 spec:
@@ -23,13 +13,6 @@ spec:
     certResolver: default
   routes:
   {{- range .Values.global.ingress.hosts }}
-    - match:  Host(`{{ . }}`) && PathPrefix(`/api`)
-      kind: Rule
-      services:
-        - name: {{ $.Chart.Name }}-app-svc
-          port: 80
-      middlewares:
-        - name: stripapiprefix
     - match:  Host(`{{ . }}`) && PathPrefix(`/`)
       kind: Rule
       services:

@@ -13,6 +13,8 @@ import { logger as appLogger } from './logger.js'
 import * as routes from './routes/index.js'
 import { makeApp } from './util/make-app.js'
 
+const staticRoot = resolve('./static')
+
 const app = makeApp()
   .use(async (c, next) => {
     // generic error handler
@@ -46,16 +48,23 @@ const app = makeApp()
       createContext,
     })
   )
+  .route('/api/export', routes.exportRouter)
+  .route('/api/import', routes.importRouter)
+  .route('/api/file', routes.fileRouter)
+  .route('/api/connect', routes.oidcRouter)
   .use(
     serveStatic({
-      root: resolve('./static'),
+      root: staticRoot,
       rewriteRequestPath: (p) => p.replace(/^\/static/, '/'),
     })
   )
-  .route('/export', routes.exportRouter)
-  .route('/import', routes.importRouter)
-  .route('/file', routes.fileRouter)
-  .route('/connect', routes.oidcRouter)
+  // fallback to index.html for client-side routing
+  .use(
+    serveStatic({
+      root: staticRoot,
+      rewriteRequestPath: () => '/index.html',
+    })
+  )
 
 const server = serve({
   fetch: app.fetch,
