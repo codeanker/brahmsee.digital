@@ -55,7 +55,7 @@ const app = makeApp()
   .route('/export', routes.exportRouter)
   .route('/import', routes.importRouter)
   .route('/file', routes.fileRouter)
-  .route('/oidc', routes.oidcRouter)
+  .route('/connect', routes.oidcRouter)
 
 const server = serve({
   fetch: app.fetch,
