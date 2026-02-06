@@ -1,19 +1,14 @@
+import XLSX from '@e965/xlsx'
 import { AnmeldungStatus, Essgewohnheit, NahrungsmittelIntoleranz } from '@prisma/client'
 import dayjs from 'dayjs'
 import type { Context } from 'hono'
-import XLSX from '@e965/xlsx'
 import prisma from '../../prisma.js'
 import { getSecurityWorksheet } from './helpers/getSecurityWorksheet.js'
 import { getWorkbookDefaultProps } from './helpers/getWorkbookDefaultProps.js'
-import { sheetAuthorize } from './sheets.schema.js'
+import type { AuthorizeResults } from './middleware/authorize.js'
 
-export async function veranstaltungVerpflegung(ctx: Context) {
-  const authorization = await sheetAuthorize(ctx)
-  if (!authorization) {
-    return
-  }
-
-  const { query, account, gliederung } = authorization
+export async function veranstaltungVerpflegung(ctx: Context<{ Variables: AuthorizeResults }>) {
+  const { query, account, gliederung } = ctx.var
 
   const unterveranstaltungen = await prisma.unterveranstaltung.findMany({
     where: {
