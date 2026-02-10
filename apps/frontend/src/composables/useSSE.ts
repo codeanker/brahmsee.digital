@@ -41,10 +41,11 @@ class SSEService {
     this.isConnecting.value = true
 
     const url = `${host}/api/events`
-    this.eventSource = new EventSource(url, {
-      // Note: EventSource doesn't support custom headers in standard API
-      // We'll need to pass token via query parameter or use a polyfill
-    } as EventSourceInit)
+    const jwt = localStorage.getItem('jwt')
+    if (!jwt) {
+      console.warn('Cannot connect to SSE: No JWT token found')
+      return
+    }
 
     // Add authorization via URL parameter as EventSource doesn't support headers
     this.eventSource = new EventSource(`${url}?token=${encodeURIComponent(jwt)}`)
@@ -216,11 +217,17 @@ export function useSSE(resource: string, onUpdate: SSEEventCallback) {
       sseService.connect()
     }
 
-    // Wait for connection before subscribing
+    // Wait for connection before subscribing (max 10 seconds)
+    let attempts = 0
+    const maxAttempts = 100 // 100 * 100ms = 10 seconds
     const checkConnection = setInterval(() => {
+      attempts++
       if (sseService.connected.value) {
         clearInterval(checkConnection)
         sseService.subscribe(resource)
+      } else if (attempts >= maxAttempts) {
+        clearInterval(checkConnection)
+        console.warn(`Failed to connect to SSE after ${maxAttempts * 100}ms`)
       }
     }, 100)
 
