@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { apiClient } from '@/api'
 import { useAsyncState } from '@vueuse/core'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
 import Notification from '@/components/LayoutComponents/Notifications.vue'
 import { ValidateForm } from '@codeanker/validation'
@@ -75,6 +75,35 @@ const landingSettings = ref({
   facebookVisible: props.unterveranstaltung?.landingSettings?.facebookVisible ?? false,
   facebookUrl: props.unterveranstaltung?.landingSettings?.facebookUrl ?? '',
 })
+
+// Watch for prop changes and update local state
+watch(
+  () => props.unterveranstaltung?.landingSettings,
+  (newSettings) => {
+    if (newSettings) {
+      landingSettings.value = {
+        heroTitle: newSettings.heroTitle ?? '',
+        heroSubtitle: newSettings.heroSubtitle ?? '',
+        eventDetailsTitle: newSettings.eventDetailsTitle ?? '',
+        eventDetailsContent: newSettings.eventDetailsContent ?? '',
+        miscellaneousVisible: newSettings.miscellaneousVisible ?? false,
+        miscellaneousTitle: newSettings.miscellaneousTitle ?? '',
+        miscellaneousSubtitle: newSettings.miscellaneousSubtitle ?? '',
+        faqVisible: newSettings.faqVisible ?? false,
+        faqEmail: newSettings.faqEmail ?? '',
+        instagramVisible: newSettings.instagramVisible ?? false,
+        instagramUrl: newSettings.instagramUrl ?? '',
+        facebookVisible: newSettings.facebookVisible ?? false,
+        facebookUrl: newSettings.facebookUrl ?? '',
+      }
+      heroImages.value = newSettings.heroImages ?? []
+      miscellaneousItems.value = newSettings.miscellaneousItems ?? []
+      deletedHeroImagesIds.value = []
+      deletedMiscellaneousItemsIds.value = []
+    }
+  },
+  { deep: true }
+)
 
 const {
   execute: updateUnterveranstaltung,

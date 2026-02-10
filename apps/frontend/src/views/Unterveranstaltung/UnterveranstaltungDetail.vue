@@ -39,7 +39,10 @@ import FAQList from '../FAQs/FAQList.vue'
 const route = useRoute()
 const { setTitle } = useRouteTitle()
 
-const { state: unterveranstaltung } = useAsyncState(async () => {
+const {
+  state: unterveranstaltung,
+  execute: refreshUnterveranstaltung,
+} = useAsyncState(async () => {
   let result
   if (loggedInAccount.value?.role === 'ADMIN') {
     result = await apiClient.unterveranstaltung.verwaltungGet.query({
@@ -277,6 +280,7 @@ const anmeldeLinkCreateModal = useTemplateRef('anmeldeLinkCreateModal')
           v-if="unterveranstaltung"
           :unterveranstaltung-id="unterveranstaltung.id"
           :unterveranstaltung="unterveranstaltung"
+          :on-update="refreshUnterveranstaltung"
         />
       </Tab>
       <Tab
