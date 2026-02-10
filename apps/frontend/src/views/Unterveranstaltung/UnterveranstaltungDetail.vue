@@ -25,6 +25,7 @@ import AnmeldungenTable from '@/components/data/AnmeldungenTable.vue'
 import FilesExport, { type ExportedFileType } from '@/components/FilesExport.vue'
 import FilesListAndUpload from '@/components/FilesListAndUpload.vue'
 import FormUnterveranstaltungLandingSettings from '@/components/forms/unterveranstaltung/FormUnterveranstaltungLandingSettings.vue'
+import TShirtExport from '@/components/TShirtExport.vue'
 import AnmeldeLinkCreateModal from '@/components/UIComponents/AnmeldeLinkCreateModal.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
 import Button from '@/components/UIComponents/Button.vue'
@@ -346,6 +347,15 @@ const anmeldeLinkCreateModal = useTemplateRef('anmeldeLinkCreateModal')
               <p class="text-sm text-gray-500">Exports von Daten zu dieser Veranstaltung</p>
             </div>
             <FilesExport :files="files" />
+            <ul
+              role="list"
+              class="mt-3 grid grid-cols-1 gap-4"
+            >
+              <TShirtExport
+                base-url="/api/export/pdf/tshirt-liste"
+                :export-params="exportParams"
+              />
+            </ul>
           </div>
         </div>
       </Tab>
