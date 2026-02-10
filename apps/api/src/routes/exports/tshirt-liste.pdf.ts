@@ -91,25 +91,32 @@ export async function veranstaltungTShirtListe(ctx: Context<{ Variables: Authori
   })
 
   // Group by Gliederung and aggregate T-shirt sizes
-  const gliederungMap = new Map<string, { name: string; sizes: Map<string, number>; nachbestellungen: number }>()
+  const gliederungDataMap = new Map<
+    string,
+    { name: string; sizes: Map<string, number>; nachbestellungen: number }
+  >()
 
   for (const uv of unterveranstaltungen) {
     const gliederungId = uv.gliederung.id
     const gliederungName = uv.gliederung.name
 
-    if (!gliederungMap.has(gliederungId)) {
-      gliederungMap.set(gliederungId, {
+    if (!gliederungDataMap.has(gliederungId)) {
+      gliederungDataMap.set(gliederungId, {
         name: gliederungName,
         sizes: new Map(),
+        // TODO: Implement logic to track reordered T-shirts
+        // This could be done via a separate custom field or database field
         nachbestellungen: 0,
       })
     }
 
-    const gliederungData = gliederungMap.get(gliederungId)!
+    const gliederungData = gliederungDataMap.get(gliederungId)!
 
     for (const anmeldung of uv.Anmeldung) {
       for (const customFieldValue of anmeldung.customFieldValues) {
-        const sizeValue = customFieldValue.value as string
+        // Validate that the value is a string and a valid T-shirt size
+        const rawValue = customFieldValue.value
+        const sizeValue = typeof rawValue === 'string' ? rawValue : ''
         if (sizeValue && TSHIRT_SIZES.includes(sizeValue)) {
           const currentCount = gliederungData.sizes.get(sizeValue) || 0
           gliederungData.sizes.set(sizeValue, currentCount + 1)
@@ -126,7 +133,7 @@ export async function veranstaltungTShirtListe(ctx: Context<{ Variables: Authori
 
   let isFirstPage = true
 
-  for (const [, data] of gliederungMap) {
+  for (const [, data] of gliederungDataMap) {
     // Add page break if not first page
     if (!isFirstPage) {
       doc.addPage()
