@@ -15,8 +15,18 @@ export function handleUpload(file: File): Promise<{ id: string; mimetype: string
 export function handleUpload(file: File[]): Promise<{ id: string; mimetype: string }[]>
 
 /**
- * Upload file
- * @param file
+ * Uploads one or multiple files to the configured storage provider (Azure or Local).
+ * Supports overloading to handle both single files and arrays of files.
+ * @param file - A single File object or an array of File objects to upload
+ * @returns A Promise resolving to the uploaded file metadata (id and mimetype)
+ * @example
+ * // Upload a single file
+ * const result = await handleUpload(fileInput.files[0])
+ * console.log(result.id) // File ID in database
+ * 
+ * // Upload multiple files
+ * const results = await handleUpload([...fileInput.files])
+ * results.forEach(file => console.log(file.id))
  */
 export async function handleUpload(file: File | File[]): Promise<uploadedFiles | uploadedFile> {
   if (Array.isArray(file)) {
@@ -33,6 +43,15 @@ export async function handleUpload(file: File | File[]): Promise<uploadedFiles |
   }
 }
 
+/**
+ * Uploads a public photo for an Anmeldung (registration).
+ * This is used for profile photos or other public images associated with registrations.
+ * @param file - The file to upload
+ * @param payload - Additional metadata for the public photo upload (excluding mimetype)
+ * @returns A Promise resolving to the uploaded file metadata
+ * @example
+ * await handlePublicPhotoUpload(photoFile, { anmeldungId: 123 })
+ */
 export async function handlePublicPhotoUpload(
   file: File,
   payload: Omit<RouterInput['file']['anmeldungPublicFotoUpload'], 'mimetype'>
@@ -41,6 +60,15 @@ export async function handlePublicPhotoUpload(
   return await uploadFile(file, dbFile)
 }
 
+/**
+ * Internal helper function that uploads a file to the appropriate storage provider.
+ * Supports both LOCAL (via HTTP) and AZURE (via Azure Blob Storage) providers.
+ * @param file - The file to upload
+ * @param dbFile - Database file record with upload configuration
+ * @returns The uploaded file metadata
+ * @throws Error if the upload fails or if the provider is not supported
+ * @internal
+ */
 async function uploadFile(file: File, dbFile: dbFile): Promise<uploadedFile> {
   const formData = new FormData()
   formData.append('file', file)
