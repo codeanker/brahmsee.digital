@@ -97,7 +97,7 @@ const query: Query<Veranstaltung> = (pagination, filter, orderBy) =>
     placeholderData: keepPreviousData,
   })
 
-const dataTableRef = ref<InstanceType<typeof DataTable>>()
+const dataTableRef = ref<{ query: ReturnType<Query<Veranstaltung>> }>()
 
 // Set up SSE to auto-refresh table when data changes
 useSSE('veranstaltung', () => {

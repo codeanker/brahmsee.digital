@@ -6,7 +6,7 @@ import { randomUUID } from 'crypto'
 
 export const sseRouter = makeApp()
 
-sseRouter.get('/', async (c) => {
+sseRouter.get('/', (c) => {
   // Authenticate the connection - support both header and query parameter
   let authorization = c.req.header('authorization')
   const tokenParam = c.req.query('token')
@@ -22,8 +22,8 @@ sseRouter.get('/', async (c) => {
   let accountId: string | undefined
   try {
     accountId = getEntityIdFromHeader(authorization)
-  } catch (error) {
-    logger.error('SSE authentication failed:', error)
+  } catch (err) {
+    logger.error('SSE authentication failed:', err)
     return c.json({ error: 'Invalid token' }, 401)
   }
 
@@ -49,7 +49,7 @@ sseRouter.get('/', async (c) => {
         try {
           const heartbeat = `: heartbeat\n\n`
           controller.enqueue(new TextEncoder().encode(heartbeat))
-        } catch (error) {
+        } catch {
           clearInterval(heartbeatInterval)
           sseManager.removeClient(clientId)
         }
