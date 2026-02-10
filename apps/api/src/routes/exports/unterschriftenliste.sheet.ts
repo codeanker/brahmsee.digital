@@ -120,5 +120,5 @@ export async function veranstaltungUnterschriftenliste(ctx: Context<{ Variables:
 
   ctx.header('Content-Disposition', `attachment; filename="${filename}"`)
   ctx.header('Content-Type', 'application/vnd.ms-excel')
-  return ctx.body(buf, 201)
+  return ctx.body(buf, 200)
 }
