@@ -38,6 +38,8 @@ export const unterveranstaltungSelect: Prisma.UnterveranstaltungSelect = {
   teilnahmegebuehr: true,
   meldebeginn: true,
   meldeschluss: true,
+  beschreibung: true,
+  bedingungen: true,
   gliederungId: true,
   _count: {
     select: {
