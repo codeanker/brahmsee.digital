@@ -7,8 +7,14 @@ import { randomUUID } from 'crypto'
 export const sseRouter = makeApp()
 
 sseRouter.get('/', async (c) => {
-  // Authenticate the connection
-  const authorization = c.req.header('authorization')
+  // Authenticate the connection - support both header and query parameter
+  let authorization = c.req.header('authorization')
+  const tokenParam = c.req.query('token')
+  
+  if (tokenParam) {
+    authorization = `Bearer ${tokenParam}`
+  }
+  
   if (!authorization) {
     return c.json({ error: 'Unauthorized' }, 401)
   }
