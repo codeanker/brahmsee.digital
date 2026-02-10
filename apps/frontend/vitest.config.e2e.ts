@@ -11,13 +11,5 @@ export default mergeConfig(
       testTimeout: 60000,
       hookTimeout: 60000,
     },
-    resolve: {
-      alias: {
-        dayjs: 'dayjs',
-      },
-    },
-    optimizeDeps: {
-      include: ['dayjs', 'playwright'],
-    },
   })
 )
