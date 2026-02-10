@@ -13,6 +13,7 @@ import type { Option } from '../BasicInputs/BasicSelect.vue'
 import DataTable, { type Query } from '../Table/DataTable.vue'
 import initialData from '../Table/initialData'
 import Badge from '../UIComponents/Badge.vue'
+import DataGridDoubleLineCell from '../DataGridDoubleLineCell.vue'
 
 const props = defineProps<{
   veranstaltungId?: string
@@ -59,6 +60,12 @@ const columns = [
       filter: {
         type: 'text',
       },
+    },
+    cell({ row }) {
+      return h(DataGridDoubleLineCell, {
+        title: row.original.gliederung.name,
+        message: row.original.beschreibung ?? '',
+      })
     },
   }),
   column.accessor('type', {

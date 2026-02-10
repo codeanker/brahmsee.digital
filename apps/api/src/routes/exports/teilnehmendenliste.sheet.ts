@@ -1,18 +1,13 @@
 import XLSX from '@e965/xlsx'
 import dayjs from 'dayjs'
+import type { Context } from 'hono'
 import { AnmeldungStatusMapping, GenderMapping } from '../../client.js'
 import prisma from '../../prisma.js'
 import { getSecurityWorksheet } from './helpers/getSecurityWorksheet.js'
-import { sheetAuthorize } from './sheets.schema.js'
-import type { Context } from 'hono'
+import type { AuthorizeResults } from './middleware/authorize.js'
 
-export async function veranstaltungTeilnehmendenliste(ctx: Context) {
-  const authorization = await sheetAuthorize(ctx)
-  if (!authorization) {
-    return
-  }
-
-  const { query, account, gliederung } = authorization
+export async function veranstaltungTeilnehmendenliste(ctx: Context<{ Variables: AuthorizeResults }>) {
+  const { query, account, gliederung } = ctx.var
 
   const anmeldungenList = await prisma.anmeldung.findMany({
     where: {

@@ -11,14 +11,12 @@ const importRouter = makeApp()
 importRouter.post('/anmeldungen/:unterveranstaltungId', async (ctx) => {
   const authorization = ctx.req.header('Authorization')
   if (!authorization) {
-    ctx.status(401)
-    return
+    return ctx.status(401)
   }
 
   const accountId = getEntityIdFromHeader(authorization)
   if (!accountId) {
-    ctx.status(401)
-    return
+    return ctx.status(401)
   }
 
   const account = await prisma.account.findUnique({
@@ -36,8 +34,7 @@ importRouter.post('/anmeldungen/:unterveranstaltungId', async (ctx) => {
     },
   })
   if (!account || account.role !== Role.ADMIN) {
-    ctx.status(401)
-    return
+    return ctx.status(401)
   }
 
   const body = await ctx.req.parseBody({

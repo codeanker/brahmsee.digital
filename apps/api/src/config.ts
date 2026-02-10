@@ -47,7 +47,7 @@ export const configSchema = z.strictObject({
           }
           return trimmed
         }),
-      allowInsecure: z.boolean(),
+      allowInsecure: z.coerce.boolean(),
     }),
   }),
 

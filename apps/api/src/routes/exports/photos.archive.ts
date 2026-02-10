@@ -3,15 +3,16 @@ import XLSX from '@e965/xlsx'
 import type { Gliederung } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
 import archiver from 'archiver'
+import type { Context } from 'hono'
 import { stream } from 'hono/streaming'
 import mime from 'mime'
 import { Readable } from 'node:stream'
 import { z } from 'zod'
 import prisma from '../../prisma.js'
 import { openFileStream } from '../../services/file/helpers/getFileUrl.js'
-import type { AppContext } from '../../util/make-app.js'
 import { getSecurityWorksheet } from './helpers/getSecurityWorksheet.js'
-import { sheetAuthorize, type SheetQuery } from './sheets.schema.js'
+import type { AuthorizeResults } from './middleware/authorize.js'
+import { type SheetQuery } from './sheets.schema.js'
 
 const querySchema = z.object({
   mode: z.enum(['group', 'flat']),
@@ -104,13 +105,8 @@ function buildSheet(
 
 const baseDirectory = 'Fotos'
 
-export async function veranstaltungPhotoArchive(ctx: AppContext) {
-  const authorization = await sheetAuthorize(ctx)
-  if (!authorization) {
-    return
-  }
-
-  const { query, gliederung, account } = authorization
+export async function veranstaltungPhotoArchive(ctx: Context<{ Variables: AuthorizeResults }>) {
+  const { query, account, gliederung } = ctx.var
   const { mode } = querySchema.parse(ctx.req.query())
 
   if (mode === 'flat' && account.role !== 'ADMIN') {
