@@ -30,7 +30,6 @@ const {
     if (!props.field) {
       return
     }
-
     switch (props.entity) {
       case 'veranstaltung':
         await apiClient.customFields.veranstaltungDelete.mutate({
@@ -56,10 +55,9 @@ const {
 
 defineExpose<ModalApi>({
   show() {
-    if (isDeleting) {
+    if (isDeleting.value) {
       return
     }
-
     modal.value?.show()
   },
   hide() {
