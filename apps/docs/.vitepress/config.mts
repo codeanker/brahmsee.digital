@@ -14,6 +14,21 @@ export default defineConfig({
 
     sidebar: [
       {
+        text: 'Development',
+        items: [
+          { text: 'Testing Guide', link: '/testing' },
+          { text: 'App Structure', link: '/app-structure' },
+        ],
+      },
+      {
+        text: 'Domain Knowledge',
+        items: [
+          { text: 'Anmelde Entity', link: '/anmelde-entity' },
+          { text: 'Qualifikationen', link: '/qualifikationen' },
+          { text: 'Bugs and Workarounds', link: '/bugs-and-workarounds' },
+        ],
+      },
+      {
         text: 'Examples',
         items: [
           { text: 'Markdown Examples', link: '/markdown-examples' },
