@@ -62,7 +62,7 @@
     "@codeanker/eslint-config": "workspace:*",
     "@codeanker/typescript-config": "workspace:*",
     "@inquirer/prompts": "^7.1.0",
-    "@types/archiver": "^6.0.3",
+    "@types/archiver": "^7.0.0",
     "@types/config": "^3.3.3",
     "@types/http-errors": "^2.0.5",
     "@types/http-status-codes": "^1.2.0",
