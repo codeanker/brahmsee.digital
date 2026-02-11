@@ -11,6 +11,7 @@ import { createContext } from './context.js'
 import { appRouter } from './index.js'
 import { logger as appLogger } from './logger.js'
 import * as routes from './routes/index.js'
+import { sseRouter } from './sse/index.js'
 import { makeApp } from './util/make-app.js'
 
 const staticRoot = resolve('./static')
@@ -52,6 +53,7 @@ const app = makeApp()
   .route('/api/import', routes.importRouter)
   .route('/api/file', routes.fileRouter)
   .route('/api/connect', routes.oidcRouter)
+  .route('/api/events', sseRouter)
   .use(
     serveStatic({
       root: staticRoot,
