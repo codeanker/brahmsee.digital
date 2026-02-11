@@ -1,0 +1,9 @@
+{
+  "authentication": {
+    "dlrg": {
+      "issuer": "https://test-issuer.example.com",
+      "clientId": "test-client-id",
+      "clientSecret": "test-client-secret"
+    }
+  }
+}
