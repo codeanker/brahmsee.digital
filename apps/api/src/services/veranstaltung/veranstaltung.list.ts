@@ -15,6 +15,11 @@ export const veranstaltungSelect: Prisma.VeranstaltungSelect = {
       id: true,
     },
   },
+  beschreibung: true,
+  datenschutz: true,
+  teilnahmeBedingungen: true,
+  teilnahmeBedingungenPublic: true,
+  zielgruppe: true,
   meldebeginn: true,
   meldeschluss: true,
   maxTeilnehmende: true,
@@ -33,6 +38,8 @@ export const unterveranstaltungSelect: Prisma.UnterveranstaltungSelect = {
   teilnahmegebuehr: true,
   meldebeginn: true,
   meldeschluss: true,
+  beschreibung: true,
+  bedingungen: true,
   gliederungId: true,
   _count: {
     select: {

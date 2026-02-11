@@ -39,7 +39,10 @@ import FAQList from '../FAQs/FAQList.vue'
 const route = useRoute()
 const { setTitle } = useRouteTitle()
 
-const { state: unterveranstaltung } = useAsyncState(async () => {
+const {
+  state: unterveranstaltung,
+  execute: refreshUnterveranstaltung,
+} = useAsyncState(async () => {
   let result
   if (loggedInAccount.value?.role === 'ADMIN') {
     result = await apiClient.unterveranstaltung.verwaltungGet.query({
@@ -141,6 +144,14 @@ const files: ExportedFileType[] = [
     description: 'Liste aller Teilnehmenden',
     bgColor: 'bg-blue-600',
     hoverColor: 'hover:text-blue-700',
+  },
+  {
+    name: 'Unterschriftenliste',
+    icon: DocumentDuplicateIcon,
+    href: `/api/export/sheet/unterschriftenliste?${exportParams}`,
+    description: 'Unterschriftenliste für Förderungen',
+    bgColor: 'bg-green-600',
+    hoverColor: 'hover:text-green-700',
   },
   {
     name: 'Verpflegung',
@@ -277,6 +288,7 @@ const anmeldeLinkCreateModal = useTemplateRef('anmeldeLinkCreateModal')
           v-if="unterveranstaltung"
           :unterveranstaltung-id="unterveranstaltung.id"
           :unterveranstaltung="unterveranstaltung"
+          :on-update="refreshUnterveranstaltung"
         />
       </Tab>
       <Tab
