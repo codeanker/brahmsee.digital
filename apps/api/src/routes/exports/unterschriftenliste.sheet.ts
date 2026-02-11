@@ -36,6 +36,7 @@ export async function veranstaltungUnterschriftenliste(ctx: Context<{ Variables:
           address: {
             select: {
               street: true,
+              streetNumber: true,
               zip: true,
               city: true,
             },
@@ -75,7 +76,8 @@ export async function veranstaltungUnterschriftenliste(ctx: Context<{ Variables:
       'Nr.': index + 1,
       Vorname: anmeldung.person.firstname,
       Name: anmeldung.person.lastname,
-      'Straße, Hausnummer': anmeldung.person.address?.street ?? '',
+      'Straße, Hausnummer':
+        (anmeldung.person.address?.street ?? '') + ' ' + (anmeldung.person.address?.streetNumber ?? ''),
       PLZ: anmeldung.person.address?.zip ?? '',
       Ort: anmeldung.person.address?.city ?? '',
       Geburtsdatum: anmeldung.person.birthday ? dayjs(anmeldung.person.birthday).format('DD.MM.YYYY') : '',
@@ -95,14 +97,14 @@ export async function veranstaltungUnterschriftenliste(ctx: Context<{ Variables:
   }
 
   const worksheet = XLSX.utils.json_to_sheet(rows)
-  
+
   // Set column widths for better readability
   worksheet['!cols'] = [
-    { wch: 5 },  // Nr.
+    { wch: 5 }, // Nr.
     { wch: 15 }, // Vorname
     { wch: 15 }, // Name
     { wch: 25 }, // Straße, Hausnummer
-    { wch: 8 },  // PLZ
+    { wch: 8 }, // PLZ
     { wch: 15 }, // Ort
     { wch: 12 }, // Geburtsdatum
     { wch: 20 }, // Gliederung
