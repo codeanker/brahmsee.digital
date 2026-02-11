@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { apiClient } from '@/api'
 import { useAsyncState } from '@vueuse/core'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
 import Notification from '@/components/LayoutComponents/Notifications.vue'
 import { ValidateForm } from '@codeanker/validation'
@@ -47,6 +47,25 @@ const props = defineProps<{
   onUpdate?: () => void
 }>()
 
+// Helper function to map landing settings from prop
+function mapLandingSettings(settings: any) {
+  return {
+    heroTitle: settings?.heroTitle ?? '',
+    heroSubtitle: settings?.heroSubtitle ?? '',
+    eventDetailsTitle: settings?.eventDetailsTitle ?? '',
+    eventDetailsContent: settings?.eventDetailsContent ?? '',
+    miscellaneousVisible: settings?.miscellaneousVisible ?? false,
+    miscellaneousTitle: settings?.miscellaneousTitle ?? '',
+    miscellaneousSubtitle: settings?.miscellaneousSubtitle ?? '',
+    faqVisible: settings?.faqVisible ?? false,
+    faqEmail: settings?.faqEmail ?? '',
+    instagramVisible: settings?.instagramVisible ?? false,
+    instagramUrl: settings?.instagramUrl ?? '',
+    facebookVisible: settings?.facebookVisible ?? false,
+    facebookUrl: settings?.facebookUrl ?? '',
+  }
+}
+
 const heroImages = ref<IHeroImages[]>(props.unterveranstaltung?.landingSettings?.heroImages ?? [])
 
 const unterveranstaltungId = props.unterveranstaltung?.id
@@ -60,21 +79,22 @@ const miscellaneousItems = ref<IMiscellaneousItem[]>(
 
 const showNotification = ref(false)
 
-const landingSettings = ref({
-  heroTitle: props.unterveranstaltung?.landingSettings?.heroTitle ?? '',
-  heroSubtitle: props.unterveranstaltung?.landingSettings?.heroSubtitle ?? '',
-  eventDetailsTitle: props.unterveranstaltung?.landingSettings?.eventDetailsTitle ?? '',
-  eventDetailsContent: props.unterveranstaltung?.landingSettings?.eventDetailsContent ?? '',
-  miscellaneousVisible: props.unterveranstaltung?.landingSettings?.miscellaneousVisible ?? false,
-  miscellaneousTitle: props.unterveranstaltung?.landingSettings?.miscellaneousTitle ?? '',
-  miscellaneousSubtitle: props.unterveranstaltung?.landingSettings?.miscellaneousSubtitle ?? '',
-  faqVisible: props.unterveranstaltung?.landingSettings?.faqVisible ?? false,
-  faqEmail: props.unterveranstaltung?.landingSettings?.faqEmail ?? '',
-  instagramVisible: props.unterveranstaltung?.landingSettings?.instagramVisible ?? false,
-  instagramUrl: props.unterveranstaltung?.landingSettings?.instagramUrl ?? '',
-  facebookVisible: props.unterveranstaltung?.landingSettings?.facebookVisible ?? false,
-  facebookUrl: props.unterveranstaltung?.landingSettings?.facebookUrl ?? '',
-})
+const landingSettings = ref(mapLandingSettings(props.unterveranstaltung?.landingSettings))
+
+// Watch for prop changes and update local state
+watch(
+  () => props.unterveranstaltung?.landingSettings,
+  (newSettings) => {
+    if (newSettings) {
+      landingSettings.value = mapLandingSettings(newSettings)
+      heroImages.value = newSettings.heroImages ?? []
+      miscellaneousItems.value = newSettings.miscellaneousItems ?? []
+      deletedHeroImagesIds.value = []
+      deletedMiscellaneousItemsIds.value = []
+    }
+  },
+  { deep: true }
+)
 
 const {
   execute: updateUnterveranstaltung,

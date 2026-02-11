@@ -1,3 +1,16 @@
+/**
+ * Pre-configured dayjs instance with German locale and Europe/Berlin timezone.
+ * 
+ * This module extends dayjs with:
+ * - Custom parse format support
+ * - UTC and timezone support
+ * - German locale (de)
+ * - Default timezone set to Europe/Berlin
+ * 
+ * @module dayjs
+ * @see {@link https://day.js.org/docs/en/installation/installation|Day.js Documentation}
+ */
+
 import dayjs, { type Dayjs } from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat.js'
 import 'dayjs/locale/de'

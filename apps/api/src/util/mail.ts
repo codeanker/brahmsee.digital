@@ -49,6 +49,12 @@ type EMail = {
   }[]
 }
 
+/**
+ * Reads an email template file from the template directory.
+ * @param name - The name of the template file (without .mjml extension)
+ * @returns An object containing the absolute path and contents of the template
+ * @internal
+ */
 async function readTemplate(name: string) {
   const abs = `${join(templateDirectory, name)}.mjml`
   const buffer = await readFile(abs)
@@ -66,10 +72,14 @@ const { contents: layout } = await readTemplate('_layout')
 Handlebars.registerPartial('layout', layout)
 
 /**
- * Triggers the email template compilation pipeline consisting of the following:
- *
- * - Use `ejs` as a templating engine for enabling variable support.
- * - Use `mjml` to generate the raw html code to embed in the email.
+ * Compiles an email template using Handlebars and MJML.
+ * The pipeline consists of:
+ * - Using Handlebars as a templating engine for variable support
+ * - Using MJML to generate the raw HTML code for the email
+ * @param templateName - The name of the template to compile
+ * @param variables - The variables to inject into the template
+ * @returns The compiled HTML string, or null if compilation fails
+ * @internal
  */
 async function compile(templateName: string, variables: Variables): Promise<string | null> {
   const { abs, contents } = await readTemplate(templateName)
@@ -91,6 +101,29 @@ async function compile(templateName: string, variables: Variables): Promise<stri
   return html
 }
 
+/**
+ * Sends an email using SendGrid with template compilation support.
+ * This function compiles MJML templates with Handlebars, logs the activity,
+ * and sends the email via SendGrid (or logs it in development mode).
+ * @param mailParams - The email parameters
+ * @param mailParams.to - Recipient email address(es)
+ * @param mailParams.bcc - Optional BCC email address(es)
+ * @param mailParams.subject - Email subject line
+ * @param mailParams.categories - SendGrid categories for tracking
+ * @param mailParams.attachments - Optional file attachments
+ * @param mailParams.skipHtmlEncode - Skip encoding German umlauts to HTML entities
+ * @param mailParams.template - Template name to use
+ * @param mailParams.variables - Variables to inject into the template
+ * @returns The SendGrid response or the email object in development mode
+ * @example
+ * await sendMail({
+ *   to: 'user@example.com',
+ *   subject: 'Welcome',
+ *   categories: ['welcome'],
+ *   template: 'welcome',
+ *   variables: { name: 'John', veranstaltung: 'Event', hostname: 'brahmsee.digital' }
+ * })
+ */
 export async function sendMail(mailParams: EMailParams) {
   try {
     let subject = mailParams.subject
@@ -171,6 +204,12 @@ export async function sendMail(mailParams: EMailParams) {
   }
 }
 
+/**
+ * Encodes German umlauts and special characters to HTML entities.
+ * @param html - The HTML string to encode
+ * @returns The encoded HTML string
+ * @internal
+ */
 function encodeHtmlEntries(html: string): string {
   return html
     .replaceAll('ä', '&auml;')
@@ -182,6 +221,12 @@ function encodeHtmlEntries(html: string): string {
     .replaceAll('ß', '&szlig;')
 }
 
+/**
+ * Formats email attachments by converting Buffer content to base64 strings.
+ * @param attachments - The attachments to format
+ * @returns An array of formatted attachments with base64 content
+ * @internal
+ */
 function formatAttachments(
   attachments: { content: string | Buffer; filename: string; type: string }[] | undefined
 ): { content: string; filename: string; type: string }[] {
@@ -204,6 +249,12 @@ function formatAttachments(
   })
 }
 
+/**
+ * Parses a value that may be a single string or an array of strings.
+ * @param maybeArray - The value to parse
+ * @returns An array of strings
+ * @internal
+ */
 function parseMaybeArray(maybeArray?: string | string[]): string[] {
   if (maybeArray === undefined) return []
   if (Array.isArray(maybeArray)) {
