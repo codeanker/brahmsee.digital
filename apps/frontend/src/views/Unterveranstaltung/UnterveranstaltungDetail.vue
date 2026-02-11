@@ -146,6 +146,14 @@ const files: ExportedFileType[] = [
     hoverColor: 'hover:text-blue-700',
   },
   {
+    name: 'Unterschriftenliste',
+    icon: DocumentDuplicateIcon,
+    href: `/api/export/sheet/unterschriftenliste?${exportParams}`,
+    description: 'Unterschriftenliste für Förderungen',
+    bgColor: 'bg-green-600',
+    hoverColor: 'hover:text-green-700',
+  },
+  {
     name: 'Verpflegung',
     initial: 'VP',
     href: `/api/export/sheet/verpflegung?${exportParams}`,
