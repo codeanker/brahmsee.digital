@@ -42,7 +42,7 @@ const unterveranstaltungCopy = ref({
 if (props.mode === 'create') {
   unterveranstaltungCopy.value.veranstaltungId = props?.veranstaltungId
 }
-const { state: veranstaltungen } = useAsyncState(() => apiClient.veranstaltung.list.query(), [])
+const { state: veranstaltungen, isReady: veranstaltungenReady } = useAsyncState(() => apiClient.veranstaltung.list.query(), [])
 
 const {
   execute: createUnterveranstaltung,
@@ -169,7 +169,7 @@ const disableddates = computed(() => {
           v-model="unterveranstaltungCopy.veranstaltungId"
           required
           label="Veranstaltung"
-          placeholder="Veranstaltungsort"
+          :placeholder="veranstaltungenReady ? 'Veranstaltungsort' : 'Lade Veranstaltungen...'"
           :options="veranstaltungen.map((veranstaltung) => ({ label: veranstaltung.name, value: veranstaltung.id }))"
         />
       </div>
