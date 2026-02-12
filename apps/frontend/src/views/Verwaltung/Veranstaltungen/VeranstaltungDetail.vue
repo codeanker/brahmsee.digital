@@ -10,6 +10,7 @@ import {
   RocketLaunchIcon,
   DocumentDuplicateIcon,
   LinkIcon,
+  TrashIcon,
 } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 import { computed } from 'vue'
@@ -29,6 +30,7 @@ import { formatDateWith } from '@codeanker/helpers'
 import { PlusIcon } from '@heroicons/vue/24/solid'
 import ProgramList from '../Program/ProgramList.vue'
 import AnmeldeLinkTable from '@/components/data/AnmeldeLinkTable.vue'
+import FormVeranstaltungDelete from '@/components/forms/veranstaltung/FormVeranstaltungDelete.vue'
 
 const { setTitle } = useRouteTitle()
 
@@ -83,6 +85,7 @@ const tabs = computed(() => {
     { name: 'Ausschreibungen', icon: MegaphoneIcon },
     { name: 'Anmeldelinks', icon: LinkIcon },
     { name: 'Felder', icon: SquaresPlusIcon },
+    { name: 'Veranstaltung löschen', icon: TrashIcon },
   ]
   return tabs
 })
@@ -354,6 +357,12 @@ function copyProgramLink() {
         v-if="veranstaltung?.id"
         :id="veranstaltung?.id"
         entity="veranstaltung"
+      />
+    </Tab>
+    <Tab key="delete">
+      <FormVeranstaltungDelete
+        v-if="veranstaltung"
+        :id="veranstaltung.id"
       />
     </Tab>
   </Tabs>

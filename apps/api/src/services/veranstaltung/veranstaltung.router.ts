@@ -1,5 +1,6 @@
 // Prettier ignored is because this file is generated
 import { mergeRouters } from '../../trpc.js'
+import { veranstaltungDeleteProcedure } from './veranstaltung.delete.js'
 import { veranstaltungListProcedure } from './veranstaltung.list.js'
 import { veranstaltungTableProcedure } from './veranstaltung.table.js'
 
@@ -15,6 +16,7 @@ export const veranstaltungRouter = mergeRouters(
   veranstaltungVerwaltungCreateProcedure,
   veranstaltungVerwaltungGetProcedure,
   veranstaltungVerwaltungPatchProcedure,
+  veranstaltungDeleteProcedure,
   veranstaltungPublicGetProcedure
   // Add Routes here - do not delete this line
 )

@@ -10,6 +10,7 @@ import {
   MegaphoneIcon,
   RocketLaunchIcon,
   SquaresPlusIcon,
+  TrashIcon,
   UserGroupIcon,
   UsersIcon,
 } from '@heroicons/vue/24/outline'
@@ -35,14 +36,12 @@ import { loggedInAccount } from '@/composables/useAuthentication'
 import { useRouteTitle } from '@/composables/useRouteTitle'
 import { formatDateWith } from '@codeanker/helpers'
 import FAQList from '../FAQs/FAQList.vue'
+import FormUnterveranstaltungDelete from '@/components/forms/unterveranstaltung/FormUnterveranstaltungDelete.vue'
 
 const route = useRoute()
 const { setTitle } = useRouteTitle()
 
-const {
-  state: unterveranstaltung,
-  execute: refreshUnterveranstaltung,
-} = useAsyncState(async () => {
+const { state: unterveranstaltung, execute: refreshUnterveranstaltung } = useAsyncState(async () => {
   let result
   if (loggedInAccount.value?.role === 'ADMIN') {
     result = await apiClient.unterveranstaltung.verwaltungGet.query({
@@ -115,6 +114,7 @@ const tabs = computed(() => {
     { name: 'Felder', icon: SquaresPlusIcon },
     { name: 'FAQ', icon: ChatBubbleLeftRightIcon },
     isAdmin && { name: 'Entwickler:in', icon: CodeBracketIcon },
+    { name: 'Ausschreibung löschen', icon: TrashIcon },
   ]
 
   return tabs.filter((t) => t !== false)
@@ -422,6 +422,13 @@ const anmeldeLinkCreateModal = useTemplateRef('anmeldeLinkCreateModal')
         </div>
 
         <pre>{{ unterveranstaltung }}</pre>
+      </Tab>
+
+      <Tab key="delete">
+        <FormUnterveranstaltungDelete
+          v-if="unterveranstaltung"
+          :id="unterveranstaltung.id"
+        />
       </Tab>
     </Tabs>
   </div>
