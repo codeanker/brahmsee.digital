@@ -86,7 +86,7 @@ type AuthContext =
   | {
       authenticated: true
       accountId: string
-      account: Awaited<ReturnType<typeof getAccountById>>
+      account: NonNullable<Awaited<ReturnType<typeof getAccountById>>>
     }
 
 export type Context = AuthContext
