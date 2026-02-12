@@ -42,7 +42,7 @@ const unterveranstaltungCopy = ref({
 if (props.mode === 'create') {
   unterveranstaltungCopy.value.veranstaltungId = props?.veranstaltungId
 }
-const { state: veranstaltungen, isReady: veranstaltungenReady } = useAsyncState(() => apiClient.veranstaltung.list.query(), [])
+const { state: veranstaltungen, isReady: veranstaltungenReady, error: errorVeranstaltungen } = useAsyncState(() => apiClient.veranstaltung.list.query(), [])
 
 const {
   execute: createUnterveranstaltung,
@@ -172,6 +172,18 @@ const disableddates = computed(() => {
           :placeholder="veranstaltungenReady ? 'Veranstaltungsort' : 'Lade Veranstaltungen...'"
           :options="veranstaltungen.map((veranstaltung) => ({ label: veranstaltung.name, value: veranstaltung.id }))"
         />
+        <div
+          v-if="errorVeranstaltungen"
+          class="text-danger-600 text-sm mt-1"
+        >
+          Fehler beim Laden der Veranstaltungen: {{ errorVeranstaltungen }}
+        </div>
+        <div
+          v-else-if="veranstaltungenReady && veranstaltungen.length === 0"
+          class="text-warning-600 text-sm mt-1"
+        >
+          Keine Veranstaltungen verfügbar. Bitte erstellen Sie zunächst eine Veranstaltung.
+        </div>
       </div>
       <template v-if="mode === 'create' && loggedInAccount?.role === 'ADMIN'">
         <div class="lg:col-span-3">
