@@ -14,6 +14,8 @@ export const listOwnGliederungAdminRequestsProcedure = defineProtectedQueryProce
       },
       select: {
         id: true,
+        createdAt: true,
+        confirmedAt: true,
         gliederungId: true,
         confirmedByGliederung: true,
         gliederung: {

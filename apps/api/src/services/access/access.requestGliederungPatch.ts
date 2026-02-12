@@ -70,6 +70,7 @@ export const requestGliederungAdminDecideProcedure = defineProtectedMutateProced
           data: {
             confirmByGliederungToken: null,
             confirmedByGliederung: true,
+            confirmedAt: new Date(),
           },
           select: {
             accountId: true,

@@ -6,6 +6,7 @@ import DataTable from '@/components/Table/DataTable.vue'
 import initialData from '@/components/Table/initialData'
 import Button from '@/components/UIComponents/Button.vue'
 import type { RouterInput, RouterOutput } from '@codeanker/api'
+import { dayjs } from '@codeanker/helpers'
 import { ArrowTopRightOnSquareIcon } from '@heroicons/vue/24/outline'
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { createColumnHelper } from '@tanstack/vue-table'
@@ -58,24 +59,58 @@ const columns = [
       )
     },
   }),
+  column.accessor('createdAt', {
+    header: 'Erstellt am',
+    cell: ({ getValue }) => {
+      const date = getValue()
+      return dayjs(date).format('DD.MM.YYYY [um] hh:mm [Uhr]')
+    },
+  }),
+  column.accessor('confirmedAt', {
+    header: 'Bestätigt am',
+    cell: ({ getValue }) => {
+      const date = getValue()
+      if (date === null) {
+        return ''
+      }
+
+      return dayjs(date).format('DD.MM.YYYY [um] hh:mm [Uhr]')
+    },
+  }),
   column.display({
     id: 'actions',
     header: 'Entscheidung',
     cell: ({ row }) => {
       if (row.original.confirmedByGliederung) {
         return h(
-          'p',
+          'div',
           {
-            class: 'text-primary-600 font-medium',
+            class: 'flex flex-row gap-x-4 items-center',
           },
-          'Bestätigt'
+          [
+            h(
+              'span',
+              {
+                class: 'text-primary-600 font-medium',
+              },
+              'Bestätigt'
+            ),
+            h(
+              Button,
+              {
+                color: 'danger',
+                onClick: () => decide.mutate({ requestId: row.original.id, decision: false }),
+              },
+              'Widerrufen'
+            ),
+          ]
         )
       }
 
       return h(
         'div',
         {
-          class: 'flex flex-row gap-x-2',
+          class: 'flex flex-row gap-x-2 items-center',
         },
         [
           h(
@@ -147,11 +182,4 @@ const query: Query<AccessRequest> = (pagination, filter, orderBy) =>
       />
     </template>
   </DataTable>
-
-  <hr />
-
-  <p>
-    <b>Hinweis</b>: Um den Zugriff auf eine Gliederung wieder zu entfernen, ändere die Rolle des betreffenden Benutzers
-    in den Accounteinstellungen einfach wieder auf <b>Benutzer</b>.
-  </p>
 </template>

@@ -49,6 +49,7 @@ export const requestGliederungAccessCreateProcedure = defineProtectedMutateProce
     await prisma.$transaction(async (tx) => {
       await tx.gliederungToAccount.create({
         data: {
+          createdAt: new Date(),
           gliederungId: input.gliederungId,
           accountId: ctx.accountId,
           role: 'DELEGATIONSLEITER',

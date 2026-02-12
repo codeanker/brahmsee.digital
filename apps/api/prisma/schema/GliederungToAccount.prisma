@@ -6,14 +6,16 @@ enum GliederungAccountRole {
 
 model GliederungToAccount {
   id           Int                   @id @default(autoincrement())
+  createdAt    DateTime
   gliederungId String
   gliederung   Gliederung            @relation(fields: [gliederungId], references: [id], onDelete: Cascade)
   accountId    String
   account      Account               @relation(fields: [accountId], references: [id], onDelete: Cascade)
   role         GliederungAccountRole
 
+  confirmedAt              DateTime?
   confirmByGliederungToken String?
-  confirmedByGliederung    Boolean @default(false)
+  confirmedByGliederung    Boolean   @default(false)
 
   @@unique([gliederungId, accountId])
 }
