@@ -12,5 +12,8 @@ model GliederungToAccount {
   account      Account               @relation(fields: [accountId], references: [id], onDelete: Cascade)
   role         GliederungAccountRole
 
+  confirmByGliederungToken String?
+  confirmedByGliederung    Boolean @default(false)
+
   @@unique([gliederungId, accountId])
 }

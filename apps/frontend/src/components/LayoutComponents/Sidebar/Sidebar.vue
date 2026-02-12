@@ -11,6 +11,7 @@ import {
   QueueListIcon,
   RocketLaunchIcon,
   UsersIcon,
+  LockOpenIcon,
 } from '@heroicons/vue/24/outline'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
@@ -132,6 +133,13 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     icon: UsersIcon,
     visible: hasPermissionToView(['USER']),
   },
+  {
+    type: 'SidebarItem',
+    name: 'Gliederungsanfrage',
+    route: { name: 'Gliederungsanfrage' },
+    icon: LockOpenIcon,
+    visible: hasPermissionToView(['USER']),
+  },
 
   { type: 'DividerItem', name: 'Gliederung', visible: hasPermissionToView(['GLIEDERUNG_ADMIN']) },
   {
@@ -169,6 +177,13 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     name: 'Gliederungen',
     route: { name: 'Verwaltung Alle Gliederungen' },
     icon: MapPinIcon,
+    visible: hasPermissionToView(['ADMIN']),
+  },
+  {
+    type: 'SidebarItem',
+    name: 'Gliederungsanfragen',
+    route: { name: 'Verwaltung Alle Zugriffsanfragen' },
+    icon: LockOpenIcon,
     visible: hasPermissionToView(['ADMIN']),
   },
   {

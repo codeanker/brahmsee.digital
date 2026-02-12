@@ -30,6 +30,11 @@ const columns = [
     enableColumnFilter: true,
     enableSorting: true,
   }),
+  column.accessor('email', {
+    header: 'Kontaktadresse',
+    enableColumnFilter: true,
+    enableSorting: true,
+  }),
 ]
 
 const query: Query<Gliederung> = (pagination, filter, orderBy) =>

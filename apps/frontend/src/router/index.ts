@@ -11,6 +11,8 @@ import { routesUnterveranstaltung } from '@/views/Unterveranstaltung/routes'
 import routesVeranstaltungen from '@/views/Veranstaltungen/routes'
 import routesActivity from '@/views/Verwaltung/Activity/routes'
 import routesVerwaltung from '@/views/Verwaltung/routes'
+import routesAnfragen from '@/views/Anfragen/routes'
+import routesConfirm from '@/views/Confirm/routes'
 
 export type Route = RouteRecordRaw & {
   meta?: {
@@ -23,6 +25,7 @@ const routes: Route[] = [
   ...routesPublic,
   ...routesPublicAnmeldung,
   ...routesRegistrierung,
+  ...routesConfirm,
   {
     path: '/',
     redirect: { name: 'Login' },
@@ -33,6 +36,7 @@ const routes: Route[] = [
       ...routesDevelopment,
       ...routesUnterveranstaltung,
       ...routesActivity,
+      ...routesAnfragen,
       {
         name: 'Dashboard',
         path: '/dashboard',
