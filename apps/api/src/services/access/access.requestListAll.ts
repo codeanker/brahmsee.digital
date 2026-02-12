@@ -9,20 +9,21 @@ export const listAllGliederungAdminRequestsProcedure = defineProtectedQueryProce
   roleIds: ['ADMIN'],
   inputSchema: defineTableInput({
     filter: {
-      gliederung: z.string().optional(),
-      person: z.string().optional(),
+      gliederung: z.string(),
+      person: z.string(),
+      confirmed: z.boolean(),
     },
     orderBy: ['gliederung.name'],
   }),
   handler: async ({ input: { pagination, filter, orderBy } }) => {
     const where: Prisma.GliederungToAccountWhereInput = {
-      confirmedByGliederung: false,
       gliederung: {
         name: {
           contains: filter?.gliederung,
           mode: 'insensitive',
         },
       },
+      confirmedByGliederung: filter?.confirmed,
       OR: [
         {
           account: {

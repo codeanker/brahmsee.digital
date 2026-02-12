@@ -181,7 +181,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
   },
   {
     type: 'SidebarItem',
-    name: 'Gliederungsanfragen',
+    name: 'Gliederungsadmins',
     route: { name: 'Verwaltung Alle Zugriffsanfragen' },
     icon: LockOpenIcon,
     visible: hasPermissionToView(['ADMIN']),

@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { apiClient } from '@/api'
+import BasicSwitch from '@/components/BasicInputs/BasicSwitch.vue'
 import type { Query } from '@/components/Table/DataTable.vue'
 import DataTable from '@/components/Table/DataTable.vue'
 import initialData from '@/components/Table/initialData'
 import Button from '@/components/UIComponents/Button.vue'
 import type { RouterInput, RouterOutput } from '@codeanker/api'
+import { ArrowTopRightOnSquareIcon } from '@heroicons/vue/24/outline'
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { createColumnHelper } from '@tanstack/vue-table'
-import { h } from 'vue'
+import { h, ref } from 'vue'
+import { RouterLink } from 'vue-router'
 
 type AccessRequest = RouterOutput['access']['listAllGliederungAdminRequests']['data'][number]
 
@@ -32,20 +35,43 @@ const columns = [
     enableColumnFilter: true,
     enableSorting: true,
   }),
-  column.accessor('account.person', {
-    id: 'person',
+  column.accessor('account', {
+    id: 'account',
     header: 'Antragsteller',
     enableColumnFilter: true,
     enableSorting: true,
     cell: ({ getValue }) => {
-      const { firstname, lastname } = getValue()
-      return `${firstname} ${lastname}`
+      const { id, person } = getValue()
+      return h(
+        RouterLink,
+        {
+          to: {
+            name: 'Verwaltung Accountdetails',
+            params: { accountId: id },
+          },
+          class: 'flex flex-row gap-x-1 items-center h-full',
+        },
+        [
+          h('span', `${person.firstname} ${person.lastname}`),
+          h(ArrowTopRightOnSquareIcon, { class: 'h-4 w-4 text-primary-600' }),
+        ]
+      )
     },
   }),
   column.display({
     id: 'actions',
     header: 'Entscheidung',
     cell: ({ row }) => {
+      if (row.original.confirmedByGliederung) {
+        return h(
+          'p',
+          {
+            class: 'text-primary-600 font-medium',
+          },
+          'Bestätigt'
+        )
+      }
+
       return h(
         'div',
         {
@@ -74,21 +100,26 @@ const columns = [
   }),
 ]
 
+const nochOffen = ref(false)
+
 const query: Query<AccessRequest> = (pagination, filter, orderBy) =>
   useQuery({
-    queryKey: ['listAllGliederungAdminRequests', pagination, filter, orderBy],
+    queryKey: ['listAllGliederungAdminRequests', pagination, filter, orderBy, nochOffen],
     queryFn: () =>
       apiClient.access.listAllGliederungAdminRequests.query({
         pagination: {
           pageIndex: pagination.value.pageIndex,
           pageSize: pagination.value.pageSize,
         },
-        filter: filter.value.reduce((prev, curr) => {
-          return {
-            ...prev,
-            [curr.id]: curr.value,
-          }
-        }, {}),
+        filter: {
+          confirmed: nochOffen.value ? false : undefined,
+          ...filter.value.reduce((prev, curr) => {
+            return {
+              ...prev,
+              [curr.id]: curr.value,
+            }
+          }, {}),
+        },
         orderBy: orderBy.value,
       }),
     initialData,
@@ -107,5 +138,20 @@ const query: Query<AccessRequest> = (pagination, filter, orderBy) =>
   <DataTable
     :query="query"
     :columns="columns"
-  />
+  >
+    <template #filter>
+      <BasicSwitch
+        v-model="nochOffen"
+        label="Nicht bestätigt"
+        class="grid-rows-2"
+      />
+    </template>
+  </DataTable>
+
+  <hr />
+
+  <p>
+    <b>Hinweis</b>: Um den Zugriff auf eine Gliederung wieder zu entfernen, ändere die Rolle des betreffenden Benutzers
+    in den Accounteinstellungen einfach wieder auf <b>Benutzer</b>.
+  </p>
 </template>

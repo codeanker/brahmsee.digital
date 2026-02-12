@@ -4,15 +4,8 @@
   font-size="16px"
   line-height="1.5"
 >
-  {{ name }} hat soeben einen Antrag auf Zugriff auf die Gliederung {{ gliederung }} gestellt. Bitte prüft den Antrag
-  und bestätigt diesen, damit {{ name }} Zugriff auf die Ausschreibungen eurer Gliederung erhält.
-</mj-text>
-
-<mj-text
-  font-size="16px"
-  line-height="1.5"
->
-  Nutzt für die Bestätigung oder Ablehnung des Antrags bitte folgenden Link: {{ confirmLink }}
+  {{#if decision}} Deinem Zugriffsantrag auf die Gliederung {{ gliederung }} wurde zugestimmt. {{else}} Dein
+  Zugriffsantrag auf die Gliederung {{ gliederung }} wurde abgelehnt. {{/if}}
 </mj-text>
 
 {{/layout}}
