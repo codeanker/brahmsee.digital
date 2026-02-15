@@ -40,6 +40,14 @@ export const createAccessForGliederungProcedure = defineProtectedMutateProcedure
           },
         },
       })
+      await tx.account.update({
+        where: {
+          id: input.accountId,
+        },
+        data: {
+          role: 'GLIEDERUNG_ADMIN',
+        },
+      })
 
       const description = `
       Der Account von ${record.account.person.firstname} ${record.account.person.lastname} (${record.account.email}) hat
