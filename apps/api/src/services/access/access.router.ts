@@ -1,5 +1,6 @@
 import { mergeRouters } from '../../trpc.js'
 import { createAccessForGliederungProcedure } from './access.createForGliederung.js'
+import { requestGliederungAdminConfirmProcedure } from './access.requestGliederungConfirm.js'
 import { requestGliederungAccessCreateProcedure } from './access.requestGliederungCreate.js'
 import { requestGliederungAdminDecideProcedure } from './access.requestGliederungPatch.js'
 import { requestGliederungAccessValidateProcedure } from './access.requestGliederungValidate.js'
@@ -12,5 +13,6 @@ export const accessRouter = mergeRouters(
   requestGliederungAccessCreateProcedure,
   requestGliederungAdminDecideProcedure,
   requestGliederungAccessValidateProcedure,
-  createAccessForGliederungProcedure
+  createAccessForGliederungProcedure,
+  requestGliederungAdminConfirmProcedure
 )

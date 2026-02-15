@@ -1,29 +1,20 @@
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import prisma from '../../prisma.js'
-import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
+import { definePublicMutateProcedure } from '../../types/defineProcedure.js'
 import logActivity from '../../util/activity.js'
-import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
 import { sendMail } from '../../util/mail.js'
 
-export const requestGliederungAdminDecideProcedure = defineProtectedMutateProcedure({
-  key: 'requestGliederungAdminDecide',
-  roleIds: ['ADMIN', 'GLIEDERUNG_ADMIN'],
+export const requestGliederungAdminConfirmProcedure = definePublicMutateProcedure({
+  key: 'requestGliederungAdminConfirm',
   inputSchema: z.strictObject({
-    requestId: z.number().int(),
+    token: z.string().uuid(),
     decision: z.boolean(),
   }),
-  handler: async ({ ctx, input: { requestId, decision } }) => {
-    let gliederungId: string | undefined = undefined
-    if (ctx.account.role === 'GLIEDERUNG_ADMIN') {
-      const gliederung = await getGliederungRequireAdmin(ctx.accountId)
-      gliederungId = gliederung.id
-    }
-
-    const request = await prisma.gliederungToAccount.findUnique({
+  handler: async ({ ctx, input: { token, decision } }) => {
+    const request = await prisma.gliederungToAccount.findFirst({
       where: {
-        id: requestId,
-        gliederungId,
+        confirmByGliederungToken: token,
       },
       select: {
         id: true,
@@ -31,12 +22,6 @@ export const requestGliederungAdminDecideProcedure = defineProtectedMutateProced
         account: {
           select: {
             email: true,
-            person: {
-              select: {
-                firstname: true,
-                lastname: true,
-              },
-            },
           },
         },
         gliederung: {
@@ -56,7 +41,7 @@ export const requestGliederungAdminDecideProcedure = defineProtectedMutateProced
       await prisma.$transaction(async (tx) => {
         await tx.gliederungToAccount.delete({
           where: {
-            id: requestId,
+            id: request.id,
           },
         })
         await tx.account.update({
@@ -78,9 +63,9 @@ export const requestGliederungAdminDecideProcedure = defineProtectedMutateProced
       })
     } else {
       await prisma.$transaction(async (tx) => {
-        await tx.gliederungToAccount.update({
+        await tx.gliederungToAccount.updateMany({
           where: {
-            id: requestId,
+            confirmByGliederungToken: token,
           },
           data: {
             confirmByGliederungToken: null,
@@ -115,7 +100,7 @@ export const requestGliederungAdminDecideProcedure = defineProtectedMutateProced
       variables: {
         hostname: 'brahmsee.digital',
         gliederung: request.gliederung.name,
-        name: `${request.account.person.firstname} ${request.account.person.lastname}`,
+        name: `${ctx.account?.person.firstname} ${ctx.account?.person.lastname}`,
         veranstaltung: 'Zugriffsanfrage',
         decision,
       },

@@ -34,9 +34,9 @@ const {
   isSuccess: decideIsSuccess,
   isPending: decideIsPending,
 } = useMutation({
-  mutationKey: ['requestGliederungAdminDecide'],
-  mutationFn: (input: RouterInput['access']['requestGliederungAdminDecide']) =>
-    apiClient.access.requestGliederungAdminDecide.mutate(input),
+  mutationKey: ['requestGliederungAdminConfirm'],
+  mutationFn: (input: RouterInput['access']['requestGliederungAdminConfirm']) =>
+    apiClient.access.requestGliederungAdminConfirm.mutate(input),
 })
 
 async function doDecide(decision: boolean) {
@@ -46,7 +46,6 @@ async function doDecide(decision: boolean) {
 
   await mutateAsync({
     token: token.value,
-    requestId: data.value.id,
     decision,
   })
 }
