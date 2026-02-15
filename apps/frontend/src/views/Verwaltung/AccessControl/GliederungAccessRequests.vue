@@ -7,6 +7,7 @@ import DataTable from '@/components/Table/DataTable.vue'
 import initialData from '@/components/Table/initialData'
 import Button from '@/components/UIComponents/Button.vue'
 import Modal from '@/components/UIComponents/Modal.vue'
+import { loggedInAccount } from '@/composables/useAuthentication'
 import type { RouterInput, RouterOutput } from '@codeanker/api'
 import { dayjs } from '@codeanker/helpers'
 import { ArrowTopRightOnSquareIcon, PlusIcon } from '@heroicons/vue/24/outline'
@@ -84,6 +85,7 @@ const columns = [
     header: 'Entscheidung',
     cell: ({ row }) => {
       if (row.original.confirmedByGliederung) {
+        const isSelf = row.original.account.id === loggedInAccount.value?.id
         return h(
           'div',
           {
@@ -97,14 +99,16 @@ const columns = [
               },
               'Bestätigt'
             ),
-            h(
-              Button,
-              {
-                color: 'danger',
-                onClick: () => decide.mutate({ requestId: row.original.id, decision: false }),
-              },
-              'Widerrufen'
-            ),
+            isSelf
+              ? undefined
+              : h(
+                  Button,
+                  {
+                    color: 'danger',
+                    onClick: () => decide.mutate({ requestId: row.original.id, decision: false }),
+                  },
+                  'Widerrufen'
+                ),
           ]
         )
       }
@@ -173,6 +177,7 @@ const modalAdd = useTemplateRef('modalAdd')
       <p class="text-sm">Hier findest du alle Accounts mit Zugriff auf Gliederungen.</p>
     </div>
     <span
+      v-if="loggedInAccount?.role === 'ADMIN'"
       class="text-primary-500 flex items-center cursor-pointer"
       @click="() => modalAdd?.show()"
     >

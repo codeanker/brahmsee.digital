@@ -3,10 +3,11 @@ import { z } from 'zod'
 import prisma from '../../prisma.js'
 import { defineProtectedQueryProcedure } from '../../types/defineProcedure.js'
 import { calculatePagination, defineQueryResponse, defineTableInput } from '../../types/defineTableProcedure.js'
+import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
 
 export const listAllGliederungAdminRequestsProcedure = defineProtectedQueryProcedure({
   key: 'listAllGliederungAdminRequests',
-  roleIds: ['ADMIN'],
+  roleIds: ['ADMIN', 'GLIEDERUNG_ADMIN'],
   inputSchema: defineTableInput({
     filter: {
       gliederung: z.string(),
@@ -15,8 +16,15 @@ export const listAllGliederungAdminRequestsProcedure = defineProtectedQueryProce
     },
     orderBy: ['gliederung.name'],
   }),
-  handler: async ({ input: { pagination, filter, orderBy } }) => {
+  handler: async ({ ctx, input: { pagination, filter, orderBy } }) => {
+    let gliederungId: string | undefined = undefined
+    if (ctx.account.role === 'GLIEDERUNG_ADMIN') {
+      const gliederung = await getGliederungRequireAdmin(ctx.accountId)
+      gliederungId = gliederung.id
+    }
+
     const where: Prisma.GliederungToAccountWhereInput = {
+      gliederungId,
       gliederung: {
         name: {
           contains: filter?.gliederung,

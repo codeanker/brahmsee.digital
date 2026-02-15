@@ -154,6 +154,13 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
     icon: MegaphoneIcon,
     visible: hasPermissionToView(['GLIEDERUNG_ADMIN']),
   },
+  {
+    type: 'SidebarItem',
+    name: 'Berechtigungen',
+    route: { name: 'Verwaltung Alle Zugriffsanfragen' },
+    icon: LockOpenIcon,
+    visible: hasPermissionToView(['GLIEDERUNG_ADMIN']),
+  },
 
   { type: 'DividerItem', name: 'Verwaltung', visible: hasPermissionToView(['ADMIN']) },
   {
