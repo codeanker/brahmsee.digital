@@ -1,8 +1,10 @@
 import { PrismaClient } from '@prisma/client'
-
+import XLSX from '@e965/xlsx'
 import logActivity from '../../src/util/activity.js'
 
 import type { Seeder } from './index.js'
+import { readFile } from 'node:fs/promises'
+import { join } from 'node:path'
 
 export const gliederungen: { edv: string; name: string }[] = [
   { edv: '1600000', name: 'DLRG Bundesverband' },
@@ -1966,10 +1968,53 @@ export const gliederungen: { edv: string; name: string }[] = [
   { edv: '1602019', name: 'Ortsgruppe IuK' },
 ]
 
+type ExcelSheet = {
+  'E-Mail-Adresse': string
+  Gliederung: string
+  'EDV-Nummer': number
+  'Vorhanden janein': 'ja' | 'nein'
+}
+
+export async function enrichEmailAdresses(prisma: PrismaClient) {
+  const data = await readFile(join(import.meta.dirname, 'gliederungen.xlsx'))
+  const sheet = XLSX.read(data)
+  const firstSheet = sheet.SheetNames[0]
+  if (!firstSheet) {
+    throw new Error('unable to load email data')
+  }
+  const workbook = sheet.Sheets[firstSheet]
+  if (!workbook) {
+    throw new Error('unable to load email data')
+  }
+
+  const rows = XLSX.utils.sheet_to_json<ExcelSheet>(workbook)
+  for (const row of rows) {
+    if (row['Vorhanden janein'] == 'nein') {
+      continue
+    }
+
+    try {
+      await prisma.gliederung.update({
+        where: {
+          edv: `${row['EDV-Nummer']}`,
+        },
+        data: {
+          email: row['E-Mail-Adresse'],
+        },
+      })
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (err) {
+      // 🤷
+    }
+  }
+}
+
 const importGliederungen: Seeder = async (prisma: PrismaClient) => {
   await prisma.gliederung.createMany({
     data: gliederungen,
   })
+
+  await enrichEmailAdresses(prisma)
 
   await logActivity({
     type: 'CREATE',
