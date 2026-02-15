@@ -33,6 +33,7 @@ const select = {
           id: true,
           name: true,
           edv: true,
+          email: true,
         },
       },
       essgewohnheit: true,

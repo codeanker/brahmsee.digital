@@ -57,8 +57,11 @@ export async function getAccountCreateData(data: TGetAccountCreateDataSchema): P
       data.adminInGliederungId !== undefined
         ? {
             create: {
+              createdAt: new Date(),
               gliederungId: data.adminInGliederungId,
               role: GliederungAccountRole.DELEGATIONSLEITER,
+              confirmedAt: new Date(),
+              confirmedByGliederung: true,
             },
           }
         : undefined,

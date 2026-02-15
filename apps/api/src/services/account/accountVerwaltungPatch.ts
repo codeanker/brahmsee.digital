@@ -25,30 +25,44 @@ export const accountVerwaltungPatchProcedure = defineProtectedMutateProcedure({
       },
       select: {
         status: true,
+        role: true,
       },
     })
 
-    const account = await prisma.account.update({
-      where: {
-        id: options.input.id,
-      },
-      data: options.input.data,
-      select: {
-        id: true,
-        status: true,
-        email: true,
-        person: {
-          select: {
-            firstname: true,
-            lastname: true,
-            gliederung: {
-              select: {
-                name: true,
+    const account = await prisma.$transaction(async (tx) => {
+      const account = await tx.account.update({
+        where: {
+          id: options.input.id,
+        },
+        data: options.input.data,
+        select: {
+          id: true,
+          status: true,
+          email: true,
+          role: true,
+          person: {
+            select: {
+              firstname: true,
+              lastname: true,
+              gliederung: {
+                select: {
+                  name: true,
+                },
               },
             },
           },
         },
-      },
+      })
+
+      if (account.role !== 'GLIEDERUNG_ADMIN') {
+        await tx.gliederungToAccount.deleteMany({
+          where: {
+            accountId: account.id,
+          },
+        })
+      }
+
+      return account
     })
 
     if (oldAccount.status !== account.status) {

@@ -1,4 +1,3 @@
-import type { Account } from '@prisma/client'
 import type { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch'
 import { getEntityIdFromHeader } from './authentication.js'
 import { logger } from './logger.js'
@@ -10,6 +9,33 @@ function getAuthorizationHeader(headers: FetchCreateContextFnOptions['req']['hea
   } else {
     return headers.get('authorization')
   }
+}
+
+function getAccountById(accountId: string) {
+  return prisma.account.findFirst({
+    where: {
+      id: accountId,
+    },
+    select: {
+      id: true,
+      activatedAt: true,
+      email: true,
+      role: true,
+      status: true,
+      GliederungToAccount: {
+        select: {
+          confirmedByGliederung: true,
+          role: true,
+        },
+      },
+      person: {
+        select: {
+          firstname: true,
+          lastname: true,
+        },
+      },
+    },
+  })
 }
 
 export async function createContext({ req }: FetchCreateContextFnOptions): Promise<Context> {
@@ -26,11 +52,7 @@ export async function createContext({ req }: FetchCreateContextFnOptions): Promi
       }
     }
 
-    const account = await prisma.account.findFirst({
-      where: {
-        id: accountId,
-      },
-    })
+    const account = await getAccountById(accountId)
 
     if (account === null) {
       return {
@@ -64,7 +86,7 @@ type AuthContext =
   | {
       authenticated: true
       accountId: string
-      account: Account
+      account: NonNullable<Awaited<ReturnType<typeof getAccountById>>>
     }
 
 export type Context = AuthContext

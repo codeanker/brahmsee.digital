@@ -15,6 +15,8 @@ export async function getGliederungRequireAdmin(accountId: string) {
         some: {
           accountId,
           role: GliederungAccountRole.DELEGATIONSLEITER,
+          confirmedByGliederung: true,
+          confirmByGliederungToken: null,
         },
       },
     },

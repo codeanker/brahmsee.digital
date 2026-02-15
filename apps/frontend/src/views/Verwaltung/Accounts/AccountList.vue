@@ -14,17 +14,13 @@ import { keepPreviousData, useQuery } from '@tanstack/vue-query'
 import { createColumnHelper } from '@tanstack/vue-table'
 import { h } from 'vue'
 import { useRouter } from 'vue-router'
+import { roleColors } from '@/helpers/constants'
 
 const { setTitle } = useRouteTitle()
 setTitle('Accounts')
 
 type Account = RouterOutput['account']['verwaltungList']['data'][number]
 
-const roleColors: Record<Role, StatusColors> = {
-  ADMIN: 'danger',
-  GLIEDERUNG_ADMIN: 'warning',
-  USER: 'muted',
-}
 const statusColors: Record<AccountStatus, StatusColors> = {
   AKTIV: 'primary',
   DEAKTIVIERT: 'danger',
