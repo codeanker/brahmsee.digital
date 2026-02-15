@@ -21,6 +21,9 @@ import SidebarItems, { type DividerItem, type SidebarItem } from './SidebarItems
 import UserLogo from '@/components/UIComponents/UserLogo.vue'
 import { loggedInAccount, logout } from '@/composables/useAuthentication'
 import { useAssets } from '@/composables/useAssets'
+import Badge from '@/components/UIComponents/Badge.vue'
+import { roleMapping } from '@codeanker/api'
+import { roleColors } from '@/helpers/constants'
 
 const route = useRoute()
 const { logoSmall } = useAssets()
@@ -36,8 +39,10 @@ const veranstaltungId = computed(() => {
   return undefined
 })
 
-const hasPermissionToView = (permission) => {
-  return permission.includes(loggedInAccount.value?.role)
+const role = computed(() => loggedInAccount.value?.role ?? 'USER')
+
+const hasPermissionToView = (permissions: string[]) => {
+  return permissions.includes(role.value)
 }
 
 const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
@@ -181,7 +186,7 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
   },
   {
     type: 'SidebarItem',
-    name: 'Gliederungsadmins',
+    name: 'Berechtigungen',
     route: { name: 'Verwaltung Alle Zugriffsanfragen' },
     icon: LockOpenIcon,
     visible: hasPermissionToView(['ADMIN']),
@@ -257,5 +262,11 @@ const navigation = computed<Array<SidebarItem | DividerItem>>(() => [
         <ArrowRightOnRectangleIcon class="h-5 aspect-square" />
       </button>
     </div>
+
+    <Badge
+      :text="roleMapping[role].human"
+      :color="roleColors[role]"
+      class="text-xs mt-4 w-fit mx-auto"
+    />
   </div>
 </template>

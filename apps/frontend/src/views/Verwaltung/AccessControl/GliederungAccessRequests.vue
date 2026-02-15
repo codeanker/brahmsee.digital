@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { apiClient } from '@/api'
 import BasicSwitch from '@/components/BasicInputs/BasicSwitch.vue'
+import FormGliederungAccess from '@/components/forms/access/FormGliederungAccess.vue'
 import type { Query } from '@/components/Table/DataTable.vue'
 import DataTable from '@/components/Table/DataTable.vue'
 import initialData from '@/components/Table/initialData'
 import Button from '@/components/UIComponents/Button.vue'
+import Modal from '@/components/UIComponents/Modal.vue'
 import type { RouterInput, RouterOutput } from '@codeanker/api'
 import { dayjs } from '@codeanker/helpers'
-import { ArrowTopRightOnSquareIcon } from '@heroicons/vue/24/outline'
+import { ArrowTopRightOnSquareIcon, PlusIcon } from '@heroicons/vue/24/outline'
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { createColumnHelper } from '@tanstack/vue-table'
-import { h, ref } from 'vue'
+import { h, ref, useTemplateRef } from 'vue'
 import { RouterLink } from 'vue-router'
 
 type AccessRequest = RouterOutput['access']['listAllGliederungAdminRequests']['data'][number]
@@ -160,14 +162,23 @@ const query: Query<AccessRequest> = (pagination, filter, orderBy) =>
     initialData,
     placeholderData: keepPreviousData,
   })
+
+const modalAdd = useTemplateRef('modalAdd')
 </script>
 
 <template>
   <div class="my-4 flex items-center justify-between">
     <div>
-      <p class="text-xl font-bold">Anfragen</p>
-      <p class="text-sm">Hier findest du alle Zugriffsanfragen auf Gliederungen.</p>
+      <p class="text-xl font-bold">Gliederungsadmin</p>
+      <p class="text-sm">Hier findest du alle Accounts mit Zugriff auf Gliederungen.</p>
     </div>
+    <span
+      class="text-primary-500 flex items-center cursor-pointer"
+      @click="() => modalAdd?.show()"
+    >
+      <PlusIcon class="h-5 w-5 mr-1" />
+      <span>Berechtigung vergeben</span>
+    </span>
   </div>
 
   <DataTable
@@ -182,4 +193,14 @@ const query: Query<AccessRequest> = (pagination, filter, orderBy) =>
       />
     </template>
   </DataTable>
+
+  <Teleport to="body">
+    <Modal ref="modalAdd">
+      <template #content>
+        <div class="text-xl font-bold mb-8">Berechtigung vergeben</div>
+
+        <FormGliederungAccess />
+      </template>
+    </Modal>
+  </Teleport>
 </template>
