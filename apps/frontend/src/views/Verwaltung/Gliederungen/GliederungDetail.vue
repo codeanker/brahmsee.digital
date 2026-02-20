@@ -8,6 +8,7 @@ import FormGliederungGeneral from '@/components/forms/gliederung/FormGliederungG
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
 import { useRouteTitle } from '@/composables/useRouteTitle'
+import UnterveranstaltungenTable from '@/components/data/UnterveranstaltungenTable.vue'
 
 const route = useRoute()
 const { setTitle } = useRouteTitle()
@@ -38,6 +39,19 @@ const tabs = [
           @update="() => fetchGliederung()"
         />
       </div>
+    </Tab>
+    <Tab>
+      <UnterveranstaltungenTable
+        v-if="gliederung?.id"
+        :mode="
+          gliederung
+            ? {
+                entity: 'gliederung',
+                gliederungId: gliederung?.id,
+              }
+            : undefined
+        "
+      />
     </Tab>
   </Tabs>
 </template>
