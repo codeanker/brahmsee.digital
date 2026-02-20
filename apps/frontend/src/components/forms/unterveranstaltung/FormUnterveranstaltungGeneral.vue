@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAsyncState } from '@vueuse/core'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 import { apiClient } from '@/api'
 import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
@@ -42,7 +42,14 @@ const unterveranstaltungCopy = ref({
 if (props.mode === 'create') {
   unterveranstaltungCopy.value.veranstaltungId = props?.veranstaltungId
 }
-const { state: veranstaltungen } = useAsyncState(() => apiClient.veranstaltung.list.query(), [])
+const { state: veranstaltungen, isReady: veranstaltungenReady, error: errorVeranstaltungen } = useAsyncState(() => apiClient.veranstaltung.list.query(), [])
+
+// Log error for debugging purposes
+watch(errorVeranstaltungen, (error) => {
+  if (error) {
+    console.error('Error loading veranstaltungen:', error)
+  }
+})
 
 const {
   execute: createUnterveranstaltung,
@@ -169,9 +176,21 @@ const disableddates = computed(() => {
           v-model="unterveranstaltungCopy.veranstaltungId"
           required
           label="Veranstaltung"
-          placeholder="Veranstaltungsort"
+          :placeholder="veranstaltungenReady ? 'Veranstaltung auswählen' : 'Lade Veranstaltungen...'"
           :options="veranstaltungen.map((veranstaltung) => ({ label: veranstaltung.name, value: veranstaltung.id }))"
         />
+        <div
+          v-if="errorVeranstaltungen"
+          class="text-danger-600 text-sm mt-1"
+        >
+          Fehler beim Laden der Veranstaltungen. Bitte versuchen Sie es später erneut oder kontaktieren Sie den Support.
+        </div>
+        <div
+          v-else-if="veranstaltungenReady && veranstaltungen.length === 0"
+          class="text-warning-600 text-sm mt-1"
+        >
+          Keine Veranstaltungen verfügbar. Bitte erstellen Sie zunächst eine Veranstaltung.
+        </div>
       </div>
       <template v-if="mode === 'create' && loggedInAccount?.role === 'ADMIN'">
         <div class="lg:col-span-3">
