@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAsyncState } from '@vueuse/core'
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 import { apiClient } from '@/api'
 import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
@@ -11,17 +11,20 @@ import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
 import BasicTypeahead from '@/components/BasicInputs/BasicTypeahead.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
-import router from '@/router'
 import type { RouterInput } from '@codeanker/api'
 import { UnterveranstaltungTypeMapping, getEnumOptions } from '@codeanker/api'
 import { ValidateForm } from '@codeanker/validation'
+import { useRoute, useRouter } from 'vue-router'
 
 const props = defineProps<{
   unterveranstaltung?: any
-  veranstaltungId?: any
+  veranstaltungId?: string
   mode: 'create' | 'update'
   onUpdate?: () => void
 }>()
+
+const router = useRouter()
+const route = useRoute()
 
 const unterveranstaltungId = props.unterveranstaltung?.id
 const gliederung = ref(props.unterveranstaltung?.gliederung)
@@ -51,7 +54,7 @@ const {
 } = useAsyncState(
   async () => {
     if (loggedInAccount.value?.role === 'ADMIN') {
-      unterveranstaltungCopy.value.gliederungId = gliederung.value.id
+      unterveranstaltungCopy.value.gliederungId = gliederung.value?.id
       await apiClient.unterveranstaltung.verwaltungCreate.mutate({
         data: unterveranstaltungCopy.value as unknown as RouterInput['unterveranstaltung']['verwaltungCreate']['data'],
       })
@@ -152,6 +155,12 @@ const disableddates = computed(() => {
   }
   return obj
 })
+
+onMounted(() => {
+  if (props.mode === 'create') {
+    unterveranstaltungCopy.value.veranstaltungId = route.params.veranstaltungId as string
+  }
+})
 </script>
 
 <template>
@@ -171,6 +180,7 @@ const disableddates = computed(() => {
           label="Veranstaltung"
           placeholder="Veranstaltungsort"
           :options="veranstaltungen.map((veranstaltung) => ({ label: veranstaltung.name, value: veranstaltung.id }))"
+          :disabled="route.params.veranstaltungId !== undefined"
         />
       </div>
       <template v-if="mode === 'create' && loggedInAccount?.role === 'ADMIN'">

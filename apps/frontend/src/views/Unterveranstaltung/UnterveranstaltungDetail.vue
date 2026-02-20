@@ -33,16 +33,13 @@ import InfoList from '@/components/UIComponents/InfoList.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
 import { useRouteTitle } from '@/composables/useRouteTitle'
-import { formatDateWith } from '@codeanker/helpers'
+import { formatCurrency, formatDateWith } from '@codeanker/helpers'
 import FAQList from '../FAQs/FAQList.vue'
 
 const route = useRoute()
 const { setTitle } = useRouteTitle()
 
-const {
-  state: unterveranstaltung,
-  execute: refreshUnterveranstaltung,
-} = useAsyncState(async () => {
+const { state: unterveranstaltung, execute: refreshUnterveranstaltung } = useAsyncState(async () => {
   let result
   if (loggedInAccount.value?.role === 'ADMIN') {
     result = await apiClient.unterveranstaltung.verwaltungGet.query({
@@ -94,7 +91,7 @@ const keyInfos = computed<KeyInfo[]>(() => {
         value: `${formatDateWith(unterveranstaltung.value.meldebeginn, keyInfoDateFormat)} - ${formatDateWith(unterveranstaltung.value.meldeschluss, keyInfoDateFormat)}`,
       },
       { title: 'Veranstaltungsort', value: unterveranstaltung.value.veranstaltung.ort?.name ?? '' },
-      { title: 'Teilnahmebeitrag', value: unterveranstaltung.value.teilnahmegebuehr + '€' },
+      { title: 'Teilnahmebeitrag', value: formatCurrency(unterveranstaltung.value.teilnahmegebuehr) },
       { title: 'max. Teilnahmezahl', value: unterveranstaltung.value.maxTeilnehmende + '' },
       { title: 'Zielgruppe', value: unterveranstaltung.value.veranstaltung.zielgruppe ?? '' },
     ]

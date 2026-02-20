@@ -6,6 +6,7 @@ import useValidationModel from '../../composables/useValidationModel'
 
 import BasicValidationFeedback from './components/BasicValidationFeedback.vue'
 import { type BasicInputDefaultProps } from './defaultProps'
+import cn from '@/helpers/cn'
 
 export interface Option {
   label: string
@@ -47,10 +48,17 @@ const { model, errorMessage } = useValidationModel(props, emit)
       as="div"
       :name="id || name || label"
       :multiple="props.multiple"
+      :disabled="disabled"
     >
       <ListboxButton class="input-style !flex flex-row items-center gap-x-2 justify-between">
-        <span class="text-start">
-          {{ options.find((option) => option.value === modelValue)?.label || placeholder || 'Bitte wählen...' }}
+        <span :class="cn('text-start', { 'text-gray-500': disabled })">
+          {{
+            (multiple && Array.isArray(model)
+              ? model.map((value) => options.find((option) => option.value === value)?.label).join(', ')
+              : options.find((option) => option.value === model)?.label) ||
+            placeholder ||
+            'Bitte wählen...'
+          }}
         </span>
         <ChevronDownIcon class="h-5 text-gray-500 self-end" />
       </ListboxButton>
@@ -74,13 +82,13 @@ const { model, errorMessage } = useValidationModel(props, emit)
                 :class="[
                   active ? 'bg-primary-600 text-white' : 'text-gray-900',
                   selected ? 'bg-primary-200' : '',
-                  'relative cursor-default select-none px-3 py-2',
+                  'relative cursor-default select-none px-3 py-2 group',
                   'flex flex-row gap-x-4 items-center',
                 ]"
               >
                 <CheckIcon
                   class="h-4"
-                  :class="selected ? 'text-primary-600' : 'invisible'"
+                  :class="selected ? 'text-primary-600 group-hover:text-white' : 'invisible'"
                 />
                 <div class="flex flex-col">
                   <span>{{ option.label }}</span>

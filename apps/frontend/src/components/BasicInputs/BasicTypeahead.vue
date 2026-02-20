@@ -16,6 +16,7 @@ const props = withDefaults(
       /** Flag, die gesetzt werden kann, wenn die query nicht async ist. Debounce wird geskipped */
       sync?: InstanceType<typeof Typeahead>['sync']
       /** Ob ein Ergebnis von der Query ausgewählt werden muss oder ob auch ein Freitext erlaubt ist */
+      disabled?: InstanceType<typeof Typeahead>['disabled']
       strict?: InstanceType<typeof Typeahead>['strict']
       immediate?: InstanceType<typeof Typeahead>['immediate']
       debounceTime?: InstanceType<typeof Typeahead>['debounceTime']
@@ -55,6 +56,7 @@ const { model, errorMessage } = useValidationModel(props, emit)
         :name="name"
         :debounce-time="debounceTime"
         :strict="strict"
+        :disabled="disabled"
       >
         <template #default="slotData">
           <slot v-bind="slotData" />
