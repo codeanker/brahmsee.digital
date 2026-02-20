@@ -3,18 +3,18 @@ import { apiClient } from '@/api'
 import BasicTypeahead from '@/components/BasicInputs/BasicTypeahead.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import Loading from '@/components/UIComponents/Loading.vue'
+import type { RouterOutput } from '@codeanker/api'
 import { ValidateForm } from '@codeanker/validation'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { ref } from 'vue'
 
+type AccountTypeaheadResult = RouterOutput['account']['verwaltungList']['data'][number]
+type GliederungTypeaheadResult = RouterOutput['gliederung']['publicList'][number]
+
 const input = ref<{
-  account?: {
-    id: string
-  }
-  gliederung?: {
-    id: string
-  }
+  account?: AccountTypeaheadResult
+  gliederung?: GliederungTypeaheadResult
 }>({})
 
 async function queryObjectGliederungen(searchTerm) {

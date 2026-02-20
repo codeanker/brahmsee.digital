@@ -19,6 +19,7 @@ const props = withDefaults(
       strict?: InstanceType<typeof Typeahead>['strict']
       immediate?: InstanceType<typeof Typeahead>['immediate']
       debounceTime?: InstanceType<typeof Typeahead>['debounceTime']
+      disabled?: InstanceType<typeof Typeahead>['disabled']
     }
   >(),
   {
@@ -50,6 +51,7 @@ const { model, errorMessage } = useValidationModel(props, emit)
         :sync="sync"
         :immediate="immediate"
         :placeholder="placeholder"
+        :disabled="disabled"
         :name="name"
         :debounce-time="debounceTime"
         :strict="strict"
