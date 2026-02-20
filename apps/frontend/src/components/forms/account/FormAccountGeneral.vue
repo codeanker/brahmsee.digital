@@ -210,13 +210,18 @@ const tabs = computed(() => {
             placeholder="Passwort eingeben"
             required
           />
-          <BasicSelect
-            id="accountRole"
-            v-model="accountForm.roleId"
-            required
-            label="Rolle"
-            :options="roles"
-          />
+          <div>
+            <BasicSelect
+              id="accountRole"
+              v-model="accountForm.roleId"
+              required
+              label="Rolle"
+              :options="roles"
+            />
+            <p v-if="accountForm.roleId === 'GLIEDERUNG_ADMIN'" class="text-warning-500 mb-0 mt-1 text-sm">
+              Um Berechtigungen für Gliederungen zu vergeben, nutze die Seite <b>Berechtigungen</b>
+            </p>
+          </div>
           <BasicDropdown
             :right="false"
             :append="true"
