@@ -92,7 +92,7 @@ export function defineTableInput<TFilter extends z.ZodRawShape, TOrderBy extends
                 //     'anmeldungen', '', 'count'
                 // but
                 //     'anmeldungen', '_count'
-                const keys = id.split(/_(?=_)/g)
+                const keys = id.split(/_(?=_)?/g)
                 const direction: Prisma.SortOrder = desc ? 'desc' : 'asc'
 
                 return keys.reduceRight<OrderBy>((acc, key) => ({ [key]: acc }), direction as unknown as OrderBy)

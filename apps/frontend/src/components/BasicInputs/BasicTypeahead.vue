@@ -20,7 +20,6 @@ const props = withDefaults(
       strict?: InstanceType<typeof Typeahead>['strict']
       immediate?: InstanceType<typeof Typeahead>['immediate']
       debounceTime?: InstanceType<typeof Typeahead>['debounceTime']
-      disabled?: InstanceType<typeof Typeahead>['disabled']
     }
   >(),
   {
@@ -56,7 +55,6 @@ const { model, errorMessage } = useValidationModel(props, emit)
         :name="name"
         :debounce-time="debounceTime"
         :strict="strict"
-        :disabled="disabled"
       >
         <template #default="slotData">
           <slot v-bind="slotData" />

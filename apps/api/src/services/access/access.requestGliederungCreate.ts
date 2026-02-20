@@ -1,5 +1,5 @@
 import { TRPCError } from '@trpc/server'
-import * as uuid from 'uuid'
+import { v7 as uuidV7 } from 'uuid'
 import { z } from 'zod'
 import prisma from '../../prisma.js'
 import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
@@ -44,7 +44,7 @@ export const requestGliederungAccessCreateProcedure = defineProtectedMutateProce
       })
     }
 
-    const confirmByGliederungToken = uuid.v7()
+    const confirmByGliederungToken = uuidV7()
 
     await prisma.$transaction(async (tx) => {
       await tx.gliederungToAccount.create({

@@ -30,6 +30,7 @@ export const requestGliederungAdminDecideProcedure = defineProtectedMutateProced
         accountId: true,
         account: {
           select: {
+            status: true,
             email: true,
             person: {
               select: {

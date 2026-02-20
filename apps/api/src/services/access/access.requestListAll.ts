@@ -10,20 +10,23 @@ export const listAllGliederungAdminRequestsProcedure = defineProtectedQueryProce
   roleIds: ['ADMIN', 'GLIEDERUNG_ADMIN'],
   inputSchema: defineTableInput({
     filter: {
+      accountId: z.string().uuid(),
+      gliederungId: z.string().uuid(),
       gliederung: z.string(),
       person: z.string(),
       confirmed: z.boolean(),
     },
-    orderBy: ['gliederung.name'],
+    orderBy: ['gliederung_name'],
   }),
   handler: async ({ ctx, input: { pagination, filter, orderBy } }) => {
-    let gliederungId: string | undefined = undefined
+    let gliederungId: string | undefined = filter?.gliederungId
     if (ctx.account.role === 'GLIEDERUNG_ADMIN') {
       const gliederung = await getGliederungRequireAdmin(ctx.accountId)
       gliederungId = gliederung.id
     }
 
     const where: Prisma.GliederungToAccountWhereInput = {
+      accountId: filter?.accountId,
       gliederungId,
       gliederung: {
         name: {
@@ -79,6 +82,7 @@ export const listAllGliederungAdminRequestsProcedure = defineProtectedQueryProce
           select: {
             id: true,
             email: true,
+            status: true,
             person: {
               select: {
                 firstname: true,

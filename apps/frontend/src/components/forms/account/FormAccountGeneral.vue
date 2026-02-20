@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import { MenuItem } from '@headlessui/vue'
 import {
+  CheckCircleIcon,
+  ChevronDownIcon,
+  CodeBracketIcon,
   FingerPrintIcon,
   KeyIcon,
+  LockOpenIcon,
+  PlusIcon,
   TrashIcon,
-  ChevronDownIcon,
-  CheckCircleIcon,
-  CodeBracketIcon,
 } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
-import { computed, ref } from 'vue'
+import { computed, ref, useTemplateRef } from 'vue'
 
 import type { IStammdaten } from '../anmeldung/Stammdaten.vue'
 import Stammdaten from '../anmeldung/Stammdaten.vue'
@@ -19,11 +21,13 @@ import BasicDropdown from '@/components/BasicInputs/BasicDropdown.vue'
 import BasicInput from '@/components/BasicInputs/BasicInput.vue'
 import BasicPassword from '@/components/BasicInputs/BasicPassword.vue'
 import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
+import GliederungAccessTable from '@/components/data/GliederungAccessTable.vue'
 import PasswordStrength from '@/components/PasswordStrength.vue'
 import Badge from '@/components/UIComponents/Badge.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import Loading from '@/components/UIComponents/Loading.vue'
+import Modal from '@/components/UIComponents/Modal.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
 import { getAccountStatusColor } from '@/helpers/getAccountStatusColors'
@@ -32,6 +36,7 @@ import type { RouterInput, RouterOutput } from '@codeanker/api'
 import { AccountStatusMapping, getEnumOptions, roleMapping } from '@codeanker/api'
 import { formatDate } from '@codeanker/helpers'
 import { ValidateForm } from '@codeanker/validation'
+import FormGliederungAccess from '../access/FormGliederungAccess.vue'
 
 type Account = RouterOutput['account']['verwaltungGet']
 
@@ -154,11 +159,16 @@ const handle = async () => {
 
 const tabs = computed(() => {
   const tabs = [{ name: 'Allgemein', icon: FingerPrintIcon }]
-  if (edit.value) tabs.push({ name: 'Sicherheit', icon: KeyIcon })
+  if (edit.value) {
+    tabs.push({ name: 'Sicherheit', icon: KeyIcon })
+    tabs.push({ name: 'Berechtigungen', icon: LockOpenIcon })
+  }
   if (!isSelf.value && edit.value) tabs.push({ name: 'Account löschen', icon: TrashIcon })
   if (loggedInAccount.value?.role === 'ADMIN') tabs.push({ name: 'Entwickler:in', icon: CodeBracketIcon })
   return tabs
 })
+
+const modalAddPermission = useTemplateRef('modalAddPermission')
 </script>
 
 <template>
@@ -370,6 +380,41 @@ const tabs = computed(() => {
           </div>
         </div>
       </div>
+    </Tab>
+    <Tab>
+      <div class="my-4 flex items-center justify-between">
+        <div>
+          <p class="text-xl font-bold">Berechtigungen</p>
+          <p class="text-sm">Hier findest du eine Übersicht aller Gliederungen, auf welche dieser Account Zugriff hat.</p>
+        </div>
+        <span
+          v-if="loggedInAccount?.role === 'ADMIN'"
+          class="text-primary-500 flex items-center cursor-pointer"
+          @click="() => modalAddPermission?.show()"
+        >
+          <PlusIcon class="h-5 w-5 mr-1" />
+          <span>Berechtigung vergeben</span>
+        </span>
+      </div>
+
+      <GliederungAccessTable
+        v-if="account"
+        :mode="{ mode: 'account', accountId: account.id }"
+      />
+
+      <Teleport to="body">
+        <Modal ref="modalAddPermission" size="xl">
+          <template #content>
+            <div class="text-xl font-bold mb-8">Berechtigung vergeben</div>
+
+            <FormGliederungAccess
+              v-if="account"
+              :mode="{ mode: 'account', accountId: account.id }"
+              @cancel="() => modalAddPermission?.hide()"
+            />
+          </template>
+        </Modal>
+      </Teleport>
     </Tab>
     <Tab>
       <div

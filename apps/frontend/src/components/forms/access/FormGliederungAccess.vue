@@ -3,6 +3,7 @@ import { apiClient } from '@/api'
 import BasicTypeahead from '@/components/BasicInputs/BasicTypeahead.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import Loading from '@/components/UIComponents/Loading.vue'
+import cn from '@/helpers/cn'
 import type { RouterOutput } from '@codeanker/api'
 import { ValidateForm } from '@codeanker/validation'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
@@ -11,6 +12,18 @@ import { ref } from 'vue'
 
 type AccountTypeaheadResult = RouterOutput['account']['verwaltungList']['data'][number]
 type GliederungTypeaheadResult = RouterOutput['gliederung']['publicList'][number]
+
+type Mode =
+  | { mode: 'account', accountId: string }
+  | { mode: 'gliederung', gliederungId: string }
+
+const { mode } = defineProps<{
+  mode?: Mode
+}>()
+
+const emit = defineEmits<{
+  cancel: []
+}>()
 
 const input = ref<{
   account?: AccountTypeaheadResult
@@ -35,14 +48,34 @@ const queryClient = useQueryClient()
 const { mutate, error, isError, isPending } = useMutation({
   mutationKey: ['createGliederungAccess'],
   mutationFn: async () => {
-    if (!input.value.account || !input.value.gliederung) {
-      throw new Error('form not valid')
-    }
+    if (mode?.mode === 'account') {
+      if (!input.value.gliederung) {
+        throw new Error('form not valid')
+      }
 
-    await apiClient.access.createForGliederung.mutate({
-      accountId: input.value.account?.id,
-      gliederungId: input.value.gliederung?.id,
-    })
+      await apiClient.access.createForGliederung.mutate({
+        accountId: mode.accountId,
+        gliederungId: input.value.gliederung?.id,
+      })
+    } else if (mode?.mode === 'gliederung') {
+      if (!input.value.account) {
+        throw new Error('form not valid')
+      }
+
+      await apiClient.access.createForGliederung.mutate({
+        accountId: input.value.account?.id,
+        gliederungId: mode.gliederungId,
+      })
+    } else {
+      if (!input.value.account || !input.value.gliederung) {
+        throw new Error('form not valid')
+      }
+
+      await apiClient.access.createForGliederung.mutate({
+        accountId: input.value.account?.id,
+        gliederungId: input.value.gliederung?.id,
+      })
+    }
 
     queryClient.invalidateQueries({
       queryKey: ['listAllGliederungAdminRequests'],
@@ -53,34 +86,45 @@ const { mutate, error, isError, isPending } = useMutation({
 
 <template>
   <ValidateForm
-    class="grid grid-cols-2 gap-4"
     @submit="mutate"
   >
-    <BasicTypeahead
-      v-model="input.gliederung"
-      :query="queryObjectGliederungen"
-      :input-formatter="(result) => result?.name"
-      :result-formatter="(result) => result.name"
-      :strict="true"
-      :disabled="isPending"
-      label="Gliederung"
-      required
-      placeholder="Gliederung suchen"
-    />
-    <BasicTypeahead
-      v-model="input.account"
-      :query="queryObjectAccount"
-      :input-formatter="(result) => result?.email"
-      :result-formatter="(result) => result.email"
-      :strict="true"
-      :disabled="isPending"
-      label="Account (E-Mail Adresse)"
-      required
-      placeholder="Account suchen"
-    />
+    <div
+      :class="cn(
+        'grid gap-4',
+        {
+          'grid-cols-1': mode !== undefined,
+          'grid-cols-2': mode === undefined,
+        }
+      )"
+    >
+      <BasicTypeahead
+        v-if="mode?.mode !== 'gliederung'"
+        v-model="input.gliederung"
+        :query="queryObjectGliederungen"
+        :input-formatter="(result) => result?.name"
+        :result-formatter="(result) => result.name"
+        :strict="true"
+        :disabled="isPending"
+        label="Gliederung"
+        required
+        placeholder="Gliederung suchen"
+      />
+      <BasicTypeahead
+        v-if="mode?.mode !== 'account'"
+        v-model="input.account"
+        :query="queryObjectAccount"
+        :input-formatter="(result) => result?.email"
+        :result-formatter="(result) => result.email"
+        :strict="true"
+        :disabled="isPending"
+        label="Account (E-Mail Adresse)"
+        required
+        placeholder="Account suchen"
+      />
+    </div>
 
     <div class="mt-4 flex gap-4 items-center">
-      <Button color="danger"> Abbrechen </Button>
+      <Button color="danger" @click="() => emit('cancel')"> Abbrechen </Button>
       <Button
         color="primary"
         type="submit"
