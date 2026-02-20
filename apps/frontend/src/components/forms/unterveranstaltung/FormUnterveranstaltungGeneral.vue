@@ -11,10 +11,10 @@ import BasicSelect from '@/components/BasicInputs/BasicSelect.vue'
 import BasicTypeahead from '@/components/BasicInputs/BasicTypeahead.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
-import router from '@/router'
 import type { RouterInput } from '@codeanker/api'
 import { UnterveranstaltungTypeMapping, getEnumOptions } from '@codeanker/api'
 import { ValidateForm } from '@codeanker/validation'
+import { useRoute } from 'vue-router'
 
 const props = defineProps<{
   unterveranstaltung?: any
@@ -22,6 +22,8 @@ const props = defineProps<{
   mode: 'create' | 'update'
   onUpdate?: () => void
 }>()
+
+const route = useRoute()
 
 const unterveranstaltungId = props.unterveranstaltung?.id
 const gliederung = ref(props.unterveranstaltung?.gliederung)
@@ -155,7 +157,7 @@ const disableddates = computed(() => {
 
 onMounted(() => {
   if (props.mode === 'create') {
-    unterveranstaltungCopy.value.veranstaltungId = router.currentRoute.value.params.veranstaltungId as string
+    unterveranstaltungCopy.value.veranstaltungId = route.params.veranstaltungId as string
   }
 })
 </script>
@@ -177,7 +179,7 @@ onMounted(() => {
           label="Veranstaltung"
           placeholder="Veranstaltungsort"
           :options="veranstaltungen.map((veranstaltung) => ({ label: veranstaltung.name, value: veranstaltung.id }))"
-          :disabled="router.currentRoute.value.params.veranstaltungId !== undefined"
+          :disabled="route.params.veranstaltungId !== undefined"
         />
       </div>
       <template v-if="mode === 'create' && loggedInAccount?.role === 'ADMIN'">
