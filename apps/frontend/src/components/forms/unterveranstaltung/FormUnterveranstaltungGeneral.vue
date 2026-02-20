@@ -14,7 +14,7 @@ import { loggedInAccount } from '@/composables/useAuthentication'
 import type { RouterInput } from '@codeanker/api'
 import { UnterveranstaltungTypeMapping, getEnumOptions } from '@codeanker/api'
 import { ValidateForm } from '@codeanker/validation'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const props = defineProps<{
   unterveranstaltung?: any
@@ -23,6 +23,7 @@ const props = defineProps<{
   onUpdate?: () => void
 }>()
 
+const router = useRouter()
 const route = useRoute()
 
 const unterveranstaltungId = props.unterveranstaltung?.id
