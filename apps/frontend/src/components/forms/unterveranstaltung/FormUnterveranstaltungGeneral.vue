@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAsyncState } from '@vueuse/core'
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 import { apiClient } from '@/api'
 import BasicDatepicker from '@/components/BasicInputs/BasicDatepicker.vue'
@@ -18,7 +18,7 @@ import { ValidateForm } from '@codeanker/validation'
 
 const props = defineProps<{
   unterveranstaltung?: any
-  veranstaltungId?: any
+  veranstaltungId?: string
   mode: 'create' | 'update'
   onUpdate?: () => void
 }>()
@@ -51,7 +51,7 @@ const {
 } = useAsyncState(
   async () => {
     if (loggedInAccount.value?.role === 'ADMIN') {
-      unterveranstaltungCopy.value.gliederungId = gliederung.value.id
+      unterveranstaltungCopy.value.gliederungId = gliederung.value?.id
       await apiClient.unterveranstaltung.verwaltungCreate.mutate({
         data: unterveranstaltungCopy.value as unknown as RouterInput['unterveranstaltung']['verwaltungCreate']['data'],
       })
@@ -152,6 +152,12 @@ const disableddates = computed(() => {
   }
   return obj
 })
+
+onMounted(() => {
+  if (props.mode === 'create') {
+    unterveranstaltungCopy.value.veranstaltungId = router.currentRoute.value.params.veranstaltungId as string
+  }
+})
 </script>
 
 <template>
@@ -171,6 +177,7 @@ const disableddates = computed(() => {
           label="Veranstaltung"
           placeholder="Veranstaltungsort"
           :options="veranstaltungen.map((veranstaltung) => ({ label: veranstaltung.name, value: veranstaltung.id }))"
+          :disabled="router.currentRoute.value.params.veranstaltungId !== undefined"
         />
       </div>
       <template v-if="mode === 'create' && loggedInAccount?.role === 'ADMIN'">

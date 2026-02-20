@@ -6,6 +6,7 @@ import useValidationModel from '../../composables/useValidationModel'
 
 import BasicValidationFeedback from './components/BasicValidationFeedback.vue'
 import { type BasicInputDefaultProps } from './defaultProps'
+import cn from '@/helpers/cn'
 
 export interface Option {
   label: string
@@ -47,9 +48,10 @@ const { model, errorMessage } = useValidationModel(props, emit)
       as="div"
       :name="id || name || label"
       :multiple="props.multiple"
+      :disabled="disabled"
     >
       <ListboxButton class="input-style !flex flex-row items-center gap-x-2 justify-between">
-        <span class="text-start">
+        <span :class="cn('text-start', { 'text-gray-500': disabled })">
           {{ options.find((option) => option.value === modelValue)?.label || placeholder || 'Bitte wählen...' }}
         </span>
         <ChevronDownIcon class="h-5 text-gray-500 self-end" />
