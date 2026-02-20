@@ -310,7 +310,14 @@ function copyProgramLink() {
 
       <UnterveranstaltungenTable
         v-if="veranstaltung?.id"
-        :veranstaltung-id="veranstaltung?.id"
+        :mode="
+          veranstaltung
+            ? {
+                entity: 'veranstaltung',
+                veranstaltungId: veranstaltung?.id,
+              }
+            : undefined
+        "
       />
     </Tab>
     <Tab

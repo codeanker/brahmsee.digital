@@ -11,7 +11,18 @@ export const unterveranstaltungListProcedure = defineProtectedQueryProcedure({
   key: 'list',
   roleIds: [Role.ADMIN, Role.GLIEDERUNG_ADMIN],
   inputSchema: z.strictObject({
-    veranstaltungId: z.string().uuid().optional(),
+    mode: z
+      .discriminatedUnion('mode', [
+        z.strictObject({
+          mode: z.literal('veranstaltung'),
+          veranstaltungId: z.string().uuid(),
+        }),
+        z.strictObject({
+          mode: z.literal('gliederung'),
+          gliederungId: z.string().uuid(),
+        }),
+      ])
+      .optional(),
     table: defineTableInput({
       filter: {
         gliederungName: z.string().optional(),
@@ -24,12 +35,13 @@ export const unterveranstaltungListProcedure = defineProtectedQueryProcedure({
   async handler({
     ctx: { account },
     input: {
-      veranstaltungId,
+      mode,
       table: { filter, pagination },
     },
   }) {
     const where: Prisma.UnterveranstaltungWhereInput = {
-      veranstaltungId,
+      veranstaltungId: mode?.mode === 'veranstaltung' ? mode.veranstaltungId : undefined,
+      gliederungId: mode?.mode === 'gliederung' ? mode.gliederungId : undefined,
       gliederung: {
         name: {
           contains: filter?.gliederungName,
@@ -49,7 +61,7 @@ export const unterveranstaltungListProcedure = defineProtectedQueryProcedure({
     // Role-based Filter
     if (account.role !== Role.ADMIN) {
       const gliederung = await getGliederungRequireAdmin(account.id)
-      where.gliederungId = gliederung.id
+      where.gliederungId = gliederung.id // TODO:
     }
 
     const total = await prisma.unterveranstaltung.count({ where })

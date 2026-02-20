@@ -16,7 +16,15 @@ import Badge from '../UIComponents/Badge.vue'
 import DataGridDoubleLineCell from '../DataGridDoubleLineCell.vue'
 
 const props = defineProps<{
-  veranstaltungId?: string
+  mode?:
+    | {
+        entity: 'veranstaltung'
+        veranstaltungId: string
+      }
+    | {
+        entity: 'gliederung'
+        gliederungId: string
+      }
 }>()
 
 type Unterveranstaltung = RouterOutput['unterveranstaltung']['list']['data'][number]
@@ -37,7 +45,7 @@ const columns = [
     id: 'veranstaltungId',
     header: 'Veranstaltung',
     meta: {
-      hidden: props.veranstaltungId !== undefined,
+      hidden: props.mode?.entity === 'veranstaltung' && props.mode.veranstaltungId !== undefined,
       filter: {
         type: 'select',
         async options() {
@@ -57,6 +65,7 @@ const columns = [
     header: 'Gliederung',
     enableColumnFilter: true,
     meta: {
+      hidden: props.mode?.entity === 'gliederung' && props.mode.gliederungId !== undefined,
       filter: {
         type: 'text',
       },
@@ -127,7 +136,17 @@ const query: Query<Unterveranstaltung> = (pagination, filter) =>
     queryKey: ['unterveranstaltung', pagination, filter],
     queryFn: () =>
       apiClient.unterveranstaltung.list.query({
-        veranstaltungId: props.veranstaltungId,
+        mode: props.mode
+          ? props.mode.entity === 'veranstaltung'
+            ? {
+                mode: props.mode.entity,
+                veranstaltungId: props.mode.veranstaltungId,
+              }
+            : {
+                mode: props.mode.entity,
+                gliederungId: props.mode.gliederungId,
+              }
+          : undefined,
         table: {
           pagination: {
             pageIndex: pagination.value.pageIndex,
