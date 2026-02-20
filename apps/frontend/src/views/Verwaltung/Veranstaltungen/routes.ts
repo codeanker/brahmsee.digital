@@ -96,11 +96,23 @@ const veranstaltungRoutes: Route[] = [
       {
         name: 'Verwaltung Programmpunkt erstellen',
         path: ':veranstaltungId/program/create',
-        component: () => import('../Program/ProgramCreate.vue'),
+        component: () => import('../Program/ProgramForm.vue'),
         meta: {
           breadcrumbs: [
             {
               text: 'Programmpunkt anlegen',
+            },
+          ],
+        },
+      },
+      {
+        name: 'Verwaltung Programmpunkt bearbeiten',
+        path: ':veranstaltungId/program/:programId/edit',
+        component: () => import('../Program/ProgramForm.vue'),
+        meta: {
+          breadcrumbs: [
+            {
+              text: 'Programmpunkt bearbeiten',
             },
           ],
         },

@@ -4,11 +4,11 @@ import { z } from 'zod'
 import prisma from '../../prisma.js'
 import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
 
-export const programCreateProcedure = defineProtectedMutateProcedure({
-  key: 'create',
+export const programEditProcedure = defineProtectedMutateProcedure({
+  key: 'edit',
   roleIds: ['ADMIN'],
   inputSchema: z.strictObject({
-    veranstaltungId: z.string().uuid(),
+    programId: z.string().uuid(),
     data: z.object({
       name: z.string(),
       description: z.string(),
@@ -18,7 +18,7 @@ export const programCreateProcedure = defineProtectedMutateProcedure({
       endingAt: z.date(),
     }),
   }),
-  handler: async ({ input: { veranstaltungId, data } }) => {
+  handler: async ({ input: { programId, data } }) => {
     if (dayjs(data.endingAt).isBefore(data.startingAt)) {
       throw new TRPCError({
         code: 'BAD_REQUEST',
@@ -26,11 +26,11 @@ export const programCreateProcedure = defineProtectedMutateProcedure({
       })
     }
 
-    await prisma.programmPunkt.create({
-      data: {
-        ...data,
-        veranstaltungId: veranstaltungId,
+    await prisma.programmPunkt.update({
+      where: {
+        id: programId,
       },
+      data: data,
     })
   },
 })

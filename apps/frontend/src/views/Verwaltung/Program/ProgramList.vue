@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { apiClient } from '@/api'
-import cn from '@/helpers/cn'
 import type { RouterOutput } from '@codeanker/api'
 import { dayjs, groupBy } from '@codeanker/helpers'
-import { useAsyncState, useLocalStorage } from '@vueuse/core'
+import { useAsyncState } from '@vueuse/core'
 import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 
 type ProgrammPunkte = RouterOutput['program']['list']
 
@@ -16,6 +16,8 @@ const props = defineProps<{
 const emit = defineEmits<{
   dblclick: []
 }>()
+
+const router = useRouter()
 
 const { state: programm } = useAsyncState(
   () => apiClient.program.list.query({ veranstaltungId: props.veranstaltungId }),
@@ -32,17 +34,6 @@ const hasData = computed(() => (programmPunkte.value?.length ?? 0) > 0)
 const programmGroups = computed(() =>
   groupBy(programmPunkte.value ?? [], (item) => dayjs(item.startingAt).format('dddd, DD. MMMM'))
 )
-
-const highlighted = useLocalStorage<string[]>(`program-highlight-v-${props.veranstaltungId}`, [])
-
-function toggleHighlight(name: string) {
-  if (highlighted.value.includes(name)) {
-    const index = highlighted.value.indexOf(name)
-    highlighted.value.splice(index, 1)
-  } else {
-    highlighted.value.push(name)
-  }
-}
 </script>
 
 <template>
@@ -73,15 +64,12 @@ function toggleHighlight(name: string) {
           <tr
             v-for="(row, index) in list"
             :key="index"
-            :class="
-              cn(
-                '*:p-2 transition-colors hover:bg-slate-200 dark:hover:bg-slate-800/90 cursor-pointer',
-                highlighted.includes(row.name)
-                  ? 'odd:bg-primary-600 bg-primary-500'
-                  : 'odd:bg-slate-100 dark:odd:bg-slate-800'
-              )
+            class="*:p-2 transition-colors hover:bg-slate-200 dark:hover:bg-slate-800/90 cursor-pointer"
+            @click="
+              router.currentRoute.value.meta.public
+                ? undefined
+                : router.push({ name: 'Verwaltung Programmpunkt bearbeiten', params: { programId: row.id } })
             "
-            @click="() => toggleHighlight(row.name)"
             @dblclick="emit('dblclick')"
           >
             <td>
