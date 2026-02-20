@@ -2,6 +2,7 @@ import { Role } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma.js'
+import { emitTableUpdate } from '../../sse/index.js'
 import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
 
 export const veranstaltungVerwaltungCreateProcedure = defineProtectedMutateProcedure({
@@ -26,11 +27,13 @@ export const veranstaltungVerwaltungCreateProcedure = defineProtectedMutateProce
     }),
   }),
   async handler(options) {
-    return prisma.veranstaltung.create({
+    const result = await prisma.veranstaltung.create({
       data: options.input.data,
       select: {
         id: true,
       },
     })
+    emitTableUpdate('veranstaltung')
+    return result
   },
 })
