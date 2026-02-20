@@ -294,9 +294,9 @@ function copyProgramLink() {
     >
       <div class="my-10 flex items-center justify-between">
         <div>
-          <div class="text-lg font-semibold">Unterveranstaltungen</div>
+          <div class="text-lg font-semibold">Ausschreibungen</div>
           <p class="max-w-2xl text-sm text-gray-500">
-            Zu dieser Veranstaltung wurden die folgenden Unterveranstaltungen erstellt.
+            Zu dieser Veranstaltung wurden die folgenden Ausschreibungen erstellt.
           </p>
         </div>
         <RouterLink
