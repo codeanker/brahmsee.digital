@@ -14,8 +14,6 @@ import type { Seeder } from './index.js'
 
 const ENTRY_COUNT = 100
 
-faker.seed(123)
-
 async function create(prisma: PrismaClient, unterveranstaltung: Unterveranstaltung): Promise<void> {
   const address = await prisma.address.create({
     data: {
