@@ -1,58 +1,111 @@
-import path from 'path'
-import { fileURLToPath } from 'url'
+import { join, resolve } from "node:path";
+import pdfmake from "pdfmake";
+import { termost } from "termost";
+import { syncAllPersonsToMeili } from "../meilisearch/person.js";
+import { createAccount } from "./command/createAccount.js";
+import { readFile } from "node:fs/promises";
 
-import { Prisma } from '@prisma/client'
-import { Command } from 'commander'
+pdfmake.addFonts({
+  Inter: {
+    normal: join(import.meta.dirname, './Inter-VariableFont_opsz,wght.ttf'),
+  }
+})
 
-import pkg from '../../../../package.json' assert { type: 'json' }
-import { pascalToCamelCase } from '../util/casing.js'
-import { getDirectories } from '../util/files.js'
+const image = await readFile(resolve(import.meta.dirname, '../../../frontend/src/assets/images/dilly_logo_sm.jpg'))
+const imageBase64 = `data:image/jpeg;base64,${Buffer.from(image).toString('base64')}`
 
-import { generateService } from './generator/generateService.js'
-import type { GeneratorContext } from './generator/utlils.js'
-import { ignoreList } from './ignoreList.js'
-import { inquireGenerateProcedure, type ProcedureArgs } from './inquireGenerateProcedure.js'
-import { inquireGenerateService } from './inquireGenerateService.js'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-
-const servicesDir = path.join(__dirname, '../services')
-
-export const context: GeneratorContext = {
-  servicesDir,
-}
-
-export const prismaServices = Object.values(Prisma.ModelName).map(pascalToCamelCase)
-
-const existingServices = await getDirectories(servicesDir)
-
-const missingServices = prismaServices
-  .filter((service) => !existingServices.includes(service))
-  .filter((service) => !ignoreList.includes(service))
-
-const program = new Command()
-program.version(pkg.version)
+const program = termost({
+  name: 'artisan',
+  description: 'brahmsee.digital cli',
+  version: process.env.VERSION ?? 'dev',
+})
 
 program
-  .command('service')
-  .description('Generate a service')
-  .option('-n, --name <serviceName>', 'Service name')
-  .action(async ({ name }: { name: string }) => {
-    if (name) {
-      await generateService(name, context)
-    } else {
-      await inquireGenerateService(missingServices, context)
+  .command({
+    name: 'account:create',
+    description: 'Create a new account',
+  })
+  .task({
+    handler: async () => {
+      await createAccount()
     }
   })
 
 program
-  .command('procedure')
-  .description('Generate a procedure')
-  .option('-s, --service <serviceName>', 'Service name')
-  .option('-u, --usecase <usecase>', 'Usecase')
-  .option('-a, --action <actionName>', 'Action')
-  .option('-p, --protection <protection>', 'Protection type: public | restrictToRoleIds=ADMIN,USER')
-  .action((args: ProcedureArgs) => inquireGenerateProcedure(args, context, existingServices))
+  .command({
+    name: 'meilisearch:init',
+    description: 'Initialize Meilisearch collections'
+  })
+  .task({
+    handler: async () => {
+      await syncAllPersonsToMeili()
+    }
+  })
 
-program.parse(process.argv)
+program
+  .command({
+    name: 'db:seed',
+    description: 'Seed the database with test data'
+  })
+  .task({
+    handler: async () => {
+      // TODO: Call seeder
+    }
+  })
+
+program
+  .command({
+    name: 'pdf',
+    description: 'Test pdf generation'
+  })
+  .task({
+    handler: async () => {
+      const pdf = pdfmake.createPdf({
+        defaultStyle: {
+          font: 'Inter',
+        },
+        pageMargins: [40, 66, 40, 56],
+        content: [
+          { margin: [0, 12], text: 'Moin Silas', },
+          { margin: [0, 12], text: 'Lorem Ipsum Dolor Sit Amet', },
+          { margin: [0, 12], text: 'Lorem Ipsum Dolor Sit Amet', },
+          { margin: [0, 12], text: 'Lorem Ipsum Dolor Sit Amet', },
+          { margin: [0, 12], text: 'Lorem Ipsum Dolor Sit Amet', },
+          { margin: [0, 12], text: 'Lorem Ipsum Dolor Sit Amet', },
+          { margin: [0, 12], text: 'Lorem Ipsum Dolor Sit Amet', },
+          { margin: [0, 12], text: 'Lorem Ipsum Dolor Sit Amet', },
+          { margin: [0, 12], text: 'Lorem Ipsum Dolor Sit Amet', },
+        ],
+        header: {
+          marginTop: 16,
+          marginLeft: 40,
+          marginRight: 40,
+          columnGap: 16,
+          fontSize: 10,
+          columns: [
+            {
+              image: imageBase64,
+              width: 48,
+            },
+            {
+              text: 'brahmsee.digital',
+              width: 'auto',
+              marginTop: 5,
+            }
+          ],
+        },
+        footer: (currentPage, pageCount) => {
+          return {
+            fontSize: 10,
+            columns: [
+              { width: '*', text: '' },
+              { width: 'auto', text: `${currentPage} / ${pageCount}`, },
+              { width: '*', text: '' },
+            ]
+          }
+        }
+      })
+
+      await pdf.write('file.pdf')
+    }
+  })

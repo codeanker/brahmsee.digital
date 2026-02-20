@@ -1,12 +1,11 @@
 import { input, password as passwordInput, select, search } from '@inquirer/prompts'
 import { Role } from '@prisma/client'
+import { getEnumOptions, roleMapping } from '../../client.js'
+import prisma from '../../prisma.js'
+import { getAccountCreateData } from '../../services/account/schema/account.schema.js'
+import logActivity from '../../util/activity.js'
 
-import prisma from '../prisma.js'
-import { getAccountCreateData } from '../services/account/schema/account.schema.js'
-import logActivity from '../util/activity.js'
-import { getEnumOptions, roleMapping } from '../client.js'
-
-async function createUser() {
+export async function createAccount() {
   const email = await input({ message: 'E-Mail' })
   const firstname = await input({ message: 'Vorname' })
   const lastname = await input({ message: 'Nachname' })
@@ -21,8 +20,8 @@ async function createUser() {
     }),
   })
 
-  async function selectGliederung(): Promise<string> {
-    return await search({
+  function selectGliederung(): Promise<string> {
+    return search({
       message: 'Deine Gliederung',
       source: async (term) => {
         const results = await prisma.gliederung.findMany({
@@ -77,5 +76,3 @@ async function createUser() {
   console.log('Nutzer erstellt')
   process.exit()
 }
-
-await createUser()
