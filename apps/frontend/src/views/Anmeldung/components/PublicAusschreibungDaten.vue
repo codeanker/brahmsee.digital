@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import InfoList from '@/components/UIComponents/InfoList.vue'
 import { injectUnterveranstaltung } from '@/layouts/AnmeldungLayout.vue'
+import { formatCurrency } from '@codeanker/helpers'
 import { formatDate } from '@vueuse/core'
 import { computed } from 'vue'
 
@@ -28,7 +29,7 @@ const keyInfos = computed<KeyInfo[]>(() => {
     },
     { title: 'Meldeschluss', value: formatDate(unterveranstaltung.value.meldeschluss, 'DD.MM.YYYY') },
     { title: 'Veranstaltungsort', value: unterveranstaltung.value.veranstaltung.ort?.name ?? '' },
-    { title: 'Teilnahmebeitrag', value: unterveranstaltung.value.teilnahmegebuehr + '€' },
+    { title: 'Teilnahmebeitrag', value: formatCurrency(unterveranstaltung.value.teilnahmegebuehr) },
     { title: 'Zielgruppe', value: unterveranstaltung.value.veranstaltung.zielgruppe ?? '' },
   ]
 })

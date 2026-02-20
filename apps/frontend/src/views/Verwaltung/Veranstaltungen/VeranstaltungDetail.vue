@@ -25,7 +25,7 @@ import Tabs from '@/components/UIComponents/Tabs.vue'
 import VeranstaltungCard from '@/components/UIComponents/VeranstaltungCard.vue'
 import UnterveranstaltungenTable from '@/components/data/UnterveranstaltungenTable.vue'
 import { useRouteTitle } from '@/composables/useRouteTitle'
-import { formatDateWith } from '@codeanker/helpers'
+import { formatCurrency, formatDateWith } from '@codeanker/helpers'
 import { PlusIcon } from '@heroicons/vue/24/solid'
 import ProgramList from '../Program/ProgramList.vue'
 import AnmeldeLinkTable from '@/components/data/AnmeldeLinkTable.vue'
@@ -66,7 +66,7 @@ const keyInfos = computed<KeyInfo[]>(() => {
         value: `${formatDateWith(veranstaltung.value.meldebeginn, keyInfoDateFormat)} - ${formatDateWith(veranstaltung.value.meldeschluss, keyInfoDateFormat)}`,
       },
       { title: 'Veranstaltungsort', value: veranstaltung.value.ort?.name ?? '' },
-      { title: 'Teilnahmebeitrag', value: veranstaltung.value.teilnahmegebuehr + '€' },
+      { title: 'Teilnahmebeitrag', value: formatCurrency(veranstaltung.value.teilnahmegebuehr) },
       { title: 'Zielgruppe', value: veranstaltung.value.zielgruppe ?? '' },
     ]
   } else {
@@ -301,7 +301,7 @@ function copyProgramLink() {
         </div>
         <RouterLink
           class="text-primary-500 flex items-center"
-          :to="{ name: 'UnterveranstaltungCreate' }"
+          :to="{ name: 'UnterveranstaltungCreate', params: { veranstaltungId: veranstaltung?.id?.toString() } }"
         >
           <PlusIcon class="h-5 w-5 mr-1" />
           <span>Ausschreibung erstellen</span>
