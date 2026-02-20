@@ -81,7 +81,7 @@ const { mutate, error, isPending, isSuccess, isError } = useMutation({
 
   <template v-if="requests.length === 0">
     <Teleport to="body">
-      <Modal ref="modalAdd">
+      <Modal ref="modalAdd" size="xl">
         <template #content>
           <div class="text-xl font-bold mb-8">Zugriff auf Gliederung anfragen</div>
 

@@ -200,7 +200,7 @@ const modalAdd = useTemplateRef('modalAdd')
   </DataTable>
 
   <Teleport to="body">
-    <Modal ref="modalAdd">
+    <Modal ref="modalAdd" size="xl">
       <template #content>
         <div class="text-xl font-bold mb-8">Berechtigung vergeben</div>
 
