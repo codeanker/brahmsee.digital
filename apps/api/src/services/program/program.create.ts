@@ -9,15 +9,17 @@ export const programCreateProcedure = defineProtectedMutateProcedure({
   roleIds: ['ADMIN'],
   inputSchema: z.strictObject({
     veranstaltungId: z.string().uuid(),
-    name: z.string(),
-    description: z.string(),
-    location: z.string(),
-    responsible: z.string(),
-    startingAt: z.date(),
-    endingAt: z.date(),
+    data: z.object({
+      name: z.string(),
+      description: z.string(),
+      location: z.string(),
+      responsible: z.string(),
+      startingAt: z.date(),
+      endingAt: z.date(),
+    }),
   }),
-  handler: async ({ input }) => {
-    if (dayjs(input.endingAt).isBefore(input.startingAt)) {
+  handler: async ({ input: { veranstaltungId, data } }) => {
+    if (dayjs(data.endingAt).isBefore(data.startingAt)) {
       throw new TRPCError({
         code: 'BAD_REQUEST',
         message: 'Das Enddatum kann nicht vor dem Startdatum liegen.',
@@ -25,7 +27,10 @@ export const programCreateProcedure = defineProtectedMutateProcedure({
     }
 
     await prisma.programmPunkt.create({
-      data: input,
+      data: {
+        ...data,
+        veranstaltungId: veranstaltungId,
+      },
     })
   },
 })

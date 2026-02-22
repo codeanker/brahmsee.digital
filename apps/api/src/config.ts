@@ -5,6 +5,7 @@ import type { StringValue } from '@codeanker/authentication'
 import { FileProvider } from '@prisma/client'
 import config from 'config'
 import { z } from 'zod'
+import { zEmptyStringAsUndefined } from './util/zod.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -37,16 +38,7 @@ export const configSchema = z.strictObject({
     dlrg: z.strictObject({
       issuer: z.string().url(),
       clientId: z.string(),
-      clientSecret: z
-        .string()
-        .optional()
-        .transform((v) => {
-          const trimmed = v?.trim()
-          if (trimmed === undefined || trimmed.length === 0) {
-            return undefined
-          }
-          return trimmed
-        }),
+      clientSecret: z.string().optional().transform(zEmptyStringAsUndefined),
       allowInsecure: z.coerce.boolean(),
     }),
   }),

@@ -1,4 +1,5 @@
 import routesMeineDaten from '../MeineDaten/routes'
+import routesAccess from './AccessControl/routes'
 import routesAccount from './Accounts/routes'
 import gliederungRoutes from './Gliederungen/routes'
 import orteRoutes from './Orte/routes'
@@ -19,6 +20,7 @@ const routesVerwaltung: Route[] = [
       ...orteRoutes,
       ...routesAccount,
       ...routesMeineDaten,
+      ...routesAccess,
     ],
   },
 ]

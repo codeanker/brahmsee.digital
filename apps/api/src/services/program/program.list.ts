@@ -14,6 +14,7 @@ export const programListProcedure = defineProtectedQueryProcedure({
         veranstaltungId: input.veranstaltungId,
       },
       select: {
+        id: true,
         name: true,
         description: true,
         location: true,

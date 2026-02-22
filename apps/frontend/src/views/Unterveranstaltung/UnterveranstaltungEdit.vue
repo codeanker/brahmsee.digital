@@ -7,6 +7,7 @@ import FormUnterveranstaltungGeneral from '@/components/forms/unterveranstaltung
 import { loggedInAccount } from '@/composables/useAuthentication'
 
 const route = useRoute()
+
 const { state: unterveranstaltung, execute: fetchUnterveranstaltung } = useAsyncState(async () => {
   const unterveranstaltungId = route.params.unterveranstaltungId as string
   if (loggedInAccount.value?.role === 'ADMIN') {

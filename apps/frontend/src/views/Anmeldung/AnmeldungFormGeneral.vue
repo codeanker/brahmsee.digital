@@ -13,7 +13,7 @@ import { type NahrungsmittelIntoleranz } from '@codeanker/api'
 
 const props = withDefaults(
   defineProps<{
-    isPublic: boolean
+    isPublic?: boolean
     token?: string
   }>(),
   {

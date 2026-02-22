@@ -3,6 +3,7 @@ import z from 'zod'
 
 import prisma from '../../prisma.js'
 import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
+import { zEmptyStringAsUndefined } from '../../util/zod.js'
 
 export const gliederungVerwaltungPatchProcedure = defineProtectedMutateProcedure({
   key: 'verwaltungPatch',
@@ -12,6 +13,7 @@ export const gliederungVerwaltungPatchProcedure = defineProtectedMutateProcedure
     data: z.strictObject({
       name: z.string(),
       edv: z.string(),
+      domain: z.string().optional().transform(zEmptyStringAsUndefined),
     }),
   }),
   async handler({ input }) {
@@ -19,6 +21,7 @@ export const gliederungVerwaltungPatchProcedure = defineProtectedMutateProcedure
       data: {
         name: input.data.name,
         edv: input.data.edv,
+        domain: input.data.domain,
       },
       where: {
         id: input.id,
@@ -26,6 +29,7 @@ export const gliederungVerwaltungPatchProcedure = defineProtectedMutateProcedure
       select: {
         name: true,
         edv: true,
+        domain: true,
       },
     })
   },

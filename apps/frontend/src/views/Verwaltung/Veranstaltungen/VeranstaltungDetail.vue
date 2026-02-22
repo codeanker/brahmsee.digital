@@ -25,7 +25,7 @@ import Tabs from '@/components/UIComponents/Tabs.vue'
 import VeranstaltungCard from '@/components/UIComponents/VeranstaltungCard.vue'
 import UnterveranstaltungenTable from '@/components/data/UnterveranstaltungenTable.vue'
 import { useRouteTitle } from '@/composables/useRouteTitle'
-import { formatDateWith } from '@codeanker/helpers'
+import { formatCurrency, formatDateWith } from '@codeanker/helpers'
 import { PlusIcon } from '@heroicons/vue/24/solid'
 import ProgramList from '../Program/ProgramList.vue'
 import AnmeldeLinkTable from '@/components/data/AnmeldeLinkTable.vue'
@@ -66,7 +66,7 @@ const keyInfos = computed<KeyInfo[]>(() => {
         value: `${formatDateWith(veranstaltung.value.meldebeginn, keyInfoDateFormat)} - ${formatDateWith(veranstaltung.value.meldeschluss, keyInfoDateFormat)}`,
       },
       { title: 'Veranstaltungsort', value: veranstaltung.value.ort?.name ?? '' },
-      { title: 'Teilnahmebeitrag', value: veranstaltung.value.teilnahmegebuehr + '€' },
+      { title: 'Teilnahmebeitrag', value: formatCurrency(veranstaltung.value.teilnahmegebuehr) },
       { title: 'Zielgruppe', value: veranstaltung.value.zielgruppe ?? '' },
     ]
   } else {
@@ -199,6 +199,7 @@ function copyProgramLink() {
           Bitte beachte die folgenden Teilnahmebedingungen, diese sind bei der Anmeldung öffentlich einsehbar.
         </p>
       </div>
+      <!-- eslint-disable vue/no-v-html -->
       <div
         v-if="veranstaltung?.teilnahmeBedingungenPublic"
         class="prose dark:prose-invert"
@@ -230,6 +231,7 @@ function copyProgramLink() {
         class="prose dark:prose-invert"
         v-html="veranstaltung?.datenschutz"
       />
+      <!-- eslint-enable vue/no-v-html -->
       <div v-else>
         <p class="text-gray-500">Keine Datenschutzhinweise hinterlegt</p>
       </div>
@@ -294,14 +296,14 @@ function copyProgramLink() {
     >
       <div class="my-10 flex items-center justify-between">
         <div>
-          <div class="text-lg font-semibold">Unterveranstaltungen</div>
+          <div class="text-lg font-semibold">Ausschreibungen</div>
           <p class="max-w-2xl text-sm text-gray-500">
-            Zu dieser Veranstaltung wurden die folgenden Unterveranstaltungen erstellt.
+            Zu dieser Veranstaltung wurden die folgenden Ausschreibungen erstellt.
           </p>
         </div>
         <RouterLink
           class="text-primary-500 flex items-center"
-          :to="{ name: 'UnterveranstaltungCreate' }"
+          :to="{ name: 'UnterveranstaltungCreate', params: { veranstaltungId: veranstaltung?.id?.toString() } }"
         >
           <PlusIcon class="h-5 w-5 mr-1" />
           <span>Ausschreibung erstellen</span>
@@ -310,7 +312,14 @@ function copyProgramLink() {
 
       <UnterveranstaltungenTable
         v-if="veranstaltung?.id"
-        :veranstaltung-id="veranstaltung?.id"
+        :mode="
+          veranstaltung
+            ? {
+                entity: 'veranstaltung',
+                veranstaltungId: veranstaltung?.id,
+              }
+            : undefined
+        "
       />
     </Tab>
     <Tab

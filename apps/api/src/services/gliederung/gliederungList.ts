@@ -12,8 +12,9 @@ export const gliederungListProcedure = defineProtectedQueryProcedure({
     filter: {
       name: z.string().optional(),
       edv: z.string().optional(),
+      domain: z.string().optional(),
     },
-    orderBy: ['name', 'edv'],
+    orderBy: ['name', 'edv', 'email'],
   }),
   async handler({ input: { pagination, filter, orderBy } }) {
     const where: Prisma.GliederungWhereInput = {
@@ -23,6 +24,9 @@ export const gliederungListProcedure = defineProtectedQueryProcedure({
       },
       edv: {
         contains: filter?.edv,
+      },
+      domain: {
+        contains: filter?.domain,
       },
     }
 
@@ -37,6 +41,7 @@ export const gliederungListProcedure = defineProtectedQueryProcedure({
       select: {
         name: true,
         edv: true,
+        domain: true,
         id: true,
       },
     })

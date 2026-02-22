@@ -19,6 +19,7 @@ export const veranstaltungPublicGetProcedure = definePublicQueryProcedure({
         ort: true,
         programmPunkte: {
           select: {
+            id: true,
             name: true,
             description: true,
             location: true,

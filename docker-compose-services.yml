@@ -18,7 +18,6 @@ services:
     volumes:
       - meilisearch-data:/data.ms
     restart: unless-stopped
-
   keycloak:
     image: quay.io/keycloak/keycloak:26.4.7
     command: start-dev

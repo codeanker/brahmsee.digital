@@ -53,6 +53,11 @@ const people = [
     imageUrl: 'https://avatars.githubusercontent.com/u/16214836?v=4',
   },
   {
+    name: 'Silas Jakubzik',
+    role: 'Contributor',
+    imageUrl: 'https://avatars.githubusercontent.com/u/115188138?v=4',
+  },
+  {
     name: 'CODEANKER',
     role: 'Sponsor',
     imageUrl: 'https://avatars.githubusercontent.com/u/13403000?v=4',
