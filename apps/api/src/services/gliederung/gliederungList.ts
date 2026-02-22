@@ -12,7 +12,7 @@ export const gliederungListProcedure = defineProtectedQueryProcedure({
     filter: {
       name: z.string().optional(),
       edv: z.string().optional(),
-      email: z.string().optional(),
+      domain: z.string().optional(),
     },
     orderBy: ['name', 'edv', 'email'],
   }),
@@ -25,8 +25,8 @@ export const gliederungListProcedure = defineProtectedQueryProcedure({
       edv: {
         contains: filter?.edv,
       },
-      email: {
-        contains: filter?.email,
+      domain: {
+        contains: filter?.domain,
       },
     }
 
@@ -41,7 +41,7 @@ export const gliederungListProcedure = defineProtectedQueryProcedure({
       select: {
         name: true,
         edv: true,
-        email: true,
+        domain: true,
         id: true,
       },
     })

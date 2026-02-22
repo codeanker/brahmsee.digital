@@ -13,7 +13,7 @@ export const gliederungVerwaltungPatchProcedure = defineProtectedMutateProcedure
     data: z.strictObject({
       name: z.string(),
       edv: z.string(),
-      email: z.string().email().optional().transform(zEmptyStringAsUndefined),
+      domain: z.string().optional().transform(zEmptyStringAsUndefined),
     }),
   }),
   async handler({ input }) {
@@ -21,7 +21,7 @@ export const gliederungVerwaltungPatchProcedure = defineProtectedMutateProcedure
       data: {
         name: input.data.name,
         edv: input.data.edv,
-        email: input.data.email,
+        domain: input.data.domain,
       },
       where: {
         id: input.id,
@@ -29,7 +29,7 @@ export const gliederungVerwaltungPatchProcedure = defineProtectedMutateProcedure
       select: {
         name: true,
         edv: true,
-        email: true,
+        domain: true,
       },
     })
   },
