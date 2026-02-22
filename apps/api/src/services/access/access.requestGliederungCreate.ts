@@ -33,14 +33,14 @@ export const requestGliederungAccessCreateProcedure = defineProtectedMutateProce
       },
       select: {
         name: true,
-        email: true,
+        domain: true,
       },
     })
 
-    if (!gliederung.email) {
+    if (!gliederung.domain) {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
-        message: `Die Gliederung ${gliederung.name} hat keine Kontaktadresse hinterlegt!`,
+        message: `Die Gliederung ${gliederung.name} hat keine Domain hinterlegt!`,
       })
     }
 
@@ -59,7 +59,7 @@ export const requestGliederungAccessCreateProcedure = defineProtectedMutateProce
       })
 
       await sendMail({
-        to: `${gliederung.email}`,
+        to: `info@${gliederung.domain}`,
         subject: 'Zugriffsanfrage auf deine Gliederung',
         template: 'gliederung-access-request-info',
         categories: ['access', 'gliederung'],

@@ -18,7 +18,7 @@ export const accountGliederungCreateProcedure = definePublicMutateProcedure({
     const gliederung = await prisma.gliederung.findUnique({
       where: {
         id: input.gliederungId,
-      }
+      },
     })
     if (gliederung === null) {
       throw new TRPCError({
@@ -42,10 +42,10 @@ export const accountGliederungCreateProcedure = definePublicMutateProcedure({
       })
     }
 
-    if (!gliederung.email) {
+    if (!gliederung.domain) {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
-        message: `Die Gliederung ${gliederung.name} hat keine Kontaktadresse hinterlegt!`,
+        message: `Die Gliederung ${gliederung.name} hat keine Domain hinterlegt!`,
       })
     }
 
@@ -85,7 +85,7 @@ export const accountGliederungCreateProcedure = definePublicMutateProcedure({
 
     await sendMailConfirmEmailRequest(accountData.email, accountData.activationToken)
     await sendMail({
-      to: `${gliederung.email}`,
+      to: `info@${gliederung.domain}`,
       subject: 'Zugriffsanfrage auf deine Gliederung',
       template: 'gliederung-access-request-info',
       categories: ['access', 'gliederung'],

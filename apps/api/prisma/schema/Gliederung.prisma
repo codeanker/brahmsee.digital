@@ -2,7 +2,7 @@ model Gliederung {
   id                   String                @id @default(uuid(7))
   name                 String
   edv                  String                @unique
-  email                String?
+  domain               String?
   unterveranstaltungen Unterveranstaltung[]
   personen             Person[]
   GliederungToAccount  GliederungToAccount[]
