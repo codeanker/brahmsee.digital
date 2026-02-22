@@ -199,6 +199,7 @@ function copyProgramLink() {
           Bitte beachte die folgenden Teilnahmebedingungen, diese sind bei der Anmeldung öffentlich einsehbar.
         </p>
       </div>
+      <!-- eslint-disable vue/no-v-html -->
       <div
         v-if="veranstaltung?.teilnahmeBedingungenPublic"
         class="prose dark:prose-invert"
@@ -230,6 +231,7 @@ function copyProgramLink() {
         class="prose dark:prose-invert"
         v-html="veranstaltung?.datenschutz"
       />
+      <!-- eslint-enable vue/no-v-html -->
       <div v-else>
         <p class="text-gray-500">Keine Datenschutzhinweise hinterlegt</p>
       </div>

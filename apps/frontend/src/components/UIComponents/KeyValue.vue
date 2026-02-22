@@ -3,8 +3,8 @@ import type { Component } from 'vue'
 
 withDefaults(
   defineProps<{
-    keyText: string
-    valueText: string | number | undefined
+    keyText?: string
+    valueText?: string | number | undefined
     icon?: Component
   }>(),
   {

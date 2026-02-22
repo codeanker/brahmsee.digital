@@ -18,6 +18,7 @@ const fill = (gliederung) => {
   return {
     name: gliederung?.name,
     edv: gliederung?.edv,
+    email: gliederung?.email,
   }
 }
 
@@ -89,6 +90,16 @@ const handle = async (event: Event) => {
           v-model="gliederungCopy.edv"
           label="EDV"
           name="edv"
+          required
+        />
+      </div>
+
+      <div class="sm:col-span-3">
+        <BasicInput
+          v-model="gliederungCopy.email"
+          label="Kontaktadresse"
+          name="email"
+          type="email"
           required
         />
       </div>

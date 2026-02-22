@@ -1,4 +1,5 @@
 import { router } from '../trpc.js'
+import { accessRouter } from './access/access.router.js'
 
 import { accountRouter } from './account/account.router.js'
 import { activityRouter } from './activity/activity.routes.js'
@@ -37,5 +38,6 @@ export const serviceRouter = router({
   faq: faqsRouter,
   program: programRouter,
   anmeldungLink: anmeldungLinkRouter,
+  access: accessRouter,
   // Add Routers here - do not delete this line
 })

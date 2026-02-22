@@ -34,3 +34,11 @@ export async function zodSafe<I, O>(schema: ZodSchema<O>, payload: I): Promise<Z
  * boolish.parse('false') // false
  */
 export const boolish = z.enum(['true', 'false']).transform((v) => v === 'true')
+
+export const zEmptyStringAsUndefined = (v: string | undefined) => {
+  const trimmed = v?.trim()
+  if (trimmed === undefined || trimmed.length === 0) {
+    return undefined
+  }
+  return trimmed
+}

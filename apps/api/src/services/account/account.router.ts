@@ -5,6 +5,7 @@ import { accountActivateProcedure } from './accountActivate.js'
 import { accountChangePasswordProcedure } from './accountChangePassword.js'
 import { accountEmailConfirmProcedure } from './accountEmailConfirm.js'
 import { accountEmailConfirmRequestProcedure } from './accountEmailConfirmRequest.js'
+import { accountGliederungCreateProcedure } from './accountGliederungCreate.js'
 import { accountPasswordResetProcedure } from './accountPasswordReset.js'
 import { accountPasswordResetRequestProcedure } from './accountPasswordResetRequest.js'
 import { accountPasswordResetValidateProcedure } from './accountPasswordResetToken.js'
@@ -29,6 +30,7 @@ export const accountRouter = mergeRouters(
   accountPasswordResetValidateProcedure,
   accountPasswordResetProcedure,
   accountVerwaltungRemoveProcedure,
-  accountTeilnehmerCreateProcedure
+  accountTeilnehmerCreateProcedure,
+  accountGliederungCreateProcedure,
   // Add Routes here - do not delete this line
 )

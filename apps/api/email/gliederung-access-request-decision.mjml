@@ -1,0 +1,11 @@
+{{#> layout }}
+
+<mj-text
+  font-size="16px"
+  line-height="1.5"
+>
+  {{#if decision}} Deinem Zugriffsantrag auf die Gliederung {{ gliederung }} wurde zugestimmt. {{else}} Dein
+  Zugriffsantrag auf die Gliederung {{ gliederung }} wurde abgelehnt. {{/if}}
+</mj-text>
+
+{{/layout}}

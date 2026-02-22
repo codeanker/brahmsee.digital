@@ -51,10 +51,10 @@ const { model, errorMessage } = useValidationModel(props, emit)
         :sync="sync"
         :immediate="immediate"
         :placeholder="placeholder"
+        :disabled="disabled"
         :name="name"
         :debounce-time="debounceTime"
         :strict="strict"
-        :disabled="disabled"
       >
         <template #default="slotData">
           <slot v-bind="slotData" />

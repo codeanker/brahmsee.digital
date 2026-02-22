@@ -35,19 +35,24 @@ async function create(prisma: PrismaClient, unterveranstaltung: Unterveranstaltu
     description: 'address created via db seeder',
   })
 
+  // Make sure the email isn't NOT based on the person's name
+  const firstName = faker.person.firstName()
+  const lastName = faker.person.lastName()
+  const mail = faker.internet.email({ firstName, lastName })
+
   const account = await prisma.account.create({
     data: {
-      email: faker.internet.email(),
+      email: mail,
       role: 'USER',
       activatedAt: new Date(),
       status: 'AKTIV',
       person: {
         create: {
-          firstname: faker.person.firstName(),
-          lastname: faker.person.lastName(),
+          firstname: firstName,
+          lastname: lastName,
           birthday: faker.date.birthdate({ min: 12, max: 30, mode: 'age' }),
           gender: faker.helpers.enumValue(Gender),
-          email: faker.internet.email(),
+          email: mail,
           telefon: faker.string.numeric('+49151########'),
           essgewohnheit: faker.helpers.enumValue(Essgewohnheit),
           nahrungsmittelIntoleranzen: faker.helpers.arrayElements(Object.values(NahrungsmittelIntoleranz)),

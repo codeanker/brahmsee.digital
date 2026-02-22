@@ -18,12 +18,17 @@ export const { getEntityIdFromHeader, authenticationLogin, sign } = createAuthen
         activationToken: true,
       },
     })
-    if (account === null) throw new Error('Es konnte kein Account gefunden werden.')
-    if (account.activationToken !== null)
-      throw new Error('Account noch nicht bestätigt, bitte bestätige deine E-Mail-Adresse.')
-    if (account.status !== 'AKTIV')
-      throw new Error('Dein Account ist noch nicht von einem Administrator freigeschaltet worden.')
-    if (account.password === null) throw new Error('Account has no password')
+
+    if (account === null) {
+      throw new Error('Es konnte kein Account gefunden werden.')
+    }
+    if (account.status !== 'AKTIV') {
+      throw new Error('Dein Account ist nicht aktiviert. Bitte prüfe dein E-Mail Postfach, ob du den Account noch aktivieren musst. Wende dich ansonsten an deine Gliederung.')
+    }
+    if (account.password === null) {
+      throw new Error('Der Account hat kein Passwort, wahrscheinlich hast du dich über das ISC angemeldet.')
+    }
+
     return {
       id: account.id,
       password: account.password,

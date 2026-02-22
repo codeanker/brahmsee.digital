@@ -49,18 +49,6 @@ const gliederungRoutes: Route[] = [
           ],
         },
       },
-      {
-        name: 'Verwaltung Gliederung Account anfragen',
-        path: 'anfrage',
-        component: () => import('./GliederungAccountanfrage.vue'),
-        meta: {
-          breadcrumbs: [
-            {
-              text: 'Anfragen',
-            },
-          ],
-        },
-      },
     ],
   },
 ]

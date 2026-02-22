@@ -6,16 +6,18 @@ import { definePublicMutateProcedure } from '../../types/defineProcedure.js'
 import { sendMailConfirmEmailRequest } from './helpers/sendMailConfirmEmailRequest.js'
 import { getAccountCreateData } from './schema/account.schema.js'
 
+export const ZAccountTeilnehmerCreate = z.strictObject({
+  firstname: z.string(),
+  lastname: z.string(),
+  gender: z.nativeEnum(Gender),
+  birthday: z.date(),
+  email: z.string().email(),
+  password: z.string(),
+})
+
 export const accountTeilnehmerCreateProcedure = definePublicMutateProcedure({
   key: 'teilnehmerCreate',
-  inputSchema: z.strictObject({
-    firstname: z.string(),
-    lastname: z.string(),
-    gender: z.nativeEnum(Gender),
-    birthday: z.date(),
-    email: z.string().email(),
-    password: z.string(),
-  }),
+  inputSchema: ZAccountTeilnehmerCreate,
   handler: async ({ input }) => {
     const existing = await prisma.account.findFirst({
       where: {
@@ -43,7 +45,7 @@ export const accountTeilnehmerCreateProcedure = definePublicMutateProcedure({
       isActiv: false,
     })
 
-    const res = await prisma.account.create({
+    await prisma.account.create({
       data: accountData,
       select: {
         id: true,
@@ -52,7 +54,5 @@ export const accountTeilnehmerCreateProcedure = definePublicMutateProcedure({
 
     if (!accountData.activationToken) throw new Error('No activation token generated')
     await sendMailConfirmEmailRequest(accountData.email, accountData.activationToken)
-
-    return res
   },
 })
