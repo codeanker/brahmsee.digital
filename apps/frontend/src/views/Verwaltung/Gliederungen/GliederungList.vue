@@ -30,8 +30,8 @@ const columns = [
     enableColumnFilter: true,
     enableSorting: true,
   }),
-  column.accessor('email', {
-    header: 'Kontaktadresse',
+  column.accessor('domain', {
+    header: 'Domain',
     enableColumnFilter: true,
     enableSorting: true,
   }),
