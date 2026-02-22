@@ -4,14 +4,7 @@ import globals from 'globals'
 import typescriptEslint from 'typescript-eslint'
 import eslintConfigPrettier from 'eslint-config-prettier'
 
-const recommended = eslintPluginVue.configs['flat/recommended'].map((item) => {
-  if (item.rules) delete item.rules['vue/multi-word-component-names']
-  if (item.rules) delete item.rules['vue/singleline-html-element-content-newline']
-  if (item.rules) delete item.rules['vue/html-self-closing']
-  if (item.rules) delete item.rules['vue/html-indent']
-  if (item.rules) delete item.rules['vue/html-closing-bracket-newline']
-  return item
-})
+const recommended = eslintPluginVue.configs['flat/recommended']
 
 export default typescriptEslint.config(
   { ignores: ['*.d.ts', '**/coverage', '**/dist'] },
@@ -45,19 +38,20 @@ export default typescriptEslint.config(
       'vue/no-mutating-props': 'off',
       'vue/multi-word-component-names': 'off',
       'vue/require-default-prop': 'off', // Durch typescript ist das immer ersichtlich, dass es undefined sein kann.
+      'vue/singleline-html-element-content-newline': 'off',
       'vue/html-self-closing': 'off',
+      'vue/html-indent': 'off',
+      'vue/html-closing-bracket-newline': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
         { argsIgnorePattern: '^_', destructuredArrayIgnorePattern: '^_', ignoreRestSiblings: true },
       ],
       'no-unused-vars': 'off',
-      'vue/no-ref-object-destructure': 'error',
       'vue/no-undef-components': ['error', { ignorePatterns: ['router-link', 'router-view'] }],
       'vue/no-unused-refs': 'error',
       'vue/no-useless-mustaches': 'error',
       'vue/no-useless-v-bind': 'error',
-      'vue/v-on-function-call': 'error',
       'vue/no-unused-properties': ['error', { groups: ['props', 'data', 'computed', 'methods', 'setup'] }],
       'vue/html-button-has-type': 'error',
       'vue/no-ref-object-reactivity-loss': 'error',

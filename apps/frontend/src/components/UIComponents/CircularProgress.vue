@@ -7,10 +7,10 @@ import { computed } from 'vue'
 
 const props = withDefaults(
   defineProps<{
-    progress: number
-    size: number
-    strokeWidth: number
-    formatter: (value: number) => string
+    progress?: number
+    size?: number
+    strokeWidth?: number
+    formatter?: (value: number) => string
   }>(),
   {
     progress: 0,

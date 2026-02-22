@@ -216,6 +216,7 @@ const anmeldeLinkCreateModal = useTemplateRef('anmeldeLinkCreateModal')
           <div class="text-lg font-semibold">Bedingungen <Badge color="secondary"> Gliederung </Badge></div>
           <p class="text-sm text-gray-500">Bitte beachte die folgenden Bedingungen</p>
         </div>
+        <!-- eslint-disable vue/no-v-html -->
         <div
           class="prose dark:prose-invert"
           v-html="unterveranstaltung?.bedingungen"
@@ -249,6 +250,7 @@ const anmeldeLinkCreateModal = useTemplateRef('anmeldeLinkCreateModal')
           class="prose dark:prose-invert"
           v-html="unterveranstaltung?.veranstaltung?.datenschutz"
         />
+        <!-- eslint-enable vue/no-v-html -->
       </Tab>
       <Tab key="marketing">
         <div class="flex justify-between items-center mt-5 lg:mt-10 mb-5">
