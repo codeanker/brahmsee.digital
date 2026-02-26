@@ -7,6 +7,7 @@ import prisma from '../../prisma.js'
 import { customFieldValuesCreateMany, defineCustomFieldValues } from '../../types/defineCustomFieldValues.js'
 import { definePublicMutateProcedure } from '../../types/defineProcedure.js'
 import logActivity from '../../util/activity.js'
+import { emitTableUpdate } from '../../sse/index.js'
 import { sendMail } from '../../util/mail.js'
 import { getPersonCreateData, personSchema } from '../person/schema/person.schema.js'
 import { updateMeiliPerson } from '../../meilisearch/person.js'
@@ -216,5 +217,7 @@ export const anmeldungPublicCreateProcedure = definePublicMutateProcedure({
         accessToken,
       },
     })
+
+    emitTableUpdate('anmeldung')
   },
 })
