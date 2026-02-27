@@ -22,6 +22,7 @@ export const accountVerwaltungGetProcedure = defineProtectedQueryProcedure({
         status: true,
         role: true,
         dlrgOauthId: true,
+        personId: true,
         person: {
           select: {
             firstname: true,
