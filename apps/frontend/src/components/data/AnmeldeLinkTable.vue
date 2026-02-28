@@ -11,12 +11,14 @@ import DataGridDoubleLineCell from '../DataGridDoubleLineCell.vue'
 import DataTable, { type Query } from '../Table/DataTable.vue'
 import initialData from '../Table/initialData'
 import Badge from '../UIComponents/Badge.vue'
-// import Button from '../UIComponents/Button.vue'
+import Button from '../UIComponents/Button.vue'
+import { toast } from 'vue-sonner'
 
 type AnmeldeLink = RouterOutput['anmeldungLink']['list']['data'][number]
 
 type Props = {
   filter: RouterInput['anmeldungLink']['list']['section']
+  url: string
 }
 
 const props = defineProps<Props>()
@@ -73,13 +75,18 @@ const columns = [
       })
     },
   }),
-  // column.display({
-  //   header: ' ',
-  //   cell({ row }) {
-  //     const link = `?token=${row.original.token}`
-  //     return h(Button, {}, ['Link kopieren'])
-  //   },
-  // }),
+  column.display({
+    header: ' ',
+    cell({ row }) {
+      return h(Button, {
+        onClick: () => {
+          const link = `${props.url}?token=${row.original.accessToken}`
+          navigator.clipboard.writeText(link)
+          toast.success('Link in Zwischenablage kopiert')
+        }
+      }, 'Link kopieren')
+    },
+  }),
 ]
 
 const query: Query<AnmeldeLink> = (pagination, filter) =>

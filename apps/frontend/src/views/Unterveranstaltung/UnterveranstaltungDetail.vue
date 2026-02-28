@@ -329,6 +329,7 @@ const anmeldeLinkCreateModal = useTemplateRef('anmeldeLinkCreateModal')
         <AnmeldeLinkTable
           v-if="unterveranstaltung"
           :filter="{ type: 'unterveranstaltung', unterveranstaltungId: unterveranstaltung.id }"
+          :url="`${publicLink}/anmeldung`"
         />
 
         <AnmeldeLinkCreateModal
