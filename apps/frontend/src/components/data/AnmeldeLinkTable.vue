@@ -18,7 +18,6 @@ type AnmeldeLink = RouterOutput['anmeldungLink']['list']['data'][number]
 
 type Props = {
   filter: RouterInput['anmeldungLink']['list']['section']
-  url: string
 }
 
 const props = defineProps<Props>()
@@ -78,10 +77,17 @@ const columns = [
   column.display({
     header: ' ',
     cell({ row }) {
+      if (row.original.usedAt !== null) {
+        return h('span', { class: 'italic'}, 'Link bereits benutzt')
+      }
+
+      const hostname = row.original.unterveranstaltung.veranstaltung.hostname?.hostname ?? ''
+      const ausschreibung = row.original.unterveranstaltung.id
+      const url = `https://${hostname}/ausschreibung/${ausschreibung}/anmeldung?token=${row.original.accessToken}`
+
       return h(Button, {
         onClick: () => {
-          const link = `${props.url}?token=${row.original.accessToken}`
-          navigator.clipboard.writeText(link)
+          navigator.clipboard.writeText(url)
           toast.success('Link in Zwischenablage kopiert')
         }
       }, 'Link kopieren')
