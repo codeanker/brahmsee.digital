@@ -19,6 +19,7 @@ export const gliederungVerwaltungGetProcedure = defineProtectedQueryProcedure({
         id: true,
         name: true,
         edv: true,
+        domain: true,
       },
     })
   },
