@@ -15,16 +15,17 @@ jobs:
       version: ${{ steps.version.outputs.prop }}
       commit: ${{ steps.set-commit.outputs.commit }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: get version
         id: version
         uses: notiz-dev/github-action-json-property@v0.2.0
         with:
-          path: 'package.json'
-          prop_path: 'version'
+          path: "package.json"
+          prop_path: "version"
       - name: set commit
         id: set-commit
         run: echo "commit=${GITHUB_SHA:0:7}" >> $GITHUB_OUTPUT
+
   release:
     needs: prepare
     permissions:
@@ -33,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -45,7 +46,7 @@ jobs:
           sed -i "s/commit: .*/commit: ${{ needs.prepare.outputs.commit }}/g" chart/brahmsee-digital/values.yaml
 
       - name: Chart | Push brahmsee-digital
-        uses: appany/helm-oci-chart-releaser@v0.3.0
+        uses: appany/helm-oci-chart-releaser@v0.5.0
         with:
           name: brahmsee-digital
           repository: codeanker/brahmsee.digital

@@ -5,9 +5,13 @@ name: CI
 
 on:
   push:
-    branches: [development, master]
+    branches:
+      - development
+      - master
   pull_request:
-    branches: [development, master]
+    branches:
+      - development
+      - master
 
 jobs:
   prepare:
@@ -17,13 +21,13 @@ jobs:
       version: ${{ steps.version.outputs.prop }}
       commit: ${{ steps.set-commit.outputs.commit }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: get version
         id: version
         uses: notiz-dev/github-action-json-property@v0.2.0
         with:
-          path: 'package.json'
-          prop_path: 'version'
+          path: "package.json"
+          prop_path: "version"
       - name: set commit
         id: set-commit
         run: echo "commit=${GITHUB_SHA:0:7}" >> $GITHUB_OUTPUT
@@ -51,7 +55,7 @@ jobs:
           images: ghcr.io/codeanker/brahmsee.digital
           tags: type=sha,prefix=
       - name: Build and push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
@@ -59,4 +63,3 @@ jobs:
           build-args: |
             commitHash=${{needs.prepare.outputs.commit}}
             version=${{needs.prepare.outputs.version}}
-            mode=${{ env.MODE }}

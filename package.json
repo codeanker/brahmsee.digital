@@ -22,7 +22,7 @@
     "lint": "turbo lint",
     "lint:strict": "pnpm -C ./apps/api exec eslint . --cache --max-warnings=0 && pnpm -C ./apps/frontend exec eslint . --cache --max-warnings=0 && pnpm -C ./packages/authentication exec eslint . --cache --max-warnings=0 && pnpm -C ./packages/cookies exec eslint . --cache --max-warnings=0 && pnpm -C ./packages/helpers exec eslint . --cache --max-warnings=0 && pnpm -C ./packages/interfaces exec eslint . --cache --max-warnings=0 && pnpm -C ./packages/validation exec eslint . --cache --max-warnings=0",
     "lint:fix": "eslint \"**/*.{vue,ts,js}\" --fix",
-    "prepare": "husky install",
+    "prepare": "husky",
     "test": "vitest",
     "generate": "tsx ./apps/api/src/cli/index.ts"
   },
