@@ -98,7 +98,7 @@ const handle = async (event: Event) => {
         <BasicInput
           v-model="gliederungCopy.domain"
           label="Domain"
-          name="email"
+          name="domain"
           required
         />
       </div>
