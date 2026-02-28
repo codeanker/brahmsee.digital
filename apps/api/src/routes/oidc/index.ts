@@ -68,19 +68,13 @@ oidcRouter.get('/dlrg/callback', async (c) => {
       Authorization: `Bearer ${result.access_token}`,
     },
   })
-  const profileRaw = await userInfoResponse.json()
+  const profileRaw = await userInfoResponse.json() as Record<string, unknown>
   const profile = ZProfile.parse(profileRaw)
   const existingUser = await prisma.account.findUnique({
     where: {
       dlrgOauthId: profile.sub,
     },
   })
-
-  let registerAsGliederung = false
-  const registerAs = c.req.query('as')?.trim()
-  if (registerAs !== undefined && registerAs?.length > 0) {
-    registerAsGliederung = true
-  }
 
   let account: Account
 
@@ -105,8 +99,8 @@ oidcRouter.get('/dlrg/callback', async (c) => {
         dlrgOauthId: profile.sub,
         email: profile.email,
         password: '',
-        role: registerAsGliederung ? 'GLIEDERUNG_ADMIN' : 'USER',
-        status: registerAsGliederung ? 'OFFEN' : 'AKTIV',
+        role: 'USER',
+        status: 'AKTIV',
         activatedAt: new Date(),
         person: {
           create: {
@@ -120,9 +114,7 @@ oidcRouter.get('/dlrg/callback', async (c) => {
     })
   }
 
-  // TODO: Implement onboarding
-  const redirectUri = new URL(registerAsGliederung ? '/onboarding' : '/login', config.clientUrl)
-
+  const redirectUri = new URL('/login', config.clientUrl)
   const jwt = sign({
     sub: account.id.toString(),
   })
