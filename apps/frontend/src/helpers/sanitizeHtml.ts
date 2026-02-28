@@ -3,9 +3,12 @@ import doSanitizeHtml from 'sanitize-html'
 export function sanitizeHtml(html: string): string {
   return doSanitizeHtml(html, {
     allowedTags: [
+      'h2',
+      'h3',
       'p',
       'strong',
       'em',
+      's',
       'u',
       'a',
       'ul',
