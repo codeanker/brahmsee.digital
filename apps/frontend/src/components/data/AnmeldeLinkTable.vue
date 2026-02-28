@@ -11,7 +11,8 @@ import DataGridDoubleLineCell from '../DataGridDoubleLineCell.vue'
 import DataTable, { type Query } from '../Table/DataTable.vue'
 import initialData from '../Table/initialData'
 import Badge from '../UIComponents/Badge.vue'
-// import Button from '../UIComponents/Button.vue'
+import Button from '../UIComponents/Button.vue'
+import { toast } from 'vue-sonner'
 
 type AnmeldeLink = RouterOutput['anmeldungLink']['list']['data'][number]
 
@@ -73,13 +74,25 @@ const columns = [
       })
     },
   }),
-  // column.display({
-  //   header: ' ',
-  //   cell({ row }) {
-  //     const link = `?token=${row.original.token}`
-  //     return h(Button, {}, ['Link kopieren'])
-  //   },
-  // }),
+  column.display({
+    header: ' ',
+    cell({ row }) {
+      if (row.original.usedAt !== null) {
+        return h('span', { class: 'italic'}, 'Link bereits benutzt')
+      }
+
+      const hostname = row.original.unterveranstaltung.veranstaltung.hostname?.hostname ?? ''
+      const ausschreibung = row.original.unterveranstaltung.id
+      const url = `https://${hostname}/ausschreibung/${ausschreibung}/anmeldung?token=${row.original.accessToken}`
+
+      return h(Button, {
+        onClick: () => {
+          navigator.clipboard.writeText(url)
+          toast.success('Link in Zwischenablage kopiert')
+        }
+      }, 'Link kopieren')
+    },
+  }),
 ]
 
 const query: Query<AnmeldeLink> = (pagination, filter) =>

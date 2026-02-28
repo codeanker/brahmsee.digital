@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { MenuItem } from '@headlessui/vue'
 import {
+  ArrowTopRightOnSquareIcon,
   CheckCircleIcon,
   ChevronDownIcon,
   CodeBracketIcon,
@@ -200,6 +201,21 @@ const modalAddPermission = useTemplateRef('modalAddPermission')
       >
         <h2 class="text-base font-semibold leading-7">Stammdaten</h2>
         <Stammdaten v-model="stammdatenForm" />
+      </div>
+      <div
+        v-else
+        class="mb-6"
+      >
+        <h2 class="text-base font-semibold leading-7">Stammdaten</h2>
+        <Button
+          v-if="account"
+          color="info"
+          class="flex flex-row items-center w-fit"
+          :to="{ name: 'Verwaltung Persondetails', params: { personId: account.personId } }"
+        >
+          <span>Stammdaten bearbeiten</span>
+          <ArrowTopRightOnSquareIcon class="h-4 w-4" />
+        </Button>
       </div>
 
       <ValidateForm @submit="handle">

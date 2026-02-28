@@ -39,9 +39,9 @@ export const personListProcedure = defineProtectedQueryProcedure({
             },
           ]
         : undefined,
-      gliederung: {
+      gliederung: filter?.gliederung_name === undefined ? undefined : {
         name: {
-          contains: filter?.gliederung_name,
+          contains: filter.gliederung_name,
           mode: 'insensitive',
         },
       },
@@ -57,8 +57,6 @@ export const personListProcedure = defineProtectedQueryProcedure({
 
     const total = await prisma.person.count({ where })
     const { pageIndex, pageSize, pages } = calculatePagination(total, pagination)
-
-    console.log(orderBy)
 
     const persons = await prisma.person.findMany({
       take: pageSize,

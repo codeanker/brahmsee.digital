@@ -40,6 +40,7 @@ const decide = useMutation({
 const column = createColumnHelper<AccessRequest>()
 const columns = [
   column.accessor('gliederung.name', {
+    id: 'gliederung',
     header: 'Gliederung',
     enableColumnFilter: true,
     enableSorting: true,

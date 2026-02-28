@@ -85,6 +85,15 @@ export const anmeldungLinkListProcedure = defineProtectedQueryProcedure({
                 name: true,
               },
             },
+            veranstaltung: {
+              select: {
+                hostname: {
+                  select: {
+                    hostname: true,
+                  }
+                }
+              }
+            }
           },
         },
         anmeldung: {

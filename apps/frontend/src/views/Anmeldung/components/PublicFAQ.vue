@@ -2,13 +2,14 @@
 import { injectUnterveranstaltung } from '@/layouts/AnmeldungLayout.vue'
 import { PlusIcon, MinusIcon } from '@heroicons/vue/24/solid'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
+import { sanitizeHtml } from '@/helpers/sanitizeHtml';
 
 const unterveranstaltung = injectUnterveranstaltung()
 </script>
 
 <template>
   <div
-    v-if="unterveranstaltung?.landingSettings.faqVisible && unterveranstaltung?.faqs"
+    v-if="unterveranstaltung?.landingSettings?.faqVisible && unterveranstaltung?.faqs"
     class="bg-white"
   >
     <div class="mx-auto max-w-7xl px-6 py-24 sm:pt-32 lg:px-8 lg:py-40">
@@ -57,7 +58,7 @@ const unterveranstaltung = injectUnterveranstaltung()
                 as="dd"
                 class="mt-2 pr-12"
               >
-                <p class="text-base/7 text-gray-600">{{ faq.answer }}</p>
+                <p class="prose text-gray-600" v-html="sanitizeHtml(faq.answer)"></p>
               </DisclosurePanel>
             </Disclosure>
           </dl>
