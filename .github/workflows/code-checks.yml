@@ -16,15 +16,6 @@ jobs:
     steps:
       - name: Git checkout
         uses: actions/checkout@v6
-
-      - name: Use Node.js 22
-        uses: actions/setup-node@v6
-        with:
-          node-version: 22
-          cache: "pnpm"
-      - name: corepack
-        run: corepack enable
-
       - name: Cache turbo build setup
         uses: actions/cache@v5
         with:
@@ -36,10 +27,16 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           run_install: false
+      - name: Use Node.js 22
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: "pnpm"
+      - name: corepack
+        run: corepack enable 
       - name: Install dependencies
         run: |
           export COREPACK_INTEGRITY_KEYS="$(curl https://registry.npmjs.org/-/npm/v1/keys | jq -c '{npm: .keys}')"
           pnpm install
-
       - name: turbo-checks
         run: pnpm run turbo-checks
