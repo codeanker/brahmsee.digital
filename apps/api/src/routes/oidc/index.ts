@@ -136,7 +136,16 @@ oidcRouter.get('/dlrg/login', async (c) => {
   const as = await oauth.processDiscoveryResponse(issuer, discoveryRequestResponse)
   const authorizationUrl = new URL(as.authorization_endpoint!)
 
-  const redirectUri = new URL('/api/connect/dlrg/callback', config.clientUrl)
+  const host = await prisma.hostname.findFirst({
+    where: {
+      hostname: c.req.header('Host'),
+    }
+  })
+  if (host === null) {
+    return c.text('Invalid domain', 400)
+  }
+
+  const redirectUri = new URL('/api/connect/dlrg/callback', host.hostname)
   const registerAs = c.req.query('as')?.trim()
   if (registerAs !== undefined && registerAs?.length > 0) {
     redirectUri.searchParams.set('as', registerAs)
