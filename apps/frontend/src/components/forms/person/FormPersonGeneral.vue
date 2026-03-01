@@ -45,6 +45,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   submit: [data: FormPersonGeneralSubmit]
   showTerms: []
+  showPrivacy: []
 }>()
 
 async function queryGliederungen(searchTerm: string) {
@@ -237,7 +238,7 @@ const submit = () => {
           <span>Ich habe die gesonderten </span>
           <u
             class="cursor-pointer"
-            @click="emit('showTerms')"
+            @click="emit('showPrivacy')"
           >
             <span>Datenschutzerklärung</span>
             <ArrowTopRightOnSquareIcon class="h-4 inline ml-1" />
