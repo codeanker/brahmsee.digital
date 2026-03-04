@@ -7,8 +7,8 @@ export const customFieldVeranstaltungOrder = defineProtectedMutateProcedure({
   key: 'veranstaltungOrder',
   roleIds: ['ADMIN'],
   inputSchema: z.strictObject({
-    veranstaltungId: z.uuid(),
-    fields: z.array(z.uuid()),
+    veranstaltungId: z.string().uuid(),
+    fields: z.array(z.string().uuid()),
   }),
   handler: async ({ input }) => {
     const fields = await prisma.customField.findMany({

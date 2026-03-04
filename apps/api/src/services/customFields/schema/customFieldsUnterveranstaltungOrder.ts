@@ -8,8 +8,8 @@ export const customFieldUnterveranstaltungOrder = defineProtectedMutateProcedure
   key: 'unterveranstaltungOrder',
   roleIds: ['ADMIN', 'GLIEDERUNG_ADMIN'],
   inputSchema: z.strictObject({
-    unterveranstaltungId: z.uuid(),
-    fields: z.array(z.uuid()),
+    unterveranstaltungId: z.string().uuid(),
+    fields: z.array(z.string().uuid()),
   }),
   handler: async ({ ctx, input }) => {
     if (ctx.account.role === 'GLIEDERUNG_ADMIN') {
