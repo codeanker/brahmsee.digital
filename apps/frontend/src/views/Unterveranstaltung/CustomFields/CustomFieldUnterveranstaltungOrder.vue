@@ -5,10 +5,11 @@ import { useRouteTitle } from '@/composables/useRouteTitle'
 import cn from '@/helpers/cn'
 import { CustomFieldTypeMapping, type CustomField } from '@codeanker/api'
 import { groupBy } from '@codeanker/helpers'
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/vue/24/outline'
+import { ArrowLeftIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/vue/24/outline'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import { useRouteParams } from '@vueuse/router'
 import { computed, ref, watch } from 'vue'
+import { RouterLink } from 'vue-router'
 
 const { setTitle } = useRouteTitle()
 setTitle('Benutzerdefinierte Felder sortieren')
@@ -93,6 +94,23 @@ const { mutate, isPending } = useMutation({
 </script>
 
 <template>
+  <div class="mb-8">
+    <RouterLink
+      :to="{ name: 'UnterveranstaltungDetail', params: { unterveranstaltungId }, query: { tab: 4 } }"
+      class="text-primary-600 flex flex-row items-center gap-x-2"
+    >
+      <ArrowLeftIcon class="size-4" />
+      <span>Zurück zur Ausschreibung</span>
+    </RouterLink>
+  </div>
+
+  <div class="mb-8">
+    <div class="text-lg font-semibold">Reihenfolge ändern</div>
+    <p class="text-sm text-gray-500">
+      Hier kann die Reihenfolge der benutzerdefinierten Felder deiner Ausschreibung verändert werden.
+    </p>
+  </div>
+
   <table class="w-full">
     <thead class="bg-primary-700 text-white">
       <tr>
@@ -110,7 +128,7 @@ const { mutate, isPending } = useMutation({
           :class="
             cn({
               'even:bg-slate-50 dark:even:bg-slate-800': !!field.unterveranstaltungId,
-              'text-gray-400 italic': !!field.veranstaltungId,
+              'text-gray-400 italic cursor-not-allowed': !!field.veranstaltungId,
             })
           "
         >
@@ -161,8 +179,10 @@ const { mutate, isPending } = useMutation({
     </Button>
     <Button
       color="danger"
-      :to="{ name: 'UnterveranstaltungDetail', params: { unterveranstaltungId } }"
-      >Abbrechen</Button
+      :disabled="isPending"
+      :to="{ name: 'UnterveranstaltungDetail', params: { unterveranstaltungId }, query: { tab: 4 } }"
     >
+      Abbrechen
+    </Button>
   </div>
 </template>

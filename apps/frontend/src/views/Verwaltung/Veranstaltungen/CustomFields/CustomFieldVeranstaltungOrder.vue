@@ -3,7 +3,7 @@ import { apiClient } from '@/api'
 import Button from '@/components/UIComponents/Button.vue'
 import { useRouteTitle } from '@/composables/useRouteTitle'
 import { CustomFieldTypeMapping, type CustomField } from '@codeanker/api'
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/vue/24/outline'
+import { ArrowLeftIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/vue/24/outline'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import { useRouteParams } from '@vueuse/router'
 import { ref, watch } from 'vue'
@@ -60,6 +60,23 @@ const { mutate, isPending } = useMutation({
 </script>
 
 <template>
+  <div class="mb-8">
+    <RouterLink
+      :to="{ name: 'Verwaltung Veranstaltungsdetails', params: { veranstaltungId }, query: { tab: 6 } }"
+      class="text-primary-600 flex flex-row items-center gap-x-2"
+    >
+      <ArrowLeftIcon class="size-4" />
+      <span>Zurück zur Veranstaltung</span>
+    </RouterLink>
+  </div>
+
+  <div class="mb-8">
+    <div class="text-lg font-semibold">Reihenfolge ändern</div>
+    <p class="text-sm text-gray-500">
+      Hier kann die Reihenfolge benutzerdefinierter Felder der Veranstaltung verändert werden.
+    </p>
+  </div>
+
   <table class="w-full">
     <thead class="bg-primary-700 text-white">
       <tr>
@@ -118,8 +135,10 @@ const { mutate, isPending } = useMutation({
     </Button>
     <Button
       color="danger"
-      :to="{ name: 'Verwaltung Veranstaltungsdetails', params: { veranstaltungId } }"
-      >Abbrechen</Button
+      :to="{ name: 'Verwaltung Veranstaltungsdetails', params: { veranstaltungId }, query: { tab: 6 } }"
+      :disabled="isPending"
     >
+      Abbrechen
+    </Button>
   </div>
 </template>
