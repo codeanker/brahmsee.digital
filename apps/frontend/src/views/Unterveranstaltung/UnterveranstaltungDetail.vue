@@ -371,6 +371,7 @@ const anmeldeLinkCreateModal = useTemplateRef('anmeldeLinkCreateModal')
               Hier können benutzerdefinierte Felder erstellt werden, welche für alle Unterveranstaltungen gelten.
             </p>
           </div>
+          <div class="flex items-center gap-x-4">
           <RouterLink
             class="text-primary-600"
             :to="{
@@ -380,6 +381,16 @@ const anmeldeLinkCreateModal = useTemplateRef('anmeldeLinkCreateModal')
           >
             Neues Feld
           </RouterLink>
+            <RouterLink
+              class="text-primary-600"
+              :to="{
+                name: 'Unterveranstaltung Custom Fields sortieren',
+                params: { unterveranstaltungId: route.params.unterveranstaltungId },
+              }"
+            >
+              Reihenfolge ändern
+            </RouterLink>
+          </div>
         </div>
         <CustomFieldsTable
           v-if="unterveranstaltung?.id"

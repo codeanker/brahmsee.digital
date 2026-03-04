@@ -81,6 +81,19 @@ const veranstaltungRoutes: Route[] = [
         },
       },
       {
+        name: 'Veranstaltung Custom Fields sortieren',
+        path: ':veranstaltungId/fields/order',
+        component: () => import('./CustomFields/CustomFieldVeranstaltungOrder.vue'),
+        meta: {
+          breadcrumbs: [
+            detailCrumb,
+            {
+              text: 'Benutzerdefinierte Felder sortieren',
+            },
+          ],
+        },
+      },
+      {
         name: 'Verwaltung Custom Field bearbeiten',
         path: ':veranstaltungId/fields/:fieldId',
         component: () => import('./CustomFields/CustomFieldVeranstaltungEdit.vue'),

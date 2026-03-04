@@ -32,6 +32,18 @@ const router = useRouter()
 
 const column = createColumnHelper<CustomField>()
 const columns = [
+  column.accessor('order', {
+    header: 'Reihenfolge',
+    enableSorting: true,
+    cell({ getValue }) {
+      const order = getValue()
+      if (!order) {
+        return '-'
+      }
+
+      return order
+    },
+  }),
   column.accessor('name', {
     header: 'Name',
     enableColumnFilter: true,
@@ -174,6 +186,7 @@ function onClick(field: CustomField) {
   <DataTable
     :query="query"
     :columns="columns"
+    :initial-sort="[{ id: 'order', desc: false }]"
     @click="onClick"
   />
 </template>

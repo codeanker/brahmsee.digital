@@ -19,6 +19,7 @@ model CustomField {
   id                   String                @id @default(uuid(7))
   name                 String
   description          String?
+  order                Int?
   type                 CustomFieldType
   required             Boolean               @default(false)
   options              String[]
