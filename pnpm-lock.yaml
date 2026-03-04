@@ -118,10 +118,10 @@ importers:
         version: 10.1.0
       '@hono/node-server':
         specifier: ^1.19.6
-        version: 1.19.7(hono@4.12.0)
+        version: 1.19.7(hono@4.12.4)
       '@hono/trpc-server':
         specifier: ^0.4.0
-        version: 0.4.1(@trpc/server@11.0.0-rc.682(typescript@5.7.2))(hono@4.12.0)
+        version: 0.4.1(@trpc/server@11.0.0-rc.682(typescript@5.7.2))(hono@4.12.4)
       '@prisma/client':
         specifier: ^5.19.1
         version: 5.22.0(prisma@5.22.0)
@@ -153,8 +153,8 @@ importers:
         specifier: ^4.7.8
         version: 4.7.8
       hono:
-        specifier: ^4.12.0
-        version: 4.12.0
+        specifier: ^4.12.4
+        version: 4.12.4
       http-errors:
         specifier: ^2.0.1
         version: 2.0.1
@@ -3625,8 +3625,8 @@ packages:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
 
-  hono@4.12.0:
-    resolution: {integrity: sha512-NekXntS5M94pUfiVZ8oXXK/kkri+5WpX2/Ik+LVsl+uvw+soj4roXIsPqO+XsWrAw20mOzaXOZf3Q7PfB9A/IA==}
+  hono@4.12.4:
+    resolution: {integrity: sha512-ooiZW1Xy8rQ4oELQ++otI2T9DsKpV0M6c6cO6JGx4RTfav9poFFLlet9UMXHZnoM1yG0HWGlQLswBGX3RZmHtg==}
     engines: {node: '>=16.9.0'}
 
   hookable@5.5.3:
@@ -3916,6 +3916,9 @@ packages:
 
   lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
+
+  lodash@4.17.23:
+    resolution: {integrity: sha512-LgVTMpQtIopCi79SJeDiP0TfWi5CNEc/L/aRdTh3yIvmZXTnheWpKjSZhnvMl8iXbC1tFg9gdHHDMLoV7CnG+w==}
 
   logform@2.7.0:
     resolution: {integrity: sha512-TFYA4jnP7PVbmlBIfhlSe+WKxs9dklXMTEGcBCIvLhE/Tn3H6Gk1norupVW7m5Cnd4bLcr08AytbyV/xj7f/kQ==}
@@ -6047,14 +6050,14 @@ snapshots:
     dependencies:
       vue: 3.5.13(typescript@5.7.2)
 
-  '@hono/node-server@1.19.7(hono@4.12.0)':
+  '@hono/node-server@1.19.7(hono@4.12.4)':
     dependencies:
-      hono: 4.12.0
+      hono: 4.12.4
 
-  '@hono/trpc-server@0.4.1(@trpc/server@11.0.0-rc.682(typescript@5.7.2))(hono@4.12.0)':
+  '@hono/trpc-server@0.4.1(@trpc/server@11.0.0-rc.682(typescript@5.7.2))(hono@4.12.4)':
     dependencies:
       '@trpc/server': 11.0.0-rc.682(typescript@5.7.2)
-      hono: 4.12.0
+      hono: 4.12.4
 
   '@humanfs/core@0.19.1': {}
 
@@ -8292,7 +8295,7 @@ snapshots:
 
   he@1.2.0: {}
 
-  hono@4.12.0: {}
+  hono@4.12.4: {}
 
   hookable@5.5.3: {}
 
@@ -8563,6 +8566,8 @@ snapshots:
   lodash.uniq@4.5.0: {}
 
   lodash@4.17.21: {}
+
+  lodash@4.17.23: {}
 
   logform@2.7.0:
     dependencies:
@@ -10127,7 +10132,7 @@ snapshots:
       eslint-visitor-keys: 3.4.3
       espree: 9.6.1
       esquery: 1.7.0
-      lodash: 4.17.21
+      lodash: 4.17.23
       semver: 7.7.4
     transitivePeerDependencies:
       - supports-color
