@@ -33,7 +33,7 @@
     "@codeanker/service-sms": "file:../../vendor/codeanker-service-sms-0.0.2.tar.gz",
     "@e965/xlsx": "^0.20.3",
     "@faker-js/faker": "catalog:",
-    "@hono/node-server": "^1.19.6",
+    "@hono/node-server": "^1.19.10",
     "@hono/trpc-server": "^0.4.0",
     "@prisma/client": "^5.19.1",
     "@prisma/extension-accelerate": "^1.1.0",
