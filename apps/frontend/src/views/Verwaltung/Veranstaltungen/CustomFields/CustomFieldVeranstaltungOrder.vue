@@ -2,7 +2,6 @@
 import { apiClient } from '@/api'
 import Button from '@/components/UIComponents/Button.vue'
 import { useRouteTitle } from '@/composables/useRouteTitle'
-import cn from '@/helpers/cn'
 import { CustomFieldTypeMapping, type CustomField } from '@codeanker/api'
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/vue/24/outline'
 import { useMutation, useQuery } from '@tanstack/vue-query'
