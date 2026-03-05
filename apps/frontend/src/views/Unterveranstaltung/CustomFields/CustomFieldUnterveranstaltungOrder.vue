@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { apiClient } from '@/api'
+import Notification from '@/components/LayoutComponents/Notifications.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import { useRouteTitle } from '@/composables/useRouteTitle'
 import cn from '@/helpers/cn'
@@ -81,6 +82,8 @@ function moveDown(index: number) {
   copy.value.splice(realIndex, 2, rows[1], rows[0])
 }
 
+const showNotification = ref(false)
+
 const { mutate, isPending } = useMutation({
   mutationFn: async () => {
     const ids = fields.value.ausschreibung.map(({ id }) => id)
@@ -88,6 +91,7 @@ const { mutate, isPending } = useMutation({
       unterveranstaltungId: unterveranstaltungId.value,
       fields: ids,
     })
+    showNotification.value = true
     await refetch()
   },
 })
@@ -185,4 +189,15 @@ const { mutate, isPending } = useMutation({
       Abbrechen
     </Button>
   </div>
+
+  <Notification
+    v-if="showNotification"
+    :duration="2000"
+    @close="showNotification = false"
+  >
+    <template #title> Erfolgreich gespeichert </template>
+    <template #content>
+      <p class="mt-1 text-sm text-gray-500">Deine Änderungen wurden erfolgreich gespeichert.</p>
+    </template>
+  </Notification>
 </template>

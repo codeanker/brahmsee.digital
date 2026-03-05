@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { apiClient } from '@/api'
+import Notification from '@/components/LayoutComponents/Notifications.vue'
 import Button from '@/components/UIComponents/Button.vue'
 import { useRouteTitle } from '@/composables/useRouteTitle'
 import { CustomFieldTypeMapping, type CustomField } from '@codeanker/api'
@@ -47,6 +48,8 @@ function moveDown(index: number) {
   copy.value.splice(index, 2, rows[1], rows[0])
 }
 
+const showNotification = ref(false)
+
 const { mutate, isPending } = useMutation({
   mutationFn: async () => {
     const ids = copy.value.map(({ id }) => id)
@@ -54,6 +57,7 @@ const { mutate, isPending } = useMutation({
       veranstaltungId: veranstaltungId.value,
       fields: ids,
     })
+    showNotification.value = true
     await refetch()
   },
 })
@@ -141,4 +145,15 @@ const { mutate, isPending } = useMutation({
       Abbrechen
     </Button>
   </div>
+
+  <Notification
+    v-if="showNotification"
+    :duration="2000"
+    @close="showNotification = false"
+  >
+    <template #title> Erfolgreich gespeichert </template>
+    <template #content>
+      <p class="mt-1 text-sm text-gray-500">Deine Änderungen wurden erfolgreich gespeichert.</p>
+    </template>
+  </Notification>
 </template>
