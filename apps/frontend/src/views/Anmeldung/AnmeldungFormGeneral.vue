@@ -10,6 +10,7 @@ import FormPersonGeneral, { type FormPersonGeneralSubmit } from '@/components/fo
 import Drawer from '@/components/LayoutComponents/Drawer.vue'
 import { injectUnterveranstaltung } from '@/layouts/AnmeldungLayout.vue'
 import { type NahrungsmittelIntoleranz } from '@codeanker/api'
+import { sanitizeHtml } from '@/helpers/sanitizeHtml'
 
 const props = withDefaults(
   defineProps<{
@@ -42,6 +43,7 @@ watch(unterveranstaltung, () => loadCustomFields())
 const customFieldValues = ref<Record<number, any>>({})
 
 const showBedingungen = ref(false)
+const showDatenschutz = ref(false)
 
 const {
   execute: createAnmeldung,
@@ -109,22 +111,33 @@ const {
   >
     <template #content>
       <div class="container mx-auto">
-        <div class="text-lg font-semibold">Teilnahmebedingungen</div>
-        <!-- eslint-disable vue/no-v-html -->
+        <div class="text-lg font-semibold">Teilnahmebedingungen der Gliederung</div>
         <div
           class="prose dark:prose-invert"
-          v-html="unterveranstaltung?.bedingungen"
+          v-html="sanitizeHtml(unterveranstaltung?.bedingungen)"
         />
-        <div
-          class="prose dark:prose-invert"
-          v-html="unterveranstaltung?.veranstaltung?.teilnahmeBedingungenPublic"
-        />
+
         <hr class="my-10" />
+
+        <div class="text-lg font-semibold">Allgemeine Teilnahmebedingungen</div>
+        <div
+          class="prose dark:prose-invert"
+          v-html="sanitizeHtml(unterveranstaltung?.veranstaltung?.teilnahmeBedingungenPublic)"
+        />
+      </div>
+    </template>
+  </Drawer>
+  <Drawer
+    v-if="showDatenschutz"
+    @close="showDatenschutz = false"
+  >
+    <template #content>
+      <div class="container mx-auto">
         <div class="text-lg font-semibold mt-10">Datenschutz</div>
 
         <div
           class="prose dark:prose-invert"
-          v-html="unterveranstaltung?.veranstaltung?.datenschutz"
+          v-html="sanitizeHtml(unterveranstaltung?.veranstaltung?.datenschutz)"
         />
       </div>
     </template>
@@ -145,6 +158,7 @@ const {
         :is-public-anmeldung="props.isPublic"
         @submit="(value) => createAnmeldung(undefined, value)"
         @show-terms="showBedingungen = true"
+        @show-privacy="showDatenschutz = true"
       >
         <div
           v-if="(customFields?.length ?? 0) > 0"

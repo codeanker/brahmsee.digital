@@ -81,6 +81,19 @@ export const routesUnterveranstaltung: Route[] = [
         },
       },
       {
+        name: 'Unterveranstaltung Custom Fields sortieren',
+        path: ':unterveranstaltungId/fields/order',
+        component: () => import('./CustomFields/CustomFieldUnterveranstaltungOrder.vue'),
+        meta: {
+          breadcrumbs: [
+            detailCrumb,
+            {
+              text: 'Benutzerdefinierte Felder sortieren',
+            },
+          ],
+        },
+      },
+      {
         name: 'Unterveranstaltung Custom Field bearbeiten',
         path: ':unterveranstaltungId/fields/:fieldId',
         component: () => import('./CustomFields/CustomFieldUnterveranstaltungEdit.vue'),

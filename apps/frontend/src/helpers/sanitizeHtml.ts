@@ -1,6 +1,10 @@
 import doSanitizeHtml from 'sanitize-html'
 
-export function sanitizeHtml(html: string): string {
+export function sanitizeHtml(html?: string | null): string {
+  if (!html) {
+    return ''
+  }
+
   return doSanitizeHtml(html, {
     allowedTags: [
       'h2',

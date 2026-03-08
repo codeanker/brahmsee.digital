@@ -10,6 +10,7 @@ import {
   RocketLaunchIcon,
   DocumentDuplicateIcon,
   LinkIcon,
+  ChevronUpDownIcon,
 } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
 import { computed } from 'vue'
@@ -352,12 +353,25 @@ function copyProgramLink() {
             Hier können benutzerdefinierte Felder erstellt werden, welche für alle Unterveranstaltungen gelten.
           </p>
         </div>
-        <RouterLink
-          class="text-primary-600"
-          :to="{ name: 'Verwaltung Custom Field erstellen' }"
-        >
-          Neues Feld
-        </RouterLink>
+        <div class="flex items-center gap-x-4">
+          <RouterLink
+            class="text-primary-600 flex items-center gap-x-1"
+            :to="{ name: 'Verwaltung Custom Field erstellen' }"
+          >
+            <PlusIcon class="size-4" />
+            <span>Neues Feld</span>
+          </RouterLink>
+          <RouterLink
+            class="text-primary-600 flex items-center gap-x-1"
+            :to="{
+              name: 'Veranstaltung Custom Fields sortieren',
+              params: { veranstaltungId: route.params.veranstaltungId },
+            }"
+          >
+            <ChevronUpDownIcon class="size-4" />
+            <span>Reihenfolge ändern</span>
+          </RouterLink>
+        </div>
       </div>
       <CustomFieldsTable
         v-if="veranstaltung?.id"
