@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 import { CustomFieldPosition, CustomFieldType, Prisma } from '@prisma/client'
 import prisma from '../../prisma.js'
-import { definePublicQueryProcedure } from '../../types/defineProcedure.js'
+import { defineProtectedQueryProcedure, definePublicQueryProcedure } from '../../types/defineProcedure.js'
 import {
   calculatePagination,
   defineEmptyQueryResponse,
@@ -10,6 +10,7 @@ import {
   defineTableInput,
 } from '../../types/defineTableProcedure.js'
 import { boolish } from '../../util/zod.js'
+import { getGliederungRequireAdmin } from '../../util/getGliederungRequireAdmin.js'
 
 const baseFilter = z.strictObject({
   entity: z.enum(['veranstaltung', 'unterveranstaltung']),
@@ -23,6 +24,7 @@ export const customFieldsTable = definePublicQueryProcedure({
   async handler({ input: { entity, entityId, position } }) {
     if (entity === 'veranstaltung') {
       return await prisma.customField.findMany({
+        orderBy: [{ order: { sort: 'asc', nulls: 'last' } }],
         where: {
           veranstaltungId: entityId,
           positions:
@@ -35,6 +37,14 @@ export const customFieldsTable = definePublicQueryProcedure({
       })
     } else if (entity === 'unterveranstaltung') {
       return await prisma.customField.findMany({
+        orderBy: [
+          {
+            unterveranstaltungId: { sort: 'asc', nulls: 'first' },
+          },
+          {
+            order: { sort: 'asc', nulls: 'last' },
+          },
+        ],
         where: {
           positions:
             position === undefined
@@ -64,8 +74,9 @@ export const customFieldsTable = definePublicQueryProcedure({
   },
 })
 
-export const customFieldsList = definePublicQueryProcedure({
+export const customFieldsList = defineProtectedQueryProcedure({
   key: 'table',
+  roleIds: ['ADMIN', 'GLIEDERUNG_ADMIN'],
   inputSchema: baseFilter.extend({
     table: defineTableInput({
       filter: {
@@ -74,10 +85,14 @@ export const customFieldsList = definePublicQueryProcedure({
         required: boolish,
         position: z.nativeEnum(CustomFieldPosition),
       },
-      orderBy: ['name'],
+      orderBy: ['name', 'order'],
     }),
   }),
-  async handler({ input }) {
+  async handler({ ctx, input }) {
+    if (ctx.account.role === 'GLIEDERUNG_ADMIN') {
+      await getGliederungRequireAdmin(ctx.accountId)
+    }
+
     const where: Prisma.CustomFieldWhereInput = {
       name: {
         contains: input.table?.filter?.name,
@@ -93,6 +108,25 @@ export const customFieldsList = definePublicQueryProcedure({
             },
     }
 
+    if (input.entity === 'veranstaltung') {
+      where.veranstaltungId = input.entityId
+    } else if (input.entity === 'unterveranstaltung') {
+      where.OR = [
+        {
+          unterveranstaltungId: input.entityId,
+        },
+        {
+          veranstaltung: {
+            unterveranstaltungen: {
+              some: {
+                id: input.entityId,
+              },
+            },
+          },
+        },
+      ]
+    }
+
     const total = await prisma.customField.count({ where })
     const { pageIndex, pageSize, pages } = calculatePagination(total, input.table?.pagination)
 
@@ -100,15 +134,13 @@ export const customFieldsList = definePublicQueryProcedure({
       const customFields = await prisma.customField.findMany({
         take: pageSize,
         skip: pageSize * pageIndex,
-        where: {
-          ...where,
-          veranstaltungId: input.entityId,
-        },
+        where,
         orderBy: input.table?.orderBy,
         select: {
           id: true,
           name: true,
           description: true,
+          order: true,
           type: true,
           positions: true,
           required: true,
@@ -122,27 +154,18 @@ export const customFieldsList = definePublicQueryProcedure({
       const customFields = await prisma.customField.findMany({
         take: pageSize,
         skip: pageSize * pageIndex,
-        where: {
-          ...where,
-          OR: [
-            {
-              unterveranstaltungId: input.entityId,
-            },
-            {
-              veranstaltung: {
-                unterveranstaltungen: {
-                  some: {
-                    id: input.entityId,
-                  },
-                },
-              },
-            },
-          ],
-        },
+        orderBy: [
+          {
+            unterveranstaltungId: { sort: 'asc', nulls: 'first' },
+          },
+          ...(input.table?.orderBy ?? []),
+        ],
+        where,
         select: {
           id: true,
           name: true,
           description: true,
+          order: true,
           type: true,
           positions: true,
           required: true,

@@ -2,12 +2,14 @@
 import {
   CameraIcon,
   ChatBubbleLeftRightIcon,
+  ChevronUpDownIcon,
   CodeBracketIcon,
   DocumentDuplicateIcon,
   DocumentIcon,
   HandRaisedIcon,
   LinkIcon,
   MegaphoneIcon,
+  PlusIcon,
   RocketLaunchIcon,
   SquaresPlusIcon,
   UserGroupIcon,
@@ -371,15 +373,28 @@ const anmeldeLinkCreateModal = useTemplateRef('anmeldeLinkCreateModal')
               Hier können benutzerdefinierte Felder erstellt werden, welche für alle Unterveranstaltungen gelten.
             </p>
           </div>
+          <div class="flex items-center gap-x-4">
           <RouterLink
-            class="text-primary-600"
+              class="text-primary-600 flex items-center gap-x-1"
             :to="{
               name: 'Unterveranstaltung Custom Field erstellen',
               params: { veranstaltungId: route.params.veranstaltungId },
             }"
           >
-            Neues Feld
+              <PlusIcon class="size-4" />
+              <span>Neues Feld</span>
           </RouterLink>
+            <RouterLink
+              class="text-primary-600 flex items-center gap-x-1"
+              :to="{
+                name: 'Unterveranstaltung Custom Fields sortieren',
+                params: { unterveranstaltungId: route.params.unterveranstaltungId },
+              }"
+            >
+              <ChevronUpDownIcon class="size-4" />
+              <span>Reihenfolge ändern</span>
+            </RouterLink>
+          </div>
         </div>
         <CustomFieldsTable
           v-if="unterveranstaltung?.id"

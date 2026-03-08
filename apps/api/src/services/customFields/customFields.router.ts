@@ -9,6 +9,8 @@ import { customFieldsVeranstaltungCreate } from './customFieldsVeranstaltungCrea
 import { customFieldsVeranstaltungDelete, customFieldsUnterveranstaltungDelete } from './customFieldsDelete.js'
 import { customFieldsUpdate } from './customFieldsUpdate.js'
 import { customFieldValuesUpdate } from './customFieldValuesUpdate.js'
+import { customFieldUnterveranstaltungOrder } from './schema/customFieldsUnterveranstaltungOrder.js'
+import { customFieldVeranstaltungOrder } from './schema/customFieldsVeranstaltungOrder.js'
 // Import Routes here - do not delete this line
 
 export const customFieldsRouter = mergeRouters(
@@ -21,6 +23,8 @@ export const customFieldsRouter = mergeRouters(
   customFieldsUnterveranstaltungDelete,
   customFieldsUnterveranstaltungCreate,
   customFieldValuesUpdate,
-  customFieldsTemplates
+  customFieldsTemplates,
+  customFieldVeranstaltungOrder,
+  customFieldUnterveranstaltungOrder
   // Add Routes here - do not delete this line
 )
