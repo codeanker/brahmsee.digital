@@ -521,8 +521,8 @@ importers:
         specifier: ^10.8.0
         version: 10.8.0(@typescript-eslint/parser@8.56.0(eslint@10.0.1(jiti@1.21.7))(typescript@5.7.2))(eslint@10.0.1(jiti@1.21.7))(vue-eslint-parser@9.4.3(eslint@10.0.1(jiti@1.21.7)))
       globals:
-        specifier: ^15.14.0
-        version: 15.14.0
+        specifier: ^17.4.0
+        version: 17.4.0
       typescript-eslint:
         specifier: 'catalog:'
         version: 8.56.0(eslint@10.0.1(jiti@1.21.7))(typescript@5.7.2)
@@ -3599,8 +3599,8 @@ packages:
     deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
     hasBin: true
 
-  globals@15.14.0:
-    resolution: {integrity: sha512-OkToC372DtlQeje9/zHIo5CT8lRP/FUgEOKBEhU4e0abL7J7CD24fD9ohiLN5hagG/kWCYj4K5oaxxtj2Z0Dig==}
+  globals@17.4.0:
+    resolution: {integrity: sha512-hjrNztw/VajQwOLsMNT1cbJiH2muO3OROCHnbehc8eY5JyD2gqz4AcMHPqgaOR59DjgUjYAYLeH699g/eWi2jw==}
     engines: {node: '>=18'}
 
   graceful-fs@4.2.11:
@@ -8258,7 +8258,7 @@ snapshots:
       package-json-from-dist: 1.0.1
       path-scurry: 1.11.1
 
-  globals@15.14.0: {}
+  globals@17.4.0: {}
 
   graceful-fs@4.2.11: {}
 
