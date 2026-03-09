@@ -68,7 +68,7 @@ oidcRouter.get('/dlrg/callback', async (c) => {
       Authorization: `Bearer ${result.access_token}`,
     },
   })
-  const profileRaw = await userInfoResponse.json() as Record<string, unknown>
+  const profileRaw = (await userInfoResponse.json()) as Record<string, unknown>
   const profile = ZProfile.parse(profileRaw)
   const existingUser = await prisma.account.findUnique({
     where: {
@@ -136,16 +136,41 @@ oidcRouter.get('/dlrg/login', async (c) => {
   const as = await oauth.processDiscoveryResponse(issuer, discoveryRequestResponse)
   const authorizationUrl = new URL(as.authorization_endpoint!)
 
+  const requestHost = c.req.header('Host')?.trim().toLowerCase()
+  if (!requestHost) {
+    return c.text('Invalid domain', 400)
+  }
+
+  // Accept hostnames stored as plain host, with port, or as full URL.
+  const hostFromHeader = new URL(`http://${requestHost}`)
+  const candidateHostnames = Array.from(
+    new Set([
+      requestHost,
+      hostFromHeader.host,
+      hostFromHeader.hostname,
+      `https://${hostFromHeader.host}`,
+      `https://${hostFromHeader.hostname}`,
+      `http://${hostFromHeader.host}`,
+      `http://${hostFromHeader.hostname}`,
+    ])
+  )
+
   const host = await prisma.hostname.findFirst({
     where: {
-      hostname: c.req.header('Host'),
-    }
+      hostname: {
+        in: candidateHostnames,
+      },
+    },
   })
   if (host === null) {
     return c.text('Invalid domain', 400)
   }
 
-  const redirectUri = new URL('/api/connect/dlrg/callback', host.hostname)
+  const redirectBase =
+    host.hostname.startsWith('http://') || host.hostname.startsWith('https://')
+      ? host.hostname
+      : `https://${host.hostname}`
+  const redirectUri = new URL('/api/connect/dlrg/callback', redirectBase)
   const registerAs = c.req.query('as')?.trim()
   if (registerAs !== undefined && registerAs?.length > 0) {
     redirectUri.searchParams.set('as', registerAs)
