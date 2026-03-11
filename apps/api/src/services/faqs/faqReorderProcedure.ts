@@ -13,14 +13,14 @@ export const faqReorderProcedure = defineProtectedMutateProcedure({
     faqOrder: z.array(
       z.strictObject({
         id: z.string().uuid(),
-        sortOrder: z.number().int().min(0),
+        order: z.number().int().min(0),
         categoryId: z.string().uuid(),
       })
     ),
     categoryOrder: z.array(
       z.strictObject({
         id: z.string().uuid(),
-        sortOrder: z.number().int().min(0),
+        order: z.number().int().min(0),
       })
     ),
   }),
@@ -78,16 +78,16 @@ export const faqReorderProcedure = defineProtectedMutateProcedure({
 
     /// Perform updates in a transaction
     await prisma.$transaction([
-      ...faqOrder.map(({ id, sortOrder, categoryId }) =>
+      ...faqOrder.map(({ id, order, categoryId }) =>
         prisma.faq.update({
           where: { id },
-          data: { sortOrder, categoryId },
+          data: { order, categoryId },
         })
       ),
-      ...categoryOrder.map(({ id, sortOrder }) =>
+      ...categoryOrder.map(({ id, order }) =>
         prisma.faqCategory.update({
           where: { id },
-          data: { sortOrder },
+          data: { order },
         })
       ),
     ])

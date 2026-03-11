@@ -14,18 +14,18 @@ export async function listFaqs(unterveranstaltungId: string) {
       },
     },
     orderBy: {
-      sortOrder: 'asc',
+      order: 'asc',
     },
     select: {
       id: true,
       question: true,
       answer: true,
-      sortOrder: true,
+      order: true,
       category: {
         select: {
           id: true,
           name: true,
-          sortOrder: true,
+          order: true,
         },
       },
     },
@@ -36,13 +36,13 @@ export async function listFaqs(unterveranstaltungId: string) {
       ...v,
       category: v.category.name,
       categoryId: v.category.id,
-      categorySortOrder: v.category.sortOrder,
+      categoryOrder: v.category.order,
     })),
     ({ category }) => category
   )
 
   return Object.fromEntries(
-    Object.entries(groups).sort(([, a], [, b]) => (a[0]?.categorySortOrder ?? 0) - (b[0]?.categorySortOrder ?? 0))
+    Object.entries(groups).sort(([, a], [, b]) => (a[0]?.categoryOrder ?? 0) - (b[0]?.categoryOrder ?? 0))
   )
 }
 

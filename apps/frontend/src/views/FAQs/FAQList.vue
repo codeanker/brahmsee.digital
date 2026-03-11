@@ -46,11 +46,11 @@ function openFormModal(faq?: FAQ) {
 
 async function saveOrder() {
   const faqOrder = categories.value.flatMap((cat) =>
-    cat.faqs.map((faq, index) => ({ id: faq.id, sortOrder: index, categoryId: cat.categoryId }))
+    cat.faqs.map((faq, index) => ({ id: faq.id, order: index, categoryId: cat.categoryId }))
   )
   const categoryOrder = categories.value.map((cat, index) => ({
     id: cat.categoryId,
-    sortOrder: index,
+    order: index,
   }))
   await apiClient.faq.reorder.mutate({ faqOrder, categoryOrder })
   await execute()

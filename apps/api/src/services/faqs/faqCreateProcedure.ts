@@ -15,11 +15,11 @@ export const faqCreateProcedure = defineProtectedMutateProcedure({
     const [maxCategoryOrder, maxFaqOrder] = await Promise.all([
       prisma.faqCategory.aggregate({
         where: { unterveranstaltungId },
-        _max: { sortOrder: true },
+        _max: { order: true },
       }),
       prisma.faq.aggregate({
         where: { category: { unterveranstaltungId } },
-        _max: { sortOrder: true },
+        _max: { order: true },
       }),
     ])
 
@@ -27,7 +27,7 @@ export const faqCreateProcedure = defineProtectedMutateProcedure({
       data: {
         question: faq.question,
         answer: faq.answer,
-        sortOrder: (maxFaqOrder._max.sortOrder ?? -1) + 1,
+        order: (maxFaqOrder._max.order ?? -1) + 1,
         unterveranstaltung: {
           connect: {
             id: unterveranstaltungId,
@@ -38,7 +38,7 @@ export const faqCreateProcedure = defineProtectedMutateProcedure({
             create: {
               name: faq.category,
               unterveranstaltungId,
-              sortOrder: (maxCategoryOrder._max.sortOrder ?? -1) + 1,
+              order: (maxCategoryOrder._max.order ?? -1) + 1,
             },
             where: {
               name_unterveranstaltungId: {
