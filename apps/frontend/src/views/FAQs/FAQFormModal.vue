@@ -79,6 +79,13 @@ async function onSubmit() {
   emit('success')
 }
 
+async function onDelete() {
+  if (!props.faq) return
+  await apiClient.faq.delete.mutate(props.faq.id)
+  modal.value?.hide()
+  emit('success')
+}
+
 defineExpose<ModalApi>({
   show() {
     modal.value?.show()
@@ -127,7 +134,16 @@ defineExpose<ModalApi>({
               />
             </div>
 
-            <div class="flex justify-end col-span-2 mt-8">
+            <div class="flex justify-between col-span-2 mt-8">
+              <Button
+                v-if="isEdit"
+                type="button"
+                color="danger"
+                @click="onDelete"
+              >
+                Entfernen
+              </Button>
+              <span v-else />
               <Button type="submit"> Speichern </Button>
             </div>
           </ValidateForm>

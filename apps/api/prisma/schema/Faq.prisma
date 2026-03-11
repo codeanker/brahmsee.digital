@@ -1,6 +1,7 @@
 model FaqCategory {
-  id   String @id @default(uuid(7))
-  name String
+  id        String @id @default(uuid(7))
+  name      String
+  sortOrder Int    @default(0)
 
   unterveranstaltungId String
   unterveranstaltung   Unterveranstaltung @relation(fields: [unterveranstaltungId], references: [id])
@@ -11,9 +12,10 @@ model FaqCategory {
 }
 
 model Faq {
-  id       String @id @default(uuid(7))
-  question String
-  answer   String
+  id        String @id @default(uuid(7))
+  question  String
+  answer    String
+  sortOrder Int    @default(0)
 
   categoryId String
   category   FaqCategory @relation(fields: [categoryId], references: [id])

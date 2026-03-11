@@ -13,24 +13,37 @@ export async function listFaqs(unterveranstaltungId: string) {
         },
       },
     },
+    orderBy: {
+      sortOrder: 'asc',
+    },
     select: {
       id: true,
       question: true,
       answer: true,
+      sortOrder: true,
       category: {
         select: {
+          id: true,
           name: true,
+          sortOrder: true,
         },
       },
     },
   })
 
   const groups = groupBy(
-    list.map((v) => ({ ...v, category: v.category.name })),
+    list.map((v) => ({
+      ...v,
+      category: v.category.name,
+      categoryId: v.category.id,
+      categorySortOrder: v.category.sortOrder,
+    })),
     ({ category }) => category
   )
 
-  return Object.fromEntries(Object.entries(groups).sort(([a], [b]) => a.localeCompare(b)))
+  return Object.fromEntries(
+    Object.entries(groups).sort(([, a], [, b]) => (a[0]?.categorySortOrder ?? 0) - (b[0]?.categorySortOrder ?? 0))
+  )
 }
 
 export const faqListProcedure = defineProtectedQueryProcedure({

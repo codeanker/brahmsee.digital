@@ -4,6 +4,7 @@ import { faqCreateProcedure } from './faqCreateProcedure.js'
 import { faqDeleteProcedure } from './faqDeleteProcecure.js'
 import { faqCategorySearchProcedure, faqListProcedure } from './faqListProcedure.js'
 import { faqUpdateProcedure } from './faqUpdateProcedure.js'
+import { faqReorderProcedure } from './faqReorderProcedure.js'
 
 // Import Routes here - do not delete this line
 
@@ -12,6 +13,7 @@ export const faqsRouter = mergeRouters(
   faqCategorySearchProcedure,
   faqCreateProcedure,
   faqUpdateProcedure,
-  faqDeleteProcedure
+  faqDeleteProcedure,
+  faqReorderProcedure
   // Add Routes here - do not delete this line
 )
