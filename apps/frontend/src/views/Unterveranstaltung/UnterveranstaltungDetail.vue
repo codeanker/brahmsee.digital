@@ -374,16 +374,16 @@ const anmeldeLinkCreateModal = useTemplateRef('anmeldeLinkCreateModal')
             </p>
           </div>
           <div class="flex items-center gap-x-4">
-          <RouterLink
+            <RouterLink
               class="text-primary-600 flex items-center gap-x-1"
-            :to="{
-              name: 'Unterveranstaltung Custom Field erstellen',
-              params: { veranstaltungId: route.params.veranstaltungId },
-            }"
-          >
+              :to="{
+                name: 'Unterveranstaltung Custom Field erstellen',
+                params: { veranstaltungId: route.params.veranstaltungId },
+              }"
+            >
               <PlusIcon class="size-4" />
               <span>Neues Feld</span>
-          </RouterLink>
+            </RouterLink>
             <RouterLink
               class="text-primary-600 flex items-center gap-x-1"
               :to="{
@@ -416,13 +416,11 @@ const anmeldeLinkCreateModal = useTemplateRef('anmeldeLinkCreateModal')
           <div class="flex-1"></div>
           <Button @click="() => faqList?.openFormModal()"> Frage anlegen </Button>
         </div>
-        <div class="grid grid-cols-3 gap-8">
-          <FAQList
-            v-if="unterveranstaltung"
-            ref="faqList"
-            :unterveranstaltung-id="unterveranstaltung.id"
-          />
-        </div>
+        <FAQList
+          v-if="unterveranstaltung"
+          ref="faqList"
+          :unterveranstaltung-id="unterveranstaltung.id"
+        />
         <hr class="my-10" />
       </Tab>
 
