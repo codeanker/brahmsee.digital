@@ -6,7 +6,6 @@ import archiver from 'archiver'
 import type { Context } from 'hono'
 import { stream } from 'hono/streaming'
 import mime from 'mime'
-import { Readable } from 'node:stream'
 import { z } from 'zod'
 import prisma from '../../prisma.js'
 import { openFileStream } from '../../services/file/helpers/getFileUrl.js'
@@ -119,54 +118,67 @@ export async function veranstaltungPhotoArchive(ctx: Context<{ Variables: Author
 
   const zip = archiver('zip')
 
-  zip.on('warning', function (err) {
-    if (err.code === 'ENOENT') {
-      console.warn(err)
-    } else {
-      throw err
-    }
-  })
-
-  zip.on('error', function (err) {
-    throw err
-  })
-
   ctx.status(201)
   ctx.header('Content-Type', 'application/zip')
   ctx.header('Content-Disposition', `attachment; filename="${mode === 'flat' ? 'FotosForAutomation' : 'Fotos'}.zip"`)
 
   zip.append(`Gesamtzahl Fotos: ${anmeldungen.length}`, { name: `${baseDirectory}/README.txt` })
 
-  for (const { person, unterveranstaltung } of anmeldungen) {
-    if (!person.photo) {
-      continue
+  return stream(ctx, async (s) => {
+    zip.on('data', (chunk) => {
+      /* eslint-disable @typescript-eslint/no-floating-promises */
+      s.write(chunk)
+    })
+
+    for (const { person, unterveranstaltung } of anmeldungen) {
+      if (!person.photo) {
+        continue
+      }
+
+      const stream = await openFileStream(person.photo)
+
+      stream.on('end', () => {
+        stream.destroy()
+      })
+
+      const directory = `${unterveranstaltung.veranstaltung.name}/${unterveranstaltung.gliederung.name}`
+      const basename = mode === 'group' ? `${person.firstname} ${person.lastname}` : person.id
+      const extension = mime.getExtension(person.photo.mimetype ?? 'text/plain')
+
+      zip.append(stream, {
+        name:
+          mode === 'group'
+            ? `${baseDirectory}/${directory}/${basename}.${extension}`
+            : `Fotos/${person.photo.id}.${extension}`,
+        date: person.photo.createdAt,
+      })
     }
 
-    const stream = await openFileStream(person.photo)
+    if (mode === 'flat') {
+      const buffer = buildSheet(anmeldungen, account.person)
+      zip.append(buffer, {
+        name: 'Datenzusammenführung.xlsx',
+      })
+    }
 
-    const directory = `${unterveranstaltung.veranstaltung.name}/${unterveranstaltung.gliederung.name}`
-    const basename = mode === 'group' ? `${person.firstname} ${person.lastname}` : person.id
-    const extension = mime.getExtension(person.photo.mimetype ?? 'text/plain')
+    /* eslint-disable @typescript-eslint/no-floating-promises */
+    zip.finalize()
 
-    zip.append(stream, {
-      name:
-        mode === 'group'
-          ? `${baseDirectory}/${directory}/${basename}.${extension}`
-          : `Fotos/${person.photo.id}.${extension}`,
-      date: person.photo.createdAt,
+    await new Promise<void>((resolve, reject) => {
+      zip.on('warning', function (err) {
+        if (err.code === 'ENOENT') {
+          console.warn(err)
+        } else {
+          reject(err)
+        }
+      })
+
+      zip.once('end', () => {
+        resolve()
+      })
+      zip.once('error', (err) => {
+        reject(err)
+      })
     })
-  }
-
-  if (mode === 'flat') {
-    const buffer = buildSheet(anmeldungen, account.person)
-    zip.append(buffer, {
-      name: 'Datenzusammenführung.xlsx',
-    })
-  }
-
-  await zip.finalize()
-
-  return stream(ctx, async (s) => {
-    await s.pipe(Readable.toWeb(zip))
   })
 }
