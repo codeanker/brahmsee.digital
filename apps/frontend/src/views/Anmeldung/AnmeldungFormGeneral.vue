@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { FaceFrownIcon } from '@heroicons/vue/24/outline'
 import { useAsyncState } from '@vueuse/core'
-import { defineProps, ref, watch, withDefaults } from 'vue'
+import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { apiClient } from '@/api'
@@ -29,11 +29,11 @@ const { state: customFields, execute: loadCustomFields } = useAsyncState(async (
   if (!unterveranstaltung) {
     return undefined
   }
-  // TODO: Nur Felder für die Position anzeigen
+
   return apiClient.customFields.list.query({
     entity: 'unterveranstaltung',
     entityId: unterveranstaltung.value.id,
-    position: 'PUBLIC_ANMELDUNG',
+    position: props.isPublic ? 'PUBLIC_ANMELDUNG' : 'INTERN_ANMELDUNG',
   })
 }, [])
 
