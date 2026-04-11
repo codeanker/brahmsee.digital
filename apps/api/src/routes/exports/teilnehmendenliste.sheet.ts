@@ -24,7 +24,6 @@ export async function veranstaltungTeilnehmendenliste(ctx: Context<{ Variables: 
       unterveranstaltung: {
         gliederungId: gliederung?.id,
       },
-      status: 'BESTAETIGT',
     },
     select: {
       id: true,
@@ -114,8 +113,7 @@ export async function veranstaltungTeilnehmendenliste(ctx: Context<{ Variables: 
       '#': anmeldung.id,
 
       Veranstaltung: anmeldung.unterveranstaltung.veranstaltung.name,
-      Ausschreibung:
-        anmeldung.unterveranstaltung.beschreibung?.substring(0, 30) || anmeldung.unterveranstaltung.gliederung.name,
+      Ausschreibung: anmeldung.unterveranstaltung.gliederung.name,
       'Art der Ausschreibung': anmeldung.unterveranstaltung.type,
 
       Status: AnmeldungStatusMapping[anmeldung.status].human,
