@@ -85,8 +85,8 @@ function buildSheet(
       Veggiemarker: anmeldung.person.essgewohnheit === 'OMNIVOR' ? '' : 'brocolli.svg',
       Vorname: anmeldung.person.firstname,
       Nachname: anmeldung.person.lastname,
-      Ausschreibung:
-        anmeldung.unterveranstaltung.beschreibung?.substring(0, 30) || anmeldung.unterveranstaltung.gliederung.name,
+      Gliederung: anmeldung.unterveranstaltung.gliederung.name,
+      'Eigener Titel': anmeldung.unterveranstaltung.beschreibung?.substring(0, 30) ?? '',
     }
   })
 
