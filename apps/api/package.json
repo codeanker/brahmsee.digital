@@ -54,7 +54,7 @@
     "oauth4webapi": "^3.8.3",
     "prom-client": "^15.0.0",
     "superjson": "catalog:",
-    "uuid": "^11.0.5",
+    "uuid": "^14.0.0",
     "winston": "^3.11.0",
     "zod": "catalog:"
   },
