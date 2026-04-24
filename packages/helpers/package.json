@@ -12,7 +12,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "dayjs": "^1.11.13"
+    "dayjs": "^1.11.19"
   },
   "devDependencies": {
     "@codeanker/typescript-config": "workspace:*",
