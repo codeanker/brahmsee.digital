@@ -120,8 +120,8 @@ importers:
         specifier: ^1.19.10
         version: 1.19.10(hono@4.12.4)
       '@hono/trpc-server':
-        specifier: ^0.4.0
-        version: 0.4.1(@trpc/server@11.0.0-rc.682(typescript@5.7.2))(hono@4.12.4)
+        specifier: ^0.4.2
+        version: 0.4.2(@trpc/server@11.0.0-rc.682(typescript@5.7.2))(hono@4.12.4)
       '@prisma/client':
         specifier: ^5.19.1
         version: 5.22.0(prisma@5.22.0)
@@ -1436,8 +1436,8 @@ packages:
     peerDependencies:
       hono: ^4
 
-  '@hono/trpc-server@0.4.1':
-    resolution: {integrity: sha512-5D4gA+MpJxUzqCEDgZMlhxz1G8BkoneR+N+bD7Kt28LPJ0jAhXp1GA3ucpV6KxMBBLvFXIAFAfzdBeRmz12Pkw==}
+  '@hono/trpc-server@0.4.2':
+    resolution: {integrity: sha512-3TDrc42CZLgcTFkXQba+y7JlRWRiyw1AqhLqztWyNS2IFT+3bHld0lxKdGBttCtGKHYx0505dM67RMazjhdZqw==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
       '@trpc/server': ^10.10.0 || >11.0.0-rc
@@ -6054,7 +6054,7 @@ snapshots:
     dependencies:
       hono: 4.12.4
 
-  '@hono/trpc-server@0.4.1(@trpc/server@11.0.0-rc.682(typescript@5.7.2))(hono@4.12.4)':
+  '@hono/trpc-server@0.4.2(@trpc/server@11.0.0-rc.682(typescript@5.7.2))(hono@4.12.4)':
     dependencies:
       '@trpc/server': 11.0.0-rc.682(typescript@5.7.2)
       hono: 4.12.4
