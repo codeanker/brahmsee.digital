@@ -2,6 +2,7 @@ import { Role } from '@prisma/client'
 import z from 'zod'
 
 import prisma from '../../prisma.js'
+import { emitTableUpdate } from '../../sse/index.js'
 import { defineProtectedMutateProcedure } from '../../types/defineProcedure.js'
 
 export const anmeldungVerwaltungPatchProcedure = defineProtectedMutateProcedure({
@@ -15,7 +16,7 @@ export const anmeldungVerwaltungPatchProcedure = defineProtectedMutateProcedure(
     }),
   }),
   async handler(options) {
-    return prisma.anmeldung.update({
+    const result = await prisma.anmeldung.update({
       where: {
         id: options.input.id,
       },
@@ -24,5 +25,7 @@ export const anmeldungVerwaltungPatchProcedure = defineProtectedMutateProcedure(
         id: true,
       },
     })
+    emitTableUpdate('anmeldung')
+    return result
   },
 })

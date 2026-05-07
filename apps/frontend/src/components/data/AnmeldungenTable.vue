@@ -13,6 +13,7 @@ import initialData from '@/components/Table/initialData'
 import Tab from '@/components/UIComponents/components/Tab.vue'
 import Tabs from '@/components/UIComponents/Tabs.vue'
 import { loggedInAccount } from '@/composables/useAuthentication'
+import { useSSE } from '@/composables/useSSE'
 import { getAnmeldungStatusColor } from '@/helpers/getAnmeldungStatusColors'
 import {
   AnmeldungStatusMapping,
@@ -270,6 +271,12 @@ const query: Query<Anmeldung> = (pagination, filter) =>
     initialData,
     placeholderData: keepPreviousData,
   })
+
+// Set up SSE to auto-refresh table when data changes
+useSSE('anmeldung', () => {
+  console.log('Anmeldung table updated, refreshing...')
+  dataTable.value?.query.refetch()
+})
 </script>
 
 <template>
