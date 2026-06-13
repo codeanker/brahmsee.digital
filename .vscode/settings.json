@@ -24,6 +24,7 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
+  "eslint.workingDirectories": [{ "mode": "auto" }],
   "editor.tabSize": 2,
   "files.associations": {
     "*.mjml": "html"

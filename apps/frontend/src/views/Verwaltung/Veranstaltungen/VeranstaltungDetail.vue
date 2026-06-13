@@ -135,6 +135,14 @@ const files: ExportedFileType[] = [
     hoverColor: 'hover:text-orange-700',
     href: `/api/export/archive/photos?${exportParams}&mode=flat`,
   },
+  {
+    name: 'Rechnungsimport',
+    initial: 'RE',
+    href: `/api/export/csv/rechnungsimport?${exportParams}`,
+    description: 'CSV-Import für bestätigte Teilnehmende (Fakturierung)',
+    bgColor: 'bg-indigo-600',
+    hoverColor: 'hover:text-indigo-700',
+  },
 ]
 
 const publicProgramLink = computed(() => {
