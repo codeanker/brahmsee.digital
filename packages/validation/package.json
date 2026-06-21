@@ -12,7 +12,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "vee-validate": "^4.11.8"
+    "vee-validate": "^4.15.1"
   },
   "devDependencies": {
     "@codeanker/typescript-config": "workspace:*",
