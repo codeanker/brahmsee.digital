@@ -5,12 +5,13 @@ import { apiClient } from '@/api'
 import DataTable, { type Query } from '@/components/Table/DataTable.vue'
 import initialData from '@/components/Table/initialData'
 import { useRouteTitle } from '@/composables/useRouteTitle'
+import { useSSE } from '@/composables/useSSE'
 import { type RouterOutput } from '@codeanker/api'
 import { keepPreviousData, useQuery } from '@tanstack/vue-query'
 import { createColumnHelper } from '@tanstack/vue-table'
 import { dayjs, formatCurrency, formatDateWith } from '@codeanker/helpers'
 import { useRouter } from 'vue-router'
-import { h } from 'vue'
+import { h, ref } from 'vue'
 
 const router = useRouter()
 
@@ -96,6 +97,14 @@ const query: Query<Veranstaltung> = (pagination, filter, orderBy) =>
     placeholderData: keepPreviousData,
   })
 
+const dataTableRef = ref<{ query: ReturnType<Query<Veranstaltung>> }>()
+
+// Set up SSE to auto-refresh table when data changes
+useSSE('veranstaltung', () => {
+  console.log('Veranstaltung table updated, refreshing...')
+  dataTableRef.value?.query.refetch()
+})
+
 function onClick(veranstaltung: Veranstaltung) {
   router.push({ name: 'Verwaltung Veranstaltungsdetails', params: { veranstaltungId: veranstaltung.id } })
 }
@@ -117,6 +126,7 @@ function onClick(veranstaltung: Veranstaltung) {
     </div>
 
     <DataTable
+      ref="dataTableRef"
       :query="query"
       :columns="columns"
       :initial-sort="[{ id: 'name', desc: false }]"
