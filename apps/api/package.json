@@ -41,7 +41,7 @@
     "@trpc/server": "catalog:",
     "archiver": "^7.0.1",
     "config": "^3.3.9",
-    "dayjs": "^1.11.10",
+    "dayjs": "^1.11.19",
     "dot-prop": "^9.0.0",
     "fast-csv": "^5.0.1",
     "handlebars": "^4.7.8",
