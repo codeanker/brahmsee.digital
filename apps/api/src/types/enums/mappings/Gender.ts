@@ -5,7 +5,8 @@ import { defineEnumMapping } from '../defineEnumMapping.js'
 export const GenderMapping = defineEnumMapping<Gender>({
   MALE: { human: 'Männlich' },
   FEMALE: { human: 'Weiblich' },
-  UNSPECIFIED: { human: 'Divers' },
+  DIVERS: { human: 'Divers' },
+  UNSPECIFIED: { human: 'Keine Angabe' },
 })
 
 export { type Gender }

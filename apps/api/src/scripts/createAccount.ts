@@ -1,28 +1,54 @@
 import { input, password as passwordInput, select, search } from '@inquirer/prompts'
 import { Role } from '@prisma/client'
 
-import prisma from '../prisma.js'
+import prisma, { withoutQueryLogging } from '../prisma.js'
 import { getAccountCreateData } from '../services/account/schema/account.schema.js'
 import logActivity from '../util/activity.js'
-import { getEnumOptions, roleMapping } from '../client.js'
+import { getEnumOptions, roleMapping, GenderMapping } from '../client.js'
+
+function parseBirthday(value: string): Date | undefined {
+  if (!/^\d{2}-\d{2}-\d{4}$/.test(value)) {
+    return undefined
+  }
+
+  const day = Number(value.slice(0, 2))
+  const month = Number(value.slice(3, 5))
+  const year = Number(value.slice(6, 10))
+  const birthday = new Date(Date.UTC(year, month - 1, day))
+
+  if (
+    birthday.getUTCFullYear() !== year ||
+    birthday.getUTCMonth() !== month - 1 ||
+    birthday.getUTCDate() !== day
+  ) {
+    return undefined
+  }
+
+  const today = new Date()
+  const todayAtMidnight = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()))
+  if (birthday > todayAtMidnight) {
+    return undefined
+  }
+
+  return birthday
+}
 
 async function createUser() {
   const email = await input({ message: 'E-Mail' })
   const firstname = await input({ message: 'Vorname' })
   const lastname = await input({ message: 'Nachname' })
   const password = await passwordInput({ message: 'Passwort' })
+  
   const roleId = await select({
     message: 'Rolle',
-    choices: getEnumOptions(roleMapping).map((option) => {
-      return {
-        name: option.label,
-        value: option.value,
-      }
-    }),
+    choices: getEnumOptions(roleMapping).map((option) => ({
+      name: option.label,
+      value: option.value,
+    })),
   })
 
-  async function selectGliederung(): Promise<string> {
-    return await search({
+  const gliederungId = await withoutQueryLogging(() =>
+    search({
       message: 'Deine Gliederung',
       source: async (term) => {
         const results = await prisma.gliederung.findMany({
@@ -40,20 +66,39 @@ async function createUser() {
         }))
       },
     })
+  )
+  const birthdayInput = await input({
+    message: 'Geburtsdatum (TT-MM-JJJJ)',
+    validate: (value) =>
+      parseBirthday(value) ? true : 'Bitte ein gültiges Datum im Format TT-MM-JJJJ eingeben, das nicht in der Zukunft liegt.',
+  })
+  const birthday = parseBirthday(birthdayInput)
+  if (!birthday) {
+    throw new Error('Ungültiges Geburtsdatum.')
   }
 
-  const gliederungId = await selectGliederung()
+  const gender = await select({
+    message: 'Geschlecht',
+    choices: getEnumOptions(GenderMapping).map((option) => ({
+      name: option.label,
+      value: option.value,
+    })),
+  })
+
   const accountData = await getAccountCreateData({
-    email: email,
-    firstname: firstname,
-    lastname: lastname,
-    password: password,
-    roleId: roleId,
+    email,
+    firstname,
+    lastname,
+    password,
+    roleId,
     isActiv: true,
     gliederungId,
-    adminInGliederungId: roleId === Role.GLIEDERUNG_ADMIN ? gliederungId : undefined,
-    birthday: new Date(),
-    gender: 'FEMALE',
+    adminInGliederungId:
+      roleId === Role.GLIEDERUNG_ADMIN
+        ? gliederungId
+        : undefined,
+    birthday,
+    gender,
   })
 
   const res = await prisma.account.create({
@@ -69,7 +114,7 @@ async function createUser() {
 
   await logActivity({
     type: 'CREATE',
-    description: `account was created via CLI script`,
+    description: 'account was created via CLI script',
     subjectType: 'account',
     subjectId: res.id,
   })

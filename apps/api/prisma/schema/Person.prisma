@@ -3,6 +3,7 @@
 enum Gender {
   MALE
   FEMALE
+  DIVERS
   UNSPECIFIED
 }
 

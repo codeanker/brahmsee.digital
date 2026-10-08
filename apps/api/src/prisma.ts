@@ -24,10 +24,25 @@ const prisma = new PrismaClient({
   },
 })
 
+let queryLoggingEnabled = config.loggingLevel === 'debug'
+
 if (config.loggingLevel === 'debug') {
   prisma.$on('query', (e) => {
-    log.debug(e.query)
+    if (queryLoggingEnabled) {
+      log.debug(e.query)
+    }
   })
+}
+
+export async function withoutQueryLogging<T>(callback: () => Promise<T>): Promise<T> {
+  const previousQueryLoggingEnabled = queryLoggingEnabled
+  queryLoggingEnabled = false
+
+  try {
+    return await callback()
+  } finally {
+    queryLoggingEnabled = previousQueryLoggingEnabled
+  }
 }
 
 export default prisma
